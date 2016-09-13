@@ -362,6 +362,10 @@ let blindImagesTwoStateNO = [DeviceImageState(defaultImage: "19 Blind - Blind - 
 let blindImagesTwoStateNC = [DeviceImageState(defaultImage: "19 Blind - Blind - 00", state: 0, text: "On"),
                            DeviceImageState(defaultImage: "19 Blind - Blind - 06", state: 1, text: "Off")]
 
+let blindImagesThreeStateNO = [DeviceImageState(defaultImage: "19 Blind - Blind - 00", state: 0, text: "Off"),
+                               DeviceImageState(defaultImage: "19 Blind - Blind - 03", state: 0, text: "Off"),
+                             DeviceImageState(defaultImage: "19 Blind - Blind - 06", state: 1, text: "On")]
+
 let curtainImagesTwoStateNO = [DeviceImageState(defaultImage: "13 Curtain - Curtain - 00", state: 0, text: "Closed"),
                           DeviceImageState(defaultImage: "13 Curtain - Curtain - 02", state: 1, text: "Stop"),
                           DeviceImageState(defaultImage: "13 Curtain - Curtain - 04", state: 2, text: "Open")]

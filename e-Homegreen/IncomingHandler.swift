@@ -169,6 +169,16 @@ class IncomingHandler: NSObject {
                     self.getFlagParameters(self.byteArray)
                 }
                 
+                // Cards name
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x57 {
+                    
+                }
+                
+                // Cards parametar
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x56 {
+                    
+                }
+                
             }
         }
     }
@@ -379,6 +389,54 @@ class IncomingHandler: NSObject {
             }
             let data = ["flagId":flagId]
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveFlagParameterFromGateway, object: self, userInfo: data)
+        }
+    }
+    
+    // MARK - Cards
+    func getCardName(byteArray: [Byte]) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningCardNames) {
+            let id = Int(byteArray[8])
+            // Miminum is 12b
+            if id != 0 {
+                var name:String = ""
+                for j in 10 ..< 10+Int(byteArray[9]) {
+                    name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  timer name
+                }
+                let moduleAddress = Int(byteArray[4])
+                
+                if gateways.count > 0 {
+                    DatabaseCardsController.shared.createCard(id, cardId: nil, cardName: name, moduleAddress: moduleAddress, gateway: gateways.first!)
+                }else{
+                    return
+                }
+            }
+            let data = ["flagId":id]
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveCardFromGateway, object: self, userInfo: data)
+        }
+    }
+    func getCardParameters(byteArray: [Byte]) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningFlagParameters) {
+            let id = Int(byteArray[8])
+            // Miminum is 14b
+            if id != 0 {
+                
+                let moduleAddress = Int(byteArray[4])
+                let isEnabled = Bool(Int(byteArray[9]))
+                
+                
+                let cardId = NSString(format: "%02X %02X %02X %02X %02X %02X %02X", byteArray[10], byteArray[11], byteArray[12], byteArray[13], byteArray[14], byteArray[15], byteArray[16])
+                
+                let timerAddress:Int = Int(byteArray[53])
+                let timerId = Int(byteArray[54])
+                
+                if gateways.count > 0 {
+                    DatabaseCardsController.shared.createCard(id, cardId: cardId as String, cardName: nil, moduleAddress: moduleAddress, gateway: gateways.first!, isEnabled: isEnabled, timerAddress: timerAddress, timerId: timerId)
+                }else{
+                    return
+                }
+            }
+            let data = ["flagId":id]
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveCardParameterFromGateway, object: self, userInfo: data)
         }
     }
     

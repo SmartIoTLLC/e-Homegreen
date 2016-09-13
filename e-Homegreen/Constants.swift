@@ -222,6 +222,8 @@ struct UserDefaults {
     static let IsScaningEventsNameAndParameters = "PLCDidFindSequenceParameters"
     static let IsScaningFlagNames = "PLCDidFindFlagName"
     static let IsScaningFlagParameters = "PLCDidFindFlagParameters"
+    static let IsScaningCardNames = "PLCDidFindCardName"
+    static let IsScaningCardParameters = "PLCDidFindCardParameters"
     static let IsPreloaded = "EHGisPreloaded"
     static let RefreshDelayHours = "hourRefresh"
     static let RefreshDelayMinutes = "minRefresh"
@@ -506,6 +508,8 @@ struct NotificationKey {
     static let DidReceiveEventFromGateway = "kPLCDidFoundEvent"
     static let DidReceiveFlagFromGateway = "kPLCDidFoundFlag"
     static let DidReceiveFlagParameterFromGateway = "kPLCDidFoundFlagParameter"
+    static let DidReceiveCardFromGateway = "kPLCDidFoundCard"
+    static let DidReceiveCardParameterFromGateway = "kPLCDidFoundCardParameter"
     
     static let RefreshTimer = "kRefreshTimerListNotification"
     static let RefreshFlag = "kRefreshFlagListNotification"

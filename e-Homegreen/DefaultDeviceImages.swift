@@ -37,7 +37,7 @@ class DefaultDeviceImages: NSObject {
         case ControlType.Curtain:
             switch categoryId {
             case CategoryId.Blind:
-                return blindImagesTwoStateNO
+                return blindImagesThreeStateNO
             default:
                 return curtainImagesTwoStateNO
             }

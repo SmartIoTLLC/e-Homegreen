@@ -19,6 +19,8 @@ extension Card {
     @NSManaged var cardId: String
     @NSManaged var address: NSNumber
     @NSManaged var isEnabled: NSNumber
+    @NSManaged var timerAddress: NSNumber
+    @NSManaged var timerId: NSNumber
     @NSManaged var gateway: Gateway
 
 }

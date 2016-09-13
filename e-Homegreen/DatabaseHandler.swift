@@ -269,21 +269,5 @@ class DatabaseHandler: NSObject {
         return []
     }
     
-    func fetchTimerWithId(timerId: Int, gateway: Gateway, moduleAddress:Int) -> [Timer]{
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Timer")
-        let predicateLocation = NSPredicate(format: "timerId == %@", NSNumber(integer: timerId))
-        let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
-        let predicateAddress = NSPredicate(format: "address == %@", NSNumber(integer: moduleAddress))
-        let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway, predicateAddress])
-        
-        fetchRequest.predicate = combinedPredicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Timer]
-            return fetResults!
-        } catch let error1 as NSError {
-            print("Unresolved error \(error1), \(error1.userInfo)")
-            abort()
-        }
-        return []
-    }
+
 }

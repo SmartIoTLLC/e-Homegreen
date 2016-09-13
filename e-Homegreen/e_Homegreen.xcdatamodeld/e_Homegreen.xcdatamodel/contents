@@ -6,6 +6,8 @@
         <attribute name="cardName" attributeType="String" syncable="YES"/>
         <attribute name="id" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isEnabled" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="timerAddress" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="timerId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="cards" inverseEntity="Gateway" syncable="YES"/>
     </entity>
     <entity name="Category" representedClassName="e_Homegreen.Category" syncable="YES">
@@ -326,6 +328,7 @@
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="zones" inverseEntity="Location" syncable="YES"/>
     </entity>
     <elements>
+        <element name="Card" positionX="-981" positionY="-1962" width="128" height="165"/>
         <element name="Category" positionX="-461" positionY="-1591" width="128" height="150"/>
         <element name="Device" positionX="-677" positionY="-1989" width="128" height="915"/>
         <element name="DeviceImage" positionX="-459" positionY="-2043" width="128" height="120"/>
@@ -346,6 +349,5 @@
         <element name="Timer" positionX="-621" positionY="-1827" width="128" height="345"/>
         <element name="User" positionX="-675" positionY="-1764" width="128" height="225"/>
         <element name="Zone" positionX="-459" positionY="-1510" width="128" height="180"/>
-        <element name="Card" positionX="-981" positionY="-1962" width="128" height="135"/>
     </elements>
 </model>

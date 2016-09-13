@@ -73,6 +73,7 @@ class ScanViewController: PopoverVC {
         scanEventsViewController.gateway = gateway
         scanTimersViewController.gateway = gateway
         scanFlagsViewController.gateway = gateway
+        scanCardsViewController.gateway = gateway
         
         self.addChildViewController(scanDeviceViewController)
         scanDeviceViewController.view.frame = CGRectMake(0, 0, self.container.frame.size.width, self.container.frame.size.height)
