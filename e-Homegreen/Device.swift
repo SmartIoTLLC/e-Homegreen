@@ -45,6 +45,10 @@ class Device: NSManagedObject {
         self.isVisible = false
         self.isEnabled = false
         self.mac = information.mac
+        self.zoneId = -1
+        self.parentZoneId = -1
+        self.categoryId = -1
+        
         if information.isClimate {
             self.mode = "AUTO"
             self.modeState = "Off"
@@ -102,6 +106,9 @@ class Device: NSManagedObject {
         self.isVisible = false
         self.isEnabled = false
         self.mac = information.mac
+        self.zoneId = -1
+        self.parentZoneId = -1
+        self.categoryId = -1
         if information.isClimate {
             self.mode = "AUTO"
             self.modeState = "Off"

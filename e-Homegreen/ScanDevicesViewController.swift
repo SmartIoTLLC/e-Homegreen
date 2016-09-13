@@ -612,12 +612,12 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     func sendCommandForFindingName(index index:Int) {
         setProgressBarParametarsForFindingNames(index)
-        if devices[index].type == ControlType.Dimmer {
+        if devices[index].type == ControlType.Dimmer || devices[index].type == ControlType.DigitalOutput || devices[index].type == ControlType.AnalogOutput{
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
         print(devices[index].type)
-        if devices[index].type == ControlType.Curtain {
+        if devices[index].type == ControlType.Curtain || devices[index].type == ControlType.PC{
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getModuleName(address), gateway: devices[index].gateway)
         }
@@ -629,14 +629,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
-        if devices[index].type == ControlType.Sensor || devices[index].type == ControlType.IntelligentSwitch || devices[index].type == ControlType.Gateway  {
+        if devices[index].type == ControlType.Sensor || devices[index].type == ControlType.IntelligentSwitch || devices[index].type == ControlType.Gateway  || devices[index].type == ControlType.DigitalInput{
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
             //            SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
-        }
-        if devices[index].type == ControlType.PC  {
-            let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-            SendingHandler.sendCommand(byteArray: Function.getModuleName(address), gateway: devices[index].gateway)
         }
         if devices[index].type == ControlType.SaltoAccess {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
@@ -645,12 +641,13 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
 //        if devices[index].type == ControlType.HumanInterfaceSeries {
 //            let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
 //            SendingHandler.sendCommand(byteArray: Function.getModuleName(address), gateway: devices[index].gateway)
-//            //            SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+//            //SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
 //        }
     }
     func sendComandForSensorZone(deviceIndex deviceIndex:Int) {
+        
         setProgressBarParametarsForFindingSensorParametar(deviceIndex)
-        if devices[deviceIndex].controlType == ControlType.Sensor || devices[deviceIndex].controlType == ControlType.IntelligentSwitch || devices[deviceIndex].controlType == ControlType.Gateway {
+        if devices[deviceIndex].controlType == ControlType.Sensor || devices[deviceIndex].controlType == ControlType.IntelligentSwitch || devices[deviceIndex].controlType == ControlType.Gateway || devices[deviceIndex].controlType == ControlType.DigitalInput{
             let address = [UInt8(Int(devices[deviceIndex].gateway.addressOne)), UInt8(Int(devices[deviceIndex].gateway.addressTwo)), UInt8(Int(devices[deviceIndex].address))]
             SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[deviceIndex].channel))), gateway: devices[deviceIndex].gateway)
         }
@@ -674,17 +671,18 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             // Values that are stored in "arrayOfSensorAdresses" are indexes in "devices" array of those devices which are filtered
             // Example: devices: [device1, device2, device3], and device1 and device3 are of defined types. Then
             // arrayOfSensorAdresses = [0, 2]
-            var from = 1
+            var from = 0
             var to = 500
             if rangeFrom.text != nil && rangeFrom.text != ""{
-                from = Int(rangeFrom.text!)!
+                from = Int(rangeFrom.text!)!-1
             }
             if rangeTo.text != nil && rangeTo.text != ""{
-                to = Int(rangeTo.text!)!
+                to = Int(rangeTo.text!)!-1
             }
             
             for i in from...to{
                 if i < devices.count{
+//                    if devices[i].categoryId.integerValue == -1 {
                     if devices[i].controlType == ControlType.Sensor
                         || devices[i].controlType == ControlType.IntelligentSwitch
                         || devices[i].controlType == ControlType.Gateway
@@ -693,6 +691,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                         
                         arrayOfSensorAdresses.append(i)
                     }
+//                    }
                 }
             }
             
@@ -735,9 +734,11 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                             sendComandForSensorZone(deviceIndex: nextDeviceIndexToBeSearched)
                         }else{
                             dismissScaningControls()
+                            findSensorParametar = false
                         }
                     }else{
                         dismissScaningControls()
+                        findSensorParametar = false
                     }
                 }
             }else{
@@ -751,9 +752,11 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                         sendComandForSensorZone(deviceIndex: nextDeviceIndexToBeSearched)
                     }else{
                         dismissScaningControls()
+                        findSensorParametar = false
                     }
                 }else{
                     dismissScaningControls()
+                    findSensorParametar = false
                 }
             }
         }
