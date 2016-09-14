@@ -182,7 +182,7 @@ class IncomingHandler: NSObject {
                 
                 // Cards name
                 if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x57 {
-                    
+                    getCardName(self.byteArray)
                 }
                 
                 // Cards parametar
@@ -410,18 +410,20 @@ class IncomingHandler: NSObject {
             // Miminum is 12b
             if id != 0 {
                 var name:String = ""
-                for j in 10 ..< 10+Int(byteArray[9]) {
-                    name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  timer name
-                }
-                let moduleAddress = Int(byteArray[4])
-                
-                if gateways.count > 0 {
-                    DatabaseCardsController.shared.createCard(id, cardId: nil, cardName: name, moduleAddress: moduleAddress, gateway: gateways.first!)
-                }else{
-                    return
+                if Int(byteArray[9]) > 0 && Int(byteArray[9]) != 255{
+                    for j in 10 ..< 10+Int(byteArray[9]) {
+                        name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  timer name
+                    }
+                    let moduleAddress = Int(byteArray[4])
+                    
+                    if gateways.count > 0 {
+                        DatabaseCardsController.shared.createCard(id, cardId: nil, cardName: name, moduleAddress: moduleAddress, gateway: gateways.first!)
+                    }else{
+                        return
+                    }
                 }
             }
-            let data = ["flagId":id]
+            let data = ["cardId":id]
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveCardFromGateway, object: self, userInfo: data)
         }
     }
@@ -446,7 +448,7 @@ class IncomingHandler: NSObject {
                     return
                 }
             }
-            let data = ["flagId":id]
+            let data = ["cardId":id]
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveCardParameterFromGateway, object: self, userInfo: data)
         }
     }

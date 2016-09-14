@@ -83,7 +83,7 @@ class DatabaseCardsController: NSObject {
     }
     
     func fetchCardWithIdAndAddress(cardId: Int, gateway: Gateway, moduleAddress:Int) -> [Card]{
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: String(Flag))
+        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: String(Card))
         let predicateLocation = NSPredicate(format: "id == %@", NSNumber(integer: cardId))
         let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
         let predicateAddress = NSPredicate(format: "address == %@", NSNumber(integer: moduleAddress))

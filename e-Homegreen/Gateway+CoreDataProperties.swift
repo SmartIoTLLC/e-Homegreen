@@ -36,5 +36,7 @@ extension Gateway {
     @NSManaged var timers: NSSet
     @NSManaged var location: Location
     @NSManaged var gatewayType: String
+    @NSManaged var cards: NSSet
+    
 
 }
