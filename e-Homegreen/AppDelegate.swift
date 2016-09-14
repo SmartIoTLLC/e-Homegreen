@@ -35,14 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Unresolved error \(error), \(error!.userInfo)")
             abort()
         }
-        API.shared.sendRequest(.GET, url: "") { (completion) -> () in
-            switch completion {
-            case .Success( _):
-                print("")
-            case .Error( _):
-                print("")
-            }
-        }
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {

@@ -174,7 +174,6 @@
 		7372EB401BC410800097806D /* Gateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB301BC410800097806D /* Gateway.swift */; };
 		7372EB411BC410800097806D /* Sequence+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB311BC410800097806D /* Sequence+CoreDataProperties.swift */; };
 		7372EB421BC410800097806D /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7372EB321BC410800097806D /* Sequence.swift */; };
-		737700FE1C74B35D00B6BC32 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737700FD1C74B35D00B6BC32 /* API.swift */; };
 		737CED2E1C04571E0055DA0E /* CustomGradientButtonWhite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737CED2D1C04571E0055DA0E /* CustomGradientButtonWhite.swift */; };
 		738BFD061B9EF79F005D183F /* DataImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738BFD051B9EF79F005D183F /* DataImporter.swift */; };
 		738DEC9C1BBBC2F000D6B834 /* SecurityPadVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738DEC9A1BBBC2F000D6B834 /* SecurityPadVC.swift */; };
@@ -526,7 +525,6 @@
 		7372EB301BC410800097806D /* Gateway.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gateway.swift; sourceTree = "<group>"; };
 		7372EB311BC410800097806D /* Sequence+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sequence+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		7372EB321BC410800097806D /* Sequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
-		737700FD1C74B35D00B6BC32 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		737CED2D1C04571E0055DA0E /* CustomGradientButtonWhite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomGradientButtonWhite.swift; sourceTree = "<group>"; };
 		738BFD051B9EF79F005D183F /* DataImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataImporter.swift; sourceTree = "<group>"; };
 		738DEC9A1BBBC2F000D6B834 /* SecurityPadVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityPadVC.swift; sourceTree = "<group>"; };
@@ -1288,7 +1286,6 @@
 		73E206A81B2EEFFE0008B002 /* e-Homegreen */ = {
 			isa = PBXGroup;
 			children = (
-				737700FD1C74B35D00B6BC32 /* API.swift */,
 				73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */,
 				731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */,
 				731E1AB31C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift */,
@@ -2061,7 +2058,6 @@
 				22FF1E631D86D86F00ECB86E /* Card.swift in Sources */,
 				22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */,
 				223690C91CAD02530037B54A /* CreateAdminViewController.swift in Sources */,
-				737700FE1C74B35D00B6BC32 /* API.swift in Sources */,
 				495726B31D4F48F1004F2A3D /* DeviceCollectionCell.swift in Sources */,
 				22FD298F1CBBC62400BCE823 /* EventCell.swift in Sources */,
 				73E206D91B2F16720008B002 /* DevicesViewController.swift in Sources */,
