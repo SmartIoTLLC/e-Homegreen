@@ -72,7 +72,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         calculateHeight()
         
         self.navigationItem.titleView = headerTitleSubtitleView
-        headerTitleSubtitleView.setTitleAndSubtitle("Chat", subtitle: "All, All, All")
+        headerTitleSubtitleView.setTitleAndSubtitle("Chat", subtitle: "All All All")
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
@@ -136,7 +136,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     }
     
     func updateSubtitle(location: String, level: String, zone: String){
-        headerTitleSubtitleView.setTitleAndSubtitle("Chat", subtitle: location + ", " + level + ", " + zone)
+        headerTitleSubtitleView.setTitleAndSubtitle("Chat", subtitle: location + " " + level + " " + zone)
     }
     
     func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){

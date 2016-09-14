@@ -13,7 +13,7 @@ import Crashlytics
 import AudioToolbox
 
 
-class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
+class DevicesViewController: PopoverVC{
     
     var sectionInsets = UIEdgeInsets(top: 25, left: 0, bottom: 20, right: 0)
     let reuseIdentifier = "deviceCell"
@@ -76,7 +76,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         zoneAndCategorySlider.continuous = false        
         
         self.navigationItem.titleView = headerTitleSubtitleView
-        headerTitleSubtitleView.setTitleAndSubtitle("Devices", subtitle: "All, All, All")
+        headerTitleSubtitleView.setTitleAndSubtitle("Devices", subtitle: "All All All")
         
         bottomView.hidden = true
         panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(DevicesViewController.panView(_:)))
@@ -161,13 +161,11 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.refreshVisibleDevicesInScrollView), name: NotificationKey.DidRefreshDeviceInfo, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DevicesViewController.updateIndicator(_:)), name: NotificationKey.IndicatorLamp, object: nil)
     }
     func removeObservers() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshDevice, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidRefreshDeviceInfo, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
-//        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.IndicatorLamp, object: nil)
     }
     
     func updateConstraints() {
@@ -196,7 +194,7 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
     }
 
     func updateSubtitle(location: String, level: String, zone: String){
-        headerTitleSubtitleView.setTitleAndSubtitle("Devices", subtitle: location + ", " + level + ", " + zone)
+        headerTitleSubtitleView.setTitleAndSubtitle("Devices", subtitle: location + " " + level + " " + zone)
     }
     func fetchDevicesInBackground(){
         updateCells()
@@ -1346,3 +1344,13 @@ extension DevicesViewController: BigSliderDelegate{
         }
     }
 }
+extension DevicesViewController: UIGestureRecognizerDelegate{
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view! is UISlider{
+            return false
+        }
+        return true
+    }
+}
+

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -1424,7 +1424,7 @@
                                         <rect key="frame" x="0.0" y="37" width="320" height="130"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jUi-ah-jIy" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="8" y="92" width="147" height="30"/>
+                                                <rect key="frame" x="12" y="92" width="143" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="fEM-qt-Fof"/>
                                                 </constraints>
@@ -1436,13 +1436,13 @@
                                                 </connections>
                                             </button>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="3Em-BI-Ix1">
-                                                <rect key="frame" x="6" y="57" width="308" height="31"/>
+                                                <rect key="frame" x="10" y="57" width="300" height="31"/>
                                                 <connections>
                                                     <action selector="zoneCategoryControlSlider:" destination="Uhp-dG-rvO" eventType="valueChanged" id="dcP-1c-GA6"/>
                                                 </connections>
                                             </slider>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CY0-LN-aYO" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
-                                                <rect key="frame" x="165" y="92" width="147" height="30"/>
+                                                <rect key="frame" x="165" y="92" width="143" height="30"/>
                                                 <state key="normal" title="OFF">
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -1451,7 +1451,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Select Zone To Control" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DeE-69-Kcm">
-                                                <rect key="frame" x="8" y="35" width="149" height="19"/>
+                                                <rect key="frame" x="12" y="35" width="149" height="19"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -1472,7 +1472,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="3An-Xt-4si">
-                                                <rect key="frame" x="8" y="5" width="304" height="29"/>
+                                                <rect key="frame" x="12" y="5" width="296" height="29"/>
                                                 <segments>
                                                     <segment title="Zone"/>
                                                     <segment title="Category"/>
@@ -1486,18 +1486,18 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="3An-Xt-4si" firstAttribute="top" secondItem="QEO-B8-hGL" secondAttribute="top" constant="5" id="3ix-nt-vFj"/>
-                                            <constraint firstItem="3Em-BI-Ix1" firstAttribute="leading" secondItem="QEO-B8-hGL" secondAttribute="leading" constant="8" id="6Qi-oc-sNT"/>
+                                            <constraint firstItem="3Em-BI-Ix1" firstAttribute="leading" secondItem="QEO-B8-hGL" secondAttribute="leading" constant="12" id="6Qi-oc-sNT"/>
                                             <constraint firstAttribute="bottom" secondItem="jUi-ah-jIy" secondAttribute="bottom" constant="8" id="EeX-M9-fcM"/>
-                                            <constraint firstItem="3An-Xt-4si" firstAttribute="leading" secondItem="QEO-B8-hGL" secondAttribute="leading" constant="8" id="Hwp-kq-EsK"/>
+                                            <constraint firstItem="3An-Xt-4si" firstAttribute="leading" secondItem="QEO-B8-hGL" secondAttribute="leading" constant="12" id="Hwp-kq-EsK"/>
                                             <constraint firstItem="3Em-BI-Ix1" firstAttribute="top" secondItem="DeE-69-Kcm" secondAttribute="bottom" constant="3" id="JaE-Uj-c7v"/>
                                             <constraint firstItem="CY0-LN-aYO" firstAttribute="width" secondItem="jUi-ah-jIy" secondAttribute="width" id="OWR-nE-dvO"/>
-                                            <constraint firstAttribute="trailing" secondItem="3An-Xt-4si" secondAttribute="trailing" constant="8" id="ay1-BP-v9m"/>
+                                            <constraint firstAttribute="trailing" secondItem="3An-Xt-4si" secondAttribute="trailing" constant="12" id="ay1-BP-v9m"/>
                                             <constraint firstItem="CY0-LN-aYO" firstAttribute="leading" secondItem="jUi-ah-jIy" secondAttribute="trailing" constant="10" id="eRf-Rz-juf"/>
-                                            <constraint firstItem="jUi-ah-jIy" firstAttribute="leading" secondItem="QEO-B8-hGL" secondAttribute="leading" constant="8" id="gC6-07-3ae"/>
-                                            <constraint firstItem="DeE-69-Kcm" firstAttribute="leading" secondItem="QEO-B8-hGL" secondAttribute="leading" constant="8" id="lL7-mN-Flh"/>
-                                            <constraint firstAttribute="trailing" secondItem="CY0-LN-aYO" secondAttribute="trailing" constant="8" id="m5q-CT-v3F"/>
+                                            <constraint firstItem="jUi-ah-jIy" firstAttribute="leading" secondItem="QEO-B8-hGL" secondAttribute="leading" constant="12" id="gC6-07-3ae"/>
+                                            <constraint firstItem="DeE-69-Kcm" firstAttribute="leading" secondItem="QEO-B8-hGL" secondAttribute="leading" constant="12" id="lL7-mN-Flh"/>
+                                            <constraint firstAttribute="trailing" secondItem="CY0-LN-aYO" secondAttribute="trailing" constant="12" id="m5q-CT-v3F"/>
                                             <constraint firstAttribute="bottom" secondItem="CY0-LN-aYO" secondAttribute="bottom" constant="8" id="pFA-UI-OSs"/>
-                                            <constraint firstAttribute="trailing" secondItem="3Em-BI-Ix1" secondAttribute="trailing" constant="8" id="pYp-dc-MJO"/>
+                                            <constraint firstAttribute="trailing" secondItem="3Em-BI-Ix1" secondAttribute="trailing" constant="12" id="pYp-dc-MJO"/>
                                             <constraint firstItem="jUi-ah-jIy" firstAttribute="top" secondItem="3Em-BI-Ix1" secondAttribute="bottom" constant="5" id="reC-gs-5Ny"/>
                                             <constraint firstItem="CY0-LN-aYO" firstAttribute="height" secondItem="jUi-ah-jIy" secondAttribute="height" id="voe-RR-6P9"/>
                                         </constraints>

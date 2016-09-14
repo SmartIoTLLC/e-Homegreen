@@ -194,11 +194,6 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.picture.addGestureRecognizer(lpgr)
                 cell.picture.addGestureRecognizer(tap)
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
-                //                cell.btnRefresh.tag = indexPath.row
-                ////                let tap = UITapGestureRecognizer(target: self, action: "refreshDevice:")
-                //                cell.btnRefresh.userInteractionEnabled = true
-                ////                cell.btnRefresh.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "refreshDevice:"))
-                //                cell.btnRefresh.addTarget(self, action: "refreshDevice:", forControlEvents:  UIControlEvents.TouchUpInside)
                 cell.disabledCellView.hidden = true
                 cell.disabledCellView.layer.cornerRadius = 5
             } else {

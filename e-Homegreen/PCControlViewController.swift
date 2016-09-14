@@ -41,7 +41,7 @@ class PCControlViewController: PopoverVC {
         scrollView.setItem(self.view)
         
         self.navigationItem.titleView = headerTitleSubtitleView
-        headerTitleSubtitleView.setTitleAndSubtitle("PC Control", subtitle: "All, All, All")
+        headerTitleSubtitleView.setTitleAndSubtitle("PC Control", subtitle: "All All All")
         
         pccontrolCollectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionCell")
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .PCControl)
@@ -105,7 +105,7 @@ class PCControlViewController: PopoverVC {
     }
     
     func updateSubtitle(location: String, level: String, zone: String){
-        headerTitleSubtitleView.setTitleAndSubtitle("PC Control", subtitle: location + ", " + level + ", " + zone)
+        headerTitleSubtitleView.setTitleAndSubtitle("PC Control", subtitle: location + " " + level + " " + zone)
     }
     
     func updateConstraints() {

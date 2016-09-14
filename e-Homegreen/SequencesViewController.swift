@@ -44,7 +44,7 @@ class SequencesViewController: PopoverVC {
         scrollView.setItem(self.view)
         
         self.navigationItem.titleView = headerTitleSubtitleView
-        headerTitleSubtitleView.setTitleAndSubtitle("Sequences", subtitle: "All, All, All")
+        headerTitleSubtitleView.setTitleAndSubtitle("Sequences", subtitle: "All All All")
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SequencesViewController.defaultFilter(_:)))
         longPress.minimumPressDuration = 0.5
@@ -141,7 +141,7 @@ class SequencesViewController: PopoverVC {
     }
     
     func updateSubtitle(location: String, level: String, zone: String){
-        headerTitleSubtitleView.setTitleAndSubtitle("Sequences", subtitle: location + ", " + level + ", " + zone)
+        headerTitleSubtitleView.setTitleAndSubtitle("Sequences", subtitle: location + " " + level + " " + zone)
     }
     
     func updateSequencesList(){
