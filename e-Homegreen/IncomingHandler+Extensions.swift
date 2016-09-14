@@ -66,7 +66,7 @@ extension IncomingHandler {
                             let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
                             
                         }else if controlType == ControlType.Climate ||
-                            controlType == ControlType.Access ||
+                            controlType == ControlType.SaltoAccess ||
                             controlType == ControlType.AnalogInput ||
                             controlType == ControlType.AnalogOutput ||
                             controlType == ControlType.DigitalInput ||

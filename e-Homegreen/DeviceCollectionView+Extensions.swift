@@ -118,9 +118,6 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
         }
         if shouldUpdate {
-            //            fetchDevicesInBackground()
-            //            updateDeviceList()
-            //            self.deviceCollectionView.reloadData()
             shouldUpdate = false
         }
         isScrolling = false
@@ -454,7 +451,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             return cell
         }
-        else if devices[indexPath.row].controlType == ControlType.Sensor || devices[indexPath.row].controlType == ControlType.IntelligentSwitch || devices[indexPath.row].controlType == ControlType.Gateway || devices[indexPath.row].controlType == ControlType.DigitalInput{
+        else if devices[indexPath.row].controlType == ControlType.Sensor || devices[indexPath.row].controlType == ControlType.IntelligentSwitch || devices[indexPath.row].controlType == ControlType.Gateway || devices[indexPath.row].controlType == ControlType.DigitalInput || devices[indexPath.row].controlType == ControlType.SaltoAccess{
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
             cell.populateCellWithData(devices[indexPath.row], tag: indexPath.row)
             // If device is enabled add all interactions
