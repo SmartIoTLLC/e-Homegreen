@@ -432,6 +432,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     var searchForNameWithIndexInDevices = 0
     var arrayOfNamesToBeSearched = [Int]()
     var indexOfNamesToBeSearched = 0
+    var longPressScannParameters = false
     
     func findNames() {
         do {
@@ -524,6 +525,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                                 || devices[i].controlType == ControlType.AnalogInput
                                 || devices[i].controlType == ControlType.DigitalInput{
                                 findSensorParametar = true
+                                longPressScannParameters = true
                             }
                         }
                     }
@@ -685,16 +687,28 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             
             for i in from...to{
                 if i < devices.count{
-//                    if devices[i].categoryId.integerValue == -1 {
-                    if devices[i].controlType == ControlType.Sensor
-                        || devices[i].controlType == ControlType.IntelligentSwitch
-                        || devices[i].controlType == ControlType.Gateway
-                        || devices[i].controlType == ControlType.AnalogInput
-                        || devices[i].controlType == ControlType.DigitalInput{
-                        
-                        arrayOfSensorAdresses.append(i)
+                    if longPressScannParameters {
+                        if devices[i].categoryId.integerValue == -1 {
+                            if devices[i].controlType == ControlType.Sensor
+                                || devices[i].controlType == ControlType.IntelligentSwitch
+                                || devices[i].controlType == ControlType.Gateway
+                                || devices[i].controlType == ControlType.AnalogInput
+                                || devices[i].controlType == ControlType.DigitalInput{
+                                
+                                arrayOfSensorAdresses.append(i)
+                            }
+                        }
+                    }else{
+                        if devices[i].controlType == ControlType.Sensor
+                            || devices[i].controlType == ControlType.IntelligentSwitch
+                            || devices[i].controlType == ControlType.Gateway
+                            || devices[i].controlType == ControlType.AnalogInput
+                            || devices[i].controlType == ControlType.DigitalInput{
+                            
+                            arrayOfSensorAdresses.append(i)
+                        }
                     }
-//                    }
+                    
                 }
             }
             
@@ -835,6 +849,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         pbFD?.dissmissProgressBar()
         if !findSensorParametar {
             UIApplication.sharedApplication().idleTimerDisabled = false
+            longPressScannParameters = false
         } else {
             findParametarsForSensor()
         }
@@ -901,8 +916,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             }
         }
     }
-    
-    
 }
 
 //MARK:- Table view dlegates and data source
