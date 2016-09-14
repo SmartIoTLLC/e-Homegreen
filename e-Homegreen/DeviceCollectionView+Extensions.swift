@@ -278,17 +278,10 @@ extension DevicesViewController: UICollectionViewDataSource {
         }
         else if devices[indexPath.row].controlType == ControlType.Relay {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
-//            cell.name.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row])
-//                        cell.name.text = devices[indexPath.row].name
             cell.name.text = devices[indexPath.row].cellTitle
             cell.name.tag = indexPath.row
             let deviceValue:Double = {
-//                return Double(devices[indexPath.row].currentValue)
-//                if Double(devices[indexPath.row].currentValue) <= 100 {
-//                    return Double(devices[indexPath.row].currentValue)/100
-//                } else {
-                    return Double(devices[indexPath.row].currentValue)///255
-//                }
+                return Double(devices[indexPath.row].currentValue)
             }()
             cell.image.image = devices[indexPath.row].returnImage(Double(devices[indexPath.row].currentValue))
             if deviceValue == 255 {

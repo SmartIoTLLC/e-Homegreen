@@ -17,11 +17,16 @@ class MultiSensorCell: UICollectionViewCell {
     var device:Device!
     func populateCellWithData(sensorDevice:Device, tag:Int) {
         device = sensorDevice
-        if device.channel == 1 || device.channel == 4 {
-            sensorState.font = UIFont(name: "DBLCDTempBlack", size: 16)
-        } else {
+        if device.controlType != ControlType.DigitalInput{
+            if device.channel == 1 || device.channel == 4 {
+                sensorState.font = UIFont(name: "DBLCDTempBlack", size: 16)
+            } else {
+                sensorState.font = UIFont(name: "Tahoma", size: 17)
+            }
+        }else{
             sensorState.font = UIFont(name: "Tahoma", size: 17)
         }
+        
         sensorTitle.userInteractionEnabled = true
         sensorTitle.text = device.cellTitle
         sensorTitle.tag = tag
@@ -199,6 +204,10 @@ class MultiSensorCell: UICollectionViewCell {
             default:
                 sensorState.text = "..."
             }
+        }
+        if device.numberOfDevices == 4 {
+            sensorImage.image = device.returnImage(Double(device.currentValue))
+            sensorState.text = returnDigitalInputModeStateinterpreter(device)
         }
         if device.numberOfDevices == 3 {
             switch device.channel {

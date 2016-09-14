@@ -16,12 +16,7 @@ class ApplianceCollectionCell: UICollectionViewCell {
     
     func refreshDevice(device:Device) {
         let deviceValue:Double = {
-//            return Double(device.currentValue)
-//            if Double(device.currentValue) <= 100 {
-//                return Double(device.currentValue)/100
-//            } else {
-                return Double(device.currentValue)///255
-//            }
+            return Double(device.currentValue)
         }()
         image.image = device.returnImage(Double(device.currentValue))
         if deviceValue == 255 {

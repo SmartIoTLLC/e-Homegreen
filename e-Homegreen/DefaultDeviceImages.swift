@@ -98,6 +98,7 @@ class DefaultDeviceImages: NSObject {
             if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
                 return climateImagesTwoStateNC
             }else{
+                let k = climateImagesTwoStateNO
                 return climateImagesTwoStateNO
             }
             

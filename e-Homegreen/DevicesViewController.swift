@@ -364,19 +364,22 @@ class DevicesViewController: PopoverVC, UIGestureRecognizerDelegate{
                 })
         }
         // Appliance?
-        if devices[tag].controlType == ControlType.Relay {
+        if devices[tag].controlType == ControlType.Relay{
             let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
             let deviceCurrentValue = Int(devices[tag].currentValue)
+            var setDeviceValue:UInt8 = 0
             var skipLevel:UInt8 = 0
             if Int(devices[tag].currentValue) > 0 {
+                setDeviceValue = UInt8(0)
                 devices[tag].currentValue = 0
                 skipLevel = 0
             } else {
-                    devices[tag].currentValue = 0xFF
+                setDeviceValue = 100
                 skipLevel = UInt8(Int(self.devices[tag].skipState))
             }
+            devices[tag].currentValue = Int(setDeviceValue)
             dispatch_async(dispatch_get_main_queue(), {
-                _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: 0xF1, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: skipLevel), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setDeviceValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: skipLevel), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
             })
         }
         updateCells()
