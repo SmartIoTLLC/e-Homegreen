@@ -862,7 +862,7 @@ class DevicesViewController: PopoverVC{
                 panningUp = true
             }
 
-            if self.startingBottomConstraint == -144 {
+            if self.startingBottomConstraint == -154 {
                 
                 if !panningUp{
                     if deltaX == 0{
@@ -871,16 +871,16 @@ class DevicesViewController: PopoverVC{
                     
                 }else{
                     if panStartPoint.x > self.bottomView.center.x - 75 && panStartPoint.x < self.bottomView.center.x + 75{
-                        if deltaX < -144 {
+                        if deltaX < -154 {
                             self.setConstraintsToShowBottomView(true, notifyDelegate: true)
                         }else{
-                            self.bottomConstraint.constant = -144 - deltaX
+                            self.bottomConstraint.constant = -154 - deltaX
                         }
                     }
                 }
             }else{
                 if !panningUp{
-                    if -deltaX > -144{
+                    if -deltaX > -154{
                         self.bottomConstraint.constant = -deltaX
                     }else{
                         self.resetConstraintContstants(true, endEditing: true)
@@ -889,14 +889,14 @@ class DevicesViewController: PopoverVC{
                     if deltaX <= 0{
                         self.setConstraintsToShowBottomView(true, notifyDelegate: true)
                     }else{
-                        self.bottomConstraint.constant = -144 - deltaX
+                        self.bottomConstraint.constant = -154 - deltaX
                     }
                 }
             }
 
             break
         case .Ended:
-            if self.startingBottomConstraint == -144 {
+            if self.startingBottomConstraint == -154 {
                 if bottomConstraint.constant >= -100{
                     self.setConstraintsToShowBottomView(true, notifyDelegate: true)
                 }else{
@@ -913,7 +913,7 @@ class DevicesViewController: PopoverVC{
             break
         case .Cancelled:
 
-            if self.startingBottomConstraint == -144 {
+            if self.startingBottomConstraint == -154 {
                 self.resetConstraintContstants(true, endEditing: true)
             } else {
                 self.setConstraintsToShowBottomView(true, notifyDelegate: true)
@@ -926,14 +926,14 @@ class DevicesViewController: PopoverVC{
     }
     
     func resetConstraintContstants(animated:Bool, endEditing:Bool){
-        if self.startingBottomConstraint == -144 &&
-            self.bottomConstraint.constant == -144 {
+        if self.startingBottomConstraint == -154 &&
+            self.bottomConstraint.constant == -154 {
             return
         }
-        self.bottomConstraint.constant = -144
+        self.bottomConstraint.constant = -154
         
         self.updateConstraintsIfNeeded(animated, completion: { (finished) -> Void in
-            self.bottomConstraint.constant = -144
+            self.bottomConstraint.constant = -154
             
             self.updateConstraintsIfNeeded(animated, completion: { (finished) -> Void in
                 self.startingBottomConstraint = self.bottomConstraint.constant
