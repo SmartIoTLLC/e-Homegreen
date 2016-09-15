@@ -772,12 +772,14 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                         NSLog("func checkIfSensorDidGotParametar \(nextDeviceIndexToBeSearched)")
                         sendComandForSensorZone(deviceIndex: nextDeviceIndexToBeSearched)
                     }else{
-                        dismissScaningControls()
                         findSensorParametar = false
+                        dismissScaningControls()
+                        
                     }
                 }else{
-                    dismissScaningControls()
                     findSensorParametar = false
+                    dismissScaningControls()
+                    
                 }
             }
         }
