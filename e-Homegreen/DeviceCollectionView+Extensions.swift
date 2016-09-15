@@ -330,9 +330,11 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.energySavingImage.hidden = devices[indexPath.row].allowEnergySaving == NSNumber(bool: true) ? false : true
             cell.climateName.text = devices[indexPath.row].cellTitle
             cell.climateName.tag = indexPath.row
-            cell.temperature.font = UIFont(name: "DBLCDTempBlack", size: 16)
+//            cell.temperature.font = UIFont(name: "DBLCDTempBlack", size: 16)
+            cell.temperature.font = UIFont(name: "Tahoma", size: 17)
             cell.temperature.text = "\(devices[indexPath.row].roomTemperature) \u{00B0}c"
-            cell.temperatureSetPoint.font = UIFont(name: "DBLCDTempBlack", size: 16)
+//            cell.temperatureSetPoint.font = UIFont(name: "DBLCDTempBlack", size: 16)
+            cell.temperatureSetPoint.font = UIFont(name: "Tahoma", size: 17)
             cell.temperatureSetPoint.text = "00 \u{00B0}c"
             
             cell.climateMode.text = devices[indexPath.row].mode
@@ -363,7 +365,8 @@ extension DevicesViewController: UICollectionViewDataSource {
                 
                 let animationImages:[UIImage] = [UIImage(named: "h1")!, UIImage(named: "h2")!, UIImage(named: "h3")!, UIImage(named: "h4")!, UIImage(named: "h5")!, UIImage(named: "h6")!, UIImage(named: "h7")!, UIImage(named: "h8")!]
                 let modeState = devices[indexPath.row].modeState
-                cell.temperatureSetPoint.font = UIFont(name: "DBLCDTempBlack", size: 16)
+//                cell.temperatureSetPoint.font = UIFont(name: "DBLCDTempBlack", size: 16)
+                cell.temperatureSetPoint.font = UIFont(name: "Tahoma", size: 17)
                 cell.temperatureSetPoint.text = "00 \u{00B0}c"
                 switch modeState {
                 case "Cool":
