@@ -17,15 +17,15 @@ class MultiSensorCell: UICollectionViewCell {
     var device:Device!
     func populateCellWithData(sensorDevice:Device, tag:Int) {
         device = sensorDevice
-        if device.controlType != ControlType.DigitalInput{
-            if device.channel == 1 || device.channel == 4 {
-                sensorState.font = UIFont(name: "DBLCDTempBlack", size: 16)
-            } else {
-                sensorState.font = UIFont(name: "Tahoma", size: 17)
-            }
-        }else{
+//        if device.controlType != ControlType.DigitalInput{
+//            if device.channel == 1 || device.channel == 4 {
+//                sensorState.font = UIFont(name: "DBLCDTempBlack", size: 16)
+//            } else {
+//                sensorState.font = UIFont(name: "Tahoma", size: 17)
+//            }
+//        }else{
             sensorState.font = UIFont(name: "Tahoma", size: 17)
-        }
+//        }
         
         sensorTitle.userInteractionEnabled = true
         sensorTitle.text = device.cellTitle
@@ -71,11 +71,11 @@ class MultiSensorCell: UICollectionViewCell {
         return digitalInputCurrentValue
     }
     func refreshDevice(device:Device) {
-        if device.channel == 1 || device.channel == 4 {
-            sensorState.font = UIFont(name: "DBLCDTempBlack", size: 16)
-        } else {
+//        if device.channel == 1 || device.channel == 4 {
+//            sensorState.font = UIFont(name: "DBLCDTempBlack", size: 16)
+//        } else {
             sensorState.font = UIFont(name: "Tahoma", size: 17)
-        }
+//        }
         sensorState.text = " "
         populateCell(device)
         labelID.text = "\(device.channel)"
@@ -102,7 +102,7 @@ class MultiSensorCell: UICollectionViewCell {
             switch device.channel {
             case 1:
                 sensorImage.image = device.returnImage(Double(device.currentValue))
-                sensorState.text = "\(device.currentValue) C"
+                sensorState.text = "\(device.currentValue) °C"
             case 2:
                 sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
@@ -114,7 +114,7 @@ class MultiSensorCell: UICollectionViewCell {
                 sensorState.text = "\(device.currentValue)%"
             case 4:
                 sensorImage.image = device.returnImage(Double(device.currentValue))
-                sensorState.text = "\(device.currentValue) C"
+                sensorState.text = "\(device.currentValue) °C"
             case 5:
                 sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = "\(device.currentValue) LUX"
@@ -160,7 +160,7 @@ class MultiSensorCell: UICollectionViewCell {
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
             case 4:
                 sensorImage.image = device.returnImage(Double(device.currentValue))
-                sensorState.text = "\(device.currentValue) C"
+                sensorState.text = "\(device.currentValue) °C"
             case 5:
                 switch device.currentValue {
                 case DeviceValue.MotionSensor.Idle:
@@ -188,7 +188,7 @@ class MultiSensorCell: UICollectionViewCell {
             switch device.channel {
             case 1:
                 sensorImage.image = device.returnImage(Double(device.currentValue))
-                sensorState.text = "\(device.currentValue) C"
+                sensorState.text = "\(device.currentValue) °C"
             case 2:
                 sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
@@ -213,7 +213,7 @@ class MultiSensorCell: UICollectionViewCell {
             switch device.channel {
             case 1:
                 sensorImage.image = device.returnImage(Double(device.currentValue))
-                sensorState.text = "\(device.currentValue) C"
+                sensorState.text = "\(device.currentValue) °C"
             case 2:
                 sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = returnDigitalInputModeStateinterpreter(device)
