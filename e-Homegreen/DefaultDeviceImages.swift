@@ -52,7 +52,14 @@ class DefaultDeviceImages: NSObject {
         case ControlType.DigitalInput:
             return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
         case ControlType.DigitalOutput:
-            return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
+            guard let controlModeTemp = controlMode else{
+                return lightningImagesTwoStateNO
+            }
+            if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
+                return appliancePowerImagesTwoStateNC
+            }else{
+                return appliancePowerImagesTwoStateNO
+            }
         case ControlType.Sensor:
             return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
         case ControlType.IRTransmitter:

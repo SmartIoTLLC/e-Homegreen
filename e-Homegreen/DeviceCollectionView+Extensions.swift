@@ -273,7 +273,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             
             return cell
         }
-        else if devices[indexPath.row].controlType == ControlType.Relay {
+        else if devices[indexPath.row].controlType == ControlType.Relay || devices[indexPath.row].controlType == ControlType.DigitalOutput {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
             cell.name.text = devices[indexPath.row].cellTitle
             cell.name.tag = indexPath.row

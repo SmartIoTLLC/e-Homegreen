@@ -293,7 +293,7 @@ struct DeviceInfo {
         // I/O Series
         DeviceType(deviceId: 0x42, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.AnalogOutput, MPN: "AO4010V"), // Analog Output Module, 4CH 0-10V
         DeviceType(deviceId: 0x43, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.DigitalInput, MPN: "DI04GPC"), // Digital Input Module, 4CH
-        DeviceType(deviceId: 0x2A, subId: 0x00):DeviceTypeCode(channel:Channel.Two, name:ControlType.DigitalOutput, MPN: "DO02GPC"), // Digital Output Module, 2CH
+        DeviceType(deviceId: 0x2A, subId: 0x01):DeviceTypeCode(channel:Channel.Two, name:ControlType.DigitalOutput, MPN: "DO02GPC"), // Digital Output Module, 2CH
         DeviceType(deviceId: 0x44, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.AnalogInput, MPN: "AI0402S"), // Analog Input Module, 4CH 0-10V/0-20mA
         
         DeviceType(deviceId: 0x41, subId: 0x00):DeviceTypeCode(channel:Channel.Ten, name:ControlType.Sensor, MPN: "MSIX08C"), // 10-in-1 Multisensor, Indoor Ceiling Mount
@@ -382,6 +382,11 @@ let applianceImagesTwoStateNO = [DeviceImageState(defaultImage: "12 Appliance - 
                             DeviceImageState(defaultImage: "12 Appliance - Switch - 01", state: 1, text: "On")]
 let applianceImagesTwoStateNC = [DeviceImageState(defaultImage: "12 Appliance - Switch - 00", state: 0, text: "On"),
                                DeviceImageState(defaultImage: "12 Appliance - Switch - 01", state: 1, text: "Off")]
+
+let appliancePowerImagesTwoStateNO = [DeviceImageState(defaultImage: "12 Appliance - Power - 00", state: 0, text: "Off"),
+                                 DeviceImageState(defaultImage: "12 Appliance - Power - 01", state: 1, text: "On")]
+let appliancePowerImagesTwoStateNC = [DeviceImageState(defaultImage: "12 Appliance - Power - 00", state: 0, text: "On"),
+                                 DeviceImageState(defaultImage: "12 Appliance - Power - 01", state: 1, text: "Off")]
 
 let climateImagesTwoStateNO = [DeviceImageState(defaultImage: "04 Climate Control - HVAC - 00", state: 0, text: "Off"),
                           DeviceImageState(defaultImage: "04 Climate Control - HVAC - 01", state: 1, text: "On")]

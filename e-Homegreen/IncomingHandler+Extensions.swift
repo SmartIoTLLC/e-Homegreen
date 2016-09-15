@@ -60,7 +60,7 @@ extension IncomingHandler {
                         let deviceInformation = DeviceInformation(address: Int(byteArray[4]), channel: i, numberOfDevices: channel, type: controlType, gateway: gateways[0], mac: NSData(bytes: MAC, length: MAC.count), isClimate:isClimate)
                         
                         if (controlType == ControlType.Sensor ||
-                            controlType == ControlType.Gateway ||
+//                            controlType == ControlType.Gateway ||
                             controlType == ControlType.IntelligentSwitch) && i > 1{
                             
                             let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
