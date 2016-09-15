@@ -70,7 +70,7 @@ class SecurityViewController: PopoverVC{
         scrollView.setItem(self.view)
         
         self.navigationItem.titleView = headerTitleSubtitleView
-        headerTitleSubtitleView.setTitleAndSubtitle("Security", subtitle: "All, All, All")
+        headerTitleSubtitleView.setTitleAndSubtitle("Security", subtitle: "All All All")
         
         let defaults = NSUserDefaults.standardUserDefaults()
         if let alarmState = defaults.valueForKey(UserDefaults.Security.AlarmState){
@@ -152,7 +152,7 @@ class SecurityViewController: PopoverVC{
     }
     
     func updateSubtitle(){
-        headerTitleSubtitleView.setTitleAndSubtitle("Security", subtitle: filterParametar.location + ", " + filterParametar.levelName + ", " + filterParametar.zoneName)
+        headerTitleSubtitleView.setTitleAndSubtitle("Security", subtitle: filterParametar.location + " " + filterParametar.levelName + " " + filterParametar.zoneName)
     }
     
     func updateConstraints() {

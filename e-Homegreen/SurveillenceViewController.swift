@@ -44,7 +44,7 @@ class SurveillenceViewController: PopoverVC {
         scrollView.setItem(self.view)
         
         self.navigationItem.titleView = headerTitleSubtitleView
-        headerTitleSubtitleView.setTitleAndSubtitle("Surveillance", subtitle: "All, All, All")
+        headerTitleSubtitleView.setTitleAndSubtitle("Surveillance", subtitle: "All All All")
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
 
@@ -130,7 +130,7 @@ class SurveillenceViewController: PopoverVC {
     }
     
     func updateSubtitle(location: String, level: String, zone: String){
-        headerTitleSubtitleView.setTitleAndSubtitle("Surveillance", subtitle: location + ", " + level + ", " + zone)
+        headerTitleSubtitleView.setTitleAndSubtitle("Surveillance", subtitle: location + " " + level + " " + zone)
     }
     
     //full screen button from navigation bar

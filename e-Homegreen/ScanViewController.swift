@@ -83,7 +83,7 @@ class ScanViewController: PopoverVC {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
         
         self.navigationItem.titleView = headerTitleSubtitleView
-        headerTitleSubtitleView.setTitleAndSubtitle("Scan", subtitle: gateway.location.name! + ", All, All")
+        headerTitleSubtitleView.setTitleAndSubtitle("Scan", subtitle: gateway.location.name! + " All All")
 
     }
     
@@ -115,7 +115,7 @@ class ScanViewController: PopoverVC {
     }
     
     func updateSubtitle(location: String, level: String, zone: String){
-        headerTitleSubtitleView.setTitleAndSubtitle("Scan", subtitle: location + ", " + level + ", " + zone)
+        headerTitleSubtitleView.setTitleAndSubtitle("Scan", subtitle: location + " " + level + " " + zone)
     }
     
     //popup controller

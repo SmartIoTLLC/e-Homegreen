@@ -44,7 +44,7 @@ class UsersViewController: PopoverVC {
         scrollView.setItem(self.view)
         
         self.navigationItem.titleView = headerTitleSubtitleView
-        headerTitleSubtitleView.setTitleAndSubtitle("Users", subtitle: "All, All, All")
+        headerTitleSubtitleView.setTitleAndSubtitle("Users", subtitle: "All All All")
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NotificationKey.RefreshTimer, object: nil)
         
@@ -113,7 +113,7 @@ class UsersViewController: PopoverVC {
     }
     
     func updateSubtitle(location: String, level: String, zone: String){
-        headerTitleSubtitleView.setTitleAndSubtitle("Users", subtitle: location + ", " + level + ", " + zone)
+        headerTitleSubtitleView.setTitleAndSubtitle("Users", subtitle: location + " " + level + " " + zone)
     }
     
     func updateConstraints() {

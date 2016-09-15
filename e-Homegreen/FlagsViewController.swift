@@ -42,7 +42,7 @@ class FlagsViewController: PopoverVC {
         scrollView.setItem(self.view)
         
         self.navigationItem.titleView = headerTitleSubtitleView
-        headerTitleSubtitleView.setTitleAndSubtitle("Flags", subtitle: "All, All, All")
+        headerTitleSubtitleView.setTitleAndSubtitle("Flags", subtitle: "All All All")
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(FlagsViewController.defaultFilter(_:)))
         longPress.minimumPressDuration = 0.5
@@ -137,7 +137,7 @@ class FlagsViewController: PopoverVC {
     }
     
     func updateSubtitle(location: String, level: String, zone: String){
-        headerTitleSubtitleView.setTitleAndSubtitle("Flags", subtitle: location + ", " + level + ", " + zone)
+        headerTitleSubtitleView.setTitleAndSubtitle("Flags", subtitle: location + " " + level + " " + zone)
     }
     
     func changeFullScreeenImage(){

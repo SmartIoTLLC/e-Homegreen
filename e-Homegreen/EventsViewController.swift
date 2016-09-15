@@ -43,7 +43,7 @@ class EventsViewController: PopoverVC{
         scrollView.setItem(self.view)
         
         self.navigationItem.titleView = headerTitleSubtitleView
-        headerTitleSubtitleView.setTitleAndSubtitle("Events", subtitle: "All, All, All")
+        headerTitleSubtitleView.setTitleAndSubtitle("Events", subtitle: "All All All")
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(EventsViewController.defaultFilter(_:)))
         longPress.minimumPressDuration = 0.5
@@ -119,7 +119,7 @@ class EventsViewController: PopoverVC{
     }
     
     func updateSubtitle(location: String, level: String, zone: String){
-        headerTitleSubtitleView.setTitleAndSubtitle("Events", subtitle: location + ", " + level + ", " + zone)
+        headerTitleSubtitleView.setTitleAndSubtitle("Events", subtitle: location + " " + level + " " + zone)
     }
     
     @IBAction func fullScreen(sender: UIButton) {

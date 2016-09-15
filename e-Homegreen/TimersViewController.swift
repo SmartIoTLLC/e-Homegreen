@@ -66,7 +66,7 @@ class TimersViewController: PopoverVC {
         scrollView.setItem(self.view)
         
         self.navigationItem.titleView = headerTitleSubtitleView
-        headerTitleSubtitleView.setTitleAndSubtitle("Timers", subtitle: "All, All, All")
+        headerTitleSubtitleView.setTitleAndSubtitle("Timers", subtitle: "All All All")
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NotificationKey.RefreshTimer, object: nil)
         
@@ -171,7 +171,7 @@ class TimersViewController: PopoverVC {
     }
     
     func updateSubtitle(location: String, level: String, zone: String){
-        headerTitleSubtitleView.setTitleAndSubtitle("Timers", subtitle: location + ", " + level + ", " + zone)
+        headerTitleSubtitleView.setTitleAndSubtitle("Timers", subtitle: location + " " + level + " " + zone)
     }
     
     func refreshTimerList() {

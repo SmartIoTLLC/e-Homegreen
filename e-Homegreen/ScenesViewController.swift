@@ -68,7 +68,7 @@ class ScenesViewController: PopoverVC {
         scrollView.setItem(self.view)
         
         self.navigationItem.titleView = headerTitleSubtitleView
-        headerTitleSubtitleView.setTitleAndSubtitle("Scenes", subtitle: "All, All, All")
+        headerTitleSubtitleView.setTitleAndSubtitle("Scenes", subtitle: "All All All")
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ScenesViewController.defaultFilter(_:)))
         longPress.minimumPressDuration = 0.5
@@ -134,7 +134,7 @@ class ScenesViewController: PopoverVC {
     }
     
     func updateSubtitle(location: String, level: String, zone: String){
-        headerTitleSubtitleView.setTitleAndSubtitle("Scenes", subtitle: location + ", " + level + ", " + zone)
+        headerTitleSubtitleView.setTitleAndSubtitle("Scenes", subtitle: location + " " + level + " " + zone)
     }
     
     func changeFullScreeenImage(){

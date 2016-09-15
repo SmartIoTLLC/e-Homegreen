@@ -44,7 +44,7 @@ class EnergyViewController: PopoverVC  {
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
         
         self.navigationItem.titleView = headerTitleSubtitleView
-        headerTitleSubtitleView.setTitleAndSubtitle("Energy", subtitle: "All, All, All")
+        headerTitleSubtitleView.setTitleAndSubtitle("Energy", subtitle: "All All All")
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
@@ -125,7 +125,7 @@ class EnergyViewController: PopoverVC  {
     }
     
     func updateSubtitle(location: String, level: String, zone: String){
-        headerTitleSubtitleView.setTitleAndSubtitle("Energy", subtitle: location + ", " + level + ", " + zone)
+        headerTitleSubtitleView.setTitleAndSubtitle("Energy", subtitle: location + " " + level + " " + zone)
     }
     
     @IBAction func fullScreen(sender: UIButton) {
