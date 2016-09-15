@@ -190,6 +190,11 @@ class IncomingHandler: NSObject {
                     
                 }
                 
+                // Salto parametar
+                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x55 {
+                    getSaltoParameters(self.byteArray)
+                }
+                
             }
         }
     }
@@ -428,7 +433,7 @@ class IncomingHandler: NSObject {
         }
     }
     func getCardParameters(byteArray: [Byte]) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningFlagParameters) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningCardParameters) {
             let id = Int(byteArray[8])
             // Miminum is 14b
             if id != 0 {
@@ -450,6 +455,71 @@ class IncomingHandler: NSObject {
             }
             let data = ["cardId":id]
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveCardParameterFromGateway, object: self, userInfo: data)
+        }
+    }
+    
+    // MARK - Salto
+    // This response message contains two bytes which carry oinformation about which channel (device) is selected.
+    // There can be max 4 devices for Salto (on that address). Which ever is selected in admin panel (1...16) must be shown and device channel is set to that number
+    // For example: If 1 and 16 is selected, we will have two bytes with tat information 0x80 0x01, and there should be four devices: 
+    // Lock 1: channel 1
+    // Lock 2: channel 16
+    // Lock 3: chaneel 0
+    // Lock 4: channel 0
+    func getSaltoParameters(byteArray: [Byte]){
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
+            self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
+            // Get two bytes that carry info
+            var first8Devices = byteArray[8]
+            var second8Devices = byteArray[7]
+            
+            // Get which channels should be set
+            var arrayOfActiveChannels: [Int] = []
+            for i in 1...8 {
+                if first8Devices & 0x1 == 1{
+                    arrayOfActiveChannels.append(i)
+                }
+                first8Devices = first8Devices >> 1
+            }
+            for i in 1...8 {
+                if second8Devices & 0x1 == 1{
+                    arrayOfActiveChannels.append(i + 8)
+                }
+                second8Devices = second8Devices >> 1
+            }
+            
+            if arrayOfActiveChannels.count > 4 { // something is wrong if we could select more than 4
+                return
+            }
+            var devicesForSalto: [Device] = []
+            // Get needed devices and be sure that everything is in good order
+            for var i = 0; i < devices.count; i++ {
+                if  devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]){
+                    devicesForSalto.append(devices[i])
+                }
+            }
+            devicesForSalto = devicesForSalto.sort({ (dev1, dev2) -> Bool in
+                return (dev1.name < dev2.name)
+            })
+            
+            // Set new parameters for device
+            for (index, device) in devicesForSalto.enumerate() {
+                if arrayOfActiveChannels.count > 0{
+                    device.isEnabled = NSNumber(bool: true)
+                    device.isVisible = NSNumber(bool: true)
+                    device.controlType = ControlType.SaltoAccess
+                    device.channel = arrayOfActiveChannels.first!
+                    arrayOfActiveChannels.removeFirst()
+                }else{
+                    device.isEnabled = NSNumber(bool: false)
+                    device.isVisible = NSNumber(bool: false)
+                    device.controlType = ControlType.SaltoAccess
+                    device.channel = 0
+                }
+            }
+            let data = ["deviceIndexForFoundName":Int(byteArray[4])]
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDeviceName, object: self, userInfo: data)
+            CoreDataController.shahredInstance.saveChanges()
         }
     }
     
