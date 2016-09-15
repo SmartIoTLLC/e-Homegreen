@@ -24,6 +24,9 @@ class ScanFilterPullDown: UIScrollView {
     let bottomLine = UIView()
     let pullView:UIImageView = UIImageView()
     
+    let redIndicator = UIView()
+    let greenIndicator = UIView()
+    
     //location
     let locationLabel:UILabel = UILabel()
     let chooseLocationButon:CustomGradientButton = CustomGradientButton()
@@ -66,7 +69,13 @@ class ScanFilterPullDown: UIScrollView {
         commonInit()
     }
     
+    deinit {
+        removeObservers()
+    }
+    
     func commonInit(){
+        
+        addObservers()
         
         self.delegate = self
         self.pagingEnabled = true
@@ -85,6 +94,14 @@ class ScanFilterPullDown: UIScrollView {
         bottomLine.backgroundColor = UIColor(red: 128/255, green: 128/255, blue: 128/255, alpha: 1.0)
         bottomLine.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(bottomLine)
+        
+        //create signal indicators
+        greenIndicator.backgroundColor = UIColor.clearColor()
+        greenIndicator.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(greenIndicator)
+        redIndicator.backgroundColor = UIColor.clearColor()
+        redIndicator.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(redIndicator)
         
         //create pull down image
         pullView.image = UIImage(named: "pulldown")
@@ -222,9 +239,27 @@ class ScanFilterPullDown: UIScrollView {
         
         self.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0))
         
-        pullView.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 30))
+        pullView.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 37))
         
-        pullView.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 60))
+        pullView.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 120))
+        
+        //setGreenIndicator
+        self.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+        
+        self.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: -15))
+        
+        greenIndicator.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 12))
+        
+        greenIndicator.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 30))
+        
+        //setRedIndicator
+        self.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+        
+        self.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 15))
+        
+        redIndicator.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 12))
+        
+        redIndicator.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 30))
     }
     
     func setLocationConstraint(){
@@ -435,6 +470,49 @@ class ScanFilterPullDown: UIScrollView {
         filterItem.zoneName = zone.name!
         filterItem.zoneObjectId = zone.objectID.URIRepresentation().absoluteString
         scanFilterDelegate?.scanFilterParametars(filterItem)
+    }
+    
+    func addObservers(){
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanFilterPullDown.updateIndicator(_:)), name: NotificationKey.IndicatorLamp, object: nil)
+    }
+    
+    func removeObservers(){
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.IndicatorLamp, object: nil)
+    }
+    
+    func updateIndicator(notification:NSNotification){
+        if let info = notification.userInfo as? [String:String]{
+            
+            redIndicator.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0)
+            greenIndicator.backgroundColor = UIColor(red: 24/255, green: 202/255, blue: 0/255, alpha: 1.0)
+            
+            if let lamp = info["lamp"]{
+                if lamp == "red" {
+                    
+                    self.redIndicator.alpha = 1
+                    UIView.animateWithDuration(0.5, animations: {
+                        self.redIndicator.alpha = 0
+                        }, completion: { (Bool) in
+                            self.redIndicator.backgroundColor = UIColor.clearColor()
+                            self.greenIndicator.backgroundColor = UIColor.clearColor()
+                            
+                    })
+                }else if lamp == "green" {
+                    
+                    self.greenIndicator.alpha = 1
+                    UIView.animateWithDuration(0.5, animations: {
+                        self.greenIndicator.alpha = 0
+                        }, completion: { (Bool) in
+                            self.redIndicator.backgroundColor = UIColor.clearColor()
+                            self.greenIndicator.backgroundColor = UIColor.clearColor()
+                    })
+                }else{
+                    print("INDICATOR ERROR")
+                }
+            }
+            
+            
+        }
     }
 
     

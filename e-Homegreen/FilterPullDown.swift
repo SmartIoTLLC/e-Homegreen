@@ -80,7 +80,6 @@ class FilterPullDown: UIScrollView {
     
     deinit {
         removeObservers()
-        print("Deinitialized")
     }
 
     func commonInit(){
@@ -571,8 +570,16 @@ class FilterPullDown: UIScrollView {
         switch button.tag{
         case 0:
             location = FilterController.shared.getLocationByObjectId(id)
+            level = nil
+            zoneSelected = nil
+            category = nil
+            chooseLevelButon.setTitle("All", forState: .Normal)
+            chooseZoneButon.setTitle("All", forState: .Normal)
+            chooseCategoryButon.setTitle("All", forState: .Normal)
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
+            zoneSelected = nil
+            chooseZoneButon.setTitle("All", forState: .Normal)
             break
         case 2:
             zoneSelected = FilterController.shared.getZoneByObjectId(id)
@@ -789,10 +796,10 @@ class FilterPullDown: UIScrollView {
 extension FilterPullDown: UIScrollViewDelegate{
     
     override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
-        if point.y > contentView.frame.size.height + 37{
+        if point.y > contentView.frame.size.height + 43{
             return nil
         }
-        if point.y > contentView.frame.size.height && (point.x < contentView.frame.size.width/2 - 60 || point.x > contentView.frame.size.width/2 + 60) {
+        if point.y > contentView.frame.size.height && (point.x < contentView.frame.size.width/2 - 75 || point.x > contentView.frame.size.width/2 + 75) {
             return nil
         }
         return super.hitTest(point, withEvent: event)

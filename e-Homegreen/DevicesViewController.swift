@@ -83,6 +83,8 @@ class DevicesViewController: PopoverVC{
         panRecognizer.delegate = self
         bottomView.addGestureRecognizer(panRecognizer)
         
+        zoneAndCategorySlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.changeGroupSliderValueOnOneTap(_:))))
+        
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DevicesViewController.defaultFilter(_:)))
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
@@ -95,6 +97,7 @@ class DevicesViewController: PopoverVC{
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+            self.revealViewController().panGestureRecognizer().delegate = self
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             revealViewController().toggleAnimationDuration = 0.5
             if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
@@ -859,7 +862,7 @@ class DevicesViewController: PopoverVC{
                 panningUp = true
             }
 
-            if self.startingBottomConstraint == -130 {
+            if self.startingBottomConstraint == -144 {
                 
                 if !panningUp{
                     if deltaX == 0{
@@ -867,17 +870,17 @@ class DevicesViewController: PopoverVC{
                     }
                     
                 }else{
-                    if panStartPoint.x > self.bottomView.center.x - 60 && panStartPoint.x < self.bottomView.center.x + 60{
-                        if deltaX < -130 {
+                    if panStartPoint.x > self.bottomView.center.x - 75 && panStartPoint.x < self.bottomView.center.x + 75{
+                        if deltaX < -144 {
                             self.setConstraintsToShowBottomView(true, notifyDelegate: true)
                         }else{
-                            self.bottomConstraint.constant = -130 - deltaX
+                            self.bottomConstraint.constant = -144 - deltaX
                         }
                     }
                 }
             }else{
                 if !panningUp{
-                    if -deltaX > -130{
+                    if -deltaX > -144{
                         self.bottomConstraint.constant = -deltaX
                     }else{
                         self.resetConstraintContstants(true, endEditing: true)
@@ -886,14 +889,14 @@ class DevicesViewController: PopoverVC{
                     if deltaX <= 0{
                         self.setConstraintsToShowBottomView(true, notifyDelegate: true)
                     }else{
-                        self.bottomConstraint.constant = -130 - deltaX
+                        self.bottomConstraint.constant = -144 - deltaX
                     }
                 }
             }
 
             break
         case .Ended:
-            if self.startingBottomConstraint == -130 {
+            if self.startingBottomConstraint == -144 {
                 if bottomConstraint.constant >= -100{
                     self.setConstraintsToShowBottomView(true, notifyDelegate: true)
                 }else{
@@ -910,7 +913,7 @@ class DevicesViewController: PopoverVC{
             break
         case .Cancelled:
 
-            if self.startingBottomConstraint == -130 {
+            if self.startingBottomConstraint == -144 {
                 self.resetConstraintContstants(true, endEditing: true)
             } else {
                 self.setConstraintsToShowBottomView(true, notifyDelegate: true)
@@ -923,14 +926,14 @@ class DevicesViewController: PopoverVC{
     }
     
     func resetConstraintContstants(animated:Bool, endEditing:Bool){
-        if self.startingBottomConstraint == -130 &&
-            self.bottomConstraint.constant == -130 {
+        if self.startingBottomConstraint == -144 &&
+            self.bottomConstraint.constant == -144 {
             return
         }
-        self.bottomConstraint.constant = -130
+        self.bottomConstraint.constant = -144
         
         self.updateConstraintsIfNeeded(animated, completion: { (finished) -> Void in
-            self.bottomConstraint.constant = -130
+            self.bottomConstraint.constant = -144
             
             self.updateConstraintsIfNeeded(animated, completion: { (finished) -> Void in
                 self.startingBottomConstraint = self.bottomConstraint.constant
@@ -966,6 +969,19 @@ class DevicesViewController: PopoverVC{
             completion(finished: success)
         })
         
+    }
+    
+    func changeGroupSliderValueOnOneTap (gesture:UIGestureRecognizer) {
+        let s = gesture.view as! UISlider
+        if s.highlighted{
+            return // tap on thumb, let slider deal with it
+        }
+        let pt:CGPoint = gesture.locationInView(s)
+        let percentage:CGFloat = pt.x / s.bounds.size.width
+        let delta:CGFloat = percentage * (CGFloat(s.maximumValue) - CGFloat(s.minimumValue))
+        let value:CGFloat = CGFloat(s.minimumValue) + delta;
+        s.setValue(Float(value), animated: true)
+        zoneCategoryControlSlider(zoneAndCategorySlider)
     }
     
     
@@ -1082,6 +1098,7 @@ class DevicesViewController: PopoverVC{
                     if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
                         if zone.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
                             ZoneAndCategoryControl.shared.turnOnByZone(filterParametar.zoneId, location: filterParametar.location)
+                            self.zoneAndCategorySlider.value = 100
                         }else if zone.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
                             let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
                             
@@ -1089,7 +1106,7 @@ class DevicesViewController: PopoverVC{
                                 (alert: UIAlertAction!) -> Void in
                                 
                                 ZoneAndCategoryControl.shared.turnOnByZone(self.filterParametar.zoneId, location: self.filterParametar.location)
-                                
+                                self.zoneAndCategorySlider.value = 100
                             })
                             
                             let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
@@ -1114,6 +1131,7 @@ class DevicesViewController: PopoverVC{
                     if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
                         if category.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
                             ZoneAndCategoryControl.shared.turnOnByCategory(filterParametar.categoryId, location: filterParametar.location)
+                            self.zoneAndCategorySlider.value = 100
                         }else if category.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
                             let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
                             
@@ -1121,7 +1139,7 @@ class DevicesViewController: PopoverVC{
                                 (alert: UIAlertAction!) -> Void in
                                 
                                 ZoneAndCategoryControl.shared.turnOnByCategory(self.filterParametar.categoryId, location: self.filterParametar.location)
-                                
+                                self.zoneAndCategorySlider.value = 100
                             })
                             
                             let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
@@ -1153,6 +1171,7 @@ class DevicesViewController: PopoverVC{
                     if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
                         if zone.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
                             ZoneAndCategoryControl.shared.turnOffByZone(filterParametar.zoneId, location: filterParametar.location)
+                            self.zoneAndCategorySlider.value = 0
                         }else if zone.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
                             let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
                             
@@ -1160,7 +1179,7 @@ class DevicesViewController: PopoverVC{
                                 (alert: UIAlertAction!) -> Void in
                                 
                                 ZoneAndCategoryControl.shared.turnOffByZone(self.filterParametar.zoneId, location: self.filterParametar.location)
-                                
+                                self.zoneAndCategorySlider.value = 0
                             })
                             
                             let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
@@ -1185,6 +1204,7 @@ class DevicesViewController: PopoverVC{
                     if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
                         if category.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
                             ZoneAndCategoryControl.shared.turnOffByCategory(filterParametar.categoryId, location: filterParametar.location)
+                            self.zoneAndCategorySlider.value = 0
                         }else if category.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
                             let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
                             
@@ -1192,7 +1212,7 @@ class DevicesViewController: PopoverVC{
                                 (alert: UIAlertAction!) -> Void in
                                 
                                 ZoneAndCategoryControl.shared.turnOffByCategory(self.filterParametar.categoryId, location: self.filterParametar.location)
-                                
+                                self.zoneAndCategorySlider.value = 0
                             })
                             
                             let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
