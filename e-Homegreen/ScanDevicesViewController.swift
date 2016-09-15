@@ -125,7 +125,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
         let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
-        let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
+        let sortDescriptorFour = NSSortDescriptor(key: "deviceIdForScanningScreen", ascending: true)
+
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
         var predicateArray:[NSPredicate] = []
         predicateArray.append(NSPredicate(format: "gateway == %@", gateway.objectID))

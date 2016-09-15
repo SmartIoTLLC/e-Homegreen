@@ -36,6 +36,7 @@
         <attribute name="curtainControlMode" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="curtainGroupID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="delay" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="deviceIdForScanningScreen" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="digitalInputMode" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="fanModeVisible" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="heatModeVisible" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -330,7 +331,7 @@
     <elements>
         <element name="Card" positionX="-981" positionY="-1962" width="128" height="165"/>
         <element name="Category" positionX="-461" positionY="-1591" width="128" height="150"/>
-        <element name="Device" positionX="-677" positionY="-1989" width="128" height="915"/>
+        <element name="Device" positionX="-677" positionY="-1989" width="128" height="930"/>
         <element name="DeviceImage" positionX="-459" positionY="-2043" width="128" height="120"/>
         <element name="Event" positionX="-587" positionY="-1717" width="128" height="300"/>
         <element name="FilterParametar" positionX="-972" positionY="-1953" width="128" height="150"/>

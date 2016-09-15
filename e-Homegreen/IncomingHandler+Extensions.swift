@@ -89,8 +89,6 @@ extension IncomingHandler {
             }
         }
     }
-    
-    
     func acknowledgementAboutNewDeviceSalto (byteArray:[Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice) {
             var deviceExists = false
@@ -113,7 +111,7 @@ extension IncomingHandler {
                         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
                     }
                     
-//                    Function.getSaltoAccessInfoWithAddress([byteArray[2], byteArray[3], byteArray[4]])
+                    
                     let data = ["deviceAddresInGateway":Int(byteArray[4])]
                     NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDevice, object: self, userInfo: data)
                 }
@@ -122,32 +120,35 @@ extension IncomingHandler {
         
     }
     func acknowledgementAboutSaltoDeviceInfo (byteArray:[Byte]) {
-//        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice) {
-//            var deviceExists = false
-//            if let controlType = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name {
-//                let MAC:[Byte] = Array(byteArray[9...14])
-//                if devices != [] {
-//                    for device in devices {
-//                        if device.address == Int(byteArray[4]) {deviceExists = true}
-//                    }
-//                } else {deviceExists = false}
-//                if !deviceExists {
-//                    for var i=1 ; i<=4 ; i++ {
-//                        let deviceInformation = DeviceInformation(address: Int(byteArray[4]), channel: i, numberOfDevices: 4, type: controlType, gateway: gateways[0], mac: NSData(bytes: MAC, length: MAC.count), isClimate:false)
-//                        
-//                        if (controlType == ControlType.SaltoAccess){
-//                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
-//                        }
-//                        
-//                        CoreDataController.shahredInstance.saveChanges()
-//                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
-//                    }
-//                    
-//                    Function.getSaltoAccessInfoWithAddress([byteArray[2], byteArray[3], byteArray[4]])
-//                    //                    let data = ["deviceAddresInGateway":Int(byteArray[4])]
-//                    //                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDevice, object: self, userInfo: data)
-//                }
-//            }
-//        }
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice) {
+            var deviceExists = false
+            if let controlType = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name {
+                let MAC:[Byte] = Array(byteArray[9...14])
+                if devices != [] {
+                    for device in devices {
+                        if device.address == Int(byteArray[4]) {deviceExists = true}
+                    }
+                } else {deviceExists = false}
+               
+                
+                
+                if !deviceExists {
+                    for var i=1 ; i<=4 ; i++ {
+                        let deviceInformation = DeviceInformation(address: Int(byteArray[4]), channel: i, numberOfDevices: 4, type: controlType, gateway: gateways[0], mac: NSData(bytes: MAC, length: MAC.count), isClimate:false)
+                        
+                        if (controlType == ControlType.SaltoAccess){
+                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
+                        }
+                        
+                        CoreDataController.shahredInstance.saveChanges()
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+                    }
+                    
+                    Function.getSaltoAccessInfoWithAddress([byteArray[2], byteArray[3], byteArray[4]])
+                    //                    let data = ["deviceAddresInGateway":Int(byteArray[4])]
+                    //                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDevice, object: self, userInfo: data)
+                }
+            }
+        }
     }
 }

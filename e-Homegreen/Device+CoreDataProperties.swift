@@ -23,6 +23,7 @@ extension Device {
     @NSManaged var channel: NSNumber
     @NSManaged var coolTemperature: NSNumber
     @NSManaged var current: NSNumber
+    @NSManaged var deviceIdForScanningScreen: NSNumber  // This parameter is used for sorting devices in ScanDeviceViewController. Problem is with SaltoAccess bcause Channels could change. In other devices channels are scanned and written while scanning (adding) device. Salto Access channels chang depending which one is selected (from 1 to 16). This parameter is now channel, and has values that are collected from PLC (i.e. channel parameter for all devices except saltoAccess), and by this parameter we sort Devices in ScannDeviceViewController. In saltoAccess channels are later changed but this parameter stays as it was when scanned (1 to 4).
     
     // Current value is the current value of the device. In app it always ranges from - to 255. When sending it and receveing it from PLC range can be 0-100 or 0-255, depending on device type.100
 // If device is dimmer then value is in range from 0-100
