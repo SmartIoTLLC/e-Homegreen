@@ -30,17 +30,11 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     
     @IBOutlet weak var eventTableView: UITableView!
     
-    var appDel:AppDelegate!
-    var error:NSError? = nil
-    
     var gateway:Gateway!
+    var filterParametar:FilterItem!
     var events:[Event] = []
     
-    var selected:AnyObject?
-    
-    var levelFromFilter:String = "All"
-    var zoneFromFilter:String = "All"
-    var categoryFromFilter:String = "All"
+    var searchBarText:String = ""
     
     var button:UIButton!
     
@@ -59,9 +53,7 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        updateEventList()
+        refreshEventList()
         
         devAddressThree.inputAccessoryView = CustomToolBar()
         IDedit.inputAccessoryView = CustomToolBar()
@@ -71,20 +63,20 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         
         imageSceneOne.userInteractionEnabled = true
         imageSceneOne.tag = 1
-        imageSceneOne.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
+        imageSceneOne.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ScanEventsViewController.handleTap(_:))))
         imageSceneTwo.userInteractionEnabled = true
         imageSceneTwo.tag = 2
-        imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
+        imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ScanEventsViewController.handleTap(_:))))
         
         devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne)))"
         devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway.addressTwo)))"
         
         broadcastSwitch.tag = 100
         broadcastSwitch.on = false
-        broadcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        broadcastSwitch.addTarget(self, action: #selector(ScanEventsViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
         localcastSwitch.tag = 200
         localcastSwitch.on = false
-        localcastSwitch.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        localcastSwitch.addTarget(self, action: #selector(ScanEventsViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
         
         btnLevel.tag = 1
         btnZone.tag = 2
@@ -100,26 +92,12 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     }
 
     override func sendFilterParametar(filterParametar: FilterItem) {
-        levelFromFilter = filterParametar.levelName
-        zoneFromFilter = filterParametar.zoneName
-        categoryFromFilter = filterParametar.categoryName
-        updateEventList()
-        eventTableView.reloadData()
+        self.filterParametar = filterParametar
+        refreshEventList()
     }
     override func sendSearchBarText(text: String) {
-        updateEventList()
-        if !text.isEmpty{
-            events = self.events.filter() {
-                event in
-                if event.eventName.lowercaseString.rangeOfString(text.lowercaseString) != nil{
-                    return true
-                }else{
-                    return false
-                }
-            }
-        }
-        eventTableView.reloadData()
-        
+        searchBarText = text
+        refreshEventList()
     }
     
     override func nameAndId(name: String, id: String) {
@@ -152,41 +130,20 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         }
     }
     func refreshEventList() {
-        updateEventList()
+        events = DatabaseEventsController.shared.updateEventList(gateway, filterParametar: filterParametar)
+        if !searchBarText.isEmpty{
+            events = self.events.filter() {
+                event in
+                if event.eventName.lowercaseString.rangeOfString(searchBarText.lowercaseString) != nil{
+                    return true
+                }else{
+                    return false
+                }
+            }
+        }
         eventTableView.reloadData()
     }
-    func updateEventList() {
-        let fetchRequest = NSFetchRequest(entityName: "Event")
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "eventId", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "eventName", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-//        let predicate = NSPredicate(format: "gateway == %@", gateway.objectID)
-        var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "gateway == %@", gateway.objectID))
-        if levelFromFilter != "All" {
-            let levelPredicate = NSPredicate(format: "entityLevel == %@", levelFromFilter)
-            predicateArray.append(levelPredicate)
-        }
-        if zoneFromFilter != "All" {
-            let zonePredicate = NSPredicate(format: "eventZone == %@", zoneFromFilter)
-            predicateArray.append(zonePredicate)
-        }
-        if categoryFromFilter != "All" {
-            let categoryPredicate = NSPredicate(format: "eventCategory == %@", categoryFromFilter)
-            predicateArray.append(categoryPredicate)
-        }
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
-        fetchRequest.predicate = compoundPredicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Event]
-            events = fetResults!
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
+    
     func handleTap (gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
             showGallery(index, user: gateway.location.user).delegate = self
@@ -240,130 +197,27 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     }
     
     @IBAction func btnAdd(sender: AnyObject) {
-        if let sceneId = Int(IDedit.text!), let sceneName = nameEdit.text, let address = Int(devAddressThree.text!) {
-            if sceneId <= 32767 && address <= 255 {
-                var itExists = false
-                var existingEvent:Event?
-                for event in events {
-                    if event.eventId == sceneId && event.address == address {
-                        itExists = true
-                        existingEvent = event
-                    }
+        if let eventId = Int(IDedit.text!), let eventName = nameEdit.text, let address = Int(devAddressThree.text!) {
+            if eventId <= 32767 && address <= 255 {
+                
+                var levelId:Int?
+                if let levelIdNumber = level?.id{
+                    levelId = Int(levelIdNumber)
                 }
-                if !itExists {
-                    let event = NSEntityDescription.insertNewObjectForEntityForName("Event", inManagedObjectContext: appDel.managedObjectContext!) as! Event
-                    event.eventId = sceneId
-                    event.eventName = sceneName
-                    event.address = address
-                    if let customImageOne = customImageOne{
-                        event.eventImageOneCustom = customImageOne
-                        event.eventImageOneDefault = nil
-                    }
-                    if let def = defaultImageOne {
-                        event.eventImageOneDefault = def
-                        event.eventImageOneCustom = nil
-                    }
-                    if let data = imageDataOne{
-                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
-                            image.imageData = data
-                            image.imageId = NSUUID().UUIDString
-                            event.eventImageOneCustom = image.imageId
-                            event.eventImageOneDefault = nil
-                            gateway.location.user!.addImagesObject(image)
-                            
-                        }
-                    }
-                    
-                    if let customImageTwo = customImageTwo{
-                        event.eventImageTwoCustom = customImageTwo
-                        event.eventImageTwoDefault = nil
-                    }
-                    if let def = defaultImageTwo {
-                        event.eventImageTwoDefault = def
-                        event.eventImageTwoCustom = nil
-                    }
-                    if let data = imageDataTwo{
-                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
-                            image.imageData = data
-                            image.imageId = NSUUID().UUIDString
-                            event.eventImageTwoCustom = image.imageId
-                            event.eventImageTwoDefault = nil
-                            gateway.location.user!.addImagesObject(image)
-                            
-                        }
-                    }
-                    
-                    event.entityLevelId = level?.id
-                    event.eventZoneId = zoneSelected?.id
-                    event.eventCategoryId = category?.id
-                    
-                    event.isBroadcast = broadcastSwitch.on
-                    event.isLocalcast = localcastSwitch.on
-                    event.report = reportSwitch.on
-                    event.entityLevel = btnLevel.titleLabel!.text!
-                    event.eventZone = btnZone.titleLabel!.text!
-                    event.eventCategory = btnCategory.titleLabel!.text!
-                    event.gateway = gateway
-                    CoreDataController.shahredInstance.saveChanges()
-                    refreshEventList()
-                } else {
-                    existingEvent!.eventId = sceneId
-                    existingEvent!.eventName = sceneName
-                    existingEvent!.address = address
-                    
-                    if let customImageOne = customImageOne{
-                        existingEvent!.eventImageOneCustom = customImageOne
-                        existingEvent!.eventImageOneDefault = nil
-                    }
-                    if let def = defaultImageOne {
-                        existingEvent!.eventImageOneDefault = def
-                        existingEvent!.eventImageOneCustom = nil
-                    }
-                    if let data = imageDataOne{
-                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
-                            image.imageData = data
-                            image.imageId = NSUUID().UUIDString
-                            existingEvent!.eventImageOneCustom = image.imageId
-                            existingEvent!.eventImageOneDefault = nil
-                            gateway.location.user!.addImagesObject(image)
-                            
-                        }
-                    }
-                    
-                    if let customImageTwo = customImageTwo{
-                        existingEvent!.eventImageTwoCustom = customImageTwo
-                        existingEvent!.eventImageTwoDefault = nil
-                    }
-                    if let def = defaultImageTwo {
-                        existingEvent!.eventImageTwoDefault = def
-                        existingEvent!.eventImageTwoCustom = nil
-                    }
-                    if let data = imageDataTwo{
-                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
-                            image.imageData = data
-                            image.imageId = NSUUID().UUIDString
-                            existingEvent!.eventImageTwoCustom = image.imageId
-                            existingEvent!.eventImageTwoDefault = nil
-                            gateway.location.user!.addImagesObject(image)
-                            
-                        }
-                    }
-                    
-                    existingEvent!.entityLevelId = level?.id
-                    existingEvent!.eventZoneId = zoneSelected?.id
-                    existingEvent!.eventCategoryId = category?.id
-                    
-                    existingEvent!.isBroadcast = broadcastSwitch.on
-                    existingEvent!.isLocalcast = localcastSwitch.on
-                    existingEvent!.report = reportSwitch.on
-                    existingEvent!.entityLevel = btnLevel.titleLabel!.text!
-                    existingEvent!.eventZone = btnZone.titleLabel!.text!
-                    existingEvent!.eventCategory = btnCategory.titleLabel!.text!
-                    existingEvent!.gateway = gateway
-                    CoreDataController.shahredInstance.saveChanges()
-                    refreshEventList()
+                var zoneId:Int?
+                if let zoneIdNumber = zoneSelected?.id{
+                    zoneId = Int(zoneIdNumber)
                 }
+                var categoryId:Int?
+                if let categoryIdNumber = category?.id{
+                    categoryId = Int(categoryIdNumber)
+                }
+                
+                DatabaseEventsController.shared.createEvent(eventId, eventName: eventName, moduleAddress: address, gateway: gateway, levelId: levelId, zoneId: zoneId, categoryId: categoryId, isBroadcast: broadcastSwitch.on, isLocalcast: localcastSwitch.on, sceneImageOneDefault: defaultImageOne, sceneImageTwoDefault: defaultImageTwo, sceneImageOneCustom: customImageOne, sceneImageTwoCustom: customImageTwo, imageDataOne: imageDataOne, imageDataTwo: imageDataTwo, report: reportSwitch.on)
+                
             }
+            refreshEventList()
+            self.view.endEditing(true)
         }
     }
     
@@ -377,35 +231,13 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     }
 
     @IBAction func btnRemove(sender: UIButton) {
-        
-        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to delete all scenes?", preferredStyle: .ActionSheet)
-        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            
-            if self.events.count != 0 {
-                for event in self.events {
-                    self.appDel.managedObjectContext!.deleteObject(event)
-                }
-                
+        showAlertView(sender, message: "Are you sure you want to delete all events?") { (action) in
+            if action{
+                DatabaseEventsController.shared.deleteAllEvents(self.gateway)
+                self.refreshEventList()
+                self.view.endEditing(true)
             }
-            CoreDataController.shahredInstance.saveChanges()
-            self.refreshEventList()
-            self.view.endEditing(true)
-        })
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Cancelled")
-        })
-        
-        if let popoverController = optionMenu.popoverPresentationController {
-            popoverController.sourceView = sender
-            popoverController.sourceRect = sender.bounds
         }
-        
-        optionMenu.addAction(deleteAction)
-        optionMenu.addAction(cancelAction)
-        self.presentViewController(optionMenu, animated: true, completion: nil)
 
     }
     
@@ -427,61 +259,55 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
             arrayOfEventsToBeSearched = [Int]()
             indexOfEventsToBeSearched = 0
             
-            
-            
             guard let address1Text = devAddressOne.text else{
-                alertController("Error", message: "Address can't be empty")
                 return
             }
             guard let address1 = Int(address1Text) else{
-                alertController("Error", message: "Address can be only number")
                 return
             }
             addressOne = address1
             
             guard let address2Text = devAddressTwo.text else{
-                alertController("Error", message: "Address can't be empty")
                 return
             }
             guard let address2 = Int(address2Text) else{
-                alertController("Error", message: "Address can be only number")
                 return
             }
             addressTwo = address2
             
             guard let address3Text = devAddressThree.text else{
-                alertController("Error", message: "Address can't be empty")
+                self.view.makeToast(message: "Address can't be empty")
                 return
             }
             guard let address3 = Int(address3Text) else{
-                alertController("Error", message: "Address can be only number")
+                self.view.makeToast(message: "Address can be only number")
                 return
             }
             addressThree = address3
             guard let rangeFromText = fromTextField.text else{
-                alertController("Error", message: "Range can't be empty")
+                self.view.makeToast(message: "Address can't be empty")
                 return
             }
             
             guard let rangeFrom = Int(rangeFromText) else{
-                alertController("Error", message: "Range can be only number")
+                self.view.makeToast(message: "Address can be only number")
                 return
             }
             let from = rangeFrom
             
             guard let rangeToText = toTextField.text else{
-                alertController("Error", message: "Range can't be empty")
+                self.view.makeToast(message: "Address can't be empty")
                 return
             }
             
             guard let rangeTo = Int(rangeToText) else{
-                alertController("Error", message: "Range can be only number")
+                self.view.makeToast(message: "Address can be only number")
                 return
             }
             let to = rangeTo
             
             if rangeTo < rangeFrom {
-                alertController("Error", message: "Range \"from\" can't be higher than range \"to\"")
+                self.view.makeToast(message: "Range \"from\" can't be higher than range \"to\"")
                 return
             }
             for i in from...to{
@@ -501,9 +327,9 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
                 sendCommandWithEventAddress(firstEventIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
         } catch let error as InputError {
-            alertController("Error", message: error.description)
+            self.view.makeToast(message: error.description)
         } catch {
-            alertController("Error", message: "Something went wrong.")
+            self.view.makeToast(message: "Something went wrong.")
         }
     }
     // Called from findEvents or from it self.
@@ -595,22 +421,6 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         UIApplication.sharedApplication().idleTimerDisabled = false
         refreshEventList()
     }
-    func alertController (title:String, message:String) {
-        alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
-            // ...
-        }
-        alertController!.addAction(cancelAction)
-        
-        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-            // ...
-        }
-        alertController!.addAction(OKAction)
-        
-        self.presentViewController(alertController!, animated: true) {
-            // ...
-        }
-    }
 }
 
 extension ScanEventsViewController: SceneGalleryDelegate{
@@ -688,22 +498,16 @@ extension ScanEventsViewController: UITableViewDataSource, UITableViewDelegate {
                     }else{
                         if let defaultImage = events[indexPath.row].eventImageOneDefault{
                             cell.imageOne.image = UIImage(named: defaultImage)
-                        }else{
-                            cell.imageOne.image = UIImage(named: "17 Event - Up Down - 00")
                         }
                     }
                 }else{
                     if let defaultImage = events[indexPath.row].eventImageOneDefault{
                         cell.imageOne.image = UIImage(named: defaultImage)
-                    }else{
-                        cell.imageOne.image = UIImage(named: "17 Event - Up Down - 00")
                     }
                 }
             }else{
                 if let defaultImage = events[indexPath.row].eventImageOneDefault{
                     cell.imageOne.image = UIImage(named: defaultImage)
-                }else{
-                    cell.imageOne.image = UIImage(named: "17 Event - Up Down - 00")
                 }
             }
             
@@ -714,22 +518,16 @@ extension ScanEventsViewController: UITableViewDataSource, UITableViewDelegate {
                     }else{
                         if let defaultImage = events[indexPath.row].eventImageTwoDefault{
                             cell.imageTwo.image = UIImage(named: defaultImage)
-                        }else{
-                            cell.imageTwo.image = UIImage(named: "17 Event - Up Down - 01")
                         }
                     }
                 }else{
                     if let defaultImage = events[indexPath.row].eventImageTwoDefault{
                         cell.imageTwo.image = UIImage(named: defaultImage)
-                    }else{
-                        cell.imageTwo.image = UIImage(named: "17 Event - Up Down - 01")
                     }
                 }
             }else{
                 if let defaultImage = events[indexPath.row].eventImageTwoDefault{
                     cell.imageTwo.image = UIImage(named: defaultImage)
-                }else{
-                    cell.imageTwo.image = UIImage(named: "17 Event - Up Down - 01")
                 }
             }
             
@@ -737,13 +535,11 @@ extension ScanEventsViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
-        cell.textLabel?.text = "sequnces"
         return cell
         
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        selected = events[indexPath.row]
         IDedit.text = "\(events[indexPath.row].eventId)"
         nameEdit.text = "\(events[indexPath.row].eventName)"
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(events[indexPath.row].address)))"
@@ -777,22 +573,16 @@ extension ScanEventsViewController: UITableViewDataSource, UITableViewDelegate {
                 }else{
                     if let defaultImage = events[indexPath.row].eventImageOneDefault{
                         imageSceneOne.image = UIImage(named: defaultImage)
-                    }else{
-                        imageSceneOne.image = UIImage(named: "17 Event - Up Down - 00")
                     }
                 }
             }else{
                 if let defaultImage = events[indexPath.row].eventImageOneDefault{
                     imageSceneOne.image = UIImage(named: defaultImage)
-                }else{
-                    imageSceneOne.image = UIImage(named: "17 Event - Up Down - 00")
                 }
             }
         }else{
             if let defaultImage = events[indexPath.row].eventImageOneDefault{
                 imageSceneOne.image = UIImage(named: defaultImage)
-            }else{
-                imageSceneOne.image = UIImage(named: "17 Event - Up Down - 00")
             }
         }
         
@@ -803,22 +593,16 @@ extension ScanEventsViewController: UITableViewDataSource, UITableViewDelegate {
                 }else{
                     if let defaultImage = events[indexPath.row].eventImageTwoDefault{
                         imageSceneTwo.image = UIImage(named: defaultImage)
-                    }else{
-                        imageSceneTwo.image = UIImage(named: "17 Event - Up Down - 01")
                     }
                 }
             }else{
                 if let defaultImage = events[indexPath.row].eventImageTwoDefault{
                     imageSceneTwo.image = UIImage(named: defaultImage)
-                }else{
-                    imageSceneTwo.image = UIImage(named: "17 Event - Up Down - 01")
                 }
             }
         }else{
             if let defaultImage = events[indexPath.row].eventImageTwoDefault{
                 imageSceneTwo.image = UIImage(named: defaultImage)
-            }else{
-                imageSceneTwo.image = UIImage(named: "17 Event - Up Down - 01")
             }
         }
     }
@@ -839,9 +623,9 @@ extension ScanEventsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
         if editingStyle == .Delete {
-            appDel.managedObjectContext?.deleteObject(events[indexPath.row])
-            CoreDataController.shahredInstance.saveChanges()
-            refreshEventList()
+            DatabaseEventsController.shared.deleteEvent(events[indexPath.row])
+            events.removeAtIndex(indexPath.row)
+            eventTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
         
     }

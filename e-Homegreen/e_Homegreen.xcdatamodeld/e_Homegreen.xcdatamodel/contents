@@ -89,9 +89,7 @@
     </entity>
     <entity name="Event" representedClassName="e_Homegreen.Event" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="entityLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="entityLevelId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="eventCategory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eventCategoryId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="eventId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="eventImageOneCustom" optional="YES" attributeType="String" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
@@ -99,7 +97,6 @@
         <attribute name="eventImageTwoCustom" optional="YES" attributeType="String" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="eventImageTwoDefault" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eventName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="eventZone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eventZoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isLocalcast" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -327,7 +324,7 @@
         <element name="Category" positionX="-461" positionY="-1591" width="128" height="150"/>
         <element name="Device" positionX="-677" positionY="-1989" width="128" height="930"/>
         <element name="DeviceImage" positionX="-459" positionY="-2043" width="128" height="120"/>
-        <element name="Event" positionX="-587" positionY="-1717" width="128" height="300"/>
+        <element name="Event" positionX="-587" positionY="-1717" width="128" height="255"/>
         <element name="FilterParametar" positionX="-972" positionY="-1953" width="128" height="150"/>
         <element name="Flag" positionX="-578" positionY="-1663" width="128" height="300"/>
         <element name="Gateway" positionX="-848" positionY="-1591" width="128" height="390"/>
