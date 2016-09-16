@@ -21,9 +21,12 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     
     var gateway:Gateway!
     var cards:[Card] = []
-
+    var appDel: AppDelegate!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         cardsTableView.tableFooterView = UIView()
         
@@ -42,6 +45,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
 
         // Notification that tells us that timer is received and stored
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanCardsViewController.nameReceivedFromPLC(_:)), name: NotificationKey.DidReceiveCardFromGateway, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanCardsViewController.cardParametarReceivedFromPLC(_:)), name: NotificationKey.DidReceiveCardParameterFromGateway, object: nil)
     }
 
     @IBAction func scanCards(sender: AnyObject) {
@@ -82,27 +86,8 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
             arrayOfNamesToBeSearched = [Int]()
             indexOfNamesToBeSearched = 0
             
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningCardNames)
-            
-            guard let address1Text = devAddressOne.text else{
-                alertController("Error", message: "Address can't be empty")
-                return
-            }
-            guard let address1 = Int(address1Text) else{
-                alertController("Error", message: "Address can be only number")
-                return
-            }
-            addressOne = address1
-            
-            guard let address2Text = devAddressTwo.text else{
-                alertController("Error", message: "Address can't be empty")
-                return
-            }
-            guard let address2 = Int(address2Text) else{
-                alertController("Error", message: "Address can be only number")
-                return
-            }
-            addressTwo = address2
+            addressOne = Int(devAddressOne.text!)!
+            addressTwo = Int(devAddressTwo.text!)!
             
             guard let address3Text = devAddressThree.text else{
                 alertController("Error", message: "Address can't be empty")
@@ -114,29 +99,18 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
             }
             addressThree = address3
             
-            guard let rangeFromText = fromTextField.text else{
-                alertController("Error", message: "Range can't be empty")
-                return
+            var from = 1
+            var to = 255
+            
+            if let rangeFromText = fromTextField.text, let rangeFrom = Int(rangeFromText){
+                from = rangeFrom
+            }
+
+            if let rangeToText = toTextField.text, let rangeTo = Int(rangeToText){
+                to = rangeTo
             }
             
-            guard let rangeFrom = Int(rangeFromText) else{
-                alertController("Error", message: "Range can be only number")
-                return
-            }
-            let from = rangeFrom
-            
-            guard let rangeToText = toTextField.text else{
-                alertController("Error", message: "Range can't be empty")
-                return
-            }
-            
-            guard let rangeTo = Int(rangeToText) else{
-                alertController("Error", message: "Range can be only number")
-                return
-            }
-            let to = rangeTo
-            
-            if rangeTo < rangeFrom {
+            if to < from {
                 alertController("Error", message: "Range \"from\" can't be higher than range \"to\"")
                 return
             }
@@ -154,6 +128,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
                 self.presentViewController(progressBarScreenTimerNames!, animated: true, completion: nil)
                 cardNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanCardsViewController.checkIfTimerDidGetName(_:)), userInfo: firstTimerIndexThatDontHaveName, repeats: false)
                 NSLog("func findNames \(firstTimerIndexThatDontHaveName)")
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningCardNames)
                 sendCommandForFindingNameWithTimerAddress(firstTimerIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
         } catch let error as InputError {
@@ -239,6 +214,157 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
         }
     }
     
+    // MARK: - Timer parameters
+    // Gets all input parameters and prepares everything for scanning, and initiates scanning.
+    func findParametarsForCard() {
+        progressBarScreenTimerNames?.dissmissProgressBar()
+        progressBarScreenTimerNames = nil
+        do {
+            arrayOfParametersToBeSearched = [Int]()
+            indexOfParametersToBeSearched = 0
+            
+            guard let rangeFromText = fromTextField.text else{
+                alertController("Error", message: "Range can't be empty")
+                return
+            }
+            
+            guard let rangeFrom = Int(rangeFromText) else{
+                alertController("Error", message: "Range can be only number")
+                return
+            }
+            let from = rangeFrom
+            
+            guard let rangeToText = toTextField.text else{
+                alertController("Error", message: "Range can't be empty")
+                return
+            }
+            
+            guard let rangeTo = Int(rangeToText) else{
+                alertController("Error", message: "Range can be only number")
+                return
+            }
+            let to = rangeTo
+            
+            if rangeTo < rangeFrom {
+                alertController("Error", message: "Range \"from\" can't be higher than range \"to\"")
+                return
+            }
+            
+            for i in from...to{
+                for cardTemp in cards {
+                    if cardTemp.id.integerValue == i{
+                        arrayOfParametersToBeSearched.append(i)
+                    }
+                }
+            }
+            
+            
+            
+            UIApplication.sharedApplication().idleTimerDisabled = true
+            if arrayOfParametersToBeSearched.count != 0{
+                let parameterIndex = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
+                timesRepeatedCounterParameters = 0
+                progressBarScreenTimerNames = nil
+                progressBarScreenTimerNames = ProgressBarVC(title: "Finding timer parametars", percentage: Float(1)/Float(self.arrayOfParametersToBeSearched.count), howMuchOf: "1 / \(self.arrayOfParametersToBeSearched.count)")
+                progressBarScreenTimerNames?.delegate = self
+                self.presentViewController(progressBarScreenTimerNames!, animated: true, completion: nil)
+                cardParameterTimer?.invalidate()
+                cardParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetParametar(_:)), userInfo: parameterIndex, repeats: false)
+                NSLog("func findNames \(parameterIndex)")
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningCardParameters)
+                sendCommandForFindingParameterWithTimerAddress(parameterIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                print("Command sent for parameter from FindParameter")
+            }
+        } catch let error as InputError {
+            alertController("Error", message: error.description)
+        } catch {
+            alertController("Error", message: "Something went wrong.")
+        }
+    }
+    // Called from findParametarsForTimer or from it self.
+    // Checks which timer ID should be searched for and calls sendCommandForFindingParameterWithTimerAddress for that specific timer id.
+    func checkIfCardDidGetParametar (timer:NSTimer) {
+        // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
+        // Here we just need to see whether we repeated the call to PLC less than 3 times.
+        // If not tree times, send same command again
+        // If three times reached, search for next timer ID if it exists
+        guard let cardIndex = timer.userInfo as? Int else{
+            return
+        }
+        timesRepeatedCounterParameters += 1
+        if timesRepeatedCounterParameters < 3 {
+            cardParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetParametar(_:)), userInfo: cardIndex, repeats: false)
+            NSLog("func checkIfDeviceDidGetParameter \(cardIndex)")
+            sendCommandForFindingParameterWithTimerAddress(cardIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+            print("Command sent for parameter from CheckIfTimerDidGetParameter (repeat \(timesRepeatedCounterParameters))")
+        }else{
+            if let indexOfTimerIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.indexOf(cardIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                if indexOfTimerIndexInArrayOfParametersToBeSearched+1 < arrayOfParametersToBeSearched.count{ // if next exists
+                    indexOfParametersToBeSearched = indexOfTimerIndexInArrayOfParametersToBeSearched+1
+                    let nextTimerIndexToBeSearched = arrayOfParametersToBeSearched[indexOfTimerIndexInArrayOfParametersToBeSearched+1]
+                    timesRepeatedCounterParameters = 0
+                    cardParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                    NSLog("func checkIfDeviceDidGetParameter \(nextTimerIndexToBeSearched)")
+                    sendCommandForFindingParameterWithTimerAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                    print("Command sent for parameter from checkIfTimerDidGetParametar: next parameter")
+                }else{
+                    shouldFindCardParameters = false
+                    dismissScaningControls()
+                }
+            }
+        }
+    }
+    // If message is received from PLC, notification is sent and notification calls this function.
+    // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
+    func cardParametarReceivedFromPLC (notification:NSNotification) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningCardParameters) {
+            guard let info = notification.userInfo! as? [String:Int] else{
+                return
+            }
+            guard let cardIndex = info["cardId"] else{
+                return
+            }
+            guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.indexOf(cardIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                return
+            }
+            
+            if indexOfDeviceIndexInArrayOfParametersToBeSearched+1 < arrayOfParametersToBeSearched.count{ // if next exists
+                indexOfParametersToBeSearched = indexOfDeviceIndexInArrayOfParametersToBeSearched+1
+                let nextTimerIndexToBeSearched = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
+                timesRepeatedCounterParameters = 0
+                cardParameterTimer?.invalidate()
+                cardParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                NSLog("func parameterReceivedFromPLC index:\(index) :deviceIndex\(nextTimerIndexToBeSearched)")
+                sendCommandForFindingParameterWithTimerAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                print("Command sent for parameter from timerParameterReceivedFromPLC: next parameter")
+            }else{
+                shouldFindCardParameters = false
+                dismissScaningControls()
+            }
+        }
+    }
+    // Sends byteArray to PLC
+    func sendCommandForFindingParameterWithTimerAddress(timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
+        setProgressBarParametarsForFindingParameters(timerId)
+        let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
+        SendingHandler.sendCommand(byteArray: Function.getCardParametar(address, cardId: UInt8(timerId)) , gateway: self.gateway)
+    }
+    func setProgressBarParametarsForFindingParameters (timerId:Int) {
+        if let indexOfDeviceIndexInArrayOfPatametersToBeSearched = arrayOfParametersToBeSearched.indexOf(timerId){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            print("Progresbar for Parameters: \(indexOfDeviceIndexInArrayOfPatametersToBeSearched)")
+            if let _ = progressBarScreenTimerNames?.lblHowMuchOf {
+                if let _ = progressBarScreenTimerNames?.lblPercentage{
+                    if let _ = progressBarScreenTimerNames?.progressView{
+                        print("Progresbar for Parameters: \(indexOfDeviceIndexInArrayOfPatametersToBeSearched)")
+                        progressBarScreenTimerNames?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfPatametersToBeSearched+1) / \(arrayOfParametersToBeSearched.count)"
+                        progressBarScreenTimerNames?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfDeviceIndexInArrayOfPatametersToBeSearched+1)/Float(arrayOfParametersToBeSearched.count)*100) + " %"
+                        progressBarScreenTimerNames?.progressView.progress = Float(indexOfDeviceIndexInArrayOfPatametersToBeSearched+1)/Float(arrayOfParametersToBeSearched.count)
+                    }
+                }
+            }
+        }
+    }
+    
     // Helpers
     func progressBarDidPressedExit() {
         shouldFindCardParameters = false
@@ -257,12 +383,12 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
         indexOfNamesToBeSearched = 0
         arrayOfParametersToBeSearched = [Int]()
         indexOfParametersToBeSearched = 0
-//        if !shouldFindCardParameters {
+        reloadCards()
+        if !shouldFindCardParameters {
             UIApplication.sharedApplication().idleTimerDisabled = false
-            reloadCards()
-//        } else {
-//            _ = NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(ScanCardsViewController.findParametarsForTimer), userInfo: nil, repeats: false)
-//        }
+        } else {
+            _ = NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(ScanCardsViewController.findParametarsForCard), userInfo: nil, repeats: false)
+        }
     }
     func alertController (title:String, message:String) {
         alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
@@ -280,7 +406,6 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
             // ...
         }
     }
-    
 }
 
 extension ScanCardsViewController: UITextFieldDelegate{
@@ -293,7 +418,7 @@ extension ScanCardsViewController: UITextFieldDelegate{
     }
 }
 
-extension ScanCardsViewController: UITableViewDataSource{
+extension ScanCardsViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cards.count
     }
@@ -304,7 +429,7 @@ extension ScanCardsViewController: UITableViewDataSource{
             cell.labelID.text = "\(cards[indexPath.row].id)"
             cell.cardNameLabel.text = cards[indexPath.row].cardName
             cell.cardIdLabel.text = cards[indexPath.row].cardId
-            cell.address.text = "\(cards[indexPath.row].gateway.addressOne):\(cards[indexPath.row].gateway.addressTwo):\(cards[indexPath.row].timerAddress):\(cards[indexPath.row].cardId)"
+            cell.address.text = "\(String(format: "%03d", cards[indexPath.row].gateway.addressOne.integerValue)):\(String(format: "%03d", cards[indexPath.row].gateway.addressTwo.integerValue)):\(String(format: "%03d", cards[indexPath.row].timerAddress.integerValue)):\(cards[indexPath.row].timerId)"
             
             return cell
         }
@@ -312,13 +437,26 @@ extension ScanCardsViewController: UITableViewDataSource{
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
         return cell
     }
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
+            self.tableView(self.cardsTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
+        })
+        
+        button.backgroundColor = UIColor.redColor()
+        return [button]
+    }
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            appDel.managedObjectContext?.deleteObject(cards[indexPath.row])
+            CoreDataController.shahredInstance.saveChanges()
+            reloadCards()
+        }
+    }
 }
 
 class CardCell:UITableViewCell{
-    
     @IBOutlet weak var labelID: UILabel!
     @IBOutlet weak var cardNameLabel: UILabel!
     @IBOutlet weak var cardIdLabel: UILabel!
     @IBOutlet weak var address: UILabel!
-    
 }

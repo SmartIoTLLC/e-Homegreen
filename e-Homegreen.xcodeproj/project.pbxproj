@@ -1581,7 +1581,7 @@
 			name = UILabel;
 			sourceTree = "<group>";
 		};
-		E79AEBA91B70A0EB00410E2D /* Device Parametars */ = {
+		E79AEBA91B70A0EB00410E2D /* Device Parametars Screens */ = {
 			isa = PBXGroup;
 			children = (
 				223F086F1D76CECF002EA80F /* Change image on device XIB */,
@@ -1590,7 +1590,7 @@
 				49FDD1DB1D51DCE200884E12 /* Digital Input */,
 				4983C7E21D4B4C7A00C8E865 /* Relay */,
 			);
-			name = "Device Parametars";
+			name = "Device Parametars Screens";
 			sourceTree = "<group>";
 		};
 		E7AAF7611BBE875100992A18 /* ClimaXIB */ = {
@@ -1751,7 +1751,7 @@
 		E7F57B071BA7FE32006B0D71 /* ScanViewController */ = {
 			isa = PBXGroup;
 			children = (
-				E79AEBA91B70A0EB00410E2D /* Device Parametars */,
+				E79AEBA91B70A0EB00410E2D /* Device Parametars Screens */,
 				E75F41661B662ED1005080F1 /* ScanViewController.swift */,
 				E7F57B0A1BA80413006B0D71 /* ScanDevicesViewController.swift */,
 				E7F57B081BA7FE5D006B0D71 /* ScanScenesViewController.swift */,

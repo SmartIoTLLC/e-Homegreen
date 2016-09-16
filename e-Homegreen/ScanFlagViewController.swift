@@ -589,7 +589,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
             arrayOfParametersToBeSearched = [Int]()
             indexOfParametersToBeSearched = 0
             
-            let flags = DatabaseHandler.sharedInstance.fetchFlags()
+            refreshFlagList()
             
             guard let rangeFromText = fromTextField.text else{
                 alertController("Error", message: "Range can't be empty")
@@ -625,9 +625,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
                     }
                 }
             }
-            
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningFlagParameters)
-            
+
             UIApplication.sharedApplication().idleTimerDisabled = true
             if arrayOfParametersToBeSearched.count != 0{
                 let parameterIndex = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
@@ -639,6 +637,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
                 flagParameterTimer?.invalidate()
                 flagParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanFlagViewController.checkIfFlagDidGetParametar(_:)), userInfo: parameterIndex, repeats: false)
                 NSLog("func findNames \(parameterIndex)")
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningFlagParameters)
                 sendCommandForFindingParameterWithFlagAddress(parameterIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
                 print("Command sent for parameter from FindParameter")
             }
@@ -988,20 +987,9 @@ extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
         return flags.count
     }
     
-    func  tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
-            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
-                self.tableView(self.flagTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
-            }
-            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
-            deleteMenu.addAction(delete)
-            deleteMenu.addAction(cancelDelete)
-            if let presentationController = deleteMenu.popoverPresentationController {
-                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
-                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
-            }
-            self.presentViewController(deleteMenu, animated: true, completion: nil)
+            self.tableView(self.flagTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
         })
         
         button.backgroundColor = UIColor.redColor()
