@@ -30,17 +30,11 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     
     @IBOutlet weak var sequencesTableView: UITableView!
     
-    var appDel:AppDelegate!
-    var error:NSError? = nil
-    
-    var levelFromFilter:String = "All"
-    var zoneFromFilter:String = "All"
-    var categoryFromFilter:String = "All"
-    
     var gateway:Gateway!
+    var filterParametar:FilterItem!
     var sequences:[Sequence] = []
     
-    var selected:AnyObject?
+    var searchBarText:String = ""
     
     var button:UIButton!
     
@@ -59,9 +53,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        updateSequenceList()
+        refreshSequenceList()
         
         devAddressThree.inputAccessoryView = CustomToolBar()
         IDedit.inputAccessoryView = CustomToolBar()
@@ -97,27 +89,13 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     }
     
     override func sendFilterParametar(filterParametar: FilterItem) {
-        levelFromFilter = filterParametar.levelName
-        zoneFromFilter = filterParametar.zoneName
-        categoryFromFilter = filterParametar.categoryName
-        updateSequenceList()
-        sequencesTableView.reloadData()
+        self.filterParametar = filterParametar
+        refreshSequenceList()
     }
     
     override func sendSearchBarText(text: String) {
-        updateSequenceList()
-        if !text.isEmpty{
-            sequences = self.sequences.filter() {
-                sequence in
-                if sequence.sequenceName.lowercaseString.rangeOfString(text.lowercaseString) != nil{
-                    return true
-                }else{
-                    return false
-                }
-            }
-        }
-        sequencesTableView.reloadData()
-        
+        searchBarText = text
+        refreshSequenceList()
     }
     
     func changeValue (sender:UISwitch){
@@ -129,42 +107,19 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     }
     
     func refreshSequenceList() {
-        updateSequenceList()
+        sequences = DatabaseSequencesController.shared.updateSequenceList(gateway, filterParametar: filterParametar)
+        if !searchBarText.isEmpty{
+            sequences = self.sequences.filter() {
+                sequence in
+                if sequence.sequenceName.lowercaseString.rangeOfString(searchBarText.lowercaseString) != nil{
+                    return true
+                }else{
+                    return false
+                }
+            }
+        }
         sequencesTableView.reloadData()
     }
-    
-    func updateSequenceList() {
-        let fetchRequest = NSFetchRequest(entityName: "Sequence")
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "sequenceId", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "sequenceName", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-        var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "gateway == %@", gateway.objectID))
-        if levelFromFilter != "All" {
-            let levelPredicate = NSPredicate(format: "entityLevel == %@", levelFromFilter)
-            predicateArray.append(levelPredicate)
-        }
-        if zoneFromFilter != "All" {
-            let zonePredicate = NSPredicate(format: "sequenceZone == %@", zoneFromFilter)
-            predicateArray.append(zonePredicate)
-        }
-        if categoryFromFilter != "All" {
-            let categoryPredicate = NSPredicate(format: "sequenceCategory == %@", categoryFromFilter)
-            predicateArray.append(categoryPredicate)
-        }
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
-        fetchRequest.predicate = compoundPredicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
-            sequences = fetResults!
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
-    
     
     func handleTap (gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
@@ -231,130 +186,26 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     }
     
     @IBAction func btnAdd(sender: AnyObject) {
-        if let sceneId = Int(IDedit.text!), let sceneName = nameEdit.text, let address = Int(devAddressThree.text!), let cycles = Int(editCycle.text!) {
-            if sceneId <= 32767 && address <= 255 {
-                var itExists = false
-                var existingSequence:Sequence?
-                for sequence in sequences {
-                    if sequence.sequenceId == sceneId && sequence.address == address {
-                        itExists = true
-                        existingSequence = sequence
-                    }
+        if let sequenceId = Int(IDedit.text!), let sequenceName = nameEdit.text, let address = Int(devAddressThree.text!), let cycles = Int(editCycle.text!) {
+            if sequenceId <= 32767 && address <= 255 {
+                
+                var levelId:Int?
+                if let levelIdNumber = level?.id{
+                    levelId = Int(levelIdNumber)
                 }
-                if !itExists {
-                    let sequence = NSEntityDescription.insertNewObjectForEntityForName("Sequence", inManagedObjectContext: appDel.managedObjectContext!) as! Sequence
-                    sequence.sequenceId = sceneId
-                    sequence.sequenceName = sceneName
-                    sequence.address = address
-                    
-                    if let customImageOne = customImageOne{
-                        sequence.sequenceImageOneCustom = customImageOne
-                        sequence.sequenceImageOneDefault = nil
-                    }
-                    if let def = defaultImageOne {
-                        sequence.sequenceImageOneDefault = def
-                        sequence.sequenceImageOneCustom = nil
-                    }
-                    if let data = imageDataOne{
-                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
-                            image.imageData = data
-                            image.imageId = NSUUID().UUIDString
-                            sequence.sequenceImageOneCustom = image.imageId
-                            sequence.sequenceImageOneDefault = nil
-                            gateway.location.user!.addImagesObject(image)
-                            
-                        }
-                    }
-                    
-                    if let customImageTwo = customImageTwo{
-                        sequence.sequenceImageTwoCustom = customImageTwo
-                        sequence.sequenceImageTwoDefault = nil
-                    }
-                    if let def = defaultImageTwo {
-                        sequence.sequenceImageTwoDefault = def
-                        sequence.sequenceImageTwoCustom = nil
-                    }
-                    if let data = imageDataTwo{
-                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
-                            image.imageData = data
-                            image.imageId = NSUUID().UUIDString
-                            sequence.sequenceImageTwoCustom = image.imageId
-                            sequence.sequenceImageTwoDefault = nil
-                            gateway.location.user!.addImagesObject(image)
-                            
-                        }
-                    }
-                    
-                    sequence.entityLevelId = level?.id
-                    sequence.sequenceZoneId = zoneSelected?.id
-                    sequence.sequenceCategoryId = category?.id
-                    
-                    sequence.isBroadcast = broadcastSwitch.on
-                    sequence.isLocalcast = localcastSwitch.on
-                    sequence.sequenceCycles = cycles
-                    sequence.entityLevel = btnLevel.titleLabel!.text!
-                    sequence.sequenceZone = btnZone.titleLabel!.text!
-                    sequence.sequenceCategory = btnCategory.titleLabel!.text!
-                    sequence.gateway = gateway
-                    refreshSequenceList()
-                } else {
-                    existingSequence!.sequenceId = sceneId
-                    existingSequence!.sequenceName = sceneName
-                    existingSequence!.address = address
-                    
-                    if let customImageOne = customImageOne{
-                        existingSequence!.sequenceImageOneCustom = customImageOne
-                        existingSequence!.sequenceImageOneDefault = nil
-                    }
-                    if let def = defaultImageOne {
-                        existingSequence!.sequenceImageOneDefault = def
-                        existingSequence!.sequenceImageOneCustom = nil
-                    }
-                    if let data = imageDataOne{
-                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
-                            image.imageData = data
-                            image.imageId = NSUUID().UUIDString
-                            existingSequence!.sequenceImageOneCustom = image.imageId
-                            existingSequence!.sequenceImageOneDefault = nil
-                            gateway.location.user!.addImagesObject(image)
-                            
-                        }
-                    }
-                    
-                    if let customImageTwo = customImageTwo{
-                        existingSequence!.sequenceImageTwoCustom = customImageTwo
-                        existingSequence!.sequenceImageTwoDefault = nil
-                    }
-                    if let def = defaultImageTwo {
-                        existingSequence!.sequenceImageTwoDefault = def
-                        existingSequence!.sequenceImageTwoCustom = nil
-                    }
-                    if let data = imageDataTwo{
-                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
-                            image.imageData = data
-                            image.imageId = NSUUID().UUIDString
-                            existingSequence!.sequenceImageTwoCustom = image.imageId
-                            existingSequence!.sequenceImageTwoDefault = nil
-                            gateway.location.user!.addImagesObject(image)
-                            
-                        }
-                    }
-                    
-                    existingSequence!.entityLevelId = level?.id
-                    existingSequence!.sequenceZoneId = zoneSelected?.id
-                    existingSequence!.sequenceCategoryId = category?.id
-                    
-                    existingSequence!.isBroadcast = broadcastSwitch.on
-                    existingSequence!.isLocalcast = localcastSwitch.on
-                    existingSequence!.sequenceCycles = cycles
-                    existingSequence!.entityLevel = btnLevel.titleLabel!.text!
-                    existingSequence!.sequenceZone = btnZone.titleLabel!.text!
-                    existingSequence!.sequenceCategory = btnCategory.titleLabel!.text!
-                    existingSequence!.gateway = gateway
-                    refreshSequenceList()
+                var zoneId:Int?
+                if let zoneIdNumber = zoneSelected?.id{
+                    zoneId = Int(zoneIdNumber)
                 }
-                CoreDataController.shahredInstance.saveChanges()
+                var categoryId:Int?
+                if let categoryIdNumber = category?.id{
+                    categoryId = Int(categoryIdNumber)
+                }
+                
+                DatabaseSequencesController.shared.createSequence(sequenceId, sequenceName: sequenceName, moduleAddress: address, gateway: gateway, levelId: levelId, zoneId: zoneId, categoryId: categoryId, isBroadcast: broadcastSwitch.on, isLocalcast: localcastSwitch.on, sceneImageOneDefault: defaultImageOne, sceneImageTwoDefault: defaultImageTwo, sceneImageOneCustom: customImageOne, sceneImageTwoCustom: customImageTwo, imageDataOne: imageDataOne, imageDataTwo: imageDataTwo, sequenceCycles: cycles)
             }
+            refreshSequenceList()
+            self.view.endEditing(true)
         }
     }
     
@@ -368,33 +219,13 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     }
     
     @IBAction func btnRemove(sender: UIButton) {
-        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to delete all scenes?", preferredStyle: .ActionSheet)
-        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            
-            if self.sequences.count != 0 {
-                for sequence in self.sequences {
-                    self.appDel.managedObjectContext!.deleteObject(sequence)
-                }
+        showAlertView(sender, message: "Are you sure you want to delete all sequences?") { (action) in
+            if action{
+                DatabaseSequencesController.shared.deleteAllSequences(self.gateway)
+                self.refreshSequenceList()
+                self.view.endEditing(true)
             }
-            CoreDataController.shahredInstance.saveChanges()
-            self.refreshSequenceList()
-            self.view.endEditing(true)
-        })
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Cancelled")
-        })
-        
-        if let popoverController = optionMenu.popoverPresentationController {
-            popoverController.sourceView = sender
-            popoverController.sourceRect = sender.bounds
         }
-        
-        optionMenu.addAction(deleteAction)
-        optionMenu.addAction(cancelAction)
-        self.presentViewController(optionMenu, animated: true, completion: nil)
     }
 
     
@@ -416,61 +247,55 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
             arrayOfSequencesToBeSearched = [Int]()
             indexOfSequencesToBeSearched = 0
             
-            
-            
             guard let address1Text = devAddressOne.text else{
-                alertController("Error", message: "Address can't be empty")
                 return
             }
             guard let address1 = Int(address1Text) else{
-                alertController("Error", message: "Address can be only number")
                 return
             }
             addressOne = address1
             
             guard let address2Text = devAddressTwo.text else{
-                alertController("Error", message: "Address can't be empty")
                 return
             }
             guard let address2 = Int(address2Text) else{
-                alertController("Error", message: "Address can be only number")
                 return
             }
             addressTwo = address2
             
             guard let address3Text = devAddressThree.text else{
-                alertController("Error", message: "Address can't be empty")
+                self.view.makeToast(message: "Address can't be empty")
                 return
             }
             guard let address3 = Int(address3Text) else{
-                alertController("Error", message: "Address can be only number")
+                self.view.makeToast(message: "Address can be only number")
                 return
             }
             addressThree = address3
             guard let rangeFromText = fromTextField.text else{
-                alertController("Error", message: "Range can't be empty")
+                self.view.makeToast(message: "Address can't be empty")
                 return
             }
             
             guard let rangeFrom = Int(rangeFromText) else{
-                alertController("Error", message: "Range can be only number")
+                self.view.makeToast(message: "Address can be only number")
                 return
             }
             let from = rangeFrom
             
             guard let rangeToText = toTextField.text else{
-                alertController("Error", message: "Range can't be empty")
+                self.view.makeToast(message: "Address can't be empty")
                 return
             }
             
             guard let rangeTo = Int(rangeToText) else{
-                alertController("Error", message: "Range can be only number")
+                self.view.makeToast(message: "Address can be only number")
                 return
             }
             let to = rangeTo
             
             if rangeTo < rangeFrom {
-                alertController("Error", message: "Range \"from\" can't be higher than range \"to\"")
+                self.view.makeToast(message: "Range \"from\" can't be higher than range \"to\"")
                 return
             }
             for i in from...to{
@@ -490,9 +315,9 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
                 sendCommandWithSequenceAddress(firstSequenceIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
         } catch let error as InputError {
-            alertController("Error", message: error.description)
+            self.view.makeToast(message: error.description)
         } catch {
-            alertController("Error", message: "Something went wrong.")
+            self.view.makeToast(message: "Something went wrong.")
         }
     }
     // Called from findSequences or from it self.
@@ -585,22 +410,6 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
         UIApplication.sharedApplication().idleTimerDisabled = false
         refreshSequenceList()
     }
-    func alertController (title:String, message:String) {
-        alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
-            // ...
-        }
-        alertController!.addAction(cancelAction)
-        
-        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-            // ...
-        }
-        alertController!.addAction(OKAction)
-        
-        self.presentViewController(alertController!, animated: true) {
-            // ...
-        }
-    }
 }
 
 extension ScanSequencesesViewController: SceneGalleryDelegate{
@@ -673,22 +482,16 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
                     }else{
                         if let defaultImage = sequences[indexPath.row].sequenceImageOneDefault{
                             cell.imageOne.image = UIImage(named: defaultImage)
-                        }else{
-                            cell.imageOne.image = UIImage(named: "lightBulb")
                         }
                     }
                 }else{
                     if let defaultImage = sequences[indexPath.row].sequenceImageOneDefault{
                         cell.imageOne.image = UIImage(named: defaultImage)
-                    }else{
-                        cell.imageOne.image = UIImage(named: "lightBulb")
                     }
                 }
             }else{
                 if let defaultImage = sequences[indexPath.row].sequenceImageOneDefault{
                     cell.imageOne.image = UIImage(named: defaultImage)
-                }else{
-                    cell.imageOne.image = UIImage(named: "lightBulb")
                 }
             }
             
@@ -699,35 +502,27 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
                     }else{
                         if let defaultImage = sequences[indexPath.row].sequenceImageTwoDefault{
                             cell.imageTwo.image = UIImage(named: defaultImage)
-                        }else{
-                            cell.imageTwo.image = UIImage(named: "lightBulb")
                         }
                     }
                 }else{
                     if let defaultImage = sequences[indexPath.row].sequenceImageTwoDefault{
                         cell.imageTwo.image = UIImage(named: defaultImage)
-                    }else{
-                        cell.imageTwo.image = UIImage(named: "lightBulb")
                     }
                 }
             }else{
                 if let defaultImage = sequences[indexPath.row].sequenceImageTwoDefault{
                     cell.imageTwo.image = UIImage(named: defaultImage)
-                }else{
-                    cell.imageTwo.image = UIImage(named: "lightBulb")
                 }
             }
             return cell
         }
         
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
-        cell.textLabel?.text = "sequnces"
         return cell
         
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        selected = sequences[indexPath.row]
         IDedit.text = "\(sequences[indexPath.row].sequenceId)"
         nameEdit.text = "\(sequences[indexPath.row].sequenceName)"
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(sequences[indexPath.row].address)))"
@@ -761,22 +556,16 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
                 }else{
                     if let defaultImage = sequences[indexPath.row].sequenceImageOneDefault{
                         imageSceneOne.image = UIImage(named: defaultImage)
-                    }else{
-                        imageSceneOne.image = UIImage(named: "lightBulb")
                     }
                 }
             }else{
                 if let defaultImage = sequences[indexPath.row].sequenceImageOneDefault{
                     imageSceneOne.image = UIImage(named: defaultImage)
-                }else{
-                    imageSceneOne.image = UIImage(named: "lightBulb")
                 }
             }
         }else{
             if let defaultImage = sequences[indexPath.row].sequenceImageOneDefault{
                 imageSceneOne.image = UIImage(named: defaultImage)
-            }else{
-                imageSceneOne.image = UIImage(named: "lightBulb")
             }
         }
         
@@ -787,22 +576,16 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
                 }else{
                     if let defaultImage = sequences[indexPath.row].sequenceImageTwoDefault{
                         imageSceneTwo.image = UIImage(named: defaultImage)
-                    }else{
-                        imageSceneTwo.image = UIImage(named: "lightBulb")
                     }
                 }
             }else{
                 if let defaultImage = sequences[indexPath.row].sequenceImageTwoDefault{
                     imageSceneTwo.image = UIImage(named: defaultImage)
-                }else{
-                    imageSceneTwo.image = UIImage(named: "lightBulb")
                 }
             }
         }else{
             if let defaultImage = sequences[indexPath.row].sequenceImageTwoDefault{
                 imageSceneTwo.image = UIImage(named: defaultImage)
-            }else{
-                imageSceneTwo.image = UIImage(named: "lightBulb")
             }
         }
     }
@@ -821,9 +604,9 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            appDel.managedObjectContext?.deleteObject(sequences[indexPath.row])
-            CoreDataController.shahredInstance.saveChanges()
-            refreshSequenceList()
+            DatabaseSequencesController.shared.deleteSequence(sequences[indexPath.row])
+            sequences.removeAtIndex(indexPath.row)
+            sequencesTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
         
     }

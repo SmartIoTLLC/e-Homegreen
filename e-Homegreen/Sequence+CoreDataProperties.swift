@@ -24,11 +24,8 @@ extension Sequence {
     @NSManaged var sequenceImageTwoCustom: String?
     @NSManaged var sequenceImageTwoDefault: String?
     @NSManaged var sequenceName: String
-    @NSManaged var entityLevel: String?
     @NSManaged var entityLevelId: NSNumber?
-    @NSManaged var sequenceZone: String?
     @NSManaged var sequenceZoneId: NSNumber?
-    @NSManaged var sequenceCategory: String?
     @NSManaged var sequenceCategoryId: NSNumber?
     @NSManaged var gateway: Gateway
 
