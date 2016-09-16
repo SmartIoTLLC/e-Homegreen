@@ -446,6 +446,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     var progressBarScreenTimerNames: ProgressBarVC?
 //    var progressBarScreenTimerParameters: ProgressBarVC?
     var shouldFindTimerParameters = false
+    
     var addressOne = 0x00
     var addressTwo = 0x00
     var addressThree = 0x00
@@ -456,27 +457,8 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             arrayOfNamesToBeSearched = [Int]()
             indexOfNamesToBeSearched = 0
             
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningTimerNames)
-            
-            guard let address1Text = devAddressOne.text else{
-                alertController("Error", message: "Address can't be empty")
-                return
-            }
-            guard let address1 = Int(address1Text) else{
-                alertController("Error", message: "Address can be only number")
-                return
-            }
-            addressOne = address1
-            
-            guard let address2Text = devAddressTwo.text else{
-                alertController("Error", message: "Address can't be empty")
-                return
-            }
-            guard let address2 = Int(address2Text) else{
-                alertController("Error", message: "Address can be only number")
-                return
-            }
-            addressTwo = address2
+            addressOne = Int(devAddressOne.text!)!
+            addressTwo = Int(devAddressTwo.text!)!
             
             guard let address3Text = devAddressThree.text else{
                 alertController("Error", message: "Address can't be empty")
@@ -528,6 +510,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
                 self.presentViewController(progressBarScreenTimerNames!, animated: true, completion: nil)
                 timerNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: firstTimerIndexThatDontHaveName, repeats: false)
                 NSLog("func findNames \(firstTimerIndexThatDontHaveName)")
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningTimerNames)
                 sendCommandForFindingNameWithTimerAddress(firstTimerIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
         } catch let error as InputError {
@@ -622,7 +605,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             arrayOfParametersToBeSearched = [Int]()
             indexOfParametersToBeSearched = 0
             
-            let timers = DatabaseHandler.sharedInstance.fetchTimers()
+            refreshTimerList()
             
             guard let rangeFromText = fromTextField.text else{
                 alertController("Error", message: "Range can't be empty")
@@ -948,18 +931,7 @@ extension ScanTimerViewController: UITableViewDataSource {
     }
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
-            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
-                self.tableView(self.timerTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
-            }
-            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
-            deleteMenu.addAction(delete)
-            deleteMenu.addAction(cancelDelete)
-            if let presentationController = deleteMenu.popoverPresentationController {
-                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
-                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
-            }
-            self.presentViewController(deleteMenu, animated: true, completion: nil)
+            self.tableView(self.timerTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
         })
         
         button.backgroundColor = UIColor.redColor()

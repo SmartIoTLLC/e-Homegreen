@@ -417,7 +417,7 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
             arrayOfEventsToBeSearched = [Int]()
             indexOfEventsToBeSearched = 0
             
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningEventsNameAndParameters)
+            
             
             guard let address1Text = devAddressOne.text else{
                 alertController("Error", message: "Address can't be empty")
@@ -487,6 +487,7 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
                 self.presentViewController(progressBarScreenEvents!, animated: true, completion: nil)
                 eventsTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanEventsViewController.checkIfEventDidGetName(_:)), userInfo: firstEventIndexThatDontHaveName, repeats: false)
                 NSLog("func findNames \(firstEventIndexThatDontHaveName)")
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningEventsNameAndParameters)
                 sendCommandWithEventAddress(firstEventIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
         } catch let error as InputError {
@@ -816,20 +817,9 @@ extension ScanEventsViewController: UITableViewDataSource, UITableViewDelegate {
         return events.count
     }
     
-    func  tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
-            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
-                self.tableView(self.eventTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
-            }
-            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
-            deleteMenu.addAction(delete)
-            deleteMenu.addAction(cancelDelete)
-            if let presentationController = deleteMenu.popoverPresentationController {
-                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
-                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
-            }
-            self.presentViewController(deleteMenu, animated: true, completion: nil)
+            self.tableView(self.eventTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
         })
         
         button.backgroundColor = UIColor.redColor()

@@ -416,7 +416,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
             arrayOfSequencesToBeSearched = [Int]()
             indexOfSequencesToBeSearched = 0
             
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningSequencesNameAndParameters)
+            
             
             guard let address1Text = devAddressOne.text else{
                 alertController("Error", message: "Address can't be empty")
@@ -486,6 +486,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
                 self.presentViewController(progressBarScreenSequences!, animated: true, completion: nil)
                 sequencesTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanSequencesesViewController.checkIfSequenceDidGetName(_:)), userInfo: firstSequenceIndexThatDontHaveName, repeats: false)
                 NSLog("func findNames \(firstSequenceIndexThatDontHaveName)")
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningSequencesNameAndParameters)
                 sendCommandWithSequenceAddress(firstSequenceIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
         } catch let error as InputError {
@@ -809,28 +810,16 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sequences.count
     }
-    func  tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+    
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
-            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
-                self.tableView(self.sequencesTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
-            }
-            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
-            deleteMenu.addAction(delete)
-            deleteMenu.addAction(cancelDelete)
-            if let presentationController = deleteMenu.popoverPresentationController {
-                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
-                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
-            }
-            self.presentViewController(deleteMenu, animated: true, completion: nil)
+            self.tableView(self.sequencesTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
         })
-        
         button.backgroundColor = UIColor.redColor()
         return [button]
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        
         if editingStyle == .Delete {
             appDel.managedObjectContext?.deleteObject(sequences[indexPath.row])
             CoreDataController.shahredInstance.saveChanges()

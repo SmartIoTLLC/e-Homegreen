@@ -187,7 +187,7 @@ class IncomingHandler: NSObject {
                 
                 // Cards parametar
                 if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x56 {
-                    
+                    getCardParameters(self.byteArray)
                 }
                 
                 // Salto parametar

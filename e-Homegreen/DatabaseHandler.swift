@@ -256,18 +256,4 @@ class DatabaseHandler: NSObject {
         }
         return []
     }
-    
-    func fetchFlags() -> [Flag]{
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Flag")
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Flag]
-            return fetResults!
-        } catch let error1 as NSError {
-            print("Unresolved error \(error1), \(error1.userInfo)")
-            abort()
-        }
-        return []
-    }
-    
-
 }
