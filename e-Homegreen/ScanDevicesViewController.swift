@@ -944,7 +944,7 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
             let levelToDisplay = DatabaseHandler.sharedInstance.returnZoneWithIdForScanDevicesCell(Int(devices[indexPath.row].zoneId), location: devices[indexPath.row].gateway.location)
             let zoneToDisplay = DatabaseHandler.sharedInstance.returnZoneWithIdForScanDevicesCell(Int(devices[indexPath.row].parentZoneId), location: devices[indexPath.row].gateway.location)
             let categoryToDisplay = DatabaseHandler.sharedInstance.returnCategoryWithIdForScanDevicesCell(Int(devices[indexPath.row].categoryId), location: devices[indexPath.row].gateway.location)
-            let zone = "Zone: \(levelToDisplay) Level: \(zoneToDisplay)"
+            let zone = "Level: \(zoneToDisplay) Zone: \(levelToDisplay)"
             let category = "Category: \(categoryToDisplay)"
             let isVisibleSwitch = devices[indexPath.row].isVisible.boolValue
             
