@@ -89,11 +89,16 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         btnLevel.tag = 1
         btnZone.tag = 2
         btnCategory.tag = 3
-        
-        // Notification that tells us that timer is received and stored
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanSequencesesViewController.nameReceivedFromPLC(_:)), name: NotificationKey.DidReceiveEventFromGateway, object: nil)
+
     }
-    
+    override func viewWillAppear(animated: Bool) {
+        addObservers()
+        refreshEventList()
+    }
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
+    }
+
     override func sendFilterParametar(filterParametar: FilterItem) {
         levelFromFilter = filterParametar.levelName
         zoneFromFilter = filterParametar.zoneName
@@ -101,7 +106,6 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         updateEventList()
         eventTableView.reloadData()
     }
-    
     override func sendSearchBarText(text: String) {
         updateEventList()
         if !text.isEmpty{
@@ -118,6 +122,28 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         
     }
     
+    override func nameAndId(name: String, id: String) {
+        
+        switch button.tag{
+        case 1:
+            level = FilterController.shared.getZoneByObjectId(id)
+            
+            btnZone.setTitle("All", forState: .Normal)
+            zoneSelected = nil
+            break
+        case 2:
+            zoneSelected = FilterController.shared.getZoneByObjectId(id)
+            break
+        case 3:
+            category = FilterController.shared.getCategoryByObjectId(id)
+            break
+        default:
+            break
+        }
+        
+        button.setTitle(name, forState: .Normal)
+    }
+    
     func changeValue (sender:UISwitch){
         if sender.tag == 100 {
             localcastSwitch.on = false
@@ -125,12 +151,10 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
             broadcastSwitch.on = false
         }
     }
-    
     func refreshEventList() {
         updateEventList()
         eventTableView.reloadData()
     }
-    
     func updateEventList() {
         let fetchRequest = NSFetchRequest(entityName: "Event")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
@@ -163,11 +187,19 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
             abort()
         }
     }
-    
     func handleTap (gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
             showGallery(index, user: gateway.location.user).delegate = self
         }
+    }
+    func addObservers(){
+        // Notification that tells us that timer is received and stored
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanSequencesesViewController.nameReceivedFromPLC(_:)), name: NotificationKey.DidReceiveEventFromGateway, object: nil)
+    }
+    func removeObservers(){
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningEventsNameAndParameters)
+        // Notification that tells us that timer is received and stored
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidReceiveEventFromGateway, object: nil)
     }
     
     @IBAction func btnLevel(sender: UIButton) {
@@ -205,28 +237,6 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
         openPopover(sender, popOverList:popoverList)
-    }
-    
-    override func nameAndId(name: String, id: String) {
-        
-        switch button.tag{
-        case 1:
-            level = FilterController.shared.getZoneByObjectId(id)
-            
-            btnZone.setTitle("All", forState: .Normal)
-            zoneSelected = nil
-            break
-        case 2:
-            zoneSelected = FilterController.shared.getZoneByObjectId(id)
-            break
-        case 3:
-            category = FilterController.shared.getCategoryByObjectId(id)
-            break
-        default:
-            break
-        }
-        
-        button.setTitle(name, forState: .Normal)
     }
     
     @IBAction func btnAdd(sender: AnyObject) {

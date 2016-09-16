@@ -86,13 +86,11 @@ class ScanViewController: PopoverVC {
         headerTitleSubtitleView.setTitleAndSubtitle("Scan", subtitle: gateway.location.name! + " All All")
 
     }
-    
     override func viewDidAppear(animated: Bool) {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
         scrollView.hidden = false
     }
-    
     override func viewDidLayoutSubviews() {
         if scrollView.contentOffset.y > 0 {
             let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
@@ -106,28 +104,6 @@ class ScanViewController: PopoverVC {
         }
         
     }
-    
-    func updateConstraints() {
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
-    }
-    
-    func updateSubtitle(location: String, level: String, zone: String){
-        headerTitleSubtitleView.setTitleAndSubtitle("Scan", subtitle: location + " " + level + " " + zone)
-    }
-    
-    //popup controller
-    @IBAction func btnScenes(sender: UIButton) {
-        senderButton = sender
-        var popoverList:[PopOverItem] = []
-        for item in ChoosedTab.allItem{
-            popoverList.append(PopOverItem(name: item.rawValue, id: ""))
-        }
-        openPopover(sender, popOverList:popoverList)
-    }
-    
     override func nameAndId(name: String, id: String) {
         
         if let to = ChoosedTab(rawValue: name){
@@ -166,7 +142,26 @@ class ScanViewController: PopoverVC {
             scrollView.setButtonTitle(name, id: id)
         }
     }
-
+    
+    func updateConstraints() {
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+    }
+    func updateSubtitle(location: String, level: String, zone: String){
+        headerTitleSubtitleView.setTitleAndSubtitle("Scan", subtitle: location + " " + level + " " + zone)
+    }
+    
+    //popup controller
+    @IBAction func btnScenes(sender: UIButton) {
+        senderButton = sender
+        var popoverList:[PopOverItem] = []
+        for item in ChoosedTab.allItem{
+            popoverList.append(PopOverItem(name: item.rawValue, id: ""))
+        }
+        openPopover(sender, popOverList:popoverList)
+    }
 }
 
 extension ScanViewController: ScanFilterPullDownDelegate{

@@ -74,6 +74,9 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         findNamesBtn.addGestureRecognizer(tapGestureFindNames)
         findNamesBtn.addGestureRecognizer(longGestureFindNames)
     }
+    override func viewWillAppear(animated: Bool) {
+        refreshDeviceList()
+    }
     override func sendFilterParametar(filterParametar: FilterItem) {
         self.filterParametar = filterParametar
         refreshDeviceList()

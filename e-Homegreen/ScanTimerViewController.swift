@@ -53,19 +53,14 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     @IBOutlet weak var btnCategory: UIButton!
     @IBOutlet weak var btnType: UIButton!
     @IBOutlet weak var btnLevel: CustomGradientButton!
-    
     @IBOutlet weak var fromTextField: UITextField!
     @IBOutlet weak var toTextField: UITextField!
-    
-    
     @IBOutlet weak var timerTableView: UITableView!
     
     var appDel:AppDelegate!
     var error:NSError? = nil
-    
     var gateway:Gateway!
     var timers:[Timer] = []
-    
     var levelFromFilter:String = "All"
     var zoneFromFilter:String = "All"
     var categoryFromFilter:String = "All"
@@ -91,7 +86,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        updateTimerList()
+        
         
         fromTextField.inputAccessoryView = CustomToolBar()
         toTextField.inputAccessoryView = CustomToolBar()
@@ -125,9 +120,14 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         btnCategory.tag = 3
         btnType.tag = 4
         
-        // Notification that tells us that timer is received and stored
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanTimerViewController.nameReceivedFromPLC(_:)), name: NotificationKey.DidReceiveTimerFromGateway, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanTimerViewController.timerParametarReceivedFromPLC(_:)), name: NotificationKey.DidReceiveTimerParameterFromGateway, object: nil)
+        
+    }
+    override func viewWillAppear(animated: Bool) {
+        addObservers()
+        refreshTimerList()
+    }
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
     }
     
     override func sendFilterParametar(filterParametar: FilterItem) {
@@ -172,6 +172,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         
         button.setTitle(name, forState: .Normal)
     }
+    
     func changeValue (sender:UISwitch){
         if sender.tag == 100 {
             localcastSwitch.on = false
@@ -218,6 +219,19 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         if let index = gesture.view?.tag {
             showGallery(index, user: gateway.location.user).delegate = self
         }
+    }
+    func addObservers(){
+        // Notification that tells us that timer is received and stored
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanTimerViewController.nameReceivedFromPLC(_:)), name: NotificationKey.DidReceiveTimerFromGateway, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanTimerViewController.timerParametarReceivedFromPLC(_:)), name: NotificationKey.DidReceiveTimerParameterFromGateway, object: nil)
+        
+    }
+    func removeObservers(){
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningTimerNames)
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningTimerParameters)
+        // Notification that tells us that timer is received and stored
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidReceiveTimerFromGateway, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidReceiveTimerParameterFromGateway, object: nil)
     }
     
     @IBAction func btnAdd(sender: AnyObject) {
@@ -431,7 +445,6 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         openPopover(sender, popOverList:popoverList)
     }
 
-    
     // MARK: - FINDING NAMES FOR DEVICE
     // Info: Add observer for received info from PLC (e.g. nameReceivedFromPLC)
     var timerNameTimer:NSTimer?
@@ -444,7 +457,6 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     var indexOfParametersToBeSearched = 0
     var alertController:UIAlertController?
     var progressBarScreenTimerNames: ProgressBarVC?
-//    var progressBarScreenTimerParameters: ProgressBarVC?
     var shouldFindTimerParameters = false
     
     var addressOne = 0x00
@@ -789,6 +801,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             // ...
         }
     }
+    
 }
 
 extension ScanTimerViewController: UITextFieldDelegate{

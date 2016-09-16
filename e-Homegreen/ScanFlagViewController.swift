@@ -23,10 +23,8 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     @IBOutlet weak var btnZone: UIButton!
     @IBOutlet weak var btnCategory: UIButton!
     @IBOutlet weak var btnLevel: CustomGradientButton!
-    
     @IBOutlet weak var fromTextField: UITextField!
     @IBOutlet weak var toTextField: UITextField!
-    
     @IBOutlet weak var flagTableView: UITableView!
     
     var appDel:AppDelegate!
@@ -92,9 +90,14 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
         btnZone.tag = 2
         btnCategory.tag = 3
         
-        // Notification that tells us that timer is received and stored
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanFlagViewController.nameReceivedFromPLC(_:)), name: NotificationKey.DidReceiveFlagFromGateway, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanFlagViewController.flagParametarReceivedFromPLC(_:)), name: NotificationKey.DidReceiveFlagParameterFromGateway, object: nil)
+        
+    }
+    override func viewWillAppear(animated: Bool) {
+        addObservers()
+        refreshFlagList()
+    }
+    override func viewWillDisappear(animated: Bool) {
+        removeObservers()
     }
 
     override func sendFilterParametar(filterParametar: FilterItem) {
@@ -104,7 +107,6 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
         updateFlagList()
         flagTableView.reloadData()
     }
-    
     override func sendSearchBarText(text: String) {
         updateFlagList()
         if !text.isEmpty{
@@ -120,6 +122,27 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
         flagTableView.reloadData()
         
     }
+    override func nameAndId(name: String, id: String) {
+        
+        switch button.tag{
+        case 1:
+            level = FilterController.shared.getZoneByObjectId(id)
+            btnZone.setTitle("All", forState: .Normal)
+            zoneSelected = nil
+            
+            break
+        case 2:
+            zoneSelected = FilterController.shared.getZoneByObjectId(id)
+            break
+        case 3:
+            category = FilterController.shared.getCategoryByObjectId(id)
+            break
+        default:
+            break
+        }
+        
+        button.setTitle(name, forState: .Normal)
+    }
     
     func changeValue (sender:UISwitch){
         if sender.tag == 100 {
@@ -128,12 +151,10 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
             broadcastSwitch.on = false
         }
     }
-    
     func refreshFlagList() {
         updateFlagList()
         flagTableView.reloadData()
     }
-    
     func updateFlagList() {
         let fetchRequest = NSFetchRequest(entityName: "Flag")
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
@@ -165,34 +186,10 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
             abort()
         }
     }
-
-    
     func handleTap (gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
             showGallery(index, user: gateway.location.user).delegate = self
         }
-    }
-    
-    override func nameAndId(name: String, id: String) {
-        
-        switch button.tag{
-        case 1:
-            level = FilterController.shared.getZoneByObjectId(id)
-            btnZone.setTitle("All", forState: .Normal)
-            zoneSelected = nil
-            
-            break
-        case 2:
-            zoneSelected = FilterController.shared.getZoneByObjectId(id)
-            break
-        case 3:
-            category = FilterController.shared.getCategoryByObjectId(id)
-            break
-        default:
-            break
-        }
-        
-        button.setTitle(name, forState: .Normal)
     }
     
     @IBAction func btnLevel(sender: UIButton) {
@@ -772,8 +769,19 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
         }
     }
     
-    
-    
+    func addObservers(){
+        // Notification that tells us that timer is received and stored
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanFlagViewController.nameReceivedFromPLC(_:)), name: NotificationKey.DidReceiveFlagFromGateway, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanFlagViewController.flagParametarReceivedFromPLC(_:)), name: NotificationKey.DidReceiveFlagParameterFromGateway, object: nil)
+    }
+    func removeObservers(){
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningFlagNames)
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningFlagParameters)
+        
+        // Notification that tells us that timer is received and stored
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidReceiveFlagFromGateway, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidReceiveFlagParameterFromGateway, object: nil)
+    }
 }
 
 extension ScanFlagViewController: SceneGalleryDelegate{
