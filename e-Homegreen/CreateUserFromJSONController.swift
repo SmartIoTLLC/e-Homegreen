@@ -362,9 +362,6 @@ class CreateUserFromJSONController: NSObject {
                 if let address = sequence["address"] as? Int{
                     newSecuence.address = address
                 }
-                if let level = sequence["entity_level"] as? String{
-                    newSecuence.entityLevel = level
-                }
                 if let levelId = sequence["entity_level_id"] as? Int{
                     newSecuence.entityLevelId = levelId
                 }
@@ -373,9 +370,6 @@ class CreateUserFromJSONController: NSObject {
                 }
                 if let isLocalcast = sequence["is_localcast"] as? Bool{
                     newSecuence.isLocalcast = isLocalcast
-                }
-                if let sequenceCategory = sequence["sequence_category"] as? String{
-                    newSecuence.sequenceCategory = sequenceCategory
                 }
                 if let sequenceCategoryId = sequence["sequence_category_id"] as? Int{
                     newSecuence.sequenceCategoryId = sequenceCategoryId
@@ -400,9 +394,6 @@ class CreateUserFromJSONController: NSObject {
                 }
                 if let sequenceName = sequence["sequence_name"] as? String{
                     newSecuence.sequenceName = sequenceName
-                }
-                if let sequenceZone = sequence["sequence_zone"] as? String{
-                    newSecuence.sequenceZone = sequenceZone
                 }
                 if let sequenceZoneId = sequence["sequence_zone_id"] as? Int{
                     newSecuence.sequenceZoneId = sequenceZoneId

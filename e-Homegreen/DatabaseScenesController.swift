@@ -94,7 +94,7 @@ class DatabaseScenesController: NSObject {
         return []
     }
     
-    func createScene(sceneId: Int, sceneName: String, moduleAddress: Int, gateway: Gateway, levelId: Int?, zoneId: Int?, categoryId: Int?, isBroadcast:Bool = true, isLocalcast:Bool = true, sceneImageOneDefault:String? = "Scene - All On - 00", sceneImageTwoDefault:String? = "Scene - All On - 01", sceneImageOneCustom:String? = nil, sceneImageTwoCustom:String? = nil){
+    func createScene(sceneId: Int, sceneName: String, moduleAddress: Int, gateway: Gateway, levelId: Int?, zoneId: Int?, categoryId: Int?, isBroadcast:Bool = true, isLocalcast:Bool = true, sceneImageOneDefault:String? = "Scene - All On - 00", sceneImageTwoDefault:String? = "Scene - All On - 01", sceneImageOneCustom:String? = nil, sceneImageTwoCustom:String? = nil, imageDataOne:NSData? = nil, imageDataTwo:NSData? = nil){
         var itExists = false
         var existingScene:Scene?
         let sceneArray = fetchSceneWithIdAndAddress(sceneId, gateway: gateway, moduleAddress: moduleAddress)
@@ -111,10 +111,32 @@ class DatabaseScenesController: NSObject {
             scene.sceneImageOneCustom = nil
             scene.sceneImageTwoCustom = nil
             
-            scene.sceneImageOneDefault = sceneImageOneDefault
-            scene.sceneImageOneCustom = sceneImageOneCustom
-            scene.sceneImageTwoDefault = sceneImageTwoDefault
-            scene.sceneImageTwoCustom = sceneImageTwoCustom
+            if let imageDataOne = imageDataOne{
+                if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                    image.imageData = imageDataOne
+                    image.imageId = NSUUID().UUIDString
+                    scene.sceneImageOneCustom = image.imageId
+                    scene.sceneImageOneDefault = nil
+                    gateway.location.user!.addImagesObject(image)
+                }
+            }else{
+                scene.sceneImageOneDefault = sceneImageOneDefault
+                scene.sceneImageOneCustom = sceneImageOneCustom
+            }
+            
+            if let imageDataTwo = imageDataTwo{
+                if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                    image.imageData = imageDataTwo
+                    image.imageId = NSUUID().UUIDString
+                    scene.sceneImageTwoCustom = image.imageId
+                    scene.sceneImageTwoDefault = nil
+                    gateway.location.user!.addImagesObject(image)
+                    
+                }
+            }else{
+                scene.sceneImageTwoDefault = sceneImageTwoDefault
+                scene.sceneImageTwoCustom = sceneImageTwoCustom
+            }
             
             scene.entityLevelId = levelId
             scene.sceneZoneId = zoneId
@@ -130,11 +152,32 @@ class DatabaseScenesController: NSObject {
             
             existingScene!.sceneName = sceneName
             
-            existingScene!.sceneImageOneDefault = sceneImageOneDefault
-            existingScene!.sceneImageOneCustom = sceneImageOneCustom
-            existingScene!.sceneImageTwoDefault = sceneImageTwoDefault
-            existingScene!.sceneImageTwoCustom = sceneImageTwoCustom
-
+            if let imageDataOne = imageDataOne{
+                if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                    image.imageData = imageDataOne
+                    image.imageId = NSUUID().UUIDString
+                    existingScene!.sceneImageOneCustom = image.imageId
+                    existingScene!.sceneImageOneDefault = nil
+                    gateway.location.user!.addImagesObject(image)
+                }
+            }else{
+                existingScene!.sceneImageOneDefault = sceneImageOneDefault
+                existingScene!.sceneImageOneCustom = sceneImageOneCustom
+            }
+            
+            if let imageDataTwo = imageDataTwo{
+                if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                    image.imageData = imageDataTwo
+                    image.imageId = NSUUID().UUIDString
+                    existingScene!.sceneImageTwoCustom = image.imageId
+                    existingScene!.sceneImageTwoDefault = nil
+                    gateway.location.user!.addImagesObject(image)
+                    
+                }
+            }else{
+                existingScene!.sceneImageTwoDefault = sceneImageTwoDefault
+                existingScene!.sceneImageTwoCustom = sceneImageTwoCustom
+            }
             
             existingScene!.entityLevelId = levelId
             existingScene!.sceneZoneId = zoneId

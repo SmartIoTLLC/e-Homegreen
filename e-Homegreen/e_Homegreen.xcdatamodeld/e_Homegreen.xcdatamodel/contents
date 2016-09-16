@@ -226,11 +226,9 @@
     </entity>
     <entity name="Sequence" representedClassName="e_Homegreen.Sequence" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="entityLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="entityLevelId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isLocalcast" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="sequenceCategory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sequenceCategoryId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceCycles" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -239,7 +237,6 @@
         <attribute name="sequenceImageTwoCustom" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sequenceImageTwoDefault" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sequenceName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="sequenceZone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sequenceZoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="sequences" inverseEntity="Gateway" syncable="YES"/>
     </entity>
@@ -341,7 +338,7 @@
         <element name="PCCommand" positionX="-470" positionY="-2104" width="128" height="105"/>
         <element name="Scene" positionX="-639" positionY="-1879" width="128" height="240"/>
         <element name="Security" positionX="-650" positionY="-1935" width="128" height="150"/>
-        <element name="Sequence" positionX="-603" positionY="-1771" width="128" height="300"/>
+        <element name="Sequence" positionX="-603" positionY="-1771" width="128" height="255"/>
         <element name="SSID" positionX="-936" positionY="-1467" width="128" height="58"/>
         <element name="Surveillance" positionX="-891" positionY="-1530" width="128" height="480"/>
         <element name="Timer" positionX="-621" positionY="-1827" width="128" height="345"/>
