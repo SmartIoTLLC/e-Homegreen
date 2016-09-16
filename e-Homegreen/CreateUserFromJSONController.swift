@@ -474,9 +474,6 @@ class CreateUserFromJSONController: NSObject {
                 if let address = scene["address"] as? Int{
                     newScene.address = address
                 }
-                if let level = scene["entity_level"] as? String{
-                    newScene.entityLevel = level
-                }
                 if let levelId = scene["entity_level_id"] as? Int{
                     newScene.entityLevelId = levelId
                 }
@@ -485,9 +482,6 @@ class CreateUserFromJSONController: NSObject {
                 }
                 if let isLocalcast = scene["is_localcast"] as? Bool{
                     newScene.isLocalcast = isLocalcast
-                }
-                if let sceneCategory = scene["scene_category"] as? String{
-                    newScene.sceneCategory = sceneCategory
                 }
                 if let sceneCategoryId = scene["scene_category_id"] as? Int{
                     newScene.sceneCategoryId = sceneCategoryId
@@ -509,9 +503,6 @@ class CreateUserFromJSONController: NSObject {
                 }
                 if let sceneName = scene["scene_name"] as? String{
                     newScene.sceneName = sceneName
-                }
-                if let sceneZone = scene["scene_zone"] as? String{
-                    newScene.sceneZone = sceneZone
                 }
                 if let sceneZoneId = scene["scene_zone_id"] as? Int{
                     newScene.sceneZoneId = sceneZoneId

@@ -23,11 +23,8 @@ extension Scene {
     @NSManaged var sceneImageTwoCustom: String?
     @NSManaged var sceneImageTwoDefault: String?
     @NSManaged var sceneName: String
-    @NSManaged var entityLevel: String?
     @NSManaged var entityLevelId: NSNumber?
-    @NSManaged var sceneZone: String?
     @NSManaged var sceneZoneId: NSNumber?
-    @NSManaged var sceneCategory: String?
     @NSManaged var sceneCategoryId: NSNumber?
     @NSManaged var gateway: Gateway
 

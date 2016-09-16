@@ -29,17 +29,11 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     
     @IBOutlet weak var sceneTableView: UITableView!
     
-    var appDel:AppDelegate!
-    var error:NSError? = nil
-    
     var gateway:Gateway!
+    var filterParametar:FilterItem!
     var scenes:[Scene] = []
     
-    var levelFromFilter:String = "All"
-    var zoneFromFilter:String = "All"
-    var categoryFromFilter:String = "All"
-    
-    var selected:AnyObject?
+    var searchBarText:String = ""
     
     var button:UIButton!
     
@@ -58,9 +52,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        updateSceneList()
+        refreshSceneList()
         
         devAddressThree.inputAccessoryView = CustomToolBar()
         IDedit.inputAccessoryView = CustomToolBar()
@@ -96,27 +88,13 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     }
     
     override func sendFilterParametar(filterParametar: FilterItem) {
-        levelFromFilter = filterParametar.levelName
-        zoneFromFilter = filterParametar.zoneName
-        categoryFromFilter = filterParametar.categoryName
-        updateSceneList()
-        sceneTableView.reloadData()
+        self.filterParametar = filterParametar
+        refreshSceneList()
     }
     
     override func sendSearchBarText(text: String) {
-        updateSceneList()
-        if !text.isEmpty{
-            scenes = self.scenes.filter() {
-                scene in
-                if scene.sceneName.lowercaseString.rangeOfString(text.lowercaseString) != nil{
-                    return true
-                }else{
-                    return false
-                }
-            }
-        }
-        
-        sceneTableView.reloadData()
+        searchBarText = text
+        refreshSceneList()
     }
     
     override func nameAndId(name: String, id: String) {
@@ -149,40 +127,18 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     }
     
     func refreshSceneList() {
-        updateSceneList()
+        scenes = DatabaseScenesController.shared.updateSceneList(gateway, filterParametar: filterParametar)
+        if !searchBarText.isEmpty{
+            scenes = self.scenes.filter() {
+                scene in
+                if scene.sceneName.lowercaseString.rangeOfString(searchBarText.lowercaseString) != nil{
+                    return true
+                }else{
+                    return false
+                }
+            }
+        }
         sceneTableView.reloadData()
-    }
-    
-    func updateSceneList() {
-        let fetchRequest = NSFetchRequest(entityName: "Scene")
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-        var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "gateway == %@", gateway.objectID))
-        if levelFromFilter != "All" {
-            let levelPredicate = NSPredicate(format: "entityLevel == %@", levelFromFilter)
-            predicateArray.append(levelPredicate)
-        }
-        if zoneFromFilter != "All" {
-            let zonePredicate = NSPredicate(format: "sceneZone == %@", zoneFromFilter)
-            predicateArray.append(zonePredicate)
-        }
-        if categoryFromFilter != "All" {
-            let categoryPredicate = NSPredicate(format: "sceneCategory == %@", categoryFromFilter)
-            predicateArray.append(categoryPredicate)
-        }
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
-        fetchRequest.predicate = compoundPredicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
-            scenes = fetResults!
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
     }
     
     func handleTap (gesture:UITapGestureRecognizer) {
@@ -231,127 +187,25 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     @IBAction func btnAdd(sender: AnyObject) {
         if let sceneId = Int(IDedit.text!), let sceneName = nameEdit.text, let address = Int(devAddressThree.text!) {
             if sceneId <= 32767 && address <= 255 {
-                var itExists = false
-                var existingScene:Scene?
-                for scene in scenes {
-                    if scene.sceneId == sceneId && scene.address == address {
-                        itExists = true
-                        existingScene = scene
-                    }
+                
+                var levelId:Int?
+                if let levelIdNumber = level?.id{
+                    levelId = Int(levelIdNumber)
                 }
-                if !itExists {
-                    let scene = NSEntityDescription.insertNewObjectForEntityForName("Scene", inManagedObjectContext: appDel.managedObjectContext!) as! Scene
-                    scene.sceneId = sceneId
-                    scene.sceneName = sceneName
-                    scene.address = address
-                    
-                    if let customImageOne = customImageOne{
-                        scene.sceneImageOneCustom = customImageOne
-                        scene.sceneImageOneDefault = nil
-                    }
-                    if let def = defaultImageOne {
-                        scene.sceneImageOneDefault = def
-                        scene.sceneImageOneCustom = nil
-                    }
-                    if let data = imageDataOne{
-                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
-                            image.imageData = data
-                            image.imageId = NSUUID().UUIDString
-                            scene.sceneImageOneCustom = image.imageId
-                            scene.sceneImageOneDefault = nil
-                            gateway.location.user!.addImagesObject(image)
-                            
-                        }
-                    }
-                    
-                    if let customImageTwo = customImageTwo{
-                        scene.sceneImageTwoCustom = customImageTwo
-                        scene.sceneImageTwoDefault = nil
-                    }
-                    if let def = defaultImageTwo {
-                        scene.sceneImageTwoDefault = def
-                        scene.sceneImageTwoCustom = nil
-                    }
-                    if let data = imageDataTwo{
-                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
-                            image.imageData = data
-                            image.imageId = NSUUID().UUIDString
-                            scene.sceneImageTwoCustom = image.imageId
-                            scene.sceneImageTwoDefault = nil
-                            gateway.location.user!.addImagesObject(image)
-                            
-                        }
-                    }
-                    
-                    scene.entityLevelId = level?.id
-                    scene.sceneZoneId = zoneSelected?.id
-                    scene.sceneCategoryId = category?.id
+                var zoneId:Int?
+                if let zoneIdNumber = zoneSelected?.id{
+                    zoneId = Int(zoneIdNumber)
+                }
+                var categoryId:Int?
+                if let categoryIdNumber = category?.id{
+                    categoryId = Int(categoryIdNumber)
+                }
+                
+                DatabaseScenesController.shared.createScene(sceneId, sceneName: sceneName, moduleAddress: address, gateway: gateway, levelId: levelId, zoneId: zoneId, categoryId: categoryId, isBroadcast: broadcastSwitch.on, isLocalcast: localcastSwitch.on, sceneImageOneDefault: defaultImageOne, sceneImageTwoDefault: defaultImageTwo, sceneImageOneCustom: customImageOne, sceneImageTwoCustom: customImageTwo)
 
-                    scene.isBroadcast = broadcastSwitch.on
-                    scene.isLocalcast = localcastSwitch.on
-                    scene.entityLevel = btnLevel.titleLabel!.text!
-                    scene.sceneZone = btnZone.titleLabel!.text!
-                    scene.sceneCategory = btnCategory.titleLabel!.text!
-                    scene.gateway = gateway
-                    CoreDataController.shahredInstance.saveChanges()
-                    refreshSceneList()
-                } else {
-                    existingScene!.sceneId = sceneId
-                    existingScene!.sceneName = sceneName
-                    existingScene!.address = address
-                    if let customImageOne = customImageOne{
-                        existingScene!.sceneImageOneCustom = customImageOne
-                        existingScene!.sceneImageOneDefault = nil
-                    }
-                    if let def = defaultImageOne {
-                        existingScene!.sceneImageOneDefault = def
-                        existingScene!.sceneImageOneCustom = nil
-                    }
-                    if let data = imageDataOne{
-                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
-                            image.imageData = data
-                            image.imageId = NSUUID().UUIDString
-                            existingScene!.sceneImageOneCustom = image.imageId
-                            existingScene!.sceneImageOneDefault = nil
-                            gateway.location.user!.addImagesObject(image)
-                            
-                        }
-                    }
-                    
-                    if let customImageTwo = customImageTwo{
-                        existingScene!.sceneImageTwoCustom = customImageTwo
-                        existingScene!.sceneImageTwoDefault = nil
-                    }
-                    if let def = defaultImageTwo {
-                        existingScene!.sceneImageTwoDefault = def
-                        existingScene!.sceneImageTwoCustom = nil
-                    }
-                    if let data = imageDataTwo{
-                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
-                            image.imageData = data
-                            image.imageId = NSUUID().UUIDString
-                            existingScene!.sceneImageTwoCustom = image.imageId
-                            existingScene!.sceneImageTwoDefault = nil
-                            gateway.location.user!.addImagesObject(image)
-                            
-                        }
-                    }
-                    
-                    existingScene!.entityLevelId = level?.id
-                    existingScene!.sceneZoneId = zoneSelected?.id
-                    existingScene!.sceneCategoryId = category?.id
-                    
-                    existingScene!.isBroadcast = broadcastSwitch.on
-                    existingScene!.isLocalcast = localcastSwitch.on
-                    existingScene!.entityLevel = btnLevel.titleLabel!.text!
-                    existingScene!.sceneZone = btnZone.titleLabel!.text!
-                    existingScene!.sceneCategory = btnCategory.titleLabel!.text!
-                    existingScene!.gateway = gateway
-                    CoreDataController.shahredInstance.saveChanges()
-                    refreshSceneList()
-                }
             }
         }
+        refreshSceneList()
         self.view.endEditing(true)
     }
     
@@ -365,34 +219,13 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     }
     
     @IBAction func btnRemove(sender: UIButton) {
-        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to delete all scenes?", preferredStyle: .ActionSheet)
-        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            
-            if self.scenes.count != 0 {
-                for scene in self.scenes {
-                    self.appDel.managedObjectContext!.deleteObject(scene)
-                }
-                
+        showAlertView(sender, message: "Are you sure you want to delete all scenes?") { (action) in
+            if action{
+                DatabaseScenesController.shared.deleteAllScenes(self.gateway)
+                self.refreshSceneList()
+                self.view.endEditing(true)
             }
-            CoreDataController.shahredInstance.saveChanges()
-            self.refreshSceneList()
-            self.view.endEditing(true)
-        })
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Cancelled")
-        })
-        
-        if let popoverController = optionMenu.popoverPresentationController {
-            popoverController.sourceView = sender
-            popoverController.sourceRect = sender.bounds
         }
-        
-        optionMenu.addAction(deleteAction)
-        optionMenu.addAction(cancelAction)
-        self.presentViewController(optionMenu, animated: true, completion: nil)
     }
     
     
@@ -414,61 +247,55 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
             arrayOfScenesToBeSearched = [Int]()
             indexOfScenesToBeSearched = 0
             
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningSceneNameAndParameters)
-            
             guard let address1Text = devAddressOne.text else{
-                alertController("Error", message: "Address can't be empty")
                 return
             }
             guard let address1 = Int(address1Text) else{
-                alertController("Error", message: "Address can be only number")
                 return
             }
             addressOne = address1
             
             guard let address2Text = devAddressTwo.text else{
-                alertController("Error", message: "Address can't be empty")
                 return
             }
             guard let address2 = Int(address2Text) else{
-                alertController("Error", message: "Address can be only number")
                 return
             }
             addressTwo = address2
             
             guard let address3Text = devAddressThree.text else{
-                alertController("Error", message: "Address can't be empty")
+                self.view.makeToast(message: "Address can't be empty")
                 return
             }
             guard let address3 = Int(address3Text) else{
-                alertController("Error", message: "Address can be only number")
+                self.view.makeToast(message: "Address can be only number")
                 return
             }
             addressThree = address3
             guard let rangeFromText = fromTextField.text else{
-                alertController("Error", message: "Range can't be empty")
+                self.view.makeToast(message: "Range can't be empty")
                 return
             }
             
             guard let rangeFrom = Int(rangeFromText) else{
-                alertController("Error", message: "Range can be only number")
+                self.view.makeToast(message: "Range can be only number")
                 return
             }
             let from = rangeFrom
             
             guard let rangeToText = toTextField.text else{
-                alertController("Error", message: "Range can't be empty")
+                self.view.makeToast(message: "Range can't be empty")
                 return
             }
             
             guard let rangeTo = Int(rangeToText) else{
-                alertController("Error", message: "Range can be only number")
+                self.view.makeToast(message: "Range can be only number")
                 return
             }
             let to = rangeTo
             
             if rangeTo < rangeFrom {
-                alertController("Error", message: "Range \"from\" can't be higher than range \"to\"")
+                self.view.makeToast(message: "Range \"from\" can't be higher than range \"to\"")
                 return
             }
             for i in from...to{
@@ -484,12 +311,13 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
                 self.presentViewController(progressBarScreenScenes!, animated: true, completion: nil)
                 scenesTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanScenesViewController.checkIfSceneDidGetName(_:)), userInfo: firstSceneIndexThatDontHaveName, repeats: false)
                 NSLog("func findNames \(firstSceneIndexThatDontHaveName)")
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningSceneNameAndParameters)
                 sendCommandWithSceneAddress(firstSceneIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
         } catch let error as InputError {
-            alertController("Error", message: error.description)
+            self.view.makeToast(message: error.description)
         } catch {
-            alertController("Error", message: "Something went wrong.")
+            self.view.makeToast(message: "Something went wrong.")
         }
     }
     // Called from findScenes or from it self.
@@ -583,22 +411,6 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
         UIApplication.sharedApplication().idleTimerDisabled = false
         refreshSceneList()
     }
-    func alertController (title:String, message:String) {
-        alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
-            // ...
-        }
-        alertController!.addAction(cancelAction)
-        
-        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-            // ...
-        }
-        alertController!.addAction(OKAction)
-        
-        self.presentViewController(alertController!, animated: true) {
-            // ...
-        }
-    }
 }
 
 extension ScanScenesViewController: SceneGalleryDelegate{
@@ -672,22 +484,16 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
                     }else{
                         if let defaultImage = scenes[indexPath.row].sceneImageOneDefault{
                             cell.imageOne.image = UIImage(named: defaultImage)
-                        }else{
-                            cell.imageOne.image = UIImage(named: "Scene - All On - 00")
                         }
                     }
                 }else{
                     if let defaultImage = scenes[indexPath.row].sceneImageOneDefault{
                         cell.imageOne.image = UIImage(named: defaultImage)
-                    }else{
-                        cell.imageOne.image = UIImage(named: "Scene - All On - 00")
                     }
                 }
             }else{
                 if let defaultImage = scenes[indexPath.row].sceneImageOneDefault{
                     cell.imageOne.image = UIImage(named: defaultImage)
-                }else{
-                    cell.imageOne.image = UIImage(named: "Scene - All On - 00")
                 }
             }
             
@@ -698,22 +504,16 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
                     }else{
                         if let defaultImage = scenes[indexPath.row].sceneImageTwoDefault{
                             cell.imageTwo.image = UIImage(named: defaultImage)
-                        }else{
-                            cell.imageTwo.image = UIImage(named: "Scene - All On - 01")
                         }
                     }
                 }else{
                     if let defaultImage = scenes[indexPath.row].sceneImageTwoDefault{
                         cell.imageTwo.image = UIImage(named: defaultImage)
-                    }else{
-                        cell.imageTwo.image = UIImage(named: "Scene - All On - 01")
                     }
                 }
             }else{
                 if let defaultImage = scenes[indexPath.row].sceneImageTwoDefault{
                     cell.imageTwo.image = UIImage(named: defaultImage)
-                }else{
-                    cell.imageTwo.image = UIImage(named: "Scene - All On - 01")
                 }
             }
             
@@ -727,7 +527,6 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        selected = scenes[indexPath.row]
         IDedit.text = "\(scenes[indexPath.row].sceneId)"
         nameEdit.text = "\(scenes[indexPath.row].sceneName)"
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(scenes[indexPath.row].address)))"
@@ -760,22 +559,16 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
                 }else{
                     if let defaultImage = scenes[indexPath.row].sceneImageOneDefault{
                         imageSceneOne.image = UIImage(named: defaultImage)
-                    }else{
-                        imageSceneOne.image = UIImage(named: "Scene - All On - 00")
                     }
                 }
             }else{
                 if let defaultImage = scenes[indexPath.row].sceneImageOneDefault{
                     imageSceneOne.image = UIImage(named: defaultImage)
-                }else{
-                    imageSceneOne.image = UIImage(named: "Scene - All On - 00")
                 }
             }
         }else{
             if let defaultImage = scenes[indexPath.row].sceneImageOneDefault{
                 imageSceneOne.image = UIImage(named: defaultImage)
-            }else{
-                imageSceneOne.image = UIImage(named: "Scene - All On - 00")
             }
         }
         
@@ -786,22 +579,16 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
                 }else{
                     if let defaultImage = scenes[indexPath.row].sceneImageTwoDefault{
                         imageSceneTwo.image = UIImage(named: defaultImage)
-                    }else{
-                        imageSceneTwo.image = UIImage(named: "Scene - All On - 01")
                     }
                 }
             }else{
                 if let defaultImage = scenes[indexPath.row].sceneImageTwoDefault{
                     imageSceneTwo.image = UIImage(named: defaultImage)
-                }else{
-                    imageSceneTwo.image = UIImage(named: "Scene - All On - 01")
                 }
             }
         }else{
             if let defaultImage = scenes[indexPath.row].sceneImageTwoDefault{
                 imageSceneTwo.image = UIImage(named: defaultImage)
-            }else{
-                imageSceneTwo.image = UIImage(named: "Scene - All On - 01")
             }
         }
     }
@@ -812,18 +599,7 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
-            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
-                self.tableView(self.sceneTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
-            }
-            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
-            deleteMenu.addAction(delete)
-            deleteMenu.addAction(cancelDelete)
-            if let presentationController = deleteMenu.popoverPresentationController {
-                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
-                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
-            }
-            self.presentViewController(deleteMenu, animated: true, completion: nil)
+            self.tableView(self.sceneTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
         })
         
         button.backgroundColor = UIColor.redColor()
@@ -832,9 +608,9 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            appDel.managedObjectContext?.deleteObject(scenes[indexPath.row])
-            CoreDataController.shahredInstance.saveChanges()
-            refreshSceneList()
+            DatabaseScenesController.shared.deleteScene(scenes[indexPath.row])
+            scenes.removeAtIndex(indexPath.row)
+            sceneTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
     }
 }
