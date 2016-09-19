@@ -220,7 +220,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     
     @IBAction func btnRemove(sender: UIButton) {
         showAlertView(sender, message: "Are you sure you want to delete all scenes?") { (action) in
-            if action{
+            if action == ReturnedValueFromAlertView.Delete{
                 DatabaseScenesController.shared.deleteAllScenes(self.gateway)
                 self.refreshSceneList()
                 self.view.endEditing(true)

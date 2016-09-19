@@ -220,7 +220,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     
     @IBAction func btnRemove(sender: UIButton) {
         showAlertView(sender, message: "Are you sure you want to delete all sequences?") { (action) in
-            if action{
+            if action == ReturnedValueFromAlertView.Delete{
                 DatabaseSequencesController.shared.deleteAllSequences(self.gateway)
                 self.refreshSequenceList()
                 self.view.endEditing(true)

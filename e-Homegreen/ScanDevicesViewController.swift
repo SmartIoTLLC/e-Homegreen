@@ -395,39 +395,17 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     
     @IBAction func deleteAll(sender: UIButton) {
-        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to delete all devices?", preferredStyle: .ActionSheet)
-        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            
-            for var item = 0; item < self.devices.count; item += 1 {
-                if self.devices[item].gateway.objectID == self.gateway.objectID {
-                    self.appDel.managedObjectContext!.deleteObject(self.devices[item])
+        showAlertView(sender, message: "Are you sure you want to delete all devices?") { (action) in
+            if action == ReturnedValueFromAlertView.Delete{
+                for item in self.devices {
+                    if item.gateway.objectID == self.gateway.objectID {
+                        self.appDel.managedObjectContext!.deleteObject(item)
+                    }
                 }
+                CoreDataController.shahredInstance.saveChanges()
+                self.refreshDeviceList()
             }
-            CoreDataController.shahredInstance.saveChanges()
-            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
-        })
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Cancelled")
-        })
-        
-        if let popoverController = optionMenu.popoverPresentationController {
-            popoverController.sourceView = sender
-            popoverController.sourceRect = sender.bounds
         }
-        
-        optionMenu.addAction(deleteAction)
-        optionMenu.addAction(cancelAction)
-        self.presentViewController(optionMenu, animated: true, completion: nil)
-        
-        
-        //Delete popup with design same as in android. If khalifa wants design to be the same then uncomment this.
-//        let deleteVC = DeleteConfirmation()
-//        deleteVC.delegate = self
-//        self.presentViewController(deleteVC, animated: false, completion: nil)
-  
     }
     
     // MARK: - FINDING NAMES FOR DEVICE
@@ -974,31 +952,18 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
     }
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
-            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
-                self.tableView(self.deviceTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
-            }
-            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
-            deleteMenu.addAction(delete)
-            deleteMenu.addAction(cancelDelete)
-            if let presentationController = deleteMenu.popoverPresentationController {
-                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
-                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
-            }
-            self.presentViewController(deleteMenu, animated: true, completion: nil)
+            self.tableView(self.deviceTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
         })
-        
         button.backgroundColor = UIColor.redColor()
         return [button]
     }
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        
         if editingStyle == .Delete {
             // Here needs to be deleted even devices that are from gateway that is going to be deleted
             appDel.managedObjectContext?.deleteObject(devices[indexPath.row])
             CoreDataController.shahredInstance.saveChanges()
             updateDeviceList()
-            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+            refreshDeviceList()
         }
     }
 }

@@ -902,7 +902,7 @@ extension Function {
         return message
     }
 }
-//MARK:- FLAG
+//MARK:- CARD
 extension Function {
     static func getCardName(address:[Byte], cardId: Byte) -> [Byte]{
         var messageInfo:[Byte] = []

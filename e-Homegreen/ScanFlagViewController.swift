@@ -368,35 +368,20 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     }
     
     @IBAction func btnRemove(sender: UIButton) {
-        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to delete all scenes?", preferredStyle: .ActionSheet)
-        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            
-            if self.flags.count != 0 {
-                for flag in self.flags {
-                    self.appDel.managedObjectContext!.deleteObject(flag)
+        showAlertView(sender, message:  "Are you sure you want to delete all scenes?") { (action) in
+            if action == ReturnedValueFromAlertView.Delete{
+                if self.flags.count != 0 {
+                    for flag in self.flags {
+                        self.appDel.managedObjectContext!.deleteObject(flag)
+                    }
                 }
+                CoreDataController.shahredInstance.saveChanges()
+                self.refreshFlagList()
+                self.view.endEditing(true)
             }
-            CoreDataController.shahredInstance.saveChanges()
-            self.refreshFlagList()
-            self.view.endEditing(true)
-        })
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Cancelled")
-        })
-        
-        if let popoverController = optionMenu.popoverPresentationController {
-            popoverController.sourceView = sender
-            popoverController.sourceRect = sender.bounds
         }
-        
-        optionMenu.addAction(deleteAction)
-        optionMenu.addAction(cancelAction)
-        self.presentViewController(optionMenu, animated: true, completion: nil)
     }
-
+    
     // MARK: - FINDING NAMES FOR DEVICE
     // Info: Add observer for received info from PLC (e.g. nameReceivedFromPLC)
     var flagNameTimer:NSTimer?

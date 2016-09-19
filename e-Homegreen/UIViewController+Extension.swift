@@ -8,6 +8,12 @@
 
 import Foundation
 
+// Used for returning value in fucntion "showAlertView" which presents alert view
+enum ReturnedValueFromAlertView {
+    case Delete
+    case Cancel
+    case Ok
+}
 
 extension UIViewController {
 
@@ -32,16 +38,18 @@ extension UIViewController {
         return image
     }
     
-    func showAlertView(sender:UIView, message:String, completion: (action: Bool) -> ()){
+    // Presents Alert view that has Delete and Cancel buttons.
+    // Returns which action is selected
+    func showAlertView(sender:UIView, message:String, completion: (action: ReturnedValueFromAlertView) -> ()){
         let optionMenu = UIAlertController(title: nil, message: message, preferredStyle: .ActionSheet)
         let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
             (alert: UIAlertAction!) -> Void in
-            completion(action: true)
+            completion(action: ReturnedValueFromAlertView.Delete)
         })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
             (alert: UIAlertAction!) -> Void in
-            completion(action: false)
+            completion(action: ReturnedValueFromAlertView.Cancel)
         })
         
         if let popoverController = optionMenu.popoverPresentationController {
