@@ -181,29 +181,29 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             var to = 255
             
             guard let rangeFromText = rangeFrom.text else{
-                alertController("Error", message: "Range can't be empty")
+                self.view.makeToast(message: "Range can't be empty")
                 return
             }
             
             guard let rangeFrom = Int(rangeFromText) else{
-                alertController("Error", message: "Range can be only number")
+                self.view.makeToast(message: "Range can be only number")
                 return
             }
             from = rangeFrom
             
             guard let rangeToText = rangeTo.text else{
-                alertController("Error", message: "Range can't be empty")
+                self.view.makeToast(message: "Range can't be empty")
                 return
             }
             
             guard let rangeTo = Int(rangeToText) else{
-                alertController("Error", message: "Range can be only number")
+                self.view.makeToast(message: "Range can be only number")
                 return
             }
             to = rangeTo
             
             if rangeTo < rangeFrom {
-                alertController("Error", message: "Range \"from\" can't be higher than range \"to\"")
+                self.view.makeToast(message: "Range is not properly set")
                 return
             }
 
@@ -211,10 +211,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                 arrayOfDevicesToBeSearched.append(i)
             }
             let initialPercentage = Float(0)//Float(1)/Float(arrayOfDevicesToBeSearched.count)*100
-            
-//            for i in sp.from ... sp.to {
-//                arrayOfDevicesToBeSearched.append(i)
-//            }
+        
             fromAddress = from
             toAddress = to
             if arrayOfDevicesToBeSearched.count > 0{
@@ -229,12 +226,12 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                 self.setProgressBarParametarsForSearchingDevices(address)   // Needs to be done because progres bar is an the beginning 100%, for some reason..
                 SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
             }else{
-                alertController("Info", message: "No devices to search")
+                self.view.makeToast(message: "No devices to search")
             }
         } catch let error as InputError {
-            alertController("Error", message: error.description)
+            self.view.makeToast(message: error.description)
         } catch {
-            alertController("Error", message: "Something went wrong.")
+            self.view.makeToast(message: "Something went wrong.")
         }
     }
     func findDevicesLongPress(sender: UILongPressGestureRecognizer) {
@@ -274,13 +271,13 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                     self.setProgressBarParametarsForSearchingDevices(address)   // Needs to be done because progres bar is an the beginning 100%, for some reason..
                     SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
                 }else{
-                    alertController("Info", message: "No devices to search")
+                    self.view.makeToast(message: "No devices to search")
                 }
                 
             } catch let error as InputError {
-                alertController("Error", message: error.description)
+                self.view.makeToast(message: error.description)
             } catch {
-                alertController("Error", message: "Something went wrong.")
+                self.view.makeToast(message: "Something went wrong.")
             }
         }
     }
@@ -439,7 +436,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                 }
                 
                 if to < from {
-                    alertController("Error", message: "Range can be only number")
+                    self.view.makeToast(message: "Range can be only number")
                     return
                 }
                 
@@ -471,9 +468,9 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                 }
             }
         } catch let error as InputError {
-            alertController("Error", message: error.description)
+            self.view.makeToast(message: error.description)
         } catch {
-            alertController("Error", message: "Something went wrong.")
+            self.view.makeToast(message: "Something went wrong.")
         }
     }
     func findNamesLongPress(sender: UILongPressGestureRecognizer) {
@@ -527,9 +524,9 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                     }
                 }
             } catch let error as InputError {
-                alertController("Error", message: error.description)
+                self.view.makeToast(message: error.description)
             } catch {
-                alertController("Error", message: "Something went wrong.")
+                self.view.makeToast(message: "Something went wrong.")
             }
         }
     }
@@ -713,9 +710,9 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                 }
             }
         } catch let error as InputError {
-            alertController("Error", message: error.description)
+            self.view.makeToast(message: error.description)
         } catch {
-            alertController("Error", message: "Something went wrong.")
+            self.view.makeToast(message: "Something went wrong.")
         }
     }
     func checkIfSensorDidGotParametar (timer:NSTimer) {
@@ -843,23 +840,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
     }
     
-    var alertController:UIAlertController?
-    func alertController (title:String, message:String) {
-        alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
-            // ...
-        }
-        alertController!.addAction(cancelAction)
-        
-        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-            // ...
-        }
-        alertController!.addAction(OKAction)
-        
-        self.presentViewController(alertController!, animated: true) {
-            // ...
-        }
-    }
     func returnSearchParametars (from:String, to:String, isScaningNamesAndParametars:Bool) throws -> SearchParametars {
         if !isScaningNamesAndParametars {
             guard let from = Int(from), let to = Int(to) else {
