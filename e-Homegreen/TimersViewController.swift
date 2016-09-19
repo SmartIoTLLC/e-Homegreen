@@ -349,7 +349,7 @@ extension TimersViewController: UICollectionViewDataSource {
         cell.timerButton.tag = indexPath.row
         cell.timerButtonLeft.tag = indexPath.row
         cell.timerButtonRight.tag = indexPath.row
-        if timers[indexPath.row].type == "Timer" || timers[indexPath.row].type == "Stopwatch/User" {
+        if timers[indexPath.row].type == TimerType.Timer.rawValue || timers[indexPath.row].type == TimerType.Stopwatch.rawValue {
             //   ===   Default   ===
             cell.timerButton.hidden = false
             cell.timerButtonLeft.hidden = true

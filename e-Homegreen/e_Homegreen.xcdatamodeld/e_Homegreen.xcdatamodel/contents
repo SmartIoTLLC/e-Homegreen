@@ -114,9 +114,7 @@
     </entity>
     <entity name="Flag" representedClassName=".Flag" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="entityLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="entityLevelId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="flagCategory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="flagCategoryId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="flagId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="flagImageOneCustom" optional="YES" attributeType="String" syncable="YES"/>
@@ -124,7 +122,6 @@
         <attribute name="flagImageTwoCustom" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="flagImageTwoDefault" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="flagName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="flagZone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="flagZoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isLocalcast" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -323,7 +320,7 @@
         <element name="DeviceImage" positionX="-459" positionY="-2043" width="128" height="120"/>
         <element name="Event" positionX="-587" positionY="-1717" width="128" height="255"/>
         <element name="FilterParametar" positionX="-972" positionY="-1953" width="128" height="150"/>
-        <element name="Flag" positionX="-578" positionY="-1663" width="128" height="300"/>
+        <element name="Flag" positionX="-578" positionY="-1663" width="128" height="255"/>
         <element name="Gateway" positionX="-848" positionY="-1591" width="128" height="390"/>
         <element name="IBeacon" positionX="-279" positionY="-1503" width="128" height="58"/>
         <element name="Image" positionX="-252" positionY="-2043" width="128" height="90"/>

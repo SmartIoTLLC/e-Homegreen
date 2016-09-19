@@ -709,6 +709,7 @@ extension ScanTimerViewController: UITableViewDataSource {
         
         if let type = TimerType(rawValue: Int(timers[indexPath.row].type)){
             btnType.setTitle(type.description, forState: UIControlState.Normal)
+            timerTypeId = type.rawValue
         }else{
             btnType.setTitle("--", forState: UIControlState.Normal)
         }
@@ -734,6 +735,14 @@ extension ScanTimerViewController: UITableViewDataSource {
         }else{
             btnCategory.setTitle("All", forState: UIControlState.Normal)
         }
+        
+        defaultImageOne = timers[indexPath.row].timerImageOneDefault
+        customImageOne = timers[indexPath.row].timerImageOneCustom
+        imageDataOne = nil
+        
+        defaultImageTwo = timers[indexPath.row].timerImageTwoDefault
+        customImageTwo = timers[indexPath.row].timerImageTwoCustom
+        imageDataTwo = nil
         
         if let id = timers[indexPath.row].timerImageOneCustom{
             if let image = DatabaseImageController.shared.getImageById(id){

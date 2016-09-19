@@ -548,6 +548,14 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
             btnCategory.setTitle("All", forState: UIControlState.Normal)
         }
         
+        defaultImageOne = sequences[indexPath.row].sequenceImageOneDefault
+        customImageOne = sequences[indexPath.row].sequenceImageOneCustom
+        imageDataOne = nil
+        
+        defaultImageTwo = sequences[indexPath.row].sequenceImageTwoDefault
+        customImageTwo = sequences[indexPath.row].sequenceImageTwoCustom
+        imageDataTwo = nil
+        
         if let id = sequences[indexPath.row].sequenceImageOneCustom{
             if let image = DatabaseImageController.shared.getImageById(id){
                 if let data =  image.imageData {
