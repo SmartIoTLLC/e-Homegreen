@@ -509,14 +509,8 @@ class CreateUserFromJSONController: NSObject {
                 if let address = event["address"] as? Int{
                     newEvent.address = address
                 }
-                if let level = event["entity_level"] as? String{
-                    newEvent.entityLevel = level
-                }
                 if let levelId = event["entity_level_id"] as? Int{
                     newEvent.entityLevelId = levelId
-                }
-                if let eventCategory = event["event_category"] as? String{
-                    newEvent.eventCategory = eventCategory
                 }
                 if let eventCategoryId = event["event_category_id"] as? Int{
                     newEvent.eventCategoryId = eventCategoryId
@@ -538,9 +532,6 @@ class CreateUserFromJSONController: NSObject {
                 }
                 if let eventName = event["event_name"] as? String{
                     newEvent.eventName = eventName
-                }
-                if let eventZone = event["event_zone"] as? String{
-                    newEvent.eventZone = eventZone
                 }
                 if let isBroadcast = event["is_broadcast"] as? Bool{
                     newEvent.isBroadcast = isBroadcast

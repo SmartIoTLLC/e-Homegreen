@@ -24,11 +24,8 @@ extension Event {
     @NSManaged var isBroadcast: NSNumber
     @NSManaged var isLocalcast: NSNumber    
     @NSManaged var report: NSNumber
-    @NSManaged var entityLevel: String?
     @NSManaged var entityLevelId: NSNumber?
-    @NSManaged var eventZone: String?
     @NSManaged var eventZoneId: NSNumber?
-    @NSManaged var eventCategory: String?
     @NSManaged var eventCategoryId: NSNumber?
     @NSManaged var gateway: Gateway
 
