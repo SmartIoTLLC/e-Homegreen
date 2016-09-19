@@ -75,7 +75,6 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     var indexOfNamesToBeSearched = 0
     var arrayOfParametersToBeSearched = [Int]()
     var indexOfParametersToBeSearched = 0
-    var alertController:UIAlertController?
     var progressBarScreenTimerNames: ProgressBarVC?
     //    var progressBarScreenTimerParameters: ProgressBarVC?
     var shouldFindCardParameters = false
@@ -95,11 +94,11 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
             addressTwo = Int(devAddressTwo.text!)!
             
             guard let address3Text = devAddressThree.text else{
-                alertController("Error", message: "Address can't be empty")
+                self.view.makeToast(message: "Address can't be empty")
                 return
             }
             guard let address3 = Int(address3Text) else{
-                alertController("Error", message: "Address can be only number")
+                self.view.makeToast(message: "Address can be only number")
                 return
             }
             addressThree = address3
@@ -116,7 +115,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
             }
             
             if to < from {
-                alertController("Error", message: "Range \"from\" can't be higher than range \"to\"")
+                self.view.makeToast(message: "Range is not properly set")
                 return
             }
             for i in from...to{
@@ -137,9 +136,9 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
                 sendCommandForFindingNameWithCardAddress(firstTimerIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
         } catch let error as InputError {
-            alertController("Error", message: error.description)
+            self.view.makeToast(message: error.description)
         } catch {
-            alertController("Error", message: "Something went wrong.")
+            self.view.makeToast(message: "Something went wrong.")
         }
     }
     // Called from findNames or from it self.
@@ -229,29 +228,29 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
             indexOfParametersToBeSearched = 0
             
             guard let rangeFromText = fromTextField.text else{
-                alertController("Error", message: "Range can't be empty")
+                self.view.makeToast(message: "Range can't be empty")
                 return
             }
             
             guard let rangeFrom = Int(rangeFromText) else{
-                alertController("Error", message: "Range can be only number")
+               self.view.makeToast(message: "Range can be only number")
                 return
             }
             let from = rangeFrom
             
             guard let rangeToText = toTextField.text else{
-                alertController("Error", message: "Range can't be empty")
+                self.view.makeToast(message: "Range can't be empty")
                 return
             }
             
             guard let rangeTo = Int(rangeToText) else{
-                alertController("Error", message: "Range can be only number")
+                self.view.makeToast(message: "Range can be only number")
                 return
             }
             let to = rangeTo
             
             if rangeTo < rangeFrom {
-                alertController("Error", message: "Range \"from\" can't be higher than range \"to\"")
+                self.view.makeToast(message: "Range is not properly set")
                 return
             }
             
@@ -281,9 +280,9 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
                 print("Command sent for parameter from FindParameter")
             }
         } catch let error as InputError {
-            alertController("Error", message: error.description)
+            self.view.makeToast(message: error.description)
         } catch {
-            alertController("Error", message: "Something went wrong.")
+            self.view.makeToast(message: "Something went wrong.")
         }
     }
     // Called from findParametarsForTimer or from it self.
@@ -409,9 +408,9 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
                 sendCommandForFindingNameWithTimerAddress(firstTimerIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: timerAddress)
             }
         } catch let error as InputError {
-            alertController("Error", message: error.description)
+            self.view.makeToast(message: error.description)
         } catch {
-            alertController("Error", message: "Something went wrong.")
+            self.view.makeToast(message: "Something went wrong.")
         }
     }
     // Called from findNames or from it self.
@@ -522,9 +521,9 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
                 print("Command sent for parameter from FindParameter")
             }
         } catch let error as InputError {
-            alertController("Error", message: error.description)
+            self.view.makeToast(message: error.description)
         } catch {
-            alertController("Error", message: "Something went wrong.")
+            self.view.makeToast(message: "Something went wrong.")
         }
     }
     // Called from findParametarsForTimer or from it self.
@@ -635,22 +634,6 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
             if shouldFindTimerParameters{
                 _ = NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(ScanCardsViewController.findParametarsForTimer), userInfo: nil, repeats: false)
             }
-        }
-    }
-    func alertController (title:String, message:String) {
-        alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
-            // ...
-        }
-        alertController!.addAction(cancelAction)
-        
-        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-            // ...
-        }
-        alertController!.addAction(OKAction)
-        
-        self.presentViewController(alertController!, animated: true) {
-            // ...
         }
     }
     

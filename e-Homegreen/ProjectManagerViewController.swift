@@ -115,36 +115,15 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     @IBAction func deleteUser(sender: UIButton) {
-        
-            let optionMenu = UIAlertController(title: nil, message: "Delete user?", preferredStyle: .ActionSheet)
-            
-            let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
-                (alert: UIAlertAction!) -> Void in
+        showAlertView(sender, message: "Delete user?") { (action) in
+            if action == ReturnedValueFromAlertView.Delete{
                 self.appDel.managedObjectContext?.deleteObject(self.users[sender.tag])
                 if self.users[sender.tag].username == DatabaseUserController.shared.getOtherUser()?.username{
                     AdminController.shared.setOtherUser(nil)
                 }
-                dispatch_async(dispatch_get_main_queue(),{
-                    self.reloadData()
-                })
-            })
-            
-            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-                (alert: UIAlertAction!) -> Void in
-                print("Cancelled")
-            })
-            
-            if let popoverController = optionMenu.popoverPresentationController {
-                popoverController.sourceView = sender
-                popoverController.sourceRect = sender.bounds
+                self.reloadData()
             }
-            
-            
-            optionMenu.addAction(deleteAction)
-            optionMenu.addAction(cancelAction)
-            self.presentViewController(optionMenu, animated: true, completion: nil)
-            
-        
+        }
     }
     
     @IBAction func shareUser(sender: UIButton) {

@@ -181,29 +181,29 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             var to = 255
             
             guard let rangeFromText = rangeFrom.text else{
-                alertController("Error", message: "Range can't be empty")
+                self.view.makeToast(message: "Range can't be empty")
                 return
             }
             
             guard let rangeFrom = Int(rangeFromText) else{
-                alertController("Error", message: "Range can be only number")
+                self.view.makeToast(message: "Range can be only number")
                 return
             }
             from = rangeFrom
             
             guard let rangeToText = rangeTo.text else{
-                alertController("Error", message: "Range can't be empty")
+                self.view.makeToast(message: "Range can't be empty")
                 return
             }
             
             guard let rangeTo = Int(rangeToText) else{
-                alertController("Error", message: "Range can be only number")
+                self.view.makeToast(message: "Range can be only number")
                 return
             }
             to = rangeTo
             
             if rangeTo < rangeFrom {
-                alertController("Error", message: "Range \"from\" can't be higher than range \"to\"")
+                self.view.makeToast(message: "Range is not properly set")
                 return
             }
 
@@ -211,10 +211,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                 arrayOfDevicesToBeSearched.append(i)
             }
             let initialPercentage = Float(0)//Float(1)/Float(arrayOfDevicesToBeSearched.count)*100
-            
-//            for i in sp.from ... sp.to {
-//                arrayOfDevicesToBeSearched.append(i)
-//            }
+        
             fromAddress = from
             toAddress = to
             if arrayOfDevicesToBeSearched.count > 0{
@@ -229,12 +226,12 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                 self.setProgressBarParametarsForSearchingDevices(address)   // Needs to be done because progres bar is an the beginning 100%, for some reason..
                 SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
             }else{
-                alertController("Info", message: "No devices to search")
+                self.view.makeToast(message: "No devices to search")
             }
         } catch let error as InputError {
-            alertController("Error", message: error.description)
+            self.view.makeToast(message: error.description)
         } catch {
-            alertController("Error", message: "Something went wrong.")
+            self.view.makeToast(message: "Something went wrong.")
         }
     }
     func findDevicesLongPress(sender: UILongPressGestureRecognizer) {
@@ -274,13 +271,13 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                     self.setProgressBarParametarsForSearchingDevices(address)   // Needs to be done because progres bar is an the beginning 100%, for some reason..
                     SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
                 }else{
-                    alertController("Info", message: "No devices to search")
+                    self.view.makeToast(message: "No devices to search")
                 }
                 
             } catch let error as InputError {
-                alertController("Error", message: error.description)
+                self.view.makeToast(message: error.description)
             } catch {
-                alertController("Error", message: "Something went wrong.")
+                self.view.makeToast(message: "Something went wrong.")
             }
         }
     }
@@ -395,39 +392,17 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     
     @IBAction func deleteAll(sender: UIButton) {
-        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to delete all devices?", preferredStyle: .ActionSheet)
-        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            
-            for var item = 0; item < self.devices.count; item += 1 {
-                if self.devices[item].gateway.objectID == self.gateway.objectID {
-                    self.appDel.managedObjectContext!.deleteObject(self.devices[item])
+        showAlertView(sender, message: "Are you sure you want to delete all devices?") { (action) in
+            if action == ReturnedValueFromAlertView.Delete{
+                for item in self.devices {
+                    if item.gateway.objectID == self.gateway.objectID {
+                        self.appDel.managedObjectContext!.deleteObject(item)
+                    }
                 }
+                CoreDataController.shahredInstance.saveChanges()
+                self.refreshDeviceList()
             }
-            CoreDataController.shahredInstance.saveChanges()
-            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
-        })
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Cancelled")
-        })
-        
-        if let popoverController = optionMenu.popoverPresentationController {
-            popoverController.sourceView = sender
-            popoverController.sourceRect = sender.bounds
         }
-        
-        optionMenu.addAction(deleteAction)
-        optionMenu.addAction(cancelAction)
-        self.presentViewController(optionMenu, animated: true, completion: nil)
-        
-        
-        //Delete popup with design same as in android. If khalifa wants design to be the same then uncomment this.
-//        let deleteVC = DeleteConfirmation()
-//        deleteVC.delegate = self
-//        self.presentViewController(deleteVC, animated: false, completion: nil)
-  
     }
     
     // MARK: - FINDING NAMES FOR DEVICE
@@ -461,7 +436,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                 }
                 
                 if to < from {
-                    alertController("Error", message: "Range can be only number")
+                    self.view.makeToast(message: "Range can be only number")
                     return
                 }
                 
@@ -493,9 +468,9 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                 }
             }
         } catch let error as InputError {
-            alertController("Error", message: error.description)
+            self.view.makeToast(message: error.description)
         } catch {
-            alertController("Error", message: "Something went wrong.")
+            self.view.makeToast(message: "Something went wrong.")
         }
     }
     func findNamesLongPress(sender: UILongPressGestureRecognizer) {
@@ -549,9 +524,9 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                     }
                 }
             } catch let error as InputError {
-                alertController("Error", message: error.description)
+                self.view.makeToast(message: error.description)
             } catch {
-                alertController("Error", message: "Something went wrong.")
+                self.view.makeToast(message: "Something went wrong.")
             }
         }
     }
@@ -735,9 +710,9 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                 }
             }
         } catch let error as InputError {
-            alertController("Error", message: error.description)
+            self.view.makeToast(message: error.description)
         } catch {
-            alertController("Error", message: "Something went wrong.")
+            self.view.makeToast(message: "Something went wrong.")
         }
     }
     func checkIfSensorDidGotParametar (timer:NSTimer) {
@@ -865,23 +840,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
     }
     
-    var alertController:UIAlertController?
-    func alertController (title:String, message:String) {
-        alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
-            // ...
-        }
-        alertController!.addAction(cancelAction)
-        
-        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-            // ...
-        }
-        alertController!.addAction(OKAction)
-        
-        self.presentViewController(alertController!, animated: true) {
-            // ...
-        }
-    }
     func returnSearchParametars (from:String, to:String, isScaningNamesAndParametars:Bool) throws -> SearchParametars {
         if !isScaningNamesAndParametars {
             guard let from = Int(from), let to = Int(to) else {
@@ -974,31 +932,18 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
     }
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
-            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
-                self.tableView(self.deviceTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
-            }
-            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
-            deleteMenu.addAction(delete)
-            deleteMenu.addAction(cancelDelete)
-            if let presentationController = deleteMenu.popoverPresentationController {
-                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
-                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
-            }
-            self.presentViewController(deleteMenu, animated: true, completion: nil)
+            self.tableView(self.deviceTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
         })
-        
         button.backgroundColor = UIColor.redColor()
         return [button]
     }
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        
         if editingStyle == .Delete {
             // Here needs to be deleted even devices that are from gateway that is going to be deleted
             appDel.managedObjectContext?.deleteObject(devices[indexPath.row])
             CoreDataController.shahredInstance.saveChanges()
             updateDeviceList()
-            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+            refreshDeviceList()
         }
     }
 }

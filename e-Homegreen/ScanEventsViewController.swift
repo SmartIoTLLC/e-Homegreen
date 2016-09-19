@@ -229,16 +229,15 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         fromTextField.text = ""
         toTextField.text = ""
     }
-
+    
     @IBAction func btnRemove(sender: UIButton) {
-        showAlertView(sender, message: "Are you sure you want to delete all events?") { (action) in
-            if action{
+        showAlertView(sender, message: "Are you sure you want to delete all scenes?") { (action) in
+            if action == ReturnedValueFromAlertView.Delete{
                 DatabaseEventsController.shared.deleteAllEvents(self.gateway)
                 self.refreshEventList()
                 self.view.endEditing(true)
             }
         }
-
     }
     
     // MARK: - FINDING EVENTS
@@ -247,7 +246,6 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     var timesRepeatedCounter:Int = 0
     var arrayOfEventsToBeSearched = [Int]()
     var indexOfEventsToBeSearched = 0
-    var alertController:UIAlertController?
     var progressBarScreenEvents: ProgressBarVC?
     var addressOne = 0x00
     var addressTwo = 0x00

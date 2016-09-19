@@ -66,31 +66,13 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            let optionMenu = UIAlertController(title: nil, message: "Delete SSID?", preferredStyle: .ActionSheet)
-            
-            let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
-                (alert: UIAlertAction!) -> Void in
-                
-            self.appDel.managedObjectContext?.deleteObject(self.ssidList[indexPath.row])
-                CoreDataController.shahredInstance.saveChanges()
-                self.updateSSID()
-
+            showAlertView(tableView, message: "Delete SSID?", completion: { (action) in
+                if action == ReturnedValueFromAlertView.Delete {
+                    self.appDel.managedObjectContext?.deleteObject(self.ssidList[indexPath.row])
+                    CoreDataController.shahredInstance.saveChanges()
+                    self.updateSSID()
+                }
             })
-            
-            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-                (alert: UIAlertAction!) -> Void in
-                print("Cancelled")
-            })
-            
-            if let presentationController = optionMenu.popoverPresentationController {
-                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
-                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
-            }
-            
-            optionMenu.addAction(deleteAction)
-            optionMenu.addAction(cancelAction)
-            self.presentViewController(optionMenu, animated: true, completion: nil)
-            
         }
     }
 

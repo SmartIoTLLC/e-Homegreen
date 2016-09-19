@@ -83,30 +83,13 @@ class LocationViewController: PopoverVC  {
     }
     
     @IBAction func deleteLocation(sender: UIButton) {
-        let optionMenu = UIAlertController(title: nil, message: "Delete location?", preferredStyle: .ActionSheet)
-        
-        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            DatabaseLocationController.shared.stopMonitoringLocation(self.locationList[sender.tag].location)
-            DatabaseLocationController.shared.deleteLocation(self.locationList[sender.tag].location)
-            self.reloadLocations()
-        })
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Cancelled")
-        })
-        
-        if let popoverController = optionMenu.popoverPresentationController {
-            popoverController.sourceView = sender
-            popoverController.sourceRect = sender.bounds
-            
+        showAlertView(sender, message: "Delete location?") { (action) in
+            if action == ReturnedValueFromAlertView.Delete {
+                DatabaseLocationController.shared.stopMonitoringLocation(self.locationList[sender.tag].location)
+                DatabaseLocationController.shared.deleteLocation(self.locationList[sender.tag].location)
+                self.reloadLocations()
+            }
         }
-        
-        optionMenu.addAction(deleteAction)
-        optionMenu.addAction(cancelAction)
-        self.presentViewController(optionMenu, animated: true, completion: nil)
-        
     }
     
     @IBAction func editLocation(sender: AnyObject) {
@@ -285,32 +268,14 @@ extension LocationViewController: UITableViewDelegate {
 
 extension LocationViewController: GatewayCellDelegate{
     func deleteGateway(gateway: Gateway, sender:UIButton) {
-        let optionMenu = UIAlertController(title: nil, message: "Delete e-Homegreen?", preferredStyle: .ActionSheet)
-        
-        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            DatabaseGatewayController.shared.deleteGateway(gateway)
-            dispatch_async(dispatch_get_main_queue(),{
-                self.editLocation()
-            })
-            
-        })
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Cancelled")
-        })
-        
-        if let popoverController = optionMenu.popoverPresentationController {
-            popoverController.sourceView = sender
-            popoverController.sourceRect = sender.bounds
-            
+        showAlertView(sender, message: "Delete e-Homegreen?") { (action) in
+            if action == ReturnedValueFromAlertView.Delete {
+                DatabaseGatewayController.shared.deleteGateway(gateway)
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.editLocation()
+                })
+            }
         }
-        
-        optionMenu.addAction(deleteAction)
-        optionMenu.addAction(cancelAction)
-        self.presentViewController(optionMenu, animated: true, completion: nil)
-        
     }
     
     func scanDevice(gateway: Gateway) {
@@ -332,30 +297,14 @@ extension LocationViewController: GatewayCellDelegate{
 
 extension LocationViewController: SurveillanceCellDelegate {
     func deleteSurveillance(surveillance:Surveillance, sender:UIButton){
-        let optionMenu = UIAlertController(title: nil, message: "Delete camera?", preferredStyle: .ActionSheet)
-        
-        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            DatabaseSurveillanceController.shared.deleteSurveillance(surveillance)
-            dispatch_async(dispatch_get_main_queue(),{
-                self.editLocation()
-            })
-        })
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Cancelled")
-        })
-        
-        if let popoverController = optionMenu.popoverPresentationController {
-            popoverController.sourceView = sender
-            popoverController.sourceRect = sender.bounds
-
+        showAlertView(sender, message: "Delete camera?") { (action) in
+            if action == ReturnedValueFromAlertView.Delete{
+                DatabaseSurveillanceController.shared.deleteSurveillance(surveillance)
+                dispatch_async(dispatch_get_main_queue(),{
+                    self.editLocation()
+                })
+            }
         }
-        
-        optionMenu.addAction(deleteAction)
-        optionMenu.addAction(cancelAction)
-        self.presentViewController(optionMenu, animated: true, completion: nil)
     }
     func scanURL(surveillance:Surveillance){
         showCameraUrls(self.view.center, surveillance: surveillance)

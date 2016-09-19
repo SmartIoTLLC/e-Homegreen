@@ -173,7 +173,6 @@ extension ScanViewController: ScanFilterPullDownDelegate{
         toViewController.sendFilterParametar(filterItem)
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
     }
-
 }
 
 extension ScanViewController: UISearchBarDelegate{

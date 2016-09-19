@@ -201,35 +201,17 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     }
     
     @IBAction func brnDeleteAll(sender: UIButton) {
-        
-        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to delete all devices?", preferredStyle: .ActionSheet)
-        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
-            (alert: UIAlertAction!) -> Void in
-            
-            
-            for category in self.categories{
-                self.appDel.managedObjectContext!.deleteObject(category)
+        showAlertView(sender, message: "Are you sure you want to delete all devices?") { (action) in
+            if action == ReturnedValueFromAlertView.Delete {
+                for category in self.categories{
+                    self.appDel.managedObjectContext!.deleteObject(category)
+                }
+                
+                self.createCategories()
+                CoreDataController.shahredInstance.saveChanges()
+                self.refreshCategoryList()
             }
-            
-            self.createCategories()
-            CoreDataController.shahredInstance.saveChanges()
-            self.refreshCategoryList()
-            
-        })
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-            print("Cancelled")
-        })
-        
-        if let popoverController = optionMenu.popoverPresentationController {
-            popoverController.sourceView = sender
-            popoverController.sourceRect = sender.bounds
         }
-        
-        optionMenu.addAction(deleteAction)
-        optionMenu.addAction(cancelAction)
-        self.presentViewController(optionMenu, animated: true, completion: nil)
     }
     @IBAction func btnCleearFields(sender: AnyObject) {
         txtFrom.text = ""
