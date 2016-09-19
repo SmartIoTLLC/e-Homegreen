@@ -75,6 +75,7 @@ class ScanViewController: PopoverVC {
         scanEventsViewController.gateway = gateway
         scanEventsViewController.filterParametar = filterParametar
         scanTimersViewController.gateway = gateway
+        scanTimersViewController.filterParametar = filterParametar
         scanFlagsViewController.gateway = gateway
         scanCardsViewController.gateway = gateway
         

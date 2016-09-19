@@ -15,11 +15,9 @@ import CoreData
 extension Timer {
 
     @NSManaged var address: NSNumber
-    @NSManaged var entityLevel: String?
     @NSManaged var entityLevelId: NSNumber?
     @NSManaged var isBroadcast: NSNumber
     @NSManaged var isLocalcast: NSNumber
-    @NSManaged var timerCategory: String?
     @NSManaged var timerCategoryId: NSNumber?
     @NSManaged var timerId: NSNumber
     @NSManaged var id: String
@@ -29,9 +27,8 @@ extension Timer {
     @NSManaged var timerImageTwoDefault: String?
     @NSManaged var timerName: String
     @NSManaged var timerState: NSNumber
-    @NSManaged var timeZone: String?
     @NSManaged var timeZoneId: NSNumber?
-    @NSManaged var type: String
+    @NSManaged var type: NSNumber
     @NSManaged var count: NSNumber
     @NSManaged var gateway: Gateway
 

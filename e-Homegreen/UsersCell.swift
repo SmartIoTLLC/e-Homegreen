@@ -65,12 +65,12 @@ class TimerUserCell:UICollectionViewCell{
         if timer.gateway.location.name != filterParametar.location{
             name += timer.gateway.location.name! + " "
         }
-        if timer.entityLevel != filterParametar.levelName{
-            name += timer.entityLevel! + " "
-        }
-        if timer.timeZone != filterParametar.zoneName{
-            name += timer.timeZone! + " "
-        }
+//        if timer.entityLevel != filterParametar.levelName{
+//            name += timer.entityLevel! + " "
+//        }
+//        if timer.timeZone != filterParametar.zoneName{
+//            name += timer.timeZone! + " "
+//        }
         name += timer.timerName
         return name
     }

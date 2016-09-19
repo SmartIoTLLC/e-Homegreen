@@ -35,5 +35,85 @@
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "e-Homegreen/DatabaseTimersController.swift"
+            timestampString = "495973604.152456"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "184"
+            endingLineNumber = "184"
+            landmarkName = "addTimer(_:timerName:moduleAddress:gateway:type:levelId:selectedZoneId:categoryId:isBroadcast:isLocalcast:sceneImageOneDefault:sceneImageTwoDefault:sceneImageOneCustom:sceneImageTwoCustom:imageDataOne:imageDataTwo:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "e-Homegreen/DatabaseTimersController.swift"
+            timestampString = "495978601.843692"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
+            landmarkName = "addTimer(_:timerName:moduleAddress:gateway:type:levelId:selectedZoneId:categoryId:isBroadcast:isLocalcast:sceneImageOneDefault:sceneImageTwoDefault:sceneImageOneCustom:sceneImageTwoCustom:imageDataOne:imageDataTwo:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "e_Homegreen.DatabaseTimersController.addTimer (Swift.Int, timerName : Swift.Optional&lt;Swift.String&gt;, moduleAddress : Swift.Int, gateway : e_Homegreen.Gateway, type : Swift.Optional&lt;Swift.Int&gt;, levelId : Swift.Optional&lt;Swift.Int&gt;, selectedZoneId : Swift.Optional&lt;Swift.Int&gt;, categoryId : Swift.Optional&lt;Swift.Int&gt;, isBroadcast : Swift.Bool, isLocalcast : Swift.Bool, sceneImageOneDefault : Swift.Optional&lt;Swift.String&gt;, sceneImageTwoDefault : Swift.Optional&lt;Swift.String&gt;, sceneImageOneCustom : Swift.Optional&lt;Swift.String&gt;, sceneImageTwoCustom : Swift.Optional&lt;Swift.String&gt;, imageDataOne : Swift.Optional&lt;__ObjC.NSData&gt;, imageDataTwo : Swift.Optional&lt;__ObjC.NSData&gt;) -&gt; ()"
+                  moduleName = "e-Homegreen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/DatabaseTimersController.swift"
+                  timestampString = "495973831.554368"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "237"
+                  endingLineNumber = "237"
+                  offsetFromSymbolStart = "5680">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "e_Homegreen.DatabaseTimersController.addTimer (Swift.Int, timerName : Swift.Optional&lt;Swift.String&gt;, moduleAddress : Swift.Int, gateway : e_Homegreen.Gateway, type : Swift.Optional&lt;Swift.Int&gt;, levelId : Swift.Optional&lt;Swift.Int&gt;, selectedZoneId : Swift.Optional&lt;Swift.Int&gt;, categoryId : Swift.Optional&lt;Swift.Int&gt;, isBroadcast : Swift.Bool, isLocalcast : Swift.Bool, sceneImageOneDefault : Swift.Optional&lt;Swift.String&gt;, sceneImageTwoDefault : Swift.Optional&lt;Swift.String&gt;, sceneImageOneCustom : Swift.Optional&lt;Swift.String&gt;, sceneImageTwoCustom : Swift.Optional&lt;Swift.String&gt;, imageDataOne : Swift.Optional&lt;__ObjC.NSData&gt;, imageDataTwo : Swift.Optional&lt;__ObjC.NSData&gt;) -&gt; ()"
+                  moduleName = "e-Homegreen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/DatabaseTimersController.swift"
+                  timestampString = "495973831.554494"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "237"
+                  endingLineNumber = "237"
+                  offsetFromSymbolStart = "5756">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "e-Homegreen/ScanTimerViewController.swift"
+            timestampString = "495973743.138514"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
+            landmarkName = "refreshTimerList()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

@@ -300,9 +300,6 @@ class CreateUserFromJSONController: NSObject {
                 if let count = timer["count"] as? Int{
                     newTimer.count = count
                 }
-                if let level = timer["entity_level"] as? String{
-                    newTimer.entityLevel = level
-                }
                 if let levelId = timer["entity_level_id"] as? Int{
                     newTimer.entityLevelId = levelId
                 }
@@ -311,9 +308,6 @@ class CreateUserFromJSONController: NSObject {
                 }
                 if let isLocalcast = timer["is_localcast"] as? Bool{
                     newTimer.isLocalcast = isLocalcast
-                }
-                if let timerCategory = timer["timer_category"] as? String{
-                    newTimer.timerCategory = timerCategory
                 }
                 if let timerCategoryId = timer["timer_category_id"] as? Int{
                     newTimer.timerCategoryId = timerCategoryId
@@ -342,11 +336,8 @@ class CreateUserFromJSONController: NSObject {
                 if let timerState = timer["timer_state"] as? Int{
                     newTimer.timerState = timerState
                 }
-                if let type = timer["type"] as? String{
+                if let type = timer["type"] as? Int{
                     newTimer.type = type
-                }
-                if let timeZone = timer["time_zone"] as? String{
-                    newTimer.timeZone = timeZone
                 }
                 if let timeZoneId = timer["time_zone_id"] as? Int{
                     newTimer.timeZoneId = timeZoneId

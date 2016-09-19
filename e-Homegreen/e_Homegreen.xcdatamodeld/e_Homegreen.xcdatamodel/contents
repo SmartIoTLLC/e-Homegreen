@@ -275,12 +275,10 @@
     <entity name="Timer" representedClassName="e_Homegreen.Timer" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="count" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="entityLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="entityLevelId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isLocalcast" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="timerCategory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timerCategoryId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="timerId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="timerImageOneCustom" optional="YES" attributeType="String" syncable="YES"/>
@@ -289,9 +287,8 @@
         <attribute name="timerImageTwoDefault" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timerName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timerState" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="timeZone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timeZoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="timers" inverseEntity="Gateway" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName=".User" syncable="YES">
@@ -338,7 +335,7 @@
         <element name="Sequence" positionX="-603" positionY="-1771" width="128" height="255"/>
         <element name="SSID" positionX="-936" positionY="-1467" width="128" height="58"/>
         <element name="Surveillance" positionX="-891" positionY="-1530" width="128" height="480"/>
-        <element name="Timer" positionX="-621" positionY="-1827" width="128" height="345"/>
+        <element name="Timer" positionX="-621" positionY="-1827" width="128" height="300"/>
         <element name="User" positionX="-675" positionY="-1764" width="128" height="225"/>
         <element name="Zone" positionX="-459" positionY="-1510" width="128" height="180"/>
     </elements>
