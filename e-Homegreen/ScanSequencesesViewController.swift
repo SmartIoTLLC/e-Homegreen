@@ -235,7 +235,6 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     var timesRepeatedCounter:Int = 0
     var arrayOfSequencesToBeSearched = [Int]()
     var indexOfSequencesToBeSearched = 0
-    var alertController:UIAlertController?
     var progressBarScreenSequences: ProgressBarVC?
     var addressOne = 0x00
     var addressTwo = 0x00
@@ -295,7 +294,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
             let to = rangeTo
             
             if rangeTo < rangeFrom {
-                self.view.makeToast(message: "Range \"from\" can't be higher than range \"to\"")
+                self.view.makeToast(message: "Range is not properly set")
                 return
             }
             for i in from...to{

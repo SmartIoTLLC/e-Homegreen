@@ -246,7 +246,6 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     var timesRepeatedCounter:Int = 0
     var arrayOfEventsToBeSearched = [Int]()
     var indexOfEventsToBeSearched = 0
-    var alertController:UIAlertController?
     var progressBarScreenEvents: ProgressBarVC?
     var addressOne = 0x00
     var addressTwo = 0x00
