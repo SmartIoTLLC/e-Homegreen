@@ -193,7 +193,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         
     }
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "categoryReceivedFromGateway:", name: NotificationKey.DidReceiveCategoryFromGateway, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ImportCategoryViewController.categoryReceivedFromGateway(_:)), name: NotificationKey.DidReceiveCategoryFromGateway, object: nil)
     }
     func removeObservers() {
         NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningForCategories)
@@ -262,8 +262,6 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
             timesRepeatedCounter = 1
             self.presentViewController(pbSZ!, animated: true, completion: nil)
             UIApplication.sharedApplication().idleTimerDisabled = true
-        }catch let error as InputError {
-            
         } catch {
             
         }

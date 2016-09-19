@@ -42,7 +42,7 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(SecuirtyCommandVC.handleTap(_:)))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         

@@ -126,8 +126,6 @@ class HvacParametersCell: PopoverVC {
         
         txtFieldName.delegate = self
         
-        let chn = Int(device.channel)
-        
         if device.humidityVisible == true {
             switchHumidity.setOn(true, animated: false)
         }else{

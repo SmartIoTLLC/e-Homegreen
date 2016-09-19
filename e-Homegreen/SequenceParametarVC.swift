@@ -39,27 +39,22 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(SequenceParametarVC.dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         cyclesTextField.text = "\(sequence!.sequenceCycles)"
         isBroadcast.tag = 100
         isBroadcast.on = sequence!.isBroadcast.boolValue
-        isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        isBroadcast.addTarget(self, action: #selector(SequenceParametarVC.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
         isLocalcast.tag = 200
         isLocalcast.on = sequence!.isLocalcast.boolValue
-        isLocalcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        isLocalcast.addTarget(self, action: #selector(SequenceParametarVC.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         cyclesTextField.delegate = self
         // Do any additional setup after loading the view.
     }
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-//        if let cycles = Int(cyclesTextField.text!) {
-//            sequence?.sequenceCycles = cycles
-//            saveChanges()
-//            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSequence, object: self, userInfo: nil)
-//        }
         return true
     }
     

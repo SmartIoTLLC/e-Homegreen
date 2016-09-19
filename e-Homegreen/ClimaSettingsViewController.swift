@@ -193,9 +193,9 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
     @IBAction func btnSet(sender: AnyObject) {
         print(hvacCommand)
         if hvacCommand != hvacCommandBefore {
-            NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: "setACSetPoint", userInfo: nil, repeats: false)
-            NSTimer.scheduledTimerWithTimeInterval(0.6, target: self, selector: "setACSpeed", userInfo: nil, repeats: false)
-            NSTimer.scheduledTimerWithTimeInterval(0.9, target: self, selector: "setACmode", userInfo: nil, repeats: false)
+            NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(ClimaSettingsViewController.setACSetPoint), userInfo: nil, repeats: false)
+            NSTimer.scheduledTimerWithTimeInterval(0.6, target: self, selector: #selector(ClimaSettingsViewController.setACSpeed), userInfo: nil, repeats: false)
+            NSTimer.scheduledTimerWithTimeInterval(0.9, target: self, selector: #selector(ClimaSettingsViewController.setACmode), userInfo: nil, repeats: false)
         }
         self.dismissViewControllerAnimated(true, completion: nil)
     }

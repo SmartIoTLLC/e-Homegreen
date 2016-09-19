@@ -50,12 +50,12 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
         
         self.view.backgroundColor = UIColor.clearColor()
         
-        panStepSlider.addTarget(self, action: "changePanStep:", forControlEvents: .ValueChanged)
-        tiltStepSlider.addTarget(self, action: "changeTiltStep:", forControlEvents: .ValueChanged)
-        autoPanStepSlider.addTarget(self, action: "changeAutoPanStep:", forControlEvents: .ValueChanged)
-        dwellTimeSlider.addTarget(self, action: "changeDwellTimeSlider:", forControlEvents: .ValueChanged)
+        panStepSlider.addTarget(self, action: #selector(CameraParametarXIBViewController.changePanStep(_:)), forControlEvents: .ValueChanged)
+        tiltStepSlider.addTarget(self, action: #selector(CameraParametarXIBViewController.changeTiltStep(_:)), forControlEvents: .ValueChanged)
+        autoPanStepSlider.addTarget(self, action: #selector(CameraParametarXIBViewController.changeAutoPanStep(_:)), forControlEvents: .ValueChanged)
+        dwellTimeSlider.addTarget(self, action: #selector(CameraParametarXIBViewController.changeDwellTimeSlider(_:)), forControlEvents: .ValueChanged)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CameraParametarXIBViewController.dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         

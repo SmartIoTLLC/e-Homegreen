@@ -493,7 +493,7 @@ class IncomingHandler: NSObject {
             }
             var devicesForSalto: [Device] = []
             // Get needed devices and be sure that everything is in good order
-            for var i = 0; i < devices.count; i++ {
+            for var i = 0; i < devices.count; i += 1 {
                 if  devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]){
                     devicesForSalto.append(devices[i])
                 }
@@ -544,7 +544,7 @@ class IncomingHandler: NSObject {
     }
     func ackACstatus (byteArray:[Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        for var i = 0; i < devices.count; i++ {
+        for var i = 0; i < devices.count; i += 1 {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 let channel = Int(devices[i].channel)
                 devices[i].currentValue = Int(byteArray[8+13*(channel-1)])
@@ -576,7 +576,7 @@ class IncomingHandler: NSObject {
     }
     func ackDimmerGetRunningTime (byteArray:[Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        for var i = 0; i < devices.count; i++ {
+        for var i = 0; i < devices.count; i += 1 {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 if byteArray[7] != 0xFF && byteArray[7] != 0xF0 {
                     devices[i].runningTime = returnRunningTime([byteArray[8], byteArray[9], byteArray[10], byteArray[11]])
@@ -618,10 +618,10 @@ class IncomingHandler: NSObject {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
             self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
             var string:String = ""
-            for var j = 9; j < byteArray.count-2; j++ {
+            for var j = 9; j < byteArray.count-2; j += 1 {
                 string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
             }
-            for var i = 0; i < devices.count; i++ {
+            for var i = 0; i < devices.count; i += 1 {
                 if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
                     //                var channel = Int(devices[i].channel)
                     if string != "" {
@@ -690,14 +690,14 @@ class IncomingHandler: NSObject {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
             self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
             var string:String = ""
-            for var i = 9; i < byteArray.count-2; i++ {
+            for var i = 9; i < byteArray.count-2; i += 1 {
                 string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
                 print(string)
             }
-            for var i = 0; i < devices.count; i++ {
+            for var i = 0; i < devices.count; i += 1 {
                 if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
                     var string:String = ""
-                    for var j = 42; j < byteArray.count-2; j++ {
+                    for var j = 42; j < byteArray.count-2; j += 1 {
                         string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                     }
                     if string != "" {
@@ -733,7 +733,7 @@ class IncomingHandler: NSObject {
     //  informacije o parametrima (statusu) urdjaja na MULTISENSORU - MISLIM DA JE OVO U REDU
     func ackADICmdGetInterfaceStatus (byteArray:[Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        for var i = 0; i < self.devices.count; i++ {
+        for var i = 0; i < self.devices.count; i += 1 {
             if self.devices[i].gateway.addressOne == Int(byteArray[2]) && self.devices[i].gateway.addressTwo == Int(byteArray[3]) && self.devices[i].address == Int(byteArray[4]) {
                 let channel = Int(self.devices[i].channel)
                 self.devices[i].currentValue = Int(byteArray[7+channel]) * 255/100 // This calculation is added because app uses 0-255 range, and PLC is sending 0-100
@@ -750,7 +750,7 @@ class IncomingHandler: NSObject {
             for (i, device) in devices.enumerate() {
                 if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) {
                     var string:String = ""
-                    for var j = 12; j < byteArray.count-2; j++ {
+                    for var j = 12; j < byteArray.count-2; j += 1 {
                         string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                     }
                     if string != "" {
@@ -776,7 +776,7 @@ class IncomingHandler: NSObject {
     //  informacije o stanjima na uredjajima
     func ackonowledgementAboutChannelsState (byteArray:[Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        for var i = 0; i < devices.count; i++ {
+        for var i = 0; i < devices.count; i += 1 {
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 let channelNumber = Int(devices[i].channel)
                 
@@ -802,11 +802,11 @@ class IncomingHandler: NSObject {
     func acknowledgementAboutChannelParametar (byteArray:[Byte]){
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
             self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-            for var i = 0; i < devices.count; i++ {
+            for var i = 0; i < devices.count; i += 1 {
                 if  devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
                     // Parse device name
                     var string:String = ""
-                    for var j = 8+47; j < byteArray.count-2; j++ {
+                    for var j = 8+47; j < byteArray.count-2; j += 1 {
                         string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                     }
                     if string != "" {
@@ -867,7 +867,7 @@ class IncomingHandler: NSObject {
     //  informacije o parametrima kanala
     func ackTimerStatus (byteArray:[Byte]){
         fetchEntities("Timer")
-        for var i = 1; i <= 16; i++ {
+        for var i = 1; i <= 16; i += 1 {
             print(timers.count)
             for item in timers {
                 if  item.gateway.addressOne == Int(byteArray[2]) && item.gateway.addressTwo == Int(byteArray[3]) && item.address == Int(byteArray[4]) && item.timerId == Int(i) {
@@ -883,7 +883,7 @@ class IncomingHandler: NSObject {
         print("AOOO 2")
         print(byteArray)
         fetchEntities("Flag")
-        for var i = 1; i <= 32; i++ {
+        for var i = 1; i <= 32; i += 1 {
             print(flags.count)
             for item in flags {
                 if  item.gateway.addressOne == Int(byteArray[2]) && item.gateway.addressTwo == Int(byteArray[3]) && item.address == Int(byteArray[4]) && item.flagId == Int(i) {
@@ -1023,7 +1023,7 @@ class IncomingHandler: NSObject {
             // Miminum is 12, but that is also doubtful...
             if byteArray.count > 12 {
                 var name:String = ""
-                for var j = 11; j < 11+Int(byteArray[10]); j++ {
+                for var j = 11; j < 11+Int(byteArray[10]); j += 1 {
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                 }
                 let id = byteArray[8]
@@ -1031,7 +1031,7 @@ class IncomingHandler: NSObject {
                 var description = ""
                 if byteArray[11+Int(byteArray[10])+2] != 0x00 {
                     let number = 11+Int(byteArray[10])+2
-                    for var j = number; j < number+Int(byteArray[number-1]); j++ {
+                    for var j = number; j < number+Int(byteArray[number-1]); j += 1 {
                         description = description + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                     }
                 }
@@ -1065,7 +1065,7 @@ class IncomingHandler: NSObject {
             var name:String = ""
             
             if 11+Int(byteArray[10]) < byteArray.count {
-                for var j = 11; j < 11+Int(byteArray[10]); j++ {
+                for var j = 11; j < 11+Int(byteArray[10]); j += 1 {
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                 }
             }
@@ -1075,7 +1075,7 @@ class IncomingHandler: NSObject {
             if 11+Int(byteArray[10])+2 < byteArray.count {  //
                 if byteArray[11+Int(byteArray[10])+2] != 0x00 {
                     let number = 11+Int(byteArray[10])+2
-                    for var j = number; j < number+Int(byteArray[number-1]); j++ {
+                    for var j = number; j < number+Int(byteArray[number-1]); j += 1 {
                         description = description + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                     }
                 }

@@ -39,15 +39,15 @@ class SceneParametarVC: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(SceneParametarVC.dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         isBroadcast.tag = 100
         isBroadcast.on = scene!.isBroadcast.boolValue
-        isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        isBroadcast.addTarget(self, action: #selector(SceneParametarVC.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
         isLocalcast.tag = 200
         isLocalcast.on = scene!.isLocalcast.boolValue
-        isLocalcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        isLocalcast.addTarget(self, action: #selector(SceneParametarVC.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
         // Do any additional setup after loading the view.

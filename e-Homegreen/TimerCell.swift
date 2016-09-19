@@ -44,12 +44,12 @@ class TimerCollectionViewCell: UICollectionViewCell {
     func startTimer(){
         if cellTimer.type == "Timer"{
             time?.invalidate()
-            time = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: "countDown:", userInfo:nil, repeats: true)
+            time = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: #selector(TimerCollectionViewCell.countDown(_:)), userInfo:nil, repeats: true)
             
         }
         if cellTimer.type == "Stopwatch/User"{
             time?.invalidate()
-            time = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: "countUp:", userInfo:nil, repeats: true)
+            time = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: #selector(TimerCollectionViewCell.countUp(_:)), userInfo:nil, repeats: true)
             
         }
     }

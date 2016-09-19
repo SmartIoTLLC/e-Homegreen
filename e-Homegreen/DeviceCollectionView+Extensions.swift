@@ -304,7 +304,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.image.tag = indexPath.row
                 cell.image.userInteractionEnabled = true
                 cell.image.addGestureRecognizer(tap)
-                let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
+                let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("cellParametarLongPress:"))
                 longPress.minimumPressDuration = 0.5
                 cell.name.addGestureRecognizer(longPress)
                 cell.name.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap:"))
@@ -314,7 +314,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
                 cell.btnRefresh.tag = indexPath.row
                 //                cell.btnRefresh.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "refreshDevice:"))
-                cell.btnRefresh.addTarget(self, action: "refreshDevice:", forControlEvents:  UIControlEvents.TouchUpInside)
+                cell.btnRefresh.addTarget(self, action: Selector("refreshDevice:"), forControlEvents:  UIControlEvents.TouchUpInside)
                 cell.disabledCellView.hidden = true
                 cell.disabledCellView.layer.cornerRadius = 5
             } else {
@@ -430,10 +430,10 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.imageOnOff.addGestureRecognizer(UITapGestureRecognizer(target:self, action:"setACPowerStatus:"))
             cell.climateName.userInteractionEnabled = true
             
-            let doublePress = UITapGestureRecognizer(target: self, action: "handleTap:")
+            let doublePress = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
             doublePress.numberOfTapsRequired = 2
             cell.climateName.addGestureRecognizer(doublePress)
-            cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
+            cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("handleTap2:")))
             
             let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
             longPress.minimumPressDuration = 0.5
@@ -453,19 +453,19 @@ extension DevicesViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
             cell.populateCellWithData(devices[indexPath.row], tag: indexPath.row)
             // If device is enabled add all interactions
-            let longPressOne:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
+            let longPressOne:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("cellParametarLongPress:"))
             longPressOne.minimumPressDuration = 0.5
-            let longPressTwo:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "cellParametarLongPress:")
+            let longPressTwo:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("cellParametarLongPress:"))
             longPressTwo.minimumPressDuration = 0.5
             cell.disabledCellView.tag = indexPath.row
             
-            var doublePress = UITapGestureRecognizer(target: self, action: "handleTap:")
+            let doublePress = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
             doublePress.numberOfTapsRequired = 2
             cell.sensorTitle.addGestureRecognizer(doublePress)
             
             cell.sensorTitle.addGestureRecognizer(longPressOne)
             cell.disabledCellView.addGestureRecognizer(longPressTwo)
-            cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
+            cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("handleTap2:")))
             if devices[indexPath.row].isEnabled.boolValue {
                 cell.disabledCellView.hidden = true
                 cell.disabledCellView.layer.cornerRadius = 5

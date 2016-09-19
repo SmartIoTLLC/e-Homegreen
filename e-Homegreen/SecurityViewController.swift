@@ -273,7 +273,6 @@ class SecurityViewController: PopoverVC{
     }
     
     func openMode(gestureRecognizer:UITapGestureRecognizer){
-        let tag = gestureRecognizer.view!.tag
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
             showSecurityLocationParametar()
         }
@@ -340,7 +339,6 @@ class SecurityViewController: PopoverVC{
             let location = gestureRecognizer.locationInView(securityCollectionView)
             if let index = securityCollectionView.indexPathForItemAtPoint(location){
                 let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                let defaults = NSUserDefaults.standardUserDefaults()
                 
                 showSecurityPad(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
             }
