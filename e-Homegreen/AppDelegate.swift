@@ -166,7 +166,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func setFilterBySSIDOrByiBeaconAgain () {
         fetchIBeacons()
         loadItems()
-        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "setFilterBySSIDOrByiBeacon", userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(AppDelegate.setFilterBySSIDOrByiBeacon), userInfo: nil, repeats: false)
     }
     
     func setFilterBySSIDOrByiBeacon () {
@@ -479,7 +479,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }()
 
     // MARK: - Core Data Saving support
-
     func saveContext () {
         if let moc = self.managedObjectContext {
             var error: NSError? = nil

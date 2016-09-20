@@ -64,4 +64,18 @@ class DatabaseSecurityController: NSObject {
         return []
     }
     
+    func getAllSecuritiesSortedBy(sortDescriptor: NSSortDescriptor) -> [Security]{
+        if let _ = DatabaseUserController.shared.logedUserOrAdmin(){
+            let fetchRequest = NSFetchRequest(entityName: String(Security))
+            
+            fetchRequest.sortDescriptors = [sortDescriptor]
+            do {
+                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
+                return fetResults!
+            } catch _ as NSError {
+                abort()
+            }
+        }
+        return []
+    }
 }

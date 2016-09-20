@@ -28,185 +28,127 @@ class IncomingHandler: NSObject {
         self.port = port
         gateways = CoreDataController.shahredInstance.fetchGatewaysForHost(host, port: port)
         
-        // NEW
         guard let dataFrame = DataFrame(byteArray: byteArrayToHandle) else {
             return
         }
         //  Checks if there are any gateways
-        if gateways != [] {
+        if gateways.count > 0 {
             self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
             self.byteArray = byteArrayToHandle
-            // Check if byteArray is correct one (check byte also, which is missing)
-            if self.byteArray[0] == 0xFC && self.byteArray[self.byteArray.count-1] == 0x10 {
-                //  ACKNOWLEDGMENT ABOUT NEW DEVICES
-                if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x01 {
-                    self.acknowledgementAboutNewDevices(self.byteArray)
+            if messageIsValid() {
+                if messageIsNewDeviceSalto(){
+                    self.parseMessageNewDevicSalto(self.byteArray)
                 }
-            }
-            if self.byteArray[0] == 0xAA && self.byteArray[self.byteArray.count-1] == 0x10 {
-                print("Uslo je u incoming handler.")
-                
-                //  ACKNOWLEDGMENT ABOUT NEW DEVICES
-                if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x01 && self.byteArray[7] == 0x03 && self.byteArray[8] == 0x03{
-                    self.acknowledgementAboutNewDeviceSalto(self.byteArray)
-                }else{ //  ACKNOWLEDGMENT ABOUT NEW DEVICES
-                    if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x01 {
-                        self.acknowledgementAboutNewDevices(self.byteArray)
+                else{
+                    if messageIsNewDevice() {
+                        self.parseMessageNewDevice(self.byteArray)
                     }
                 }
-                
-                
-                //  ACKNOWLEDGMENT ABOUT NEW DEVICE - SALTO
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x55 {
-                    self.acknowledgementAboutNewDeviceSalto(self.byteArray)
+                if messageIsNewDeviceParameters() {
+                    self.parseMessageNewDeviceParameter(self.byteArray)
                 }
-                
-                // Get device (module not by channel) Main ACK, Category, Zone, Name
-                // It was named curtain in beginning, but it is standard for all modules.
-                if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x0D {
-                    self.acknowledgementAboutCurtainParametar(self.byteArray)
-                }
-                
+            
                 //  ACKNOWLEDGEMENT ABOUT CHANNEL PARAMETAR (Get Channel Parametar) IMENA
-                if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x01 {
-                    self.acknowledgementAboutChannelParametar (self.byteArray)
+                if messageIsChannelParameter() {
+                    self.parseMessageChannelParameter(self.byteArray)
                 }
-                
-                //  ACKNOWLEDGMENT ABOUT CHANNEL STATE (Get Channel State)
-                if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x06 && self.byteArray[7] == 0xFF { // OVO NE MOZE OVAKO DA BUDE
-                    self.ackonowledgementAboutChannelsState(self.byteArray)
-                }
-                if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x06 && self.byteArray[7] == 0xF0 { // OVO NE MOZE OVAKO DA BUDE
-                    self.ackonowledgementAboutCurtainState(self.byteArray)
-                }
-                
-                //  ACKNOWLEDGMENT ABOUT RUNNING TIME (Get Channel On Time Count)
-                if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x0C {
-                    self.ackDimmerGetRunningTime(self.byteArray)
+                if messageIsChannelState() {
+                    self.parseMessageChannelsState(self.byteArray)
                 }
                 
                 //  ACKNOWLEDGMENT ABOUT CHANNEL WARNINGS (Get Channel On Last Current Change Warning)
-                if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x10 {
-                    self.ackChannelWarnings(self.byteArray)
+                if messageIsChannelWarning() {
+                    self.parseMessageChannelWarnings(self.byteArray)
+                }
+                if messageIsCurtainState() {
+                    self.pardeMessageCurtainState(self.byteArray)
                 }
                 
-                //  ACKNOWLEDGMENET ABOUT AC CONTROL PARAMETAR
-                if self.byteArray[5] == 0xF4 && self.byteArray[6] == 0x01 {
-                    self.ackACParametar(self.byteArray)
+                //  ACKNOWLEDGMENT ABOUT RUNNING TIME (Get Channel On Time Count)
+                if messageIsRunningTime() {
+                    self.parseMessageDimmerGetRunningTime(self.byteArray)
                 }
-                //  ACKNOWLEDGMENT ABOUT AC CONTROL STATUS
-                if self.byteArray[5] == 0xF4 && self.byteArray[6] == 0x03 && self.byteArray[7] == 0xFF  {
-                    self.ackACstatus(self.byteArray)
+                if messageIsAcParameter() {
+                    self.parseMessageACParametar(self.byteArray)
                 }
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x02 {
-                    self.ackADICmdGetInterfaceParametar(self.byteArray)
+                if messageIsAcControlStatus() {
+                    self.parseMessageACstatus(self.byteArray)
                 }
-                // - Ovo je izgleda u redu
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 && self.byteArray[7] == 0xFF { // OVO NE MOZE OVAKO DA BUDE
-                    self.ackADICmdGetInterfaceStatus(self.byteArray)
+                if messageIsInterfaceParameter() {
+                    self.parseMessageInterfaceParametar(self.byteArray)
                 }
-                
-                // - Ovo je izgleda u redu
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 {
-                    self.securityFeedbackHandler(self.byteArray)
+                if messageIsInterfaceStatus(){ // OVO NE MOZE OVAKO DA BUDE
+                    self.parseMessageInterfaceStatus(self.byteArray)
                 }
-                
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x03 {
-                    self.ackInterfaceEnableStatus(self.byteArray)
+                if messageIsSecurityFeedbackHandler() {
+                    self.parseMessageSecurityFeedbackHandler(self.byteArray)
                 }
-                
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x04 {
-                    self.ackADICmdGetInterfaceName(self.byteArray)
+                if messageIsInterfaceEnableStatus() {
+                    self.parseMessageInterfaceEnableStatus(self.byteArray)
                 }
-                
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x17 && self.byteArray[7] == 0xFF {
-                    self.ackTimerStatus(self.byteArray)
+                if messageIsInterfaceName() {
+                    self.parseMessageInterfaceName(self.byteArray)
                 }
-                
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x06 && self.byteArray[7] == 0xFF {
-                    self.ackFlagStatus(self.byteArray)
+                if messageIsTimerStatus() {
+                    self.parseMessageTimerStatus(self.byteArray)
                 }
-                if self.byteArray[5] == 0xF2 && self.byteArray[6] == 0x11 && self.byteArray[7] == 0x00 {
-                    self.getZone(self.byteArray)
+                if messageIsFlagStatus() {
+                    self.parseMessageFlagStatus(self.byteArray)
                 }
-                if self.byteArray[5] == 0xF2 && self.byteArray[6] == 0x13 && self.byteArray[7] == 0x00 {
-                    self.getCategories(self.byteArray)
+                if messageIsNewZone() {
+                    self.parseMessageNewZone(self.byteArray)
                 }
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x12 {
-                    self.refreshEvent(self.byteArray)
+                if messageIsNewCategory() {
+                    self.parseMessageNewCategory(self.byteArray)
                 }
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x19 && self.byteArray[7] == 0xFF {
+                if messageIsEventStatus() {
+                    self.parseMessageRefreshEvent(self.byteArray)
+                }
+                if messageIsTimerStatusData() {
                     self.parseTimerStatus(dataFrame)
-                    //FIXME: Popravi me
-                    //                    self.ackTimerStatus(self.byteArray)
                 }
-                
-                // Timer name
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x15 {
-                    self.getTimerName(self.byteArray)
+                if messageIsTimerName() {
+                    self.parseMessageTimerName(self.byteArray)
                 }
-                // Timer parameters
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x13 {
-                    self.getTimerParameters(self.byteArray)
+                if messageIsTimerParameters() {
+                    self.parseMessageTimerParameters(self.byteArray)
                 }
-                
-                // Timer parametar
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x13 {
-                    
+                if messageIsNewScene(){
+                    self.parseMessageNewScene(self.byteArray)
                 }
-                
-                // Scene name and parametar
-                if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x08 {
-                    self.getSceneNameAndParametar(self.byteArray)
+                if messageIsNewSequence() {
+                    self.parseMessageNewSequence(self.byteArray)
                 }
-                
-                // Sequences name and parametar
-                if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x0A {
-                    self.getSequencesNameAndParametar(self.byteArray)
+                if messageIsNewEvent() {
+                    self.parseMessageNewEvent(self.byteArray)
                 }
-                
-                // Events name and parametar
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x08 {
-                    self.getEventNameAndParametar(self.byteArray)
+                if messageIsNewFlag() {
+                    self.parseMessageFlagName(self.byteArray)
                 }
-                
-                // Flags name
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x04 {
-                    self.getFlagName(self.byteArray)
+                if messageIsNewFlagParameter() {
+                    self.parseMessageFlagParameters(self.byteArray)
                 }
-                
-                // Flags parametar
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x02 {
-                    self.getFlagParameters(self.byteArray)
+                if messageIsNewCardName() {
+                    self.parseMessageCardName(self.byteArray)
                 }
-                
-                // Cards name
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x57 {
-                    getCardName(self.byteArray)
+                if messageIsNewCardParameter() {
+                    self.parseMessageCardParameters(self.byteArray)
                 }
-                
-                // Cards parametar
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x56 {
-                    getCardParameters(self.byteArray)
+                if messageIsNewDeviceSaltoParameter() {
+                    self.parseMessageSaltoParameters(self.byteArray)
                 }
-                
-                // Salto parametar
-                if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x55 {
-                    getSaltoParameters(self.byteArray)
-                }
-                
             }
         }
     }
     
     // MARK - Timers
-    func getTimerName(byteArray: [Byte]) {
+    func parseMessageTimerName(byteArray: [Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningTimerNames) {
             var timerId = Int(byteArray[7])
             // Miminum is 12b
             if Int(byteArray[8]) != 0 {
                 var name:String = ""
-                for var j = 9; j < 9+Int(byteArray[8]); j += 1 {
+                for j in 9 ..< 9+Int(byteArray[8]) {
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  timer name
                 }
                 timerId = Int(byteArray[7])
@@ -222,7 +164,7 @@ class IncomingHandler: NSObject {
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveTimerFromGateway, object: self, userInfo: data)
         }
     }
-    func getTimerParameters(byteArray: [Byte]) {
+    func parseMessageTimerParameters(byteArray: [Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningTimerParameters) {
             var timerId = Int(byteArray[7])
             // Miminum is 14b
@@ -246,11 +188,10 @@ class IncomingHandler: NSObject {
         }
     }
     func parseTimerStatus(dataFrame:DataFrame) {
-        fetchEntities(String(Timer))
-        // Check if byte array has minimum requirement 0f 16 times 4 bytes which is 64 OVERALL
-        //        guard dataFrame.INFO.count == 74 else {
-        //            return
-        //        }
+        
+        let sortDescriptor = NSSortDescriptor(key: "timerName", ascending: true)
+        let timers = DatabaseTimersController.shared.getAllTimersSortedBy(sortDescriptor)
+        
         // For loop in data frame INFO block
         for i in 1...16 {
             for item in timers {
@@ -268,7 +209,7 @@ class IncomingHandler: NSObject {
     }
     
     // MARK - Scenes
-    func getSceneNameAndParametar(byteArray: [Byte]) {
+    func parseMessageNewScene(byteArray: [Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningSceneNameAndParameters) {
             var sceneId = Int(byteArray[7])
             // Miminum is 80b
@@ -297,7 +238,7 @@ class IncomingHandler: NSObject {
     }
     
     // MARK - Sequences
-    func getSequencesNameAndParametar(byteArray: [Byte]) {
+    func parseMessageNewSequence(byteArray: [Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningSequencesNameAndParameters) {
             var sequenceId = Int(byteArray[7])
             // Miminum is 82b
@@ -332,7 +273,7 @@ class IncomingHandler: NSObject {
     }
     
     // MARK - Event
-    func getEventNameAndParametar(byteArray: [Byte]) {
+    func parseMessageNewEvent(byteArray: [Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningEventsNameAndParameters) {
             var eventId = Int(byteArray[7])
             // Miminum is 14b
@@ -363,13 +304,13 @@ class IncomingHandler: NSObject {
     }
     
     // MARK - Flags
-    func getFlagName(byteArray: [Byte]) {
+    func parseMessageFlagName(byteArray: [Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningFlagNames) {
             var flagId = Int(byteArray[7]) - 100
             // Miminum is 12b
             if Int(byteArray[8]) != 0 {
                 var name:String = ""
-                for var j = 9; j < 9+Int(byteArray[8]); j += 1 {
+                for j in 9 ..< 9+Int(byteArray[8]) {
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  timer name
                 }
                 flagId = Int(byteArray[7]) - 100
@@ -385,7 +326,7 @@ class IncomingHandler: NSObject {
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveFlagFromGateway, object: self, userInfo: data)
         }
     }
-    func getFlagParameters(byteArray: [Byte]) {
+    func parseMessageFlagParameters(byteArray: [Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningFlagParameters) {
             var flagId = Int(byteArray[7]) - 100
             // Miminum is 14b
@@ -409,7 +350,7 @@ class IncomingHandler: NSObject {
     }
     
     // MARK - Cards
-    func getCardName(byteArray: [Byte]) {
+    func parseMessageCardName(byteArray: [Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningCardNames) {
             let id = Int(byteArray[8])
             // Miminum is 12b
@@ -432,7 +373,7 @@ class IncomingHandler: NSObject {
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveCardFromGateway, object: self, userInfo: data)
         }
     }
-    func getCardParameters(byteArray: [Byte]) {
+    func parseMessageCardParameters(byteArray: [Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningCardParameters) {
             let id = Int(byteArray[8])
             // Miminum is 14b
@@ -458,15 +399,15 @@ class IncomingHandler: NSObject {
         }
     }
     
-    // MARK - Salto
-    // This response message contains two bytes which carry oinformation about which channel (device) is selected.
-    // There can be max 4 devices for Salto (on that address). Which ever is selected in admin panel (1...16) must be shown and device channel is set to that number
-    // For example: If 1 and 16 is selected, we will have two bytes with tat information 0x80 0x01, and there should be four devices: 
-    // Lock 1: channel 1
-    // Lock 2: channel 16
-    // Lock 3: chaneel 0
-    // Lock 4: channel 0
-    func getSaltoParameters(byteArray: [Byte]){
+    func parseMessageSaltoParameters(byteArray: [Byte]){
+        // MARK - Salto
+        // This response message contains two bytes which carry information about which channel (device) is selected.
+        // There can be max 4 devices for Salto (on that address). Which ever is selected in admin panel (1...16) must be shown and device channel is set to that number
+        // For example: If 1 and 16 is selected, we will have two bytes with tat information 0x80 0x01, and there should be four devices:
+        // Lock 1: channel 1
+        // Lock 2: channel 16
+        // Lock 3: chaneel 0
+        // Lock 4: channel 0
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
             self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
             // Get two bytes that carry info
@@ -493,7 +434,7 @@ class IncomingHandler: NSObject {
             }
             var devicesForSalto: [Device] = []
             // Get needed devices and be sure that everything is in good order
-            for var i = 0; i < devices.count; i++ {
+            for i in 1..<devices.count{
                 if  devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]){
                     devicesForSalto.append(devices[i])
                 }
@@ -503,7 +444,7 @@ class IncomingHandler: NSObject {
             })
             
             // Set new parameters for device
-            for (index, device) in devicesForSalto.enumerate() {
+            for device in devicesForSalto {
                 if arrayOfActiveChannels.count > 0{
                     device.isEnabled = NSNumber(bool: true)
                     device.isVisible = NSNumber(bool: true)
@@ -522,15 +463,11 @@ class IncomingHandler: NSObject {
             CoreDataController.shahredInstance.saveChanges()
         }
     }
-    
-    func refreshEvent(byteArray:[Byte]){
+    func parseMessageRefreshEvent(byteArray:[Byte]){
         let data = ["id":Int(byteArray[7]), "value":Int(byteArray[8])]
         NSNotificationCenter.defaultCenter().postNotificationName("ReportEvent", object: self, userInfo: data)
     }
-    func refreshSecurityStatus (byteArray:[Byte]) {
-        
-    }
-    func ackChannelWarnings (byteArray:[Byte]) {
+    func parseMessageChannelWarnings (byteArray:[Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
         for device in devices {
             if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) {
@@ -542,9 +479,9 @@ class IncomingHandler: NSObject {
         CoreDataController.shahredInstance.saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
-    func ackACstatus (byteArray:[Byte]) {
+    func parseMessageACstatus (byteArray:[Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        for var i = 0; i < devices.count; i++ {
+        for i in 0..<devices.count{
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 let channel = Int(devices[i].channel)
                 devices[i].currentValue = Int(byteArray[8+13*(channel-1)])
@@ -574,9 +511,9 @@ class IncomingHandler: NSObject {
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshClimate, object: self, userInfo: nil)
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
-    func ackDimmerGetRunningTime (byteArray:[Byte]) {
+    func parseMessageDimmerGetRunningTime (byteArray:[Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        for var i = 0; i < devices.count; i++ {
+        for i in  0..<devices.count{
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 if byteArray[7] != 0xFF && byteArray[7] != 0xF0 {
                     devices[i].runningTime = returnRunningTime([byteArray[8], byteArray[9], byteArray[10], byteArray[11]])
@@ -594,34 +531,17 @@ class IncomingHandler: NSObject {
         CoreDataController.shahredInstance.saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
-    
-    func returnRunningTime (runningTimeByteArray:[Byte]) -> String {
-        print(runningTimeByteArray)
-        let x = Int(UInt.convertFourBytesToUInt(runningTimeByteArray))
-        //        var z = UnsafePointer<UInt16>(runningTimeByteArray).memory
-        //        var y = Int(runningTimeByteArray[0])*1*256 + Int(runningTimeByteArray[1])*1*256 + Int(runningTimeByteArray[2])*1*256 + Int(runningTimeByteArray[3])
-        var seconds = x / 10
-        let hours = seconds / 3600
-        let minutes = (seconds % 3600) / 60
-        seconds = seconds % 60
-        let secdiv = (x % 60) % 10
-        return "\(returnTwoPlaces(hours)):\(returnTwoPlaces(minutes)):\(returnTwoPlaces(seconds)),\(secdiv)s"
-    }
-    
-    func returnTwoPlaces (number:Int) -> String {
-        return String(format: "%02d",number)
-    }
-    
+
     //  informacije o imenima uredjaja na MULTISENSORU
-    func ackADICmdGetInterfaceName (byteArray:[Byte]) {
+    func parseMessageInterfaceName (byteArray:[Byte]) {
         print(NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName))
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
             self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
             var string:String = ""
-            for var j = 9; j < byteArray.count-2; j++ {
+            for j in 9..<byteArray.count-2{
                 string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
             }
-            for var i = 0; i < devices.count; i++ {
+            for i in  0..<devices.count{
                 if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
                     //                var channel = Int(devices[i].channel)
                     if string != "" {
@@ -638,7 +558,7 @@ class IncomingHandler: NSObject {
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
     }
-    func ackInterfaceEnableStatus (byteArray: [Byte]) {
+    func parseMessageInterfaceEnableStatus (byteArray: [Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
         for device in devices {
             if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) && device.channel == Int(byteArray[7]) {
@@ -652,7 +572,7 @@ class IncomingHandler: NSObject {
         CoreDataController.shahredInstance.saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
-    func ackADICmdGetInterfaceParametar (byteArray:[Byte]) {
+    func parseMessageInterfaceParametar (byteArray:[Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
         var counter = 0
         for device in devices {
@@ -685,19 +605,19 @@ class IncomingHandler: NSObject {
         CoreDataController.shahredInstance.saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
-    func ackACParametar (byteArray:[Byte]) {
+    func parseMessageACParametar (byteArray:[Byte]) {
         print(NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName))
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
             self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
             var string:String = ""
-            for var i = 9; i < byteArray.count-2; i++ {
+            for i in 9..<byteArray.count-2{
                 string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))))" //  device name
                 print(string)
             }
-            for var i = 0; i < devices.count; i++ {
+            for i in 0..<devices.count {
                 if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
                     var string:String = ""
-                    for var j = 42; j < byteArray.count-2; j++ {
+                    for j in 42..<byteArray.count-2{
                         string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                     }
                     if string != "" {
@@ -731,9 +651,9 @@ class IncomingHandler: NSObject {
     }
     
     //  informacije o parametrima (statusu) urdjaja na MULTISENSORU - MISLIM DA JE OVO U REDU
-    func ackADICmdGetInterfaceStatus (byteArray:[Byte]) {
+    func parseMessageInterfaceStatus (byteArray:[Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        for var i = 0; i < self.devices.count; i++ {
+        for i in 0..<self.devices.count{
             if self.devices[i].gateway.addressOne == Int(byteArray[2]) && self.devices[i].gateway.addressTwo == Int(byteArray[3]) && self.devices[i].address == Int(byteArray[4]) {
                 let channel = Int(self.devices[i].channel)
                 self.devices[i].currentValue = Int(byteArray[7+channel]) * 255/100 // This calculation is added because app uses 0-255 range, and PLC is sending 0-100
@@ -744,13 +664,13 @@ class IncomingHandler: NSObject {
         CoreDataController.shahredInstance.saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
-    func acknowledgementAboutCurtainParametar (byteArray:[Byte]) {
+    func parseMessageNewDeviceParameter(byteArray:[Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
             self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-            for (i, device) in devices.enumerate() {
+            for device in devices {
                 if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) {
                     var string:String = ""
-                    for var j = 12; j < byteArray.count-2; j++ {
+                    for j in 12..<(byteArray.count-2) {
                         string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                     }
                     if string != "" {
@@ -763,23 +683,18 @@ class IncomingHandler: NSObject {
                     device.parentZoneId = Int(byteArray[10])
                     // When we change category it will reset images
                     device.resetImages(appDel.managedObjectContext!)
-                    //TODO: problem with modul names and response for finding names
-                    //                let data = ["deviceIndexForFoundName":i]
-                    //                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDeviceName, object: self, userInfo: data)
                 }
-                
             }
             CoreDataController.shahredInstance.saveChanges()
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
     }
     //  informacije o stanjima na uredjajima
-    func ackonowledgementAboutChannelsState (byteArray:[Byte]) {
+    func parseMessageChannelsState (byteArray:[Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        for var i = 0; i < devices.count; i++ {
+        for i in 0..<devices.count{
             if devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) {
                 let channelNumber = Int(devices[i].channel)
-                
                 // Problem: If device is dimmer, then value that is received is in range from 0-100. In rest of the cases value is 0x00 of 0xFF (0 or 255)
                 // That is why we must check whether device value is >100. If value is greater than 100 that means that it is not dimmer and the only value greater than 100 can be 255
                 if Int(byteArray[8+5*(channelNumber-1)]) > 100 {
@@ -799,14 +714,14 @@ class IncomingHandler: NSObject {
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
     //  informacije o parametrima kanala
-    func acknowledgementAboutChannelParametar (byteArray:[Byte]){
+    func parseMessageChannelParameter(byteArray:[Byte]){
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDeviceName) {
             self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-            for var i = 0; i < devices.count; i++ {
+            for i in 0..<devices.count{
                 if  devices[i].gateway.addressOne == Int(byteArray[2]) && devices[i].gateway.addressTwo == Int(byteArray[3]) && devices[i].address == Int(byteArray[4]) && devices[i].channel == Int(byteArray[7]) {
                     // Parse device name
                     var string:String = ""
-                    for var j = 8+47; j < byteArray.count-2; j++ {
+                    for j in (8+47)..<(byteArray.count-2){
                         string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                     }
                     if string != "" {
@@ -865,9 +780,11 @@ class IncomingHandler: NSObject {
     //  0xF0 Elapsed = 240
     //  0xEE Suspend = 238
     //  informacije o parametrima kanala
-    func ackTimerStatus (byteArray:[Byte]){
-        fetchEntities("Timer")
-        for var i = 1; i <= 16; i++ {
+    func parseMessageTimerStatus (byteArray:[Byte]){
+        let sortDescriptor = NSSortDescriptor(key: "timerName", ascending: true)
+        let timers = DatabaseTimersController.shared.getAllTimersSortedBy(sortDescriptor)
+        
+        for i in 1...16 {
             print(timers.count)
             for item in timers {
                 if  item.gateway.addressOne == Int(byteArray[2]) && item.gateway.addressTwo == Int(byteArray[3]) && item.address == Int(byteArray[4]) && item.timerId == Int(i) {
@@ -879,11 +796,9 @@ class IncomingHandler: NSObject {
         CoreDataController.shahredInstance.saveChanges()
     }
     //  informacije o parametrima kanala
-    func ackFlagStatus (byteArray:[Byte]){
-        print("AOOO 2")
-        print(byteArray)
-        fetchEntities("Flag")
-        for var i = 1; i <= 32; i++ {
+    func parseMessageFlagStatus (byteArray:[Byte]){
+        let flags = DatabaseFlagsController.shared.getAllFlags()
+        for i in 1...32 {
             print(flags.count)
             for item in flags {
                 if  item.gateway.addressOne == Int(byteArray[2]) && item.gateway.addressTwo == Int(byteArray[3]) && item.address == Int(byteArray[4]) && item.flagId == Int(i) {
@@ -899,13 +814,11 @@ class IncomingHandler: NSObject {
             }
         }
         CoreDataController.shahredInstance.saveChanges()
-        
     }
-    
-    // Security
-    func securityFeedbackHandler (byteArray:[Byte]) {
-        parseMessage(byteArray)
-        fetchEntities("Security")
+    func parseMessageSecurityFeedbackHandler(byteArray:[Byte]) {
+        let sortDescriptor = NSSortDescriptor(key: "securityName", ascending: true)
+        let securities = DatabaseSecurityController.shared.getAllSecuritiesSortedBy(sortDescriptor)
+        
         
         //FIXME: Pucalo je security zato sto nema u svim gatewayovima security
         if securities.count != 0 {
@@ -916,7 +829,6 @@ class IncomingHandler: NSObject {
                 if byteArray[7] == 0x02 {
                     switch byteArray[8] {
                     case 0x00:
-                        
                         defaults.setValue(SecurityControlMode.Disarm, forKey: UserDefaults.Security.SecurityMode)
                     case 0x01:
                         defaults.setValue(SecurityControlMode.Away, forKey: UserDefaults.Security.SecurityMode)
@@ -958,72 +870,13 @@ class IncomingHandler: NSObject {
         }
     }
     
-    var timers:[Timer] = []
-    var flags:[Flag] = []
-    var securities:[Security] = []
-    var events:[Event] = []
-    func fetchEntities (whatToFetch:String) {
-        if whatToFetch == String(Flag) {
-            let fetchRequest = NSFetchRequest(entityName: String(Flag))
-            let sortDescriptors = NSSortDescriptor(key: "flagName", ascending: true)
-            fetchRequest.sortDescriptors = [sortDescriptors]
-            do {
-                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Flag]
-                print(results.count)
-                flags = results
-            } catch let catchedError as NSError {
-                error = catchedError
-            }
-            return
-        }
-        
-        if whatToFetch == String(Timer) {
-            let fetchRequest = NSFetchRequest(entityName: String(Timer))
-            let sortDescriptors = NSSortDescriptor(key: "timerName", ascending: true)
-            fetchRequest.sortDescriptors = [sortDescriptors]
-            do {
-                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Timer]
-                timers = results
-            } catch let catchedError as NSError {
-                error = catchedError
-            }
-            return
-        }
-        if whatToFetch == String(Security){
-            let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: String(Security))
-            let sortDescriptorTwo = NSSortDescriptor(key: "securityName", ascending: true)
-            fetchRequest.sortDescriptors = [sortDescriptorTwo]
-            do {
-                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Security]
-                securities = fetResults!
-            } catch let error1 as NSError {
-                error = error1
-                print("Unresolved error \(error), \(error!.userInfo)")
-                abort()
-            }
-        }
-        if whatToFetch == String(Event) {
-            let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: String(Event))
-            let sortDescriptorTwo = NSSortDescriptor(key: "name", ascending: true)
-            fetchRequest.sortDescriptors = [sortDescriptorTwo]
-            do {
-                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Event]
-                events = fetResults!
-            } catch let error1 as NSError {
-                error = error1
-                print("Unresolved error \(error), \(error!.userInfo)")
-                abort()
-            }
-        }
-    }
-    
     // MARK: - Get zones and categories
-    func getZone(byteArray:[Byte]) {
+    func parseMessageNewZone(byteArray:[Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForZones) {
             // Miminum is 12, but that is also doubtful...
             if byteArray.count > 12 {
                 var name:String = ""
-                for var j = 11; j < 11+Int(byteArray[10]); j++ {
+                for j in 11..<(11+Int(byteArray[10])){
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                 }
                 let id = byteArray[8]
@@ -1031,7 +884,7 @@ class IncomingHandler: NSObject {
                 var description = ""
                 if byteArray[11+Int(byteArray[10])+2] != 0x00 {
                     let number = 11+Int(byteArray[10])+2
-                    for var j = number; j < number+Int(byteArray[number-1]); j++ {
+                    for j in number..<(number+Int(byteArray[number-1])){
                         description = description + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                     }
                 }
@@ -1060,12 +913,12 @@ class IncomingHandler: NSObject {
             }
         }
     }
-    func getCategories(byteArray:[Byte]) {
+    func parseMessageNewCategory(byteArray:[Byte]) {
         if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForCategories) {
             var name:String = ""
             
             if 11+Int(byteArray[10]) < byteArray.count {
-                for var j = 11; j < 11+Int(byteArray[10]); j++ {
+                for j in 11..<(11+Int(byteArray[10])){
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                 }
             }
@@ -1075,7 +928,7 @@ class IncomingHandler: NSObject {
             if 11+Int(byteArray[10])+2 < byteArray.count {  //
                 if byteArray[11+Int(byteArray[10])+2] != 0x00 {
                     let number = 11+Int(byteArray[10])+2
-                    for var j = number; j < number+Int(byteArray[number-1]); j++ {
+                    for j in number..<(number+Int(byteArray[number-1])){
                         description = description + "\(Character(UnicodeScalar(Int(byteArray[j]))))" //  device name
                     }
                 }
@@ -1104,7 +957,7 @@ class IncomingHandler: NSObject {
     }
     
     // Helper
-    func parseMessage(byteArray: [UInt8]){
+    func parseMessageAndPrint(byteArray: [UInt8]){
         let byteLength = byteArray.count
         let SOI = byteArray[0]
         let LEN = byteArray[1]
@@ -1121,9 +974,235 @@ class IncomingHandler: NSObject {
         let EOI = byteArray[byteArray.count-1]
         
         print("SOI: \(SOI)")
+        print("LEN: \(LEN)")
         print("ADDR: \(ADDR)")
         print("CID1: \(CID1)")
         print("CID2: \(CID2)")
         print("INFO: \(INFO)")
+        print("CHK: \(CHK)")
+        print("EOI: \(EOI)")
+    }
+    func returnRunningTime (runningTimeByteArray:[Byte]) -> String {
+        print(runningTimeByteArray)
+        let x = Int(UInt.convertFourBytesToUInt(runningTimeByteArray))
+        //        var z = UnsafePointer<UInt16>(runningTimeByteArray).memory
+        //        var y = Int(runningTimeByteArray[0])*1*256 + Int(runningTimeByteArray[1])*1*256 + Int(runningTimeByteArray[2])*1*256 + Int(runningTimeByteArray[3])
+        var seconds = x / 10
+        let hours = seconds / 3600
+        let minutes = (seconds % 3600) / 60
+        seconds = seconds % 60
+        let secdiv = (x % 60) % 10
+        return "\(returnTwoPlaces(hours)):\(returnTwoPlaces(minutes)):\(returnTwoPlaces(seconds)),\(secdiv)s"
+    }
+    func returnTwoPlaces (number:Int) -> String {
+        return String(format: "%02d",number)
+    }
+    func returnIncommingMessageType(){
+        
+    }
+}
+
+// Recieved message helpers
+extension IncomingHandler {
+    func messageIsValid() -> Bool{
+        if self.byteArray[0] == 0xAA && self.byteArray[self.byteArray.count-1] == 0x10 {
+            return true
+        }
+        return false
+    }
+    
+    func messageIsNewDevice() -> Bool {
+        if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x01{
+            return true
+        }
+        return false
+    }
+    func messageIsNewDeviceParameters() -> Bool {
+        if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x0D {
+            return true
+        }
+        return false
+    }
+    func messageIsNewDeviceSalto() -> Bool {
+        if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x01 && self.byteArray[7] == 0x03 && self.byteArray[8] == 0x03{
+            return true
+        }
+        return false
+    }
+    func messageIsNewDeviceSaltoParameter() -> Bool {
+        if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x55 {
+            return true
+        }
+        return false
+    }
+    
+    func messageIsChannelParameter() -> Bool {
+        if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x01 {
+            return true
+        }
+        return false
+    }
+    func messageIsChannelState() -> Bool {
+        if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x06 && self.byteArray[7] == 0xFF {
+            return true
+        }
+        return false
+    }
+    
+    func messageIsCurtainState() -> Bool {
+        if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x06 && self.byteArray[7] == 0xF0 {
+            return true
+        }
+        return false
+    }
+    func messageIsRunningTime() -> Bool {
+        if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x0C {
+            return true
+        }
+        return false
+    }
+    func messageIsChannelWarning() -> Bool {
+        if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x10 {
+            return true
+        }
+        return false
+    }
+    
+    func messageIsAcParameter() -> Bool {
+        if self.byteArray[5] == 0xF4 && self.byteArray[6] == 0x01 {
+            return true
+        }
+        return false
+    }
+    func messageIsAcControlStatus() -> Bool {
+        if self.byteArray[5] == 0xF4 && self.byteArray[6] == 0x03 && self.byteArray[7] == 0xFF {
+            return true
+        }
+        return false
+    }
+    func messageIsInterfaceParameter() -> Bool {
+        if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x02 {
+            return true
+        }
+        return false
+    }
+    func messageIsInterfaceStatus() -> Bool {
+        if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 && self.byteArray[7] == 0xFF {
+            return true
+        }
+        return false
+    }
+    func messageIsSecurityFeedbackHandler() -> Bool {
+        if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x01 {
+            return true
+        }
+        return false
+    }
+    func messageIsInterfaceEnableStatus() -> Bool{
+        if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x03 {
+            return true
+        }
+        return false
+    }
+    func messageIsInterfaceName() -> Bool {
+        if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x04{
+            return true
+        }
+        return false
+    }
+    
+    func messageIsTimerStatus() -> Bool {
+        if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x17 && self.byteArray[7] == 0xFF {
+            return true
+        }
+        return false
+    }
+    func messageIsTimerStatusData() -> Bool {
+        if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x19 && self.byteArray[7] == 0xFF {
+            return true
+        }
+        return false
+    }
+    func messageIsTimerName() -> Bool{
+        if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x15 {
+            return true
+        }
+        return false
+    }
+    func messageIsTimerParameters() -> Bool {
+        if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x13{
+            return true
+        }
+        return false
+    }
+    
+    func messageIsFlagStatus() -> Bool {
+        if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x06 && self.byteArray[7] == 0xFF {
+            return true
+        }
+        return false
+    }
+    func messageIsNewFlag() -> Bool {
+        if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x04 {
+            return true
+        }
+        return false
+    }
+    func messageIsNewFlagParameter() -> Bool {
+        if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x02 {
+            return true
+        }
+        return false
+    }
+    
+    func messageIsEventStatus() -> Bool {
+        if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x12 {
+            return true
+        }
+        return false
+    }
+    func messageIsNewEvent() -> Bool {
+        if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x08 {
+            return true
+        }
+        return false
+    }
+    
+    func messageIsNewCardName() -> Bool {
+        if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x57 {
+            return true
+        }
+        return false
+    }
+    func messageIsNewCardParameter() -> Bool {
+        if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x56 {
+            return true
+        }
+        return false
+    }
+    
+    func messageIsNewZone() -> Bool {
+        if self.byteArray[5] == 0xF2 && self.byteArray[6] == 0x11 && self.byteArray[7] == 0x00 {
+            return true
+        }
+        return false
+    }
+    func messageIsNewCategory() -> Bool {
+        if self.byteArray[5] == 0xF2 && self.byteArray[6] == 0x13 && self.byteArray[7] == 0x00 {
+            return true
+        }
+        return false
+    }
+    func messageIsNewScene() -> Bool {
+        if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x08 {
+            return true
+        }
+        return false
+    }
+    func messageIsNewSequence() -> Bool {
+        if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x0A {
+            return true
+        }
+        return false
     }
 }

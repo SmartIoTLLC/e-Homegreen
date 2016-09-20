@@ -54,6 +54,21 @@ class DatabaseFlagsController: NSObject {
         }
         return []
     }
+    func getAllFlags() -> [Flag] {
+        if let _ = DatabaseUserController.shared.logedUserOrAdmin(){
+            let fetchRequest = NSFetchRequest(entityName: "Flag")
+            let sortDescriptors = NSSortDescriptor(key: "flagName", ascending: true)
+            fetchRequest.sortDescriptors = [sortDescriptors]
+            
+            do {
+                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Flag]
+                return fetResults!
+            } catch _ as NSError {
+                abort()
+            }
+        }
+        return []
+    }
     
     func createFlag(flagId: Int, flagName: String?, moduleAddress: Int, gateway: Gateway, levelId: Int?, selectedZoneId: Int?, categoryId: Int?){
         var itExists = false

@@ -232,34 +232,13 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         toTextField.text = ""
     }
     @IBAction func btnRemove(sender: UIButton) {
-        
-//        let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to delete all scenes?", preferredStyle: .ActionSheet)
-//        let deleteAction = UIAlertAction(title: "Delete", style: .Default, handler: {
-//            (alert: UIAlertAction!) -> Void in
-//            
-//            if self.timers.count != 0 {
-//                for timer in self.timers {
-//                    self.appDel.managedObjectContext!.deleteObject(timer)
-//                }
-//            }
-//            CoreDataController.shahredInstance.saveChanges()
-//            self.refreshTimerList()
-//            self.view.endEditing(true)
-//        })
-//        
-//        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-//            (alert: UIAlertAction!) -> Void in
-//            print("Cancelled")
-//        })
-//        
-//        if let popoverController = optionMenu.popoverPresentationController {
-//            popoverController.sourceView = sender
-//            popoverController.sourceRect = sender.bounds
-//        }
-//        
-//        optionMenu.addAction(deleteAction)
-//        optionMenu.addAction(cancelAction)
-//        self.presentViewController(optionMenu, animated: true, completion: nil)
+        showAlertView(sender, message: "Are you sure you want to delete all scenes?") { (action) in
+            if action == ReturnedValueFromAlertView.Delete {
+                DatabaseTimersController.shared.deleteAllTimers(self.gateway)
+                self.refreshTimerList()
+                self.view.endEditing(true)
+            }
+        }
     }
     @IBAction func btnLevel(sender: UIButton) {
         button = sender
@@ -314,7 +293,6 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     var indexOfNamesToBeSearched = 0
     var arrayOfParametersToBeSearched = [Int]()
     var indexOfParametersToBeSearched = 0
-    var alertController:UIAlertController?
     var progressBarScreenTimerNames: ProgressBarVC?
     var shouldFindTimerParameters = false
     
@@ -644,7 +622,6 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             _ = NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(ScanTimerViewController.findParametarsForTimer), userInfo: nil, repeats: false)
         }
     }
-    
 }
 
 extension ScanTimerViewController: UITextFieldDelegate{
@@ -655,7 +632,6 @@ extension ScanTimerViewController: UITextFieldDelegate{
 }
 
 extension ScanTimerViewController: SceneGalleryDelegate{
-    
     func backImage(image: Image, imageIndex: Int) {
         if imageIndex == 1 {
             defaultImageOne = nil
@@ -701,7 +677,6 @@ extension ScanTimerViewController: SceneGalleryDelegate{
 }
 
 extension ScanTimerViewController: UITableViewDataSource {
-    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         IDedit.text = "\(timers[indexPath.row].timerId)"
         nameEdit.text = "\(timers[indexPath.row].timerName)"
@@ -852,11 +827,9 @@ extension ScanTimerViewController: UITableViewDataSource {
 }
 
 class TimerCell:UITableViewCell{
-    
     @IBOutlet weak var labelID: UILabel!
     @IBOutlet weak var labelName: UILabel!
     @IBOutlet weak var imageOne: UIImageView!
     @IBOutlet weak var imageTwo: UIImageView!
     @IBOutlet weak var address: UILabel!
-    
 }

@@ -159,6 +159,20 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         rangeFrom.text = ""
         rangeTo.text = ""
     }
+    @IBAction func deleteAll(sender: UIButton) {
+        showAlertView(sender, message: "Are you sure you want to delete all devices?") { (action) in
+            if action == ReturnedValueFromAlertView.Delete{
+                DatabaseDeviceController.shared
+                for item in self.devices {
+                    if item.gateway.objectID == self.gateway.objectID {
+                        self.appDel.managedObjectContext!.deleteObject(item)
+                    }
+                }
+                CoreDataController.shahredInstance.saveChanges()
+                self.refreshDeviceList()
+            }
+        }
+    }
     
     // MARK: - FINDING DEVICES FOR GATEWAY
     var searchDeviceTimer:NSTimer?
@@ -389,20 +403,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
         CoreDataController.shahredInstance.saveChanges()
         //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanDevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
-    }
-    
-    @IBAction func deleteAll(sender: UIButton) {
-        showAlertView(sender, message: "Are you sure you want to delete all devices?") { (action) in
-            if action == ReturnedValueFromAlertView.Delete{
-                for item in self.devices {
-                    if item.gateway.objectID == self.gateway.objectID {
-                        self.appDel.managedObjectContext!.deleteObject(item)
-                    }
-                }
-                CoreDataController.shahredInstance.saveChanges()
-                self.refreshDeviceList()
-            }
-        }
     }
     
     // MARK: - FINDING NAMES FOR DEVICE
