@@ -400,7 +400,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     func findParametarsForFlag() {
         progressBarScreenFlagNames?.dissmissProgressBar()
         progressBarScreenFlagNames = nil
-        do {
+        
             arrayOfParametersToBeSearched = [Int]()
             indexOfParametersToBeSearched = 0
             
@@ -456,11 +456,6 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
                 sendCommandForFindingParameterWithFlagAddress(parameterIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
                 print("Command sent for parameter from FindParameter")
             }
-        } catch let error as InputError {
-            self.view.makeToast(message: error.description)
-        } catch {
-            self.view.makeToast(message: "Something went wrong.")
-        }
     }
     // Called from findParametarsForTimer or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingParameterWithTimerAddress for that specific timer id.

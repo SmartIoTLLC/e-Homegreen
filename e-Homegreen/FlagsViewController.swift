@@ -206,7 +206,7 @@ extension FlagsViewController: FilterPullDownDelegate{
 
 extension FlagsViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let flagId = flags[indexPath.row].flagId as? Int {
+        let flagId = Int(flags[indexPath.row].flagId)
             var address:[UInt8] = []
             if flags[indexPath.row].isBroadcast.boolValue {
                 address = [0xFF, 0xFF, 0xFF]
@@ -220,7 +220,7 @@ extension FlagsViewController: UICollectionViewDelegate, UICollectionViewDelegat
             } else {
                 SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x00), gateway: flags[indexPath.row].gateway)
             }
-        }
+        
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return sectionInsets
@@ -252,11 +252,7 @@ extension FlagsViewController: UICollectionViewDataSource {
     func openCellParametar (gestureRecognizer: UILongPressGestureRecognizer){
         let tag = gestureRecognizer.view!.tag
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
-            let location = gestureRecognizer.locationInView(flagsCollectionView)
-            if let index = flagsCollectionView.indexPathForItemAtPoint(location){
-                let cell = flagsCollectionView.cellForItemAtIndexPath(index)
-                showFlagParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - flagsCollectionView.contentOffset.y), flag: flags[tag])
-            }
+            showFlagParametar(flags[tag])
         }
     }
     
@@ -294,21 +290,21 @@ extension FlagsViewController: UICollectionViewDataSource {
     
     func setFlag (gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
-            if let flagId = flags[tag].flagId as? Int {
-                var address:[UInt8] = []
-                if flags[tag].isBroadcast.boolValue {
-                    address = [0xFF, 0xFF, 0xFF]
-                } else if flags[tag].isLocalcast.boolValue {
-                    address = [UInt8(Int(flags[tag].gateway.addressOne)), UInt8(Int(flags[tag].gateway.addressTwo)), 0xFF]
-                } else {
-                    address = [UInt8(Int(flags[tag].gateway.addressOne)), UInt8(Int(flags[tag].gateway.addressTwo)), UInt8(Int(flags[tag].address))]
-                }
-                if flags[tag].setState.boolValue {
-                    SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x01), gateway: flags[tag].gateway)
-                } else {
-                    SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x00), gateway: flags[tag].gateway)
-                }
+            let flagId = Int(flags[tag].flagId)
+            var address:[UInt8] = []
+            if flags[tag].isBroadcast.boolValue {
+                address = [0xFF, 0xFF, 0xFF]
+            } else if flags[tag].isLocalcast.boolValue {
+                address = [UInt8(Int(flags[tag].gateway.addressOne)), UInt8(Int(flags[tag].gateway.addressTwo)), 0xFF]
+            } else {
+                address = [UInt8(Int(flags[tag].gateway.addressOne)), UInt8(Int(flags[tag].gateway.addressTwo)), UInt8(Int(flags[tag].address))]
             }
+            if flags[tag].setState.boolValue {
+                SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x01), gateway: flags[tag].gateway)
+            } else {
+                SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x00), gateway: flags[tag].gateway)
+            }
+            
         }
     }
     

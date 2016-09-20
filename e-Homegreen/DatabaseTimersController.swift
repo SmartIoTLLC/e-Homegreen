@@ -190,7 +190,7 @@ class DatabaseTimersController: NSObject {
     func addTimer(timerId: Int, timerName: String?, moduleAddress: Int, gateway: Gateway, type: Int?, levelId: Int?, selectedZoneId: Int?, categoryId: Int?, isBroadcast:Bool = true, isLocalcast:Bool = true, sceneImageOneDefault:String? = "15 Timer - CLock - 00", sceneImageTwoDefault:String? = "15 Timer - CLock - 01", sceneImageOneCustom:String? = nil, sceneImageTwoCustom:String? = nil, imageDataOne:NSData? = nil, imageDataTwo:NSData? = nil){
         var itExists = false
         var existingTimer:Timer?
-        var timerArray = fetchTimerWithId(timerId, gateway: gateway, moduleAddress: moduleAddress)
+        let timerArray = fetchTimerWithId(timerId, gateway: gateway, moduleAddress: moduleAddress)
         if timerArray.count > 0 {
             existingTimer = timerArray.first
             itExists = true

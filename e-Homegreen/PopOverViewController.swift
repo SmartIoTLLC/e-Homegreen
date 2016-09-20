@@ -16,14 +16,14 @@ protocol PopOverIndexDelegate
     func nameAndId(name : String, id:String)
 }
 
-class SecurityFeedback {
-    var name:String
-    var gateway:Gateway
-    init(name: String, gateway:Gateway) {
-        self.name = name
-        self.gateway = gateway
-    }
-}
+//class SecurityFeedback {
+//    var name:String
+//    var gateway:Gateway
+//    init(name: String, gateway:Gateway) {
+//        self.name = name
+//        self.gateway = gateway
+//    }
+//}
 
 struct PopOverItem {
     var name:String

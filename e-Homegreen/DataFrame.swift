@@ -52,7 +52,7 @@ extension DataFrame {
         // Check if penultimate byte is ok
         let chk = Int(byteArray[byteArray.count-2])
         var sum = 0
-        for var i = 1; i < byteArray.count - 2; i++ {
+        for i in 1 ..< byteArray.count - 2 {
             sum += Int(byteArray[i])
         }
         guard chk == sum % 256  else {

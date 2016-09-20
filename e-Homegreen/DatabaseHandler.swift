@@ -202,9 +202,9 @@ class DatabaseHandler: NSObject {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
         let predicate1 = NSPredicate(format: "addressOne = %@", argumentArray: [address2])
         
-        let predicate2 = NSPredicate(format: "addressTwo = %@", argumentArray: [address2])
-//
-        let predicate3 = NSPredicate(format: "addressThree = %@", argumentArray: [address3])
+//        let predicate2 = NSPredicate(format: "addressTwo = %@", argumentArray: [address2])
+////
+//        let predicate3 = NSPredicate(format: "addressThree = %@", argumentArray: [address3])
         
         let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1])//, predicate2, predicate3])
         fetchRequest.predicate = combinedPredicate

@@ -408,7 +408,7 @@ extension SecurityViewController: SWRevealViewControllerDelegate {
 extension SecurityViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? SecurityLocationCell{
+        if (collectionView.cellForItemAtIndexPath(indexPath) as? SecurityLocationCell) != nil{
             
             filterParametar.location = location[indexPath.row].name!
             filterParametar.locationObjectId = location[indexPath.row].objectID.URIRepresentation().absoluteString

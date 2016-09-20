@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FlagParametarVC: UIViewController, UIGestureRecognizerDelegate {
+class FlagParametarVC: CommonXIBTransitionVC {
     
     var point:CGPoint?
     var oldPoint:CGPoint?
@@ -23,13 +23,8 @@ class FlagParametarVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var isBroadcast: UISwitch!
     @IBOutlet weak var isLocalcast: UISwitch!
     
-    var isPresenting: Bool = true
-    
-    init(point:CGPoint){
+    init(){
         super.init(nibName: "FlagParametarVC", bundle: nil)
-        transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
-        self.point = point
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -38,18 +33,24 @@ class FlagParametarVC: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(FlagParametarVC.dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         isBroadcast.tag = 100
         isBroadcast.on = flag!.isBroadcast.boolValue
-        isBroadcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        isBroadcast.addTarget(self, action: #selector(FlagParametarVC.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
         isLocalcast.tag = 200
         isLocalcast.on = flag!.isLocalcast.boolValue
-        isLocalcast.addTarget(self, action: "changeValue:", forControlEvents: UIControlEvents.ValueChanged)
+        isLocalcast.addTarget(self, action: #selector(FlagParametarVC.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        // Do any additional setup after loading the view.
+    }
+    
+    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if touch.view!.isDescendantOfView(backView){
+            return false
+        }
+        return true
     }
     
     @IBAction func btnSave(sender: AnyObject) {
@@ -88,98 +89,12 @@ class FlagParametarVC: UIViewController, UIGestureRecognizerDelegate {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
-            return false
-        }
-        return true
-    }
-    
-    /*
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
-    }
-    */
     
 }
 
-extension FlagParametarVC : UIViewControllerAnimatedTransitioning {
-    
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 0.5 //Add your own duration here
-    }
-    
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        //Add presentation and dismiss animation transition here.
-        if isPresenting == true{
-            isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
-            
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
-            self.oldPoint = presentedControllerView.center
-            presentedControllerView.center = self.point!
-            presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
-            containerView!.addSubview(presentedControllerView)
-            
-            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                
-                presentedControllerView.center = self.oldPoint!
-                presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
-                
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
-            //            let containerView = transitionContext.containerView()
-            
-            // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
-                
-                presentedControllerView.center = self.point!
-                presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
-                
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }
-        
-    }
-}
-
-extension FlagParametarVC : UIViewControllerTransitioningDelegate {
-    
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return self
-    }
-    
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
-    }
-    
-}
 extension UIViewController {
-    func showFlagParametar(point:CGPoint, flag:Flag) {
-        let fp = FlagParametarVC(point: point)
+    func showFlagParametar(flag:Flag) {
+        let fp = FlagParametarVC()
         fp.flag = flag
         self.presentViewController(fp, animated: true, completion: nil)
     }
