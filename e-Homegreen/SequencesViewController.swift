@@ -283,7 +283,7 @@ extension SequencesViewController: UICollectionViewDataSource {
             }
             let cycles = Int(sequences[tag].sequenceCycles)
             if cycles >= 0 && cycles <= 255 {
-                SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequences[tag].sequenceId), cycle: UInt8(cycles)), gateway: sequences[tag].gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setSequence(address, id: Int(sequences[tag].sequenceId), cycle: UInt8(cycles)), gateway: sequences[tag].gateway)
             }
             let pointInTable = gesture.view?.convertPoint(gesture.view!.bounds.origin, toView: sequenceCollectionView)
             let indexPath = sequenceCollectionView.indexPathForItemAtPoint(pointInTable!)
@@ -309,7 +309,7 @@ extension SequencesViewController: UICollectionViewDataSource {
                 address = [UInt8(Int(sequences[tag].gateway.addressOne)), UInt8(Int(sequences[tag].gateway.addressTwo)), UInt8(Int(sequences[tag].address))]
             }
             //  0xEF = 239, stops it?
-            SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: sequenceId, cycle: 0xEF), gateway: sequences[tag].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setSequence(address, id: sequenceId, cycle: 0xEF), gateway: sequences[tag].gateway)
             cell.commandSentChangeImage()
         }
     }

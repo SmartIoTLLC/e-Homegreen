@@ -169,8 +169,8 @@ class UsersViewController: PopoverVC {
             } else {
                 address = [UInt8(Int(timer.gateway.addressOne)), UInt8(Int(timer.gateway.addressTwo)), UInt8(Int(timer.address))]
             }
-            SendingHandler.sendCommand(byteArray: Function.refreshTimerStatus(address), gateway: timer.gateway)
-            SendingHandler.sendCommand(byteArray: Function.refreshTimerStatusCountApp(address), gateway: timer.gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.refreshTimerStatus(address), gateway: timer.gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.refreshTimerStatusCountApp(address), gateway: timer.gateway)
         }
     }
     
@@ -191,7 +191,7 @@ class UsersViewController: PopoverVC {
         } else {
             address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
         }
-        SendingHandler.sendCommand(byteArray: Function.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xEE), gateway: timers[tag].gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xEE), gateway: timers[tag].gateway)
         changeImageInCell(button)
     }
     
@@ -205,7 +205,7 @@ class UsersViewController: PopoverVC {
         } else {
             address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
         }
-        SendingHandler.sendCommand(byteArray: Function.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0x01), gateway: timers[tag].gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0x01), gateway: timers[tag].gateway)
         changeImageInCell(button)
     }
     
@@ -219,7 +219,7 @@ class UsersViewController: PopoverVC {
         } else {
             address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
         }
-        SendingHandler.sendCommand(byteArray: Function.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xED), gateway: timers[tag].gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xED), gateway: timers[tag].gateway)
         changeImageInCell(button)
     }
     
@@ -233,7 +233,7 @@ class UsersViewController: PopoverVC {
         } else {
             address = [UInt8(Int(timers[tag].gateway.addressOne)), UInt8(Int(timers[tag].gateway.addressTwo)), UInt8(Int(timers[tag].address))]
         }
-        SendingHandler.sendCommand(byteArray: Function.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xEF), gateway: timers[tag].gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xEF), gateway: timers[tag].gateway)
         changeImageInCell(button)
     }
     

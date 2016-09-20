@@ -210,8 +210,8 @@ class SecurityViewController: PopoverVC{
             let address:[UInt8] = [UInt8(Int(securities[0].addressOne)), UInt8(Int(securities[0].addressTwo)), UInt8(Int(securities[0].addressThree))]
             if let id = securities[0].gatewayId{
                 if let gateway = DatabaseGatewayController.shared.getGatewayByid(id)  {
-                    SendingHandler.sendCommand(byteArray: Function.getCurrentAlarmState(address), gateway: gateway)
-                    SendingHandler.sendCommand(byteArray: Function.getCurrentSecurityMode(address), gateway: gateway)
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurrentAlarmState(address), gateway: gateway)
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurrentSecurityMode(address), gateway: gateway)
                 }
             }
         }

@@ -387,7 +387,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let userInfo = timer.userInfo as! Dictionary<String, AnyObject>
         if let gateway = userInfo["gateway"] as? Gateway{
             let address = [Byte(Int(gateway.addressOne)), Byte(Int(gateway.addressTwo)), Byte(Int(gateway.addressThree))]
-            SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address) , gateway: gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address) , gateway: gateway)
 
         }
     }
@@ -399,7 +399,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if let minutes = gateway.autoReconnectDelay as? Int, date = gateway.autoReconnectDelayLast {
                     if NSDate().timeIntervalSinceDate(date.dateByAddingTimeInterval(NSTimeInterval(minutes))) >= 0 {
                         let address = [Byte(Int(gateway.addressOne)), Byte(Int(gateway.addressTwo)), Byte(Int(gateway.addressThree))]
-                        SendingHandler.sendCommand(byteArray: Function.refreshGatewayConnection(address), gateway: gateway)
+                        SendingHandler.sendCommand(byteArray: OutgoingHandler.refreshGatewayConnection(address), gateway: gateway)
                     }
                 }
             }

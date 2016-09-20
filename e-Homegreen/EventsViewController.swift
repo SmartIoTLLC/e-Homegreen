@@ -298,7 +298,7 @@ extension EventsViewController: UICollectionViewDataSource {
             }
             let eventId = Int(events[tag].eventId)
             if eventId >= 0 && eventId <= 255 {
-                SendingHandler.sendCommand(byteArray: Function.runEvent(address, id: UInt8(eventId)), gateway: events[tag].gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.runEvent(address, id: UInt8(eventId)), gateway: events[tag].gateway)
             }
             let pointInTable = gesture.view?.convertPoint(gesture.view!.bounds.origin, toView: eventCollectionView)
             let indexPath = eventCollectionView.indexPathForItemAtPoint(pointInTable!)
@@ -323,7 +323,7 @@ extension EventsViewController: UICollectionViewDataSource {
             } else {
                 address = [UInt8(Int(events[tag].gateway.addressOne)), UInt8(Int(events[tag].gateway.addressTwo)), UInt8(Int(events[tag].address))]
             }
-            SendingHandler.sendCommand(byteArray: Function.cancelEvent(address, id: UInt8(eventId)), gateway: events[tag].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.cancelEvent(address, id: UInt8(eventId)), gateway: events[tag].gateway)
             cell.commandSentChangeImage()
         }
     }

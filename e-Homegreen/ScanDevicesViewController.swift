@@ -234,7 +234,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(searchForDeviceWithId!)]
             self.setProgressBarParametarsForSearchingDevices(address)   // Needs to be done because progres bar is an the beginning 100%, for some reason..
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningDevice)
-            SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.searchForDevices(address), gateway: gateway)
         }else{
             self.view.makeToast(message: "No devices to search")
         }
@@ -274,7 +274,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: searchForDeviceWithId, repeats: false)
                     let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(searchForDeviceWithId!)]
                     self.setProgressBarParametarsForSearchingDevices(address)   // Needs to be done because progres bar is an the beginning 100%, for some reason..
-                    SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.searchForDevices(address), gateway: gateway)
                 }else{
                     self.view.makeToast(message: "No devices to search")
                 }
@@ -299,7 +299,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                             searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: deviceIdToBeSearched, repeats: false)
                             let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(arrayOfDevicesToBeSearched[indexOfDevicesToBeSearched])]
                             setProgressBarParametarsForSearchingDevices(address)
-                            SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
+                            SendingHandler.sendCommand(byteArray: OutgoingHandler.searchForDevices(address), gateway: gateway)
                         }else{
                             dismissScaningControls()
                         }
@@ -336,7 +336,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                     searchDeviceTimer?.invalidate()
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: deviceIdToBeSearched, repeats: false)
                     setProgressBarParametarsForSearchingDevices(address)
-                    SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.searchForDevices(address), gateway: gateway)
                 }else{
                     indexOfDevicesToBeSearched += 1
                     setProgressBarParametarsForSearchingDevices(address)
@@ -347,7 +347,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                     timesRepeatedCounter = timesRepeatedCounter + 1
                     searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: deviceIdToBeSearched, repeats: false)
                     setProgressBarParametarsForSearchingDevices(address)
-                    SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.searchForDevices(address), gateway: gateway)
                 }else{
                     if indexOfDevicesToBeSearched+1 < arrayOfDevicesToBeSearched.count {
                         indexOfDevicesToBeSearched += 1
@@ -356,7 +356,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                         searchDeviceTimer?.invalidate()
                         searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: deviceIdToBeSearched, repeats: false)
                         setProgressBarParametarsForSearchingDevices(address)
-                        SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
+                        SendingHandler.sendCommand(byteArray: OutgoingHandler.searchForDevices(address), gateway: gateway)
                     }else{
                         setProgressBarParametarsForSearchingDevices(address)
                         indexOfDevicesToBeSearched += 1
@@ -579,32 +579,32 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         setProgressBarParametarsForFindingNames(index)
         if devices[index].type == ControlType.Dimmer || devices[index].type == ControlType.AnalogOutput{
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-            SendingHandler.sendCommand(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
         print(devices[index].type)
         if devices[index].type == ControlType.Curtain || devices[index].type == ControlType.PC{
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-            SendingHandler.sendCommand(byteArray: Function.getModuleName(address), gateway: devices[index].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getModuleName(address), gateway: devices[index].gateway)
         }
         if devices[index].type == ControlType.Relay || devices[index].type == ControlType.DigitalOutput{
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-            SendingHandler.sendCommand(byteArray: Function.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
         if devices[index].type == ControlType.Climate {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-            SendingHandler.sendCommand(byteArray: Function.getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getACName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
         if devices[index].type == ControlType.Sensor || devices[index].type == ControlType.IntelligentSwitch || devices[index].type == ControlType.Gateway  || devices[index].type == ControlType.DigitalInput{
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-            SendingHandler.sendCommand(byteArray: Function.getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
         if devices[index].type == ControlType.SaltoAccess {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-            SendingHandler.sendCommand(byteArray: Function.getSaltoAccessInfoWithAddress(address), gateway: devices[index].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessInfoWithAddress(address), gateway: devices[index].gateway)
         }
         if devices[index].type == ControlType.IntelligentSwitch {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-            SendingHandler.sendCommand(byteArray: Function.getModuleName(address), gateway: devices[index].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getModuleName(address), gateway: devices[index].gateway)
         }
     }
     
@@ -614,7 +614,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         setProgressBarParametarsForFindingSensorParametar(deviceIndex)
         if devices[deviceIndex].controlType == ControlType.Sensor || devices[deviceIndex].controlType == ControlType.IntelligentSwitch || devices[deviceIndex].controlType == ControlType.Gateway || devices[deviceIndex].controlType == ControlType.DigitalInput{
             let address = [UInt8(Int(devices[deviceIndex].gateway.addressOne)), UInt8(Int(devices[deviceIndex].gateway.addressTwo)), UInt8(Int(devices[deviceIndex].address))]
-            SendingHandler.sendCommand(byteArray: Function.getSensorParameters(address, channel: UInt8(Int(devices[deviceIndex].channel))), gateway: devices[deviceIndex].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getSensorParameters(address, channel: UInt8(Int(devices[deviceIndex].channel))), gateway: devices[deviceIndex].gateway)
         }
     }
     func setProgressBarParametarsForFindingNames (index:Int) {

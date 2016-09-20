@@ -26,7 +26,7 @@ class ClimateCell: UICollectionViewCell {
         device?.allowEnergySaving = NSNumber(bool: switchAES.on)
         let address = [UInt8(Int(device!.gateway.addressOne)),UInt8(Int(device!.gateway.addressTwo)),UInt8(Int(device!.address))]
         let status:Byte = switchAES.on ? 0x01 : 0x00
-        SendingHandler.sendCommand(byteArray: Function.setACEnergySaving(address, channel: Byte(Int(device!.channel)), status: status), gateway: device!.gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.setACEnergySaving(address, channel: Byte(Int(device!.channel)), status: status), gateway: device!.gateway)
         
     }
     func refreshDevice(device:Device) {

@@ -386,7 +386,7 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     func sendCommandWithEventAddress(eventId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametars(eventId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
-        SendingHandler.sendCommand(byteArray: Function.getEventNameAndParametar(address, eventId: UInt8(eventId)), gateway: self.gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.getEventNameAndParametar(address, eventId: UInt8(eventId)), gateway: self.gateway)
     }
     func setProgressBarParametars (eventId:Int) {
         if let indexOfEventIndexInArrayOfNamesToBeSearched = arrayOfEventsToBeSearched.indexOf(eventId){

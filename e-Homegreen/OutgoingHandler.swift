@@ -1,5 +1,5 @@
 //
-//  Function.swift
+//  OutgoingHandler.swift
 //  new
 //
 //  Created by Teodor Stevic on 7/3/15.
@@ -10,7 +10,7 @@ import UIKit
 
 /// Class for communication with PLC. Sending commands to PLC
 /// Incoming handler is responsible for reveiving commands and data.
-class Function {
+class OutgoingHandler {
     // Get Socket State Command:
     static func refreshGatewayConnection (address:[Byte]) -> [Byte] {
         var messageInfo:[Byte] = []
@@ -124,7 +124,7 @@ class Function {
 }
 
 //MARK:- RELAY
-extension Function{
+extension OutgoingHandler{
     static func getLightRelayStatus (address:[Byte]) -> [Byte] {
         var messageInfo:[Byte] = []
         var message:[Byte] = []
@@ -170,7 +170,7 @@ extension Function{
 }
 
 //MARK:- CHANNEL
-extension Function {
+extension OutgoingHandler {
     static func getChannelName (address:[Byte], channel:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
@@ -193,7 +193,7 @@ extension Function {
 }
 
 //MARK:- MODULE
-extension Function {
+extension OutgoingHandler {
     static func getModuleName (address:[Byte]) -> [Byte]{
         var messageInfo:[Byte] = [0x00]
         var message:[Byte] = []
@@ -215,7 +215,7 @@ extension Function {
 }
 
 //MARK:- DEVICE
-extension Function {
+extension OutgoingHandler {
     static func searchForDevices (address:[Byte]) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
@@ -238,7 +238,7 @@ extension Function {
 }
 
 //MARK:- SENSOR
-extension Function {
+extension OutgoingHandler {
     static func getSensorName (address:[Byte], channel:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
@@ -280,7 +280,7 @@ extension Function {
 }
 
 //MARK:- SaltoAccess
-extension Function {
+extension OutgoingHandler {
     static func getSaltoAccessInfoWithAddress(address:[Byte]) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
@@ -306,7 +306,7 @@ extension Function {
 }
 
 //MARK:- CURTAIN
-extension Function {
+extension OutgoingHandler {
     static func setCurtainStatus (address:[Byte], value:Byte, groupId:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
@@ -348,7 +348,7 @@ extension Function {
 }
 
 //MARK:- CLIMATE
-extension Function {
+extension OutgoingHandler {
     static func getACName (address:[Byte], channel:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
@@ -485,7 +485,7 @@ extension Function {
 }
 
 //MARK:- FLAG
-extension Function {
+extension OutgoingHandler {
     static func setFlag (address:[Byte], id:Byte, command:Byte) -> [Byte]{
         let messageInfo:[Byte] = [id, command]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
@@ -571,7 +571,7 @@ extension Function {
 }
 
 //MARK:- EVENT
-extension Function {
+extension OutgoingHandler {
     static func runEvent (address:[Byte], id:Byte) -> [Byte]{
         var messageInfo:[Byte] = [id, 0xFF]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
@@ -631,7 +631,7 @@ extension Function {
 }
 
 //MARK:- SEQUENCE
-extension Function {
+extension OutgoingHandler {
     static func setSequence (address:[Byte], id:Int, cycle:Byte) -> [Byte]{
         let numberOne:Byte = Byte((id / 0x100) % 0x100)
         let numberTwo:Byte = Byte(id % 0x100)
@@ -676,7 +676,7 @@ extension Function {
 }
 
 //MARK:- SCENE
-extension Function {
+extension OutgoingHandler {
     static func setScene (address:[Byte], id:Int) -> [Byte]{
         let numberOne:Byte = Byte((id / 0x100) % 0x100)
         let numberTwo:Byte = Byte(id % 0x100)
@@ -721,7 +721,7 @@ extension Function {
 }
 
 //MARK:- TIMER
-extension Function {
+extension OutgoingHandler {
     static func getTimerName(address:[Byte], timerId: Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
@@ -825,7 +825,7 @@ extension Function {
 }
 
 //MARK:- CARD
-extension Function {
+extension OutgoingHandler {
     static func getCardName(address:[Byte], cardId: Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
@@ -873,7 +873,7 @@ extension Function {
 }
 
 //MARK:- ANALOG/ DIGITAL INPUT
-extension Function {
+extension OutgoingHandler {
     static func getInterfaceParametar (address:[Byte], channel:Byte) -> [Byte]{
         let messageInfo:[Byte] = [channel]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
@@ -1043,7 +1043,7 @@ extension Function {
 }
 
 //MARK:- SECURITY
-extension Function {
+extension OutgoingHandler {
     // Send command (password) for disarm
     static func sendKeySecurity (address:[Byte], key:Byte) -> [Byte]{
         let messageInfo:[Byte] = [0x01, key]
@@ -1152,7 +1152,7 @@ extension Function {
 }
 
 //MARK:- ANALOG/DIGITAL OUTPUT
-extension Function {
+extension OutgoingHandler {
     static func getInterfaceEnabled (address:[Byte], panic:Byte) -> [Byte]{
         let messageInfo:[Byte] = [0x04, panic]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
@@ -1213,7 +1213,7 @@ extension Function {
 }
 
 //MARK:- PC Control
-extension Function {
+extension OutgoingHandler {
     static func setPCVolume(address:[Byte], volume:Byte, mute:Byte=0x00) -> [Byte]{
         let messageInfo:[Byte] = [volume, mute]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
@@ -1337,7 +1337,7 @@ extension Function {
 }
 
 // NOT IMPLEMENTED FUNCTIONS
-extension Function {
+extension OutgoingHandler {
     static func setPCState (address:[Byte], command:Byte) -> [Byte]{
         let messageInfo:[Byte] = [0x02, command]
         var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)

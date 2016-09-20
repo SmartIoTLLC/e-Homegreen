@@ -160,7 +160,7 @@
 		734DBFBF1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734DBFBD1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift */; };
 		734DBFC01BEF7950002FE77E /* ChangeDeviceParametarsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */; };
 		734E35781C8239990096E043 /* ScanFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734E35771C8239990096E043 /* ScanFunction.swift */; };
-		736265E31B4A483E0078C11D /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E21B4A483E0078C11D /* Function.swift */; };
+		736265E31B4A483E0078C11D /* OutgoingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736265E21B4A483E0078C11D /* OutgoingHandler.swift */; };
 		736A5B271B5A678F008FD745 /* HashTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736A5B261B5A678F008FD745 /* HashTable.swift */; };
 		736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D11B3AE840003A6A02 /* EventsViewController.swift */; };
 		736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F17D31B3AE850003A6A02 /* SequencesViewController.swift */; };
@@ -520,7 +520,7 @@
 		734DBFBD1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeDeviceParametarsVC.swift; sourceTree = "<group>"; };
 		734DBFBE1BEF7950002FE77E /* ChangeDeviceParametarsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangeDeviceParametarsVC.xib; sourceTree = "<group>"; };
 		734E35771C8239990096E043 /* ScanFunction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ScanFunction.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		736265E21B4A483E0078C11D /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Function.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		736265E21B4A483E0078C11D /* OutgoingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = OutgoingHandler.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		736A5B261B5A678F008FD745 /* HashTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashTable.swift; sourceTree = "<group>"; };
 		736F17D11B3AE840003A6A02 /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
 		736F17D31B3AE850003A6A02 /* SequencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SequencesViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -1198,7 +1198,7 @@
 			name = "PC Control Notifications";
 			sourceTree = "<group>";
 		};
-		736265DD1B4A47FE0078C11D /* BL */ = {
+		736265DD1B4A47FE0078C11D /* Business Logic */ = {
 			isa = PBXGroup;
 			children = (
 				73EEEB451C3530570071DF53 /* Incoming Handler */,
@@ -1214,7 +1214,7 @@
 				E70A6ED21BCFE86900EBB53D /* TellMeAJokeHandler.swift */,
 				22D867661CBE832400A6575A /* ZoneAndCategoryControl.swift */,
 			);
-			name = BL;
+			name = "Business Logic";
 			sourceTree = "<group>";
 		};
 		7372EB221BC3F76C0097806D /* TimerXIB */ = {
@@ -1249,17 +1249,24 @@
 			name = Security;
 			sourceTree = "<group>";
 		};
-		73BD1EBE1B4E655700AA5B28 /* Other */ = {
+		73BD1EBE1B4E655700AA5B28 /* Supporting files */ = {
 			isa = PBXGroup;
 			children = (
+				73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */,
+				731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */,
+				731E1AB31C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift */,
+				731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */,
+				733E5E851C666F840039B7A8 /* Config.plist */,
+				73E206AA1B2EEFFE0008B002 /* Info.plist */,
 				73E82D0B1BECA97D00C1C621 /* Categories List.json */,
 				73E82D0C1BECA97D00C1C621 /* Zones List.json */,
 				73E2C9F81B5E25570048C072 /* ViewControllerUtils.swift */,
 				E75163F01B4C089300457BED /* Widget */,
 				E7D9FFE51B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout */,
+				22495D0B1CAA63EA0034FC94 /* SWRevealViewController */,
 				73F51A0A1C9484E4003EE702 /* Test.playground */,
 			);
-			name = Other;
+			name = "Supporting files";
 			sourceTree = "<group>";
 		};
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
@@ -1321,32 +1328,17 @@
 		73E206A81B2EEFFE0008B002 /* e-Homegreen */ = {
 			isa = PBXGroup;
 			children = (
-				73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */,
-				731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */,
-				731E1AB31C60EF2B00B7BDA8 /* AppDelegate+ConfigureStateForTheFirstTime.swift */,
-				731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */,
-				733E5E851C666F840039B7A8 /* Config.plist */,
-				73F04ECC1C92CD95009696EF /* Controller */,
-				73F04EC71C92C728009696EF /* Utils */,
+				73F04ECC1C92CD95009696EF /* Database Controllers */,
 				E76B57651BBD1DAC00A70F69 /* UI */,
 				73E2390E1B97145D00CB38ED /* Model */,
-				736265DD1B4A47FE0078C11D /* BL */,
+				736265DD1B4A47FE0078C11D /* Business Logic */,
 				73DEA21F1B32CE67007836B4 /* ViewControllers */,
 				223F08701D76CF3D002EA80F /* Shared */,
-				73BD1EBE1B4E655700AA5B28 /* Other */,
-				E7E1A81F1B3804F1008D8713 /* Framework */,
-				73E206A91B2EEFFE0008B002 /* Supporting Files */,
-				22495D0B1CAA63EA0034FC94 /* SWRevealViewController */,
+				73BD1EBE1B4E655700AA5B28 /* Supporting files */,
+				73F04EC71C92C728009696EF /* Extensions and Helpers */,
+				E7E1A81F1B3804F1008D8713 /* Frameworks */,
 			);
 			path = "e-Homegreen";
-			sourceTree = "<group>";
-		};
-		73E206A91B2EEFFE0008B002 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				73E206AA1B2EEFFE0008B002 /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		73E206C11B2EEFFE0008B002 /* e-HomegreenTests */ = {
@@ -1429,7 +1421,7 @@
 		73EEEB441C3530520071DF53 /* Sending Handler */ = {
 			isa = PBXGroup;
 			children = (
-				736265E21B4A483E0078C11D /* Function.swift */,
+				736265E21B4A483E0078C11D /* OutgoingHandler.swift */,
 				22D867681CBE855900A6575A /* ZoneAndCategoryFunction.swift */,
 			);
 			name = "Sending Handler";
@@ -1447,7 +1439,7 @@
 			name = "Incoming Handler";
 			sourceTree = "<group>";
 		};
-		73F04EC71C92C728009696EF /* Utils */ = {
+		73F04EC71C92C728009696EF /* Extensions and Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				73F04EC81C92C74C009696EF /* Int+Extensions.swift */,
@@ -1462,10 +1454,10 @@
 				22495D321CAA868E0034FC94 /* UIGradient + Extension.swift */,
 				4D0D97211CAD4087001A1E89 /* HRToast+UIView.swift */,
 			);
-			name = Utils;
+			name = "Extensions and Helpers";
 			sourceTree = "<group>";
 		};
-		73F04ECC1C92CD95009696EF /* Controller */ = {
+		73F04ECC1C92CD95009696EF /* Database Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				7398667F1C0DEE1600CEBDB4 /* DatabaseHandler.swift */,
@@ -1492,7 +1484,7 @@
 				223FB5901D64414600DC2627 /* DatabaseImageController.swift */,
 				22FF1E641D86D92000ECB86E /* DatabaseCardsController.swift */,
 			);
-			name = Controller;
+			name = "Database Controllers";
 			sourceTree = "<group>";
 		};
 		E73993141BCE9DAC00C74486 /* ChatXIB */ = {
@@ -1769,7 +1761,7 @@
 			name = Font;
 			sourceTree = "<group>";
 		};
-		E7E1A81F1B3804F1008D8713 /* Framework */ = {
+		E7E1A81F1B3804F1008D8713 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				73B55E451C6B2C99001C9251 /* Fabric.framework */,
@@ -1779,7 +1771,7 @@
 				E7E1A8201B3804F1008D8713 /* AcousticModelEnglish.bundle */,
 				E7E1A8211B3804F1008D8713 /* AcousticModelSpanish.bundle */,
 			);
-			name = Framework;
+			name = Frameworks;
 			path = ../Framework;
 			sourceTree = "<group>";
 		};
@@ -2198,7 +2190,7 @@
 				73F4D6BA1C807A5900FE0514 /* DeviceImagePickerTVC.swift in Sources */,
 				223FB5951D645AB500DC2627 /* Image.swift in Sources */,
 				22409DDC1D6AFD2600C33F6D /* User.swift in Sources */,
-				736265E31B4A483E0078C11D /* Function.swift in Sources */,
+				736265E31B4A483E0078C11D /* OutgoingHandler.swift in Sources */,
 				2240DCB01CBB931800F1F886 /* AdminController.swift in Sources */,
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,
 				E7F57B0D1BA847D8006B0D71 /* ScanSequencesesViewController.swift in Sources */,

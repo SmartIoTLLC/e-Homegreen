@@ -377,7 +377,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     func sendCommandWithSceneAddress(sceneId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametars(sceneId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
-        SendingHandler.sendCommand(byteArray: Function.getSceneNameAndParametar(address, sceneId: UInt8(sceneId)) , gateway: self.gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.getSceneNameAndParametar(address, sceneId: UInt8(sceneId)) , gateway: self.gateway)
     }
     func setProgressBarParametars (sceneId:Int) {
         if let indexOfSceneIndexInArrayOfNamesToBeSearched = arrayOfScenesToBeSearched.indexOf(sceneId){

@@ -201,7 +201,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     func sendCommandForFindingNameWithCardAddress(cardId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametarsForFindingNames(cardId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
-        SendingHandler.sendCommand(byteArray: Function.getCardName(address, cardId: UInt8(cardId)) , gateway: self.gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.getCardName(address, cardId: UInt8(cardId)) , gateway: self.gateway)
     }
     func setProgressBarParametarsForFindingNames (cardId:Int) {
         print("Progresbar for Names: \(cardId)")
@@ -342,7 +342,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     func sendCommandForFindingParameterWithCardAddress(timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametarsForFindingParameters(timerId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
-        SendingHandler.sendCommand(byteArray: Function.getCardParametar(address, cardId: UInt8(timerId)) , gateway: self.gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.getCardParametar(address, cardId: UInt8(timerId)) , gateway: self.gateway)
     }
     func setProgressBarParametarsForFindingParameters (timerId:Int) {
         if let indexOfDeviceIndexInArrayOfPatametersToBeSearched = arrayOfParametersToBeSearched.indexOf(timerId){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
@@ -470,7 +470,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
         print("KOMANDA ZA TRAZENJE TIMER IMENA: \((addressOne)) : \((addressTwo)) : \((addressThree)), timerId: \((timerId))")
         setProgressBarParametarsForFindingNames(timerId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
-        SendingHandler.sendCommand(byteArray: Function.getTimerName(address, timerId: UInt8(timerId)) , gateway: self.gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.getTimerName(address, timerId: UInt8(timerId)) , gateway: self.gateway)
     }
     
     // MARK: - Timer parameters
@@ -577,7 +577,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     func sendCommandForFindingParameterWithTimerAddress(timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametarsForFindingParameters(timerId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
-        SendingHandler.sendCommand(byteArray: Function.getTimerParametar(address, id: UInt8(timerId)) , gateway: self.gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.getTimerParametar(address, id: UInt8(timerId)) , gateway: self.gateway)
     }
     
     // Helpers

@@ -55,14 +55,14 @@ class SecurityPadVC: CommonXIBTransitionVC {
             NSLog("Error sending command to PLC. Gateway is nil for this security. Function: btnOne(sender: AnyObject)")
             return
         }
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x01), gateway: gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.sendKeySecurity(address, key: 0x01), gateway: gateway)
     }
     @IBAction func btnTwo(sender: AnyObject) {
         guard let gateway = self.gateway else{
             NSLog("Error sending command to PLC. Gateway is nil for this security. Function: btnOne(sender: AnyObject)")
             return
         }
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x02), gateway: gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.sendKeySecurity(address, key: 0x02), gateway: gateway)
         
     }
     @IBAction func btnThree(sender: AnyObject) {
@@ -70,7 +70,7 @@ class SecurityPadVC: CommonXIBTransitionVC {
             NSLog("Error sending command to PLC. Gateway is nil for this security. Function: btnOne(sender: AnyObject)")
             return
         }
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x03), gateway: gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.sendKeySecurity(address, key: 0x03), gateway: gateway)
         
     }
     @IBAction func btnFour(sender: AnyObject) {
@@ -78,63 +78,63 @@ class SecurityPadVC: CommonXIBTransitionVC {
             NSLog("Error sending command to PLC. Gateway is nil for this security. Function: btnOne(sender: AnyObject)")
             return
         }
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x04), gateway: gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.sendKeySecurity(address, key: 0x04), gateway: gateway)
     }
     @IBAction func btnFive(sender: AnyObject) {
         guard let gateway = self.gateway else{
             NSLog("Error sending command to PLC. Gateway is nil for this security. Function: btnOne(sender: AnyObject)")
             return
         }
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x05), gateway: gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.sendKeySecurity(address, key: 0x05), gateway: gateway)
     }
     @IBAction func btnSix(sender: AnyObject) {
         guard let gateway = self.gateway else{
             NSLog("Error sending command to PLC. Gateway is nil for this security. Function: btnOne(sender: AnyObject)")
             return
         }
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x06), gateway: gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.sendKeySecurity(address, key: 0x06), gateway: gateway)
     }
     @IBAction func btnSeven(sender: AnyObject) {
         guard let gateway = self.gateway else{
             NSLog("Error sending command to PLC. Gateway is nil for this security. Function: btnOne(sender: AnyObject)")
             return
         }
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x07), gateway: gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.sendKeySecurity(address, key: 0x07), gateway: gateway)
     }
     @IBAction func btnEight(sender: AnyObject) {
         guard let gateway = self.gateway else{
             NSLog("Error sending command to PLC. Gateway is nil for this security. Function: btnOne(sender: AnyObject)")
             return
         }
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x08), gateway: gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.sendKeySecurity(address, key: 0x08), gateway: gateway)
     }
     @IBAction func btnNine(sender: AnyObject) {
         guard let gateway = self.gateway else{
             NSLog("Error sending command to PLC. Gateway is nil for this security. Function: btnOne(sender: AnyObject)")
             return
         }
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x09), gateway: gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.sendKeySecurity(address, key: 0x09), gateway: gateway)
     }
     @IBAction func btnStar(sender: AnyObject) {
         guard let gateway = self.gateway else{
             NSLog("Error sending command to PLC. Gateway is nil for this security. Function: btnOne(sender: AnyObject)")
             return
         }
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x0B), gateway: gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.sendKeySecurity(address, key: 0x0B), gateway: gateway)
     }
     @IBAction func btnNull(sender: AnyObject) {
         guard let gateway = self.gateway else{
             NSLog("Error sending command to PLC. Gateway is nil for this security. Function: btnOne(sender: AnyObject)")
             return
         }
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x00), gateway: gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.sendKeySecurity(address, key: 0x00), gateway: gateway)
     }
     @IBAction func btnHash(sender: AnyObject) {
         guard let gateway = self.gateway else{
             NSLog("Error sending command to PLC. Gateway is nil for this security. Function: btnOne(sender: AnyObject)")
             return
         }
-        SendingHandler.sendCommand(byteArray: Function.sendKeySecurity(address, key: 0x1A), gateway: gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.sendKeySecurity(address, key: 0x1A), gateway: gateway)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     @IBAction func btnCancel(sender: AnyObject) {

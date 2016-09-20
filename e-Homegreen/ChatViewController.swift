@@ -292,7 +292,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         if command == .SetScene {
             if let scene = object as? Scene {
                 let address = [UInt8(Int(scene.gateway.addressOne)),UInt8(Int(scene.gateway.addressTwo)),UInt8(Int(scene.address))]
-                SendingHandler.sendCommand(byteArray: Function.setScene(address, id: Int(scene.sceneId)), gateway: scene.gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setScene(address, id: Int(scene.sceneId)), gateway: scene.gateway)
                 refreshChatListWithAnswer("scene was set", isValeryVoiceOn: isValeryVoiceOn)
             }
         }
@@ -300,7 +300,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         if command == .RunEvent {
             if let event = object as? Event {
                 let address = [UInt8(Int(event.gateway.addressOne)),UInt8(Int(event.gateway.addressTwo)),UInt8(Int(event.address))]
-                SendingHandler.sendCommand(byteArray: Function.runEvent(address, id: UInt8(Int(event.eventId))), gateway: event.gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.runEvent(address, id: UInt8(Int(event.eventId))), gateway: event.gateway)
                 refreshChatListWithAnswer("event was ran", isValeryVoiceOn: isValeryVoiceOn)
             }
         }
@@ -308,7 +308,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         if command == .CancelEvent {
             if let event = object as? Event {
                 let address = [UInt8(Int(event.gateway.addressOne)),UInt8(Int(event.gateway.addressTwo)),UInt8(Int(event.address))]
-                SendingHandler.sendCommand(byteArray: Function.cancelEvent(address, id: UInt8(Int(event.eventId))), gateway: event.gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.cancelEvent(address, id: UInt8(Int(event.eventId))), gateway: event.gateway)
                 refreshChatListWithAnswer("event was canceled", isValeryVoiceOn: isValeryVoiceOn)
             }
         }
@@ -316,7 +316,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         if command == .StartSequence {
             if let sequence = object as? Sequence {
                 let address = [UInt8(Int(sequence.gateway.addressOne)),UInt8(Int(sequence.gateway.addressTwo)),UInt8(Int(sequence.address))]
-                SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequence.sequenceId), cycle: UInt8(Int(sequence.sequenceCycles))), gateway: sequence.gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setSequence(address, id: Int(sequence.sequenceId), cycle: UInt8(Int(sequence.sequenceCycles))), gateway: sequence.gateway)
                 refreshChatListWithAnswer("sequence was started", isValeryVoiceOn: isValeryVoiceOn)
             }
         }
@@ -324,7 +324,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         if command == .StopSequence {
             if let sequence = object as? Sequence {
                 let address = [UInt8(Int(sequence.gateway.addressOne)),UInt8(Int(sequence.gateway.addressTwo)),UInt8(Int(sequence.address))]
-                SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequence.sequenceId), cycle: 0xEF), gateway: sequence.gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setSequence(address, id: Int(sequence.sequenceId), cycle: 0xEF), gateway: sequence.gateway)
                 refreshChatListWithAnswer("sequence was stopped", isValeryVoiceOn: isValeryVoiceOn)
             }
         }
@@ -372,38 +372,38 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         if command == .TurnOnDevice {
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
             if device.controlType == ControlType.Dimmer {
-                SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
             }
             if device.controlType == ControlType.Relay {
-                SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
             }
             if device.controlType == ControlType.Curtain {
-                SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
             }
             if device.controlType == ControlType.Climate {
-                SendingHandler.sendCommand(byteArray: Function.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0xFF), gateway: device.gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0xFF), gateway: device.gateway)
             }
             refreshChatListWithAnswer(commandWasSent(command, deviceType: device.controlType), isValeryVoiceOn: isValeryVoiceOn)
         } else if command == .TurnOffDevice {
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
             if device.controlType == ControlType.Dimmer {
-                SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
             }
             if device.controlType == ControlType.Relay {
-                SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
             }
             if device.controlType == ControlType.Curtain {
-                SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
             }
             if device.controlType == ControlType.Climate {
-                SendingHandler.sendCommand(byteArray: Function.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0x00), gateway: device.gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0x00), gateway: device.gateway)
             }
             refreshChatListWithAnswer(commandWasSent(command, deviceType: device.controlType), isValeryVoiceOn: isValeryVoiceOn)
         } else if command == .DimDevice {
             if dimValue != -1 {
                 let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
                 if device.controlType == ControlType.Dimmer {
-                    SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: UInt8(dimValue), delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: UInt8(dimValue), delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
                     refreshChatListWithAnswer(commandWasSent(command, deviceType: device.controlType), isValeryVoiceOn: isValeryVoiceOn)
                 } else {
                     refreshChatListWithAnswer("Device is not of dimmer type.", isValeryVoiceOn: isValeryVoiceOn)

@@ -202,20 +202,20 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
     
     func setACSetPoint () {
         let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-        SendingHandler.sendCommand(byteArray: Function.setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(hvacCommand.coolTemperature), heatingSetPoint: UInt8(hvacCommand.heatTemperature)), gateway: device.gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(hvacCommand.coolTemperature), heatingSetPoint: UInt8(hvacCommand.heatTemperature)), gateway: device.gateway)
     }
     
     func setACSpeed () {
         let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         switch hvacCommand.fan {
         case .Low:
-            SendingHandler.sendCommand(byteArray: Function.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x01), gateway: device.gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x01), gateway: device.gateway)
         case .Med:
-            SendingHandler.sendCommand(byteArray: Function.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x02), gateway: device.gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x02), gateway: device.gateway)
         case .High:
-            SendingHandler.sendCommand(byteArray: Function.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x03), gateway: device.gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x03), gateway: device.gateway)
         case .AUTO:
-            SendingHandler.sendCommand(byteArray: Function.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x00), gateway: device.gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x00), gateway: device.gateway)
         default :break
         }
     }
@@ -224,13 +224,13 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         switch hvacCommand.mode {
         case .Cool:
-            SendingHandler.sendCommand(byteArray: Function.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x01), gateway: device.gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x01), gateway: device.gateway)
         case .Heat:
-            SendingHandler.sendCommand(byteArray: Function.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x02), gateway: device.gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x02), gateway: device.gateway)
         case .Fan:
-            SendingHandler.sendCommand(byteArray: Function.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x03), gateway: device.gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x03), gateway: device.gateway)
         case .AUTO:
-            SendingHandler.sendCommand(byteArray: Function.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x00), gateway: device.gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x00), gateway: device.gateway)
         default :break
         }
     }
@@ -377,11 +377,11 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
     @IBAction func onOff(sender: AnyObject) {
         if device.currentValue == 0x00 {
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-            SendingHandler.sendCommand(byteArray: Function.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0xFF), gateway: device.gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0xFF), gateway: device.gateway)
         }
         if device.currentValue == 0xFF {
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-            SendingHandler.sendCommand(byteArray: Function.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0x00), gateway: device.gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0x00), gateway: device.gateway)
         }
     }
     
@@ -405,7 +405,7 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         if let number = timer.userInfo as? Int {
             temperatureNumber = 0
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-            SendingHandler.sendCommand(byteArray: Function.setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)+number), heatingSetPoint: UInt8(Int(device.heatTemperature))), gateway: device.gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)+number), heatingSetPoint: UInt8(Int(device.heatTemperature))), gateway: device.gateway)
         }
     }
     
@@ -428,7 +428,7 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         if let number = timer.userInfo as? Int {
             temperatureNumber = 0
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
-            SendingHandler.sendCommand(byteArray: Function.setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)), heatingSetPoint: UInt8(Int(device.heatTemperature)+number)), gateway: device.gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSetPoint(address, channel: UInt8(Int(device.channel)), coolingSetPoint: UInt8(Int(device.coolTemperature)), heatingSetPoint: UInt8(Int(device.heatTemperature)+number)), gateway: device.gateway)
         }
     }
 

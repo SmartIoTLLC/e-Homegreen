@@ -10,6 +10,6 @@ import UIKit
 
 class ScanCategory: ScanEntity {
     func sendCommandForScannning(id:Byte, address:[Byte], gateway:Gateway) {
-        SendingHandler.sendCommand(byteArray: Function.getCategory(address, id: id), gateway: gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.getCategory(address, id: id), gateway: gateway)
     }
 }

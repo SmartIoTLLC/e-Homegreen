@@ -84,27 +84,27 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
                 let notificationName = NotificationKey.Security.ControlModeStartBlinking
                 switch security.securityName! {
                 case "Away":
-                    SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x01), gateway: gateway)
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.changeSecurityMode(address, mode: 0x01), gateway: gateway)
                     NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Away]))
                     break
                 case "Night":
-                    SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x02), gateway: gateway)
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.changeSecurityMode(address, mode: 0x02), gateway: gateway)
                     NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Night]))
                     break
                 case "Day":
-                    SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x03), gateway: gateway)
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.changeSecurityMode(address, mode: 0x03), gateway: gateway)
                     NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Day]))
                     break
                 case "Vacation":
-                    SendingHandler.sendCommand(byteArray: Function.changeSecurityMode(address, mode: 0x04), gateway: gateway)
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.changeSecurityMode(address, mode: 0x04), gateway: gateway)
                     NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Vacation]))
                     break
                 case "Panic":
                     if defaults.boolForKey(UserDefaults.Security.IsPanic) {
-                        SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x01), gateway: gateway)
+                        SendingHandler.sendCommand(byteArray: OutgoingHandler.setPanic(address, panic: 0x01), gateway: gateway)
                         defaults.setBool(false, forKey: UserDefaults.Security.IsPanic)
                     } else {
-                        SendingHandler.sendCommand(byteArray: Function.setPanic(address, panic: 0x00), gateway: gateway)
+                        SendingHandler.sendCommand(byteArray: OutgoingHandler.setPanic(address, panic: 0x00), gateway: gateway)
                         defaults.setBool(true, forKey: UserDefaults.Security.IsPanic)
                     }
                     NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Panic]))

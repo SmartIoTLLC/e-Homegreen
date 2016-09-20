@@ -383,7 +383,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     func sendCommandForFindingNameWithFlagAddress(flagId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametarsForFindingNames(flagId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
-        SendingHandler.sendCommand(byteArray: Function.getFlagName(address, flagId: UInt8(flagId + 100)) , gateway: self.gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.getFlagName(address, flagId: UInt8(flagId + 100)) , gateway: self.gateway)
     }
     func setProgressBarParametarsForFindingNames (flagId:Int) {
         if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(flagId){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
@@ -522,7 +522,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     func sendCommandForFindingParameterWithFlagAddress(flagId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametarsForFindingParameters(flagId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
-        SendingHandler.sendCommand(byteArray: Function.getFlagParametar(address, flagId: UInt8(flagId+100)) , gateway: self.gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.getFlagParametar(address, flagId: UInt8(flagId+100)) , gateway: self.gateway)
     }
     func setProgressBarParametarsForFindingParameters (flagId:Int) {
         if let indexOfDeviceIndexInArrayOfPatametersToBeSearched = arrayOfParametersToBeSearched.indexOf(flagId){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name

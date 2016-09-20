@@ -100,7 +100,7 @@ extension AppDelegate {
         let second = components.second
         let weekday = components.weekday-1
         
-        SendingHandler.sendCommand(byteArray: Function.setInternalClockRTC([0xFF,0xFF,0xFF], year: Byte(year), month: Byte(month), day: Byte(day), hour: Byte(hour), minute: Byte(minute), second: Byte(second), dayOfWeak: Byte(weekday)), ip: BroadcastPreference.getBroadcastIp(), port: UInt16 (BroadcastPreference.getBroadcastPort()))
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.setInternalClockRTC([0xFF,0xFF,0xFF], year: Byte(year), month: Byte(month), day: Byte(day), hour: Byte(hour), minute: Byte(minute), second: Byte(second), dayOfWeak: Byte(weekday)), ip: BroadcastPreference.getBroadcastIp(), port: UInt16 (BroadcastPreference.getBroadcastPort()))
         BroadcastPreference.setBroadcastUpdateDate()
         
     }

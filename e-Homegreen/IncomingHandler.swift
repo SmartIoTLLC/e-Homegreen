@@ -61,7 +61,7 @@ class IncomingHandler: NSObject {
                     self.parseMessageChannelWarnings(self.byteArray)
                 }
                 if messageIsCurtainState() {
-                    self.pardeMessageCurtainState(self.byteArray)
+                    self.parseMessageCurtainState(self.byteArray)
                 }
                 
                 //  ACKNOWLEDGMENT ABOUT RUNNING TIME (Get Channel On Time Count)
@@ -399,6 +399,85 @@ class IncomingHandler: NSObject {
         }
     }
     
+    // MARK - New devices
+    func parseMessageNewDevice (byteArray:[Byte]) {
+        print(NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice))
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice) {
+            var deviceExists = false
+            if let channel = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.channel,
+                let controlType = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name {
+                
+                let MAC:[Byte] = Array(byteArray[9...14])
+                if devices != [] {
+                    for device in devices {
+                        if device.address == Int(byteArray[4]) {deviceExists = true}
+                    }
+                } else {deviceExists = false}
+                if !deviceExists {
+                    for i in 1...channel{
+                        var isClimate = false
+                        if controlType == ControlType.Climate {
+                            isClimate = true
+                        }
+                        let deviceInformation = DeviceInformation(address: Int(byteArray[4]), channel: i, numberOfDevices: channel, type: controlType, gateway: gateways[0], mac: NSData(bytes: MAC, length: MAC.count), isClimate:isClimate)
+                        
+                        if (controlType == ControlType.Sensor ||
+                            controlType == ControlType.IntelligentSwitch) && i > 1{
+                            
+                            let _ = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
+                            
+                        }else if controlType == ControlType.Climate ||
+                            controlType == ControlType.SaltoAccess ||
+                            controlType == ControlType.AnalogInput ||
+                            controlType == ControlType.AnalogOutput ||
+                            controlType == ControlType.DigitalInput ||
+                            controlType == ControlType.DigitalOutput ||
+                            controlType == ControlType.IRTransmitter ||
+                            controlType == ControlType.Curtain ||
+                            controlType == ControlType.PC ||
+                            controlType == ControlType.Relay ||
+                            controlType == ControlType.Dimmer{
+                            
+                            let _ = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
+                        }
+                        
+                        CoreDataController.shahredInstance.saveChanges()
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+                    }
+                    let data = ["deviceAddresInGateway":Int(byteArray[4])]
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDevice, object: self, userInfo: data)
+                }
+            }
+        }
+    }
+    func parseMessageNewDevicSalto (byteArray:[Byte]) {
+        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningDevice) {
+            var deviceExists = false
+            if let controlType = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name {
+                let MAC:[Byte] = Array(byteArray[9...14])
+                if devices != [] {
+                    for device in devices {
+                        if device.address == Int(byteArray[4]) {deviceExists = true}
+                    }
+                } else {deviceExists = false}
+                if !deviceExists {
+                    for i in 1...4{
+                        let deviceInformation = DeviceInformation(address: Int(byteArray[4]), channel: i, numberOfDevices: 4, type: controlType, gateway: gateways[0], mac: NSData(bytes: MAC, length: MAC.count), isClimate:false)
+                        
+                        if (controlType == ControlType.SaltoAccess){
+                            let _ = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation, channelName: "Lock \(i)")
+                        }
+                        
+                        CoreDataController.shahredInstance.saveChanges()
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+                    }
+                    let data = ["deviceAddresInGateway":Int(byteArray[4])]
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDevice, object: self, userInfo: data)
+                }
+            }
+        }
+        
+    }
     func parseMessageSaltoParameters(byteArray: [Byte]){
         // MARK - Salto
         // This response message contains two bytes which carry information about which channel (device) is selected.
@@ -463,6 +542,8 @@ class IncomingHandler: NSObject {
             CoreDataController.shahredInstance.saveChanges()
         }
     }
+    
+    
     func parseMessageRefreshEvent(byteArray:[Byte]){
         let data = ["id":Int(byteArray[7]), "value":Int(byteArray[8])]
         NSNotificationCenter.defaultCenter().postNotificationName("ReportEvent", object: self, userInfo: data)
@@ -479,6 +560,7 @@ class IncomingHandler: NSObject {
         CoreDataController.shahredInstance.saveChanges()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
+    
     func parseMessageACstatus (byteArray:[Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
         for i in 0..<devices.count{
@@ -511,6 +593,7 @@ class IncomingHandler: NSObject {
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshClimate, object: self, userInfo: nil)
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
     }
+    
     func parseMessageDimmerGetRunningTime (byteArray:[Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
         for i in  0..<devices.count{
@@ -775,12 +858,13 @@ class IncomingHandler: NSObject {
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
         }
     }
-    //  0x00 Waiting = 0
-    //  0x01 Started = 1
-    //  0xF0 Elapsed = 240
-    //  0xEE Suspend = 238
-    //  informacije o parametrima kanala
+    
     func parseMessageTimerStatus (byteArray:[Byte]){
+        //  0x00 Waiting = 0
+        //  0x01 Started = 1
+        //  0xF0 Elapsed = 240
+        //  0xEE Suspend = 238
+        //  informacije o parametrima kanala
         let sortDescriptor = NSSortDescriptor(key: "timerName", ascending: true)
         let timers = DatabaseTimersController.shared.getAllTimersSortedBy(sortDescriptor)
         for i in 1...16 {
@@ -955,7 +1039,22 @@ class IncomingHandler: NSObject {
         }
     }
     
-    // Helper
+    // Curtains
+    func parseMessageCurtainState(byteArray:[Byte]) {
+        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
+        for device in devices {
+            if device.gateway.addressOne == Int(byteArray[2]) && device.gateway.addressTwo == Int(byteArray[3]) && device.address == Int(byteArray[4]) {
+                device.currentValue = Int(byteArray[8])
+                let data = ["deviceDidReceiveSignalFromGateway":device]
+                NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidReceiveDataForRepeatSendingHandler, object: self, userInfo: data)
+                break
+            }
+        }
+        CoreDataController.shahredInstance.saveChanges()
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+    }
+    
+    // Helpers
     func parseMessageAndPrint(byteArray: [UInt8]){
         let byteLength = byteArray.count
         let SOI = byteArray[0]
@@ -1000,7 +1099,10 @@ class IncomingHandler: NSObject {
         
     }
 }
+// New devices
+extension IncomingHandler {
 
+}
 // Recieved message helpers
 extension IncomingHandler {
     func messageIsValid() -> Bool{

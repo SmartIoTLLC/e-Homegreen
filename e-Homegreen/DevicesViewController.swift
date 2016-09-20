@@ -275,10 +275,10 @@ class DevicesViewController: PopoverVC{
         let tag = gesture.view!.tag
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
         if devices[tag].currentValue == 0x00 {
-            SendingHandler.sendCommand(byteArray: Function.setACStatus(address, channel: UInt8(Int(devices[tag].channel)), status: 0xFF), gateway: devices[tag].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: UInt8(Int(devices[tag].channel)), status: 0xFF), gateway: devices[tag].gateway)
         }
         if devices[tag].currentValue == 0xFF {
-            SendingHandler.sendCommand(byteArray: Function.setACStatus(address, channel: UInt8(Int(devices[tag].channel)), status: 0x00), gateway: devices[tag].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: UInt8(Int(devices[tag].channel)), status: 0x00), gateway: devices[tag].gateway)
         }
     }
     func cellParametarLongPress(gestureRecognizer: UILongPressGestureRecognizer){
@@ -318,20 +318,20 @@ class DevicesViewController: PopoverVC{
             // Light
             if devices[tag].controlType == ControlType.Dimmer {
                 let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-                SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[tag].gateway)
-                SendingHandler.sendCommand(byteArray: Function.resetRunningTime(address, channel: 0xFF), gateway: devices[tag].gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: devices[tag].gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: devices[tag].gateway)
             }
             // Appliance?
             if devices[tag].controlType == ControlType.Relay {
                 let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-                SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[tag].gateway)
-                SendingHandler.sendCommand(byteArray: Function.resetRunningTime(address, channel: 0xFF), gateway: devices[tag].gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: devices[tag].gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: devices[tag].gateway)
             }
             // Curtain?
             if devices[tag].controlType == ControlType.Curtain {
                 let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-                SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[tag].gateway)
-                SendingHandler.sendCommand(byteArray: Function.resetRunningTime(address, channel: 0xFF), gateway: devices[tag].gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: devices[tag].gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: devices[tag].gateway)
             }
         }
     }
@@ -358,7 +358,7 @@ class DevicesViewController: PopoverVC{
             devices[tag].currentValue = Int(setDeviceValue)*255/100
             print("Device current value: \(deviceCurrentValue)%")
                 dispatch_async(dispatch_get_main_queue(), {
-                _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setDeviceValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: skipLevel), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                _ = RepeatSendingHandler(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setDeviceValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: skipLevel), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
                 })
         }
         // Appliance?
@@ -377,7 +377,7 @@ class DevicesViewController: PopoverVC{
             }
             devices[tag].currentValue = Int(setDeviceValue)
             dispatch_async(dispatch_get_main_queue(), {
-                _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setDeviceValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: skipLevel), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                _ = RepeatSendingHandler(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setDeviceValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: skipLevel), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
             })
         }
         updateCells()
@@ -413,7 +413,7 @@ class DevicesViewController: PopoverVC{
                 let deviceGroupId = devices[tag].curtainGroupID.integerValue
                 CoreDataController.shahredInstance.saveChanges()
                 dispatch_async(dispatch_get_main_queue(), {
-                    _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
                 })
             }
         }else{
@@ -425,7 +425,7 @@ class DevicesViewController: PopoverVC{
                 let deviceGroupId = devices[tag].curtainGroupID.integerValue
                 CoreDataController.shahredInstance.saveChanges()
                 dispatch_async(dispatch_get_main_queue(), {
-                    _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
                 })
             }
         }
@@ -462,7 +462,7 @@ class DevicesViewController: PopoverVC{
                 CoreDataController.shahredInstance.saveChanges()
                 updateCells()
                 dispatch_async(dispatch_get_main_queue(), {
-                    _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue) // vratiti na deviceCurrentValue ovo poslednje
+                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue) // vratiti na deviceCurrentValue ovo poslednje
                 })
             }
         }else{
@@ -480,7 +480,7 @@ class DevicesViewController: PopoverVC{
                 CoreDataController.shahredInstance.saveChanges()
                 updateCells()
                 dispatch_async(dispatch_get_main_queue(), {
-                    _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue) // vratiti na deviceCurrentValue ovo poslednje
+                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue) // vratiti na deviceCurrentValue ovo poslednje
                 })
             }
         }
@@ -517,7 +517,7 @@ class DevicesViewController: PopoverVC{
                 CoreDataController.shahredInstance.saveChanges()
                 updateCells()
                 dispatch_async(dispatch_get_main_queue(), {
-                    _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
                 })
             }
         }else{
@@ -530,7 +530,7 @@ class DevicesViewController: PopoverVC{
                 CoreDataController.shahredInstance.saveChanges()
                 updateCells()
                 dispatch_async(dispatch_get_main_queue(), {
-                    _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
                 })
             }
         }
@@ -707,7 +707,7 @@ class DevicesViewController: PopoverVC{
             let setValue = UInt8(Int(self.devices[tag].currentValue.doubleValue*100/255))
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                 dispatch_async(dispatch_get_main_queue(), {
-                    _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
+                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
                 })
             })
         }
@@ -716,7 +716,7 @@ class DevicesViewController: PopoverVC{
             let deviceGroupId = devices[tag].curtainGroupID.integerValue
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
                 dispatch_async(dispatch_get_main_queue(), {
-                    _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: UInt8(Int(self.devices[tag].currentValue)), groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
+                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: UInt8(Int(self.devices[tag].currentValue)), groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
                 })
             })
         }
@@ -738,13 +738,13 @@ class DevicesViewController: PopoverVC{
         
         if devices[tag].controlType == ControlType.Dimmer {
             dispatch_async(dispatch_get_main_queue(), {
-                _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(v4), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
+                _ = RepeatSendingHandler(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(v4), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
             })
         }
         //  Curtain
         if devices[tag].controlType == ControlType.Curtain {
             dispatch_async(dispatch_get_main_queue(), {
-                _ = RepeatSendingHandler(byteArray: Function.setCurtainStatus(address, value: UInt8(Int(self.devices[tag].currentValue)), groupId:  0x00), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
+                _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: UInt8(Int(self.devices[tag].currentValue)), groupId:  0x00), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
             })
         }
         changeSliderValueOldValue = 0
@@ -1236,7 +1236,7 @@ extension DevicesViewController: BigSliderDelegate{
             let deviceCurrentValue = Int(devices[index].currentValue)
             devices[index].currentValue = Int(setDeviceValue)*255/100
             dispatch_async(dispatch_get_main_queue(), {
-                _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(self.devices[index].channel)), value: setDeviceValue, delay: Int(self.devices[index].delay), runningTime: Int(self.devices[index].runtime), skipLevel: skipLevel), gateway: self.devices[index].gateway, device: self.devices[index], oldValue: deviceCurrentValue)
+                _ = RepeatSendingHandler(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(self.devices[index].channel)), value: setDeviceValue, delay: Int(self.devices[index].delay), runningTime: Int(self.devices[index].runtime), skipLevel: skipLevel), gateway: self.devices[index].gateway, device: self.devices[index], oldValue: deviceCurrentValue)
             })
         }
     }

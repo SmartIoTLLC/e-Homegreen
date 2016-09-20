@@ -216,9 +216,9 @@ extension FlagsViewController: UICollectionViewDelegate, UICollectionViewDelegat
                 address = [UInt8(Int(flags[indexPath.row].gateway.addressOne)), UInt8(Int(flags[indexPath.row].gateway.addressTwo)), UInt8(Int(flags[indexPath.row].address))]
             }
             if flags[indexPath.row].setState.boolValue {
-                SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x01), gateway: flags[indexPath.row].gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setFlag(address, id: UInt8(flagId), command: 0x01), gateway: flags[indexPath.row].gateway)
             } else {
-                SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x00), gateway: flags[indexPath.row].gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setFlag(address, id: UInt8(flagId), command: 0x00), gateway: flags[indexPath.row].gateway)
             }
         
     }
@@ -300,9 +300,9 @@ extension FlagsViewController: UICollectionViewDataSource {
                 address = [UInt8(Int(flags[tag].gateway.addressOne)), UInt8(Int(flags[tag].gateway.addressTwo)), UInt8(Int(flags[tag].address))]
             }
             if flags[tag].setState.boolValue {
-                SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x01), gateway: flags[tag].gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setFlag(address, id: UInt8(flagId), command: 0x01), gateway: flags[tag].gateway)
             } else {
-                SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x00), gateway: flags[tag].gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setFlag(address, id: UInt8(flagId), command: 0x00), gateway: flags[tag].gateway)
             }
             
         }
@@ -318,9 +318,9 @@ extension FlagsViewController: UICollectionViewDataSource {
             address = [UInt8(Int(flags[tag].gateway.addressOne)), UInt8(Int(flags[tag].gateway.addressTwo)), UInt8(Int(flags[tag].address))]
         }
         if flags[tag].setState.boolValue {
-            SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x01), gateway: flags[tag].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setFlag(address, id: UInt8(flagId), command: 0x01), gateway: flags[tag].gateway)
         } else {
-            SendingHandler.sendCommand(byteArray: Function.setFlag(address, id: UInt8(flagId), command: 0x00), gateway: flags[tag].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setFlag(address, id: UInt8(flagId), command: 0x00), gateway: flags[tag].gateway)
         }
     }
 }

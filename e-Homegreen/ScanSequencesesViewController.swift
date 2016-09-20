@@ -376,7 +376,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     func sendCommandWithSequenceAddress(sequenceId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametars(sequenceId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
-        SendingHandler.sendCommand(byteArray: Function.getSequenceNameAndParametar(address, sequenceId: UInt8(sequenceId)) , gateway: self.gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.getSequenceNameAndParametar(address, sequenceId: UInt8(sequenceId)) , gateway: self.gateway)
     }
     func setProgressBarParametars (sequenceId:Int) {
         if let indexOfSequenceIndexInArrayOfNamesToBeSearched = arrayOfSequencesToBeSearched.indexOf(sequenceId){

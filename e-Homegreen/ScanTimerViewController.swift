@@ -426,7 +426,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     func sendCommandForFindingNameWithTimerAddress(timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametarsForFindingNames(timerId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
-        SendingHandler.sendCommand(byteArray: Function.getTimerName(address, timerId: UInt8(timerId)) , gateway: self.gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.getTimerName(address, timerId: UInt8(timerId)) , gateway: self.gateway)
     }
     func setProgressBarParametarsForFindingNames (timerId:Int) {
         print("Progresbar for Names: \(timerId)")
@@ -567,7 +567,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     func sendCommandForFindingParameterWithTimerAddress(timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametarsForFindingParameters(timerId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
-        SendingHandler.sendCommand(byteArray: Function.getTimerParametar(address, id: UInt8(timerId)) , gateway: self.gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.getTimerParametar(address, id: UInt8(timerId)) , gateway: self.gateway)
     }
     func setProgressBarParametarsForFindingParameters (timerId:Int) {
         if let indexOfDeviceIndexInArrayOfPatametersToBeSearched = arrayOfParametersToBeSearched.indexOf(timerId){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name

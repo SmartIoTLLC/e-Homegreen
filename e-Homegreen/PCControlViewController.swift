@@ -160,9 +160,9 @@ class PCControlViewController: PopoverVC {
         let address = [Byte(Int(pcs[tag].gateway.addressOne)), Byte(Int(pcs[tag].gateway.addressTwo)), Byte(Int(pcs[tag].address))]
         let value = Byte(Int(slider.value * 100))
         if value == 0x00 {
-            SendingHandler.sendCommand(byteArray: Function.setPCVolume(address, volume: pcs[tag].pcVolume, mute: 0x01), gateway: pcs[tag].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setPCVolume(address, volume: pcs[tag].pcVolume, mute: 0x01), gateway: pcs[tag].gateway)
         } else {
-            SendingHandler.sendCommand(byteArray: Function.setPCVolume(address, volume: value), gateway: pcs[tag].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setPCVolume(address, volume: value), gateway: pcs[tag].gateway)
             pcs[tag].pcVolume = value
         }
     }

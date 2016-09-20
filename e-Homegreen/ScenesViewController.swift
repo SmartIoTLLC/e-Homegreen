@@ -265,7 +265,7 @@ extension ScenesViewController: UICollectionViewDataSource {
             }
             let sceneId = Int(scenes[tag].sceneId)
             if sceneId >= 0 && sceneId <= 32767 {
-                SendingHandler.sendCommand(byteArray: Function.setScene(address, id: Int(scenes[tag].sceneId)), gateway: scenes[tag].gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setScene(address, id: Int(scenes[tag].sceneId)), gateway: scenes[tag].gateway)
             }
             _ = gesture.view!.tag
             let location = gesture.locationInView(scenesCollectionView)

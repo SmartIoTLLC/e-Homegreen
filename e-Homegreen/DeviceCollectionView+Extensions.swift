@@ -52,20 +52,20 @@ extension DevicesViewController: UICollectionViewDataSource {
         }
         let address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)), UInt8(Int(devices[indexPathRow].gateway.addressTwo)), UInt8(Int(devices[indexPathRow].address))]
         if devices[indexPathRow].controlType == ControlType.Dimmer {
-            SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
         }
         if devices[indexPathRow].controlType == ControlType.Relay {
 
-            SendingHandler.sendCommand(byteArray: Function.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway)
         }
         if devices[indexPathRow].controlType == ControlType.Climate {
-            SendingHandler.sendCommand(byteArray: Function.getACStatus(address), gateway: devices[indexPathRow].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getACStatus(address), gateway: devices[indexPathRow].gateway)
         }
         if devices[indexPathRow].controlType == ControlType.Sensor || devices[indexPathRow].controlType == ControlType.IntelligentSwitch || devices[indexPathRow].controlType == ControlType.Gateway {
-            SendingHandler.sendCommand(byteArray: Function.getSensorState(address), gateway: devices[indexPathRow].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getSensorState(address), gateway: devices[indexPathRow].gateway)
         }
         if devices[indexPathRow].controlType == ControlType.Curtain {
-            SendingHandler.sendCommand(byteArray: Function.getCurtainStatus(address), gateway: devices[indexPathRow].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurtainStatus(address), gateway: devices[indexPathRow].gateway)
         }
         CoreDataController.shahredInstance.saveChanges()
     }

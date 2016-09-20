@@ -211,7 +211,7 @@ class PCControlInterfaceXIB: PopoverVC {
         }else{
             fullScreenByte = 0x01
         }
-        SendingHandler.sendCommand(byteArray: Function.playVideo(pc.moduleAddress, fileName: path, fullScreen: fullScreenByte, by: PlayVideoWith.WindowsMediaPlayer.rawValue), gateway: pc.gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.playVideo(pc.moduleAddress, fileName: path, fullScreen: fullScreenByte, by: PlayVideoWith.WindowsMediaPlayer.rawValue), gateway: pc.gateway)
     }
 
     @IBAction func runAction(sender: AnyObject) {
@@ -223,7 +223,7 @@ class PCControlInterfaceXIB: PopoverVC {
         }else{
             fullScreenByte = 0x01
         }
-        SendingHandler.sendCommand(byteArray: Function.runApp(pc.moduleAddress, cmdLine: command), gateway: pc.gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.runApp(pc.moduleAddress, cmdLine: command), gateway: pc.gateway)
     }
     
     var socketIO:InOutSocket
@@ -233,7 +233,7 @@ class PCControlInterfaceXIB: PopoverVC {
             return
         }
         
-        SendingHandler.sendCommand(byteArray: Function.sendNotificationToPC(pc.moduleAddress, text: text, notificationType: NotificationType(rawValue: Int((pc.notificationType?.intValue)!))!, notificationPosition: NotificationPosition(rawValue: Int((pc.notificationPosition?.intValue)!))!, delayTime: Int((pc.notificationDelay?.intValue)!), displayTime: Int((pc.notificationDisplayTime?.intValue)!)), gateway: pc.gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.sendNotificationToPC(pc.moduleAddress, text: text, notificationType: NotificationType(rawValue: Int((pc.notificationType?.intValue)!))!, notificationPosition: NotificationPosition(rawValue: Int((pc.notificationPosition?.intValue)!))!, delayTime: Int((pc.notificationDelay?.intValue)!), displayTime: Int((pc.notificationDisplayTime?.intValue)!)), gateway: pc.gateway)
     }
     
     @IBAction func addPathForVideo(sender: AnyObject) {        
