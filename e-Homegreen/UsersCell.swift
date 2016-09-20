@@ -42,7 +42,7 @@ class TimerUserCell:UICollectionViewCell{
     
     func startTimer(){
         time?.invalidate()
-        time = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: "countUp:", userInfo:nil, repeats: true)
+        time = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: #selector(TimerUserCell.countUp(_:)), userInfo:nil, repeats: true)
             
     }
     

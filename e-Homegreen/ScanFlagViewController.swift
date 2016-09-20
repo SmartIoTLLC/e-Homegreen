@@ -27,17 +27,11 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     @IBOutlet weak var toTextField: UITextField!
     @IBOutlet weak var flagTableView: UITableView!
     
-    var appDel:AppDelegate!
-    var error:NSError? = nil
-    
     var gateway:Gateway!
+    var filterParametar:FilterItem!
     var flags:[Flag] = []
     
-    var levelFromFilter:String = "All"
-    var zoneFromFilter:String = "All"
-    var categoryFromFilter:String = "All"
-    
-    var selected:AnyObject?
+    var searchBarText:String = ""
     
     var button:UIButton!
     
@@ -56,9 +50,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        updateFlagList()
+        refreshFlagList()
         
         devAddressThree.inputAccessoryView = CustomToolBar()
         IDedit.inputAccessoryView = CustomToolBar()
@@ -101,25 +93,23 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     }
 
     override func sendFilterParametar(filterParametar: FilterItem) {
-        levelFromFilter = filterParametar.levelName
-        zoneFromFilter = filterParametar.zoneName
-        categoryFromFilter = filterParametar.categoryName
-        updateFlagList()
-        flagTableView.reloadData()
+        self.filterParametar = filterParametar
+        refreshFlagList()
     }
     override func sendSearchBarText(text: String) {
-        updateFlagList()
-        if !text.isEmpty{
-            flags = self.flags.filter() {
-                flag in
-                if flag.flagName.lowercaseString.rangeOfString(text.lowercaseString) != nil{
-                    return true
-                }else{
-                    return false
-                }
-            }
-        }
-        flagTableView.reloadData()
+        searchBarText = text
+        refreshFlagList()
+//        if !text.isEmpty{
+//            flags = self.flags.filter() {
+//                flag in
+//                if flag.flagName.lowercaseString.rangeOfString(text.lowercaseString) != nil{
+//                    return true
+//                }else{
+//                    return false
+//                }
+//            }
+//        }
+//        flagTableView.reloadData()
         
     }
     override func nameAndId(name: String, id: String) {
@@ -152,40 +142,10 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
         }
     }
     func refreshFlagList() {
-        updateFlagList()
+        flags = DatabaseFlagsController.shared.updateFlagList(gateway, filterParametar: filterParametar)
         flagTableView.reloadData()
     }
-    func updateFlagList() {
-        let fetchRequest = NSFetchRequest(entityName: "Flag")
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "flagId", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "flagName", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-        var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "gateway == %@", gateway.objectID))
-        if levelFromFilter != "All" {
-            let levelPredicate = NSPredicate(format: "entityLevel == %@", levelFromFilter)
-            predicateArray.append(levelPredicate)
-        }
-        if zoneFromFilter != "All" {
-            let zonePredicate = NSPredicate(format: "flagZone == %@", zoneFromFilter)
-            predicateArray.append(zonePredicate)
-        }
-        if categoryFromFilter != "All" {
-            let categoryPredicate = NSPredicate(format: "flagCategory == %@", categoryFromFilter)
-            predicateArray.append(categoryPredicate)
-        }
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
-        fetchRequest.predicate = compoundPredicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Flag]
-            flags = fetResults!
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
+    
     func handleTap (gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
             showGallery(index, user: gateway.location.user).delegate = self
@@ -232,128 +192,24 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     @IBAction func btnAdd(sender: AnyObject) {
         if let flagId = Int(IDedit.text!), let flagName = nameEdit.text, let address = Int(devAddressThree.text!) {
             if flagId <= 32767 && address <= 255 {
-                var itExists = false
-                var existingFlag:Flag?
-                for flag in flags {
-                    if flag.flagId == flagId && flag.address == address {
-                        itExists = true
-                        existingFlag = flag
-                    }
+                
+                var levelId:Int?
+                if let levelIdNumber = level?.id{
+                    levelId = Int(levelIdNumber)
                 }
-                if !itExists {
-                    let flag = NSEntityDescription.insertNewObjectForEntityForName("Flag", inManagedObjectContext: appDel.managedObjectContext!) as! Flag
-                    flag.flagId = flagId
-                    flag.flagName = flagName
-                    flag.address = address
-                    
-                    if let customImageOne = customImageOne{
-                        flag.flagImageOneCustom = customImageOne
-                        flag.flagImageOneDefault = nil
-                    }
-                    if let def = defaultImageOne {
-                        flag.flagImageOneDefault = def
-                        flag.flagImageOneCustom = nil
-                    }
-                    if let data = imageDataOne{
-                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
-                            image.imageData = data
-                            image.imageId = NSUUID().UUIDString
-                            flag.flagImageOneCustom = image.imageId
-                            flag.flagImageOneDefault = nil
-                            gateway.location.user!.addImagesObject(image)
-                            
-                        }
-                    }
-                    
-                    if let customImageTwo = customImageTwo{
-                        flag.flagImageTwoCustom = customImageTwo
-                        flag.flagImageTwoDefault = nil
-                    }
-                    if let def = defaultImageTwo {
-                        flag.flagImageTwoDefault = def
-                        flag.flagImageTwoCustom = nil
-                    }
-                    if let data = imageDataTwo{
-                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
-                            image.imageData = data
-                            image.imageId = NSUUID().UUIDString
-                            flag.flagImageTwoCustom = image.imageId
-                            flag.flagImageTwoDefault = nil
-                            gateway.location.user!.addImagesObject(image)
-                            
-                        }
-                    }
-                    
-                    flag.entityLevelId = level?.id
-                    flag.flagZoneId = zoneSelected?.id
-                    flag.flagCategoryId = category?.id
-                    
-                    flag.isBroadcast = broadcastSwitch.on
-                    flag.isLocalcast = localcastSwitch.on
-                    flag.entityLevel = btnLevel.titleLabel!.text!
-                    flag.flagZone = btnZone.titleLabel!.text!
-                    flag.flagCategory = btnCategory.titleLabel!.text!
-                    flag.gateway = gateway
-                    CoreDataController.shahredInstance.saveChanges()
-                    refreshFlagList()
-                } else {
-                    existingFlag!.flagId = flagId
-                    existingFlag!.flagName = flagName
-                    existingFlag!.address = address
-                    
-                    if let customImageOne = customImageOne{
-                        existingFlag!.flagImageOneCustom = customImageOne
-                        existingFlag!.flagImageOneDefault = nil
-                    }
-                    if let def = defaultImageOne {
-                        existingFlag!.flagImageOneDefault = def
-                        existingFlag!.flagImageOneCustom = nil
-                    }
-                    if let data = imageDataOne{
-                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
-                            image.imageData = data
-                            image.imageId = NSUUID().UUIDString
-                            existingFlag!.flagImageOneCustom = image.imageId
-                            existingFlag!.flagImageOneDefault = nil
-                            gateway.location.user!.addImagesObject(image)
-                            
-                        }
-                    }
-                    
-                    if let customImageTwo = customImageTwo{
-                        existingFlag!.flagImageOneCustom = customImageTwo
-                        existingFlag!.flagImageOneDefault = nil
-                    }
-                    if let def = defaultImageTwo {
-                        existingFlag!.flagImageTwoDefault = def
-                        existingFlag!.flagImageTwoCustom = nil
-                    }
-                    if let data = imageDataTwo{
-                        if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
-                            image.imageData = data
-                            image.imageId = NSUUID().UUIDString
-                            existingFlag!.flagImageTwoCustom = image.imageId
-                            existingFlag!.flagImageTwoDefault = nil
-                            gateway.location.user!.addImagesObject(image)
-                            
-                        }
-                    }
-                    
-                    existingFlag!.entityLevelId = level?.id
-                    existingFlag!.flagZoneId = zoneSelected?.id
-                    existingFlag!.flagCategoryId = category?.id
-
-                    
-                    existingFlag!.isBroadcast = broadcastSwitch.on
-                    existingFlag!.isLocalcast = localcastSwitch.on
-                    existingFlag!.entityLevel = btnLevel.titleLabel!.text!
-                    existingFlag!.flagZone = btnZone.titleLabel!.text!
-                    existingFlag!.flagCategory = btnCategory.titleLabel!.text!
-                    existingFlag!.gateway = gateway
-                    CoreDataController.shahredInstance.saveChanges()
-                    refreshFlagList()
+                var zoneId:Int?
+                if let zoneIdNumber = zoneSelected?.id{
+                    zoneId = Int(zoneIdNumber)
                 }
+                var categoryId:Int?
+                if let categoryIdNumber = category?.id{
+                    categoryId = Int(categoryIdNumber)
+                }
+                
+                DatabaseFlagsController.shared.createFlag(flagId, flagName: flagName, moduleAddress: address, gateway: gateway, levelId: levelId, selectedZoneId: zoneId, categoryId: categoryId, isBroadcast: broadcastSwitch.on, isLocalcast: localcastSwitch.on, sceneImageOneDefault: defaultImageOne, sceneImageTwoDefault: defaultImageTwo, sceneImageOneCustom: customImageOne, sceneImageTwoCustom: customImageTwo, imageDataOne: imageDataOne, imageDataTwo: imageDataTwo)
+                
             }
+            refreshFlagList()
         }
         self.view.endEditing(true)
     }
@@ -368,14 +224,9 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     }
     
     @IBAction func btnRemove(sender: UIButton) {
-        showAlertView(sender, message:  "Are you sure you want to delete all scenes?") { (action) in
+        showAlertView(sender, message:  "Are you sure you want to delete all flags?") { (action) in
             if action == ReturnedValueFromAlertView.Delete{
-                if self.flags.count != 0 {
-                    for flag in self.flags {
-                        self.appDel.managedObjectContext!.deleteObject(flag)
-                    }
-                }
-                CoreDataController.shahredInstance.saveChanges()
+                DatabaseFlagsController.shared.deleteAllFlags(self.gateway)
                 self.refreshFlagList()
                 self.view.endEditing(true)
             }
@@ -408,60 +259,60 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningFlagNames)
             
             guard let address1Text = devAddressOne.text else{
-                alertController("Error", message: "Address can't be empty")
+                self.view.makeToast(message: "Address can't be empty")
                 return
             }
             guard let address1 = Int(address1Text) else{
-                alertController("Error", message: "Address can be only number")
+                self.view.makeToast(message: "Address can be only number")
                 return
             }
             addressOne = address1
 
             guard let address2Text = devAddressTwo.text else{
-                alertController("Error", message: "Address can't be empty")
+                self.view.makeToast(message: "Address can't be empty")
                 return
             }
             guard let address2 = Int(address2Text) else{
-                alertController("Error", message: "Address can be only number")
+                self.view.makeToast(message: "Address can be only number")
                 return
             }
             addressTwo = address2
             
             guard let address3Text = devAddressThree.text else{
-                alertController("Error", message: "Address can't be empty")
+                self.view.makeToast(message: "Address can't be empty")
                 return
             }
             guard let address3 = Int(address3Text) else{
-                alertController("Error", message: "Address can be only number")
+                self.view.makeToast(message: "Address can be only number")
                 return
             }
             addressThree = address3
             
             
             guard let rangeFromText = fromTextField.text else{
-                alertController("Error", message: "Range can't be empty")
+                self.view.makeToast(message: "Range can't be empty")
                 return
             }
             
             guard let rangeFrom = Int(rangeFromText) else{
-                alertController("Error", message: "Range can be only number")
+                self.view.makeToast(message: "Range can be only number")
                 return
             }
             let from = rangeFrom
             
             guard let rangeToText = toTextField.text else{
-                alertController("Error", message: "Range can't be empty")
+                self.view.makeToast(message: "Range can't be empty")
                 return
             }
             
             guard let rangeTo = Int(rangeToText) else{
-                alertController("Error", message: "Range can be only number")
+                self.view.makeToast(message: "Range can be only number")
                 return
             }
             let to = rangeTo
             
             if rangeTo < rangeFrom {
-                alertController("Error", message: "Range \"from\" can't be higher than range \"to\"")
+                self.view.makeToast(message: "Range \"from\" can't be higher than range \"to\"")
                 return
             }
             for i in from...to{
@@ -481,9 +332,9 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
                 sendCommandForFindingNameWithFlagAddress(firstFlagIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
         } catch let error as InputError {
-            alertController("Error", message: error.description)
+            self.view.makeToast(message: error.description)
         } catch {
-            alertController("Error", message: "Something went wrong.")
+            self.view.makeToast(message: "Something went wrong.")
         }
     }
     // Called from findNames or from it self.
@@ -574,29 +425,29 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
             refreshFlagList()
             
             guard let rangeFromText = fromTextField.text else{
-                alertController("Error", message: "Range can't be empty")
+                self.view.makeToast(message: "Range can't be empty")
                 return
             }
             
             guard let rangeFrom = Int(rangeFromText) else{
-                alertController("Error", message: "Range can be only number")
+                self.view.makeToast(message: "Range can be only number")
                 return
             }
             let from = rangeFrom
             
             guard let rangeToText = toTextField.text else{
-                alertController("Error", message: "Range can't be empty")
+                self.view.makeToast(message: "Range can't be empty")
                 return
             }
             
             guard let rangeTo = Int(rangeToText) else{
-                alertController("Error", message: "Range can be only number")
+                self.view.makeToast(message: "Range can be only number")
                 return
             }
             let to = rangeTo
             
             if rangeTo < rangeFrom {
-                alertController("Error", message: "Range \"from\" can't be higher than range \"to\"")
+                self.view.makeToast(message: "Range \"from\" can't be higher than range \"to\"")
                 return
             }
             
@@ -624,9 +475,9 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
                 print("Command sent for parameter from FindParameter")
             }
         } catch let error as InputError {
-            alertController("Error", message: error.description)
+            self.view.makeToast(message: error.description)
         } catch {
-            alertController("Error", message: "Something went wrong.")
+            self.view.makeToast(message: "Something went wrong.")
         }
     }
     // Called from findParametarsForTimer or from it self.
@@ -737,22 +588,6 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
             _ = NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(ScanFlagViewController.findParametarsForFlag), userInfo: nil, repeats: false)
         }
     }
-    func alertController (title:String, message:String) {
-        alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
-            // ...
-        }
-        alertController!.addAction(cancelAction)
-        
-        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-            // ...
-        }
-        alertController!.addAction(OKAction)
-        
-        self.presentViewController(alertController!, animated: true) {
-            // ...
-        }
-    }
     
     func addObservers(){
         // Notification that tells us that timer is received and stored
@@ -840,22 +675,16 @@ extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
                     }else{
                         if let defaultImage = flags[indexPath.row].flagImageOneDefault{
                             cell.imageOne.image = UIImage(named: defaultImage)
-                        }else{
-                            cell.imageOne.image = UIImage(named: "User")
                         }
                     }
                 }else{
                     if let defaultImage = flags[indexPath.row].flagImageOneDefault{
                         cell.imageOne.image = UIImage(named: defaultImage)
-                    }else{
-                        cell.imageOne.image = UIImage(named: "User")
                     }
                 }
             }else{
                 if let defaultImage = flags[indexPath.row].flagImageOneDefault{
                     cell.imageOne.image = UIImage(named: defaultImage)
-                }else{
-                    cell.imageOne.image = UIImage(named: "User")
                 }
             }
             
@@ -866,22 +695,16 @@ extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
                     }else{
                         if let defaultImage = flags[indexPath.row].flagImageTwoDefault{
                             cell.imageTwo.image = UIImage(named: defaultImage)
-                        }else{
-                            cell.imageTwo.image = UIImage(named: "User")
                         }
                     }
                 }else{
                     if let defaultImage = flags[indexPath.row].flagImageTwoDefault{
                         cell.imageTwo.image = UIImage(named: defaultImage)
-                    }else{
-                        cell.imageTwo.image = UIImage(named: "User")
                     }
                 }
             }else{
                 if let defaultImage = flags[indexPath.row].flagImageTwoDefault{
                     cell.imageTwo.image = UIImage(named: defaultImage)
-                }else{
-                    cell.imageTwo.image = UIImage(named: "User")
                 }
             }
             
@@ -894,15 +717,11 @@ extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        selected = flags[indexPath.row]
         IDedit.text = "\(flags[indexPath.row].flagId)"
         nameEdit.text = "\(flags[indexPath.row].flagName)"
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(flags[indexPath.row].address)))"
         broadcastSwitch.on = flags[indexPath.row].isBroadcast.boolValue
         localcastSwitch.on = flags[indexPath.row].isLocalcast.boolValue
-        print(flags[indexPath.row].entityLevelId)
-        print(flags[indexPath.row].flagZoneId)
-        print(flags[indexPath.row].flagCategoryId)
         
         if let levelId = flags[indexPath.row].entityLevelId as? Int {
             level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location)
@@ -922,6 +741,14 @@ extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
         }else{
             btnCategory.setTitle("All", forState: .Normal)
         }
+        
+        defaultImageOne = flags[indexPath.row].flagImageOneDefault
+        customImageOne = flags[indexPath.row].flagImageOneCustom
+        imageDataOne = nil
+        
+        defaultImageTwo = flags[indexPath.row].flagImageTwoDefault
+        customImageTwo = flags[indexPath.row].flagImageTwoCustom
+        imageDataTwo = nil
         
         if let id = flags[indexPath.row].flagImageOneCustom{
             if let image = DatabaseImageController.shared.getImageById(id){
@@ -991,9 +818,9 @@ extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            appDel.managedObjectContext?.deleteObject(flags[indexPath.row])
-            CoreDataController.shahredInstance.saveChanges()
-            refreshFlagList()
+            DatabaseFlagsController.shared.deleteFlag(flags[indexPath.row])
+            flags.removeAtIndex(indexPath.row)
+            flagTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
         
     }

@@ -564,6 +564,14 @@ extension ScanEventsViewController: UITableViewDataSource, UITableViewDelegate {
             btnCategory.setTitle(category?.name, forState: UIControlState.Normal)
         }
         
+        defaultImageOne = events[indexPath.row].eventImageOneDefault
+        customImageOne = events[indexPath.row].eventImageOneCustom
+        imageDataOne = nil
+        
+        defaultImageTwo = events[indexPath.row].eventImageTwoDefault
+        customImageTwo = events[indexPath.row].eventImageTwoCustom
+        imageDataTwo = nil
+        
         if let id = events[indexPath.row].eventImageOneCustom{
             if let image = DatabaseImageController.shared.getImageById(id){
                 if let data =  image.imageData {

@@ -458,7 +458,7 @@ class DevicesViewController: PopoverVC{
         
         if devicePair == nil{
             if devices[tag].controlType == ControlType.Curtain {
-                var setDeviceValue:UInt8 = 0x00
+                let setDeviceValue:UInt8 = 0x00
                 let deviceCurrentValue = Int(devices[tag].currentValue)
                 devices[tag].currentValue = 0x00
                 let deviceGroupId = devices[tag].curtainGroupID.integerValue
@@ -475,7 +475,7 @@ class DevicesViewController: PopoverVC{
             }
             
             if devices[tag].controlType == ControlType.Curtain {
-                var setDeviceValue:UInt8 = 0x00
+                let setDeviceValue:UInt8 = 0x00
                 let deviceCurrentValue = Int(devices[tag].currentValue)
                 devices[tag].currentValue = 0xFF// We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4.
                 devicePair?.currentValue = 0
@@ -525,7 +525,7 @@ class DevicesViewController: PopoverVC{
             }
         }else{
             if devices[tag].controlType == ControlType.Curtain {
-                var setDeviceValue:UInt8 = 0xEF
+                let setDeviceValue:UInt8 = 0xEF
                 let deviceCurrentValue = Int(devices[tag].currentValue)
                 devices[tag].currentValue = 0x00
                 devicePair?.currentValue = 0x00

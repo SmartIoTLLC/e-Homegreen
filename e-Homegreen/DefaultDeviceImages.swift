@@ -21,7 +21,6 @@ class DefaultDeviceImages: NSObject {
         
         let categoryId = device.categoryId
         let controlType = device.controlType
-        let channel = device.channel
         let controlMode = device.digitalInputMode?.integerValue
         
         switch controlType {
@@ -105,7 +104,6 @@ class DefaultDeviceImages: NSObject {
             if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
                 return climateImagesTwoStateNC
             }else{
-                let k = climateImagesTwoStateNO
                 return climateImagesTwoStateNO
             }
             

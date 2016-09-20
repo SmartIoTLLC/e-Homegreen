@@ -638,7 +638,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[deviceIndex].channel))), gateway: devices[deviceIndex].gateway)
         }
     }
-    func setProgressBarParametarsForFindingNames (var index:Int) {
+    func setProgressBarParametarsForFindingNames (index:Int) {
         if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(index){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
             if let _ = pbFN?.lblHowMuchOf, let _ = pbFN?.lblPercentage, let _ = pbFN?.progressView{
                 pbFN?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfNamesToBeSearched+1) / \(arrayOfNamesToBeSearched.count)"

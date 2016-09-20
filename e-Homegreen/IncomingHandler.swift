@@ -783,7 +783,6 @@ class IncomingHandler: NSObject {
     func parseMessageTimerStatus (byteArray:[Byte]){
         let sortDescriptor = NSSortDescriptor(key: "timerName", ascending: true)
         let timers = DatabaseTimersController.shared.getAllTimersSortedBy(sortDescriptor)
-        
         for i in 1...16 {
             print(timers.count)
             for item in timers {

@@ -52,7 +52,7 @@ extension IncomingHandler {
                     }
                 } else {deviceExists = false}
                 if !deviceExists {
-                    for var i=1 ; i<=channel ; i++ {
+                    for var i=1 ; i<=channel ; i += 1 {
                         var isClimate = false
                         if controlType == ControlType.Climate {
                             isClimate = true
@@ -100,7 +100,7 @@ extension IncomingHandler {
                     }
                 } else {deviceExists = false}
                 if !deviceExists {
-                    for var i=1 ; i<=4 ; i++ {
+                    for var i=1 ; i<=4 ; i += 1 {
                         let deviceInformation = DeviceInformation(address: Int(byteArray[4]), channel: i, numberOfDevices: 4, type: controlType, gateway: gateways[0], mac: NSData(bytes: MAC, length: MAC.count), isClimate:false)
                         
                         if (controlType == ControlType.SaltoAccess){

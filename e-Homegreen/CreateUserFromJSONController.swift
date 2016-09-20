@@ -400,9 +400,6 @@ class CreateUserFromJSONController: NSObject {
                 if let address = flag["address"] as? Int{
                     newFlag.address = address
                 }
-                if let level = flag["entity_level"] as? String{
-                    newFlag.entityLevel = level
-                }
                 if let levelId = flag["entity_level_id"] as? Int{
                     newFlag.entityLevelId = levelId
                 }
@@ -411,9 +408,6 @@ class CreateUserFromJSONController: NSObject {
                 }
                 if let isLocalcast = flag["is_localcast"] as? Bool{
                     newFlag.isLocalcast = isLocalcast
-                }
-                if let flagCategory = flag["flag_category"] as? String{
-                    newFlag.flagCategory = flagCategory
                 }
                 if let flagCategoryId = flag["flag_category_id"] as? Int{
                     newFlag.flagCategoryId = flagCategoryId
@@ -435,9 +429,6 @@ class CreateUserFromJSONController: NSObject {
                 }
                 if let flagName = flag["flag_name"] as? String{
                     newFlag.flagName = flagName
-                }
-                if let flagZone = flag["flag_zone"] as? String{
-                    newFlag.flagZone = flagZone
                 }
                 if let flagZoneId = flag["flag_zone_id"] as? Int{
                     newFlag.flagZoneId = flagZoneId

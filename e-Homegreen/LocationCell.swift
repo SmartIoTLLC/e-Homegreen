@@ -96,7 +96,7 @@ class GatewayCell: UITableViewCell {
     }
     
     override func drawRect(rect: CGRect) {
-        var rectNew = CGRectMake(3, 3, rect.size.width - 6, rect.size.height - 6)
+        let rectNew = CGRectMake(3, 3, rect.size.width - 6, rect.size.height - 6)
         let path = UIBezierPath(roundedRect: rectNew,
                                 byRoundingCorners: UIRectCorner.AllCorners,
                                 cornerRadii: CGSize(width: 5.0, height: 5.0))
@@ -169,7 +169,7 @@ class SurvCell: UITableViewCell{
         }
     }
     override func drawRect(rect: CGRect) {
-        var rectNew = CGRectMake(3, 3, rect.size.width - 6, rect.size.height - 6)
+        let rectNew = CGRectMake(3, 3, rect.size.width - 6, rect.size.height - 6)
         let path = UIBezierPath(roundedRect: rectNew,
                                 byRoundingCorners: UIRectCorner.AllCorners,
                                 cornerRadii: CGSize(width: 5.0, height: 5.0))

@@ -550,6 +550,14 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
             btnCategory.setTitle("All", forState: UIControlState.Normal)
         }
         
+        defaultImageOne = scenes[indexPath.row].sceneImageOneDefault
+        customImageOne = scenes[indexPath.row].sceneImageOneCustom
+        imageDataOne = nil
+        
+        defaultImageTwo = scenes[indexPath.row].sceneImageTwoDefault
+        customImageTwo = scenes[indexPath.row].sceneImageTwoCustom
+        imageDataTwo = nil
+        
         if let id = scenes[indexPath.row].sceneImageOneCustom{
             if let image = DatabaseImageController.shared.getImageById(id){
                 if let data =  image.imageData {
