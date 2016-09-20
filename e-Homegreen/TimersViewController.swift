@@ -21,7 +21,7 @@ class TimersViewController: PopoverVC {
     @IBOutlet weak var fullScreenButton: UIButton!
     
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-    private let reuseIdentifier = "TimerCell"
+    private let reuseIdentifier = "TimersCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
     @IBOutlet weak var timersCollectionView: UICollectionView!

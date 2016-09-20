@@ -1,5 +1,5 @@
 //
-//  SequencesCell.swift
+//  SceneCell.swift
 //  e-Homegreen
 //
 //  Created by Damir Djozic on 9/20/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SequencesCell: UITableViewCell{
+class ScenesCell: UITableViewCell{
     
     @IBOutlet weak var labelID: UILabel!
     @IBOutlet weak var labelName: UILabel!

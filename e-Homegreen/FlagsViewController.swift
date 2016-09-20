@@ -20,7 +20,7 @@ class FlagsViewController: PopoverVC {
     @IBOutlet weak var fullScreenButton: UIButton!
     
     private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-    private let reuseIdentifier = "FlagCell"
+    private let reuseIdentifier = "FlagsCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))

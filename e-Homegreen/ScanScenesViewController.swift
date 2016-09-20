@@ -464,7 +464,7 @@ extension ScanScenesViewController: UITextFieldDelegate{
 extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        if let cell = tableView.dequeueReusableCellWithIdentifier("sceneCell") as? SceneCell {
+        if let cell = tableView.dequeueReusableCellWithIdentifier("scenesCell") as? ScenesCell {
             cell.backgroundColor = UIColor.clearColor()
             cell.labelID.text = "\(scenes[indexPath.row].sceneId)"
             cell.labelName.text = "\(scenes[indexPath.row].sceneName)"
@@ -615,12 +615,4 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
     }
 }
 
-class SceneCell:UITableViewCell{
-    
-    @IBOutlet weak var labelID: UILabel!
-    @IBOutlet weak var labelName: UILabel!
-    @IBOutlet weak var imageOne: UIImageView!
-    @IBOutlet weak var imageTwo: UIImageView!
-    @IBOutlet weak var address: UILabel!
-        
-}
+

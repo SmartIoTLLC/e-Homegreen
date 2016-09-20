@@ -483,13 +483,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
     func chooseGateway (gestureRecognizer:UIGestureRecognizer) {
         if let tag = gestureRecognizer.view?.tag {
             choosedIndex = tag
-            
-//            button = sender
             var popoverList:[PopOverItem] = []
-//            let list:[Gateway] = DatabaseGatewayController.shared.getGatewayByLocationForSecurity(location!)
-//            for item in list {
-//                popoverList.append(PopOverItem(name: item.gatewayDescription, id: item.objectID.URIRepresentation().absoluteString))
-//            }
             popoverList.insert(PopOverItem(name: "  ", id: ""), atIndex: 0)
             openPopover(gestureRecognizer.view!, popOverList:popoverList)
         }

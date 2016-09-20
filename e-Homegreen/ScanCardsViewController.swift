@@ -673,7 +673,7 @@ extension ScanCardsViewController: UITableViewDataSource, UITableViewDelegate{
         return cards.count
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCellWithIdentifier(String(CardCell)) as? CardCell {
+        if let cell = tableView.dequeueReusableCellWithIdentifier(String(CardsCell)) as? CardsCell {
             cell.backgroundColor = UIColor.clearColor()
             
             cell.labelID.text = "\(cards[indexPath.row].id)"
@@ -704,9 +704,4 @@ extension ScanCardsViewController: UITableViewDataSource, UITableViewDelegate{
     }
 }
 
-class CardCell:UITableViewCell{
-    @IBOutlet weak var labelID: UILabel!
-    @IBOutlet weak var cardNameLabel: UILabel!
-    @IBOutlet weak var cardIdLabel: UILabel!
-    @IBOutlet weak var address: UILabel!
-}
+

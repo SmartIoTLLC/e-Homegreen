@@ -639,7 +639,7 @@ extension ScanFlagViewController: UITextFieldDelegate{
 extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        if let cell = tableView.dequeueReusableCellWithIdentifier("flagCell") as? FlagCell {
+        if let cell = tableView.dequeueReusableCellWithIdentifier("flagsCell") as? FlagsCell {
             cell.backgroundColor = UIColor.clearColor()
             cell.labelID.text = "\(flags[indexPath.row].flagId)"
             cell.labelName.text = "\(flags[indexPath.row].flagName)"
@@ -803,12 +803,4 @@ extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-class FlagCell:UITableViewCell{
-    
-    @IBOutlet weak var labelID: UILabel!
-    @IBOutlet weak var labelName: UILabel!
-    @IBOutlet weak var imageOne: UIImageView!
-    @IBOutlet weak var imageTwo: UIImageView!
-    @IBOutlet weak var address: UILabel!
-    
-}
+

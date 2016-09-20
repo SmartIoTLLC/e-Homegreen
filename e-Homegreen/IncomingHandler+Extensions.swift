@@ -52,7 +52,7 @@ extension IncomingHandler {
                     }
                 } else {deviceExists = false}
                 if !deviceExists {
-                    for var i=1 ; i<=channel ; i += 1 {
+                    for i in 1...channel{
                         var isClimate = false
                         if controlType == ControlType.Climate {
                             isClimate = true
@@ -60,10 +60,9 @@ extension IncomingHandler {
                         let deviceInformation = DeviceInformation(address: Int(byteArray[4]), channel: i, numberOfDevices: channel, type: controlType, gateway: gateways[0], mac: NSData(bytes: MAC, length: MAC.count), isClimate:isClimate)
                         
                         if (controlType == ControlType.Sensor ||
-//                            controlType == ControlType.Gateway ||
                             controlType == ControlType.IntelligentSwitch) && i > 1{
                             
-                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
+                            let _ = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
                             
                         }else if controlType == ControlType.Climate ||
                             controlType == ControlType.SaltoAccess ||
@@ -77,7 +76,7 @@ extension IncomingHandler {
                             controlType == ControlType.Relay ||
                             controlType == ControlType.Dimmer{
                             
-                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
+                            let _ = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
                         }
                         
                         CoreDataController.shahredInstance.saveChanges()
@@ -100,18 +99,16 @@ extension IncomingHandler {
                     }
                 } else {deviceExists = false}
                 if !deviceExists {
-                    for var i=1 ; i<=4 ; i += 1 {
+                    for i in 1...4{
                         let deviceInformation = DeviceInformation(address: Int(byteArray[4]), channel: i, numberOfDevices: 4, type: controlType, gateway: gateways[0], mac: NSData(bytes: MAC, length: MAC.count), isClimate:false)
                         
                         if (controlType == ControlType.SaltoAccess){
-                            let device = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation, channelName: "Lock \(i)")
+                            let _ = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation, channelName: "Lock \(i)")
                         }
                         
                         CoreDataController.shahredInstance.saveChanges()
                         NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
                     }
-                    
-                    
                     let data = ["deviceAddresInGateway":Int(byteArray[4])]
                     NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.DidFindDevice, object: self, userInfo: data)
                 }

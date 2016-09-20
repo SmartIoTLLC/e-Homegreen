@@ -22,7 +22,6 @@ enum TypeOfControl:Int{
 
 //IPGCW02001_000_000_Categories List
 class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditCategoryDelegate, AddAddressDelegate, ProgressBarDelegate, UITextFieldDelegate {
-    
     var appDel:AppDelegate!
     var error:NSError? = nil
     var categories:[Category] = []
@@ -34,7 +33,6 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     
     var scanZones:ScanFunction?
     var zoneScanTimer:NSTimer?
-//    var idToSearch:Int?
     var timesRepeatedCounter:Int = 0
     
     var pbSZ:ProgressBarVC?
@@ -91,14 +89,10 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         struct Path {
             static var initialIndexPath : NSIndexPath? = nil
         }
-        
-        
-        
+
         switch state {
         case UIGestureRecognizerState.Began:
-            
             if indexPath != nil {
-                
                 Path.initialIndexPath = indexPath
                 let cell = importCategoryTableView.cellForRowAtIndexPath(indexPath!) as UITableViewCell!
                 My.cellSnapshot  = snapshopOfCell(cell)
@@ -107,8 +101,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
                 My.cellSnapshot!.center = center
                 My.cellSnapshot!.alpha = 0.0
                 importCategoryTableView.addSubview(My.cellSnapshot!)
-                
-                
+
                 UIView.animateWithDuration(0.25, animations: { () -> Void in
                     
                     center.y = locationInView.y
@@ -163,13 +156,10 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
                 }, completion: { (finished) -> Void in
                     
                     if finished {
-                        
                         Path.initialIndexPath = nil
                         My.cellSnapshot!.removeFromSuperview()
                         My.cellSnapshot = nil
-                        
                     }
-                    
             })
             
         }
@@ -226,17 +216,12 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     @IBAction func doneAction(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
-    
     @IBAction func btnScanCategories(sender: AnyObject) {
         showAddAddress(ScanType.Categories).delegate = self
-
     }
     func addAddressFinished(address: Address) {
         do {
-            
             var gatewayForScan:Gateway?
-            
             if let location = location{
                 if let gateways = location.gateways?.allObjects as? [Gateway]{
                     for gate in gateways{
@@ -246,12 +231,10 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
                     }
                 }
             }
-            
             guard let gateway = gatewayForScan else {
                 self.view.makeToast(message: "No gateway with address")
                 return
             }
-            
             let sp = try returnSearchParametars(txtFrom.text!, to: txtTo.text!)
             scanZones = ScanFunction(from: sp.from, to: sp.to, gateway: gateway, scanForWhat: .Category)
             pbSZ = ProgressBarVC(title: "Scanning Categories", percentage: sp.initialPercentage, howMuchOf: "1 / \(sp.count)")
@@ -356,12 +339,6 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     
     
     func backURL(strText: String) {
-//        First - Delete all categories
-//        for var item = 0; item < categories.count; item++ {
-//            if categories[item].gateway!.objectID == gateway!.objectID {
-//                appDel.managedObjectContext!.deleteObject(categories[item])
-//            }
-//        }
 //        Second - Take default categories from bundle
         let categoriesJSONBundle = DataImporter.createCategoriesFromFileFromNSBundle()
 //        Third - Add new zones and edit zones from bundle if needed
@@ -389,14 +366,9 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
                     } else {
                         category.isVisible = NSNumber(bool: true)
                     }
-//                    category.gateway = gateway!
                     CoreDataController.shahredInstance.saveChanges()
                 }
-            } else {
-//                createCategories(gateway!)
             }
-        } else {
-//            createCategories(gateway!)
         }
         refreshCategoryList()
     }

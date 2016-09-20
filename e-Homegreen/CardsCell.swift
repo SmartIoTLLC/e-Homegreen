@@ -1,5 +1,5 @@
 //
-//  SequencesCell.swift
+//  CardsCell.swift
 //  e-Homegreen
 //
 //  Created by Damir Djozic on 9/20/16.
@@ -8,12 +8,9 @@
 
 import UIKit
 
-class SequencesCell: UITableViewCell{
-    
+class CardsCell: UITableViewCell{
     @IBOutlet weak var labelID: UILabel!
-    @IBOutlet weak var labelName: UILabel!
-    @IBOutlet weak var imageOne: UIImageView!
-    @IBOutlet weak var imageTwo: UIImageView!
+    @IBOutlet weak var cardNameLabel: UILabel!
+    @IBOutlet weak var cardIdLabel: UILabel!
     @IBOutlet weak var address: UILabel!
-    
 }

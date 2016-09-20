@@ -769,7 +769,7 @@ extension ScanTimerViewController: UITableViewDataSource {
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        if let cell = tableView.dequeueReusableCellWithIdentifier("timerCell") as? TimerCell {
+        if let cell = tableView.dequeueReusableCellWithIdentifier("timersCell") as? TimersCell {
             cell.backgroundColor = UIColor.clearColor()
             cell.labelID.text = "\(timers[indexPath.row].timerId)"
             cell.labelName.text = timers[indexPath.row].timerName
@@ -824,10 +824,4 @@ extension ScanTimerViewController: UITableViewDataSource {
     }
 }
 
-class TimerCell:UITableViewCell{
-    @IBOutlet weak var labelID: UILabel!
-    @IBOutlet weak var labelName: UILabel!
-    @IBOutlet weak var imageOne: UIImageView!
-    @IBOutlet weak var imageTwo: UIImageView!
-    @IBOutlet weak var address: UILabel!
-}
+

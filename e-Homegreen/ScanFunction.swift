@@ -10,16 +10,7 @@ import Foundation
 protocol ScanEntity {
     func sendCommandForScannning(id:Byte, address:[Byte], gateway:Gateway)
 }
-class ScanZone:ScanEntity {
-    func sendCommandForScannning(id:Byte, address:[Byte], gateway:Gateway) {
-        SendingHandler.sendCommand(byteArray: Function.getZone(address, id: id), gateway: gateway)
-    }
-}
-class ScanCategory:ScanEntity {
-    func sendCommandForScannning(id:Byte, address:[Byte], gateway:Gateway) {
-        SendingHandler.sendCommand(byteArray: Function.getCategory(address, id: id), gateway: gateway)
-    }
-}
+
 enum WhatToScan {
     case Zone, Category
 }

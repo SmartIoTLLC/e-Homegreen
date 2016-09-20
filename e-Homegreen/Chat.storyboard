@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -123,7 +123,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Chat" id="plp-Lm-p2P">
                         <barButtonItem key="leftBarButtonItem" image="Menu button" id="AI4-xe-H9L"/>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="BS2-O3-0E0">
+                        <barButtonItem key="rightBarButtonItem" id="BS2-O3-0E0">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="vyC-C0-qfQ">
                                 <rect key="frame" x="274" y="7" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

@@ -10,9 +10,9 @@
 		220176391CD0FED400A1470A /* MenuItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220176371CD0FED400A1470A /* MenuItem+CoreDataProperties.swift */; };
 		2201763A1CD0FED400A1470A /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220176381CD0FED400A1470A /* MenuItem.swift */; };
 		2201763C1CD1016200A1470A /* DatabaseMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2201763B1CD1016200A1470A /* DatabaseMenuController.swift */; };
-		222889B01CBBCF84004EBADD /* TimerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222889AF1CBBCF84004EBADD /* TimerCell.swift */; };
+		222889B01CBBCF84004EBADD /* TimerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222889AF1CBBCF84004EBADD /* TimerCollectionViewCell.swift */; };
 		222889B21CBBCFD1004EBADD /* DatabaseTimersController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222889B11CBBCFD1004EBADD /* DatabaseTimersController.swift */; };
-		222889B41CBBD5E0004EBADD /* FlagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222889B31CBBD5E0004EBADD /* FlagCell.swift */; };
+		222889B41CBBD5E0004EBADD /* FlagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222889B31CBBD5E0004EBADD /* FlagCollectionViewCell.swift */; };
 		222889B61CBBD60F004EBADD /* DatabaseFlagsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222889B51CBBD60F004EBADD /* DatabaseFlagsController.swift */; };
 		22320C891C9ACE0900F15B36 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22320C881C9ACE0900F15B36 /* UIColor + Extension.swift */; };
 		2232922B1CABD6790001422B /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2232922A1CABD6790001422B /* Settings.storyboard */; };
@@ -109,7 +109,7 @@
 		22EEAD131C872BB500AD66F0 /* EditZoneViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EEAD111C872BB500AD66F0 /* EditZoneViewController.xib */; };
 		22F2C9E51D41058A008A04DE /* NavigationTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F2C9E41D41058A008A04DE /* NavigationTitleView.swift */; };
 		22FD298F1CBBC62400BCE823 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD298E1CBBC62400BCE823 /* EventCell.swift */; };
-		22FD29911CBBC9D100BCE823 /* SequencesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD29901CBBC9D100BCE823 /* SequencesCell.swift */; };
+		22FD29911CBBC9D100BCE823 /* SequencesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD29901CBBC9D100BCE823 /* SequencesCollectionViewCell.swift */; };
 		22FD29931CBBCB4B00BCE823 /* DatabaseSequencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FD29921CBBCB4B00BCE823 /* DatabaseSequencesController.swift */; };
 		22FF1E5F1D86BF5700ECB86E /* ScanCardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FF1E5E1D86BF5700ECB86E /* ScanCardsViewController.swift */; };
 		22FF1E621D86D86F00ECB86E /* Card+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FF1E601D86D86F00ECB86E /* Card+CoreDataProperties.swift */; };
@@ -129,6 +129,16 @@
 		495726BB1D4F49A6004F2A3D /* CurtainModuleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726BA1D4F49A6004F2A3D /* CurtainModuleCell.swift */; };
 		4983C7E51D4B5F2D00C8E865 /* RelayParametersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4983C7E31D4B5F2D00C8E865 /* RelayParametersCell.swift */; };
 		4983C7E61D4B5F2D00C8E865 /* RelayParametersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4983C7E41D4B5F2D00C8E865 /* RelayParametersCell.xib */; };
+		49C059641D9136E50061A544 /* PopoverVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C059631D9136E50061A544 /* PopoverVC.swift */; };
+		49C059661D91373C0061A544 /* ScanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C059651D91373C0061A544 /* ScanCell.swift */; };
+		49C059681D9137990061A544 /* SceneCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C059671D9137990061A544 /* SceneCell.swift */; };
+		49C0596A1D9138460061A544 /* SequencesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C059691D9138460061A544 /* SequencesCell.swift */; };
+		49C0596C1D91386A0061A544 /* EventsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C0596B1D91386A0061A544 /* EventsCell.swift */; };
+		49C059701D91393F0061A544 /* TimerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C0596F1D91393F0061A544 /* TimerCell.swift */; };
+		49C059721D91398F0061A544 /* FlagsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C059711D91398F0061A544 /* FlagsCell.swift */; };
+		49C059741D913ACA0061A544 /* CardsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C059731D913ACA0061A544 /* CardsCell.swift */; };
+		49C059761D913D7D0061A544 /* ScanZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C059751D913D7D0061A544 /* ScanZone.swift */; };
+		49C059781D913DB90061A544 /* ScanCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C059771D913DB90061A544 /* ScanCategory.swift */; };
 		49E4055B1D2D0A870031130B /* PullDownViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4055A1D2D0A870031130B /* PullDownViewCell.swift */; };
 		49FDD1E21D52043F00884E12 /* DigitalInputPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDD1E01D52043F00884E12 /* DigitalInputPopup.swift */; };
 		49FDD1E31D52043F00884E12 /* DigitalInputPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49FDD1E11D52043F00884E12 /* DigitalInputPopup.xib */; };
@@ -358,9 +368,9 @@
 		220176371CD0FED400A1470A /* MenuItem+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MenuItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		220176381CD0FED400A1470A /* MenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		2201763B1CD1016200A1470A /* DatabaseMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseMenuController.swift; sourceTree = "<group>"; };
-		222889AF1CBBCF84004EBADD /* TimerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerCell.swift; sourceTree = "<group>"; };
+		222889AF1CBBCF84004EBADD /* TimerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerCollectionViewCell.swift; sourceTree = "<group>"; };
 		222889B11CBBCFD1004EBADD /* DatabaseTimersController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseTimersController.swift; sourceTree = "<group>"; };
-		222889B31CBBD5E0004EBADD /* FlagCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagCell.swift; sourceTree = "<group>"; };
+		222889B31CBBD5E0004EBADD /* FlagCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagCollectionViewCell.swift; sourceTree = "<group>"; };
 		222889B51CBBD60F004EBADD /* DatabaseFlagsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseFlagsController.swift; sourceTree = "<group>"; };
 		22320C881C9ACE0900F15B36 /* UIColor + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
 		2232922A1CABD6790001422B /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
@@ -459,7 +469,7 @@
 		22EEAD111C872BB500AD66F0 /* EditZoneViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditZoneViewController.xib; sourceTree = "<group>"; };
 		22F2C9E41D41058A008A04DE /* NavigationTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationTitleView.swift; sourceTree = "<group>"; };
 		22FD298E1CBBC62400BCE823 /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
-		22FD29901CBBC9D100BCE823 /* SequencesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequencesCell.swift; sourceTree = "<group>"; };
+		22FD29901CBBC9D100BCE823 /* SequencesCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequencesCollectionViewCell.swift; sourceTree = "<group>"; };
 		22FD29921CBBCB4B00BCE823 /* DatabaseSequencesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSequencesController.swift; sourceTree = "<group>"; };
 		22FF1E5E1D86BF5700ECB86E /* ScanCardsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanCardsViewController.swift; sourceTree = "<group>"; };
 		22FF1E601D86D86F00ECB86E /* Card+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Card+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -479,6 +489,16 @@
 		495726BA1D4F49A6004F2A3D /* CurtainModuleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurtainModuleCell.swift; sourceTree = "<group>"; };
 		4983C7E31D4B5F2D00C8E865 /* RelayParametersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelayParametersCell.swift; sourceTree = "<group>"; };
 		4983C7E41D4B5F2D00C8E865 /* RelayParametersCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RelayParametersCell.xib; sourceTree = "<group>"; };
+		49C059631D9136E50061A544 /* PopoverVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverVC.swift; sourceTree = "<group>"; };
+		49C059651D91373C0061A544 /* ScanCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanCell.swift; sourceTree = "<group>"; };
+		49C059671D9137990061A544 /* SceneCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneCell.swift; sourceTree = "<group>"; };
+		49C059691D9138460061A544 /* SequencesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequencesCell.swift; sourceTree = "<group>"; };
+		49C0596B1D91386A0061A544 /* EventsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsCell.swift; sourceTree = "<group>"; };
+		49C0596F1D91393F0061A544 /* TimerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerCell.swift; sourceTree = "<group>"; };
+		49C059711D91398F0061A544 /* FlagsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagsCell.swift; sourceTree = "<group>"; };
+		49C059731D913ACA0061A544 /* CardsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardsCell.swift; sourceTree = "<group>"; };
+		49C059751D913D7D0061A544 /* ScanZone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanZone.swift; sourceTree = "<group>"; };
+		49C059771D913DB90061A544 /* ScanCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanCategory.swift; sourceTree = "<group>"; };
 		49E4055A1D2D0A870031130B /* PullDownViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownViewCell.swift; sourceTree = "<group>"; };
 		49FDD1E01D52043F00884E12 /* DigitalInputPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalInputPopup.swift; sourceTree = "<group>"; };
 		49FDD1E11D52043F00884E12 /* DigitalInputPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalInputPopup.xib; sourceTree = "<group>"; };
@@ -786,7 +806,7 @@
 				E7AAF7641BBE87C300992A18 /* SequencesXIB */,
 				736F17D31B3AE850003A6A02 /* SequencesViewController.swift */,
 				22495D191CAA797C0034FC94 /* Sequences.storyboard */,
-				22FD29901CBBC9D100BCE823 /* SequencesCell.swift */,
+				22FD29901CBBC9D100BCE823 /* SequencesCollectionViewCell.swift */,
 			);
 			name = Sequences;
 			sourceTree = "<group>";
@@ -797,7 +817,7 @@
 				7372EB221BC3F76C0097806D /* TimerXIB */,
 				736F17D51B3AE85F003A6A02 /* TimersViewController.swift */,
 				22495D1C1CAA7A2E0034FC94 /* Timers.storyboard */,
-				222889AF1CBBCF84004EBADD /* TimerCell.swift */,
+				222889AF1CBBCF84004EBADD /* TimerCollectionViewCell.swift */,
 			);
 			name = Timers;
 			sourceTree = "<group>";
@@ -808,7 +828,7 @@
 				73E6CDB61BC56421003A5F55 /* FlagXIB */,
 				22495D1E1CAA7ADA0034FC94 /* Flags.storyboard */,
 				736F17D71B3AE870003A6A02 /* FlagsViewController.swift */,
-				222889B31CBBD5E0004EBADD /* FlagCell.swift */,
+				222889B31CBBD5E0004EBADD /* FlagCollectionViewCell.swift */,
 			);
 			name = Flags;
 			sourceTree = "<group>";
@@ -857,7 +877,7 @@
 			children = (
 				22E7B2121CC5044200F813AC /* Menu */,
 				22E7B20D1CC4FC7600F813AC /* Reset Password */,
-				22E7B20C1CC4FC1900F813AC /* Add Zone And Category */,
+				22E7B20C1CC4FC1900F813AC /* Scan zone and category */,
 				22E7B20B1CC4FBFD00F813AC /* Add iBeacon */,
 				22E7B20A1CC4FBED00F813AC /* Progress Bar */,
 				22E7B2091CC4FBDE00F813AC /* Import Files */,
@@ -865,7 +885,7 @@
 				22E7B2071CC4FBA600F813AC /* Add Surveillance */,
 				22E7B2061CC4FB9200F813AC /* Add e-Homegreen */,
 				22E7B2051CC4FB7F00F813AC /* Add Location */,
-				E7F57B071BA7FE32006B0D71 /* ScanViewController */,
+				E7F57B071BA7FE32006B0D71 /* ScanItemsViewController */,
 				2232922D1CABE9400001422B /* Add User */,
 				2232922A1CABD6790001422B /* Settings.storyboard */,
 				223362931CA2E518006C80C4 /* ProjectManagerViewController.swift */,
@@ -1057,7 +1077,7 @@
 			name = "Add iBeacon";
 			sourceTree = "<group>";
 		};
-		22E7B20C1CC4FC1900F813AC /* Add Zone And Category */ = {
+		22E7B20C1CC4FC1900F813AC /* Scan zone and category */ = {
 			isa = PBXGroup;
 			children = (
 				73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */,
@@ -1069,8 +1089,11 @@
 				22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */,
 				22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */,
 				22EEAD111C872BB500AD66F0 /* EditZoneViewController.xib */,
+				734E35771C8239990096E043 /* ScanFunction.swift */,
+				49C059751D913D7D0061A544 /* ScanZone.swift */,
+				49C059771D913DB90061A544 /* ScanCategory.swift */,
 			);
-			name = "Add Zone And Category";
+			name = "Scan zone and category";
 			sourceTree = "<group>";
 		};
 		22E7B20D1CC4FC7600F813AC /* Reset Password */ = {
@@ -1142,6 +1165,21 @@
 				4983C7E41D4B5F2D00C8E865 /* RelayParametersCell.xib */,
 			);
 			name = Relay;
+			sourceTree = "<group>";
+		};
+		49C059621D9134650061A544 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				49C059631D9136E50061A544 /* PopoverVC.swift */,
+				49C059651D91373C0061A544 /* ScanCell.swift */,
+				49C059671D9137990061A544 /* SceneCell.swift */,
+				49C059691D9138460061A544 /* SequencesCell.swift */,
+				49C0596B1D91386A0061A544 /* EventsCell.swift */,
+				49C0596F1D91393F0061A544 /* TimerCell.swift */,
+				49C059711D91398F0061A544 /* FlagsCell.swift */,
+				49C059731D913ACA0061A544 /* CardsCell.swift */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		49FDD1DB1D51DCE200884E12 /* Digital Input */ = {
@@ -1748,9 +1786,10 @@
 			path = ../Framework;
 			sourceTree = "<group>";
 		};
-		E7F57B071BA7FE32006B0D71 /* ScanViewController */ = {
+		E7F57B071BA7FE32006B0D71 /* ScanItemsViewController */ = {
 			isa = PBXGroup;
 			children = (
+				49C059621D9134650061A544 /* Cells */,
 				E79AEBA91B70A0EB00410E2D /* Device Parametars Screens */,
 				E75F41661B662ED1005080F1 /* ScanViewController.swift */,
 				E7F57B0A1BA80413006B0D71 /* ScanDevicesViewController.swift */,
@@ -1760,11 +1799,10 @@
 				E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */,
 				E79309B71BC50E8D0009EFB1 /* ScanFlagViewController.swift */,
 				22FF1E5E1D86BF5700ECB86E /* ScanCardsViewController.swift */,
-				734E35771C8239990096E043 /* ScanFunction.swift */,
 				490C352B1D6D848400C9B851 /* DeleteConfirmation.swift */,
 				490C352C1D6D848400C9B851 /* DeleteConfirmation.xib */,
 			);
-			name = ScanViewController;
+			name = ScanItemsViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2058,6 +2096,7 @@
 				22FF1E631D86D86F00ECB86E /* Card.swift in Sources */,
 				22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */,
 				223690C91CAD02530037B54A /* CreateAdminViewController.swift in Sources */,
+				49C059781D913DB90061A544 /* ScanCategory.swift in Sources */,
 				495726B31D4F48F1004F2A3D /* DeviceCollectionCell.swift in Sources */,
 				22FD298F1CBBC62400BCE823 /* EventCell.swift in Sources */,
 				73E206D91B2F16720008B002 /* DevicesViewController.swift in Sources */,
@@ -2082,6 +2121,8 @@
 				7372EB401BC410800097806D /* Gateway.swift in Sources */,
 				2238789B1C916748001357E0 /* Device_AppCell.swift in Sources */,
 				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
+				49C059721D91398F0061A544 /* FlagsCell.swift in Sources */,
+				49C059641D9136E50061A544 /* PopoverVC.swift in Sources */,
 				73EBE28C1C1043990095F372 /* DeviceCollectionViewCells.swift in Sources */,
 				223BAD471D3E5395003E9365 /* FilterController.swift in Sources */,
 				223690CB1CAD04270037B54A /* LogInTextField.swift in Sources */,
@@ -2095,7 +2136,7 @@
 				E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */,
 				7372EB421BC410800097806D /* Sequence.swift in Sources */,
 				223362971CA2E624006C80C4 /* UsersViewController.swift in Sources */,
-				22FD29911CBBC9D100BCE823 /* SequencesCell.swift in Sources */,
+				22FD29911CBBC9D100BCE823 /* SequencesCollectionViewCell.swift in Sources */,
 				734E35781C8239990096E043 /* ScanFunction.swift in Sources */,
 				223362911CA2E4EC006C80C4 /* AddUserXIB.swift in Sources */,
 				E79FD4EC1BCE43B600CA17DB /* ChatBubble.swift in Sources */,
@@ -2125,6 +2166,7 @@
 				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,
 				223687151CB4F13E005ACDE4 /* InsertGatewayAddressXIB.swift in Sources */,
 				E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */,
+				49C059681D9137990061A544 /* SceneCell.swift in Sources */,
 				736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */,
 				7372EB341BC410800097806D /* Timer.swift in Sources */,
 				2240EAC91D46084E0062AC2F /* FilterParametar.swift in Sources */,
@@ -2165,7 +2207,7 @@
 				E7F57B0D1BA847D8006B0D71 /* ScanSequencesesViewController.swift in Sources */,
 				2240EAC81D46084E0062AC2F /* FilterParametar+CoreDataProperties.swift in Sources */,
 				73FD2E5A1C08AB9F00B9F11A /* ImageHandler.swift in Sources */,
-				222889B41CBBD5E0004EBADD /* FlagCell.swift in Sources */,
+				222889B41CBBD5E0004EBADD /* FlagCollectionViewCell.swift in Sources */,
 				734DBFBF1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift in Sources */,
 				73DB8B911B2FF87600139E58 /* Menu.swift in Sources */,
 				7372EB411BC410800097806D /* Sequence+CoreDataProperties.swift in Sources */,
@@ -2223,10 +2265,12 @@
 				E7F5FC1D1BB9744200071982 /* CustomButton.swift in Sources */,
 				4D0BB34C1D5C91020047688F /* PCCommand.swift in Sources */,
 				2241E4701CC6389700BCD763 /* SurveillanceCell.swift in Sources */,
+				49C059661D91373C0061A544 /* ScanCell.swift in Sources */,
 				7372EB3F1BC410800097806D /* Gateway+CoreDataProperties.swift in Sources */,
 				E7F5FC221BB985E600071982 /* MoveCameraHandler.swift in Sources */,
 				E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */,
 				E7F0A6061BBBF06000B6648F /* CustomGradientButton.swift in Sources */,
+				49C059741D913ACA0061A544 /* CardsCell.swift in Sources */,
 				49E4055B1D2D0A870031130B /* PullDownViewCell.swift in Sources */,
 				22409DDB1D6AFD2600C33F6D /* User+CoreDataProperties.swift in Sources */,
 				22320C891C9ACE0900F15B36 /* UIColor + Extension.swift in Sources */,
@@ -2247,22 +2291,26 @@
 				736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */,
 				7372EB331BC410800097806D /* Timer+CoreDataProperties.swift in Sources */,
 				223878991C916645001357E0 /* ListOfDevice_AppViewController.swift in Sources */,
+				49C059761D913D7D0061A544 /* ScanZone.swift in Sources */,
 				E79AEBB81B70C43300410E2D /* RelayParametarVC.swift in Sources */,
+				49C0596C1D91386A0061A544 /* EventsCell.swift in Sources */,
 				22402A851CBFC54C00CBB6E4 /* SecurityCollectionCell.swift in Sources */,
 				E73993181BCEA05100C74486 /* AnswersHandler.swift in Sources */,
 				22402A831CBFACF400CBB6E4 /* DatabaseDeviceController.swift in Sources */,
 				49FDD1E21D52043F00884E12 /* DigitalInputPopup.swift in Sources */,
-				222889B01CBBCF84004EBADD /* TimerCell.swift in Sources */,
+				222889B01CBBCF84004EBADD /* TimerCollectionViewCell.swift in Sources */,
 				731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */,
 				22453A9F1D391E33009DCB07 /* FilterPullDown.swift in Sources */,
 				2201763C1CD1016200A1470A /* DatabaseMenuController.swift in Sources */,
 				738DECAD1BBBEA6300D6B834 /* Security.swift in Sources */,
 				2241E46C1CC612B400BCD763 /* DatabaseZoneController.swift in Sources */,
 				22FF1E621D86D86F00ECB86E /* Card+CoreDataProperties.swift in Sources */,
+				49C059701D91393F0061A544 /* TimerCell.swift in Sources */,
 				7372EB201BC3F7600097806D /* TimerParametarVC.swift in Sources */,
 				E7F57B0F1BA847F8006B0D71 /* ScanEventsViewController.swift in Sources */,
 				73331C181CA029DF009BA1DE /* FilterStruct.swift in Sources */,
 				495726BB1D4F49A6004F2A3D /* CurtainModuleCell.swift in Sources */,
+				49C0596A1D9138460061A544 /* SequencesCell.swift in Sources */,
 				E75F41671B662ED1005080F1 /* ScanViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

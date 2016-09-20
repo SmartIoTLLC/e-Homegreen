@@ -613,12 +613,4 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
     }
 }
 
-class SequencesCell:UITableViewCell{
-    
-    @IBOutlet weak var labelID: UILabel!
-    @IBOutlet weak var labelName: UILabel!
-    @IBOutlet weak var imageOne: UIImageView!
-    @IBOutlet weak var imageTwo: UIImageView!
-    @IBOutlet weak var address: UILabel!
-    
-}
+
