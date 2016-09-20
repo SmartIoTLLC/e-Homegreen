@@ -37,8 +37,8 @@ class DatabaseTimersController: NSObject {
             let sortDescriptorThree = NSSortDescriptor(key: "timerName", ascending: true)
             fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
             
-            var predicateArrayOr:[NSPredicate] = [NSPredicate(format: "type != %@", "Stopwatch/User")]
-            predicateArrayOr.append(NSPredicate(format: "timerCategory != %@", "User"))
+            var predicateArrayOr:[NSPredicate] = [NSPredicate(format: "type != %@", NSNumber(integer: TimerType.Stopwatch.rawValue))]
+            predicateArrayOr.append(NSPredicate(format: "timerCategoryId != %@", NSNumber(integer: 20)))
             let compoundPredicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: predicateArrayOr)
 
             var predicateArrayAnd:[NSPredicate] = [NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))]
