@@ -14,6 +14,21 @@ class DatabaseTimersController: NSObject {
     static let shared = DatabaseTimersController()
     let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
+    func getAllTimersSortedBy(sortDescripror: NSSortDescriptor) -> [Timer] {
+        if let _ = DatabaseUserController.shared.logedUserOrAdmin(){
+            let fetchRequest = NSFetchRequest(entityName: "Timer")
+            
+            fetchRequest.sortDescriptors = [sortDescripror]
+            do {
+                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Timer]
+                return fetResults!
+            } catch _ as NSError {
+                abort()
+            }
+        }
+        return []
+    }
+    
     func getTimers(filterParametar:FilterItem) -> [Timer] {
         if let user = DatabaseUserController.shared.logedUserOrAdmin(){
             let fetchRequest = NSFetchRequest(entityName: "Timer")
