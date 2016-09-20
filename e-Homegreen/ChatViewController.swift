@@ -19,7 +19,6 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     
     @IBOutlet weak var chatTableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
-//    @IBOutlet weak var chatTextField: UITextField!
     var sidebarMenuOpen : Bool!
     
     @IBOutlet weak var viewHeight: NSLayoutConstraint!
@@ -178,7 +177,6 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     
     func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
-//        pullDown.drawMenu(filterParametar)
         chatTableView.reloadData()
     }
     
@@ -223,7 +221,6 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     func textToSpeech(text:String) {
         let utterance = AVSpeechUtterance(string: text)
         synth.speakUtterance(utterance)
-        //        synth.stopSpeakingAtBoundary(AVSpeechBoundary.Immediate)
     }
     
     func stopTextToSpeech() {
@@ -386,7 +383,6 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
             if device.controlType == ControlType.Climate {
                 SendingHandler.sendCommand(byteArray: Function.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0xFF), gateway: device.gateway)
             }
-//            refreshChatListWithAnswer("The command for turning on for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: isValeryVoiceOn)
             refreshChatListWithAnswer(commandWasSent(command, deviceType: device.controlType), isValeryVoiceOn: isValeryVoiceOn)
         } else if command == .TurnOffDevice {
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
@@ -402,14 +398,12 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
             if device.controlType == ControlType.Climate {
                 SendingHandler.sendCommand(byteArray: Function.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0x00), gateway: device.gateway)
             }
-//            refreshChatListWithAnswer("The command for turning off for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: isValeryVoiceOn)
             refreshChatListWithAnswer(commandWasSent(command, deviceType: device.controlType), isValeryVoiceOn: isValeryVoiceOn)
         } else if command == .DimDevice {
             if dimValue != -1 {
                 let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
                 if device.controlType == ControlType.Dimmer {
                     SendingHandler.sendCommand(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(device.channel)), value: UInt8(dimValue), delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: UInt8(Int(device.skipState))), gateway: device.gateway)
-//                    refreshChatListWithAnswer("The command for dimming to \(dimValue) for device \(device.name) was sent to \(device.gateway.name)", isValeryVoiceOn: isValeryVoiceOn)
                     refreshChatListWithAnswer(commandWasSent(command, deviceType: device.controlType), isValeryVoiceOn: isValeryVoiceOn)
                 } else {
                     refreshChatListWithAnswer("Device is not of dimmer type.", isValeryVoiceOn: isValeryVoiceOn)

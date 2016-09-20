@@ -99,17 +99,6 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     override func sendSearchBarText(text: String) {
         searchBarText = text
         refreshFlagList()
-//        if !text.isEmpty{
-//            flags = self.flags.filter() {
-//                flag in
-//                if flag.flagName.lowercaseString.rangeOfString(text.lowercaseString) != nil{
-//                    return true
-//                }else{
-//                    return false
-//                }
-//            }
-//        }
-//        flagTableView.reloadData()
         
     }
     override func nameAndId(name: String, id: String) {
@@ -252,11 +241,8 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     
     // Gets all input parameters and prepares everything for scanning, and initiates scanning.
     func findNames() {
-        do {
             arrayOfNamesToBeSearched = [Int]()
             indexOfNamesToBeSearched = 0
-            
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningFlagNames)
             
             guard let address1Text = devAddressOne.text else{
                 self.view.makeToast(message: "Address can't be empty")
@@ -329,13 +315,9 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
                 self.presentViewController(progressBarScreenFlagNames!, animated: true, completion: nil)
                 flagNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanFlagViewController.checkIfFlagDidGetName(_:)), userInfo: firstFlagIndexThatDontHaveName, repeats: false)
                 NSLog("func findNames \(firstFlagIndexThatDontHaveName)")
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningFlagNames)
                 sendCommandForFindingNameWithFlagAddress(firstFlagIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
-        } catch let error as InputError {
-            self.view.makeToast(message: error.description)
-        } catch {
-            self.view.makeToast(message: "Something went wrong.")
-        }
     }
     // Called from findNames or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingNames for that specific timer id.

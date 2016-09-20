@@ -242,7 +242,6 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     
     // Gets all input parameters and prepares everything for scanning, and initiates scanning.
     func findSequences() {
-        do {
             arrayOfSequencesToBeSearched = [Int]()
             indexOfSequencesToBeSearched = 0
             
@@ -313,11 +312,6 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningSequencesNameAndParameters)
                 sendCommandWithSequenceAddress(firstSequenceIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
-        } catch let error as InputError {
-            self.view.makeToast(message: error.description)
-        } catch {
-            self.view.makeToast(message: "Something went wrong.")
-        }
     }
     // Called from findSequences or from it self.
     // Checks which sequence ID should be searched for and calls sendCommandWithSequenceAddress for that specific sequence id.

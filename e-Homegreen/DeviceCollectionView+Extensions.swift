@@ -79,30 +79,7 @@ extension DevicesViewController: UICollectionViewDataSource {
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             if let collectionView = scrollView as? UICollectionView {
-                if let indexPaths = collectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
-                    for indexPath in indexPaths {
-                        if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as NSDate? {
-                            if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayHours) as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayMinutes) as? Int {
-                                let minutes = (hourValue * 60 + minuteValue) * 60
-                                if NSDate().timeIntervalSinceDate(stateUpdatedAt.dateByAddingTimeInterval(NSTimeInterval(NSNumber(integer: minutes)))) >= 0 {
-                                    updateDeviceStatus (indexPathRow: indexPath.row)
-                                }
-                            }
-                        } else {
-                            updateDeviceStatus (indexPathRow: indexPath.row)
-                        }
-                    }
-                }
-            }
-            if shouldUpdate {
-                shouldUpdate = false
-            }
-            isScrolling = false
-        }
-    }
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        if let collectionView = scrollView as? UICollectionView {
-            if let indexPaths = collectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
+                let indexPaths = collectionView.indexPathsForVisibleItems()
                 for indexPath in indexPaths {
                     if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as NSDate? {
                         if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayHours) as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayMinutes) as? Int {
@@ -114,6 +91,28 @@ extension DevicesViewController: UICollectionViewDataSource {
                     } else {
                         updateDeviceStatus (indexPathRow: indexPath.row)
                     }
+                }
+                
+            }
+            if shouldUpdate {
+                shouldUpdate = false
+            }
+            isScrolling = false
+        }
+    }
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        if let collectionView = scrollView as? UICollectionView {
+            let indexPaths = collectionView.indexPathsForVisibleItems()
+            for indexPath in indexPaths {
+                if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as NSDate? {
+                    if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayHours) as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayMinutes) as? Int {
+                        let minutes = (hourValue * 60 + minuteValue) * 60
+                        if NSDate().timeIntervalSinceDate(stateUpdatedAt.dateByAddingTimeInterval(NSTimeInterval(NSNumber(integer: minutes)))) >= 0 {
+                            updateDeviceStatus (indexPathRow: indexPath.row)
+                        }
+                    }
+                } else {
+                    updateDeviceStatus (indexPathRow: indexPath.row)
                 }
             }
         }
@@ -132,17 +131,11 @@ extension DevicesViewController: UICollectionViewDataSource {
             // Set cell data
             cell.getDevice(devices[indexPath.row])
             cell.typeOfLight.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row]) //devices[indexPath.row].cellTitle
-//            cell.setTitle(filterParametar)
             cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.continuous = true
             cell.lightSlider.tag = indexPath.row
             let deviceValue:Double = {
-//                return Double(devices[indexPath.row].currentValue)
-//                if Double(devices[indexPath.row].currentValue) > 100 {
-//                    return Double(Double(devices[indexPath.row].currentValue)/255)
-//                } else {
-                    return Double(devices[indexPath.row].currentValue)///255
-//                }
+                return Double(devices[indexPath.row].currentValue)///255
             }()
             cell.picture.image = devices[indexPath.row].returnImage(Double(devices[indexPath.row].currentValue))
             cell.lightSlider.value = Float(deviceValue)/255 // Slider accepts values 0-1
@@ -208,9 +201,6 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.curtainImage.tag = indexPath.row
             cell.openButton.tag = indexPath.row
             cell.closeButton.tag = indexPath.row
-            let deviceValue:Double = {
-                return Double(devices[indexPath.row].currentValue) /// 255
-            }()
             cell.setImageForDevice(devices[indexPath.row])
         
             cell.curtainName.userInteractionEnabled = true
@@ -330,10 +320,8 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.energySavingImage.hidden = devices[indexPath.row].allowEnergySaving == NSNumber(bool: true) ? false : true
             cell.climateName.text = devices[indexPath.row].cellTitle
             cell.climateName.tag = indexPath.row
-//            cell.temperature.font = UIFont(name: "DBLCDTempBlack", size: 16)
             cell.temperature.font = UIFont(name: "Tahoma", size: 17)
             cell.temperature.text = "\(devices[indexPath.row].roomTemperature) \u{00B0}c"
-//            cell.temperatureSetPoint.font = UIFont(name: "DBLCDTempBlack", size: 16)
             cell.temperatureSetPoint.font = UIFont(name: "Tahoma", size: 17)
             cell.temperatureSetPoint.text = "00 \u{00B0}c"
             
@@ -365,7 +353,6 @@ extension DevicesViewController: UICollectionViewDataSource {
                 
                 let animationImages:[UIImage] = [UIImage(named: "h1")!, UIImage(named: "h2")!, UIImage(named: "h3")!, UIImage(named: "h4")!, UIImage(named: "h5")!, UIImage(named: "h6")!, UIImage(named: "h7")!, UIImage(named: "h8")!]
                 let modeState = devices[indexPath.row].modeState
-//                cell.temperatureSetPoint.font = UIFont(name: "DBLCDTempBlack", size: 16)
                 cell.temperatureSetPoint.font = UIFont(name: "Tahoma", size: 17)
                 cell.temperatureSetPoint.text = "00 \u{00B0}c"
                 switch modeState {
@@ -415,9 +402,6 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.imageOnOff.image = UIImage(named: "poweron")
             }
             
-            
-//            cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
-            
             if devices[indexPath.row].info {
                 cell.infoView.hidden = false
                 cell.backView.hidden = true
@@ -459,13 +443,13 @@ extension DevicesViewController: UICollectionViewDataSource {
             longPressTwo.minimumPressDuration = 0.5
             cell.disabledCellView.tag = indexPath.row
             
-            let doublePress = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
+            let doublePress = UITapGestureRecognizer(target: self, action: "handleTap:")
             doublePress.numberOfTapsRequired = 2
             cell.sensorTitle.addGestureRecognizer(doublePress)
             
             cell.sensorTitle.addGestureRecognizer(longPressOne)
             cell.disabledCellView.addGestureRecognizer(longPressTwo)
-            cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("handleTap2:")))
+            cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "handleTap2:"))
             if devices[indexPath.row].isEnabled.boolValue {
                 cell.disabledCellView.hidden = true
                 cell.disabledCellView.layer.cornerRadius = 5

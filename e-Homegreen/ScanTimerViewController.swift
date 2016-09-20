@@ -324,7 +324,6 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     
     // Gets all input parameters and prepares everything for scanning, and initiates scanning.
     func findNames() {
-        do {
             arrayOfNamesToBeSearched = [Int]()
             indexOfNamesToBeSearched = 0
             
@@ -384,11 +383,6 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningTimerNames)
                 sendCommandForFindingNameWithTimerAddress(firstTimerIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
-        } catch let error as InputError {
-            self.view.makeToast(message: error.description)
-        } catch {
-            self.view.makeToast(message: "Something went wrong.")
-        }
     }
     // Called from findNames or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingNames for that specific timer id.
@@ -472,7 +466,6 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     func findParametarsForTimer() {
         progressBarScreenTimerNames?.dissmissProgressBar()
         progressBarScreenTimerNames = nil
-        do {
             arrayOfParametersToBeSearched = [Int]()
             indexOfParametersToBeSearched = 0
             
@@ -529,11 +522,6 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
                 sendCommandForFindingParameterWithTimerAddress(parameterIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
                 print("Command sent for parameter from FindParameter")
             }
-        } catch let error as InputError {
-            self.view.makeToast(message: error.description)
-        } catch {
-            self.view.makeToast(message: "Something went wrong.")
-        }
     }
     // Called from findParametarsForTimer or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingParameterWithTimerAddress for that specific timer id.
@@ -712,6 +700,7 @@ extension ScanTimerViewController: UITableViewDataSource {
             timerTypeId = type.rawValue
         }else{
             btnType.setTitle("--", forState: UIControlState.Normal)
+            timerTypeId = nil
         }
         
         broadcastSwitch.on = timers[indexPath.row].isBroadcast.boolValue

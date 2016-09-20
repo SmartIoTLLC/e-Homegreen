@@ -125,16 +125,10 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
             deviceImage.defaultImage = "12 Appliance - Power - 02"
             deviceImage.device = device
             deviceImage.customImageId = image.imageId
-//            if let user  = deviceImage.device?.gateway.location.user{
-//                image.user = user
-//            }
             deviceImages.append(deviceImage)
         } else {
             deviceImages[imageIndex].customImageId = image.imageId
             
-//            if let user  = deviceImages[imageIndex].device?.gateway.location.user{
-//                image.user = user
-//            }
         }
         do {
             try appDel.managedObjectContext?.save()
@@ -219,9 +213,6 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
             appDel.managedObjectContext?.deleteObject(deviceImages[indexPath.row])
             deviceImages.removeAtIndex(indexPath.row)
             appDel.saveContext()
-//            tableView.beginUpdates()
-//            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
-//            tableView.endUpdates()
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
             tableView.reloadData()
         }
@@ -310,11 +301,5 @@ extension UIImage {
         }else{
             return UIImage(named:deviceImage.defaultImage!)!
         }
-        
-//        if let deviceImageUnwrapped = deviceImage.image?.imageData {
-//            return UIImage(data: deviceImageUnwrapped)!
-//        } else {
-//            return UIImage(named:deviceImage.defaultImage!)!
-//        }
     }
 }

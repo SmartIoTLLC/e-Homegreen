@@ -31,7 +31,6 @@ class ClimateCell: UICollectionViewCell {
     }
     func refreshDevice(device:Device) {
         self.device = device
-//        temperature.font = UIFont(name: "DBLCDTempBlack", size: 16)
         temperature.font = UIFont(name: "Tahoma", size: 17)
         temperature.text = "\(device.roomTemperature) \u{00B0}c"
         energySavingImage.hidden = device.allowEnergySaving == NSNumber(bool: true) ? false : true
@@ -60,7 +59,6 @@ class ClimateCell: UICollectionViewCell {
                 fanSpeed = 0.0
             }
             let animationImages:[UIImage] = [UIImage(named: "h1")!, UIImage(named: "h2")!, UIImage(named: "h3")!, UIImage(named: "h4")!, UIImage(named: "h5")!, UIImage(named: "h6")!, UIImage(named: "h7")!, UIImage(named: "h8")!]
-//            temperatureSetPoint.font = UIFont(name: "DBLCDTempBlack", size: 16)
             temperatureSetPoint.font = UIFont(name: "Tahoma", size: 16)
             let modeState = device.modeState
             switch modeState {
@@ -87,7 +85,6 @@ class ClimateCell: UICollectionViewCell {
                 modeImage.stopAnimating()
                 modeImage.image = nil
                 let mode = device.mode
-//                temperatureSetPoint.font = UIFont(name: "DBLCDTempBlack", size: 16)
                 temperatureSetPoint.font = UIFont(name: "Tahoma", size: 17)
                 switch mode {
                 case "Cool":
@@ -112,7 +109,6 @@ class ClimateCell: UICollectionViewCell {
         } else {
             imageOnOff.image = UIImage(named: "poweron")
         }
-//        labelPowrUsege.text = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
         if device.info {
             infoView.hidden = false
             backView.hidden = true

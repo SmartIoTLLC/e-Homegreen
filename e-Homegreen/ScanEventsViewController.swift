@@ -253,7 +253,6 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     
     // Gets all input parameters and prepares everything for scanning, and initiates scanning.
     func findEvents() {
-        do {
             arrayOfEventsToBeSearched = [Int]()
             indexOfEventsToBeSearched = 0
             
@@ -324,11 +323,6 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningEventsNameAndParameters)
                 sendCommandWithEventAddress(firstEventIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
-        } catch let error as InputError {
-            self.view.makeToast(message: error.description)
-        } catch {
-            self.view.makeToast(message: "Something went wrong.")
-        }
     }
     // Called from findEvents or from it self.
     // Checks which sequence ID should be searched for and calls sendCommandWithEventAddress for that specific sequence id.

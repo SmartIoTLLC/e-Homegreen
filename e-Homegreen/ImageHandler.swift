@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 
 class ImageHandler: NSObject {
-//    static func returnPictures(type:String, categoryId:Int, deviceValue:Float, motionSensor:Bool) -> UIImage? {
     static func returnPictures(categoryId:Int, deviceValue:Double, motionSensor:Bool) -> UIImage? {
     
         //        1 - Gateway & Control
@@ -33,7 +32,7 @@ class ImageHandler: NSObject {
         //        18 - Media *
         //        19 - Blind *
         //        255 - Default
-//        if type == "Dimmer" {
+
             if categoryId == 2 {
                 if deviceValue == 0 {
                     return UIImage(named: "lightBulb")
@@ -64,7 +63,6 @@ class ImageHandler: NSObject {
                     } else {
                         return UIImage(named: "applianceon")!
                     }
-//                return [UIImage(named: "")!, UIImage(named: "")!]
             }
             else if categoryId == 4 {
                 if deviceValue == 0 {
@@ -72,7 +70,6 @@ class ImageHandler: NSObject {
                 } else {
                     return UIImage(named: "04 Climate Control - HVAC - 01")!
                 }
-//                return [UIImage(named: "04 Climate Control - HVAC - 00")!, UIImage(named: "04 Climate Control - HVAC - 01")!]
             }
             else if categoryId == 11 {
                 if deviceValue == 0 {
@@ -98,18 +95,6 @@ class ImageHandler: NSObject {
                 } else {
                     return UIImage(named: "lightBulb10")
                 }
-//                return [UIImage(named: "11 Lighting - Bulb - 00")!, UIImage(named: "11 Lighting - Bulb - 10")!]
-                //                11 Lighting - Bulb - 00
-                //                11 Lighting - Bulb - 01
-                //                11 Lighting - Bulb - 02
-                //                11 Lighting - Bulb - 03
-                //                11 Lighting - Bulb - 04
-                //                11 Lighting - Bulb - 05
-                //                11 Lighting - Bulb - 06
-                //                11 Lighting - Bulb - 07
-                //                11 Lighting - Bulb - 08
-                //                11 Lighting - Bulb - 09
-                //                11 Lighting - Bulb - 10
             }
             else if categoryId == 12 {
                 if deviceValue == 0 {
@@ -117,7 +102,6 @@ class ImageHandler: NSObject {
                 } else {
                     return UIImage(named: "12 Appliance - Power - 01")!
                 }
-//                return [UIImage(named: "12 Appliance - Power - 00")!, UIImage(named: "12 Appliance - Power - 01")!]
             }
             else if categoryId == 13 {
                 if deviceValue == 0 {
@@ -129,13 +113,6 @@ class ImageHandler: NSObject {
                 }
             } else if categoryId == 14 {
                 if motionSensor {
-//                    if devices[indexPath.row].currentValue == 1 {
-//                        cell.sensorImage.image = UIImage(named: "sensor_motion")
-//                    } else if devices[indexPath.row].currentValue == 0 {
-//                        cell.sensorImage.image = UIImage(named: "sensor_idle")
-//                    } else {
-//                        cell.sensorImage.image = UIImage(named: "sensor_third")
-//                    }
                     if deviceValue == 0 {
                         return UIImage(named: "14 Security - Motion Sensor - 00")!
                     } else if deviceValue == 255 { //1 {
@@ -149,15 +126,8 @@ class ImageHandler: NSObject {
                     } else {
                         return UIImage(named: "14 Security - Lock - 01")!
                     }
-//                    return [UIImage(named: "")!, UIImage(named: "")!]// OVDE JE PROBLEM
-//                    return UIImage(named: "14 Security - Lock - 00")!// OVDE JE PROBLEM
-//                    return UIImage(named: "14 Security - Lock - 01")!// OVDE JE PROBLEM
                 }
-//                //                14 Security - Motion Sensor - 00
-//                //                14 Security - Motion Sensor - 01
-//                //                14 Security - Motion Sensor - 02
-//                //                14 Security - Lock - 00
-//                //                14 Security - Lock - 01
+
             }
             else if categoryId == 15 {
                 if deviceValue == 0 {
@@ -165,7 +135,6 @@ class ImageHandler: NSObject {
                 } else {
                     return UIImage(named: "15 Timer - CLock - 01")!
                 }
-//                return [UIImage(named: "15 Timer - CLock - 00")!, UIImage(named: "15 Timer - CLock - 01")!]
             }
             else if categoryId == 16 {
                 if deviceValue == 0 {
@@ -173,7 +142,6 @@ class ImageHandler: NSObject {
                 } else {
                     return UIImage(named: "16 Flag - Flag - 01")!
                 }
-//                return [UIImage(named: "16 Flag - Flag - 00")!, UIImage(named: "16 Flag - Flag - 01")!]
             }
             else if categoryId == 17 {
                 if deviceValue == 0 {
@@ -181,7 +149,6 @@ class ImageHandler: NSObject {
                 } else {
                     return UIImage(named: "17 Event - Up Down - 01")!
                 }
-//                return [UIImage(named: "17 Event - Up Down - 00")!, UIImage(named: "17 Event - Up Down - 01")!]
             }
             else if categoryId == 18 {
                 if deviceValue == 0 {
@@ -189,7 +156,6 @@ class ImageHandler: NSObject {
                 } else {
                     return UIImage(named: "18 Media - LCD TV - 01")!
                 }
-//                return [UIImage(named: "18 Media - LCD TV - 00")!, UIImage(named: "18 Media - LCD TV - 01")!]
             }
             else if categoryId == 19 {
                 if deviceValue == 0 {
@@ -207,26 +173,7 @@ class ImageHandler: NSObject {
                 } else {
                     return UIImage(named: "19 Blind - Blind - 06")
                 }
-//                return [UIImage(named: "19 Blind - Blind - 00")!, UIImage(named: "19 Blind - Blind - 06")!]
-                //                19 Blind - Blind - 00
-                //                19 Blind - Blind - 01
-                //                19 Blind - Blind - 02
-                //                19 Blind - Blind - 03
-                //                19 Blind - Blind - 04
-                //                19 Blind - Blind - 05
-                //                19 Blind - Blind - 06
             }
-//        } else if type == "curtainsRS485" {
-//            
-//        } else if type == "curtainsRelay" {
-//            
-//        } else if type == "appliance" {
-//            
-//        } else if type == "hvac" {
-//            
-//        } else if type == "sensor" {
-//            
-//        }
         return nil
     }
 }

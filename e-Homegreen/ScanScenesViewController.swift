@@ -242,7 +242,6 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     
     // Gets all input parameters and prepares everything for scanning, and initiates scanning.
     func findScenes() {
-        do {
             arrayOfScenesToBeSearched = [Int]()
             indexOfScenesToBeSearched = 0
             
@@ -313,11 +312,6 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningSceneNameAndParameters)
                 sendCommandWithSceneAddress(firstSceneIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
-        } catch let error as InputError {
-            self.view.makeToast(message: error.description)
-        } catch {
-            self.view.makeToast(message: "Something went wrong.")
-        }
     }
     // Called from findScenes or from it self.
     // Checks which scene ID should be searched for and calls sendCommandWithSceneAddress for that specific scene id.

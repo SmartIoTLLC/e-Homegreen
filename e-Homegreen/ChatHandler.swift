@@ -51,31 +51,11 @@ class ChatHandler {
     
     let CHAT_ANSWERS:[String:ChatCommand] = [:]
     var CHAT_COMMANDS:[String:ChatCommand] = [:]
-//    var chat:[String:ChantCommands] = [:]
-//    var chatChatChat:[ChantCommands:String] = [:]
-//    var something:[Int:Int] = [:]
     init () {
         setValues()
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
     }
-//    func setSetSet () {
-//        let string = ""
-//        chat[""] = ChantCommands.TurnOnDevice
-//        chatChatChat[ChantCommands.TurnOnDevice] = ""
-//        for command in chat.keys {
-//            var numberOfMatchWords = 0
-//            let commandWords = command.componentsSeparatedByString(" ")
-//            for word in commandWords {
-//                if string.containsString(" " + word + " ") {
-//                    numberOfMatchWords++
-//                }
-//            }
-//            if numberOfMatchWords == commandWords.count {
-//                something[numberOfMatchWords] = chat[command]?.rawValue
-//            }
-//        }
-//    }
     func getAllZoneNames() ->[Zone] {
         let fetchRequest = NSFetchRequest(entityName: "Zone")
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
@@ -88,25 +68,6 @@ class ChatHandler {
             return []
         }
     }
-//    func getCommandScope(message:String) -> ChatScope {
-//        let message = " " + message + " "
-//        if message.containsString(" in ") {
-//            // ima kljucnu rec in
-//            let zones = getAllZoneNames()
-//            for zone in zones {
-//                if message.containsString(zone.name) {
-//                    // Nadjeno je ime
-//                    // zone.name VRATI IME ZA ZONU
-//                    fetchEntitiesWithoutFilter(<#T##whatToFetch: String##String#>, inZoneId: <#T##Int#>, inZoneName: <#T##String#>)
-//                }
-//            }
-//            // Nije nadjen ni jedan zone
-//            // VRATI ODGOVOR DA JE KOMANDA NEJASNA
-//        } else {
-//            // trazi filter
-//        }
-////        abc
-//    }
     func getCommand (message:String) -> ChatCommand {
         var listOfCommands:[Int:ChatCommand] = [:]
         let message = " " + message + " "
@@ -115,7 +76,7 @@ class ChatHandler {
             let commandWords = command.componentsSeparatedByString(" ")
             for word in commandWords {
                 if message.containsString(" " + word + " ") {
-                    numberOfMatchWords++
+                    numberOfMatchWords += 1
                 }
             }
             if numberOfMatchWords == commandWords.count {
@@ -127,11 +88,9 @@ class ChatHandler {
         } else {
             return .Failed
         }
-        return .Failed
     }
     
     func getTypeOfControl(chatCommand:ChatCommand)->String {
-        //        return typeOfControl[getCommand(message)]!
         return typeOfControl[chatCommand]!
     }
     
@@ -148,13 +107,6 @@ class ChatHandler {
         }
         return -1
     }
-    
-//    func returnCommand (message:String) -> ChatInfo {
-//        let command = getCommand(message)
-//        let devices = getItemByName(getTypeOfControl(command), message: message)
-//        let dimValue = getValueForDim(message)
-//        return ChatInfo(command: command, device: devices, dimValue: +)
-//    }
     
     func getItemByName(typeOfControl:String, message:String) -> [AnyObject] {
         switch typeOfControl {
@@ -212,11 +164,8 @@ class ChatHandler {
                 var counter = 0
                 for word in words {
                     for gatewayWord in gatewayNameWords {
-//                        if word.lowercaseString == gatewayWord.lowercaseString {
-//                            counter++
-//                        }
                         if word.lowercaseString == gatewayWord.lowercaseString || "\(word.lowercaseString)s" == "\(gatewayWord.lowercaseString)s" {
-                            counter++
+                            counter += 1
                         }
                     }
                 }
@@ -249,7 +198,7 @@ class ChatHandler {
                 for word in words {
                     for zoneWord in zoneNameWords {
                         if word.lowercaseString == zoneWord.lowercaseString {
-                            counter++
+                            counter += 1
                         }
                     }
                 }
@@ -290,7 +239,7 @@ class ChatHandler {
                 for word in words {
                     for zoneWord in zoneNameWords {
                         if word.lowercaseString == zoneWord.lowercaseString {
-                            counter++
+                            counter += 1
                         }
                     }
                 }
@@ -311,7 +260,7 @@ class ChatHandler {
         }
         return nil
     }
-    //
+    
     func returnAllDevices(filterItem:FilterItem, onlyZoneName:String) -> [Device] {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
         let predicateNull = NSPredicate(format: "categoryId != 0")
@@ -325,13 +274,11 @@ class ChatHandler {
         if onlyZoneName == "" {
             //  DatabaseHandler.returnZoneIdWithName(zone) only return one zone so this could be a problem and also there is no LOCATION, but this was a REQUEST
             let zonePredicateOne = NSPredicate(format: "zoneId == %@", NSNumber(integer: filterItem.zoneId))
-//            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", filterItem.zoneName)
             let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicateOne])
             predicateArray.append(copmpoundPredicate)
         } else {
             //  DatabaseHandler.returnZoneIdWithName(zone) only return one zone so this could be a problem and also there is no LOCATION, but this was a REQUEST
             let zonePredicateOne = NSPredicate(format: "zoneId == %@", NSNumber(integer: DatabaseHandler.sharedInstance.returnZoneIdWithName(onlyZoneName)))
-//            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", onlyZoneName)
             let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicateOne])
             predicateArray.append(copmpoundPredicate)
         }
@@ -346,7 +293,7 @@ class ChatHandler {
         }
         return []
     }
-    //
+    
     func returnAllEvents(filterItem:FilterItem, onlyZoneName:String) -> [Event] {
         let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Event")
         let predicate = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
@@ -440,27 +387,9 @@ class ChatHandler {
         return []
     }
     // return first zone found in scope
-    func getGateways(name:String) -> [Gateway] {
-//        let fetchRequest = NSFetchRequest(entityName: "Gateway")
-//        let predicateOne = NSPredicate(format: "name == %@", name)
-//        let predicateTwo = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
-//        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateOne, predicateTwo])
-//        do {
-//            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Gateway]
-//            return results
-//        }
-//        } catch let catchedError as NSError {
-//            error = catchedError
-//        }
-        return []
-    }
-    // return first zone found in scope
     func getZone(message:String, isLevel:Bool, gateways:[Gateway]?) -> Zone? {
         let zones:[Zone]?
         let fetchRequest = NSFetchRequest(entityName: "Zone")
-        if let gateway = gateways {
-            
-        }
         if isLevel {
             let predicate = NSPredicate(format: "level == %@", NSNumber(integer: 0))
             fetchRequest.predicate = predicate

@@ -61,4 +61,28 @@ extension UIViewController {
         optionMenu.addAction(cancelAction)
         self.presentViewController(optionMenu, animated: true, completion: nil)
     }
+    
+    // Presents Alert view that has OK and Cancel buttons.
+    // Returns which action is selected
+    func showOKAlertView(sender:UIView, message:String, completion: (action: ReturnedValueFromAlertView) -> ()){
+        let optionMenu = UIAlertController(title: nil, message: message, preferredStyle: .ActionSheet)
+        let okAction = UIAlertAction(title: "OK", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            completion(action: ReturnedValueFromAlertView.Ok)
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            completion(action: ReturnedValueFromAlertView.Cancel)
+        })
+        
+        if let popoverController = optionMenu.popoverPresentationController {
+            popoverController.sourceView = sender
+            popoverController.sourceRect = sender.bounds
+        }
+        
+        optionMenu.addAction(okAction)
+        optionMenu.addAction(cancelAction)
+        self.presentViewController(optionMenu, animated: true, completion: nil)
+    }
 }

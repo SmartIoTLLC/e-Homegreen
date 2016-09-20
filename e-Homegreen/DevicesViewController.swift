@@ -129,7 +129,6 @@ class DevicesViewController: PopoverVC{
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
         
-//        deviceCollectionView.reloadData()
         addObservers()
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
             self.refreshVisibleDevicesInScrollView()
@@ -287,7 +286,6 @@ class DevicesViewController: PopoverVC{
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
             let location = gestureRecognizer.locationInView(deviceCollectionView)
             if let index = deviceCollectionView.indexPathForItemAtPoint(location){
-                let cell = deviceCollectionView.cellForItemAtIndexPath(index)
                 if devices[index.row].controlType == ControlType.Dimmer {
                     showDimmerParametar(tag, devices: devices)
                 }
@@ -301,7 +299,6 @@ class DevicesViewController: PopoverVC{
             }
         }
     }
-    
     
     func longTouch(gestureRecognizer: UILongPressGestureRecognizer) {
         // Light
@@ -421,7 +418,7 @@ class DevicesViewController: PopoverVC{
             }
         }else{
             if devices[tag].controlType == ControlType.Curtain {
-                var setDeviceValue:UInt8 = 0xFF
+                let setDeviceValue:UInt8 = 0xFF
                 let deviceCurrentValue = Int(devices[tag].currentValue)
                 devices[tag].currentValue = 0xFF // We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4. And this channel needs to be ON for image to be displayed properly
                 devicePair!.currentValue = 0xFF
@@ -513,7 +510,7 @@ class DevicesViewController: PopoverVC{
         
         if devicePair == nil {
             if devices[tag].controlType == ControlType.Curtain {
-                var setDeviceValue:UInt8 = 0xEF
+                let setDeviceValue:UInt8 = 0xEF
                 let deviceCurrentValue = Int(devices[tag].currentValue)
                 devices[tag].currentValue = 0xEF
                 let deviceGroupId = devices[tag].curtainGroupID.integerValue
@@ -543,24 +540,23 @@ class DevicesViewController: PopoverVC{
     
     //    This has to be done, because we dont receive updates immmediately from gateway
     func updateCells() {
-        if let indexPaths = deviceCollectionView.indexPathsForVisibleItems() as? [NSIndexPath] {
-            for indexPath in indexPaths {
-                if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
-                    cell.refreshDevice(devices[indexPath.row])
-                    cell.setNeedsDisplay()
-                } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
-                    cell.refreshDevice(devices[indexPath.row])
-                    cell.setNeedsDisplay()
-                } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? MultiSensorCell {
-                    cell.refreshDevice(devices[indexPath.row])
-                    cell.setNeedsDisplay()
-                } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? ClimateCell {
-                    cell.refreshDevice(devices[indexPath.row])
-                    cell.setNeedsDisplay()
-                } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? ApplianceCollectionCell {
-                    cell.refreshDevice(devices[indexPath.row])
-                    cell.setNeedsDisplay()
-                }
+        let indexPaths = deviceCollectionView.indexPathsForVisibleItems()
+        for indexPath in indexPaths {
+            if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
+                cell.refreshDevice(devices[indexPath.row])
+                cell.setNeedsDisplay()
+            } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
+                cell.refreshDevice(devices[indexPath.row])
+                cell.setNeedsDisplay()
+            } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? MultiSensorCell {
+                cell.refreshDevice(devices[indexPath.row])
+                cell.setNeedsDisplay()
+            } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? ClimateCell {
+                cell.refreshDevice(devices[indexPath.row])
+                cell.setNeedsDisplay()
+            } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? ApplianceCollectionCell {
+                cell.refreshDevice(devices[indexPath.row])
+                cell.setNeedsDisplay()
             }
         }
     }
@@ -579,13 +575,11 @@ class DevicesViewController: PopoverVC{
             devices[tag].currentValue = Int(deviceValue) //*100)
             let indexPath = NSIndexPath(forItem: tag, inSection: 0)
             if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
-                //                cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
                 cell.picture.image = devices[tag].returnImage(Double(deviceValue))
                 cell.lightSlider.value = Float(deviceValue/255)
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
                 cell.setImageForDevice(devices[tag])
-                //                cell.curtainImage.image = devices[tag].returnImage(Double(deviceValue*100))
                 cell.setNeedsDisplay()
             }
         }
@@ -605,13 +599,11 @@ class DevicesViewController: PopoverVC{
             devices[tag].currentValue = Int(deviceValue)//*100)
             let indexPath = NSIndexPath(forItem: tag, inSection: 0)
             if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
-                //                cell.picture.image = ImageHandler.returnPictures(Int(devices[tag].categoryId), deviceValue: Double(deviceValue), motionSensor: false)
                 cell.picture.image = devices[tag].returnImage(Double(deviceValue))
                 cell.lightSlider.value = Float(deviceValue)/255 // Slider accepts values from 0 to 1
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
                 cell.setImageForDevice(devices[tag])
-//                cell.curtainImage.image = devices[tag].returnImage(Double(deviceValue*100))
                 cell.setNeedsDisplay()
             }
         }
@@ -739,7 +731,6 @@ class DevicesViewController: PopoverVC{
         let tag = sender.tag
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
         //   Dimmer
-//        let value = UInt8(Int(self.devices[tag].currentValue*100/255))
         let v = self.devices[tag].currentValue.doubleValue
         let v2 = v*100/255
         let v3 = Int(v2)
@@ -763,7 +754,7 @@ class DevicesViewController: PopoverVC{
     
     func changeSliderValue(sender: UISlider){
         let tag = sender.tag
-        devices[tag].currentValue = Int(sender.value * 255)
+        devices[tag].currentValue = Int(sender.value * 255)   // device values is Int, 0 to 255 (0x00 to 0xFF)
         if sender.value == 1{
             devices[tag].opening = false
         }
@@ -771,7 +762,6 @@ class DevicesViewController: PopoverVC{
             devices[tag].opening = true
         }
         
-        let deviceValue = sender.value*255  // device values is Int, 0 to 255 (0x00 to 0xFF)
         let indexPath = NSIndexPath(forItem: tag, inSection: 0)
         if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? DeviceCollectionCell {
             let deviceValue:Double = {
@@ -781,21 +771,8 @@ class DevicesViewController: PopoverVC{
             cell.lightSlider.value = Float(deviceValue/255) // Slider value accepts values from 0 to 1
             cell.setNeedsDisplay()
         } else if let cell = self.deviceCollectionView.cellForItemAtIndexPath(indexPath) as? CurtainCollectionCell {
-            let deviceValue:Double = {
-                    return Double(Double(devices[tag].currentValue))
-            }()
             cell.setImageForDevice(devices[tag])
             cell.setNeedsDisplay()
-        }
-    }
-    
-    func buttonTapped(sender:UIButton){
-        let tag = sender.tag
-        // Appliance?
-        if devices[tag].controlType == ControlType.Relay {
-            let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-            let oldValue = Int(devices[tag].currentValue)
-            _ = RepeatSendingHandler(byteArray: Function.setLightRelayStatus(address, channel: UInt8(Int(devices[tag].channel)), value: 0xF1, delay: Int(devices[tag].delay), runningTime: Int(devices[tag].runtime), skipLevel: UInt8(Int(devices[tag].skipState))), gateway: devices[tag].gateway, device: devices[tag], oldValue: oldValue)
         }
     }
     func refreshDeviceList() {
@@ -940,7 +917,6 @@ class DevicesViewController: PopoverVC{
             })
         })
     }
-    
     func setConstraintsToShowBottomView(animated:Bool, notifyDelegate:Bool){
         if self.startingBottomConstraint == 0 &&
             self.bottomConstraint.constant == 0 {
@@ -983,7 +959,6 @@ class DevicesViewController: PopoverVC{
         s.setValue(Float(value), animated: true)
         zoneCategoryControlSlider(zoneAndCategorySlider)
     }
-    
     
     // Controll zone and category
     // Pull up menu. Setting elements which need to be presented.
@@ -1028,28 +1003,11 @@ class DevicesViewController: PopoverVC{
                         if zone.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
                             ZoneAndCategoryControl.shared.changeValueByZone(filterParametar.zoneId, location: filterParametar.location, value: sliderValue)
                         }else if zone.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
-                            let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
-                            
-                            let okAction = UIAlertAction(title: "YES", style: .Default, handler: {
-                                (alert: UIAlertAction!) -> Void in
-                                
-                                ZoneAndCategoryControl.shared.changeValueByZone(self.filterParametar.zoneId, location: self.filterParametar.location, value: sliderValue)
-                                
+                            showOKAlertView(sender, message: "Are you sure you want to proced with this control?", completion: { (action) in
+                                if action == ReturnedValueFromAlertView.Ok{
+                                    ZoneAndCategoryControl.shared.changeValueByZone(self.filterParametar.zoneId, location: self.filterParametar.location, value: sliderValue)
+                                }
                             })
-                            
-                            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-                                (alert: UIAlertAction!) -> Void in
-                                print("Cancelled")
-                            })
-                            
-                            if let presentationController = optionMenu.popoverPresentationController {
-                                presentationController.sourceView = sender
-                                presentationController.sourceRect = sender.bounds
-                            }
-                            
-                            optionMenu.addAction(okAction)
-                            optionMenu.addAction(cancelAction)
-                            self.presentViewController(optionMenu, animated: true, completion: nil)
                         }
                     }
                     
@@ -1060,28 +1018,11 @@ class DevicesViewController: PopoverVC{
                         if category.allowOption.integerValue == TypeOfControl.Allowed.rawValue{
                             ZoneAndCategoryControl.shared.changeValueByCategory(filterParametar.categoryId, location: filterParametar.location, value: sliderValue)
                         }else if category.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
-                            let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
-                            
-                            let okAction = UIAlertAction(title: "YES", style: .Default, handler: {
-                                (alert: UIAlertAction!) -> Void in
-                                
-                                ZoneAndCategoryControl.shared.changeValueByCategory(self.filterParametar.zoneId, location: self.filterParametar.location, value: sliderValue)
-                                
+                            showOKAlertView(sender, message: "Are you sure you want to proced with this control?", completion: { (action) in
+                                if action == ReturnedValueFromAlertView.Ok{
+                                    ZoneAndCategoryControl.shared.changeValueByCategory(self.filterParametar.zoneId, location: self.filterParametar.location, value: sliderValue)
+                                }
                             })
-                            
-                            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-                                (alert: UIAlertAction!) -> Void in
-                                print("Cancelled")
-                            })
-                            
-                            if let presentationController = optionMenu.popoverPresentationController {
-                                presentationController.sourceView = sender
-                                presentationController.sourceRect = sender.bounds
-                            }
-                            
-                            optionMenu.addAction(okAction)
-                            optionMenu.addAction(cancelAction)
-                            self.presentViewController(optionMenu, animated: true, completion: nil)
                         }
                     }
                     
@@ -1091,7 +1032,7 @@ class DevicesViewController: PopoverVC{
             }
         }
     }
-    @IBAction func on(sender: AnyObject) {
+    @IBAction func on(sender: UIButton) {
         if let title = zoneCategoryControl.titleForSegmentAtIndex(zoneCategoryControl.selectedSegmentIndex){
             if title == "Zone" {
                 if filterParametar.zoneObjectId != "All"{
@@ -1100,28 +1041,12 @@ class DevicesViewController: PopoverVC{
                             ZoneAndCategoryControl.shared.turnOnByZone(filterParametar.zoneId, location: filterParametar.location)
                             self.zoneAndCategorySlider.value = 100
                         }else if zone.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
-                            let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
-                            
-                            let okAction = UIAlertAction(title: "YES", style: .Default, handler: {
-                                (alert: UIAlertAction!) -> Void in
-                                
-                                ZoneAndCategoryControl.shared.turnOnByZone(self.filterParametar.zoneId, location: self.filterParametar.location)
-                                self.zoneAndCategorySlider.value = 100
+                            showOKAlertView(sender, message: "Are you sure you want to proced with this control?", completion: { (action) in
+                                if action == ReturnedValueFromAlertView.Ok{
+                                    ZoneAndCategoryControl.shared.turnOnByZone(self.filterParametar.zoneId, location: self.filterParametar.location)
+                                    self.zoneAndCategorySlider.value = 100
+                                }
                             })
-                            
-                            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-                                (alert: UIAlertAction!) -> Void in
-                                print("Cancelled")
-                            })
-                            
-                            if let presentationController = optionMenu.popoverPresentationController {
-                                presentationController.sourceView = sender as? UIView
-                                presentationController.sourceRect = sender.bounds
-                            }
-                            
-                            optionMenu.addAction(okAction)
-                            optionMenu.addAction(cancelAction)
-                            self.presentViewController(optionMenu, animated: true, completion: nil)
                         }
                     }
                     
@@ -1133,28 +1058,12 @@ class DevicesViewController: PopoverVC{
                             ZoneAndCategoryControl.shared.turnOnByCategory(filterParametar.categoryId, location: filterParametar.location)
                             self.zoneAndCategorySlider.value = 100
                         }else if category.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
-                            let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
-                            
-                            let okAction = UIAlertAction(title: "YES", style: .Default, handler: {
-                                (alert: UIAlertAction!) -> Void in
-                                
-                                ZoneAndCategoryControl.shared.turnOnByCategory(self.filterParametar.categoryId, location: self.filterParametar.location)
-                                self.zoneAndCategorySlider.value = 100
+                            showOKAlertView(sender, message: "Are you sure you want to proced with this control?", completion: { (action) in
+                                if action == ReturnedValueFromAlertView.Ok{
+                                    ZoneAndCategoryControl.shared.turnOnByCategory(self.filterParametar.categoryId, location: self.filterParametar.location)
+                                    self.zoneAndCategorySlider.value = 100
+                                }
                             })
-                            
-                            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-                                (alert: UIAlertAction!) -> Void in
-                                print("Cancelled")
-                            })
-                            
-                            if let presentationController = optionMenu.popoverPresentationController {
-                                presentationController.sourceView = sender as? UIView
-                                presentationController.sourceRect = sender.bounds
-                            }
-                            
-                            optionMenu.addAction(okAction)
-                            optionMenu.addAction(cancelAction)
-                            self.presentViewController(optionMenu, animated: true, completion: nil)
                         }
                     }
                     
@@ -1164,7 +1073,7 @@ class DevicesViewController: PopoverVC{
             }
         }
     }
-    @IBAction func off(sender: AnyObject) {
+    @IBAction func off(sender: UIButton) {
         if let title = zoneCategoryControl.titleForSegmentAtIndex(zoneCategoryControl.selectedSegmentIndex){
             if title == "Zone" {
                 if filterParametar.zoneObjectId != "All"{
@@ -1173,28 +1082,12 @@ class DevicesViewController: PopoverVC{
                             ZoneAndCategoryControl.shared.turnOffByZone(filterParametar.zoneId, location: filterParametar.location)
                             self.zoneAndCategorySlider.value = 0
                         }else if zone.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
-                            let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
-                            
-                            let okAction = UIAlertAction(title: "YES", style: .Default, handler: {
-                                (alert: UIAlertAction!) -> Void in
-                                
-                                ZoneAndCategoryControl.shared.turnOffByZone(self.filterParametar.zoneId, location: self.filterParametar.location)
-                                self.zoneAndCategorySlider.value = 0
+                            showOKAlertView(sender, message: "Are you sure you want to proced with this control?", completion: { (action) in
+                                if action == ReturnedValueFromAlertView.Ok{
+                                    ZoneAndCategoryControl.shared.turnOffByZone(self.filterParametar.zoneId, location: self.filterParametar.location)
+                                    self.zoneAndCategorySlider.value = 0
+                                }
                             })
-                            
-                            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-                                (alert: UIAlertAction!) -> Void in
-                                print("Canceled")
-                            })
-                            
-                            if let presentationController = optionMenu.popoverPresentationController {
-                                presentationController.sourceView = sender as? UIView
-                                presentationController.sourceRect = sender.bounds
-                            }
-                            
-                            optionMenu.addAction(okAction)
-                            optionMenu.addAction(cancelAction)
-                            self.presentViewController(optionMenu, animated: true, completion: nil)
                         }
                     }
                     
@@ -1206,28 +1099,12 @@ class DevicesViewController: PopoverVC{
                             ZoneAndCategoryControl.shared.turnOffByCategory(filterParametar.categoryId, location: filterParametar.location)
                             self.zoneAndCategorySlider.value = 0
                         }else if category.allowOption.integerValue == TypeOfControl.Confirm.rawValue {
-                            let optionMenu = UIAlertController(title: nil, message: "Are you sure you want to proced with this control?", preferredStyle: .ActionSheet)
-                            
-                            let okAction = UIAlertAction(title: "YES", style: .Default, handler: {
-                                (alert: UIAlertAction!) -> Void in
-                                
-                                ZoneAndCategoryControl.shared.turnOffByCategory(self.filterParametar.categoryId, location: self.filterParametar.location)
-                                self.zoneAndCategorySlider.value = 0
+                            showOKAlertView(sender, message: "Are you sure you want to proced with this control?", completion: { (action) in
+                                if action == ReturnedValueFromAlertView.Ok{
+                                    ZoneAndCategoryControl.shared.turnOffByCategory(self.filterParametar.categoryId, location: self.filterParametar.location)
+                                    self.zoneAndCategorySlider.value = 0
+                                }
                             })
-                            
-                            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-                                (alert: UIAlertAction!) -> Void in
-                                print("Cancelled")
-                            })
-                            
-                            if let presentationController = optionMenu.popoverPresentationController {
-                                presentationController.sourceView = sender as? UIView
-                                presentationController.sourceRect = sender.bounds
-                            }
-                            
-                            optionMenu.addAction(okAction)
-                            optionMenu.addAction(cancelAction)
-                            self.presentViewController(optionMenu, animated: true, completion: nil)
                         }
                     }
                     
@@ -1248,6 +1125,7 @@ class DevicesViewController: PopoverVC{
             }
         }
     }
+    
     @IBAction func fullScreen(sender: UIButton) {
         sender.collapseInReturnToNormal(1)
         if UIApplication.sharedApplication().statusBarHidden {

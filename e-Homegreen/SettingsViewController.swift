@@ -25,7 +25,7 @@ enum SettingsItem{
     
 }
 
-class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UITextFieldDelegate, SWRevealViewControllerDelegate, SettingsDelegate {
+class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWRevealViewControllerDelegate, SettingsDelegate {
     
     var user:User?
     var appDel:AppDelegate!
@@ -99,44 +99,6 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         self.view.makeToast(message: "Passwords was changed successfully")
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return settingArray.count
-    }
-    
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 3
-    }
-    
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 3
-    }
-    
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView:UIView = UIView(frame: CGRectMake(0, 0, 1024, 3))
-        headerView.backgroundColor = UIColor.clearColor()
-        return headerView
-    }
-    
-    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView:UIView = UIView(frame: CGRectMake(0, 0, 1024, 3))
-        footerView.backgroundColor = UIColor.clearColor()
-        return footerView
-    }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.section == 2 { return 90 }
-        if settingArray[indexPath.section] == SettingsItem.Broadcast {
-            if isMore {
-                return 192
-            }
-        }
-        return 44
-    }
-    
     func btnAddHourPressed(sender:UIButton){
         if sender.tag == 1{
             if hourRefresh < 23 {
@@ -182,106 +144,6 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if settingArray[indexPath.section] == SettingsItem.MainMenu || settingArray[indexPath.section] == SettingsItem.Interfaces || settingArray[indexPath.section] == SettingsItem.ResetPassword{
-            
-            let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as! SettinsTableViewCell
-            cell.settingsButton.tag = indexPath.section
-            cell.settingsButton.addTarget(self, action: #selector(SettingsViewController.didTouchSettingButton(_:)), forControlEvents: .TouchUpInside)
-            cell.settingsButton.setTitle(settingArray[indexPath.section].description, forState: .Normal)
-            cell.backgroundColor = UIColor.clearColor()
-            cell.layer.cornerRadius = 5
-            
-            return cell
-        } else if settingArray[indexPath.section] == SettingsItem.RefreshStatusDelay {
-            let cell = tableView.dequeueReusableCellWithIdentifier("delayRefreshStatus") as! SettingsRefreshDelayTableViewCell
-            cell.layer.cornerRadius = 5
-            
-            cell.btnAddHourPressed.addTarget(self, action: #selector(SettingsViewController.btnAddHourPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            cell.btnAddHourPressed.tag = 1
-            cell.btnDecHourPressed.addTarget(self, action: #selector(SettingsViewController.btnDecHourPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            cell.btnDecHourPressed.tag = 1
-            cell.hourLabel.text = "\(hourRefresh)"
-            
-            cell.backgroundColor = UIColor.clearColor()
-            
-            cell.btnAddMinPressed.addTarget(self, action: #selector(SettingsViewController.btnAddHourPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            cell.btnDecMinPressed.addTarget(self, action: #selector(SettingsViewController.btnDecHourPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            
-            cell.minLabel.text = "\(minRefresh)"
-            
-            return cell
-        } else if settingArray[indexPath.section] == SettingsItem.OpenLastScreen {
-            let cell = tableView.dequeueReusableCellWithIdentifier("openLastScreen") as! SettingsLastScreenTableViewCell
-            cell.openLastScreen.tag = indexPath.section
-            cell.backgroundColor = UIColor.clearColor()
-            cell.openLastScreen.addTarget(self, action: #selector(SettingsViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
-            
-            if let user = user{
-                cell.openLastScreen.on = user.openLastScreen.boolValue
-            }else{
-                if let tempUser = DatabaseUserController.shared.getLoggedUser(){
-                    cell.openLastScreen.on = tempUser.openLastScreen.boolValue
-                }
-            }
-            cell.backgroundColor = UIColor.clearColor()
-            cell.layer.cornerRadius = 5
-            return cell
-        } else if settingArray[indexPath.section] == SettingsItem.Broadcast {
-            let cell = tableView.dequeueReusableCellWithIdentifier("idBroadcastCurrentAppTimeAndDate") as! BroadcastTimeAndDateTVC
-            cell.setBroadcast()
-            cell.txtIp.delegate = self
-            cell.txtPort.delegate = self
-            cell.txtH.delegate = self
-            cell.txtM.delegate = self
-            cell.backgroundColor = UIColor.clearColor()
-            cell.layer.cornerRadius = 5
-            return cell
-        }
-//        else if settingArray[indexPath.section] == SettingsItem.RefreshConnection {
-//            let cell = tableView.dequeueReusableCellWithIdentifier("idRefreshGatewayTimerCell") as! SettingsRefreshConnectionEvery
-//            cell.setRefreshCell()
-//            cell.txtMinutesField.delegate = self
-//            cell.backgroundColor = UIColor.clearColor()
-//            cell.layer.cornerRadius = 5
-//            return cell
-//        }
-        else if settingArray[indexPath.section] == SettingsItem.LockProfile {
-            
-            let cell = tableView.dequeueReusableCellWithIdentifier("openLastScreen") as! SettingsLastScreenTableViewCell
-            
-            cell.nameLabel.text = settingArray[indexPath.section].description
-            if let user = user{
-                if let locked = user.isLocked as? Bool{
-                    cell.openLastScreen.on = locked
-                }else{
-                    cell.openLastScreen.on = false
-                }
-            }else if let user = DatabaseUserController.shared.getLoggedUser(){
-                if let locked = user.isLocked as? Bool{
-                    cell.openLastScreen.on = locked
-                }else{
-                    cell.openLastScreen.on = false
-                }
-            }else{
-                cell.openLastScreen.on = false
-            }
-            
-            cell.openLastScreen.tag = indexPath.section
-            cell.backgroundColor = UIColor.clearColor()
-            cell.openLastScreen.addTarget(self, action: #selector(SettingsViewController.lockProfile(_:)), forControlEvents: UIControlEvents.ValueChanged)
-            
-            cell.backgroundColor = UIColor.clearColor()
-            cell.layer.cornerRadius = 5
-            return cell
-            
-        }else {
-            let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
-            cell.textLabel?.text = "dads"
-            return cell
-        }
-    }
-    
     func changeValue(sender:UISwitch){
         if let user = user{
             user.openLastScreen = sender.on
@@ -289,14 +151,6 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             if let tempUser = DatabaseUserController.shared.getLoggedUser(){
                 tempUser.openLastScreen = sender.on
             }
-        }
-        if sender.on == true {
-            
-//            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.OpenLastScreen)
-
-        }else {
-//            NSUserDefaults.standardUserDefaults().setBool(false, forKey:UserDefaults.OpenLastScreen)
-
         }
     }
     
@@ -309,7 +163,6 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         CoreDataController.shahredInstance.saveChanges()
         
     }
-
     
     func didTouchSettingButton (sender:AnyObject) {
         if let view = sender as? UIButton {
@@ -375,15 +228,6 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         (UIApplication.sharedApplication().delegate as! AppDelegate).sendDataToBroadcastTimeAndDate()
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
-        if let cell = textField.superview?.superview as? BroadcastTimeAndDateTVC {
-            settingsTableView.scrollToRowAtIndexPath(settingsTableView.indexPathForCell(cell)!, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
-        }
-        
-//        if let cell = textField.superview?.superview as? SettingsRefreshConnectionEvery {
-//            settingsTableView.scrollToRowAtIndexPath(settingsTableView.indexPathForCell(cell)!, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
-//        }
-    }
     func KeyboardWillShow(notification: NSNotification){
         if let userInfo = notification.userInfo {
             let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
@@ -404,7 +248,6 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     
     func KeyboardWillHide(notification: NSNotification){
         if let userInfo = notification.userInfo {
-            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
             let duration:NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
             let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
             let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
@@ -419,15 +262,151 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
                 completion: nil)
         }
     }
+}
+
+extension SettingsViewController: UITableViewDelegate, UITableViewDataSource{
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if settingArray[indexPath.section] == SettingsItem.MainMenu || settingArray[indexPath.section] == SettingsItem.Interfaces || settingArray[indexPath.section] == SettingsItem.ResetPassword{
+            
+            let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as! SettinsTableViewCell
+            cell.settingsButton.tag = indexPath.section
+            cell.settingsButton.addTarget(self, action: #selector(SettingsViewController.didTouchSettingButton(_:)), forControlEvents: .TouchUpInside)
+            cell.settingsButton.setTitle(settingArray[indexPath.section].description, forState: .Normal)
+            cell.backgroundColor = UIColor.clearColor()
+            cell.layer.cornerRadius = 5
+            
+            return cell
+        } else if settingArray[indexPath.section] == SettingsItem.RefreshStatusDelay {
+            let cell = tableView.dequeueReusableCellWithIdentifier("delayRefreshStatus") as! SettingsRefreshDelayTableViewCell
+            cell.layer.cornerRadius = 5
+            
+            cell.btnAddHourPressed.addTarget(self, action: #selector(SettingsViewController.btnAddHourPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.btnAddHourPressed.tag = 1
+            cell.btnDecHourPressed.addTarget(self, action: #selector(SettingsViewController.btnDecHourPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.btnDecHourPressed.tag = 1
+            cell.hourLabel.text = "\(hourRefresh)"
+            
+            cell.backgroundColor = UIColor.clearColor()
+            
+            cell.btnAddMinPressed.addTarget(self, action: #selector(SettingsViewController.btnAddHourPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.btnDecMinPressed.addTarget(self, action: #selector(SettingsViewController.btnDecHourPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            
+            cell.minLabel.text = "\(minRefresh)"
+            
+            return cell
+        } else if settingArray[indexPath.section] == SettingsItem.OpenLastScreen {
+            let cell = tableView.dequeueReusableCellWithIdentifier("openLastScreen") as! SettingsLastScreenTableViewCell
+            cell.openLastScreen.tag = indexPath.section
+            cell.backgroundColor = UIColor.clearColor()
+            cell.openLastScreen.addTarget(self, action: #selector(SettingsViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
+            
+            if let user = user{
+                cell.openLastScreen.on = user.openLastScreen.boolValue
+            }else{
+                if let tempUser = DatabaseUserController.shared.getLoggedUser(){
+                    cell.openLastScreen.on = tempUser.openLastScreen.boolValue
+                }
+            }
+            cell.backgroundColor = UIColor.clearColor()
+            cell.layer.cornerRadius = 5
+            return cell
+        } else if settingArray[indexPath.section] == SettingsItem.Broadcast {
+            let cell = tableView.dequeueReusableCellWithIdentifier("idBroadcastCurrentAppTimeAndDate") as! BroadcastTimeAndDateTVC
+            cell.setBroadcast()
+            cell.txtIp.delegate = self
+            cell.txtPort.delegate = self
+            cell.txtH.delegate = self
+            cell.txtM.delegate = self
+            cell.backgroundColor = UIColor.clearColor()
+            cell.layer.cornerRadius = 5
+            return cell
+        }
+        else if settingArray[indexPath.section] == SettingsItem.LockProfile {
+            
+            let cell = tableView.dequeueReusableCellWithIdentifier("openLastScreen") as! SettingsLastScreenTableViewCell
+            
+            cell.nameLabel.text = settingArray[indexPath.section].description
+            if let user = user{
+                if let locked = user.isLocked as? Bool{
+                    cell.openLastScreen.on = locked
+                }else{
+                    cell.openLastScreen.on = false
+                }
+            }else if let user = DatabaseUserController.shared.getLoggedUser(){
+                if let locked = user.isLocked as? Bool{
+                    cell.openLastScreen.on = locked
+                }else{
+                    cell.openLastScreen.on = false
+                }
+            }else{
+                cell.openLastScreen.on = false
+            }
+            
+            cell.openLastScreen.tag = indexPath.section
+            cell.backgroundColor = UIColor.clearColor()
+            cell.openLastScreen.addTarget(self, action: #selector(SettingsViewController.lockProfile(_:)), forControlEvents: UIControlEvents.ValueChanged)
+            
+            cell.backgroundColor = UIColor.clearColor()
+            cell.layer.cornerRadius = 5
+            return cell
+            
+        }else {
+            let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
+            return cell
+        }
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return settingArray.count
+    }
+    
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 3
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 3
+    }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView:UIView = UIView(frame: CGRectMake(0, 0, 1024, 3))
+        headerView.backgroundColor = UIColor.clearColor()
+        return headerView
+    }
+    
+    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView:UIView = UIView(frame: CGRectMake(0, 0, 1024, 3))
+        footerView.backgroundColor = UIColor.clearColor()
+        return footerView
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.section == 2 { return 90 }
+        if settingArray[indexPath.section] == SettingsItem.Broadcast {
+            if isMore {
+                return 192
+            }
+        }
+        return 44
+    }
+}
+
+extension SettingsViewController: UITextFieldDelegate{
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         if let cell = textField.superview?.superview as? BroadcastTimeAndDateTVC {
             cell.saveData()
         }
-        
-//        if let cell = textField.superview?.superview as? SettingsRefreshConnectionEvery {
-//            cell.saveData()
-//        }
         return true
+    }
+    func textFieldDidBeginEditing(textField: UITextField) {
+        if let cell = textField.superview?.superview as? BroadcastTimeAndDateTVC {
+            settingsTableView.scrollToRowAtIndexPath(settingsTableView.indexPathForCell(cell)!, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
+        }
     }
 }
 
@@ -437,7 +416,6 @@ class SettinsTableViewCell: UITableViewCell {
 }
 
 class SettingsRefreshDelayTableViewCell: UITableViewCell {
-//    @IBOutlet weak var txtDelayResfreshStatus: UITextField!
     
     @IBOutlet weak var hourLabel: UILabel!
     @IBOutlet weak var minLabel: UILabel!
@@ -459,33 +437,6 @@ class SettingsLastScreenTableViewCell: UITableViewCell {
     }
     
 }
-
-//class SettingsRefreshConnectionEvery: UITableViewCell, UITextFieldDelegate {
-//    
-//    @IBOutlet weak var txtMinutesField: UITextField!
-//    
-//    func setRefreshCell() {
-//        self.txtMinutesField.text = "\(RefreshConnectionsPreference.getMinutes())"
-//    }
-//    
-//    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
-//        saveData()
-//        return true
-//    }
-//    
-//    func textFieldShouldReturn(textField: UITextField) -> Bool {
-//        saveData()
-//        return true
-//    }
-//    
-//    func saveData() {
-//        self.txtMinutesField.resignFirstResponder()
-//        if let minutes = Int(self.txtMinutesField.text!) {
-//            RefreshConnectionsPreference.setMinutes(minutes)
-//        }
-//        self.txtMinutesField.text = "\(RefreshConnectionsPreference.getMinutes())"
-//    }
-//}
 
 class BroadcastTimeAndDateTVC: UITableViewCell, UITextFieldDelegate {
     

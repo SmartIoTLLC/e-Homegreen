@@ -109,23 +109,14 @@ class CurtainCollectionCell: UICollectionViewCell {
             if device.currentValue.integerValue == 255 && devicePair!.currentValue.integerValue == 0{
                 if preSort.count > 0{
                     curtainImage.image = UIImage(named: preSort[0].defaultImage!)
-                }else{
-                    let k = device
-                    print("prviaaaaa")
                 }
             }else if device.currentValue.integerValue == 255 && devicePair!.currentValue.integerValue == 255{
                 if preSort.count > 2{
                     curtainImage.image = UIImage(named: preSort[2].defaultImage!)
-                }else{
-                    let k = device
-                    print("prviaaaaa")
                 }
             }else {//device.currentValue.integerValue == 0{
                 if preSort.count > 1{
                     curtainImage.image = UIImage(named: preSort[1].defaultImage!)
-                }else{
-                    let k = device
-                    print("prviaaaaa")
                 }
             }
         }

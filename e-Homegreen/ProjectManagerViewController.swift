@@ -169,7 +169,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
             print("File already exists")
         }
         
-        var data:NSData? = NSKeyedArchiver.archivedDataWithRootObject(userData)
+        let data:NSData? = NSKeyedArchiver.archivedDataWithRootObject(userData)
         if let data = data{
             data.writeToFile(jsonFilePath.path!, atomically: true)
         }
