@@ -47,7 +47,7 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
         popUpTextView.delegate = self
         textViewDidChange(popUpTextView)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(SecParamatarVC.handleTap(_:)))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
 

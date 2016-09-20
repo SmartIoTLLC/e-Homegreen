@@ -186,7 +186,7 @@ class SurveillanceSettingsVC: PopoverVC {
     }
     
     @IBAction func btnSave(sender: AnyObject) {
-        if  let remoteIp = editIPRemote.text,let remotePort = editPortRemote.text, let username =  editUserName.text, let password = editPassword.text, let name =  editName.text, let remotePortNumber = Int(remotePort),let localIp = editIPLocal.text, let localPort = editPortLocal.text, let localPortNumber = Int(localPort)   {
+        if  let remoteIp = editIPRemote.text,let remotePort = editPortRemote.text, let username =  editUserName.text, let password = editPassword.text, let name =  editName.text, let remotePortNumber = Int(remotePort),let localIp = editIPLocal.text, let localPort = editPortLocal.text  {
             if surv == nil{
                 if let parentLocation = parentLocation{
                     let surveillance = Surveillance(context: appDel.managedObjectContext!)

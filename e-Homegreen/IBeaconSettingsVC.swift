@@ -65,16 +65,8 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         
         appDel = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        let keyboardDoneButtonView = UIToolbar()
-        keyboardDoneButtonView.sizeToFit()
-        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: Selector("endEditingNow") )
-        let toolbarButtons = [item]
-        
-        keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
-        
-        editMajor.inputAccessoryView = keyboardDoneButtonView
-        editMinor.inputAccessoryView = keyboardDoneButtonView
-
+        editMajor.inputAccessoryView = CustomToolBar()
+        editMinor.inputAccessoryView = CustomToolBar()
         
         if UIScreen.mainScreen().scale > 2.5{
             editName.layer.borderWidth = 1
@@ -121,9 +113,9 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         editUUID.text = "2B162531-FD29-4758-85B4-555A6DFF00FF"
         editUUID.tag = 2
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IBeaconSettingsVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("dismissViewController"))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(IBeaconSettingsVC.dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         
@@ -133,27 +125,6 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     func dismissViewController () {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
-//    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-//        print(textField.tag)
-//        if textField.tag == 2 {
-//            if string.characters.count == 0 {
-//                return true
-//            }
-//            let expression:String = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
-//            let newString = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
-//            let regex = try! NSRegularExpression(pattern: expression, options: .CaseInsensitive)
-//            print(NSMakeRange(0, newString.characters.count))
-//            let matchCount = regex.numberOfMatchesInString(newString,options: NSMatchingOptions(),range: NSMakeRange(0, newString.characters.count))
-//            regex.
-//            print(regex.numberOfMatchesInString("2B162531-FD29-4758-85B4-555A6DFF00FF",options: NSMatchingOptions(),range: NSMakeRange(0, "2B162531-FD29-4758-85B4-555A6DFF00FF".characters.count)))
-//            if matchCount == 0 {
-//                return false
-//            }
-//        }
-//        
-//        return true
-//    }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()

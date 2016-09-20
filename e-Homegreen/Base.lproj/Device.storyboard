@@ -1147,7 +1147,7 @@
                                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="tapToScroll" value="YES"/>
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="Home logo" translatesAutoresizingMaskIntoConstraints="NO" id="Qsw-H8-6Us">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="Qsw-H8-6Us">
                                                             <rect key="frame" x="20" y="35" width="110" height="110"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="Qsw-H8-6Us" secondAttribute="height" multiplier="1:1" id="Q3Z-qz-sUU"/>
@@ -1544,7 +1544,7 @@
                         <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" image="Menu button" id="mkr-Hy-meR"/>
                         <rightBarButtonItems>
-                            <barButtonItem style="plain" id="gdx-Fo-YqH">
+                            <barButtonItem id="gdx-Fo-YqH">
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="usE-1q-giC" userLabel="Full screen">
                                     <rect key="frame" x="269" y="7" width="35" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1554,7 +1554,7 @@
                                     </connections>
                                 </button>
                             </barButtonItem>
-                            <barButtonItem style="plain" id="EbQ-lT-RIa">
+                            <barButtonItem id="EbQ-lT-RIa">
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="FkU-iB-1BX" userLabel="Reload">
                                     <rect key="frame" x="226" y="7" width="35" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1564,7 +1564,7 @@
                                     </connections>
                                 </button>
                             </barButtonItem>
-                            <barButtonItem style="plain" id="y9w-yv-KYl">
+                            <barButtonItem id="y9w-yv-KYl">
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Pob-z5-wEG" userLabel="iBeacon">
                                     <rect key="frame" x="183" y="7" width="35" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1597,7 +1597,6 @@
     </scenes>
     <resources>
         <image name="Background" width="1024" height="768"/>
-        <image name="Home logo" width="86" height="86"/>
         <image name="Menu button" width="22" height="22"/>
         <image name="applianceoff" width="200" height="200"/>
         <image name="cool" width="40" height="40"/>

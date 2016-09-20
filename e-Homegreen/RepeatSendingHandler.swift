@@ -75,7 +75,7 @@ class RepeatSendingHandler: NSObject {
                     self.delay = 1
                 }
                 SendingHandler.sendCommand(byteArray: byteArray, gateway: gateway)
-                if let timer = didGetResponseTimer{
+                if didGetResponseTimer != nil{
                     didGetResponseTimer.invalidate()
                     didGetResponseTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(RepeatSendingHandler.sendCommand), userInfo: nil, repeats: false)
                 }else{
@@ -105,11 +105,11 @@ class RepeatSendingHandler: NSObject {
                     self.delay = 1
                 }
                 SendingHandler.sendCommand(byteArray: byteArray, gateway: gateway)
-                if let timer = didGetResponseTimer{
+                if didGetResponseTimer != nil{
                     didGetResponseTimer.invalidate()
                     didGetResponseTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(RepeatSendingHandler.sendCommand), userInfo: nil, repeats: false)
                 }else{
-                    didGetResponseTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "sendCommand", userInfo: nil, repeats: false)
+                    didGetResponseTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(RepeatSendingHandler.sendCommand), userInfo: nil, repeats: false)
                 }
                 repeatCounter += 1
             } else {

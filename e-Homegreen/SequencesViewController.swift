@@ -281,12 +281,9 @@ extension SequencesViewController: UICollectionViewDataSource {
             } else {
                 address = [UInt8(Int(sequences[tag].gateway.addressOne)), UInt8(Int(sequences[tag].gateway.addressTwo)), UInt8(Int(sequences[tag].address))]
             }
-            if let cycles = sequences[tag].sequenceCycles as? Int {
-                if cycles >= 0 && cycles <= 255 {
-                    SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequences[tag].sequenceId), cycle: UInt8(cycles)), gateway: sequences[tag].gateway)
-                }
-            } else {
-                SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequences[tag].sequenceId), cycle: 0x00), gateway: sequences[tag].gateway)
+            let cycles = Int(sequences[tag].sequenceCycles)
+            if cycles >= 0 && cycles <= 255 {
+                SendingHandler.sendCommand(byteArray: Function.setSequence(address, id: Int(sequences[tag].sequenceId), cycle: UInt8(cycles)), gateway: sequences[tag].gateway)
             }
             let pointInTable = gesture.view?.convertPoint(gesture.view!.bounds.origin, toView: sequenceCollectionView)
             let indexPath = sequenceCollectionView.indexPathForItemAtPoint(pointInTable!)

@@ -30,7 +30,7 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
         
         self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ChatDeviceSuggestionVC.handleTap(_:)))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
 //        if Common.screenHeight-60 > CGFloat(60 * listOfDevice.count + 5) {
