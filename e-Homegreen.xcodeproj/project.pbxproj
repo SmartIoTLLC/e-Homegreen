@@ -208,7 +208,6 @@
 		73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DB849E1B30116D000DB4EB /* ScenesViewController.swift */; };
 		73DB84A31B301338000DB4EB /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DB84A21B301338000DB4EB /* SettingsViewController.swift */; };
 		73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DB84A81B3013CB000DB4EB /* SecurityViewController.swift */; };
-		73DB8B911B2FF87600139E58 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DB8B901B2FF87600139E58 /* Menu.swift */; };
 		73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DB8B961B2FFA4D00139E58 /* SidePanelViewController.swift */; };
 		73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */; };
 		73E206B41B2EEFFE0008B002 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73E206B21B2EEFFE0008B002 /* Main.storyboard */; };
@@ -569,7 +568,6 @@
 		73DB849E1B30116D000DB4EB /* ScenesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ScenesViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		73DB84A21B301338000DB4EB /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		73DB84A81B3013CB000DB4EB /* SecurityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SecurityViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		73DB8B901B2FF87600139E58 /* Menu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		73DB8B961B2FFA4D00139E58 /* SidePanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidePanelViewController.swift; sourceTree = "<group>"; };
 		73E206A61B2EEFFE0008B002 /* e-Homegreen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "e-Homegreen.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		73E206AA1B2EEFFE0008B002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1291,7 +1289,6 @@
 		73DEA2201B32CE9F007836B4 /* Side Menu */ = {
 			isa = PBXGroup;
 			children = (
-				73DB8B901B2FF87600139E58 /* Menu.swift */,
 				73DB8B961B2FFA4D00139E58 /* SidePanelViewController.swift */,
 			);
 			name = "Side Menu";
@@ -2209,7 +2206,6 @@
 				73FD2E5A1C08AB9F00B9F11A /* ImageHandler.swift in Sources */,
 				222889B41CBBD5E0004EBADD /* FlagCollectionViewCell.swift in Sources */,
 				734DBFBF1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift in Sources */,
-				73DB8B911B2FF87600139E58 /* Menu.swift in Sources */,
 				7372EB411BC410800097806D /* Sequence+CoreDataProperties.swift in Sources */,
 				E7F57B091BA7FE5D006B0D71 /* ScanScenesViewController.swift in Sources */,
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
