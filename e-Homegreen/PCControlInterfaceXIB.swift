@@ -21,8 +21,26 @@ enum FileType{
     }
 }
 
-enum PowerOption{
-    case ShutDown, Restart, Sleep, Hibernate, LogOff
+enum PlayVideoWith: Byte{
+    case WindowsMediaPlayer = 0x01
+    case WindowsMediaCenter = 0x02
+}
+
+enum CommandsForPCControll: Byte {
+    case ShutDown = 0x01
+    case Restart = 0x02
+    case Sleep = 0x03
+    case Hibernate = 0x04
+    case LogOff = 0x05
+}
+
+enum PowerOption: Byte{
+    case ShutDown = 0x01
+    case Restart = 0x02
+    case Sleep = 0x03
+    case Hibernate = 0x04
+    case LogOff = 0x05
+    
     var description:String{
         switch self{
         case ShutDown: return "Shut Down"
@@ -193,7 +211,7 @@ class PCControlInterfaceXIB: PopoverVC {
         }else{
             fullScreenByte = 0x01
         }
-        SendingHandler.sendCommand(byteArray: Function.playVideo(pc.moduleAddress, fileName: path, fullScreen: fullScreenByte, by: 0x01), gateway: pc.gateway)
+        SendingHandler.sendCommand(byteArray: Function.playVideo(pc.moduleAddress, fileName: path, fullScreen: fullScreenByte, by: PlayVideoWith.WindowsMediaPlayer.rawValue), gateway: pc.gateway)
     }
 
     @IBAction func runAction(sender: AnyObject) {
@@ -215,7 +233,7 @@ class PCControlInterfaceXIB: PopoverVC {
             return
         }
         
-        SendingHandler.sendCommand(byteArray: Function.sendNotification(pc.moduleAddress, text: text, notificationType: NotificationType(rawValue: Int((pc.notificationType?.intValue)!))!, notificationPosition: NotificationPosition(rawValue: Int((pc.notificationPosition?.intValue)!))!, delayTime: Int((pc.notificationDelay?.intValue)!), displayTime: Int((pc.notificationDisplayTime?.intValue)!)), gateway: pc.gateway)
+        SendingHandler.sendCommand(byteArray: Function.sendNotificationToPC(pc.moduleAddress, text: text, notificationType: NotificationType(rawValue: Int((pc.notificationType?.intValue)!))!, notificationPosition: NotificationPosition(rawValue: Int((pc.notificationPosition?.intValue)!))!, delayTime: Int((pc.notificationDelay?.intValue)!), displayTime: Int((pc.notificationDisplayTime?.intValue)!)), gateway: pc.gateway)
     }
     
     @IBAction func addPathForVideo(sender: AnyObject) {        

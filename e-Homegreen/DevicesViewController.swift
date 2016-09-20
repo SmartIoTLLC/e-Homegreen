@@ -534,7 +534,6 @@ class DevicesViewController: PopoverVC{
                 })
             }
         }
-
         updateCells()
     }
     

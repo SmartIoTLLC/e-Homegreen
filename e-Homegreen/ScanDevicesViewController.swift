@@ -597,24 +597,24 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         if devices[index].type == ControlType.Sensor || devices[index].type == ControlType.IntelligentSwitch || devices[index].type == ControlType.Gateway  || devices[index].type == ControlType.DigitalInput{
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getSensorName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
-            //            SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
         if devices[index].type == ControlType.SaltoAccess {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
             SendingHandler.sendCommand(byteArray: Function.getSaltoAccessInfoWithAddress(address), gateway: devices[index].gateway)
         }
-//        if devices[index].type == ControlType.HumanInterfaceSeries {
-//            let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-//            SendingHandler.sendCommand(byteArray: Function.getModuleName(address), gateway: devices[index].gateway)
-//            //SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
-//        }
+        if devices[index].type == ControlType.IntelligentSwitch {
+            let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
+            SendingHandler.sendCommand(byteArray: Function.getModuleName(address), gateway: devices[index].gateway)
+        }
     }
+    
+    // Find sensor parameters
     func sendComandForSensorZone(deviceIndex deviceIndex:Int) {
         
         setProgressBarParametarsForFindingSensorParametar(deviceIndex)
         if devices[deviceIndex].controlType == ControlType.Sensor || devices[deviceIndex].controlType == ControlType.IntelligentSwitch || devices[deviceIndex].controlType == ControlType.Gateway || devices[deviceIndex].controlType == ControlType.DigitalInput{
             let address = [UInt8(Int(devices[deviceIndex].gateway.addressOne)), UInt8(Int(devices[deviceIndex].gateway.addressTwo)), UInt8(Int(devices[deviceIndex].address))]
-            SendingHandler.sendCommand(byteArray: Function.getSensorZone(address, channel: UInt8(Int(devices[deviceIndex].channel))), gateway: devices[deviceIndex].gateway)
+            SendingHandler.sendCommand(byteArray: Function.getSensorParameters(address, channel: UInt8(Int(devices[deviceIndex].channel))), gateway: devices[deviceIndex].gateway)
         }
     }
     func setProgressBarParametarsForFindingNames (index:Int) {

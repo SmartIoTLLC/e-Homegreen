@@ -394,7 +394,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func refreshAllConnectionsToEHomeGreenPLC () {
         fetchGateways()
-        // === === === === ===
         if gateways != [] {
             for gateway in gateways {
                 if let minutes = gateway.autoReconnectDelay as? Int, date = gateway.autoReconnectDelayLast {

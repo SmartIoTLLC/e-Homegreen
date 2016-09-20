@@ -14,7 +14,6 @@ struct CommandParametar{
 }
 
 class ZoneAndCategoryFunction: NSObject {
-
     static let shared =  ZoneAndCategoryFunction()
     
     func getCommandTurnOnByZone(zoneId:Int) -> [Byte]{
