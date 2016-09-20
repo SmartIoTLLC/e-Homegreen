@@ -86,7 +86,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     
     // Gets all input parameters and prepares everything for scanning, and initiates scanning.
     func findNames() {
-        do {
+        
             arrayOfNamesToBeSearched = [Int]()
             indexOfNamesToBeSearched = 0
             
@@ -135,11 +135,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningCardNames)
                 sendCommandForFindingNameWithCardAddress(firstTimerIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
-        } catch let error as InputError {
-            self.view.makeToast(message: error.description)
-        } catch {
-            self.view.makeToast(message: "Something went wrong.")
-        }
+        
     }
     // Called from findNames or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingNames for that specific timer id.
@@ -223,7 +219,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     func findParametarsForCard() {
         progressBarScreenTimerNames?.dissmissProgressBar()
         progressBarScreenTimerNames = nil
-        do {
+        
             arrayOfParametersToBeSearched = [Int]()
             indexOfParametersToBeSearched = 0
             
@@ -279,11 +275,6 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
                 sendCommandForFindingParameterWithCardAddress(parameterIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
                 print("Command sent for parameter from FindParameter")
             }
-        } catch let error as InputError {
-            self.view.makeToast(message: error.description)
-        } catch {
-            self.view.makeToast(message: "Something went wrong.")
-        }
     }
     // Called from findParametarsForTimer or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingParameterWithCardAddress for that specific timer id.
@@ -378,7 +369,6 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
 
     // Gets all input parameters and prepares everything for scanning, and initiates scanning.
     func findTimerNames() {
-        do {
             arrayOfNamesToBeSearched = [Int]()
             arrayTimerAddresses = [Int]()
             indexOfNamesToBeSearched = 0
@@ -407,11 +397,6 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningTimerNames)
                 sendCommandForFindingNameWithTimerAddress(firstTimerIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: timerAddress)
             }
-        } catch let error as InputError {
-            self.view.makeToast(message: error.description)
-        } catch {
-            self.view.makeToast(message: "Something went wrong.")
-        }
     }
     // Called from findNames or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingNames for that specific timer id.
@@ -493,7 +478,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     func findParametarsForTimer() {
         progressBarScreenTimerNames?.dissmissProgressBar()
         progressBarScreenTimerNames = nil
-        do {
+
             arrayOfParametersToBeSearched = [Int]()
             arrayTimerAddresses = [Int]()
             indexOfParametersToBeSearched = 0
@@ -520,11 +505,6 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
                 sendCommandForFindingParameterWithTimerAddress(parameterIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: timerAddress)
                 print("Command sent for parameter from FindParameter")
             }
-        } catch let error as InputError {
-            self.view.makeToast(message: error.description)
-        } catch {
-            self.view.makeToast(message: "Something went wrong.")
-        }
     }
     // Called from findParametarsForTimer or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingParameterWithTimerAddress for that specific timer id.

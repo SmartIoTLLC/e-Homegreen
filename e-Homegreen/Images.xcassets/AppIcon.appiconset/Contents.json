@@ -180,12 +180,6 @@
       "scale" : "2x",
       "role" : "quickLook",
       "subtype" : "42mm"
-    },
-    {
-      "size" : "120x120",
-      "idiom" : "car",
-      "filename" : "AppIcon120x120.png",
-      "scale" : "1x"
     }
   ],
   "info" : {

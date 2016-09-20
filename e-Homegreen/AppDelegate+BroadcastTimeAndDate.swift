@@ -35,7 +35,7 @@ extension AppDelegate {
     
     func refreshAllConnections() {
         let queue = dispatch_queue_create("com.domain.app.refresh.connections.timer", nil)
-        var minutes = 1
+        let minutes = 1
         let seconds:UInt64 = UInt64(((minutes*60)-10))
         refreshTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue)
         dispatch_source_set_timer(refreshTimer, DISPATCH_TIME_NOW, seconds * NSEC_PER_SEC, 1 * NSEC_PER_SEC) // every 60 seconds, with leeway of 1 second

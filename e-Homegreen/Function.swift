@@ -325,7 +325,7 @@ class Function {
     // MARK: - Get check byte
     static func getChkByte (byteArray byteArray:[Byte]) -> Byte {
         var chk:Int = 0
-        for var i = 1; i <= byteArray.count-3; i += 1 {
+            for i in 1...(byteArray.count-3){
             let number = "\(byteArray[i])"
             
             chk = chk + Int(number)!

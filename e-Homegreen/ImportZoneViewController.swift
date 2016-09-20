@@ -191,7 +191,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
     }
     
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "zoneReceivedFromGateway:", name: NotificationKey.DidReceiveZoneFromGateway, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ImportZoneViewController.zoneReceivedFromGateway(_:)), name: NotificationKey.DidReceiveZoneFromGateway, object: nil)
     }
     
     func removeObservers() {
@@ -417,7 +417,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
     @IBAction func btnDeleteAll(sender: UIButton) {
         showAlertView(sender, message: "Are you sure you want to delete all devices?") { (action) in
             if action == ReturnedValueFromAlertView.Delete {
-                for var item = 0; item < self.zones.count; item++ {
+                for item in 0 ..< self.zones.count {
                     if self.zones[item].location == self.location! {
                         self.appDel.managedObjectContext!.deleteObject(self.zones[item])
                     }
