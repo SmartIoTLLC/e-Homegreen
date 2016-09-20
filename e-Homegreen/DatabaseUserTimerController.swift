@@ -24,8 +24,9 @@ class DatabaseUserTimerController: NSObject {
             
             var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))]
             predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
-            predicateArray.append(NSPredicate(format: "type == %@", "Stopwatch/User"))
-            predicateArray.append(NSPredicate(format: "timerCategory == %@", "User"))            
+            
+            predicateArray.append(NSPredicate(format: "type == %@", NSNumber(integer: TimerType.Stopwatch.rawValue)))
+            predicateArray.append(NSPredicate(format: "timerCategoryId == %@", NSNumber(integer: 20)))
             
             if filterParametar.location != "All" {
                 predicateArray.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location))

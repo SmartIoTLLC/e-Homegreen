@@ -23,7 +23,6 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
             if devices[indexPath.row].controlType == ControlType.Climate {
                 showClimaSettings(indexPath.row, devices: devices)
             }
-            //            deviceCollectionView.reloadData()
         }
         
     }
