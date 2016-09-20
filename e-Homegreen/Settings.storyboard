@@ -730,7 +730,7 @@
                     <navigationItem key="navigationItem" title="Project Manager" id="qEU-2K-KIP">
                         <barButtonItem key="leftBarButtonItem" image="Menu button" id="JNt-6f-ErI"/>
                         <rightBarButtonItems>
-                            <barButtonItem style="plain" id="wNx-TB-0Sy">
+                            <barButtonItem id="wNx-TB-0Sy">
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Wce-dC-0AE">
                                     <rect key="frame" x="274" y="7" width="30" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -740,7 +740,7 @@
                                     </connections>
                                 </button>
                             </barButtonItem>
-                            <barButtonItem style="plain" id="ehp-ar-Urw">
+                            <barButtonItem id="ehp-ar-Urw">
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="bSc-SA-awB">
                                     <rect key="frame" x="236" y="7" width="30" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
