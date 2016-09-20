@@ -60,15 +60,15 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
          filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
         
         // Add  gestures to Find Devices button in order to make "click" and "long press" possible
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ScanDevicesViewController.findDevice))  //Tap function will call when user tap on button
-        let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(ScanDevicesViewController.findDevicesLongPress(_:))) //Long function will call when user long press on button.
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ScanDevicesViewController.findDevice))                              //Tap function will call when user tap on button
+        let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(ScanDevicesViewController.findDevicesLongPress(_:)))         //Long function will call when user long press on button.
         tapGesture.numberOfTapsRequired = 1
         longGesture.minimumPressDuration = 1
         findDevicesBtn.addGestureRecognizer(tapGesture)
         findDevicesBtn.addGestureRecognizer(longGesture)
         
-        let tapGestureFindNames = UITapGestureRecognizer(target: self, action: #selector(ScanDevicesViewController.findNames))  //Tap function will call when user tap on button
-        let longGestureFindNames = UILongPressGestureRecognizer(target: self, action: #selector(ScanDevicesViewController.findNamesLongPress(_:))) //Long function will call when user long press on button.
+        let tapGestureFindNames = UITapGestureRecognizer(target: self, action: #selector(ScanDevicesViewController.findNames))                      //Tap function will call when user tap on button
+        let longGestureFindNames = UILongPressGestureRecognizer(target: self, action: #selector(ScanDevicesViewController.findNamesLongPress(_:)))  //Long function will call when user long press on button.
         tapGestureFindNames.numberOfTapsRequired = 1
         longGestureFindNames.minimumPressDuration = 1
         findNamesBtn.addGestureRecognizer(tapGestureFindNames)
@@ -185,67 +185,58 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     func findDevice() {
         arrayOfDevicesToBeSearched = [Int]()
         indexOfDevicesToBeSearched = 0
-        do {
-//            let sp = try returnSearchParametars(rangeFrom.text!, to: rangeTo.text!, isScaningNamesAndParametars: false)
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningDevice)
-            UIApplication.sharedApplication().idleTimerDisabled = true
-            
-            
-            var from = 1
-            var to = 255
-            
-            guard let rangeFromText = rangeFrom.text else{
-                self.view.makeToast(message: "Range can't be empty")
-                return
-            }
-            
-            guard let rangeFrom = Int(rangeFromText) else{
-                self.view.makeToast(message: "Range can be only number")
-                return
-            }
-            from = rangeFrom
-            
-            guard let rangeToText = rangeTo.text else{
-                self.view.makeToast(message: "Range can't be empty")
-                return
-            }
-            
-            guard let rangeTo = Int(rangeToText) else{
-                self.view.makeToast(message: "Range can be only number")
-                return
-            }
-            to = rangeTo
-            
-            if rangeTo < rangeFrom {
-                self.view.makeToast(message: "Range is not properly set")
-                return
-            }
-
-            for i in from ... to {
-                arrayOfDevicesToBeSearched.append(i)
-            }
-            let initialPercentage = Float(0)//Float(1)/Float(arrayOfDevicesToBeSearched.count)*100
+        UIApplication.sharedApplication().idleTimerDisabled = true
+        var from = 1
+        var to = 255
         
-            fromAddress = from
-            toAddress = to
-            if arrayOfDevicesToBeSearched.count > 0{
-                searchForDeviceWithId = arrayOfDevicesToBeSearched[0]
-                timesRepeatedCounter = 0
-                
-                pbFD = ProgressBarVC(title: "Finding devices", percentage: initialPercentage, howMuchOf: "1 / \(arrayOfDevicesToBeSearched.count)")
-                pbFD?.delegate = self
-                self.presentViewController(pbFD!, animated: true, completion: nil)
-                searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: searchForDeviceWithId, repeats: false)
-                let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(searchForDeviceWithId!)]
-                self.setProgressBarParametarsForSearchingDevices(address)   // Needs to be done because progres bar is an the beginning 100%, for some reason..
-                SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
-            }else{
-                self.view.makeToast(message: "No devices to search")
-            }
-        } catch let error as InputError {
-            self.view.makeToast(message: error.description)
-        } catch {
-            self.view.makeToast(message: "Something went wrong.")
+        guard let rangeFromText = rangeFrom.text else{
+            self.view.makeToast(message: "Range can't be empty")
+            return
+        }
+        
+        guard let rangeFrom = Int(rangeFromText) else{
+            self.view.makeToast(message: "Range can be only number")
+            return
+        }
+        from = rangeFrom
+        
+        guard let rangeToText = rangeTo.text else{
+            self.view.makeToast(message: "Range can't be empty")
+            return
+        }
+        
+        guard let rangeTo = Int(rangeToText) else{
+            self.view.makeToast(message: "Range can be only number")
+            return
+        }
+        to = rangeTo
+        
+        if rangeTo < rangeFrom {
+            self.view.makeToast(message: "Range is not properly set")
+            return
+        }
+        
+        for i in from ... to {
+            arrayOfDevicesToBeSearched.append(i)
+        }
+        let initialPercentage = Float(0)
+        
+        fromAddress = from
+        toAddress = to
+        if arrayOfDevicesToBeSearched.count > 0{
+            searchForDeviceWithId = arrayOfDevicesToBeSearched[0]
+            timesRepeatedCounter = 0
+            
+            pbFD = ProgressBarVC(title: "Finding devices", percentage: initialPercentage, howMuchOf: "1 / \(arrayOfDevicesToBeSearched.count)")
+            pbFD?.delegate = self
+            self.presentViewController(pbFD!, animated: true, completion: nil)
+            searchDeviceTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfGatewayDidGetDevice(_:)), userInfo: searchForDeviceWithId, repeats: false)
+            let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(searchForDeviceWithId!)]
+            self.setProgressBarParametarsForSearchingDevices(address)   // Needs to be done because progres bar is an the beginning 100%, for some reason..
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningDevice)
+            SendingHandler.sendCommand(byteArray: Function.searchForDevices(address), gateway: gateway)
+        }else{
+            self.view.makeToast(message: "No devices to search")
         }
     }
     func findDevicesLongPress(sender: UILongPressGestureRecognizer) {
@@ -414,35 +405,84 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     var longPressScannParameters = false
     
     func findNames() {
-        do {
+        arrayOfNamesToBeSearched = [Int]()
+        indexOfNamesToBeSearched = 0
+        
+        if devices.count != 0 {
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningDeviceName)
+            
+            // Go through all devices and store all devices which are in defined range and which don't have name parameter
+            // Values that are stored in "arrayOfNamesToBeSearched" are indexes in "devices" array of those devices that don't have name
+            // Example: devices: [device1, device2, device3], and device1 and device3 don't names. Then
+            // arrayOfNamesToBeSearched = [0, 2]
+            var from = 0
+            var to = 500
+            
+            if rangeFrom.text != nil && rangeFrom.text! != ""{
+                from = Int(rangeFrom.text!)!-1
+            }
+            if rangeTo.text != nil && rangeTo.text! != ""{
+                to = Int(rangeTo.text!)!-1
+            }
+            
+            if to < from {
+                self.view.makeToast(message: "Range can be only number")
+                return
+            }
+            
+            for i in from...to{
+                if i < devices.count{
+                    arrayOfNamesToBeSearched.append(i)
+                    if devices[i].controlType == ControlType.Sensor
+                        || devices[i].controlType == ControlType.IntelligentSwitch
+                        || devices[i].controlType == ControlType.Gateway
+                        || devices[i].controlType == ControlType.AnalogInput
+                        || devices[i].controlType == ControlType.DigitalInput
+                        || devices[i].controlType == ControlType.DigitalOutput{
+                        findSensorParametar = true
+                    }
+                }
+            }
+            
+            arrayOfSensorAdresses = []
+            UIApplication.sharedApplication().idleTimerDisabled = true
+            if arrayOfNamesToBeSearched.count != 0{
+                let firstDeviceIndexThatDontHaveName = arrayOfNamesToBeSearched[indexOfNamesToBeSearched]
+                timesRepeatedCounter = 0
+                pbFN = ProgressBarVC(title: "Finding names", percentage: Float(1)/Float(arrayOfNamesToBeSearched.count), howMuchOf: "1 / \(arrayOfNamesToBeSearched.count)")
+                pbFN?.delegate = self
+                self.presentViewController(pbFN!, animated: true, completion: nil)
+                deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfDeviceDidGetName(_:)), userInfo: firstDeviceIndexThatDontHaveName, repeats: false)
+                NSLog("func findNames \(firstDeviceIndexThatDontHaveName)")
+                sendCommandForFindingName(index: firstDeviceIndexThatDontHaveName)
+            }
+        }
+    }
+    func findNamesLongPress(sender: UILongPressGestureRecognizer) {
+        if sender.state == UIGestureRecognizerState.Began{
             arrayOfNamesToBeSearched = [Int]()
             indexOfNamesToBeSearched = 0
-            
             if devices.count != 0 {
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningDeviceName)
                 
-                // Go through all devices and store all devices which are in defined range and which don't have name parameter
+                // Go through all devices and store only those which are in defined range and which don't have name parameter
                 // Values that are stored in "arrayOfNamesToBeSearched" are indexes in "devices" array of those devices that don't have name
                 // Example: devices: [device1, device2, device3], and device1 and device3 don't names. Then
                 // arrayOfNamesToBeSearched = [0, 2]
-                var from = 0
-                var to = 500
-                
-                if rangeFrom.text != nil && rangeFrom.text! != ""{
+                var from = 1
+                var to = 255
+                if rangeFrom.text != nil && rangeFrom.text != "" {
                     from = Int(rangeFrom.text!)!-1
                 }
-                if rangeTo.text != nil && rangeTo.text! != ""{
+                if rangeTo.text != nil && rangeTo.text != ""{
                     to = Int(rangeTo.text!)!-1
                 }
-                
-                if to < from {
-                    self.view.makeToast(message: "Range can be only number")
-                    return
-                }
-                
                 for i in from...to{
                     if i < devices.count{
-                        arrayOfNamesToBeSearched.append(i)
+                        //                        if devices[i].address.integerValue >= Int(rangeFrom.text!) && devices[i].address.integerValue <= Int(rangeTo.text!){ // if it is in good range
+                        if devices[i].name == "Unknown"{
+                            arrayOfNamesToBeSearched.append(i)
+                        }
                         if devices[i].controlType == ControlType.Sensor
                             || devices[i].controlType == ControlType.IntelligentSwitch
                             || devices[i].controlType == ControlType.Gateway
@@ -450,10 +490,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                             || devices[i].controlType == ControlType.DigitalInput
                             || devices[i].controlType == ControlType.DigitalOutput{
                             findSensorParametar = true
+                            longPressScannParameters = true
                         }
                     }
                 }
-                
                 arrayOfSensorAdresses = []
                 UIApplication.sharedApplication().idleTimerDisabled = true
                 if arrayOfNamesToBeSearched.count != 0{
@@ -466,67 +506,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                     NSLog("func findNames \(firstDeviceIndexThatDontHaveName)")
                     sendCommandForFindingName(index: firstDeviceIndexThatDontHaveName)
                 }
-            }
-        } catch let error as InputError {
-            self.view.makeToast(message: error.description)
-        } catch {
-            self.view.makeToast(message: "Something went wrong.")
-        }
-    }
-    func findNamesLongPress(sender: UILongPressGestureRecognizer) {
-        if sender.state == UIGestureRecognizerState.Began{
-            do {
-                arrayOfNamesToBeSearched = [Int]()
-                indexOfNamesToBeSearched = 0
-                if devices.count != 0 {
-                    NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningDeviceName)
-                    
-                    // Go through all devices and store only those which are in defined range and which don't have name parameter
-                    // Values that are stored in "arrayOfNamesToBeSearched" are indexes in "devices" array of those devices that don't have name
-                    // Example: devices: [device1, device2, device3], and device1 and device3 don't names. Then
-                    // arrayOfNamesToBeSearched = [0, 2]
-                    var from = 1
-                    var to = 255
-                    if rangeFrom.text != nil && rangeFrom.text != "" {
-                        from = Int(rangeFrom.text!)!-1
-                    }
-                    if rangeTo.text != nil && rangeTo.text != ""{
-                        to = Int(rangeTo.text!)!-1
-                    }
-                    for i in from...to{
-                        if i < devices.count{
-//                        if devices[i].address.integerValue >= Int(rangeFrom.text!) && devices[i].address.integerValue <= Int(rangeTo.text!){ // if it is in good range
-                            if devices[i].name == "Unknown"{
-                                arrayOfNamesToBeSearched.append(i)
-                            }
-                            if devices[i].controlType == ControlType.Sensor
-                                || devices[i].controlType == ControlType.IntelligentSwitch
-                                || devices[i].controlType == ControlType.Gateway
-                                || devices[i].controlType == ControlType.AnalogInput
-                                || devices[i].controlType == ControlType.DigitalInput
-                                || devices[i].controlType == ControlType.DigitalOutput{
-                                findSensorParametar = true
-                                longPressScannParameters = true
-                            }
-                        }
-                    }
-                    arrayOfSensorAdresses = []
-                    UIApplication.sharedApplication().idleTimerDisabled = true
-                    if arrayOfNamesToBeSearched.count != 0{
-                        let firstDeviceIndexThatDontHaveName = arrayOfNamesToBeSearched[indexOfNamesToBeSearched]
-                        timesRepeatedCounter = 0
-                        pbFN = ProgressBarVC(title: "Finding names", percentage: Float(1)/Float(arrayOfNamesToBeSearched.count), howMuchOf: "1 / \(arrayOfNamesToBeSearched.count)")
-                        pbFN?.delegate = self
-                        self.presentViewController(pbFN!, animated: true, completion: nil)
-                        deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfDeviceDidGetName(_:)), userInfo: firstDeviceIndexThatDontHaveName, repeats: false)
-                        NSLog("func findNames \(firstDeviceIndexThatDontHaveName)")
-                        sendCommandForFindingName(index: firstDeviceIndexThatDontHaveName)
-                    }
-                }
-            } catch let error as InputError {
-                self.view.makeToast(message: error.description)
-            } catch {
-                self.view.makeToast(message: "Something went wrong.")
             }
         }
     }
@@ -651,36 +630,24 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     
     // MARK: - Sensor parametar
     func findParametarsForSensor() {
-        do {
-            arrayOfSensorAdresses = []
-            // Go through all devices and store only those which are in defined range and which ar of type:HumanInterfaceSeries, Gateway, AnalogInput or DigitalInput
-            // Values that are stored in "arrayOfSensorAdresses" are indexes in "devices" array of those devices which are filtered
-            // Example: devices: [device1, device2, device3], and device1 and device3 are of defined types. Then
-            // arrayOfSensorAdresses = [0, 2]
-            var from = 0
-            var to = 500
-            if rangeFrom.text != nil && rangeFrom.text != ""{
-                from = Int(rangeFrom.text!)!-1
-            }
-            if rangeTo.text != nil && rangeTo.text != ""{
-                to = Int(rangeTo.text!)!-1
-            }
-            
-            for i in from...to{
-                if i < devices.count{
-                    if longPressScannParameters {
-                        if devices[i].categoryId.integerValue == -1 {
-                            if devices[i].controlType == ControlType.Sensor
-                                || devices[i].controlType == ControlType.IntelligentSwitch
-                                || devices[i].controlType == ControlType.Gateway
-                                || devices[i].controlType == ControlType.AnalogInput
-                                || devices[i].controlType == ControlType.DigitalInput
-                                || devices[i].controlType == ControlType.DigitalOutput{
-                                
-                                arrayOfSensorAdresses.append(i)
-                            }
-                        }
-                    }else{
+        arrayOfSensorAdresses = []
+        // Go through all devices and store only those which are in defined range and which ar of type:HumanInterfaceSeries, Gateway, AnalogInput or DigitalInput
+        // Values that are stored in "arrayOfSensorAdresses" are indexes in "devices" array of those devices which are filtered
+        // Example: devices: [device1, device2, device3], and device1 and device3 are of defined types. Then
+        // arrayOfSensorAdresses = [0, 2]
+        var from = 0
+        var to = 500
+        if rangeFrom.text != nil && rangeFrom.text != ""{
+            from = Int(rangeFrom.text!)!-1
+        }
+        if rangeTo.text != nil && rangeTo.text != ""{
+            to = Int(rangeTo.text!)!-1
+        }
+        
+        for i in from...to{
+            if i < devices.count{
+                if longPressScannParameters {
+                    if devices[i].categoryId.integerValue == -1 {
                         if devices[i].controlType == ControlType.Sensor
                             || devices[i].controlType == ControlType.IntelligentSwitch
                             || devices[i].controlType == ControlType.Gateway
@@ -691,28 +658,34 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                             arrayOfSensorAdresses.append(i)
                         }
                     }
-                    
+                }else{
+                    if devices[i].controlType == ControlType.Sensor
+                        || devices[i].controlType == ControlType.IntelligentSwitch
+                        || devices[i].controlType == ControlType.Gateway
+                        || devices[i].controlType == ControlType.AnalogInput
+                        || devices[i].controlType == ControlType.DigitalInput
+                        || devices[i].controlType == ControlType.DigitalOutput{
+                        
+                        arrayOfSensorAdresses.append(i)
+                    }
                 }
+                
             }
-            
-            UIApplication.sharedApplication().idleTimerDisabled = true
-            if arrayOfSensorAdresses.count != 0{
-                NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningSensorParametars)
-                let index = 0
-                let deviceIndex = arrayOfSensorAdresses[index]
-                timesRepeatedCounter = 0
-                deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfSensorDidGotParametar(_:)), userInfo: deviceIndex, repeats: false)
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
-                    self.pbFN = ProgressBarVC(title: "Finding sensor parametars", percentage: Float(1)/Float(self.arrayOfSensorAdresses.count), howMuchOf: "1 / \(self.arrayOfSensorAdresses.count)")
-                    self.pbFN?.delegate = self
-                    self.presentViewController(self.pbFN!, animated: true, completion: nil)
-                    self.sendComandForSensorZone(deviceIndex: deviceIndex)
-                }
+        }
+        
+        UIApplication.sharedApplication().idleTimerDisabled = true
+        if arrayOfSensorAdresses.count != 0{
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningSensorParametars)
+            let index = 0
+            let deviceIndex = arrayOfSensorAdresses[index]
+            timesRepeatedCounter = 0
+            deviceNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanDevicesViewController.checkIfSensorDidGotParametar(_:)), userInfo: deviceIndex, repeats: false)
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+                self.pbFN = ProgressBarVC(title: "Finding sensor parametars", percentage: Float(1)/Float(self.arrayOfSensorAdresses.count), howMuchOf: "1 / \(self.arrayOfSensorAdresses.count)")
+                self.pbFN?.delegate = self
+                self.presentViewController(self.pbFN!, animated: true, completion: nil)
+                self.sendComandForSensorZone(deviceIndex: deviceIndex)
             }
-        } catch let error as InputError {
-            self.view.makeToast(message: error.description)
-        } catch {
-            self.view.makeToast(message: "Something went wrong.")
         }
     }
     func checkIfSensorDidGotParametar (timer:NSTimer) {
@@ -788,7 +761,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
     }
     func setProgressBarParametarsForFindingSensorParametar (deviceIndex:Int) {
-        var counterOfAttempts = 0
         if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfSensorAdresses.indexOf(deviceIndex){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
             if let _ = pbFN?.lblHowMuchOf, let _ = pbFN?.lblPercentage, let _ = pbFN?.progressView{
                 pbFN?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfNamesToBeSearched+1) / \(arrayOfSensorAdresses.count)"
@@ -950,7 +922,7 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
 
 extension ScanDevicesViewController: DeleteAllDelegate {
     func deleteConfirmed() {
-        for var item = 0; item < self.devices.count; item += 1 {
+        for item in 0..<self.devices.count{
             if self.devices[item].gateway.objectID == self.gateway.objectID {
                 self.appDel.managedObjectContext!.deleteObject(self.devices[item])
             }
