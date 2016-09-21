@@ -1,5 +1,5 @@
 //
-//  ZoneAndCategoryFunction.swift
+//  OutgoingHandlerForZoneAndCategory.swift
 //  e-Homegreen
 //
 //  Created by Vladimir Zivanov on 4/13/16.
@@ -13,8 +13,8 @@ struct CommandParametar{
     static let EOI:Byte = 0x10  //End of Information
 }
 
-class ZoneAndCategoryFunction: NSObject {
-    static let shared =  ZoneAndCategoryFunction()
+class OutgoingHandlerForZoneAndCategory: NSObject {
+    static let shared =  OutgoingHandlerForZoneAndCategory()
     
     func getCommandTurnOnByZone(zoneId:Int) -> [Byte]{
         var message:[Byte] = []

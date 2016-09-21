@@ -543,7 +543,6 @@ class IncomingHandler: NSObject {
         }
     }
     
-    
     func parseMessageRefreshEvent(byteArray:[Byte]){
         let data = ["id":Int(byteArray[7]), "value":Int(byteArray[8])]
         NSNotificationCenter.defaultCenter().postNotificationName("ReportEvent", object: self, userInfo: data)
@@ -1098,10 +1097,6 @@ class IncomingHandler: NSObject {
     func returnIncommingMessageType(){
         
     }
-}
-// New devices
-extension IncomingHandler {
-
 }
 // Recieved message helpers
 extension IncomingHandler {

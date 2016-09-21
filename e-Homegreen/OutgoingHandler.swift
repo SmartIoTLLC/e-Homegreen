@@ -279,7 +279,7 @@ extension OutgoingHandler {
     }
 }
 
-//MARK:- SaltoAccess
+//MARK:- SALTO ACCESS
 extension OutgoingHandler {
     static func getSaltoAccessInfoWithAddress(address:[Byte]) -> [Byte]{
         var messageInfo:[Byte] = []

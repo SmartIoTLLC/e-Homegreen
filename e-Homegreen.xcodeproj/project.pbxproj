@@ -100,7 +100,7 @@
 		22D7EBA11D78418F00853051 /* SecurityLocationXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D7EB9F1D78418F00853051 /* SecurityLocationXIB.swift */; };
 		22D7EBA21D78418F00853051 /* SecurityLocationXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22D7EBA01D78418F00853051 /* SecurityLocationXIB.xib */; };
 		22D867671CBE832400A6575A /* ZoneAndCategoryControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D867661CBE832400A6575A /* ZoneAndCategoryControl.swift */; };
-		22D867691CBE855900A6575A /* ZoneAndCategoryFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D867681CBE855900A6575A /* ZoneAndCategoryFunction.swift */; };
+		22D867691CBE855900A6575A /* OutgoingHandlerForZoneAndCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D867681CBE855900A6575A /* OutgoingHandlerForZoneAndCategory.swift */; };
 		22E7B2101CC4FC9A00F813AC /* ResetPasswordXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E7B20E1CC4FC9A00F813AC /* ResetPasswordXIB.swift */; };
 		22E7B2111CC4FC9A00F813AC /* ResetPasswordXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22E7B20F1CC4FC9A00F813AC /* ResetPasswordXIB.xib */; };
 		22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */; };
@@ -459,7 +459,7 @@
 		22D7EB9F1D78418F00853051 /* SecurityLocationXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityLocationXIB.swift; sourceTree = "<group>"; };
 		22D7EBA01D78418F00853051 /* SecurityLocationXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecurityLocationXIB.xib; sourceTree = "<group>"; };
 		22D867661CBE832400A6575A /* ZoneAndCategoryControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ZoneAndCategoryControl.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		22D867681CBE855900A6575A /* ZoneAndCategoryFunction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ZoneAndCategoryFunction.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		22D867681CBE855900A6575A /* OutgoingHandlerForZoneAndCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = OutgoingHandlerForZoneAndCategory.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		22E7B20E1CC4FC9A00F813AC /* ResetPasswordXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordXIB.swift; sourceTree = "<group>"; };
 		22E7B20F1CC4FC9A00F813AC /* ResetPasswordXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResetPasswordXIB.xib; sourceTree = "<group>"; };
 		22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCategoryViewController.swift; sourceTree = "<group>"; };
@@ -1422,7 +1422,7 @@
 			isa = PBXGroup;
 			children = (
 				736265E21B4A483E0078C11D /* OutgoingHandler.swift */,
-				22D867681CBE855900A6575A /* ZoneAndCategoryFunction.swift */,
+				22D867681CBE855900A6575A /* OutgoingHandlerForZoneAndCategory.swift */,
 			);
 			name = "Sending Handler";
 			sourceTree = "<group>";
@@ -2249,7 +2249,7 @@
 				73F1F0911BAD5BF1005C63AB /* ImportCategoryViewController.swift in Sources */,
 				E7C9CE001BC2B2AD007D8FE8 /* SecParamatarVC.swift in Sources */,
 				22EEAD121C872BB500AD66F0 /* EditZoneViewController.swift in Sources */,
-				22D867691CBE855900A6575A /* ZoneAndCategoryFunction.swift in Sources */,
+				22D867691CBE855900A6575A /* OutgoingHandlerForZoneAndCategory.swift in Sources */,
 				E7F5FC1D1BB9744200071982 /* CustomButton.swift in Sources */,
 				4D0BB34C1D5C91020047688F /* PCCommand.swift in Sources */,
 				2241E4701CC6389700BCD763 /* SurveillanceCell.swift in Sources */,
