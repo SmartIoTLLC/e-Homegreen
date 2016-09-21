@@ -8,7 +8,6 @@ target 'e-Homegreen' do
     # Pods for e-Homegreen
     pod 'CocoaAsyncSocket'
     pod 'ALCameraViewController'
-    pod 'JSQCoreDataKit'
     pod 'NSManagedObject-HYPPropertyMapper'
     pod 'Zip'
     
