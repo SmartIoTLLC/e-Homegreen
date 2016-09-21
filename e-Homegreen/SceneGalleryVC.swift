@@ -394,6 +394,7 @@ extension SceneGalleryVC : UICollectionViewDelegate, UICollectionViewDelegateFlo
         }
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    
     func handleTap(gesture:UITapGestureRecognizer){
         self.dismissViewControllerAnimated(true, completion: nil)
     }

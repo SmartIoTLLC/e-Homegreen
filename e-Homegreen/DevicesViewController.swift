@@ -372,7 +372,7 @@ class DevicesViewController: PopoverVC{
                 devices[tag].currentValue = 0
                 skipLevel = 0
             } else {
-                setDeviceValue = 100
+                setDeviceValue = 255
                 skipLevel = UInt8(Int(self.devices[tag].skipState))
             }
             devices[tag].currentValue = Int(setDeviceValue)
@@ -734,7 +734,6 @@ class DevicesViewController: PopoverVC{
         let v2 = v*100/255
         let v3 = Int(v2)
         let v4 = UInt8(v3)
-        
         
         if devices[tag].controlType == ControlType.Dimmer {
             dispatch_async(dispatch_get_main_queue(), {

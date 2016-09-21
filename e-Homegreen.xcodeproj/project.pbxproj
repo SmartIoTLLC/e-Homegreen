@@ -139,6 +139,7 @@
 		49C059741D913ACA0061A544 /* CardsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C059731D913ACA0061A544 /* CardsCell.swift */; };
 		49C059761D913D7D0061A544 /* ScanZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C059751D913D7D0061A544 /* ScanZone.swift */; };
 		49C059781D913DB90061A544 /* ScanCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C059771D913DB90061A544 /* ScanCategory.swift */; };
+		49C0597D1D928C4A0061A544 /* ImportZoneTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C0597C1D928C4A0061A544 /* ImportZoneTableViewCell.swift */; };
 		49E4055B1D2D0A870031130B /* PullDownViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4055A1D2D0A870031130B /* PullDownViewCell.swift */; };
 		49FDD1E21D52043F00884E12 /* DigitalInputPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDD1E01D52043F00884E12 /* DigitalInputPopup.swift */; };
 		49FDD1E31D52043F00884E12 /* DigitalInputPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49FDD1E11D52043F00884E12 /* DigitalInputPopup.xib */; };
@@ -498,6 +499,7 @@
 		49C059731D913ACA0061A544 /* CardsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardsCell.swift; sourceTree = "<group>"; };
 		49C059751D913D7D0061A544 /* ScanZone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ScanZone.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		49C059771D913DB90061A544 /* ScanCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ScanCategory.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		49C0597C1D928C4A0061A544 /* ImportZoneTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportZoneTableViewCell.swift; sourceTree = "<group>"; };
 		49E4055A1D2D0A870031130B /* PullDownViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownViewCell.swift; sourceTree = "<group>"; };
 		49FDD1E01D52043F00884E12 /* DigitalInputPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalInputPopup.swift; sourceTree = "<group>"; };
 		49FDD1E11D52043F00884E12 /* DigitalInputPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalInputPopup.xib; sourceTree = "<group>"; };
@@ -573,7 +575,7 @@
 		73E206AA1B2EEFFE0008B002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		73E206AB1B2EEFFE0008B002 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppDelegate.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		73E206B31B2EEFFE0008B002 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		73E206B51B2EEFFE0008B002 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "e-Homegreen/Images.xcassets"; sourceTree = "<group>"; };
+		73E206B51B2EEFFE0008B002 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		73E206B81B2EEFFE0008B002 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		73E206BE1B2EEFFE0008B002 /* e-HomegreenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "e-HomegreenTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		73E206C31B2EEFFE0008B002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -851,14 +853,16 @@
 			name = Energy;
 			sourceTree = "<group>";
 		};
-		2232922C1CABE48E0001422B /* PullDown */ = {
+		2232922C1CABE48E0001422B /* Filter */ = {
 			isa = PBXGroup;
 			children = (
+				22453A9E1D391E33009DCB07 /* FilterPullDown.swift */,
+				22AF883A1D49E9E700048A33 /* ScanFilterPullDown.swift */,
 				E7D9FFE91B3C2E3D00FC2C3B /* PopOverViewController.swift */,
 				49E4055A1D2D0A870031130B /* PullDownViewCell.swift */,
 				22495D301CAA83260034FC94 /* Popover.storyboard */,
 			);
-			name = PullDown;
+			name = Filter;
 			sourceTree = "<group>";
 		};
 		2232922D1CABE9400001422B /* Add User */ = {
@@ -873,18 +877,14 @@
 		2233628E1CA2E4D2006C80C4 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				2232922D1CABE9400001422B /* Add User */,
 				22E7B2121CC5044200F813AC /* Menu */,
 				22E7B20D1CC4FC7600F813AC /* Reset Password */,
-				22E7B20C1CC4FC1900F813AC /* Scan zone and category */,
-				22E7B20B1CC4FBFD00F813AC /* Add iBeacon */,
-				22E7B20A1CC4FBED00F813AC /* Progress Bar */,
-				22E7B2091CC4FBDE00F813AC /* Import Files */,
-				22E7B2081CC4FBC200F813AC /* Gallery */,
-				22E7B2071CC4FBA600F813AC /* Add Surveillance */,
-				22E7B2061CC4FB9200F813AC /* Add e-Homegreen */,
 				22E7B2051CC4FB7F00F813AC /* Add Location */,
+				22E7B2061CC4FB9200F813AC /* Add e-Homegreen */,
+				22E7B2071CC4FBA600F813AC /* Add IPCamera */,
+				22E7B20C1CC4FC1900F813AC /* Scan zone and category */,
 				E7F57B071BA7FE32006B0D71 /* ScanItemsViewController */,
-				2232922D1CABE9400001422B /* Add User */,
 				2232922A1CABD6790001422B /* Settings.storyboard */,
 				223362931CA2E518006C80C4 /* ProjectManagerViewController.swift */,
 				73DB84A21B301338000DB4EB /* SettingsViewController.swift */,
@@ -955,6 +955,9 @@
 		223F08701D76CF3D002EA80F /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				2232922C1CABE48E0001422B /* Filter */,
+				22E7B2081CC4FBC200F813AC /* Gallery */,
+				22E7B20A1CC4FBED00F813AC /* Progress Bar */,
 				225F59831D74402F00156BCD /* CommonXIBTransitionVC.swift */,
 			);
 			name = Shared;
@@ -1028,13 +1031,13 @@
 			name = "Add e-Homegreen";
 			sourceTree = "<group>";
 		};
-		22E7B2071CC4FBA600F813AC /* Add Surveillance */ = {
+		22E7B2071CC4FBA600F813AC /* Add IPCamera */ = {
 			isa = PBXGroup;
 			children = (
 				E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */,
 				E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */,
 			);
-			name = "Add Surveillance";
+			name = "Add IPCamera";
 			sourceTree = "<group>";
 		};
 		22E7B2081CC4FBC200F813AC /* Gallery */ = {
@@ -1078,6 +1081,9 @@
 		22E7B20C1CC4FC1900F813AC /* Scan zone and category */ = {
 			isa = PBXGroup;
 			children = (
+				49C0597B1D928BEE0061A544 /* Cells */,
+				22E7B20B1CC4FBFD00F813AC /* Add iBeacon */,
+				22E7B2091CC4FBDE00F813AC /* Import Files */,
 				73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */,
 				73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */,
 				2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */,
@@ -1180,6 +1186,21 @@
 			name = Cells;
 			sourceTree = "<group>";
 		};
+		49C0597B1D928BEE0061A544 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				49C0597C1D928C4A0061A544 /* ImportZoneTableViewCell.swift */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		49C0597E1D92ACF20061A544 /* Launch screen */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Launch screen";
+			sourceTree = "<group>";
+		};
 		49FDD1DB1D51DCE200884E12 /* Digital Input */ = {
 			isa = PBXGroup;
 			children = (
@@ -1272,23 +1293,8 @@
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				223690C51CAD00C00037B54A /* Login */,
-				2232922C1CABE48E0001422B /* PullDown */,
-				223292291CABD3280001422B /* Energy */,
-				223292281CABD1B60001422B /* Surveillance */,
-				223292261CABD0130001422B /* Flags */,
-				223292251CABCE180001422B /* Timers */,
-				223292241CABCDFB0001422B /* Sequences */,
-				223292231CABCC350001422B /* Events */,
-				223292221CABCC1F0001422B /* Scenes */,
-				223292211CABCB180001422B /* Dashboard */,
-				223362951CA2E604006C80C4 /* Users */,
-				2233628E1CA2E4D2006C80C4 /* Settings */,
-				2249A3271C90349C0019C6FB /* PC Controll */,
-				E73993151BCE9DC400C74486 /* Chat */,
 				73DEA2201B32CE9F007836B4 /* Side Menu */,
-				E7E08E011B4E4D5400153E9A /* Devices */,
-				738DEC991BBBBFF800D6B834 /* Security */,
+				223690C51CAD00C00037B54A /* Login */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1296,6 +1302,20 @@
 		73DEA2201B32CE9F007836B4 /* Side Menu */ = {
 			isa = PBXGroup;
 			children = (
+				223292211CABCB180001422B /* Dashboard */,
+				E7E08E011B4E4D5400153E9A /* Devices */,
+				223292221CABCC1F0001422B /* Scenes */,
+				223292231CABCC350001422B /* Events */,
+				223292241CABCDFB0001422B /* Sequences */,
+				223292251CABCE180001422B /* Timers */,
+				738DEC991BBBBFF800D6B834 /* Security */,
+				223292281CABD1B60001422B /* Surveillance */,
+				223292261CABD0130001422B /* Flags */,
+				223362951CA2E604006C80C4 /* Users */,
+				2249A3271C90349C0019C6FB /* PC Controll */,
+				E73993151BCE9DC400C74486 /* Chat */,
+				223292291CABD3280001422B /* Energy */,
+				2233628E1CA2E4D2006C80C4 /* Settings */,
 				73DB8B961B2FFA4D00139E58 /* SidePanelViewController.swift */,
 			);
 			name = "Side Menu";
@@ -1305,10 +1325,6 @@
 			isa = PBXGroup;
 			children = (
 				73E206A81B2EEFFE0008B002 /* e-Homegreen */,
-				E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */,
-				73E206B21B2EEFFE0008B002 /* Main.storyboard */,
-				73E206B51B2EEFFE0008B002 /* Images.xcassets */,
-				73E206B71B2EEFFE0008B002 /* LaunchScreen.xib */,
 				73E206C11B2EEFFE0008B002 /* e-HomegreenTests */,
 				73E206A71B2EEFFE0008B002 /* Products */,
 				1B233F1151142CED73C3C4C8 /* Frameworks */,
@@ -1328,8 +1344,9 @@
 		73E206A81B2EEFFE0008B002 /* e-Homegreen */ = {
 			isa = PBXGroup;
 			children = (
+				49C0597E1D92ACF20061A544 /* Launch screen */,
 				73F04ECC1C92CD95009696EF /* Database Controllers */,
-				E76B57651BBD1DAC00A70F69 /* UI */,
+				E76B57651BBD1DAC00A70F69 /* Custom UI */,
 				73E2390E1B97145D00CB38ED /* Model */,
 				736265DD1B4A47FE0078C11D /* Business Logic */,
 				73DEA21F1B32CE67007836B4 /* ViewControllers */,
@@ -1337,6 +1354,10 @@
 				73BD1EBE1B4E655700AA5B28 /* Supporting files */,
 				73F04EC71C92C728009696EF /* Extensions and Helpers */,
 				E7E1A81F1B3804F1008D8713 /* Frameworks */,
+				E7D9FFE41B3BE02700FC2C3B /* e-Homegreen-Bridging-Header.h */,
+				73E206B21B2EEFFE0008B002 /* Main.storyboard */,
+				73E206B51B2EEFFE0008B002 /* Images.xcassets */,
+				73E206B71B2EEFFE0008B002 /* LaunchScreen.xib */,
 			);
 			path = "e-Homegreen";
 			sourceTree = "<group>";
@@ -1551,7 +1572,7 @@
 			name = Calendar;
 			sourceTree = "<group>";
 		};
-		E76B57651BBD1DAC00A70F69 /* UI */ = {
+		E76B57651BBD1DAC00A70F69 /* Custom UI */ = {
 			isa = PBXGroup;
 			children = (
 				2260FB9F1D2CF5C800576513 /* UIToolBar */,
@@ -1561,7 +1582,7 @@
 				E76B57671BBD1E7100A70F69 /* View */,
 				E76B57661BBD1DB900A70F69 /* Button */,
 			);
-			name = UI;
+			name = "Custom UI";
 			sourceTree = "<group>";
 		};
 		E76B57661BBD1DB900A70F69 /* Button */ = {
@@ -1593,8 +1614,6 @@
 		E76B576A1BBD245400A70F69 /* ScrollView */ = {
 			isa = PBXGroup;
 			children = (
-				22453A9E1D391E33009DCB07 /* FilterPullDown.swift */,
-				22AF883A1D49E9E700048A33 /* ScanFilterPullDown.swift */,
 			);
 			name = ScrollView;
 			sourceTree = "<group>";
@@ -2097,6 +2116,7 @@
 				73ED6AFD1BA0249800E6CE06 /* RepeatSendingHandler.swift in Sources */,
 				739D57171C809B30004CC50E /* DeviceImage.swift in Sources */,
 				2249A3321C90693C0019C6FB /* PCControlInterfaceXIB.swift in Sources */,
+				49C0597D1D928C4A0061A544 /* ImportZoneTableViewCell.swift in Sources */,
 				738DEC9C1BBBC2F000D6B834 /* SecurityPadVC.swift in Sources */,
 				225F59871D74427300156BCD /* BigSliderXIB.swift in Sources */,
 				22FF1E651D86D92000ECB86E /* DatabaseCardsController.swift in Sources */,
@@ -2384,7 +2404,6 @@
 				73E206B31B2EEFFE0008B002 /* Base */,
 			);
 			name = Main.storyboard;
-			path = "e-Homegreen";
 			sourceTree = "<group>";
 		};
 		73E206B71B2EEFFE0008B002 /* LaunchScreen.xib */ = {
@@ -2393,7 +2412,6 @@
 				73E206B81B2EEFFE0008B002 /* Base */,
 			);
 			name = LaunchScreen.xib;
-			path = "e-Homegreen";
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
