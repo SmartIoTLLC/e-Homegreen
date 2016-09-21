@@ -9,22 +9,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/DatabaseTimersController.swift"
-            timestampString = "495978601.843692"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "237"
-            endingLineNumber = "237"
-            landmarkName = "addTimer(_:timerName:moduleAddress:gateway:type:levelId:selectedZoneId:categoryId:isBroadcast:isLocalcast:sceneImageOneDefault:sceneImageTwoDefault:sceneImageOneCustom:sceneImageTwoCustom:imageDataOne:imageDataTwo:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "e-Homegreen/SecurityViewController.swift"
             timestampString = "496063514.773356"
             startingColumnNumber = "9223372036854775807"
