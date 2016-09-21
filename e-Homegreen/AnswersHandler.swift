@@ -10,10 +10,10 @@ import UIKit
 
 class AnswersHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
     
-    func getAnswerComplition(var question:String, completion:(result:String) -> Void){
+    func getAnswerComplition(question:String, completion:(result:String) -> Void){
         
-        question = question.stringByReplacingOccurrencesOfString(" ", withString: "_")
-        let url = NSURL(string: "http://answers.com/Q/\(question)")!
+        let questionTemp = question.stringByReplacingOccurrencesOfString(" ", withString: "_")
+        let url = NSURL(string: "http://answers.com/Q/\(questionTemp)")!
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "GET"
         
