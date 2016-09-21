@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Zip
+//import Zip
 import CoreData
 
 class CreateUserFromJSONController: NSObject {
@@ -20,14 +20,14 @@ class CreateUserFromJSONController: NSObject {
         if let filePath = url.path {
             let documentsDirectoryPathString = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first!
             let documentsDirectoryPath = NSURL(string: documentsDirectoryPathString)!
-            do{
-                try Zip.unzipFile(url, destination: documentsDirectoryPath, overwrite: true, password: nil, progress: { (progress) -> () in
-                    print(progress)
-                })
-            }
-            catch {
-                print("Something went wrong")
-            }
+//            do{
+//                try Zip.unzipFile(url, destination: documentsDirectoryPath, overwrite: true, password: nil, progress: { (progress) -> () in
+//                    print(progress)
+//                })
+//            }
+//            catch {
+//                print("Something went wrong")
+//            }
             if NSFileManager.defaultManager().fileExistsAtPath(filePath) {
                 do {
                     try NSFileManager.defaultManager().removeItemAtPath(filePath)
@@ -38,7 +38,7 @@ class CreateUserFromJSONController: NSObject {
             }
             
             let jsonFilePath = documentsDirectoryPath.URLByAppendingPathComponent("test.json")
-            createUserFromJSON(jsonFilePath.path!)
+            createUserFromJSON(jsonFilePath!.path!)
             
         }
     }

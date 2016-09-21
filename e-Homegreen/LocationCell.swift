@@ -113,7 +113,7 @@ class GatewayCell: UITableViewCell {
                                                   colorLocations)
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:self.bounds.width , y:0)
-        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+        CGContextDrawLinearGradient(context!, gradient!, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
         path.stroke()
     }
     
@@ -186,7 +186,7 @@ class SurvCell: UITableViewCell{
                                                   colorLocations)
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:self.bounds.width , y:0)
-        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+        CGContextDrawLinearGradient(context!, gradient!, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
         path.stroke()
     }
 }

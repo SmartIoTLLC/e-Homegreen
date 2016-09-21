@@ -187,7 +187,7 @@ class ChangeDeviceParametarsVC: PopoverVC {
         var popoverList:[PopOverItem] = []
         let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(device.gateway.location)
         for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
         }
         popoverList.insert(PopOverItem(name: "All", id: "0"), atIndex: 0)
         openPopover(sender, popOverList:popoverList)
@@ -199,7 +199,7 @@ class ChangeDeviceParametarsVC: PopoverVC {
         if let level = level{
             let list:[Zone] = DatabaseZoneController.shared.getZoneByLevel(device.gateway.location, parentZone: level)
             for item in list {
-                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
             }
         }
         
@@ -212,7 +212,7 @@ class ChangeDeviceParametarsVC: PopoverVC {
         var popoverList:[PopOverItem] = []
         let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(device.gateway.location)
         for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
         }
         
         popoverList.insert(PopOverItem(name: "All", id: "0"), atIndex: 0)
@@ -276,7 +276,7 @@ extension ChangeDeviceParametarsVC : UIViewControllerAnimatedTransitioning {
             //        presentedControllerView.center.y -= containerView.bounds.size.height
             presentedControllerView.alpha = 0
             presentedControllerView.transform = CGAffineTransformMakeScale(1.5, 1.5)
-            containerView!.addSubview(presentedControllerView)
+            containerView.addSubview(presentedControllerView)
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 //            presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 1

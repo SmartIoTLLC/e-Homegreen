@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 import NSManagedObject_HYPPropertyMapper
-import Zip
+//import Zip
 
 class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddUserDelegate, SWRevealViewControllerDelegate {
     
@@ -138,7 +138,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
         let jsonFilePath = documentsUrl.URLByAppendingPathComponent("archive.zip")
         
-        let activityViewController = UIActivityViewController(activityItems: [jsonFilePath], applicationActivities: nil)
+        let activityViewController = UIActivityViewController(activityItems: [jsonFilePath!], applicationActivities: nil)
         if let presentationController = activityViewController.popoverPresentationController {
             presentationController.sourceView = sender
             presentationController.sourceRect = sender.bounds
@@ -158,8 +158,8 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         var isDirectory: ObjCBool = false
         
         // creating a .json file in the Documents folder
-        if !fileManager.fileExistsAtPath(jsonFilePath.absoluteString, isDirectory: &isDirectory) {
-            let created = fileManager.createFileAtPath(jsonFilePath.absoluteString, contents: nil, attributes: nil)
+        if !fileManager.fileExistsAtPath(jsonFilePath!.absoluteString!, isDirectory: &isDirectory) {
+            let created = fileManager.createFileAtPath(jsonFilePath!.absoluteString!, contents: nil, attributes: nil)
             if created {
                 print("File created ")
             } else {
@@ -171,21 +171,21 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         
         let data:NSData? = NSKeyedArchiver.archivedDataWithRootObject(userData)
         if let data = data{
-            data.writeToFile(jsonFilePath.path!, atomically: true)
+            data.writeToFile(jsonFilePath!.path!, atomically: true)
         }
         
-        do {
-            let zipFilePath = documentsDirectoryPath.URLByAppendingPathComponent("archive.zip")
-            try Zip.zipFiles([jsonFilePath], zipFilePath: zipFilePath, password: nil, progress: { (progress) -> () in
-                print(progress)
-            })
-        }
-        catch {
-            print("Something went wrong")
-        }
+//        do {
+//            let zipFilePath = documentsDirectoryPath.URLByAppendingPathComponent("archive.zip")
+//            try Zip.zipFiles([jsonFilePath], zipFilePath: zipFilePath, password: nil, progress: { (progress) -> () in
+//                print(progress)
+//            })
+//        }
+//        catch {
+//            print("Something went wrong")
+//        }
         
         do {
-            try fileManager.removeItemAtPath(jsonFilePath.path!)
+            try fileManager.removeItemAtPath(jsonFilePath!.path!)
         } catch let error as NSError {
             print("ERROR: \(error)")
         }

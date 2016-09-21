@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import ALCameraViewController
+//import ALCameraViewController
 import CoreData
 
 @objc protocol SceneGalleryDelegate{
@@ -302,23 +302,23 @@ class SceneGalleryVC: CommonXIBTransitionVC, UICollectionViewDataSource {
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return newImage
+        return newImage!
         
     }
     
     @IBAction func openGallery(sender: AnyObject) {
-        let libraryViewController = ALCameraViewController.imagePickerViewController(true) { [weak self] (image) -> Void in
-            if let backImage = image{
-//                self?.updateWithImage(backImage)
-                self?.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self!.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self!.imageIndex)
-                self?.dismissViewControllerAnimated(true, completion: { () -> Void in
-                    self?.dismissViewControllerAnimated(true, completion: nil)
-                })
-            }else{
-                self?.dismissViewControllerAnimated(true, completion:nil)
-            }
-        }
-        presentViewController(libraryViewController, animated: true, completion: nil)
+//        let libraryViewController = ALCameraViewController.imagePickerViewController(true) { [weak self] (image) -> Void in
+//            if let backImage = image{
+////                self?.updateWithImage(backImage)
+//                self?.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self!.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self!.imageIndex)
+//                self?.dismissViewControllerAnimated(true, completion: { () -> Void in
+//                    self?.dismissViewControllerAnimated(true, completion: nil)
+//                })
+//            }else{
+//                self?.dismissViewControllerAnimated(true, completion:nil)
+//            }
+//        }
+//        presentViewController(libraryViewController, animated: true, completion: nil)
     }
     
     @IBAction func changeGallery(sender: UISegmentedControl) {
@@ -343,17 +343,17 @@ class SceneGalleryVC: CommonXIBTransitionVC, UICollectionViewDataSource {
     
     
     @IBAction func takePhoto(sender: AnyObject) {
-        let cameraViewController = ALCameraViewController(croppingEnabled: true) { (image) -> Void in
-            if let backImage = image{
-                self.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self.imageIndex)
-                self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                })
-            }else{
-                self.dismissViewControllerAnimated(true, completion:nil)
-            }
-        }
-        presentViewController(cameraViewController, animated: true, completion: nil)
+//        let cameraViewController = ALCameraViewController(croppingEnabled: true) { (image) -> Void in
+//            if let backImage = image{
+//                self.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self.imageIndex)
+//                self.dismissViewControllerAnimated(true, completion: { () -> Void in
+//                    self.dismissViewControllerAnimated(true, completion: nil)
+//                })
+//            }else{
+//                self.dismissViewControllerAnimated(true, completion:nil)
+//            }
+//        }
+//        presentViewController(cameraViewController, animated: true, completion: nil)
 
     }
     

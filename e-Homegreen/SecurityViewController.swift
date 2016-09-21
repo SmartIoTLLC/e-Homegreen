@@ -411,7 +411,7 @@ extension SecurityViewController: UICollectionViewDelegate, UICollectionViewDele
         if (collectionView.cellForItemAtIndexPath(indexPath) as? SecurityLocationCell) != nil{
             
             filterParametar.location = location[indexPath.row].name!
-            filterParametar.locationObjectId = location[indexPath.row].objectID.URIRepresentation().absoluteString
+            filterParametar.locationObjectId = location[indexPath.row].objectID.URIRepresentation().absoluteString!
             DatabaseFilterController.shared.saveFilter(filterParametar, menu: Menu.Security)
             scrollView.setFilterItem(Menu.Security)
             updateSubtitle()

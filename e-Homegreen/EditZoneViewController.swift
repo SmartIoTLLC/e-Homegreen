@@ -93,7 +93,7 @@ class EditZoneViewController: PopoverVC {
         
         let list:[Zone] = FilterController.shared.getLevelsByLocation(location)
         for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
         }
         
         popoverList.insert(PopOverItem(name: "", id: ""), atIndex: 0)
@@ -223,7 +223,7 @@ extension EditZoneViewController : UIViewControllerAnimatedTransitioning {
             //        presentedControllerView.center.y -= containerView.bounds.size.height
             presentedControllerView.alpha = 0
             presentedControllerView.transform = CGAffineTransformMakeScale(1.5, 1.5)
-            containerView!.addSubview(presentedControllerView)
+            containerView.addSubview(presentedControllerView)
             UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 //            presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 1

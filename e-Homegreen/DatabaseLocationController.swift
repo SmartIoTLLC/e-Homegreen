@@ -47,7 +47,7 @@ class DatabaseLocationController: NSObject {
     }
     
     func regionWithLocation(location: Location) -> CLCircularRegion {
-        let region = CLCircularRegion(center: CLLocationCoordinate2DMake(Double(location.latitude!), Double(location.longitude!)) , radius: Double(location.radius!), identifier: location.objectID.URIRepresentation().absoluteString)
+        let region = CLCircularRegion(center: CLLocationCoordinate2DMake(Double(location.latitude!), Double(location.longitude!)) , radius: Double(location.radius!), identifier: location.objectID.URIRepresentation().absoluteString!)
         region.notifyOnEntry = true
         region.notifyOnExit = true
         return region

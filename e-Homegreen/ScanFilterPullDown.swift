@@ -359,7 +359,7 @@ class ScanFilterPullDown: UIScrollView {
         var popoverList:[PopOverItem] = []
         let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(location)
         for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
         }
         
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
@@ -381,7 +381,7 @@ class ScanFilterPullDown: UIScrollView {
         if let level = level{
             let list:[Zone] = DatabaseZoneController.shared.getZoneByLevel(location, parentZone: level)
             for item in list {
-                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
             }
         }
         
@@ -401,7 +401,7 @@ class ScanFilterPullDown: UIScrollView {
         var popoverList:[PopOverItem] = []
         let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(location)
         for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
         }
         
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
@@ -450,11 +450,11 @@ class ScanFilterPullDown: UIScrollView {
     func returnFilter(){
         let filterItem = FilterItem(location: location.name!, levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
 
-        filterItem.locationObjectId = location.objectID.URIRepresentation().absoluteString
+        filterItem.locationObjectId = location.objectID.URIRepresentation().absoluteString!
         if let category = category{
             filterItem.categoryId = category.id!.integerValue
             filterItem.categoryName = category.name!
-            filterItem.categoryObjectId = category.objectID.URIRepresentation().absoluteString
+            filterItem.categoryObjectId = category.objectID.URIRepresentation().absoluteString!
         }
         guard let level = level else{
             scanFilterDelegate?.scanFilterParametars(filterItem)
@@ -463,14 +463,14 @@ class ScanFilterPullDown: UIScrollView {
         
         filterItem.levelId = level.id!.integerValue
         filterItem.levelName = level.name!
-        filterItem.levelObjectId = level.objectID.URIRepresentation().absoluteString
+        filterItem.levelObjectId = level.objectID.URIRepresentation().absoluteString!
         guard let zone = zoneSelected else{
             scanFilterDelegate?.scanFilterParametars(filterItem)
             return
         }
         filterItem.zoneId = zone.id!.integerValue
         filterItem.zoneName = zone.name!
-        filterItem.zoneObjectId = zone.objectID.URIRepresentation().absoluteString
+        filterItem.zoneObjectId = zone.objectID.URIRepresentation().absoluteString!
         scanFilterDelegate?.scanFilterParametars(filterItem)
     }
     

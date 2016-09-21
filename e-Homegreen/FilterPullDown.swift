@@ -482,7 +482,7 @@ class FilterPullDown: UIScrollView {
         var popoverList:[PopOverItem] = []
         let list:[Location] = FilterController.shared.getLocationForFilterByUser()
         for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
         }
         popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
         if let vc = self.parentViewController as? PopoverVC{
@@ -507,7 +507,7 @@ class FilterPullDown: UIScrollView {
         if let location = location{
             let list:[Zone] = FilterController.shared.getLevelsByLocation(location)
             for item in list {
-                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
             }
         }
         
@@ -530,7 +530,7 @@ class FilterPullDown: UIScrollView {
         if let location = location, let level = level{
             let list:[Zone] = FilterController.shared.getZoneByLevel(location, parentZone: level)
             for item in list {
-                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
             }
         }
 
@@ -551,7 +551,7 @@ class FilterPullDown: UIScrollView {
         if let location = location{
             let list:[Category] = FilterController.shared.getCategoriesByLocation(location)
             for item in list {
-                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString))
+                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
             }
         }
         
@@ -683,23 +683,23 @@ class FilterPullDown: UIScrollView {
         let filterItem = FilterItem(location: "All", levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
         if let location = location {
             filterItem.location = location.name!
-            filterItem.locationObjectId = location.objectID.URIRepresentation().absoluteString
+            filterItem.locationObjectId = location.objectID.URIRepresentation().absoluteString!
         }
         if let category = category{
             filterItem.categoryId = category.id!.integerValue
             filterItem.categoryName = category.name!
-            filterItem.categoryObjectId = category.objectID.URIRepresentation().absoluteString
+            filterItem.categoryObjectId = category.objectID.URIRepresentation().absoluteString!
         }
         if let level = level {
             filterItem.levelId = level.id!.integerValue
             filterItem.levelName = level.name!
-            filterItem.levelObjectId = level.objectID.URIRepresentation().absoluteString
+            filterItem.levelObjectId = level.objectID.URIRepresentation().absoluteString!
         }
 
         if let zone = zoneSelected {
             filterItem.zoneId = zone.id!.integerValue
             filterItem.zoneName = zone.name!
-            filterItem.zoneObjectId = zone.objectID.URIRepresentation().absoluteString
+            filterItem.zoneObjectId = zone.objectID.URIRepresentation().absoluteString!
         }
 
         DatabaseFilterController.shared.saveDeafultFilter(filterItem, menu: menuItem)
@@ -723,11 +723,11 @@ class FilterPullDown: UIScrollView {
             return
         }
         filterItem.location = location.name!
-        filterItem.locationObjectId = location.objectID.URIRepresentation().absoluteString
+        filterItem.locationObjectId = location.objectID.URIRepresentation().absoluteString!
         if let category = category{
             filterItem.categoryId = category.id!.integerValue
             filterItem.categoryName = category.name!
-            filterItem.categoryObjectId = category.objectID.URIRepresentation().absoluteString
+            filterItem.categoryObjectId = category.objectID.URIRepresentation().absoluteString!
         }
         guard let level = level else{
             filterDelegate?.filterParametars(filterItem)
@@ -736,14 +736,14 @@ class FilterPullDown: UIScrollView {
         
         filterItem.levelId = level.id!.integerValue
         filterItem.levelName = level.name!        
-        filterItem.levelObjectId = level.objectID.URIRepresentation().absoluteString
+        filterItem.levelObjectId = level.objectID.URIRepresentation().absoluteString!
         guard let zone = zoneSelected else{
             filterDelegate?.filterParametars(filterItem)
             return
         }
         filterItem.zoneId = zone.id!.integerValue
         filterItem.zoneName = zone.name!
-        filterItem.zoneObjectId = zone.objectID.URIRepresentation().absoluteString
+        filterItem.zoneObjectId = zone.objectID.URIRepresentation().absoluteString!
         filterDelegate?.filterParametars(filterItem)
     }
     

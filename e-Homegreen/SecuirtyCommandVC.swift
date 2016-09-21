@@ -139,7 +139,7 @@ extension SecuirtyCommandVC : UIViewControllerAnimatedTransitioning {
             presentedControllerView.center = self.point!
             presentedControllerView.alpha = 0
             presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
-            containerView!.addSubview(presentedControllerView)
+            containerView.addSubview(presentedControllerView)
             
             UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
                 

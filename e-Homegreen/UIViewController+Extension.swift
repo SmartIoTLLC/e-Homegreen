@@ -35,7 +35,7 @@ extension UIViewController {
         layer.renderInContext(UIGraphicsGetCurrentContext()!)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return image
+        return image!
     }
     
     // Presents Alert view that has Delete and Cancel buttons.

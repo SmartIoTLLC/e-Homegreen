@@ -59,20 +59,20 @@ class EditTextField: UITextField {
         let context = UIGraphicsGetCurrentContext()
         image.drawAtPoint(CGPointZero)
         
-        CGContextSetFillColorWithColor(context, color.CGColor)
-        CGContextSetBlendMode(context, CGBlendMode.SourceIn)
-        CGContextSetAlpha(context, 1.0)
+        CGContextSetFillColorWithColor(context!, color.CGColor)
+        CGContextSetBlendMode(context!, CGBlendMode.SourceIn)
+        CGContextSetAlpha(context!, 1.0)
         
         let rect = CGRectMake(
             CGPointZero.x,
             CGPointZero.y,
             image.size.width,
             image.size.height)
-        CGContextFillRect(UIGraphicsGetCurrentContext(), rect)
+        CGContextFillRect(UIGraphicsGetCurrentContext()!, rect)
         let tintedImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return tintedImage
+        return tintedImage!
     }
 
 }

@@ -175,7 +175,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         UIGraphicsBeginImageContextWithOptions(inputView.bounds.size, false, 0.0)
         
         inputView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
-        let image = UIGraphicsGetImageFromCurrentImageContext() as UIImage
+        let image = UIGraphicsGetImageFromCurrentImageContext()! as UIImage
         
         UIGraphicsEndImageContext()
         
