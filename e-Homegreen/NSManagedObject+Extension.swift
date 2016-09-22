@@ -10,13 +10,13 @@ import Foundation
 import CoreData
 
 extension NSManagedObject {
-    class func entityName() -> String {
-        let fullClassName = NSStringFromClass(object_getClass(self))
-        let nameComponents = fullClassName.characters.split{$0 == "."}.map(String.init)
-//        return last(nameComponents)!
-        return nameComponents.last!
-    }
-    
+//    class func entityName() -> String {
+//        let fullClassName = NSStringFromClass(object_getClass(self))
+//        let nameComponents = fullClassName.characters.split{$0 == "."}.map(String.init)
+////        return last(nameComponents)!
+//        return nameComponents.last!
+//    }
+//    
 //    convenience init(context: NSManagedObjectContext) {
 //        let name = type(of: self).entityName()
 //        let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!

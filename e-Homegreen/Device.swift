@@ -25,9 +25,7 @@ class Device: NSManagedObject {
         return [Byte(Int(self.gateway.addressOne)), Byte(Int(self.gateway.addressTwo)), Byte(Int(self.address))]
     }()
     convenience init(context: NSManagedObjectContext, specificDeviceInformation information:DeviceInformation) {
-        let name = self.dynamicType.entityName()
-        let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
-        self.init(entity: entity, insertIntoManagedObjectContext: context)
+        self.init(context: context)
         self.name = "Unknown"
         self.address = information.address
         self.channel = information.channel
@@ -87,9 +85,7 @@ class Device: NSManagedObject {
     // Used only for creating SaltoAccess Device
     // the name must be different
     convenience init(context: NSManagedObjectContext, specificDeviceInformation information:DeviceInformation, channelName: String) {
-        let name = self.dynamicType.entityName()
-        let entity = NSEntityDescription.entityForName(name, inManagedObjectContext: context)!
-        self.init(entity: entity, insertIntoManagedObjectContext: context)
+        self.init(context: context)
         self.name = channelName
         self.address = information.address
         self.channel = information.channel
@@ -179,11 +175,11 @@ class Device: NSManagedObject {
         let sumOfDeviceImages = devImages.count
         let dblSection:Double = 100/Double(sumOfDeviceImages)
         // sort by state: 1 2 3 4 5 6
-        let preSort = devImages.sort { (let result1, let result2) -> Bool in
+        let preSort = devImages.sort { ( result1, result2) -> Bool in
             if result1.state?.integerValue < result2.state?.integerValue {return true}
             return false
         }
-        let mapedResult = preSort.enumerate().map { (let index, let deviceImage) -> Result in
+        let mapedResult = preSort.enumerate().map { ( index, deviceImage) -> Result in
             let defaultImageNamed = deviceImage.defaultImage!
             let stateValue = (Double(index) + 1) * dblSection
             
@@ -204,11 +200,11 @@ class Device: NSManagedObject {
             return Result(stateValue: stateValue, imageData: nil, defaultImage: UIImage(named: defaultImageNamed)!)
         }
         // Compares state value (example: 20, 40, 60, 80, 100 for 5 images) with device value (which is in percent 0-100)
-        let filteredMapedresult = mapedResult.filter { (let result) -> Bool in
+        let filteredMapedresult = mapedResult.filter { ( result) -> Bool in
             if result.stateValue >= (deviceValue/255*100) {return true} //
             return false
         }
-        let sortedFilteredMapedResult = filteredMapedresult.sort { (let result1, let result2) -> Bool in
+        let sortedFilteredMapedResult = filteredMapedresult.sort { ( result1, result2) -> Bool in
             if result1.stateValue < result2.stateValue {return true}
             return false
         }
