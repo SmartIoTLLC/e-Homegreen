@@ -15,24 +15,24 @@ func != (lhs: HvacCommand, rhs: HvacCommand) -> Bool {
     return lhs.coolTemperature != rhs.coolTemperature || lhs.heatTemperature != rhs.heatTemperature || lhs.fan != rhs.fan || lhs.mode != rhs.mode
 }
 struct HvacCommand {
-    var mode:Mode = .NoMode
-    var fan:Fan = .NoFan
+    var mode:Mode = .noMode
+    var fan:Fan = .noFan
     var coolTemperature = 0
     var heatTemperature = 0
 }
 enum Mode {
-    case Cool
-    case Heat
-    case Fan
-    case AUTO
-    case NoMode
+    case cool
+    case heat
+    case fan
+    case auto
+    case noMode
 }
 enum Fan {
-    case Low
-    case Med
-    case High
-    case AUTO
-    case NoFan
+    case low
+    case med
+    case high
+    case auto
+    case noFan
 }
 class ClimaSettingsViewController: CommonXIBTransitionVC {
     
@@ -82,7 +82,7 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
     var hvacCommand:HvacCommand = HvacCommand()
     var hvacCommandBefore:HvacCommand = HvacCommand()
     
-    var timerForTemperatureSetPoint:NSTimer = NSTimer()
+    var timerForTemperatureSetPoint:Foundation.Timer = Foundation.Timer()
     var temperatureNumber = 0
     var heatNumber = 0
     var coolNumber = 0
@@ -109,69 +109,69 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         coolNumber = Int(device.coolTemperature)
         heatNumber = Int(device.heatTemperature)
         
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)        
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.7)        
         
         getACState()
         
         if device.coolModeVisible == false {
         
-            btnCool.hidden = true
+            btnCool.isHidden = true
             
-            coolView.hidden = true
+            coolView.isHidden = true
             
             if device.heatModeVisible == false {
                 
-                btnHeat.hidden = true
+                btnHeat.isHidden = true
                 
-                thresholdSTackView.hidden = true
-                threshholdLbl.hidden = true
+                thresholdSTackView.isHidden = true
+                threshholdLbl.isHidden = true
             }
         }
         
         if device.heatModeVisible == false {
-            btnHeat.hidden = true
-            heatView.hidden = true
+            btnHeat.isHidden = true
+            heatView.isHidden = true
         }
         if device.fanModeVisible == false {
-            btnFan.hidden = true
+            btnFan.isHidden = true
         }
         if device.autoModeVisible == false {
-            btnAuto.hidden = true
+            btnAuto.isHidden = true
         }
         
         if device.coolModeVisible == false && device.heatModeVisible == false && device.fanModeVisible == false && device.autoModeVisible == false {
-            modeLbl.hidden = true
-            modeStackView.hidden = true
+            modeLbl.isHidden = true
+            modeStackView.isHidden = true
         }
 
         if device.lowSpeedVisible == false {
-            btnLow.hidden = true
+            btnLow.isHidden = true
         }
         if device.medSpeedVisible == false {
-            btnMed.hidden = true
+            btnMed.isHidden = true
         }
         if device.highSpeedVisible == false {
-            btnHigh.hidden = true
+            btnHigh.isHidden = true
         }
         if device.autoSpeedVisible == false {
-            btnAutoFan.hidden = true
+            btnAutoFan.isHidden = true
         }
         
         if device.lowSpeedVisible == false && device.medSpeedVisible == false && device.highSpeedVisible == false && device.autoSpeedVisible == false {
-            fanLbl.hidden = true
-            fanStackView.hidden = true
+            fanLbl.isHidden = true
+            fanStackView.isHidden = true
         }
         
         if device.temperatureVisible == false {
-            tempLbl.hidden = true
+            tempLbl.isHidden = true
         }
         if device.humidityVisible == false {
-            humidityLbl.hidden = true
+            humidityLbl.isHidden = true
         }
         
         if device.temperatureVisible == false && device.humidityVisible == false {
-            currentLbl.hidden = true
-            currentStackView.hidden = true
+            currentLbl.isHidden = true
+            currentStackView.isHidden = true
         }
 
         
@@ -179,25 +179,25 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         
     }
     
-    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(settingsView){
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: settingsView){
             return false
         }
         return true
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(NotificationKey.RefreshClimate)
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(NotificationKey.RefreshClimate)
     }
     
-    @IBAction func btnSet(sender: AnyObject) {
+    @IBAction func btnSet(_ sender: AnyObject) {
         print(hvacCommand)
         if hvacCommand != hvacCommandBefore {
-            NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(ClimaSettingsViewController.setACSetPoint), userInfo: nil, repeats: false)
-            NSTimer.scheduledTimerWithTimeInterval(0.6, target: self, selector: #selector(ClimaSettingsViewController.setACSpeed), userInfo: nil, repeats: false)
-            NSTimer.scheduledTimerWithTimeInterval(0.9, target: self, selector: #selector(ClimaSettingsViewController.setACmode), userInfo: nil, repeats: false)
+            Foundation.Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(ClimaSettingsViewController.setACSetPoint), userInfo: nil, repeats: false)
+            Foundation.Timer.scheduledTimer(timeInterval: 0.6, target: self, selector: #selector(ClimaSettingsViewController.setACSpeed), userInfo: nil, repeats: false)
+            Foundation.Timer.scheduledTimer(timeInterval: 0.9, target: self, selector: #selector(ClimaSettingsViewController.setACmode), userInfo: nil, repeats: false)
         }
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     func setACSetPoint () {
@@ -208,13 +208,13 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
     func setACSpeed () {
         let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         switch hvacCommand.fan {
-        case .Low:
+        case .low:
             SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x01), gateway: device.gateway)
-        case .Med:
+        case .med:
             SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x02), gateway: device.gateway)
-        case .High:
+        case .high:
             SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x03), gateway: device.gateway)
-        case .AUTO:
+        case .auto:
             SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSpeed(address, channel: UInt8(Int(device.channel)), value: 0x00), gateway: device.gateway)
         default :break
         }
@@ -223,21 +223,21 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
     func setACmode () {
         let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
         switch hvacCommand.mode {
-        case .Cool:
+        case .cool:
             SendingHandler.sendCommand(byteArray: OutgoingHandler.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x01), gateway: device.gateway)
-        case .Heat:
+        case .heat:
             SendingHandler.sendCommand(byteArray: OutgoingHandler.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x02), gateway: device.gateway)
-        case .Fan:
+        case .fan:
             SendingHandler.sendCommand(byteArray: OutgoingHandler.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x03), gateway: device.gateway)
-        case .AUTO:
+        case .auto:
             SendingHandler.sendCommand(byteArray: OutgoingHandler.setACmode(address, channel: UInt8(Int(device.channel)), value: 0x00), gateway: device.gateway)
         default :break
         }
     }
     
     func updateDevice () {
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
-        let fetResults = appDel.managedObjectContext!.objectWithID(devices[indexPathRow].objectID) as? Device
+        appDel = UIApplication.shared.delegate as! AppDelegate
+        let fetResults = appDel.managedObjectContext!.object(with: devices[indexPathRow].objectID) as? Device
         if let results = fetResults {
             device = results
         } else {
@@ -249,31 +249,31 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         let speedState = device.speed
         switch speedState {
         case "Low":
-            hvacCommand.fan = .Low
+            hvacCommand.fan = .low
             pressedLow()
         case "Med" :
-            hvacCommand.fan = .Med
+            hvacCommand.fan = .med
             pressedMed()
         case "High":
-            hvacCommand.fan = .High
+            hvacCommand.fan = .high
             pressedHigh()
         default:
-            hvacCommand.fan = .AUTO
+            hvacCommand.fan = .auto
             pressedAutoSecond()
         }
         let modeState = device.mode
         switch modeState {
         case "Cool":
-            hvacCommand.mode = .Cool
+            hvacCommand.mode = .cool
             pressedCool()
         case "Heat":
-            hvacCommand.mode = .Heat
+            hvacCommand.mode = .heat
             pressedHeat()
         case "Fan":
-            hvacCommand.mode = .Fan
+            hvacCommand.mode = .fan
             pressedFan()
         default:
-            hvacCommand.mode = .AUTO
+            hvacCommand.mode = .auto
             pressedAuto()
         }
         
@@ -311,20 +311,20 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         btnFan.setGradientColor()
         btnAuto.setSelectedColor()
     }
-    @IBAction func btnCoolPressed(sender: UIButton) {
-        hvacCommand.mode = .Cool
+    @IBAction func btnCoolPressed(_ sender: UIButton) {
+        hvacCommand.mode = .cool
         pressedCool()
     }
-    @IBAction func btnHeatPressed(sender: UIButton) {
-        hvacCommand.mode = .Heat
+    @IBAction func btnHeatPressed(_ sender: UIButton) {
+        hvacCommand.mode = .heat
         pressedHeat()
     }
-    @IBAction func fan(sender: UIButton) {
-        hvacCommand.mode = .Fan
+    @IBAction func fan(_ sender: UIButton) {
+        hvacCommand.mode = .fan
         pressedFan()
     }
-    @IBAction func auto(sender: UIButton) {
-        hvacCommand.mode = .AUTO
+    @IBAction func auto(_ sender: UIButton) {
+        hvacCommand.mode = .auto
         pressedAuto()
         
     }
@@ -354,27 +354,27 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         btnAutoFan.setSelectedColor()
     }
     
-    @IBAction func low(sender: AnyObject) {
-        hvacCommand.fan = .Low
+    @IBAction func low(_ sender: AnyObject) {
+        hvacCommand.fan = .low
         pressedLow()
     }
     
-    @IBAction func med(sender: AnyObject) {
-        hvacCommand.fan = .Med
+    @IBAction func med(_ sender: AnyObject) {
+        hvacCommand.fan = .med
         pressedMed()
     }
     
-    @IBAction func high(sender: AnyObject) {
-        hvacCommand.fan = .High
+    @IBAction func high(_ sender: AnyObject) {
+        hvacCommand.fan = .high
         pressedHigh()
     }
     
-    @IBAction func fanAuto(sender: AnyObject) {
-        hvacCommand.fan = .AUTO
+    @IBAction func fanAuto(_ sender: AnyObject) {
+        hvacCommand.fan = .auto
         pressedAutoSecond()
     }
     
-    @IBAction func onOff(sender: AnyObject) {
+    @IBAction func onOff(_ sender: AnyObject) {
         if device.currentValue == 0x00 {
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
             SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: UInt8(Int(device.channel)), status: 0xFF), gateway: device.gateway)
@@ -385,7 +385,7 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         }
     }
     
-    @IBAction func lowCool(sender: AnyObject) {
+    @IBAction func lowCool(_ sender: AnyObject) {
         if coolNumber >= 1 {
             coolNumber -= 1
             lblCool.text = "\(coolNumber)"
@@ -393,7 +393,7 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         }
     }
     
-    @IBAction func highCool(sender: AnyObject) {
+    @IBAction func highCool(_ sender: AnyObject) {
         if coolNumber <= 36 {
             coolNumber += 1
             lblCool.text = "\(coolNumber)"
@@ -401,7 +401,7 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         }
     }
     
-    func coolTemeperatureUpdate (timer:NSTimer) {
+    func coolTemeperatureUpdate (_ timer:Foundation.Timer) {
         if let number = timer.userInfo as? Int {
             temperatureNumber = 0
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
@@ -409,7 +409,7 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         }
     }
     
-    @IBAction func lowHeat(sender: AnyObject) {
+    @IBAction func lowHeat(_ sender: AnyObject) {
         if heatNumber >= 1 {
             heatNumber -= 1
             lblHeat.text = "\(heatNumber)"
@@ -417,14 +417,14 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         }
     }
     
-    @IBAction func highHeat(sender: AnyObject) {
+    @IBAction func highHeat(_ sender: AnyObject) {
         if heatNumber <= 36 {
             heatNumber += 1
             lblHeat.text = "\(heatNumber)"
             hvacCommand.heatTemperature = heatNumber
         }
     }
-    func heatTemeperatureUpdate (timer:NSTimer) {
+    func heatTemeperatureUpdate (_ timer:Foundation.Timer) {
         if let number = timer.userInfo as? Int {
             temperatureNumber = 0
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
@@ -435,10 +435,10 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
 }
 
 extension UIViewController {
-    func showClimaSettings(indexPathRow: Int, devices:[Device]) {
+    func showClimaSettings(_ indexPathRow: Int, devices:[Device]) {
         let ad = ClimaSettingsViewController(device: devices[indexPathRow])
         ad.indexPathRow = indexPathRow
         ad.devices = devices
-        self.presentViewController(ad, animated: true, completion: nil)
+        self.present(ad, animated: true, completion: nil)
     }
 }

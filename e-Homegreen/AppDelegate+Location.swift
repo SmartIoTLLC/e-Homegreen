@@ -12,20 +12,18 @@ import CoreData
 
 extension AppDelegate: CLLocationManagerDelegate {
     
-    func locationManager(manager: CLLocationManager, monitoringDidFailForRegion region: CLRegion?, withError error: NSError) {
-        print("Failed monitoring region: \(error.description)")
+    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
     }
     
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-        print("Location manager failed: \(error.description)")
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
     }
     
-    func returnZoneWithIBeacon (iBeacon:IBeacon) -> Zone? {
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
+    func returnZoneWithIBeacon (_ iBeacon:IBeacon) -> Zone? {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
         let predicateOne = NSPredicate(format: "iBeacon == %@", iBeacon)
         fetchRequest.predicate = predicateOne
         do {
-            let fetResults = try managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            let fetResults = try managedObjectContext!.fetch(fetchRequest) as? [Zone]
             if fetResults?.count != 0 {
                 return fetResults![0]
             }
@@ -36,10 +34,10 @@ extension AppDelegate: CLLocationManagerDelegate {
         return nil
     }
     
-    func locationManager(manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], inRegion region: CLBeaconRegion) {
+    func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
         for beacon in beacons {
             for item in iBeacons {
-                if (Int(beacon.major) == Int(item.major!)) && (Int(beacon.minor) == Int(item.minor!)) && (item.uuid!.uppercaseString == beacon.proximityUUID.UUIDString){
+                if (Int(beacon.major) == Int(item.major!)) && (Int(beacon.minor) == Int(item.minor!)) && (item.uuid!.uppercased() == beacon.proximityUUID.uuidString){
                     item.accuracy = beacon.accuracy
                 }
             }
@@ -56,14 +54,14 @@ extension AppDelegate: CLLocationManagerDelegate {
             stopMonitoringItem(item)
         }
     }
-    func startMonitoringItem(item: IBeacon) {
-        let beaconRegion = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: item.uuid!)!, major: UInt16(item.major!.integerValue) , minor: UInt16(item.minor!.integerValue), identifier: item.name!)
-        locationManager.startMonitoringForRegion(beaconRegion)
-        locationManager.startRangingBeaconsInRegion(beaconRegion)
+    func startMonitoringItem(_ item: IBeacon) {
+        let beaconRegion = CLBeaconRegion(proximityUUID: UUID(uuidString: item.uuid!)!, major: UInt16(item.major!.intValue) , minor: UInt16(item.minor!.intValue), identifier: item.name!)
+        locationManager.startMonitoring(for: beaconRegion)
+        locationManager.startRangingBeacons(in: beaconRegion)
     }
-    func stopMonitoringItem(item: IBeacon) {
-        let beaconRegion = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: item.uuid!)!, major: UInt16(item.major!.integerValue) , minor: UInt16(item.minor!.integerValue), identifier: item.name!)
-        locationManager.stopMonitoringForRegion(beaconRegion)
-        locationManager.stopRangingBeaconsInRegion(beaconRegion)
+    func stopMonitoringItem(_ item: IBeacon) {
+        let beaconRegion = CLBeaconRegion(proximityUUID: UUID(uuidString: item.uuid!)!, major: UInt16(item.major!.intValue) , minor: UInt16(item.minor!.intValue), identifier: item.name!)
+        locationManager.stopMonitoring(for: beaconRegion)
+        locationManager.stopRangingBeacons(in: beaconRegion)
     }
 }

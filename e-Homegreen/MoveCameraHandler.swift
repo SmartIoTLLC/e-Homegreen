@@ -8,15 +8,15 @@
 
 import UIKit
 
-class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
+class MoveCameraHandler: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDataDelegate {
     
-    func home(surv:Surveillance) {
+    func home(_ surv:Surveillance) {
         let username = surv.username
         let password = surv.password
         let loginString = NSString(format: "%@:%@", username!, password!)
-        let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!
-        let base64LoginString = loginData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
-        var url:NSURL
+        let loginData: Data = loginString.data(using: String.Encoding.utf8.rawValue)!
+        let base64LoginString = loginData.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
+        var url:URL
 //        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
 //            var urlExtension = ""
 //            if surv.urlHome == "" {urlExtension = "/cgi-bin/longcctvhome.cgi?action=gohome"} else {urlExtension = surv.urlHome!}
@@ -25,35 +25,30 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
 //        }else{
             var urlExtension = ""
             if surv.urlHome == "" {urlExtension = "/cgi-bin/longcctvhome.cgi?action=gohome"} else {urlExtension = surv.urlHome!}
-            url = NSURL(string: "http://\(surv.ip!):\(surv.port!)\(urlExtension)")!
+            url = URL(string: "http://\(surv.ip!):\(surv.port!)\(urlExtension)")!
 //        }
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "GET"
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
         
-        let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        let session = NSURLSession(configuration: configuration, delegate: self, delegateQueue: NSOperationQueue())
+        let configuration = URLSessionConfiguration.default
+        let session = URLSession(configuration: configuration, delegate: self, delegateQueue: OperationQueue())
         
-        let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
-            
-            if error == nil{
-                
-            }else{
-                
-            }
+        let task = session.dataTask(with: request) { (data, response, error) in
             
         }
+ 
         task.resume()
     }
-    func moveCamera(surv: Surveillance, position: String){
+    func moveCamera(_ surv: Surveillance, position: String){
         let username = surv.username
         let password = surv.password
         
         let loginString = NSString(format: "%@:%@", username!, password!)
-        let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!
-        let base64LoginString = loginData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+        let loginData: Data = loginString.data(using: String.Encoding.utf8.rawValue)!
+        let base64LoginString = loginData.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
         
-        var url:NSURL
+        var url:URL
         var urlMain = ""
 //        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
 //            urlMain = "http://\(surv.localIp!):\(surv.localPort!)"
@@ -70,16 +65,16 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
         } else  if position == "down" {
             if surv.urlMoveDown != "" {urlExtension = surv.urlMoveDown!}
         }
-        url = NSURL(string: "\(urlMain)\(urlExtension)")!
+        url = URL(string: "\(urlMain)\(urlExtension)")!
         
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "GET"
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
         
-        let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        let session = NSURLSession(configuration: configuration, delegate: self, delegateQueue: NSOperationQueue())
+        let configuration = URLSessionConfiguration.default
+        let session = URLSession(configuration: configuration, delegate: self, delegateQueue: OperationQueue())
         
-        let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
+        let task = session.dataTask(with: request, completionHandler: { (data, response, error) in
             
             if error == nil{
                 
@@ -87,17 +82,17 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
                 
             }
             
-        }
+        }) 
         task.resume()
     }
-    func autoPan(surv: Surveillance, isStopNecessary:Bool){
+    func autoPan(_ surv: Surveillance, isStopNecessary:Bool){
         let username = surv.username
         let password = surv.password
         
         let loginString = NSString(format: "%@:%@", username!, password!)
-        let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!
-        let base64LoginString = loginData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
-        var url:NSURL
+        let loginData: Data = loginString.data(using: String.Encoding.utf8.rawValue)!
+        let base64LoginString = loginData.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
+        var url:URL
         var urlMain = ""
 //        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
 //            urlMain = "http://\(surv.localIp!):\(surv.localPort!)"
@@ -111,15 +106,15 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
         } else {
             if surv.urlAutoPan == "" {urlExtension = "/cgi-bin/longcctvapn.cgi?action=go&speed=\(surv.autSpanStep!)"} else {urlExtension = surv.urlAutoPan!}
         }
-        url = NSURL(string: "\(urlMain)\(urlExtension)")!
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "GET"
+        url = URL(string: "\(urlMain)\(urlExtension)")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
         
-        let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        let session = NSURLSession(configuration: configuration, delegate: self, delegateQueue: NSOperationQueue())
+        let configuration = URLSessionConfiguration.default
+        let session = URLSession(configuration: configuration, delegate: self, delegateQueue: OperationQueue())
         
-        let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
+        let task = session.dataTask(with: request, completionHandler: { (data, response, error) in
             
             if error == nil{
                 
@@ -127,7 +122,7 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
                 
             }
             
-        }
+        }) 
         task.resume()
     }
 //    func stop(surv: Surveilence){
@@ -184,15 +179,15 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
 //        task1.resume()
 //    }
     
-    func presetSequence(surv: Surveillance, isStopNecessary:Bool){
+    func presetSequence(_ surv: Surveillance, isStopNecessary:Bool){
         let username = surv.username
         let password = surv.password
         
         let loginString = NSString(format: "%@:%@", username!, password!)
-        let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!
-        let base64LoginString = loginData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+        let loginData: Data = loginString.data(using: String.Encoding.utf8.rawValue)!
+        let base64LoginString = loginData.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
         
-        var url:NSURL
+        var url:URL
         var urlMain = ""
 //        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
 //            urlMain = "http://\(surv.localIp!):\(surv.localPort!)"
@@ -200,7 +195,7 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
 //            
 //        }else{
             urlMain = "http://\(surv.ip!):\(surv.port!)"
-            url = NSURL(string: "/cgi-bin/longcctvseq.cgi?action=go")!
+            url = URL(string: "/cgi-bin/longcctvseq.cgi?action=go")!
 //        }
         var urlExtension = ""
         if isStopNecessary {
@@ -208,23 +203,22 @@ class MoveCameraHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegat
         } else {
             if surv.urlPresetSequence == "" {urlExtension = "/cgi-bin/longcctvseq.cgi?action=go"} else {urlExtension = surv.urlPresetSequence!}
         }
-        url = NSURL(string: "\(urlMain)\(urlExtension)")!
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "GET"
+        url = URL(string: "\(urlMain)\(urlExtension)")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
         
-        let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        let session = NSURLSession(configuration: configuration, delegate: self, delegateQueue: NSOperationQueue())
+        let configuration = URLSessionConfiguration.default
+        let session = URLSession(configuration: configuration, delegate: self, delegateQueue: OperationQueue())
         
-        let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
-            
+        let task = session.dataTask(with: request) { (data, response, error) in
             if error == nil{
                 
             }else{
                 
             }
-            
         }
+         
         task.resume()
     }
 

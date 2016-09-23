@@ -23,13 +23,13 @@ class EditTextField: UITextField {
     }
     
     func updateTextField(){
-        self.tintColor = UIColor.blackColor()
-        self.textColor = UIColor.blackColor()
+        self.tintColor = UIColor.black
+        self.textColor = UIColor.black
         self.font = UIFont(name: "Tahoma", size: 13)
-        self.layer.borderColor = UIColor.blackColor().CGColor
+        self.layer.borderColor = UIColor.black.cgColor
         self.layer.borderWidth = 1
         self.layer.cornerRadius = 5
-        self.backgroundColor = UIColor.whiteColor()
+        self.backgroundColor = UIColor.white
     }
     
     override func layoutSubviews() {
@@ -37,38 +37,38 @@ class EditTextField: UITextField {
         tintClearImage()
     }
     
-    private func tintClearImage() {
+    fileprivate func tintClearImage() {
         for view in subviews {
             if view is UIButton {
                 let button = view as! UIButton
-                if let uiImage = button.imageForState(.Highlighted) {
+                if let uiImage = button.image(for: .highlighted) {
                     if tintedClearImage == nil {
                         tintedClearImage = tintImage(uiImage, color: tintColor)
                     }
-                    button.setImage(tintedClearImage, forState: .Normal)
-                    button.setImage(tintedClearImage, forState: .Highlighted)
+                    button.setImage(tintedClearImage, for: UIControlState())
+                    button.setImage(tintedClearImage, for: .highlighted)
                 }
             }
         }
     }
     
-    func tintImage(image: UIImage, color: UIColor) -> UIImage {
+    func tintImage(_ image: UIImage, color: UIColor) -> UIImage {
         let size = image.size
         
         UIGraphicsBeginImageContextWithOptions(size, false, image.scale)
         let context = UIGraphicsGetCurrentContext()
-        image.drawAtPoint(CGPointZero)
+        image.draw(at: CGPoint.zero)
         
-        CGContextSetFillColorWithColor(context!, color.CGColor)
-        CGContextSetBlendMode(context!, CGBlendMode.SourceIn)
-        CGContextSetAlpha(context!, 1.0)
+        context!.setFillColor(color.cgColor)
+        context!.setBlendMode(CGBlendMode.sourceIn)
+        context!.setAlpha(1.0)
         
-        let rect = CGRectMake(
-            CGPointZero.x,
-            CGPointZero.y,
-            image.size.width,
-            image.size.height)
-        CGContextFillRect(UIGraphicsGetCurrentContext()!, rect)
+        let rect = CGRect(
+            x: CGPoint.zero.x,
+            y: CGPoint.zero.y,
+            width: image.size.width,
+            height: image.size.height)
+        UIGraphicsGetCurrentContext()!.fill(rect)
         let tintedImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         

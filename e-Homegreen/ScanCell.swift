@@ -18,15 +18,15 @@ class ScanCell:UITableViewCell{
     @IBOutlet weak var isEnabledSwitch: UISwitch!
     @IBOutlet weak var isVisibleSwitch: UISwitch!
     
-    func setItemWithParameters(row row: String, description: String, address: String, type: String, isEnabledSwitch: Bool, zone: String, category: String, isVisibleSwitch: Bool){
-        self.backgroundColor = UIColor.clearColor()
+    func setItemWithParameters(row: String, description: String, address: String, type: String, isEnabledSwitch: Bool, zone: String, category: String, isVisibleSwitch: Bool){
+        self.backgroundColor = UIColor.clear
         self.lblRow.text = row
         self.lblDesc.text = description
         self.lblAddress.text = address
         self.lblType.text = type
-        self.isEnabledSwitch.on = isEnabledSwitch
+        self.isEnabledSwitch.isOn = isEnabledSwitch
         self.lblZone.text = zone
         self.lblCategory.text = category
-        self.isVisibleSwitch.on = isVisibleSwitch
+        self.isVisibleSwitch.isOn = isVisibleSwitch
     }
 }

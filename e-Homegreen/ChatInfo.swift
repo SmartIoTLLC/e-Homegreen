@@ -14,9 +14,9 @@ struct ChatScopeAnswer {
 }
 
 enum ChatScope {
-    case ZoneFound
-    case DidNotFindZone
-    case UseFilter
+    case zoneFound
+    case didNotFindZone
+    case useFilter
 }
 enum ChatCommand:String {
     case Failed = "Failed"

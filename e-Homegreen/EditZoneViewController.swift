@@ -40,7 +40,7 @@ class EditZoneViewController: PopoverVC {
         transitioningDelegate = self
         self.editZone = zone
         self.location = location
-        modalPresentationStyle = UIModalPresentationStyle.Custom
+        modalPresentationStyle = UIModalPresentationStyle.custom
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -53,28 +53,28 @@ class EditZoneViewController: PopoverVC {
         idTextField.inputAccessoryView = CustomToolBar()
 //        levelTextField.inputAccessoryView = CustomToolBar()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         
         nameTextField.delegate = self
         levelTextField.delegate = self
         idTextField.delegate = self
         
         if let zoneForEdit = editZone {
-            idTextField.text = "\(zoneForEdit.id!.integerValue)"
+            idTextField.text = "\(zoneForEdit.id!.intValue)"
             nameTextField.text = zoneForEdit.name!
             levelTextField.text = zoneForEdit.zoneDescription
-            levelButton.setTitle("", forState: .Normal)
-            if let id = zoneForEdit.level?.integerValue{
+            levelButton.setTitle("", for: UIControlState())
+            if let id = zoneForEdit.level?.intValue{
                 if id != 0 {
                     if let level = DatabaseZoneController.shared.getZoneById(id, location: location){
                         self.level = level
-                        levelButton.setTitle(level.name, forState: .Normal)
+                        levelButton.setTitle(level.name, for: UIControlState())
                     }
                 }
             }
-            idTextField.enabled = false
+            idTextField.isEnabled = false
         }
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(EditZoneViewController.dismissViewController))
@@ -83,36 +83,36 @@ class EditZoneViewController: PopoverVC {
 
     }
     
-    override func nameAndId(name: String, id: String) {
+    override func nameAndId(_ name: String, id: String) {
         level = FilterController.shared.getZoneByObjectId(id)
-        levelButton.setTitle(name, forState: .Normal)
+        levelButton.setTitle(name, for: UIControlState())
     }
     
-    @IBAction func levelButton(sender: AnyObject) {
+    @IBAction func levelButton(_ sender: AnyObject) {
         var popoverList:[PopOverItem] = []
         
         let list:[Zone] = FilterController.shared.getLevelsByLocation(location)
         for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
         }
         
-        popoverList.insert(PopOverItem(name: "", id: ""), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
         
     }
     
     func dismissViewController () {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func fetchZones(id:Int, location:Location) -> [Zone]? {
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Zone")
+    func fetchZones(_ id:Int, location:Location) -> [Zone]? {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
         let predicate = NSPredicate(format: "location == %@", location)
-        let predicateTwo = NSPredicate(format: "id == %@", NSNumber(integer: id))
+        let predicateTwo = NSPredicate(format: "id == %@", NSNumber(value: id as Int))
         let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicateTwo])
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Zone]
             return fetResults!
         } catch let error1 as NSError {
             error = error1
@@ -122,9 +122,9 @@ class EditZoneViewController: PopoverVC {
         return nil
     }
     
-    @IBAction func saveAction(sender: AnyObject) {
+    @IBAction func saveAction(_ sender: AnyObject) {
         
-        guard let name = nameTextField.text where name != "" else{
+        guard let name = nameTextField.text , name != "" else{
             return
         }
         
@@ -144,11 +144,11 @@ class EditZoneViewController: PopoverVC {
                         }
                     }
                 }else{
-                    if let zoneInsert = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as? Zone{
-                        zoneInsert.id = id
+                    if let zoneInsert = NSEntityDescription.insertNewObject(forEntityName: "Zone", into: appDel.managedObjectContext!) as? Zone{
+                        zoneInsert.id = id as NSNumber?
                         zoneInsert.name = name
                         zoneInsert.location = location
-                        zoneInsert.orderId = id
+                        zoneInsert.orderId = id as NSNumber?
                         zoneInsert.allowOption = 1
                         zoneInsert.isVisible = true
                         zoneInsert.zoneDescription = levelTextField.text
@@ -174,30 +174,30 @@ class EditZoneViewController: PopoverVC {
             saveChanges()
         }
         delegate?.editZoneFInished()
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func cancelAction(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelAction(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     func saveChanges() {
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshIBeacon, object: self, userInfo: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshIBeacon), object: self, userInfo: nil)
     }
 
 
 }
 
 extension EditZoneViewController : UITextFieldDelegate{
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
 }
 
 extension EditZoneViewController : UIGestureRecognizerDelegate{
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: backView){
             self.view.endEditing(true)
             return false
         }
@@ -207,39 +207,39 @@ extension EditZoneViewController : UIGestureRecognizerDelegate{
 
 extension EditZoneViewController : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5 //Add your own duration here
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         //Add presentation and dismiss animation transition here.
         if isPresenting == true{
             isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
+            let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
+            let containerView = transitionContext.containerView
             
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
             //        presentedControllerView.center.y -= containerView.bounds.size.height
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.5, 1.5)
+            presentedControllerView.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
             containerView.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 //            presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
             //            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 //                presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -252,11 +252,11 @@ extension EditZoneViewController : UIViewControllerAnimatedTransitioning {
 
 extension EditZoneViewController : UIViewControllerTransitioningDelegate {
     
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if dismissed == self {
             return self
         }
@@ -268,9 +268,9 @@ extension EditZoneViewController : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showEditZone(zone:Zone?, location:Location) -> EditZoneViewController {
+    func showEditZone(_ zone:Zone?, location:Location) -> EditZoneViewController {
         let editzone = EditZoneViewController(zone: zone, location: location)
-        self.presentViewController(editzone, animated: true, completion: nil)
+        self.present(editzone, animated: true, completion: nil)
         return editzone
     }
 }

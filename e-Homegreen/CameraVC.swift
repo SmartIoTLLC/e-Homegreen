@@ -33,7 +33,7 @@ class CameraVC: UIViewController {
     
     var isPresenting: Bool = true
     
-    var timer:NSTimer = NSTimer()
+    var timer:Foundation.Timer = Foundation.Timer()
     
     @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     
@@ -41,7 +41,7 @@ class CameraVC: UIViewController {
     init(point:CGPoint, surv:Surveillance){
         super.init(nibName: "CameraVC", bundle: nil)
         transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
+        modalPresentationStyle = UIModalPresentationStyle.custom
         self.point = point
         self.surv = surv
     }
@@ -53,29 +53,29 @@ class CameraVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let value = UIInterfaceOrientation.LandscapeLeft.rawValue
-        UIDevice.currentDevice().setValue(value, forKey: "orientation")
+        let value = UIInterfaceOrientation.landscapeLeft.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
         
-        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(CameraVC.update), userInfo: nil, repeats: true)
+        timer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(CameraVC.update), userInfo: nil, repeats: true)
 
         // Do any additional setup after loading the view.
     }
     
-    override func shouldAutorotate() -> Bool {
+    override var shouldAutorotate : Bool {
         return true
     }
     
     override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+        if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
             print("vodoravno")
         }else{
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         }
     }
     
-    @IBAction func exitButton(sender: AnyObject) {
+    @IBAction func exitButton(_ sender: AnyObject) {
         timer.invalidate()
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     
@@ -91,34 +91,34 @@ class CameraVC: UIViewController {
 //        moveCam.presetSequence(surv)
 //    }
     
-    @IBAction func btnAutoPan(sender: AnyObject) {
+    @IBAction func btnAutoPan(_ sender: AnyObject) {
         var title = ""
         if isAutoPanStop { title = "AUTO PAN" } else { title = "STOP" }
-        btnAutoPan.setTitle(title, forState: .Normal)
+        btnAutoPan.setTitle(title, for: UIControlState())
         moveCam.autoPan(surv, isStopNecessary: isAutoPanStop)
         isAutoPanStop = !isAutoPanStop
     }
     
-    @IBAction func btnHome(sender: AnyObject) {
+    @IBAction func btnHome(_ sender: AnyObject) {
 //        moveCam.stop(surv)
         moveCam.home(surv)
     }
     
-    @IBAction func btnPresetSequence(sender: AnyObject) {
+    @IBAction func btnPresetSequence(_ sender: AnyObject) {
         var title = ""
         if isPresetSequenceStop { title = "PRESET SEQUENCE" } else { title = "STOP" }
         isPresetSequenceStop = !isPresetSequenceStop
-        btnPresetSequence.setTitle(title, forState: .Normal)
+        btnPresetSequence.setTitle(title, for: UIControlState())
         moveCam.presetSequence(surv, isStopNecessary: isPresetSequenceStop)
     }
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.LandscapeLeft
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.landscapeLeft
     }
     
     func update(){
         if surv.imageData != nil{
-            self.image.image = UIImage(data: surv.imageData!)
+            self.image.image = UIImage(data: surv.imageData! as Data)
         }else{
             self.image.image = UIImage(named: "loading")
         }
@@ -129,19 +129,19 @@ class CameraVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func leftButtomAction(sender: AnyObject) {
+    @IBAction func leftButtomAction(_ sender: AnyObject) {
         moveCam.moveCamera(surv, position: "left")
     }
     
-    @IBAction func rightButtomAction(sender: AnyObject) {
+    @IBAction func rightButtomAction(_ sender: AnyObject) {
         moveCam.moveCamera(surv, position: "right")
     }
     
-    @IBAction func topButtomAction(sender: AnyObject) {
+    @IBAction func topButtomAction(_ sender: AnyObject) {
         moveCam.moveCamera(surv, position: "up")
     }
     
-    @IBAction func bottomButtomAction(sender: AnyObject) {
+    @IBAction func bottomButtomAction(_ sender: AnyObject) {
         moveCam.moveCamera(surv, position: "down")
     }
 
@@ -149,42 +149,42 @@ class CameraVC: UIViewController {
 
 extension CameraVC : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5 //Add your own duration here
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         //Add presentation and dismiss animation transition here.
         if isPresenting == true{
             isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
+            let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
+            let containerView = transitionContext.containerView
             
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
             self.oldPoint = presentedControllerView.center
             presentedControllerView.center = self.point!
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+            presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
             containerView.addSubview(presentedControllerView)
             
-            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 
                 presentedControllerView.center = self.oldPoint!
                 presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
                 
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
             
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 
                 presentedControllerView.center = self.point!
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
                 
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
@@ -196,11 +196,11 @@ extension CameraVC : UIViewControllerAnimatedTransitioning {
 
 extension CameraVC : UIViewControllerTransitioningDelegate {
     
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if dismissed == self {
             return self
         }
@@ -211,9 +211,9 @@ extension CameraVC : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showCamera(point:CGPoint, surv:Surveillance) {
+    func showCamera(_ point:CGPoint, surv:Surveillance) {
         let ad = CameraVC(point: point, surv:surv)
-        self.presentViewController(ad, animated: true, completion: nil)
+        self.present(ad, animated: true, completion: nil)
     }
 }
 

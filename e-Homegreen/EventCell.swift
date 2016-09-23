@@ -17,11 +17,11 @@ class EventsCollectionViewCell: UICollectionViewCell {
     var imageOne:UIImage?
     var imageTwo:UIImage?
     
-    func setItem(event:Event, filterParametar:FilterItem){
+    func setItem(_ event:Event, filterParametar:FilterItem){
         eventTitle.text = getName(event, filterParametar: filterParametar)
     }
     
-    func getName(event:Event, filterParametar:FilterItem) -> String{
+    func getName(_ event:Event, filterParametar:FilterItem) -> String{
         var name:String = ""
         if event.gateway.location.name != filterParametar.location{
             name += event.gateway.location.name! + " "
@@ -45,7 +45,7 @@ class EventsCollectionViewCell: UICollectionViewCell {
         return name
     }
     
-    func getImagesFrom(event:Event) {
+    func getImagesFrom(_ event:Event) {
         self.reportEvent = event.report.boolValue
         self.eventId = event.eventId as Int
         
@@ -107,16 +107,16 @@ class EventsCollectionViewCell: UICollectionViewCell {
     func commandSentChangeImage () {
         
         if reportEvent {
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(EventsCollectionViewCell.changeImage(_:)), name:"ReportEvent", object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(EventsCollectionViewCell.changeImage(_:)), name:NSNotification.Name(rawValue: "ReportEvent"), object: nil)
         }else{
             eventImageView.image = imageTwo
             setNeedsDisplay()
-            NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(EventsCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
+            Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(EventsCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
 
         }
     }
-    func changeImage(notification:NSNotification) {
-        if let info = notification.userInfo! as? [String:Int] {
+    func changeImage(_ notification:Notification) {
+        if let info = (notification as NSNotification).userInfo! as? [String:Int] {
             if info["value"] == 1{
                 eventImageView.image = imageTwo
                 setNeedsDisplay()
@@ -132,23 +132,23 @@ class EventsCollectionViewCell: UICollectionViewCell {
         eventImageView.image = imageOne
         setNeedsDisplay()
     }
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         let path = UIBezierPath(roundedRect: rect,
-                                byRoundingCorners: UIRectCorner.AllCorners,
+                                byRoundingCorners: UIRectCorner.allCorners,
                                 cornerRadii: CGSize(width: 5.0, height: 5.0))
         path.addClip()
         path.lineWidth = 2
-        UIColor.lightGrayColor().setStroke()
+        UIColor.lightGray.setStroke()
         let context = UIGraphicsGetCurrentContext()
-        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
+        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).withAlphaComponent(0.95).cgColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).withAlphaComponent(1.0).cgColor]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
-        let gradient = CGGradientCreateWithColors(colorSpace,
-                                                  colors,
-                                                  colorLocations)
+        let gradient = CGGradient(colorsSpace: colorSpace,
+                                                  colors: colors as CFArray,
+                                                  locations: colorLocations)
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:0, y:self.bounds.height)
-        CGContextDrawLinearGradient(context!, gradient!, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+        context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
         path.stroke()
     }
 }

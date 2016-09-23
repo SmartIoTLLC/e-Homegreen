@@ -12,8 +12,8 @@ import CoreData
 
 class Surveillance: NSManagedObject {
     
-    var imageData:NSData?
-    var lastDate:NSDate?
+    var imageData:Data?
+    var lastDate:Date?
 
 // Insert code here to add functionality to your managed object subclass
 

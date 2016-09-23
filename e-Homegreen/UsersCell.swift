@@ -21,14 +21,14 @@ class TimerUserCell:UICollectionViewCell{
     var imageTwo:UIImage?
     
     var cellTimer:Timer!
-    var time:NSTimer?
+    var time:Foundation.Timer?
     
     override func awakeFromNib() {
         imageTimer.layer.cornerRadius = 5
         imageTimer.clipsToBounds = true
     }
     
-    func setItem(timer:Timer, filterParametar:FilterItem){
+    func setItem(_ timer:Timer, filterParametar:FilterItem){
         cellTimer = timer
         titleLabel.text = getName(timer, filterParametar: filterParametar)
         let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
@@ -36,13 +36,13 @@ class TimerUserCell:UICollectionViewCell{
         
     }
     
-    func secondsToHoursMinutesSeconds (seconds : Int) -> (Int, Int, Int) {
+    func secondsToHoursMinutesSeconds (_ seconds : Int) -> (Int, Int, Int) {
         return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
     }
     
     func startTimer(){
         time?.invalidate()
-        time = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: #selector(TimerUserCell.countUp(_:)), userInfo:nil, repeats: true)
+        time = Foundation.Timer.scheduledTimer(timeInterval: 1, target:self, selector: #selector(TimerUserCell.countUp(_:)), userInfo:nil, repeats: true)
             
     }
     
@@ -50,7 +50,7 @@ class TimerUserCell:UICollectionViewCell{
         time?.invalidate()
     }
     
-    func countUp(timer:NSTimer){
+    func countUp(_ timer:Foundation.Timer){
         cellTimer.timerCount += 1
         let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
         timeLabel.text = "\(h):\(m):\(s)"
@@ -60,7 +60,7 @@ class TimerUserCell:UICollectionViewCell{
         time?.invalidate()
     }
     
-    func getName(timer:Timer, filterParametar:FilterItem) -> String{
+    func getName(_ timer:Timer, filterParametar:FilterItem) -> String{
         var name:String = ""
         if timer.gateway.location.name != filterParametar.location{
             name += timer.gateway.location.name! + " "
@@ -75,7 +75,7 @@ class TimerUserCell:UICollectionViewCell{
         return name
     }
     
-    func getImagesFrom(timer:Timer) {
+    func getImagesFrom(_ timer:Timer) {
         if let id = timer.timerImageOneCustom{
             if let image = DatabaseImageController.shared.getImageById(id){
                 if let data =  image.imageData {
@@ -134,7 +134,7 @@ class TimerUserCell:UICollectionViewCell{
     func commandSentChangeImage () {
         imageTimer.image = imageTwo
         setNeedsDisplay()
-        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(TimerCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
+        Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
     }
     
     func changeImageToNormal () {
@@ -142,23 +142,23 @@ class TimerUserCell:UICollectionViewCell{
         setNeedsDisplay()
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         let path = UIBezierPath(roundedRect: rect,
-                                byRoundingCorners: UIRectCorner.AllCorners,
+                                byRoundingCorners: UIRectCorner.allCorners,
                                 cornerRadii: CGSize(width: 5.0, height: 5.0))
         path.addClip()
         path.lineWidth = 2
-        UIColor.lightGrayColor().setStroke()
+        UIColor.lightGray.setStroke()
         let context = UIGraphicsGetCurrentContext()
-        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
+        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).withAlphaComponent(0.95).cgColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).withAlphaComponent(1.0).cgColor]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
-        let gradient = CGGradientCreateWithColors(colorSpace,
-                                                  colors,
-                                                  colorLocations)
+        let gradient = CGGradient(colorsSpace: colorSpace,
+                                                  colors: colors as CFArray,
+                                                  locations: colorLocations)
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:0, y:self.bounds.height)
-        CGContextDrawLinearGradient(context!, gradient!, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+        context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
         path.stroke()
     }
     

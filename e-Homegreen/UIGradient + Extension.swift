@@ -9,7 +9,7 @@
 import Foundation
 
 extension CAGradientLayer {
-    class func gradientLayerForBounds(bounds: CGRect) -> CAGradientLayer {
+    class func gradientLayerForBounds(_ bounds: CGRect) -> CAGradientLayer {
         let layer = CAGradientLayer()
         layer.frame = bounds
         layer.colors = [Colors.DarkGray, Colors.MediumGray]

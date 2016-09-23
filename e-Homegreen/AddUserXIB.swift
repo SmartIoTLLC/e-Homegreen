@@ -33,7 +33,7 @@ class AddUserXIB: CommonXIBTransitionVC {
     var error:NSError? = nil
     var user:User?
     
-    var imageData:NSData?
+    var imageData:Data?
     var customImage:String?
     var defaultImage:String?
     
@@ -49,9 +49,9 @@ class AddUserXIB: CommonXIBTransitionVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UIView.hr_setToastThemeColor(color: UIColor.redColor())
+        UIView.hr_setToastThemeColor(color: UIColor.red)
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
         usernameTextField.delegate = self
         passwordTextView.delegate = self
@@ -60,36 +60,36 @@ class AddUserXIB: CommonXIBTransitionVC {
         if let user = user{
             usernameTextField.text = user.username
             
-            passwordTextView.enabled = false
-            confirmPasswordtextView.enabled = false
+            passwordTextView.isEnabled = false
+            confirmPasswordtextView.isEnabled = false
             
             if let issuperuser = user.isSuperUser as? Bool{
-                superUserSwitch.on = issuperuser
+                superUserSwitch.isOn = issuperuser
             }
             
             if let id = user.customImageId{
                 if let image = DatabaseImageController.shared.getImageById(id){
                     if let data =  image.imageData {
-                        userImageButton.setImage(UIImage(data: data), forState: .Normal)
+                        userImageButton.setImage(UIImage(data: data), for: UIControlState())
                     }else{
                         if let defaultImage = user.defaultImage{
-                            userImageButton.setImage(UIImage(named: defaultImage), forState: .Normal)
+                            userImageButton.setImage(UIImage(named: defaultImage), for: UIControlState())
                         }else{
-                            userImageButton.setImage(UIImage(named: "User"), forState: .Normal)
+                            userImageButton.setImage(UIImage(named: "User"), for: UIControlState())
                         }
                     }
                 }else{
                     if let defaultImage = user.defaultImage{
-                        userImageButton.setImage(UIImage(named: defaultImage), forState: .Normal)
+                        userImageButton.setImage(UIImage(named: defaultImage), for: UIControlState())
                     }else{
-                        userImageButton.setImage(UIImage(named: "User"), forState: .Normal)
+                        userImageButton.setImage(UIImage(named: "User"), for: UIControlState())
                     }
                 }
             }else{
                 if let defaultImage = user.defaultImage{
-                    userImageButton.setImage(UIImage(named: defaultImage), forState: .Normal)
+                    userImageButton.setImage(UIImage(named: defaultImage), for: UIControlState())
                 }else{
-                   userImageButton.setImage(UIImage(named: "User"), forState: .Normal)
+                   userImageButton.setImage(UIImage(named: "User"), for: UIControlState())
                 }
             }
 
@@ -97,15 +97,15 @@ class AddUserXIB: CommonXIBTransitionVC {
         
     }
     
-    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: backView){
             dismissKeyboard()
             return false
         }
         return true
     }
     
-    @IBAction func changePicture(sender: AnyObject) {
+    @IBAction func changePicture(_ sender: AnyObject) {
         showGallery(1, user: user).delegate = self
     }
     
@@ -113,18 +113,18 @@ class AddUserXIB: CommonXIBTransitionVC {
         self.view.endEditing(true)
     }
     
-    @IBAction func saveAction(sender: AnyObject) {
+    @IBAction func saveAction(_ sender: AnyObject) {
         
         self.view.endEditing(true)
         
         if let user = user{
-            guard let username = usernameTextField.text where username != "" else{
+            guard let username = usernameTextField.text , username != "" else{
                 self.view.makeToast(message: "Enter username!")
                 return
             }
             user.username = username
             user.isLocked = false
-            user.isSuperUser = superUserSwitch.on
+            user.isSuperUser = superUserSwitch.isOn as NSNumber?
             
             user.lastScreenId = 13
             
@@ -137,9 +137,9 @@ class AddUserXIB: CommonXIBTransitionVC {
                 user.customImageId = nil
             }
             if let data = imageData{
-                if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
                     image.imageData = data
-                    image.imageId = NSUUID().UUIDString
+                    image.imageId = UUID().uuidString
                     user.customImageId = image.imageId
                     user.defaultImage = nil
                     user.addImagesObject(image)
@@ -150,7 +150,7 @@ class AddUserXIB: CommonXIBTransitionVC {
             CoreDataController.shahredInstance.saveChanges()
             DatabaseMenuController.shared.createMenu(user)
         }else{
-            guard let username = usernameTextField.text where username != "", let password = passwordTextView.text where password != "", let confirmpass = confirmPasswordtextView.text where confirmpass != "" else{
+            guard let username = usernameTextField.text , username != "", let password = passwordTextView.text , password != "", let confirmpass = confirmPasswordtextView.text , confirmpass != "" else{
                 self.view.makeToast(message: "All fields must be filled")
                 return
             }
@@ -159,12 +159,12 @@ class AddUserXIB: CommonXIBTransitionVC {
                 return
             }
             
-            if let user = NSEntityDescription.insertNewObjectForEntityForName("User", inManagedObjectContext: appDel.managedObjectContext!) as? User{
+            if let user = NSEntityDescription.insertNewObject(forEntityName: "User", into: appDel.managedObjectContext!) as? User{
                 
                 user.username = username
                 user.password = password
                 user.isLocked = false
-                user.isSuperUser = superUserSwitch.on
+                user.isSuperUser = superUserSwitch.isOn as NSNumber?
                 user.openLastScreen = false
                 if let customImage = customImage{
                     user.customImageId = customImage
@@ -173,9 +173,9 @@ class AddUserXIB: CommonXIBTransitionVC {
                     user.defaultImage = def
                 }
                 if let data = imageData{
-                    if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                    if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
                         image.imageData = data
-                        image.imageId = NSUUID().UUIDString
+                        image.imageId = UUID().uuidString
                         user.customImageId = image.imageId
                         
                         user.addImagesObject(image)
@@ -192,11 +192,11 @@ class AddUserXIB: CommonXIBTransitionVC {
         }
 
         delegate?.addUserFinished()
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func cancelAction(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelAction(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
 
 
@@ -204,35 +204,35 @@ class AddUserXIB: CommonXIBTransitionVC {
 
 extension AddUserXIB : SceneGalleryDelegate {
     
-    func backImageFromGallery(data: NSData, imageIndex: Int) {
+    func backImageFromGallery(_ data: Data, imageIndex: Int) {
         defaultImage = nil
         customImage = nil
         imageData = data
-        userImageButton.setImage(UIImage(data: data), forState: .Normal)
+        userImageButton.setImage(UIImage(data: data), for: UIControlState())
     }
     
-    func backString(strText: String, imageIndex: Int) {
-        userImageButton.setImage(UIImage(named: strText), forState: .Normal)
+    func backString(_ strText: String, imageIndex: Int) {
+        userImageButton.setImage(UIImage(named: strText), for: UIControlState())
         defaultImage = strText
         customImage = nil
         imageData = nil
     }
     
-    func backImage(image: Image, imageIndex: Int) {
+    func backImage(_ image: Image, imageIndex: Int) {
         defaultImage = nil
         customImage = image.imageId
         imageData = nil
-        userImageButton.setImage(UIImage(data: image.imageData!), forState: .Normal)
+        userImageButton.setImage(UIImage(data: image.imageData! as Data), for: UIControlState())
     }
     
 }
 
 extension AddUserXIB : UITextFieldDelegate {
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        if usernameTextField.isFirstResponder(){
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if usernameTextField.isFirstResponder{
             passwordTextView.becomeFirstResponder()
-        }else if passwordTextView.isFirstResponder(){
+        }else if passwordTextView.isFirstResponder{
             confirmPasswordtextView.becomeFirstResponder()
         }else{
             textField.resignFirstResponder()
@@ -243,9 +243,9 @@ extension AddUserXIB : UITextFieldDelegate {
 }
 
 extension UIViewController {
-    func showAddUser(user:User?) -> AddUserXIB {
+    func showAddUser(_ user:User?) -> AddUserXIB {
         let addUser = AddUserXIB(user:user)
-        self.presentViewController(addUser, animated: true, completion: nil)
+        self.present(addUser, animated: true, completion: nil)
         return addUser
     }
 }

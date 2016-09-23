@@ -15,12 +15,12 @@ class MultiSensorCell: UICollectionViewCell {
     @IBOutlet weak var sensorTitle: UILabel!
     @IBOutlet weak var sensorState: UILabel!
     var device:Device!
-    func populateCellWithData(sensorDevice:Device, tag:Int) {
+    func populateCellWithData(_ sensorDevice:Device, tag:Int) {
         device = sensorDevice
 
         sensorState.font = UIFont(name: "Tahoma", size: 17)
 
-        sensorTitle.userInteractionEnabled = true
+        sensorTitle.isUserInteractionEnabled = true
         sensorTitle.text = device.cellTitle
         sensorTitle.tag = tag
         populateCell(device)
@@ -39,31 +39,31 @@ class MultiSensorCell: UICollectionViewCell {
             labelZone.text = ""
         }
         if device.info {
-            infoView.hidden = false
-            backView.hidden = true
+            infoView.isHidden = false
+            backView.isHidden = true
         } else {
-            infoView.hidden = true
-            backView.hidden = false
+            infoView.isHidden = true
+            backView.isHidden = false
         }
     }
-    func returnDigitalInputModeStateinterpreter (device:Device) -> String {
+    func returnDigitalInputModeStateinterpreter (_ device:Device) -> String {
         var digitalInputCurrentValue = " "
-        if device.digitalInputMode == NSNumber(integer: DigitalInput.DigitalInputMode.NormallyOpen) {
+        if device.digitalInputMode == NSNumber(value: DigitalInput.DigitalInputMode.NormallyOpen as Int) {
             digitalInputCurrentValue = DigitalInput.NormallyOpen.description(Int(device.currentValue))
-        } else if device.digitalInputMode == NSNumber(integer: DigitalInput.DigitalInputMode.NormallyClosed) {
+        } else if device.digitalInputMode == NSNumber(value: DigitalInput.DigitalInputMode.NormallyClosed as Int) {
             digitalInputCurrentValue = DigitalInput.NormallyClosed.description(Int(device.currentValue))
-        } else if device.digitalInputMode == NSNumber(integer: DigitalInput.DigitalInputMode.Generic) {
+        } else if device.digitalInputMode == NSNumber(value: DigitalInput.DigitalInputMode.Generic as Int) {
             digitalInputCurrentValue = DigitalInput.Generic.description(Int(device.currentValue))
-        } else if device.digitalInputMode == NSNumber(integer: DigitalInput.DigitalInputMode.ButtonNormallyOpen) {
+        } else if device.digitalInputMode == NSNumber(value: DigitalInput.DigitalInputMode.ButtonNormallyOpen as Int) {
             digitalInputCurrentValue = DigitalInput.ButtonNormallyOpen.description(Int(device.currentValue))
-        } else if device.digitalInputMode == NSNumber(integer: DigitalInput.DigitalInputMode.ButtonNormallyClosed) {
+        } else if device.digitalInputMode == NSNumber(value: DigitalInput.DigitalInputMode.ButtonNormallyClosed as Int) {
             digitalInputCurrentValue = DigitalInput.ButtonNormallyClosed.description(Int(device.currentValue))
-        } else if device.digitalInputMode == NSNumber(integer: DigitalInput.DigitalInputMode.MotionSensor) {
+        } else if device.digitalInputMode == NSNumber(value: DigitalInput.DigitalInputMode.MotionSensor as Int) {
             digitalInputCurrentValue = DigitalInput.MotionSensor.description(Int(device.currentValue))
         }
         return digitalInputCurrentValue
     }
-    func refreshDevice(device:Device) {
+    func refreshDevice(_ device:Device) {
         sensorState.font = UIFont(name: "Tahoma", size: 17)
 
         sensorState.text = " "
@@ -74,20 +74,20 @@ class MultiSensorCell: UICollectionViewCell {
         labelLevel.text = "\(device.parentZoneId)"
         labelZone.text = "\(device.zoneId)"
         if device.info {
-            infoView.hidden = false
-            backView.hidden = true
+            infoView.isHidden = false
+            backView.isHidden = true
         }else {
-            infoView.hidden = true
-            backView.hidden = false
+            infoView.isHidden = true
+            backView.isHidden = false
         }
         // If device is enabled add all interactions
         if device.isEnabled.boolValue {
-            disabledCellView.hidden = true
+            disabledCellView.isHidden = true
         } else {
-            disabledCellView.hidden = false
+            disabledCellView.isHidden = false
         }
     }
-    func populateCell(device:Device) {
+    func populateCell(_ device:Device) {
         if device.numberOfDevices == 10 {
             switch device.channel {
             case 1:
@@ -109,7 +109,7 @@ class MultiSensorCell: UICollectionViewCell {
                 sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = "\(device.currentValue) LUX"
             case 6:
-                switch device.currentValue {
+                switch Int(device.currentValue) {
                 case DeviceValue.MotionSensor.Idle:
                     sensorImage.image = UIImage(named: "sensor_idle")
                     sensorState.text = "Idle"
@@ -152,7 +152,7 @@ class MultiSensorCell: UICollectionViewCell {
                 sensorImage.image = device.returnImage(Double(device.currentValue))
                 sensorState.text = "\(device.currentValue) °C"
             case 5:
-                switch device.currentValue {
+                switch Int(device.currentValue) {
                 case DeviceValue.MotionSensor.Idle:
                     sensorImage.image = UIImage(named: "sensor_idle")
                     sensorState.text = "Idle"
@@ -216,7 +216,7 @@ class MultiSensorCell: UICollectionViewCell {
         }
     }
     
-    func returnDigitalInputMode(status:Byte) -> String {
+    func returnDigitalInputMode(_ status:Byte) -> String {
         return ""
     }
     

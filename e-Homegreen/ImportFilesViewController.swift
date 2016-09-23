@@ -9,7 +9,7 @@
 import UIKit
 
 protocol ImportFilesDelegate{
-    func backURL(strText: String)
+    func backURL(_ strText: String)
 }
 
 class ImportFilesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -26,7 +26,7 @@ class ImportFilesViewController: UIViewController, UITableViewDataSource, UITabl
     init () {
         super.init(nibName: "ImportFilesViewController", bundle: nil)
         transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
+        modalPresentationStyle = UIModalPresentationStyle.custom
         
     }
 
@@ -36,17 +36,17 @@ class ImportFilesViewController: UIViewController, UITableViewDataSource, UITabl
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.2)
         backView.layer.cornerRadius = 10
         
         let isFileInDir = enumerateDirectory() ?? []
         for item in isFileInDir{
-            if "json" == NSURL(string: item.stringByReplacingOccurrencesOfString(" ", withString: ""))?.pathExtension{
+            if "json" == URL(string: item.replacingOccurrences(of: " ", with: ""))?.pathExtension{
                 listOfJson.append(item)
             }
         }
         
-        self.tableOfFiles.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        self.tableOfFiles.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         // Do any additional setup after loading the view.
     }
 
@@ -55,20 +55,20 @@ class ImportFilesViewController: UIViewController, UITableViewDataSource, UITabl
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func btnImport(sender: AnyObject) {
+    @IBAction func btnImport(_ sender: AnyObject) {
         if indexSelect != -1{
             delegate?.backURL(listOfJson[indexSelect])
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         }
         
     }
     
     func enumerateDirectory() -> [String] {
-        let dirs = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.AllDomainsMask, true) as [String]
+        let dirs = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true) as [String]
 //        if dirs != nil {
             let dir = dirs[0]
             do {
-                let fileList = try NSFileManager.defaultManager().contentsOfDirectoryAtPath(dir)
+                let fileList = try FileManager.default.contentsOfDirectory(atPath: dir)
                 return fileList as [String]
             }catch {
                 
@@ -81,23 +81,23 @@ class ImportFilesViewController: UIViewController, UITableViewDataSource, UITabl
         
     }
 
-    @IBAction func btnCancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func btnCancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
-        cell.textLabel?.text = listOfJson[indexPath.row]
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
+        cell.textLabel?.text = listOfJson[(indexPath as NSIndexPath).row]
         cell.textLabel?.numberOfLines = 0
         return cell
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listOfJson.count
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        indexSelect = indexPath.row
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        indexSelect = (indexPath as NSIndexPath).row
     }
     
 
@@ -105,36 +105,36 @@ class ImportFilesViewController: UIViewController, UITableViewDataSource, UITabl
 
 extension ImportFilesViewController : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5 //Add your own duration here
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         //Add presentation and dismiss animation transition here.
         if isPresenting == true{
             isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
+            let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
+            let containerView = transitionContext.containerView
             
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
+            presentedControllerView.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
             containerView.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
             //            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -147,11 +147,11 @@ extension ImportFilesViewController : UIViewControllerAnimatedTransitioning {
 
 extension ImportFilesViewController : UIViewControllerTransitioningDelegate {
     
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if dismissed == self {
             return self
         }
@@ -165,7 +165,7 @@ extension ImportFilesViewController : UIViewControllerTransitioningDelegate {
 extension UIViewController {
     func showImportFiles() -> ImportFilesViewController {
         let ad = ImportFilesViewController()
-        self.presentViewController(ad, animated: true, completion: nil)
+        self.present(ad, animated: true, completion: nil)
         return ad
     }
 }

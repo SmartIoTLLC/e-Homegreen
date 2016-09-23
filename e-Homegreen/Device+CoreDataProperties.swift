@@ -14,6 +14,10 @@ import CoreData
 
 extension Device {
     
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<Device> {
+        return NSFetchRequest<Device>(entityName: "Device");
+    }
+    
     @NSManaged var deviceImages: NSSet?
     @NSManaged var address: NSNumber
     @NSManaged var allowEnergySaving: NSNumber
@@ -51,7 +55,7 @@ extension Device {
     @NSManaged var skipState: NSNumber
     @NSManaged var speed: String
     @NSManaged var speedState: String
-    @NSManaged var stateUpdatedAt: NSDate?
+    @NSManaged var stateUpdatedAt: Date?
     @NSManaged var temperature: NSNumber
 // Original type of the device
 // This is important because Dimmer can behave as Relay, but dimmer can't change Cotrol mode. Relay (original Relay) can change Control mode (NO or NC)
@@ -67,7 +71,7 @@ extension Device {
     @NSManaged var curtainControlMode: NSNumber
     @NSManaged var digitalInputMode: NSNumber?
     @NSManaged var pcCommands: NSSet?
-    @NSManaged var mac: NSData?
+    @NSManaged var mac: Data?
     @NSManaged var humidityVisible: NSNumber?
     @NSManaged var temperatureVisible: NSNumber?
     @NSManaged var coolModeVisible: NSNumber?

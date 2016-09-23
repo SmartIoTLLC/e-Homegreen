@@ -37,65 +37,65 @@ class FlagParametarVC: CommonXIBTransitionVC {
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         isBroadcast.tag = 100
-        isBroadcast.on = flag!.isBroadcast.boolValue
-        isBroadcast.addTarget(self, action: #selector(FlagParametarVC.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        isBroadcast.isOn = flag!.isBroadcast.boolValue
+        isBroadcast.addTarget(self, action: #selector(FlagParametarVC.changeValue(_:)), for: UIControlEvents.valueChanged)
         isLocalcast.tag = 200
-        isLocalcast.on = flag!.isLocalcast.boolValue
-        isLocalcast.addTarget(self, action: #selector(FlagParametarVC.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        isLocalcast.isOn = flag!.isLocalcast.boolValue
+        isLocalcast.addTarget(self, action: #selector(FlagParametarVC.changeValue(_:)), for: UIControlEvents.valueChanged)
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
     }
     
-    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: backView){
             return false
         }
         return true
     }
     
-    @IBAction func btnSave(sender: AnyObject) {
-        if isBroadcast.on {
+    @IBAction func btnSave(_ sender: AnyObject) {
+        if isBroadcast.isOn {
             flag?.isBroadcast = true
         } else {
             flag?.isBroadcast = false
         }
-        if isLocalcast.on {
+        if isLocalcast.isOn {
             flag?.isLocalcast = true
         } else {
             flag?.isLocalcast = false
         }
         CoreDataController.shahredInstance.saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshTimer, object: self, userInfo: nil)
-        self.dismissViewControllerAnimated(true, completion: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshTimer), object: self, userInfo: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func changeValue (sender:UISwitch){
+    func changeValue (_ sender:UISwitch){
         if sender.tag == 100 {
-            if sender.on == true {
-                isLocalcast.on = false
+            if sender.isOn == true {
+                isLocalcast.isOn = false
             } else {
-                isLocalcast.on = false
+                isLocalcast.isOn = false
             }
         } else if sender.tag == 200 {
-            if sender.on == true {
-                isBroadcast.on = false
+            if sender.isOn == true {
+                isBroadcast.isOn = false
             } else {
-                isBroadcast.on = false
+                isBroadcast.isOn = false
             }
         }
     }
     
     func dismissViewController () {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     
 }
 
 extension UIViewController {
-    func showFlagParametar(flag:Flag) {
+    func showFlagParametar(_ flag:Flag) {
         let fp = FlagParametarVC()
         fp.flag = flag
-        self.presentViewController(fp, animated: true, completion: nil)
+        self.present(fp, animated: true, completion: nil)
     }
 }

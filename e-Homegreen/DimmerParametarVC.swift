@@ -48,7 +48,7 @@ class DimmerParametarVC: CommonXIBTransitionVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
         editDelay.inputAccessoryView = CustomToolBar()
         editRunTime.inputAccessoryView = CustomToolBar()
@@ -79,66 +79,66 @@ class DimmerParametarVC: CommonXIBTransitionVC {
         deviceAddress.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].address)))"
         deviceChannel.text = "\(devices[indexPathRow].channel)"
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DimmerParametarVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DimmerParametarVC.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DimmerParametarVC.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DimmerParametarVC.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: backView){
             self.view.endEditing(true)
             return false
         }
         return true
     }
 
-    @IBAction func btnCancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func btnCancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func btnSave(sender: AnyObject) {
+    @IBAction func btnSave(_ sender: AnyObject) {
         if let numberOne = Int(editDelay.text!), let numberTwo = Int(editRunTime.text!), let numberThree = Int(editSkipState.text!) {
             if numberOne <= 65534 && numberTwo <= 65534 && numberThree <= 100 {
                 getDeviceAndSave(numberOne, numberTwo:numberTwo, numberThree:numberThree)
                 self.delegate?.saveClicked()
-                self.dismissViewControllerAnimated(true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
             }
         }
     }
     
     func dismissViewController () {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func getDeviceAndSave (numberOne:Int, numberTwo:Int, numberThree:Int) {
-        if let deviceObject = appDel.managedObjectContext!.objectWithID(devices[indexPathRow].objectID) as? Device {
+    func getDeviceAndSave (_ numberOne:Int, numberTwo:Int, numberThree:Int) {
+        if let deviceObject = appDel.managedObjectContext!.object(with: devices[indexPathRow].objectID) as? Device {
             device = deviceObject
             print(device)
-            device!.delay = numberOne
-            device!.runtime = numberTwo
-            device!.skipState = numberThree
+            device!.delay = NSNumber(value: numberOne)
+            device!.runtime = NSNumber(value: numberTwo)
+            device!.skipState = NSNumber(value: numberThree)
             CoreDataController.shahredInstance.saveChanges()
         }
     }
     
-    func keyboardWillShow(notification: NSNotification) {
-        var info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+    func keyboardWillShow(_ notification: Notification) {
+        var info = (notification as NSNotification).userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
-        if editDelay.isFirstResponder(){
+        if editDelay.isFirstResponder{
             if backView.frame.origin.y + editDelay.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.editDelay.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
                 
             }
         }
-        if editRunTime.isFirstResponder(){
+        if editRunTime.isFirstResponder{
             if backView.frame.origin.y + editRunTime.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.editRunTime.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
                 
             }
         }
-        if editSkipState.isFirstResponder(){
+        if editSkipState.isFirstResponder{
             if backView.frame.origin.y + editSkipState.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.editSkipState.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
@@ -146,28 +146,28 @@ class DimmerParametarVC: CommonXIBTransitionVC {
             }
         }
         
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
         
     }
     
-    func keyboardWillHide(notification: NSNotification) {
+    func keyboardWillHide(_ notification: Notification) {
         self.centerY.constant = 0
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
 }
 
 extension DimmerParametarVC: UITextFieldDelegate{
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
 }
 
 extension UIViewController {
-    func showDimmerParametar(indexPathRow: Int, devices:[Device]) {
+    func showDimmerParametar(_ indexPathRow: Int, devices:[Device]) {
         let ad = DimmerParametarVC()
         ad.indexPathRow = indexPathRow
         ad.devices = devices
-        self.presentViewController(ad, animated: true, completion: nil)
+        self.present(ad, animated: true, completion: nil)
     }
 }

@@ -18,12 +18,12 @@ class Device_AppCell: UITableViewCell {
         // Initialization code
     }
     
-    func setItem(item:PCCommand){
+    func setItem(_ item:PCCommand){
         nameLabel.text = item.name
         pathLabel.text = item.comand
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state

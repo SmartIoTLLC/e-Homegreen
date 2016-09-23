@@ -29,7 +29,7 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
     init(point:CGPoint){
         super.init(nibName: "SequenceParametarVC", bundle: nil)
         transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
+        modalPresentationStyle = UIModalPresentationStyle.custom
         self.point = point
     }
     
@@ -44,32 +44,32 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
         self.view.addGestureRecognizer(tapGesture)
         cyclesTextField.text = "\(sequence!.sequenceCycles)"
         isBroadcast.tag = 100
-        isBroadcast.on = sequence!.isBroadcast.boolValue
-        isBroadcast.addTarget(self, action: #selector(SequenceParametarVC.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        isBroadcast.isOn = sequence!.isBroadcast.boolValue
+        isBroadcast.addTarget(self, action: #selector(SequenceParametarVC.changeValue(_:)), for: UIControlEvents.valueChanged)
         isLocalcast.tag = 200
-        isLocalcast.on = sequence!.isLocalcast.boolValue
-        isLocalcast.addTarget(self, action: #selector(SequenceParametarVC.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        isLocalcast.isOn = sequence!.isLocalcast.boolValue
+        isLocalcast.addTarget(self, action: #selector(SequenceParametarVC.changeValue(_:)), for: UIControlEvents.valueChanged)
+        appDel = UIApplication.shared.delegate as! AppDelegate
         cyclesTextField.delegate = self
         // Do any additional setup after loading the view.
     }
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
-    func changeValue (sender:UISwitch){
+    func changeValue (_ sender:UISwitch){
         if sender.tag == 100 {
-            if sender.on == true {
-                isLocalcast.on = false
+            if sender.isOn == true {
+                isLocalcast.isOn = false
             } else {
-                isLocalcast.on = false
+                isLocalcast.isOn = false
             }
         } else if sender.tag == 200 {
-            if sender.on == true {
-                isBroadcast.on = false
+            if sender.isOn == true {
+                isBroadcast.isOn = false
             } else {
-                isBroadcast.on = false
+                isBroadcast.isOn = false
             }
         }
     }
@@ -81,31 +81,31 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
 //                saveChanges()
 //            }
 //        }
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
-    @IBAction func btnSave(sender: AnyObject) {
-        if isBroadcast.on {
+    @IBAction func btnSave(_ sender: AnyObject) {
+        if isBroadcast.isOn {
             sequence?.isBroadcast = true
         } else {
             sequence?.isBroadcast = false
         }
-        if isLocalcast.on {
+        if isLocalcast.isOn {
             sequence?.isLocalcast = true
         } else {
             sequence?.isLocalcast = false
         }
         if cyclesTextField.text != "" {
             if let cycles = Int(cyclesTextField.text!) {
-                sequence?.sequenceCycles = cycles
+                sequence?.sequenceCycles = NSNumber(value: cycles)
             }
         }
         CoreDataController.shahredInstance.saveChanges()
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshSequence, object: self, userInfo: nil)
-        self.dismissViewControllerAnimated(true, completion: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshSequence), object: self, userInfo: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: backView){
             return false
         }
         return true
@@ -131,44 +131,44 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
 
 extension SequenceParametarVC : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5 //Add your own duration here
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         //Add presentation and dismiss animation transition here.
         if isPresenting == true{
             isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
+            let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
+            let containerView = transitionContext.containerView
             
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
             self.oldPoint = presentedControllerView.center
             presentedControllerView.center = self.point!
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+            presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
             containerView.addSubview(presentedControllerView)
             
-            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 
                 presentedControllerView.center = self.oldPoint!
                 presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
                 
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
 //            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 
                 presentedControllerView.center = self.point!
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
                 
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
@@ -180,11 +180,11 @@ extension SequenceParametarVC : UIViewControllerAnimatedTransitioning {
 
 extension SequenceParametarVC : UIViewControllerTransitioningDelegate {
     
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if dismissed == self {
             return self
         }
@@ -195,10 +195,10 @@ extension SequenceParametarVC : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showSequenceParametar(point:CGPoint, sequence:Sequence) {
+    func showSequenceParametar(_ point:CGPoint, sequence:Sequence) {
         let sp = SequenceParametarVC(point: point)
 //        ad.indexPathRow = indexPathRow
         sp.sequence = sequence
-        self.presentViewController(sp, animated: true, completion: nil)
+        self.present(sp, animated: true, completion: nil)
     }
 }

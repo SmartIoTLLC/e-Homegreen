@@ -23,13 +23,13 @@ class CreateAdminViewController: UIViewController, UITextFieldDelegate {
         // Do any additional setup after loading the view.
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
 
-    @IBAction func createAdmin(sender: AnyObject) {
-        guard let username = userNameTextField.text where username != "", let password = passwordTextField.text where password != "", let confirmPass = confirmPasswordTextField.text where confirmPass != "" else{
+    @IBAction func createAdmin(_ sender: AnyObject) {
+        guard let username = userNameTextField.text , username != "", let password = passwordTextField.text , password != "", let confirmPass = confirmPasswordTextField.text , confirmPass != "" else{
             self.view.makeToast(message: "All fields must be filled")
             return
         }
@@ -47,10 +47,10 @@ class CreateAdminViewController: UIViewController, UITextFieldDelegate {
         
         if AdminController.shared.isAdminLogged(){
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
-            let settings = Menu.Settings.controller
-            sideMenu.setFrontViewController(settings, animated: true)
-            self.presentViewController(sideMenu, animated: true, completion: nil)
+            let sideMenu = storyboard.instantiateViewController(withIdentifier: "SideMenu") as! SWRevealViewController
+            let settings = Menu.settings.controller
+            sideMenu.setFront(settings, animated: true)
+            self.present(sideMenu, animated: true, completion: nil)
         }else{
             self.view.makeToast(message: "Something wrong, try again!")
             return

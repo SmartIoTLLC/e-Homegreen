@@ -29,7 +29,7 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
     init(point:CGPoint, security: Security, newDescription: String? = nil){
         super.init(nibName: "SecParamatarVC", bundle: nil)
         transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
+        modalPresentationStyle = UIModalPresentationStyle.custom
         self.point = point
         self.security = security
     }
@@ -41,7 +41,7 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
         popUpTextView.text = security.securityDescription
         popUpTextView.delegate = self
@@ -54,25 +54,25 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
     }
     
     override func viewWillLayoutSubviews() {
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+        if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
             centarY.constant = -80
         }else{
             centarY.constant = -60
         }
     }
 
-    @IBAction func btnUpdate(sender: AnyObject) {
+    @IBAction func btnUpdate(_ sender: AnyObject) {
         if popUpTextView.text != "" {
             security.securityDescription = popUpTextView.text
             CoreDataController.shahredInstance.saveChanges()
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         }
     }
     
-    func keyboardWillShow(notification: NSNotification) {
-        var info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-        if popUpTextView.isFirstResponder(){
+    func keyboardWillShow(_ notification: Notification) {
+        var info = (notification as NSNotification).userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        if popUpTextView.isFirstResponder{
             if popUpView.frame.origin.y + popUpView.frame.size.height > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centarY.constant = -50
@@ -81,11 +81,11 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
         }
     }
     
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         
         let fixedWidth = textView.frame.size.width
-        textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
-        let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
+        textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+        let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
         var newFrame = textView.frame
         newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
         if newFrame.size.height + 60 < 190{
@@ -96,12 +96,12 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
         
     }
     
-    func handleTap(gesture:UITapGestureRecognizer){
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func handleTap(_ gesture:UITapGestureRecognizer){
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(popUpView){
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: popUpView){
             return false
         }
         return true
@@ -110,44 +110,44 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
 }
 extension SecParamatarVC : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5 //Add your own duration here
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         //Add presentation and dismiss animation transition here.
         if isPresenting == true{
             isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
+            let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
+            let containerView = transitionContext.containerView
             
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
             self.oldPoint = presentedControllerView.center
             presentedControllerView.center = self.point!
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+            presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
             containerView.addSubview(presentedControllerView)
             
-            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 
                 presentedControllerView.center = self.oldPoint!
                 presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
                 
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
             //            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 
                 presentedControllerView.center = self.point!
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
                 
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
@@ -159,11 +159,11 @@ extension SecParamatarVC : UIViewControllerAnimatedTransitioning {
 
 extension SecParamatarVC : UIViewControllerTransitioningDelegate {
     
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if dismissed == self {
             return self
         }
@@ -174,8 +174,8 @@ extension SecParamatarVC : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showSecurityParametar (point:CGPoint, security: Security) {
+    func showSecurityParametar (_ point:CGPoint, security: Security) {
         let sp = SecParamatarVC(point: point, security: security)
-        self.presentViewController(sp, animated: true, completion: nil)
+        self.present(sp, animated: true, completion: nil)
     }
 }

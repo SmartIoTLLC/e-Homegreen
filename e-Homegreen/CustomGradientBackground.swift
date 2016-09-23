@@ -24,30 +24,30 @@ class CustomGradientBackground: UIView {
     }
     var vRect = CGRect()
      var gl: CAGradientLayer = CAGradientLayer()
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         vRect = rect
         var path = UIBezierPath()
         if isHeader == false{
             path = UIBezierPath(roundedRect: rect,
-                byRoundingCorners: UIRectCorner.AllCorners,
+                byRoundingCorners: UIRectCorner.allCorners,
                 cornerRadii: CGSize(width: 5.0, height: 5.0))
             path.addClip()
             path.lineWidth = 2
             
-            UIColor.darkGrayColor().setStroke()
+            UIColor.darkGray.setStroke()
         }
         let context = UIGraphicsGetCurrentContext()
         let colors = [colorTwo, colorOne]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
-        let gradient = CGGradientCreateWithColors(colorSpace,
-            colors,
-            colorLocations)
+        let gradient = CGGradient(colorsSpace: colorSpace,
+            colors: colors as CFArray,
+            locations: colorLocations)
         
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:0, y:self.bounds.height)
         
-        CGContextDrawLinearGradient(context!, gradient!, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+        context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
         if isHeader == false{
             path.stroke()
         }
@@ -60,30 +60,30 @@ class CustomGradientBackground: UIView {
     func updateBackgroundColor(){
         gl.colors = [ colorOne, colorTwo]
     }
-    func changeGradientColors(rect: CGRect){
+    func changeGradientColors(_ rect: CGRect){
         vRect = rect
         var path = UIBezierPath()
         if isHeader == false{
             path = UIBezierPath(roundedRect: rect,
-                byRoundingCorners: UIRectCorner.AllCorners,
+                byRoundingCorners: UIRectCorner.allCorners,
                 cornerRadii: CGSize(width: 5.0, height: 5.0))
             path.addClip()
             path.lineWidth = 2
             
-            UIColor.lightGrayColor().setStroke()
+            UIColor.lightGray.setStroke()
         }
         let context = UIGraphicsGetCurrentContext()
         let colors = [colorOne , colorTwo]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
-        let gradient = CGGradientCreateWithColors(colorSpace,
-            colors,
-            colorLocations)
+        let gradient = CGGradient(colorsSpace: colorSpace,
+            colors: colors as CFArray,
+            locations: colorLocations)
         
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:0, y:self.bounds.height)
         
-        CGContextDrawLinearGradient(context!, gradient!, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+        context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
         if isHeader == false{
             path.stroke()
         }

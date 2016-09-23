@@ -16,10 +16,10 @@ struct CommandParametar{
 class OutgoingHandlerForZoneAndCategory: NSObject {
     static let shared =  OutgoingHandlerForZoneAndCategory()
     
-    func getCommandTurnOnByZone(zoneId:Int) -> [Byte]{
+    func getCommandTurnOnByZone(_ zoneId:Int) -> [Byte]{
         var message:[Byte] = []
         var messageInfo:[Byte] = [0xff, 0xff, 0xff,0x02, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, Byte(zoneId)]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = CommandParametar.SOI
         message[1] = Byte(messageInfo.count % 256)
         message[2] = 0xff
@@ -35,10 +35,10 @@ class OutgoingHandlerForZoneAndCategory: NSObject {
         return message
     }
     
-    func getCommandTurnOffByZone(zoneId:Int) -> [Byte]{
+    func getCommandTurnOffByZone(_ zoneId:Int) -> [Byte]{
         var message:[Byte] = []
         var messageInfo:[Byte] = [0xff, 0xff, 0xff,0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, Byte(zoneId)]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = CommandParametar.SOI
         message[1] = Byte(messageInfo.count % 256)
         message[2] = 0xff
@@ -54,10 +54,10 @@ class OutgoingHandlerForZoneAndCategory: NSObject {
         return message
     }
     
-    func getCommandTurnOnByCategory(categoryId:Int) -> [Byte]{
+    func getCommandTurnOnByCategory(_ categoryId:Int) -> [Byte]{
         var message:[Byte] = []
         var messageInfo:[Byte] = [0xff, 0xff, 0xff, 0x03, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, Byte(categoryId)]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = CommandParametar.SOI
         message[1] = Byte(messageInfo.count % 256)
         message[2] = 0xff
@@ -73,10 +73,10 @@ class OutgoingHandlerForZoneAndCategory: NSObject {
         return message
     }
     
-    func getCommandTurnOffByCategory(categoryId:Int) -> [Byte]{
+    func getCommandTurnOffByCategory(_ categoryId:Int) -> [Byte]{
         var message:[Byte] = []
         var messageInfo:[Byte] = [0xff, 0xff, 0xff, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, Byte(categoryId)]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = CommandParametar.SOI
         message[1] = Byte(messageInfo.count % 256)
         message[2] = 0xff
@@ -92,10 +92,10 @@ class OutgoingHandlerForZoneAndCategory: NSObject {
         return message
     }
     
-    func getCommandChangeValueByZone(zoneId:Int, value:Int) -> [Byte]{
+    func getCommandChangeValueByZone(_ zoneId:Int, value:Int) -> [Byte]{
         var message:[Byte] = []
         var messageInfo:[Byte] = [0xff, 0xff, 0xff,0x02, Byte(value), 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, Byte(zoneId)]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = CommandParametar.SOI
         message[1] = Byte(messageInfo.count % 256)
         message[2] = 0xff
@@ -111,10 +111,10 @@ class OutgoingHandlerForZoneAndCategory: NSObject {
         return message
     }
     
-    func getCommandChangeValueByCategory(categoryId:Int, value:Int) -> [Byte]{
+    func getCommandChangeValueByCategory(_ categoryId:Int, value:Int) -> [Byte]{
         var message:[Byte] = []
         var messageInfo:[Byte] = [0xff, 0xff, 0xff, 0x03, Byte(value), 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, Byte(categoryId)]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = CommandParametar.SOI
         message[1] = Byte(messageInfo.count % 256)
         message[2] = 0xff
@@ -130,7 +130,7 @@ class OutgoingHandlerForZoneAndCategory: NSObject {
         return message
     }
     
-    func getChkByte (byteArray byteArray:[Byte]) -> Byte {
+    func getChkByte (byteArray:[Byte]) -> Byte {
         var chk:Int = 0
         for i in 1...byteArray.count-3{
             let number = "\(byteArray[i])"

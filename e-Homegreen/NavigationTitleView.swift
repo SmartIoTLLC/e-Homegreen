@@ -34,35 +34,35 @@ class NavigationTitleView: UIView {
     
     func commonInit(){
         self.translatesAutoresizingMaskIntoConstraints = true        
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
         
         titleView.translatesAutoresizingMaskIntoConstraints = false
-        titleView.backgroundColor = UIColor.clearColor()
-        titleView.font = UIFont.boldSystemFontOfSize(20)
-        titleView.textColor = UIColor.whiteColor()
-        titleView.setContentHuggingPriority(1000, forAxis: .Horizontal)
+        titleView.backgroundColor = UIColor.clear
+        titleView.font = UIFont.boldSystemFont(ofSize: 20)
+        titleView.textColor = UIColor.white
+        titleView.setContentHuggingPriority(1000, for: .horizontal)
         self.addSubview(titleView)
         
         subtitleView.translatesAutoresizingMaskIntoConstraints = false
-        subtitleView.backgroundColor = UIColor.clearColor()
-        subtitleView.font = UIFont.boldSystemFontOfSize(13)
-        subtitleView.textColor = UIColor.whiteColor()
+        subtitleView.backgroundColor = UIColor.clear
+        subtitleView.font = UIFont.boldSystemFont(ofSize: 13)
+        subtitleView.textColor = UIColor.white
         subtitleView.adjustsFontSizeToFitWidth = true
         self.addSubview(subtitleView)
         
         //set portrait constraint
-        titleTopConstraint = NSLayoutConstraint(item: titleView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0)
-        titleLeadingConstraint = NSLayoutConstraint(item: titleView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0)
-        subtitleTopConstraint = NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: titleView, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0)
-        subtitleLeadingConstraint = NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0)
+        titleTopConstraint = NSLayoutConstraint(item: titleView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 0)
+        titleLeadingConstraint = NSLayoutConstraint(item: titleView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0)
+        subtitleTopConstraint = NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: titleView, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0)
+        subtitleLeadingConstraint = NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0)
         
         //set landscape constraint
-        titleCenterConstraint = NSLayoutConstraint(item: titleView, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0)
+        titleCenterConstraint = NSLayoutConstraint(item: titleView, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.centerY, multiplier: 1.0, constant: 0)
         
-        subtitleCenterConstraint = NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: titleView, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0)
-        subtitleLeadingConstraintLandscape = NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: titleView, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 10)
+        subtitleCenterConstraint = NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: titleView, attribute: NSLayoutAttribute.centerY, multiplier: 1.0, constant: 0)
+        subtitleLeadingConstraintLandscape = NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: titleView, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 10)
         
-        self.addConstraint(NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0))
 
         setPortraitTitle()
         
@@ -96,7 +96,7 @@ class NavigationTitleView: UIView {
         
     }
     
-    func setTitleAndSubtitle(title:String, subtitle:String){
+    func setTitleAndSubtitle(_ title:String, subtitle:String){
         titleView.text = title
         subtitleView.text = subtitle
     }

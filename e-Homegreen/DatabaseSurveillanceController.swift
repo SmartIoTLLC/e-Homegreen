@@ -12,12 +12,12 @@ import CoreData
 class DatabaseSurveillanceController: NSObject {
     
     static let shared = DatabaseSurveillanceController()
-    let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    func getSurveillace(filterParametar:FilterItem) -> [Surveillance]{
+    func getSurveillace(_ filterParametar:FilterItem) -> [Surveillance]{
         if let user = DatabaseUserController.shared.logedUserOrAdmin(){
             
-            let fetchRequest = NSFetchRequest(entityName: "Surveillance")
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Surveillance.fetchRequest()
             
             let sortDescriptor = NSSortDescriptor(key: "ip", ascending: true)
             let sortDescriptorTwo = NSSortDescriptor(key: "port", ascending: true)
@@ -41,7 +41,7 @@ class DatabaseSurveillanceController: NSObject {
             }
             fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicateArray)
             do {
-                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Surveillance]
+                let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Surveillance]
                 return fetResults!
             } catch _ as NSError {
                 abort()
@@ -50,8 +50,8 @@ class DatabaseSurveillanceController: NSObject {
         return []
     }
     
-    func deleteSurveillance(surv:Surveillance){
-        appDel.managedObjectContext?.deleteObject(surv)
+    func deleteSurveillance(_ surv:Surveillance){
+        appDel.managedObjectContext?.delete(surv)
     }
     
 }

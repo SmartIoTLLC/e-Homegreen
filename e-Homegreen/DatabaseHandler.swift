@@ -10,24 +10,24 @@ import UIKit
 import CoreData
 
 class DatabaseHandler: NSObject {
-    var appDel:AppDelegate! = UIApplication.sharedApplication().delegate as! AppDelegate
+    var appDel:AppDelegate! = UIApplication.shared.delegate as! AppDelegate
     
     static let sharedInstance = DatabaseHandler()
     
-    func returnCategoryWithId(id:Int, location:Location) -> String {
+    func returnCategoryWithId(_ id:Int, location:Location) -> String {
         // 255: default
         // 0: when there is no category defined
         if id == 255 || id == 0{
             return "All"
         }else{
-            let fetchRequest = NSFetchRequest(entityName: "Category")
-            let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Category.fetchRequest()
+            let predicateOne = NSPredicate(format: "id == %@", NSNumber(value: id as Int))
             let predicateTwo = NSPredicate(format: "location == %@", location)
             let predicateArray = [predicateOne, predicateTwo]
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
             do {
-                let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+                let fetResults = try (UIApplication.shared.delegate as! AppDelegate).managedObjectContext!.fetch(fetchRequest) as? [Category]
                 if fetResults!.count != 0 {
                     if let name = fetResults![0].name{
                         return name
@@ -45,15 +45,15 @@ class DatabaseHandler: NSObject {
             return ""
         }
     }
-    func returnCategoryWithIdForScanDevicesCell(id:Int, location:Location) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Category")
-        let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
+    func returnCategoryWithIdForScanDevicesCell(_ id:Int, location:Location) -> String {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Category.fetchRequest()
+        let predicateOne = NSPredicate(format: "id == %@", NSNumber(value: id as Int))
         let predicateTwo = NSPredicate(format: "location == %@", location)
         let predicateArray = [predicateOne, predicateTwo]
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+            let fetResults = try (UIApplication.shared.delegate as! AppDelegate).managedObjectContext!.fetch(fetchRequest) as? [Category]
             if fetResults!.count != 0 {
                 if let name = fetResults![0].name{
                     return name
@@ -69,20 +69,20 @@ class DatabaseHandler: NSObject {
         return ""
     }
     
-    func returnZoneWithId(id:Int, location:Location) -> Zone? {
+    func returnZoneWithId(_ id:Int, location:Location) -> Zone? {
         // 255: default
         // 0: when there is no zone defined
         if id == 255 || id == 0{
             return nil
         }else{
-            let fetchRequest = NSFetchRequest(entityName: "Zone")
-            let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
+            let predicateOne = NSPredicate(format: "id == %@", NSNumber(value: id as Int))
             let predicateTwo = NSPredicate(format: "location == %@", location)
             let predicateArray = [predicateOne, predicateTwo]
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
             do {
-                let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+                let fetResults = try (UIApplication.shared.delegate as! AppDelegate).managedObjectContext!.fetch(fetchRequest) as? [Zone]
                 if fetResults!.count != 0 {
                     return fetResults?.first
                     //                    if fetResults![0].name! != "All"{
@@ -98,15 +98,15 @@ class DatabaseHandler: NSObject {
             return nil
         }
     }
-    func returnZoneWithIdForScanDevicesCell(id:Int, location:Location) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
-        let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
+    func returnZoneWithIdForScanDevicesCell(_ id:Int, location:Location) -> String {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
+        let predicateOne = NSPredicate(format: "id == %@", NSNumber(value: id as Int))
         let predicateTwo = NSPredicate(format: "location == %@", location)
         let predicateArray = [predicateOne, predicateTwo]
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            let fetResults = try (UIApplication.shared.delegate as! AppDelegate).managedObjectContext!.fetch(fetchRequest) as? [Zone]
             if fetResults!.count != 0 {
                 return "\(fetResults![0].name!)"
             } else {
@@ -119,15 +119,15 @@ class DatabaseHandler: NSObject {
         return ""
     }
     
-    func returnLevelWithId(id:Int, location:Location) -> Zone? {
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
-        let predicateOne = NSPredicate(format: "id == %@", NSNumber(integer: id))
+    func returnLevelWithId(_ id:Int, location:Location) -> Zone? {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
+        let predicateOne = NSPredicate(format: "id == %@", NSNumber(value: id as Int))
         let predicateTwo = NSPredicate(format: "location == %@", location)
         let predicateArray = [predicateOne, predicateTwo]
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            let fetResults = try (UIApplication.shared.delegate as! AppDelegate).managedObjectContext!.fetch(fetchRequest) as? [Zone]
             if fetResults!.count != 0 {
                 return fetResults![0]
             }
@@ -138,15 +138,15 @@ class DatabaseHandler: NSObject {
         return nil
     }
     
-    func returnCategoryIdWithName(name:String, location:Location) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Category")
+    func returnCategoryIdWithName(_ name:String, location:Location) -> String {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Category.fetchRequest()
         let predicateOne = NSPredicate(format: "name == %@", name)
         let predicateTwo = NSPredicate(format: "location == %@", location)
         let predicateArray = [predicateOne, predicateTwo]
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+            let fetResults = try (UIApplication.shared.delegate as! AppDelegate).managedObjectContext!.fetch(fetchRequest) as? [Category]
             if fetResults!.count != 0 {
                 return "\(fetResults![0].id)"
             } else {
@@ -159,15 +159,15 @@ class DatabaseHandler: NSObject {
         return ""
     }
     
-    func returnZoneIdWithName (name:String, location:Location) -> String {
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
+    func returnZoneIdWithName (_ name:String, location:Location) -> String {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
         let predicateOne = NSPredicate(format: "name == %@", name)
         let predicateTwo = NSPredicate(format: "location == %@", location)
         let predicateArray = [predicateOne, predicateTwo]
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            let fetResults = try (UIApplication.shared.delegate as! AppDelegate).managedObjectContext!.fetch(fetchRequest) as? [Zone]
             if fetResults!.count != 0 {
                 return "\(fetResults![0].id)"
             } else {
@@ -180,12 +180,12 @@ class DatabaseHandler: NSObject {
         return ""
     }
     
-    func returnZoneIdWithName (name:String) -> Int {
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
+    func returnZoneIdWithName (_ name:String) -> Int {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
         let predicate = NSPredicate(format: "name == %@", name)
         fetchRequest.predicate = predicate
         do {
-            let fetResults = try (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            let fetResults = try (UIApplication.shared.delegate as! AppDelegate).managedObjectContext!.fetch(fetchRequest) as? [Zone]
             if fetResults!.count != 0 {
                 return Int(fetResults![0].id!)
             } else {
@@ -198,8 +198,8 @@ class DatabaseHandler: NSObject {
         return -1
     }
     
-    func returnGatewayWithAddress(address1: Int, address2: Int, address3: Int) -> [Gateway]{
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
+    func returnGatewayWithAddress(_ address1: Int, address2: Int, address3: Int) -> [Gateway]{
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Gateway.fetchRequest()
         let predicate1 = NSPredicate(format: "addressOne = %@", argumentArray: [address2])
         
 //        let predicate2 = NSPredicate(format: "addressTwo = %@", argumentArray: [address2])
@@ -209,7 +209,7 @@ class DatabaseHandler: NSObject {
         let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1])//, predicate2, predicate3])
         fetchRequest.predicate = combinedPredicate
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Gateway]
             return fetResults!
         } catch let error1 as NSError {
             print("Unresolved error \(error1), \(error1.userInfo)")
@@ -218,12 +218,12 @@ class DatabaseHandler: NSObject {
         return []
     }
     
-    func fetchZonesWithLocationId(locationId: Location) -> [Zone] {
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Zone")
+    func fetchZonesWithLocationId(_ locationId: Location) -> [Zone] {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
         let predicate = NSPredicate(format: "location == %@", locationId)
         fetchRequest.predicate = predicate
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Zone]
             return fetResults!
         } catch let error1 as NSError {
             print("Unresolved error \(error1), \(error1.userInfo)")
@@ -231,12 +231,12 @@ class DatabaseHandler: NSObject {
         }
         return []
     }
-    func fetchCategoriesWithLocationId(locationId: Location) -> [Category] {
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Category")
+    func fetchCategoriesWithLocationId(_ locationId: Location) -> [Category] {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Category.fetchRequest()
         let predicate = NSPredicate(format: "location == %@", locationId)
         fetchRequest.predicate = predicate
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Category]
             return fetResults!
         } catch let error1 as NSError {
             print("Unresolved error \(error1), \(error1.userInfo)")
@@ -246,9 +246,9 @@ class DatabaseHandler: NSObject {
     }
     
     func fetchTimers() -> [Timer]{
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Timer")
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Timer.fetchRequest()
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Timer]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Timer]
             return fetResults!
         } catch let error1 as NSError {
             print("Unresolved error \(error1), \(error1.userInfo)")

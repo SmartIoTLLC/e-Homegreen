@@ -29,16 +29,16 @@ class ChatBubble: UIView {
         super.init(frame: ChatBubble.framePrimary(data.type, startY:startY, orientation:orientation))
         
         // Making Background color as gray color
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
         
         let padding: CGFloat = 10.0
         
         // 2. Drawing image if any
         if let chatImage = data.image {
             
-            let width: CGFloat = min(chatImage.size.width, CGRectGetWidth(self.frame) - 2 * padding)
+            let width: CGFloat = min(chatImage.size.width, self.frame.width - 2 * padding)
             let height: CGFloat = chatImage.size.height * (width / chatImage.size.width)
-            imageViewChat = UIImageView(frame: CGRectMake(padding, padding, width, height))
+            imageViewChat = UIImageView(frame: CGRect(x: padding, y: padding, width: width, height: height))
             imageViewChat?.image = chatImage
             imageViewChat?.layer.cornerRadius = 5.0
             imageViewChat?.layer.masksToBounds = true
@@ -51,10 +51,10 @@ class ChatBubble: UIView {
             let startX = padding
             var startY:CGFloat = 5.0
             if let _ = imageViewChat {
-                startY += CGRectGetMaxY(imageViewChat!.frame)
+                startY += imageViewChat!.frame.maxY
             }
-            labelChatText = UILabel(frame: CGRectMake(startX, startY, CGRectGetWidth(self.frame) - 2 * startX , 5))
-            labelChatText?.textAlignment = data.type == .Mine ? .Right : .Left
+            labelChatText = UILabel(frame: CGRect(x: startX, y: startY, width: self.frame.width - 2 * startX , height: 5))
+            labelChatText?.textAlignment = data.type == .mine ? .right : .left
             labelChatText?.font = UIFont(name: "Tahoma", size: 15)
             labelChatText?.numberOfLines = 0 // Making it multiline
             labelChatText?.text = data.text
@@ -66,40 +66,40 @@ class ChatBubble: UIView {
         var viewWidth: CGFloat = 0.0
         if let _ = imageViewChat {
             // Height calculation of the parent view depending upon the image view and text label
-            viewWidth = max(CGRectGetMaxX(imageViewChat!.frame), CGRectGetMaxX(labelChatText!.frame)) + padding
-            viewHeight = max(CGRectGetMaxY(imageViewChat!.frame), CGRectGetMaxY(labelChatText!.frame)) + padding
+            viewWidth = max(imageViewChat!.frame.maxX, labelChatText!.frame.maxX) + padding
+            viewHeight = max(imageViewChat!.frame.maxY, labelChatText!.frame.maxY) + padding
             
         } else {
-            viewHeight = CGRectGetMaxY(labelChatText!.frame) + padding/2
-            viewWidth = CGRectGetWidth(labelChatText!.frame) + CGRectGetMinX(labelChatText!.frame) + padding
+            viewHeight = labelChatText!.frame.maxY + padding/2
+            viewWidth = labelChatText!.frame.width + labelChatText!.frame.minX + padding
         }
         
         // 5. Adding new width and height of the chat bubble frame
-        self.frame = CGRectMake(CGRectGetMinX(self.frame), CGRectGetMinY(self.frame), viewWidth, viewHeight)
+        self.frame = CGRect(x: self.frame.minX, y: self.frame.minY, width: viewWidth, height: viewHeight)
         
         // 6. Adding the resizable image view to give it bubble like shape
-        let bubbleImageFileName = data.type == .Mine ? "bubbleMine" : "bubbleSomeone"
-        imageViewBG = UIImageView(frame: CGRectMake(0.0, 0.0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame)))
-        if data.type == .Mine {
-            imageViewBG?.image = UIImage(named: bubbleImageFileName)?.resizableImageWithCapInsets(UIEdgeInsetsMake(14, 14, 17, 28))
+        let bubbleImageFileName = data.type == .mine ? "bubbleMine" : "bubbleSomeone"
+        imageViewBG = UIImageView(frame: CGRect(x: 0.0, y: 0.0, width: self.frame.width, height: self.frame.height))
+        if data.type == .mine {
+            imageViewBG?.image = UIImage(named: bubbleImageFileName)?.resizableImage(withCapInsets: UIEdgeInsetsMake(14, 14, 17, 28))
         } else {
-            imageViewBG?.image = UIImage(named: bubbleImageFileName)?.resizableImageWithCapInsets(UIEdgeInsetsMake(14, 22, 17, 20))
+            imageViewBG?.image = UIImage(named: bubbleImageFileName)?.resizableImage(withCapInsets: UIEdgeInsetsMake(14, 22, 17, 20))
         }
         self.addSubview(imageViewBG!)
-        self.sendSubviewToBack(imageViewBG!)
+        self.sendSubview(toBack: imageViewBG!)
 
         // Frame recalculation for filling up the bubble with background bubble image
-        let repsotionXFactor:CGFloat = data.type == .Mine ? 0.0 : -8.0
-        let bgImageNewX = CGRectGetMinX(imageViewBG!.frame) + repsotionXFactor
-        let bgImageNewWidth =  CGRectGetWidth(imageViewBG!.frame) + CGFloat(12.0)
-        let bgImageNewHeight =  CGRectGetHeight(imageViewBG!.frame) + CGFloat(6.0)
-        imageViewBG?.frame = CGRectMake(bgImageNewX, 0.0, bgImageNewWidth, bgImageNewHeight)
+        let repsotionXFactor:CGFloat = data.type == .mine ? 0.0 : -8.0
+        let bgImageNewX = imageViewBG!.frame.minX + repsotionXFactor
+        let bgImageNewWidth =  imageViewBG!.frame.width + CGFloat(12.0)
+        let bgImageNewHeight =  imageViewBG!.frame.height + CGFloat(6.0)
+        imageViewBG?.frame = CGRect(x: bgImageNewX, y: 0.0, width: bgImageNewWidth, height: bgImageNewHeight)
         
         // Keepping a minimum distance from the edge of the screen
         var newStartX:CGFloat = 0.0
-        if data.type == .Mine {
+        if data.type == .mine {
             // Need to maintain the minimum right side padding from the right edge of the screen
-            let extraWidthToConsider = CGRectGetWidth(imageViewBG!.frame)
+            let extraWidthToConsider = imageViewBG!.frame.width
 //            newStartX = ScreenSize.SCREEN_WIDTH - extraWidthToConsider
             if orientation == "Landscape" {
                 newStartX = ScreenSize.SCREEN_HEIGHT - extraWidthToConsider
@@ -108,10 +108,10 @@ class ChatBubble: UIView {
             }
         } else {
             // Need to maintain the minimum left side padding from the left edge of the screen
-            newStartX = -CGRectGetMinX(imageViewBG!.frame) + 3.0
+            newStartX = -imageViewBG!.frame.minX + 3.0
         }
         
-        self.frame = CGRectMake(newStartX, CGRectGetMinY(self.frame), CGRectGetWidth(frame), CGRectGetHeight(frame))
+        self.frame = CGRect(x: newStartX, y: self.frame.minY, width: frame.width, height: frame.height)
     }
     
     // 6. View persistance support
@@ -121,7 +121,7 @@ class ChatBubble: UIView {
     
     
     //MARK: - FRAME CALCULATION
-    class func framePrimary(type:BubbleDataType, startY: CGFloat, orientation: String) -> CGRect{
+    class func framePrimary(_ type:BubbleDataType, startY: CGFloat, orientation: String) -> CGRect{
         var width:CGFloat
         if orientation == "Landscape" {
             width = max(ScreenSize.SCREEN_WIDTH, ScreenSize.SCREEN_HEIGHT)
@@ -131,8 +131,8 @@ class ChatBubble: UIView {
         let paddingFactor: CGFloat = 0.02
         let sidePadding = width * paddingFactor
         let maxWidth = width * 0.65 // We are cosidering 65% of the screen width as the Maximum with of a single bubble
-        let startX: CGFloat = type == .Mine ? ScreenSize.SCREEN_WIDTH * (CGFloat(1.0) - paddingFactor) - maxWidth : sidePadding
-        return CGRectMake(startX, startY, maxWidth, 5) // 5 is the primary height before drawing starts
+        let startX: CGFloat = type == .mine ? ScreenSize.SCREEN_WIDTH * (CGFloat(1.0) - paddingFactor) - maxWidth : sidePadding
+        return CGRect(x: startX, y: startY, width: maxWidth, height: 5) // 5 is the primary height before drawing starts
 
     }
 

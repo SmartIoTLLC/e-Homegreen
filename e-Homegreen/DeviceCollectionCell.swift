@@ -16,11 +16,11 @@ class DeviceCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var disabledCellView: UIView!
     var device:Device?
-    func getDevice (device:Device) {
+    func getDevice (_ device:Device) {
         self.device = device
     }
     
-    func setTitle(filter: FilterItem){
+    func setTitle(_ filter: FilterItem){
         var title = ""
         if filter.location == "All"{
             title = (device?.gateway.location.name)! + " "
@@ -29,7 +29,7 @@ class DeviceCollectionCell: UICollectionViewCell {
         self.typeOfLight.text = title
     }
     
-    func refreshDevice(device:Device) {
+    func refreshDevice(_ device:Device) {
         let deviceValue:Double = {
             return Double(device.currentValue)///255
         }()
@@ -41,14 +41,14 @@ class DeviceCollectionCell: UICollectionViewCell {
         labelPowrUsege.text = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
         labelRunningTime.text = device.runningTime
         if device.info {
-            infoView.hidden = false
-            backView.hidden = true
+            infoView.isHidden = false
+            backView.isHidden = true
         }else {
-            infoView.hidden = true
-            backView.hidden = false
+            infoView.isHidden = true
+            backView.isHidden = false
         }
         if device.warningState == 0 {
-            backView.colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
+            backView.colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).cgColor
         } else if device.warningState == 1 {
             // Uppet state
             backView.colorTwo = Colors.DirtyRedColor
@@ -58,9 +58,9 @@ class DeviceCollectionCell: UICollectionViewCell {
         }
         // If device is enabled add all interactions
         if device.isEnabled.boolValue {
-            disabledCellView.hidden = true
+            disabledCellView.isHidden = true
         } else {
-            disabledCellView.hidden = false
+            disabledCellView.isHidden = false
         }
     }
     
@@ -70,7 +70,7 @@ class DeviceCollectionCell: UICollectionViewCell {
     @IBOutlet weak var labelPowrUsege: UILabel!
     @IBOutlet weak var labelRunningTime: UILabel!
     
-    @IBAction func btnRefresh(sender: AnyObject) {
+    @IBAction func btnRefresh(_ sender: AnyObject) {
         let address = [UInt8(Int(device!.gateway.addressOne)),UInt8(Int(device!.gateway.addressTwo)),UInt8(Int(device!.address))]
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: device!.gateway)
         SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: device!.gateway)

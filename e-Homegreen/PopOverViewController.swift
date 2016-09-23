@@ -13,7 +13,7 @@ import CoreData
 protocol PopOverIndexDelegate
 {
     /// Function returns name and ID of item selected
-    func nameAndId(name : String, id:String)
+    func nameAndId(_ name : String, id:String)
 }
 
 //class SecurityFeedback {
@@ -51,33 +51,33 @@ class PopOverViewController: UIViewController, UITableViewDataSource {
 
 extension PopOverViewController: UITableViewDelegate{
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    @objc(tableView:cellForRowAtIndexPath:) func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if cellWithTwoTextRows {
-            if let cell = tableView.dequeueReusableCellWithIdentifier(String(PullDownViewTwoRowsCell)) as? PullDownViewTwoRowsCell {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: PullDownViewTwoRowsCell())) as? PullDownViewTwoRowsCell {
                 
-                cell.tableItemName.text = popOverList[indexPath.row].name
-                cell.tableItemDescription.text = popOverList[indexPath.row].id
+                cell.tableItemName.text = popOverList[(indexPath as NSIndexPath).row].name
+                cell.tableItemDescription.text = popOverList[(indexPath as NSIndexPath).row].id
                 return cell
             }
 
         }else{
-            if let cell = tableView.dequeueReusableCellWithIdentifier("pullCell") as? PullDownViewCell {
-                cell.tableItem.text = popOverList[indexPath.row].name
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "pullCell") as? PullDownViewCell {
+                cell.tableItem.text = popOverList[(indexPath as NSIndexPath).row].name
                 return cell
             }
         }
         
-        let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-        delegate?.nameAndId(popOverList[indexPath.row].name, id: popOverList[indexPath.row].id)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.dismiss(animated: true, completion: nil)
+        delegate?.nameAndId(popOverList[(indexPath as NSIndexPath).row].name, id: popOverList[(indexPath as NSIndexPath).row].id)
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return popOverList.count
     }
     

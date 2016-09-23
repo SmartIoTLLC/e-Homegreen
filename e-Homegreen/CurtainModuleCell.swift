@@ -14,7 +14,7 @@ class CurtainModuleCell:UICollectionViewCell {
     @IBOutlet weak var leftButton: CustomGradientButtonWhite!
     @IBOutlet weak var rightButton: CustomGradientButtonWhite!
     
-    func refreshDevice(device:Device) {
+    func refreshDevice(_ device:Device) {
         
     }
     

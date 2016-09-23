@@ -9,18 +9,18 @@
 import Foundation
 
 extension NSObject {
-    func convertByteArrayToMacAddress(byteArray:[UInt8]) -> String {
+    func convertByteArrayToMacAddress(_ byteArray:[UInt8]) -> String {
         guard byteArray.count == 6 else {
             return ""
         }
         var returnString = ""
-        for (index, byte) in byteArray.enumerate() {
+        for (index, byte) in byteArray.enumerated() {
             if index == byteArray.count-1 {
                 returnString += String.localizedStringWithFormat("%02x", byte)
                 break
             }
             returnString += String.localizedStringWithFormat("%02x", byte) + ":"
         }
-        return returnString.uppercaseString
+        return returnString.uppercased()
     }
 }

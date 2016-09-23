@@ -57,8 +57,8 @@ class ResetPasswordXIB: CommonXIBTransitionVC {
 
     }
     
-    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: backView){
             self.view.endEditing(true)
             return false
         }
@@ -66,12 +66,12 @@ class ResetPasswordXIB: CommonXIBTransitionVC {
     }
     
     func dismissViewController () {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func save(sender: AnyObject) {
+    @IBAction func save(_ sender: AnyObject) {
         if !AdminController.shared.isAdminLogged(){
-            guard let oldPass = oldPassswordTextField.text where oldPass != "" else{
+            guard let oldPass = oldPassswordTextField.text , oldPass != "" else{
                 self.view.makeToast(message: "All fields must be filled")
                 return
             }
@@ -81,7 +81,7 @@ class ResetPasswordXIB: CommonXIBTransitionVC {
             }
         }
         
-        guard let newPass = newPasswordTextField.text where newPass != "", let confirmPass = confirmPasswordTextField.text where confirmPass != "" else{
+        guard let newPass = newPasswordTextField.text , newPass != "", let confirmPass = confirmPasswordTextField.text , confirmPass != "" else{
             self.view.makeToast(message: "All fields must be filled")
             return
         }
@@ -93,20 +93,20 @@ class ResetPasswordXIB: CommonXIBTransitionVC {
         }
         
         user.password = newPass
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
         delegate?.resetPasswordFinished()
         
     }
     
-    @IBAction func cancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
 
 }
 
 extension ResetPasswordXIB : UITextFieldDelegate {
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
@@ -114,9 +114,9 @@ extension ResetPasswordXIB : UITextFieldDelegate {
 }
 
 extension UIViewController {
-    func showResetPassword(user:User) -> ResetPasswordXIB{
+    func showResetPassword(_ user:User) -> ResetPasswordXIB{
         let ressetPass = ResetPasswordXIB(user: user)
-        self.presentViewController(ressetPass, animated: true, completion: nil)
+        self.present(ressetPass, animated: true, completion: nil)
         return ressetPass
     }
 }

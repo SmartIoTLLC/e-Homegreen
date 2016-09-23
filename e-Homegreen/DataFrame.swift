@@ -9,16 +9,16 @@
 import Foundation
 
 enum MainCID:Byte {
-    case CommonComand = 0xF1
-    case GatewayControllerCommand = 0xF2
-    case LightingControlCommandDimmerRelayModule = 0xF3
-    case ClimateControlCommand = 0xF4
-    case AnalogDigitalInputCommand = 0xF5
-    case AnalogDigitalOutputCommand = 0xF6
-    case SwitchPanelCommand = 0xF8
-    case LCDPanelCommands = 0xF7
-    case IRCommand = 0xF9
-    case PCControllerCommand = 0xFA
+    case commonComand = 0xF1
+    case gatewayControllerCommand = 0xF2
+    case lightingControlCommandDimmerRelayModule = 0xF3
+    case climateControlCommand = 0xF4
+    case analogDigitalInputCommand = 0xF5
+    case analogDigitalOutputCommand = 0xF6
+    case switchPanelCommand = 0xF8
+    case lcdPanelCommands = 0xF7
+    case irCommand = 0xF9
+    case pcControllerCommand = 0xFA
 }
 
 struct DataFrame {

@@ -9,7 +9,7 @@
 import UIKit
 
 protocol ScanFilterPullDownDelegate{
-    func scanFilterParametars (filterItem: FilterItem)
+    func scanFilterParametars (_ filterItem: FilterItem)
 }
 
 class ScanFilterPullDown: UIScrollView {
@@ -78,15 +78,15 @@ class ScanFilterPullDown: UIScrollView {
         addObservers()
         
         self.delegate = self
-        self.pagingEnabled = true
+        self.isPagingEnabled = true
         self.bounces = false
         self.showsVerticalScrollIndicator = false
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
         self.translatesAutoresizingMaskIntoConstraints = false
         
         //Create and add content view
         contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.9)
+        contentView.backgroundColor = UIColor.black.withAlphaComponent(0.9)
         contentView.clipsToBounds = true
         self.addSubview(contentView)
         
@@ -96,10 +96,10 @@ class ScanFilterPullDown: UIScrollView {
         contentView.addSubview(bottomLine)
         
         //create signal indicators
-        greenIndicator.backgroundColor = UIColor.clearColor()
+        greenIndicator.backgroundColor = UIColor.clear
         greenIndicator.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(greenIndicator)
-        redIndicator.backgroundColor = UIColor.clearColor()
+        redIndicator.backgroundColor = UIColor.clear
         redIndicator.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(redIndicator)
         
@@ -110,107 +110,107 @@ class ScanFilterPullDown: UIScrollView {
         
         //location label
         locationLabel.text = "Location"
-        locationLabel.textAlignment = .Left
-        locationLabel.textColor = UIColor.whiteColor()
+        locationLabel.textAlignment = .left
+        locationLabel.textColor = UIColor.white
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(locationLabel)
         
         //choose location button
-        chooseLocationButon.setTitle("All", forState: .Normal)
+        chooseLocationButon.setTitle("All", for: UIControlState())
         chooseLocationButon.translatesAutoresizingMaskIntoConstraints = false
         chooseLocationButon.tag = 0
         contentView.addSubview(chooseLocationButon)
         
         //reset location
-        resetLocationButton.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
+        resetLocationButton.setImage(UIImage(named: "exit"), for: UIControlState())
         resetLocationButton.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(resetLocationButton)
         
         //level label
         levelLabel.text = "Level"
-        levelLabel.textAlignment = .Left
-        levelLabel.textColor = UIColor.whiteColor()
+        levelLabel.textAlignment = .left
+        levelLabel.textColor = UIColor.white
         levelLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(levelLabel)
         
         //choose level button
-        chooseLevelButon.setTitle("All", forState: .Normal)
+        chooseLevelButon.setTitle("All", for: UIControlState())
         chooseLevelButon.translatesAutoresizingMaskIntoConstraints = false
-        chooseLevelButon.addTarget(self, action: #selector(ScanFilterPullDown.openLevels(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        chooseLevelButon.addTarget(self, action: #selector(ScanFilterPullDown.openLevels(_:)), for: UIControlEvents.touchUpInside)
         chooseLevelButon.tag = 1
         contentView.addSubview(chooseLevelButon)
         
         //reset level
-        resetLevelButton.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
+        resetLevelButton.setImage(UIImage(named: "exit"), for: UIControlState())
         resetLevelButton.translatesAutoresizingMaskIntoConstraints = false
-        resetLevelButton.addTarget(self, action: #selector(ScanFilterPullDown.resetLevel(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        resetLevelButton.addTarget(self, action: #selector(ScanFilterPullDown.resetLevel(_:)), for: UIControlEvents.touchUpInside)
         contentView.addSubview(resetLevelButton)
         
         //zone label
         zoneLabel.text = "Zone"
-        zoneLabel.textAlignment = .Left
-        zoneLabel.textColor = UIColor.whiteColor()
+        zoneLabel.textAlignment = .left
+        zoneLabel.textColor = UIColor.white
         zoneLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(zoneLabel)
         
         //choose zone button
-        chooseZoneButon.setTitle("All", forState: .Normal)
+        chooseZoneButon.setTitle("All", for: UIControlState())
         chooseZoneButon.translatesAutoresizingMaskIntoConstraints = false
-        chooseZoneButon.addTarget(self, action: #selector(ScanFilterPullDown.openZones(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        chooseZoneButon.addTarget(self, action: #selector(ScanFilterPullDown.openZones(_:)), for: UIControlEvents.touchUpInside)
         chooseZoneButon.tag = 2
         contentView.addSubview(chooseZoneButon)
         
         //reset zone
-        resetZoneButton.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
+        resetZoneButton.setImage(UIImage(named: "exit"), for: UIControlState())
         resetZoneButton.translatesAutoresizingMaskIntoConstraints = false
-        resetZoneButton.addTarget(self, action: #selector(ScanFilterPullDown.resetZone(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        resetZoneButton.addTarget(self, action: #selector(ScanFilterPullDown.resetZone(_:)), for: UIControlEvents.touchUpInside)
         contentView.addSubview(resetZoneButton)
         
         //category label
         categoryLabel.text = "Category"
-        categoryLabel.textAlignment = .Left
-        categoryLabel.textColor = UIColor.whiteColor()
+        categoryLabel.textAlignment = .left
+        categoryLabel.textColor = UIColor.white
         categoryLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(categoryLabel)
         
         //choose category button
-        chooseCategoryButon.setTitle("All", forState: .Normal)
+        chooseCategoryButon.setTitle("All", for: UIControlState())
         chooseCategoryButon.translatesAutoresizingMaskIntoConstraints = false
-        chooseCategoryButon.addTarget(self, action: #selector(ScanFilterPullDown.openCategories(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        chooseCategoryButon.addTarget(self, action: #selector(ScanFilterPullDown.openCategories(_:)), for: UIControlEvents.touchUpInside)
         chooseCategoryButon.tag = 3
         contentView.addSubview(chooseCategoryButon)
         
         //reset category
-        resetCategoryButton.setImage(UIImage(named: "exit"), forState: UIControlState.Normal)
+        resetCategoryButton.setImage(UIImage(named: "exit"), for: UIControlState())
         resetCategoryButton.translatesAutoresizingMaskIntoConstraints = false
-        resetCategoryButton.addTarget(self, action: #selector(ScanFilterPullDown.resetCategory(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        resetCategoryButton.addTarget(self, action: #selector(ScanFilterPullDown.resetCategory(_:)), for: UIControlEvents.touchUpInside)
         contentView.addSubview(resetCategoryButton)
         
         //GO button
-        goButon.setTitle("Go", forState: .Normal)
+        goButon.setTitle("Go", for: UIControlState())
         goButon.translatesAutoresizingMaskIntoConstraints = false
-        goButon.addTarget(self, action: #selector(FilterPullDown.go), forControlEvents: UIControlEvents.TouchUpInside)
+        goButon.addTarget(self, action: #selector(FilterPullDown.go), for: UIControlEvents.touchUpInside)
         contentView.addSubview(goButon)
         
     }
     
-    func setItem(view: UIView, location: Location){
+    func setItem(_ view: UIView, location: Location){
         
         self.location = location
-        chooseLocationButon.setTitle(location.name, forState: .Normal)
+        chooseLocationButon.setTitle(location.name, for: UIControlState())
         
         //set content view constraint
-        self.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 0.0))
         
-        bottom = NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: -600)
+        bottom = NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: -600)
         self.addConstraint(bottom)
-        self.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        self.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0.0))
         
-        view.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0.0))
         
-        height = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: 0)
+        height = NSLayoutConstraint(item: view, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.height, multiplier: 1, constant: 0)
         view.addConstraint(height)
         
         setBottomLineAndPullDownImageConstraint()
@@ -229,207 +229,207 @@ class ScanFilterPullDown: UIScrollView {
     
     func setBottomLineAndPullDownImageConstraint(){
         //set bottomLine constraint
-        contentView.addConstraint(NSLayoutConstraint(item: bottomLine, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        contentView.addConstraint(NSLayoutConstraint(item: bottomLine, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
-        contentView.addConstraint(NSLayoutConstraint(item: bottomLine, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0))
-        bottomLine.addConstraint(NSLayoutConstraint(item: bottomLine, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 2))
+        contentView.addConstraint(NSLayoutConstraint(item: bottomLine, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0))
+        contentView.addConstraint(NSLayoutConstraint(item: bottomLine, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0.0))
+        contentView.addConstraint(NSLayoutConstraint(item: bottomLine, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0))
+        bottomLine.addConstraint(NSLayoutConstraint(item: bottomLine, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 2))
         
         //set pullDown image
-        self.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0.0))
         
-        self.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0))
         
-        pullView.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 37))
+        pullView.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 37))
         
-        pullView.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 120))
+        pullView.addConstraint(NSLayoutConstraint(item: pullView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 120))
         
         //setGreenIndicator
-        self.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0.0))
         
-        self.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: -15))
+        self.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: -15))
         
-        greenIndicator.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 12))
+        greenIndicator.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 12))
         
-        greenIndicator.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 30))
+        greenIndicator.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 30))
         
         //setRedIndicator
-        self.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
+        self.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0.0))
         
-        self.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 15))
+        self.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 15))
         
-        redIndicator.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 12))
+        redIndicator.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 12))
         
-        redIndicator.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 30))
+        redIndicator.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 30))
     }
     
     func setLocationConstraint(){
         
         //location label
-        contentView.addConstraint(NSLayoutConstraint(item: locationLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 10))
-        contentView.addConstraint(NSLayoutConstraint(item: locationLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 20))
-        locationLabel.addConstraint(NSLayoutConstraint(item: locationLabel, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 80))
+        contentView.addConstraint(NSLayoutConstraint(item: locationLabel, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 10))
+        contentView.addConstraint(NSLayoutConstraint(item: locationLabel, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 20))
+        locationLabel.addConstraint(NSLayoutConstraint(item: locationLabel, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 80))
         
         //choose location button
-        contentView.addConstraint(NSLayoutConstraint(item: chooseLocationButon, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: locationLabel, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 20))
-        contentView.addConstraint(NSLayoutConstraint(item: chooseLocationButon, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: locationLabel, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
+        contentView.addConstraint(NSLayoutConstraint(item: chooseLocationButon, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: locationLabel, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 20))
+        contentView.addConstraint(NSLayoutConstraint(item: chooseLocationButon, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: locationLabel, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
         
         //reset location
-        contentView.addConstraint(NSLayoutConstraint(item: resetLocationButton, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: chooseLocationButon, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: resetLocationButton, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 10))
-        resetLocationButton.addConstraint(NSLayoutConstraint(item: resetLocationButton, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
-        resetLocationButton.addConstraint(NSLayoutConstraint(item: resetLocationButton, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
+        contentView.addConstraint(NSLayoutConstraint(item: resetLocationButton, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: chooseLocationButon, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
+        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: resetLocationButton, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 10))
+        resetLocationButton.addConstraint(NSLayoutConstraint(item: resetLocationButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 35))
+        resetLocationButton.addConstraint(NSLayoutConstraint(item: resetLocationButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 35))
         
         //choose location button trailing
-        contentView.addConstraint(NSLayoutConstraint(item: resetLocationButton, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: chooseLocationButon, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 20))
+        contentView.addConstraint(NSLayoutConstraint(item: resetLocationButton, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: chooseLocationButon, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 20))
     }
     
     func setLevelConstraint(){
         
         // level label
-        contentView.addConstraint(NSLayoutConstraint(item: levelLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 10))
-        contentView.addConstraint(NSLayoutConstraint(item: levelLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: locationLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 30))
-        levelLabel.addConstraint(NSLayoutConstraint(item: levelLabel, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 80))
+        contentView.addConstraint(NSLayoutConstraint(item: levelLabel, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 10))
+        contentView.addConstraint(NSLayoutConstraint(item: levelLabel, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: locationLabel, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 30))
+        levelLabel.addConstraint(NSLayoutConstraint(item: levelLabel, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 80))
         
         //choose level button
-        contentView.addConstraint(NSLayoutConstraint(item: chooseLevelButon, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: levelLabel, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 20))
-        contentView.addConstraint(NSLayoutConstraint(item: chooseLevelButon, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: levelLabel, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
+        contentView.addConstraint(NSLayoutConstraint(item: chooseLevelButon, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: levelLabel, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 20))
+        contentView.addConstraint(NSLayoutConstraint(item: chooseLevelButon, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: levelLabel, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
         
         //reset level button
-        contentView.addConstraint(NSLayoutConstraint(item: resetLevelButton, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: chooseLevelButon, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: resetLevelButton, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 10))
-        resetLevelButton.addConstraint(NSLayoutConstraint(item: resetLevelButton, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
-        resetLevelButton.addConstraint(NSLayoutConstraint(item: resetLevelButton, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
+        contentView.addConstraint(NSLayoutConstraint(item: resetLevelButton, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: chooseLevelButon, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
+        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: resetLevelButton, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 10))
+        resetLevelButton.addConstraint(NSLayoutConstraint(item: resetLevelButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 35))
+        resetLevelButton.addConstraint(NSLayoutConstraint(item: resetLevelButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 35))
         
         //choose level button trailing
-        contentView.addConstraint(NSLayoutConstraint(item: resetLevelButton, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: chooseLevelButon, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 20))
+        contentView.addConstraint(NSLayoutConstraint(item: resetLevelButton, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: chooseLevelButon, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 20))
     }
     
     func setZonesConstraint(){
         
         //zone label
-        contentView.addConstraint(NSLayoutConstraint(item: zoneLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 10))
-        contentView.addConstraint(NSLayoutConstraint(item: zoneLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: levelLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 30))
-        zoneLabel.addConstraint(NSLayoutConstraint(item: zoneLabel, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 80))
+        contentView.addConstraint(NSLayoutConstraint(item: zoneLabel, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 10))
+        contentView.addConstraint(NSLayoutConstraint(item: zoneLabel, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: levelLabel, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 30))
+        zoneLabel.addConstraint(NSLayoutConstraint(item: zoneLabel, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 80))
         
         //choose zone butoon
-        contentView.addConstraint(NSLayoutConstraint(item: chooseZoneButon, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: zoneLabel, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 20))
-        contentView.addConstraint(NSLayoutConstraint(item: chooseZoneButon, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: zoneLabel, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
+        contentView.addConstraint(NSLayoutConstraint(item: chooseZoneButon, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: zoneLabel, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 20))
+        contentView.addConstraint(NSLayoutConstraint(item: chooseZoneButon, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: zoneLabel, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
         
         //reset zone
-        contentView.addConstraint(NSLayoutConstraint(item: resetZoneButton, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: chooseZoneButon, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: resetZoneButton, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 10))
-        resetZoneButton.addConstraint(NSLayoutConstraint(item: resetZoneButton, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
-        resetZoneButton.addConstraint(NSLayoutConstraint(item: resetZoneButton, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
+        contentView.addConstraint(NSLayoutConstraint(item: resetZoneButton, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: chooseZoneButon, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
+        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: resetZoneButton, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 10))
+        resetZoneButton.addConstraint(NSLayoutConstraint(item: resetZoneButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 35))
+        resetZoneButton.addConstraint(NSLayoutConstraint(item: resetZoneButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 35))
         
         //choose zone trailing
-        contentView.addConstraint(NSLayoutConstraint(item: resetZoneButton, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: chooseZoneButon, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 20))
+        contentView.addConstraint(NSLayoutConstraint(item: resetZoneButton, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: chooseZoneButon, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 20))
     }
     
     func setCategoryConstraint(){
         
         //category label
-        contentView.addConstraint(NSLayoutConstraint(item: categoryLabel, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 10))
-        contentView.addConstraint(NSLayoutConstraint(item: categoryLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: zoneLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 30))
-        categoryLabel.addConstraint(NSLayoutConstraint(item: categoryLabel, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 80))
+        contentView.addConstraint(NSLayoutConstraint(item: categoryLabel, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 10))
+        contentView.addConstraint(NSLayoutConstraint(item: categoryLabel, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: zoneLabel, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 30))
+        categoryLabel.addConstraint(NSLayoutConstraint(item: categoryLabel, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 80))
         
         //choose category label
-        contentView.addConstraint(NSLayoutConstraint(item: chooseCategoryButon, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: categoryLabel, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 20))
-        contentView.addConstraint(NSLayoutConstraint(item: chooseCategoryButon, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: categoryLabel, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
+        contentView.addConstraint(NSLayoutConstraint(item: chooseCategoryButon, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: categoryLabel, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 20))
+        contentView.addConstraint(NSLayoutConstraint(item: chooseCategoryButon, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: categoryLabel, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
         
         //reset category
-        contentView.addConstraint(NSLayoutConstraint(item: resetCategoryButton, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: resetCategoryButton, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 10))
-        resetCategoryButton.addConstraint(NSLayoutConstraint(item: resetCategoryButton, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
-        resetCategoryButton.addConstraint(NSLayoutConstraint(item: resetCategoryButton, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 35))
+        contentView.addConstraint(NSLayoutConstraint(item: resetCategoryButton, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0))
+        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: resetCategoryButton, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 10))
+        resetCategoryButton.addConstraint(NSLayoutConstraint(item: resetCategoryButton, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 35))
+        resetCategoryButton.addConstraint(NSLayoutConstraint(item: resetCategoryButton, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 35))
         
         // choose button trailing
-        contentView.addConstraint(NSLayoutConstraint(item: resetCategoryButton, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 20))
+        contentView.addConstraint(NSLayoutConstraint(item: resetCategoryButton, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 20))
     }
     
     func setGo(){
         
         //set go button constraints
-        contentView.addConstraint(NSLayoutConstraint(item: goButon, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0))
-        contentView.addConstraint(NSLayoutConstraint(item: goButon, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 25))
-        contentView.addConstraint(NSLayoutConstraint(item: goButon, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.Width, multiplier: 0.5, constant: 0))
+        contentView.addConstraint(NSLayoutConstraint(item: goButon, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0))
+        contentView.addConstraint(NSLayoutConstraint(item: goButon, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 25))
+        contentView.addConstraint(NSLayoutConstraint(item: goButon, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: chooseCategoryButon, attribute: NSLayoutAttribute.width, multiplier: 0.5, constant: 0))
     }
     
-    func openLevels(sender : UIButton){
+    func openLevels(_ sender : UIButton){
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(location)
         for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
         }
         
-        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         if let vc = self.parentViewController as? PopoverVC{
             vc.openPopover(sender, popOverList:popoverList)
         }
     }
     
-    func resetLevel(sender : UIButton){
+    func resetLevel(_ sender : UIButton){
         level = nil
         zoneSelected = nil
-        chooseZoneButon.setTitle("All", forState: .Normal)
-        chooseLevelButon.setTitle("All", forState: .Normal)
+        chooseZoneButon.setTitle("All", for: UIControlState())
+        chooseLevelButon.setTitle("All", for: UIControlState())
     }
     
-    func openZones(sender : UIButton){
+    func openZones(_ sender : UIButton){
         button = sender
         var popoverList:[PopOverItem] = []
         if let level = level{
             let list:[Zone] = DatabaseZoneController.shared.getZoneByLevel(location, parentZone: level)
             for item in list {
-                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
+                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
             }
         }
         
-        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         if let vc = self.parentViewController as? PopoverVC{
             vc.openPopover(sender, popOverList:popoverList)
         }
     }
     
-    func resetZone(sender : UIButton){
+    func resetZone(_ sender : UIButton){
         zoneSelected = nil
-        chooseZoneButon.setTitle("All", forState: .Normal)
+        chooseZoneButon.setTitle("All", for: UIControlState())
     }
     
-    func openCategories(sender : UIButton){
+    func openCategories(_ sender : UIButton){
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(location)
         for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
         }
         
-        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         if let vc = self.parentViewController as? PopoverVC{
             vc.openPopover(sender, popOverList:popoverList)
         }
     }
     
-    func resetCategory(sender : UIButton){
+    func resetCategory(_ sender : UIButton){
         category = nil
-        chooseCategoryButon.setTitle("All", forState: .Normal)
+        chooseCategoryButon.setTitle("All", for: UIControlState())
     }
     
-    func setButtonTitle(text:String, id:String){
+    func setButtonTitle(_ text:String, id:String){
         switch button.tag{
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
-            button.setTitle(text, forState: .Normal)
+            button.setTitle(text, for: UIControlState())
             zoneSelected = nil
-            chooseZoneButon.setTitle("All", forState: .Normal)
+            chooseZoneButon.setTitle("All", for: UIControlState())
             break
         case 2:
             zoneSelected = FilterController.shared.getZoneByObjectId(id)
-            button.setTitle(text, forState: .Normal)
+            button.setTitle(text, for: UIControlState())
             break
         case 3:
             category = FilterController.shared.getCategoryByObjectId(id)
-            button.setTitle(text, forState: .Normal)
+            button.setTitle(text, for: UIControlState())
             break
         default:
             break
@@ -450,40 +450,40 @@ class ScanFilterPullDown: UIScrollView {
     func returnFilter(){
         let filterItem = FilterItem(location: location.name!, levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
 
-        filterItem.locationObjectId = location.objectID.URIRepresentation().absoluteString!
+        filterItem.locationObjectId = location.objectID.uriRepresentation().absoluteString
         if let category = category{
-            filterItem.categoryId = category.id!.integerValue
+            filterItem.categoryId = category.id!.intValue
             filterItem.categoryName = category.name!
-            filterItem.categoryObjectId = category.objectID.URIRepresentation().absoluteString!
+            filterItem.categoryObjectId = category.objectID.uriRepresentation().absoluteString
         }
         guard let level = level else{
             scanFilterDelegate?.scanFilterParametars(filterItem)
             return
         }
         
-        filterItem.levelId = level.id!.integerValue
+        filterItem.levelId = level.id!.intValue
         filterItem.levelName = level.name!
-        filterItem.levelObjectId = level.objectID.URIRepresentation().absoluteString!
+        filterItem.levelObjectId = level.objectID.uriRepresentation().absoluteString
         guard let zone = zoneSelected else{
             scanFilterDelegate?.scanFilterParametars(filterItem)
             return
         }
-        filterItem.zoneId = zone.id!.integerValue
+        filterItem.zoneId = zone.id!.intValue
         filterItem.zoneName = zone.name!
-        filterItem.zoneObjectId = zone.objectID.URIRepresentation().absoluteString!
+        filterItem.zoneObjectId = zone.objectID.uriRepresentation().absoluteString
         scanFilterDelegate?.scanFilterParametars(filterItem)
     }
     
     func addObservers(){
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanFilterPullDown.updateIndicator(_:)), name: NotificationKey.IndicatorLamp, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ScanFilterPullDown.updateIndicator(_:)), name: NSNotification.Name(rawValue: NotificationKey.IndicatorLamp), object: nil)
     }
     
     func removeObservers(){
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.IndicatorLamp, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.IndicatorLamp), object: nil)
     }
     
-    func updateIndicator(notification:NSNotification){
-        if let info = notification.userInfo as? [String:String]{
+    func updateIndicator(_ notification:Notification){
+        if let info = (notification as NSNotification).userInfo as? [String:String]{
             
             redIndicator.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0)
             greenIndicator.backgroundColor = UIColor(red: 24/255, green: 202/255, blue: 0/255, alpha: 1.0)
@@ -492,21 +492,21 @@ class ScanFilterPullDown: UIScrollView {
                 if lamp == "red" {
                     
                     self.redIndicator.alpha = 1
-                    UIView.animateWithDuration(0.5, animations: {
+                    UIView.animate(withDuration: 0.5, animations: {
                         self.redIndicator.alpha = 0
                         }, completion: { (Bool) in
-                            self.redIndicator.backgroundColor = UIColor.clearColor()
-                            self.greenIndicator.backgroundColor = UIColor.clearColor()
+                            self.redIndicator.backgroundColor = UIColor.clear
+                            self.greenIndicator.backgroundColor = UIColor.clear
                             
                     })
                 }else if lamp == "green" {
                     
                     self.greenIndicator.alpha = 1
-                    UIView.animateWithDuration(0.5, animations: {
+                    UIView.animate(withDuration: 0.5, animations: {
                         self.greenIndicator.alpha = 0
                         }, completion: { (Bool) in
-                            self.redIndicator.backgroundColor = UIColor.clearColor()
-                            self.greenIndicator.backgroundColor = UIColor.clearColor()
+                            self.redIndicator.backgroundColor = UIColor.clear
+                            self.greenIndicator.backgroundColor = UIColor.clear
                     })
                 }else{
                     print("INDICATOR ERROR")
@@ -523,14 +523,14 @@ class ScanFilterPullDown: UIScrollView {
 
 extension ScanFilterPullDown: UIScrollViewDelegate{
     
-    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         if point.y > contentView.frame.size.height + 30 {
             return nil
         }
-        return super.hitTest(point, withEvent: event)
+        return super.hitTest(point, with: event)
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y > 0{
             
             returnFilter()

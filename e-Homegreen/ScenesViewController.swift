@@ -16,22 +16,22 @@ class ScenesViewController: PopoverVC {
     
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
-    private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-    private let reuseIdentifier = "ScenesCell"
+    fileprivate var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+    fileprivate let reuseIdentifier = "ScenesCell"
     
     var scrollView = FilterPullDown()
     
     var scenes:[Scene] = []
     var sidebarMenuOpen : Bool!
     
-    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
     @IBOutlet weak var broadcastSwitch: UISwitch!
     @IBOutlet weak var scenesCollectionView: UICollectionView!
 
     var filterParametar:FilterItem!
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         
         if self.revealViewController() != nil {
@@ -39,7 +39,7 @@ class ScenesViewController: PopoverVC {
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             revealViewController().toggleAnimationDuration = 0.5
-            if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
+            if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
                 revealViewController().rearViewRevealWidth = 200
             }else{
                 revealViewController().rearViewRevealWidth = 200
@@ -58,9 +58,9 @@ class ScenesViewController: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UIView.hr_setToastThemeColor(color: UIColor.redColor())
+        UIView.hr_setToastThemeColor(color: UIColor.red)
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         
         scrollView.filterDelegate = self
         view.addSubview(scrollView)
@@ -74,10 +74,10 @@ class ScenesViewController: PopoverVC {
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
-        scrollView.setFilterItem(Menu.Scenes)
+        scrollView.setFilterItem(Menu.scenes)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
     }
@@ -88,7 +88,7 @@ class ScenesViewController: PopoverVC {
             scrollView.setContentOffset(bottomOffset, animated: false)
         }
         scrollView.bottom.constant = -(self.view.frame.height - 2)
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+        if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
             headerTitleSubtitleView.setLandscapeTitle()
         }else{
             headerTitleSubtitleView.setPortraitTitle()
@@ -100,32 +100,32 @@ class ScenesViewController: PopoverVC {
         
     }
     
-    override func nameAndId(name : String, id:String){
+    override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
     }
     
-    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.Began {
-            scrollView.setDefaultFilterItem(Menu.Scenes)
+    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
+            scrollView.setDefaultFilterItem(Menu.scenes)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
     
     func updateConstraints() {
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0.0))
     }
     
-    @IBAction func fullScreen(sender: UIButton) {
+    @IBAction func fullScreen(_ sender: UIButton) {
         sender.collapseInReturnToNormal(1)
-        if UIApplication.sharedApplication().statusBarHidden {
-            UIApplication.sharedApplication().statusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        if UIApplication.shared.isStatusBarHidden {
+            UIApplication.shared.isStatusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
         } else {
-            UIApplication.sharedApplication().statusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            UIApplication.shared.isStatusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
             if scrollView.contentOffset.y != 0 {
                 let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
                 scrollView.setContentOffset(bottomOffset, animated: false)
@@ -133,15 +133,15 @@ class ScenesViewController: PopoverVC {
         }
     }
     
-    func updateSubtitle(location: String, level: String, zone: String){
+    func updateSubtitle(_ location: String, level: String, zone: String){
         headerTitleSubtitleView.setTitleAndSubtitle("Scenes", subtitle: location + " " + level + " " + zone)
     }
     
     func changeFullScreeenImage(){
-        if UIApplication.sharedApplication().statusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        if UIApplication.shared.isStatusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
         } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
         }
     }
     
@@ -161,10 +161,10 @@ class ScenesViewController: PopoverVC {
 
 // Parametar from filter and relaod data
 extension ScenesViewController: FilterPullDownDelegate{
-    func filterParametars(filterItem: FilterItem){
+    func filterParametars(_ filterItem: FilterItem){
         filterParametar = filterItem
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Scenes)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.scenes)
         updateSceneList()
     }
     
@@ -175,85 +175,85 @@ extension ScenesViewController: FilterPullDownDelegate{
 
 extension ScenesViewController: SWRevealViewControllerDelegate{
     
-    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            scenesCollectionView.userInteractionEnabled = true
+    func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
+        if(position == FrontViewPosition.left) {
+            scenesCollectionView.isUserInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
-            scenesCollectionView.userInteractionEnabled = false
+            scenesCollectionView.isUserInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }
     
-    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            scenesCollectionView.userInteractionEnabled = true
+    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
+        if(position == FrontViewPosition.left) {
+            scenesCollectionView.isUserInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
             let tap = UITapGestureRecognizer(target: self, action: #selector(ScenesViewController.closeSideMenu))
             self.view.addGestureRecognizer(tap)
-            scenesCollectionView.userInteractionEnabled = false
+            scenesCollectionView.isUserInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }
     
     func closeSideMenu(){
         if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggleAnimated(true)
+            self.revealViewController().revealToggle(animated: true)
         }
     }
 }
 
 extension ScenesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {        return collectionViewCellSize
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {        return collectionViewCellSize
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
 }
 
 extension ScenesViewController: UICollectionViewDataSource {
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return scenes.count
     }
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SceneCollectionCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SceneCollectionCell
         
-            cell.setItem(scenes[indexPath.row], filterParametar: filterParametar)
+            cell.setItem(scenes[(indexPath as NSIndexPath).row], filterParametar: filterParametar)
         
-            cell.sceneCellLabel.tag = indexPath.row
-            cell.sceneCellLabel.userInteractionEnabled = true
+            cell.sceneCellLabel.tag = (indexPath as NSIndexPath).row
+            cell.sceneCellLabel.isUserInteractionEnabled = true
             
             let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ScenesViewController.openCellParametar(_:)))
             longPress.minimumPressDuration = 0.5
-            cell.getImagesFrom(scenes[indexPath.row])
+            cell.getImagesFrom(scenes[(indexPath as NSIndexPath).row])
             cell.sceneCellLabel.addGestureRecognizer(longPress)
-            cell.sceneCellImageView.tag = indexPath.row
-            cell.sceneCellImageView.userInteractionEnabled = true
+            cell.sceneCellImageView.tag = (indexPath as NSIndexPath).row
+            cell.sceneCellImageView.isUserInteractionEnabled = true
             cell.sceneCellImageView.clipsToBounds = true
             cell.sceneCellImageView.layer.cornerRadius = 5
             let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ScenesViewController.setScene(_:)))
             cell.sceneCellImageView.addGestureRecognizer(set)
-            cell.btnSet.tag = indexPath.row
+            cell.btnSet.tag = (indexPath as NSIndexPath).row
             let setTwo:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ScenesViewController.setScene(_:)))
             cell.btnSet.addGestureRecognizer(setTwo)
             return cell
         
     }
     
-    func setScene (gesture:UIGestureRecognizer) {
+    func setScene (_ gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
             var address:[UInt8] = []
             if scenes[tag].isBroadcast.boolValue {
@@ -268,21 +268,21 @@ extension ScenesViewController: UICollectionViewDataSource {
                 SendingHandler.sendCommand(byteArray: OutgoingHandler.setScene(address, id: Int(scenes[tag].sceneId)), gateway: scenes[tag].gateway)
             }
             _ = gesture.view!.tag
-            let location = gesture.locationInView(scenesCollectionView)
-            if let index = scenesCollectionView.indexPathForItemAtPoint(location){
-                if let cell = scenesCollectionView.cellForItemAtIndexPath(index) as? SceneCollectionCell {
+            let location = gesture.location(in: scenesCollectionView)
+            if let index = scenesCollectionView.indexPathForItem(at: location){
+                if let cell = scenesCollectionView.cellForItem(at: index) as? SceneCollectionCell {
                     cell.changeImageForOneSecond()
                 }
             }
         }
         
     }
-    func openCellParametar (gestureRecognizer: UILongPressGestureRecognizer){
+    func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer){
         let tag = gestureRecognizer.view!.tag
-        if gestureRecognizer.state == UIGestureRecognizerState.Began {
-            let location = gestureRecognizer.locationInView(scenesCollectionView)
-            if let index = scenesCollectionView.indexPathForItemAtPoint(location){
-                let cell = scenesCollectionView.cellForItemAtIndexPath(index)
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
+            let location = gestureRecognizer.location(in: scenesCollectionView)
+            if let index = scenesCollectionView.indexPathForItem(at: location){
+                let cell = scenesCollectionView.cellForItem(at: index)
                 showSceneParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - scenesCollectionView.contentOffset.y), scene: scenes[tag])
             }
         }

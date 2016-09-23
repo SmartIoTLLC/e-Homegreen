@@ -25,7 +25,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     
     
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         
         if self.revealViewController() != nil {
@@ -33,7 +33,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             revealViewController().toggleAnimationDuration = 0.5
-            if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
+            if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
                 revealViewController().rearViewRevealWidth = 200
             }else{
                 revealViewController().rearViewRevealWidth = 200
@@ -52,55 +52,55 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         super.viewDidLoad()
         tap = UITapGestureRecognizer(target: self, action: #selector(ProjectManagerViewController.closeSideMenu))
 
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
-        UIView.hr_setToastThemeColor(color: UIColor.redColor())
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
+        UIView.hr_setToastThemeColor(color: UIColor.red)
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
         if !AdminController.shared.isAdminLogged() {
-            addButton.hidden = true
+            addButton.isHidden = true
         }
         
         users = DatabaseUserController.shared.getAllUsers()
         
         // Do any additional setup after loading the view.
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "settings"{
             if let button = sender as? UIButton{
-                if let vc = segue.destinationViewController as? SettingsViewController{
+                if let vc = segue.destination as? SettingsViewController{
                     vc.user = users[button.tag]
                 }
             }
         }
     }
     
-    @IBAction func fullScreen(sender: UIButton) {
+    @IBAction func fullScreen(_ sender: UIButton) {
         sender.collapseInReturnToNormal(1)
-        if UIApplication.sharedApplication().statusBarHidden {
-            UIApplication.sharedApplication().statusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        if UIApplication.shared.isStatusBarHidden {
+            UIApplication.shared.isStatusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
         } else {
-            UIApplication.sharedApplication().statusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            UIApplication.shared.isStatusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
         }
     }
     
     func changeFullScreeenImage(){
-        if UIApplication.sharedApplication().statusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        if UIApplication.shared.isStatusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
         } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
         }
     }
 
-    @IBAction func addUser(sender: AnyObject) {
+    @IBAction func addUser(_ sender: AnyObject) {
         showAddUser(nil).delegate = self
     }
     
-    @IBAction func changeDataBase(sender: AnyObject) {
+    @IBAction func changeDataBase(_ sender: AnyObject) {
         if let button = sender as? UIButton{
-            if AdminController.shared.setOtherUser(users[button.tag].objectID.URIRepresentation().absoluteString){
+            if AdminController.shared.setOtherUser(users[button.tag].objectID.uriRepresentation().absoluteString){
                 self.view.makeToast(message: "\(users[button.tag].username!)'s database is in use!")
             }else{
                 self.view.makeToast(message: "Error!!")
@@ -108,16 +108,16 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         }
     }
     
-    @IBAction func editDataBase(sender: AnyObject) {
+    @IBAction func editDataBase(_ sender: AnyObject) {
         if let button = sender as? UIButton{
-            performSegueWithIdentifier("settings", sender: button)
+            performSegue(withIdentifier: "settings", sender: button)
         }
     }
     
-    @IBAction func deleteUser(sender: UIButton) {
+    @IBAction func deleteUser(_ sender: UIButton) {
         showAlertView(sender, message: "Delete user?") { (action) in
-            if action == ReturnedValueFromAlertView.Delete{
-                self.appDel.managedObjectContext?.deleteObject(self.users[sender.tag])
+            if action == ReturnedValueFromAlertView.delete{
+                self.appDel.managedObjectContext?.delete(self.users[sender.tag])
                 if self.users[sender.tag].username == DatabaseUserController.shared.getOtherUser()?.username{
                     AdminController.shared.setOtherUser(nil)
                 }
@@ -126,40 +126,40 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         }
     }
     
-    @IBAction func shareUser(sender: UIButton) {
+    @IBAction func shareUser(_ sender: UIButton) {
         
         let user = self.users[sender.tag]
-        let user_value:NSDictionary = user.hyp_dictionaryUsingRelationshipType(HYPPropertyMapperRelationshipType.Array)
+        let user_value:NSDictionary = user.hyp_dictionary(using: HYPPropertyMapperRelationshipType.array) as NSDictionary
         
         write(user_value)
         
         print(user_value)
 
-        let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
-        let jsonFilePath = documentsUrl.URLByAppendingPathComponent("archive.zip")
+        let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let jsonFilePath = documentsUrl.appendingPathComponent("archive.zip")
         
-        let activityViewController = UIActivityViewController(activityItems: [jsonFilePath!], applicationActivities: nil)
+        let activityViewController = UIActivityViewController(activityItems: [jsonFilePath], applicationActivities: nil)
         if let presentationController = activityViewController.popoverPresentationController {
             presentationController.sourceView = sender
             presentationController.sourceRect = sender.bounds
         }
         
-        self.presentViewController(activityViewController, animated: true, completion: nil)
+        self.present(activityViewController, animated: true, completion: nil)
 
         
     }
     
-    func write(userData:NSDictionary){
-        let documentsDirectoryPathString = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first!
-        let documentsDirectoryPath = NSURL(string: documentsDirectoryPathString)!
+    func write(_ userData:NSDictionary){
+        let documentsDirectoryPathString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+        let documentsDirectoryPath = URL(string: documentsDirectoryPathString)!
         
-        let jsonFilePath = documentsDirectoryPath.URLByAppendingPathComponent("test.json")
-        let fileManager = NSFileManager.defaultManager()
+        let jsonFilePath = documentsDirectoryPath.appendingPathComponent("test.json")
+        let fileManager = FileManager.default
         var isDirectory: ObjCBool = false
         
         // creating a .json file in the Documents folder
-        if !fileManager.fileExistsAtPath(jsonFilePath!.absoluteString!, isDirectory: &isDirectory) {
-            let created = fileManager.createFileAtPath(jsonFilePath!.absoluteString!, contents: nil, attributes: nil)
+        if !fileManager.fileExists(atPath: jsonFilePath.absoluteString, isDirectory: &isDirectory) {
+            let created = fileManager.createFile(atPath: jsonFilePath.absoluteString, contents: nil, attributes: nil)
             if created {
                 print("File created ")
             } else {
@@ -169,9 +169,9 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
             print("File already exists")
         }
         
-        let data:NSData? = NSKeyedArchiver.archivedDataWithRootObject(userData)
+        let data:Data? = NSKeyedArchiver.archivedData(withRootObject: userData)
         if let data = data{
-            data.writeToFile(jsonFilePath!.path!, atomically: true)
+            try? data.write(to: URL(fileURLWithPath: jsonFilePath.path), options: [.atomic])
         }
         
 //        do {
@@ -185,7 +185,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
 //        }
         
         do {
-            try fileManager.removeItemAtPath(jsonFilePath!.path!)
+            try fileManager.removeItem(atPath: jsonFilePath.path)
         } catch let error as NSError {
             print("ERROR: \(error)")
         }
@@ -204,22 +204,22 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         usersTableView.reloadData()
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCellWithIdentifier("userCell") as? UserCell{
-            cell.chooseDatabaseButton.tag = indexPath.row
-            cell.editDatabaseButton.tag = indexPath.row
-            cell.deleteUser.tag = indexPath.row
-            cell.shareUser.tag = indexPath.row
-            print(indexPath.row)
-            cell.setItem(users[indexPath.row])
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "userCell") as? UserCell{
+            cell.chooseDatabaseButton.tag = (indexPath as NSIndexPath).row
+            cell.editDatabaseButton.tag = (indexPath as NSIndexPath).row
+            cell.deleteUser.tag = (indexPath as NSIndexPath).row
+            cell.shareUser.tag = (indexPath as NSIndexPath).row
+            print((indexPath as NSIndexPath).row)
+            cell.setItem(users[(indexPath as NSIndexPath).row])
             return cell
         }
-        let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
         cell.textLabel?.text = "dads"
         return cell
     }
     
-    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if(sidebarMenuOpen == true){
             return nil
         } else {
@@ -227,37 +227,37 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         }
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return users.count
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        dispatch_async(dispatch_get_main_queue(),{
-            if self.users[indexPath.row].isLocked == false || self.users[indexPath.row].username == DatabaseUserController.shared.getLoggedUser()?.username{
-                self.showAddUser(self.users[indexPath.row]).delegate = self
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        DispatchQueue.main.async(execute: {
+            if self.users[(indexPath as NSIndexPath).row].isLocked == false || self.users[(indexPath as NSIndexPath).row].username == DatabaseUserController.shared.getLoggedUser()?.username{
+                self.showAddUser(self.users[(indexPath as NSIndexPath).row]).delegate = self
             }
         })
     }
     
-    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            usersTableView.userInteractionEnabled = true
+    func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
+        if(position == FrontViewPosition.left) {
+            usersTableView.isUserInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
-            usersTableView.userInteractionEnabled = false
+            usersTableView.isUserInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }
     
-    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
+    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
         
-        if(position == FrontViewPosition.Left) {
-            usersTableView.userInteractionEnabled = true
+        if(position == FrontViewPosition.left) {
+            usersTableView.isUserInteractionEnabled = true
             sidebarMenuOpen = false
             self.view.removeGestureRecognizer(tap)
         } else {
             self.view.addGestureRecognizer(tap)
-            usersTableView.userInteractionEnabled = false
+            usersTableView.isUserInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }
@@ -265,7 +265,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     func closeSideMenu(){
         
         if sidebarMenuOpen == true {
-            self.revealViewController().revealToggleAnimated(true)
+            self.revealViewController().revealToggle(animated: true)
         }
         
     }
@@ -281,8 +281,8 @@ class UserCell: UITableViewCell{
     @IBOutlet weak var deleteUser: UIButton!
     @IBOutlet weak var shareUser: UIButton!
     
-    func setItem(user:User){
-        self.backgroundColor = UIColor.clearColor()
+    func setItem(_ user:User){
+        self.backgroundColor = UIColor.clear
         
         userNameLabel.text = user.username
         
@@ -314,12 +314,12 @@ class UserCell: UITableViewCell{
 
         if !AdminController.shared.isAdminLogged() {
             if user.username != DatabaseUserController.shared.getLoggedUser()?.username{
-                chooseDatabaseButton.enabled = !(user.isLocked as! Bool)
-                editDatabaseButton.enabled = !(user.isLocked as! Bool)
+                chooseDatabaseButton.isEnabled = !(user.isLocked as! Bool)
+                editDatabaseButton.isEnabled = !(user.isLocked as! Bool)
             }
         }else{
-            chooseDatabaseButton.enabled = !(user.isLocked as! Bool)
-            editDatabaseButton.enabled = !(user.isLocked as! Bool)
+            chooseDatabaseButton.isEnabled = !(user.isLocked as! Bool)
+            editDatabaseButton.isEnabled = !(user.isLocked as! Bool)
         }
         
         

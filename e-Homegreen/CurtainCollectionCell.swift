@@ -8,6 +8,17 @@
 
 import UIKit
 import CoreData
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 //curtain
 class CurtainCollectionCell: UICollectionViewCell {
@@ -22,7 +33,7 @@ class CurtainCollectionCell: UICollectionViewCell {
         openButton.layer.cornerRadius = 5
     }
     
-    func refreshDevice(device:Device) {
+    func refreshDevice(_ device:Device) {
         setImageForDevice(device)
         if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location), let name = zone.name{
             lblLevel.text = "\(name)"
@@ -37,16 +48,16 @@ class CurtainCollectionCell: UICollectionViewCell {
         lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(device.categoryId), location: device.gateway.location))"
         // If device is enabled add all interactions
         if device.isEnabled.boolValue {
-            disabledCellView.hidden = true
+            disabledCellView.isHidden = true
         } else {
-            disabledCellView.hidden = false
+            disabledCellView.isHidden = false
         }
         if device.info {
-            infoView.hidden = false
-            backView.hidden = true
+            infoView.isHidden = false
+            backView.isHidden = true
         }else {
-            infoView.hidden = true
-            backView.hidden = false
+            infoView.isHidden = true
+            backView.isHidden = false
         }
     }
     @IBOutlet weak var disabledCellView: UIView!
@@ -58,17 +69,17 @@ class CurtainCollectionCell: UICollectionViewCell {
 
 // Other. Helper
     
-    func setImageForDevice(device: Device){
+    func setImageForDevice(_ device: Device){
         // Find the device that is the pair of this device for reley control
         // First or second channel will always be presented (not 3 and 4), so we are looking for 3 and 4 channels
         let devices = CoreDataController.shahredInstance.fetchDevicesForGateway(device.gateway)
         var devicePair: Device? = nil
         for deviceTemp in devices{
             if deviceTemp.address == device.address {
-                if ((device.channel.integerValue == 1 && deviceTemp.channel.integerValue == 3) ||
-                    (device.channel.integerValue == 3 && deviceTemp.channel.integerValue == 1) ||
-                    (device.channel.integerValue == 2 && deviceTemp.channel.integerValue == 4) ||
-                    (device.channel.integerValue == 4 && deviceTemp.channel.integerValue == 2)) &&
+                if ((device.channel.intValue == 1 && deviceTemp.channel.intValue == 3) ||
+                    (device.channel.intValue == 3 && deviceTemp.channel.intValue == 1) ||
+                    (device.channel.intValue == 2 && deviceTemp.channel.intValue == 4) ||
+                    (device.channel.intValue == 4 && deviceTemp.channel.intValue == 2)) &&
                 deviceTemp.isCurtainModeAllowed.boolValue == true &&
                 device.isCurtainModeAllowed.boolValue == true{
                     
@@ -81,13 +92,13 @@ class CurtainCollectionCell: UICollectionViewCell {
                 print("error")
                 return
             }
-            let preSort = devImages.sort { (let result1, let result2) -> Bool in
-                if result1.state?.integerValue < result2.state?.integerValue {return true}
+            let preSort = devImages.sorted { (result1, result2) -> Bool in
+                if result1.state?.intValue < result2.state?.intValue {return true}
                 return false
             }
-            if device.currentValue.integerValue == 255{
+            if device.currentValue.intValue == 255{
                 curtainImage.image = UIImage(named: preSort[2].defaultImage!)
-            }else if device.currentValue.integerValue == 0{
+            }else if device.currentValue.intValue == 0{
                 curtainImage.image = UIImage(named: preSort[0].defaultImage!)
             }else {//device.currentValue.integerValue == 0{
                 curtainImage.image = UIImage(named: preSort[1].defaultImage!)
@@ -97,8 +108,8 @@ class CurtainCollectionCell: UICollectionViewCell {
                 print("error")
                 return
             }
-            let preSort = devImages.sort { (let result1, let result2) -> Bool in
-                if result1.state?.integerValue < result2.state?.integerValue {return true}
+            let preSort = devImages.sorted { (result1, result2) -> Bool in
+                if result1.state?.intValue < result2.state?.intValue {return true}
                 return false
             }
             
@@ -106,11 +117,11 @@ class CurtainCollectionCell: UICollectionViewCell {
             // Closing state:  Ch1 == on (255), Ch3 == off(0)
             // Opening state:  Ch1 == on (255), Ch3 == on(255)
             // Stop state:     Ch1 == off (0), Ch3 == on(255)
-            if device.currentValue.integerValue == 255 && devicePair!.currentValue.integerValue == 0{
+            if device.currentValue.intValue == 255 && devicePair!.currentValue.intValue == 0{
                 if preSort.count > 0{
                     curtainImage.image = UIImage(named: preSort[0].defaultImage!)
                 }
-            }else if device.currentValue.integerValue == 255 && devicePair!.currentValue.integerValue == 255{
+            }else if device.currentValue.intValue == 255 && devicePair!.currentValue.intValue == 255{
                 if preSort.count > 2{
                     curtainImage.image = UIImage(named: preSort[2].defaultImage!)
                 }

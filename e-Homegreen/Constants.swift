@@ -9,46 +9,35 @@
 import UIKit
 
 struct Common {
-    static let screenWidth:CGFloat! = UIScreen.mainScreen().bounds.size.width
-    static let screenHeight:CGFloat! = UIScreen.mainScreen().bounds.size.height
+    static let screenWidth:CGFloat! = UIScreen.main.bounds.size.width
+    static let screenHeight:CGFloat! = UIScreen.main.bounds.size.height
 }
 
 typealias Byte = UInt8
 
-//struct MainScreenSize {
-//    static let SCREEN_WIDTH = UIScreen.mainScreen().bounds.size.width
-//    static let SCREEN_HEIGHT = UIScreen.mainScreen().bounds.size.height
-//    static let SCREEN_MAX_LENGTH = max(ScreenSize.SCREEN_WIDTH, ScreenSize.SCREEN_HEIGHT)
-//    static let SCREEN_MIN_LENGTH = min(ScreenSize.SCREEN_WIDTH, ScreenSize.SCREEN_HEIGHT)
-//}
-
-//enum InputError: ErrorType {
-//    case InputMissing
-//    case IdIncorrect
-//}
-enum InputError: ErrorType {
-    case NotConvertibleToInt
-    case FromBiggerThanTo
-    case NotPositiveNumbers
-    case InputMissing
-    case IdIncorrect
-    case NumbersAreNegative
-    case NothingToSearchFor
-    case OutOfRange
-    case SpecifyRange
+enum InputError: Error {
+    case notConvertibleToInt
+    case fromBiggerThanTo
+    case notPositiveNumbers
+    case inputMissing
+    case idIncorrect
+    case numbersAreNegative
+    case nothingToSearchFor
+    case outOfRange
+    case specifyRange
 }
 extension InputError: CustomStringConvertible {
     var description: String {
         switch self {
-        case NotConvertibleToInt: return "Not convertible to number."
-        case FromBiggerThanTo: return "From is bigger then to."
-        case NotPositiveNumbers: return "Numbers must be positive."
-        case InputMissing: return "Missing input."
-        case IdIncorrect: return "Id is incorrect."
-        case NumbersAreNegative: return "Numbers cab't be negative."
-        case NothingToSearchFor: return "There is nothing to search for."
-        case OutOfRange: return "Search range is out of range."
-        case SpecifyRange: return "You need to specify range."
+        case .notConvertibleToInt: return "Not convertible to number."
+        case .fromBiggerThanTo: return "From is bigger then to."
+        case .notPositiveNumbers: return "Numbers must be positive."
+        case .inputMissing: return "Missing input."
+        case .idIncorrect: return "Id is incorrect."
+        case .numbersAreNegative: return "Numbers cab't be negative."
+        case .nothingToSearchFor: return "There is nothing to search for."
+        case .outOfRange: return "Search range is out of range."
+        case .specifyRange: return "You need to specify range."
         }
     }
 }
@@ -61,7 +50,7 @@ extension InputError: CustomStringConvertible {
 //EF Stoped - Tada ne pisemo nista
 
 struct CurtainModuleState {
-    static func returnState(byte:Int) -> String {
+    static func returnState(_ byte:Int) -> String {
         var state = ""
         switch byte {
         case 0x00:
@@ -124,7 +113,7 @@ struct DigitalInput {
         
     }
     struct ControlMode {
-        static func returnControlModeForId(id:Int) -> String {
+        static func returnControlModeForId(_ id:Int) -> String {
             switch id {
             case 2:
                 return "Normally Open"
@@ -155,7 +144,7 @@ struct DigitalInput {
         static let Open = 0x00
         static let Close = 0x01
         static func description()->String {return "Generic"}
-        static func description(state:Int) -> String {
+        static func description(_ state:Int) -> String {
             return state == 0x00 ? "Open" : "Close"
         }
     }
@@ -163,7 +152,7 @@ struct DigitalInput {
         static let Ready = 0x00
         static let Triggerd = 0x01
         static func description()->String {return "Normally Open"}
-        static func description(state:Int) -> String {
+        static func description(_ state:Int) -> String {
             return state == 0x00 ? "Ready" : "Triggerd"
         }
     }
@@ -171,7 +160,7 @@ struct DigitalInput {
         static let Triggered = 0x00
         static let Ready = 0x01
         static func description()->String {return "Normally Closed"}
-        static func description(state:Int) -> String {
+        static func description(_ state:Int) -> String {
             return state == 0x00 ? "Triggered" : "Ready"
         }
     }
@@ -179,7 +168,7 @@ struct DigitalInput {
         static let Idle = 0x00
         static let Motion = 0x01
         static func description()->String {return "Motion Sensor"}
-        static func description(state:Int) -> String {
+        static func description(_ state:Int) -> String {
             return state == 0x00 ? "Idle" : "Motion"
         }
     }
@@ -187,7 +176,7 @@ struct DigitalInput {
         static let Press = 0x00
         static let Release = 0x01
         static func description()->String {return "Button(NormallyOpen)"}
-        static func description(state:Int) -> String {
+        static func description(_ state:Int) -> String {
             return state == 0x00 ? "Press" : "Release"
         }
     }
@@ -195,7 +184,7 @@ struct DigitalInput {
         static let Release = 0x00
         static let Press = 0x01
         static func description()->String {return "Button(NormallyClosed)"}
-        static func description(state:Int) -> String {
+        static func description(_ state:Int) -> String {
             return state == 0x00 ? "Release" : "Press"
         }
     }
@@ -440,27 +429,29 @@ class FilterParametars {
     }
 }
 struct CellSize {
-    static func calculateCellSize(inout size:CGSize, screenWidth:CGFloat) {
+    static func calculateCellSize(_ size:inout CGSize, screenWidth:CGFloat) {
         var i:CGFloat = 2
         while i >= 2 {
             if (screenWidth / i) >= 120 && (screenWidth / i) <= 160 {
                 break
             }
-            i++
+            i += 1
         }
-        let cellWidth = Int(screenWidth/i - (2/i + (i*5-5)/i))
+        let const = (2/i + (i*5-5)/i)
+        let cellWidth = Int(screenWidth/i - const)
         size = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
     }
     
-    static func calculateSurvCellSize(inout size:CGSize, screenWidth:CGFloat) {
+    static func calculateSurvCellSize(_ size:inout CGSize, screenWidth:CGFloat) {
         var i:CGFloat = 2
         while i >= 2 {
             if (screenWidth / i) >= 120 && (screenWidth / i) <= 220 {
                 break
             }
-            i++
+            i += 1
         }
-        let cellWidth = Int(screenWidth/i - (2/i + (i*5-5)/i))
+        let const = (2/i + (i*5-5)/i)
+        let cellWidth = Int(screenWidth/i - const)
         size = CGSize(width: cellWidth, height: cellWidth)
     }
 }
@@ -566,21 +557,16 @@ struct Login {
 
 struct SegueIdentifier {
     static let some = ""
-//    "menuSettings"
-//    "connectionSettings"
-//    "surveillanceSettings"
-//    "securitySettings"
-//    "iBeaconSettings"
 }
 
 struct Colors {
-    static let DarkGray = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor    //   #262626
-    static let MediumGray = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
-    static let LightGrayColor = UIColor.lightGrayColor().CGColor
-    static let VeryLightGrayColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1).CGColor
-    static let DarkGrayColor = UIColor.darkGrayColor().CGColor
-    static let DirtyBlueColor = UIColor(red: 91/255, green: 182/255, blue: 229/225, alpha: 1.0).CGColor    //   #5bb7e5
-    static let DirtyRedColor = UIColor(red: 251/255, green: 87/255, blue: 87/255, alpha: 1.0).CGColor    //   #fb5757
+    static let DarkGray = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).cgColor    //   #262626
+    static let MediumGray = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).cgColor
+    static let LightGrayColor = UIColor.lightGray.cgColor
+    static let VeryLightGrayColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1).cgColor
+    static let DarkGrayColor = UIColor.darkGray.cgColor
+    static let DirtyBlueColor = UIColor(red: 91/255, green: 182/255, blue: 229/225, alpha: 1.0).cgColor    //   #5bb7e5
+    static let DirtyRedColor = UIColor(red: 251/255, green: 87/255, blue: 87/255, alpha: 1.0).cgColor    //   #fb5757
 }
 // 0-255
 struct DeviceValue {
@@ -590,29 +576,23 @@ struct DeviceValue {
         static let IdleWarning = (0xFE)
         static let ResetTimer = (0xEF)
     }
-//    enum MotionSensor:Int {
-//        case Idle = 0x00
-//        case Motion = 0x01
-//        case IdleWarning = 0xFE
-//        case ResetTimer = 0xEF
-//    }
 }
 
-extension NSDate {
+extension Date {
     
-    static func yesterDay() -> NSDate {
+    static func yesterDay() -> Date {
         
-        let today: NSDate = NSDate()
+        let today: Date = Date()
         
         let daysToAdd:Int = -1
         
         // Set up date components
-        let dateComponents: NSDateComponents = NSDateComponents()
+        var dateComponents: DateComponents = DateComponents()
         dateComponents.day = daysToAdd
         
         // Create a calendar
-        let gregorianCalendar: NSCalendar = NSCalendar(identifier: NSCalendarIdentifierGregorian)!
-        let yesterDayDate: NSDate = gregorianCalendar.dateByAddingComponents(dateComponents, toDate: today, options:NSCalendarOptions(rawValue: 0))!
+        let gregorianCalendar: Calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+        let yesterDayDate: Date = (gregorianCalendar as NSCalendar).date(byAdding: dateComponents, to: today, options:NSCalendar.Options(rawValue: 0))!
         
         return yesterDayDate
     }

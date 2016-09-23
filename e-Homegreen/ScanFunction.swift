@@ -8,11 +8,11 @@
 
 import Foundation
 protocol ScanEntity {
-    func sendCommandForScannning(id:Byte, address:[Byte], gateway:Gateway)
+    func sendCommandForScannning(_ id:Byte, address:[Byte], gateway:Gateway)
 }
 
 enum WhatToScan {
-    case Zone, Category
+    case zone, category
 }
 class ScanFunction {
     var from:Int
@@ -31,14 +31,14 @@ class ScanFunction {
         self.gateway = gateway
         gatewayAddress = [Byte(Int(gateway.addressOne)), Byte(Int(gateway.addressTwo)), Byte(Int(gateway.addressThree))]
         switch scanForWhat {
-        case .Zone:
+        case .zone:
             scanWhat = ScanZone()
-        case .Category:
+        case .category:
             scanWhat = ScanCategory()
         }
     }
     
-    func sendCommandForFinding(id id:Byte) {
+    func sendCommandForFinding(id:Byte) {
         scanWhat.sendCommandForScannning(id, address: gatewayAddress, gateway: gateway)
     }
 }

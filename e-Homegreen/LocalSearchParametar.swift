@@ -9,8 +9,8 @@
 import Foundation
 
 class LocalSearchParametar {
-    class func setLocalParametar(tab:String, parametar:[String]) {
-        let userDefault:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    class func setLocalParametar(_ tab:String, parametar:[String]) {
+        let userDefault:Foundation.UserDefaults = Foundation.UserDefaults.standard
         if parametar.count <= 4 {
             userDefault.setValue(parametar[0], forKey: "\(tab)GatewaySearch")
             userDefault.setValue(parametar[1], forKey: "\(tab)LevelSearch")
@@ -33,20 +33,20 @@ class LocalSearchParametar {
 //            userDefault.setValue(parametars[i], forKey: keyArray[i])
 //        }
 //    }
-    class func getLocalParametar(tab:String) ->[String] {
-        let userDefault:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        return [userDefault.stringForKey("\(tab)GatewaySearch")!,userDefault.stringForKey("\(tab)LevelSearch")!,userDefault.stringForKey("\(tab)ZoneSearch")!,userDefault.stringForKey("\(tab)CategorySearch")!,userDefault.stringForKey("\(tab)LevelSearchName")!,userDefault.stringForKey("\(tab)ZoneSearchName")!,userDefault.stringForKey("\(tab)CategorySearchName")!]
+    class func getLocalParametar(_ tab:String) ->[String] {
+        let userDefault:Foundation.UserDefaults = Foundation.UserDefaults.standard
+        return [userDefault.string(forKey: "\(tab)GatewaySearch")!,userDefault.string(forKey: "\(tab)LevelSearch")!,userDefault.string(forKey: "\(tab)ZoneSearch")!,userDefault.string(forKey: "\(tab)CategorySearch")!,userDefault.string(forKey: "\(tab)LevelSearchName")!,userDefault.string(forKey: "\(tab)ZoneSearchName")!,userDefault.string(forKey: "\(tab)CategorySearchName")!]
     }
-    class func setLocalIds(tab:String, parametar:[String]) {
-        let userDefault:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    class func setLocalIds(_ tab:String, parametar:[String]) {
+        let userDefault:Foundation.UserDefaults = Foundation.UserDefaults.standard
         userDefault.setValue(parametar[0], forKey: "\(tab)LevelSearchId")
         userDefault.setValue(parametar[1], forKey: "\(tab)ZoneSearchId")
         userDefault.setValue(parametar[2], forKey: "\(tab)CategorySearchId")
         
     }
-    class func getLocalIds(tab:String) ->[String] {
-        let userDefault:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        return [userDefault.stringForKey("\(tab)LevelSearchId")!,userDefault.stringForKey("\(tab)ZoneSearchId")!,userDefault.stringForKey("\(tab)CategorySearchId")!]
+    class func getLocalIds(_ tab:String) ->[String] {
+        let userDefault:Foundation.UserDefaults = Foundation.UserDefaults.standard
+        return [userDefault.string(forKey: "\(tab)LevelSearchId")!,userDefault.string(forKey: "\(tab)ZoneSearchId")!,userDefault.string(forKey: "\(tab)CategorySearchId")!]
     }
 }
 //class LocalSearchParametar {

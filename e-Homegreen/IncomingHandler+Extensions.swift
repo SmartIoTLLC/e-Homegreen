@@ -15,7 +15,7 @@ struct DeviceInformation {
     let numberOfDevices:Int
     let type:String
     let gateway:Gateway
-    let mac:NSData
+    let mac:Data
     let isClimate:Bool
 }
 

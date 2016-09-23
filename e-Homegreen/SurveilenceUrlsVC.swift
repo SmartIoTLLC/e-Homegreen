@@ -49,7 +49,7 @@ class SurveilenceUrlsVC: UIViewController {
     init(point:CGPoint, surv:Surveillance){
         super.init(nibName: "SurveilenceUrlsVC", bundle: nil)
         transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
+        modalPresentationStyle = UIModalPresentationStyle.custom
         self.point = point
         self.surv = surv
     }
@@ -61,7 +61,7 @@ class SurveilenceUrlsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
         txtGetImage.delegate = self
         txtMoveLeft.delegate = self
@@ -100,19 +100,19 @@ class SurveilenceUrlsVC: UIViewController {
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SurveilenceUrlsVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SurveilenceUrlsVC.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SurveilenceUrlsVC.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SurveilenceUrlsVC.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     func dismissViewController () {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func btnCancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func btnCancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func btnSave(sender: AnyObject) {
+    @IBAction func btnSave(_ sender: AnyObject) {
         if txtGetImage.text != "" {surv!.urlGetImage! = txtGetImage.text!}
         if txtMoveRight.text != "" {surv!.urlMoveRight! = txtMoveRight.text!}
         if txtMoveLeft.text != "" {surv!.urlMoveLeft! = txtMoveLeft.text!}
@@ -126,14 +126,14 @@ class SurveilenceUrlsVC: UIViewController {
         CoreDataController.shahredInstance.saveChanges()
         
         resignFirstResponder()
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
 
-    func keyboardWillShow(notification: NSNotification) {
-        var info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+    func keyboardWillShow(_ notification: Notification) {
+        var info = (notification as NSNotification).userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
-        if txtMoveRight.isFirstResponder(){
+        if txtMoveRight.isFirstResponder{
             if backView.frame.origin.y + txtMoveRight.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.txtMoveRight.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
@@ -141,7 +141,7 @@ class SurveilenceUrlsVC: UIViewController {
             }
         }
         
-        if txtMoveUp.isFirstResponder(){
+        if txtMoveUp.isFirstResponder{
             if backView.frame.origin.y + txtMoveUp.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.txtMoveUp.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
@@ -149,7 +149,7 @@ class SurveilenceUrlsVC: UIViewController {
             }
         }
         
-        if txtMoveDown.isFirstResponder(){
+        if txtMoveDown.isFirstResponder{
             if backView.frame.origin.y + txtMoveDown.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.txtMoveDown.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
@@ -157,7 +157,7 @@ class SurveilenceUrlsVC: UIViewController {
             }
         }
         
-        if txtAutoPan.isFirstResponder(){
+        if txtAutoPan.isFirstResponder{
             if backView.frame.origin.y + txtAutoPan.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.txtAutoPan.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
@@ -165,7 +165,7 @@ class SurveilenceUrlsVC: UIViewController {
             }
         }
         
-        if txtStopAutoPan.isFirstResponder(){
+        if txtStopAutoPan.isFirstResponder{
             if backView.frame.origin.y + txtStopAutoPan.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.txtStopAutoPan.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
@@ -173,7 +173,7 @@ class SurveilenceUrlsVC: UIViewController {
             }
         }
         
-        if txtPresetSequence.isFirstResponder(){
+        if txtPresetSequence.isFirstResponder{
             if backView.frame.origin.y + txtPresetSequence.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.txtPresetSequence.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
@@ -181,7 +181,7 @@ class SurveilenceUrlsVC: UIViewController {
             }
         }
         
-        if txtStopPresetSequence.isFirstResponder(){
+        if txtStopPresetSequence.isFirstResponder{
             if backView.frame.origin.y + txtStopPresetSequence.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.txtStopPresetSequence.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
@@ -189,7 +189,7 @@ class SurveilenceUrlsVC: UIViewController {
             }
         }
         
-        if txtHome.isFirstResponder(){
+        if txtHome.isFirstResponder{
             if backView.frame.origin.y + txtHome.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.txtHome.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
@@ -197,13 +197,13 @@ class SurveilenceUrlsVC: UIViewController {
             }
         }
         
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
         
     }
     
-    func keyboardWillHide(notification: NSNotification) {
+    func keyboardWillHide(_ notification: Notification) {
         self.centerY.constant = 0
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
     func dismissKeyboard(){
@@ -215,24 +215,24 @@ class SurveilenceUrlsVC: UIViewController {
 
 extension SurveilenceUrlsVC : UITextFieldDelegate {
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        if txtGetImage.isFirstResponder(){
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if txtGetImage.isFirstResponder{
             txtMoveLeft.becomeFirstResponder()
-        }else if txtMoveLeft.isFirstResponder(){
+        }else if txtMoveLeft.isFirstResponder{
             txtMoveRight.becomeFirstResponder()
-        }else if txtMoveRight.isFirstResponder(){
+        }else if txtMoveRight.isFirstResponder{
             txtMoveUp.becomeFirstResponder()
-        }else if txtMoveUp.isFirstResponder(){
+        }else if txtMoveUp.isFirstResponder{
             txtMoveDown.becomeFirstResponder()
-        }else if txtMoveDown.isFirstResponder(){
+        }else if txtMoveDown.isFirstResponder{
             txtAutoPan.becomeFirstResponder()
-        }else if txtAutoPan.isFirstResponder(){
+        }else if txtAutoPan.isFirstResponder{
             txtStopAutoPan.becomeFirstResponder()
-        }else if txtStopAutoPan.isFirstResponder(){
+        }else if txtStopAutoPan.isFirstResponder{
             txtPresetSequence.becomeFirstResponder()
-        }else if txtPresetSequence.isFirstResponder(){
+        }else if txtPresetSequence.isFirstResponder{
             txtStopPresetSequence.becomeFirstResponder()
-        }else if txtStopPresetSequence.isFirstResponder(){
+        }else if txtStopPresetSequence.isFirstResponder{
             txtHome.becomeFirstResponder()
         }else{
             textField.resignFirstResponder()
@@ -243,8 +243,8 @@ extension SurveilenceUrlsVC : UITextFieldDelegate {
 
 extension SurveilenceUrlsVC : UIGestureRecognizerDelegate {
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: backView){
             dismissKeyboard()
             return false
         }
@@ -254,44 +254,44 @@ extension SurveilenceUrlsVC : UIGestureRecognizerDelegate {
 
 extension SurveilenceUrlsVC : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5 //Add your own duration here
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         //Add presentation and dismiss animation transition here.
         if isPresenting == true{
             isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
+            let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
+            let containerView = transitionContext.containerView
             
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
             self.oldPoint = presentedControllerView.center
             presentedControllerView.center = self.point!
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+            presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
             containerView.addSubview(presentedControllerView)
             
-            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 
                 presentedControllerView.center = self.oldPoint!
                 presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
                 
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
             //            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 
                 presentedControllerView.center = self.point!
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
                 
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
@@ -303,11 +303,11 @@ extension SurveilenceUrlsVC : UIViewControllerAnimatedTransitioning {
 
 extension SurveilenceUrlsVC : UIViewControllerTransitioningDelegate {
     
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if dismissed == self {
             return self
         }
@@ -318,8 +318,8 @@ extension SurveilenceUrlsVC : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showCameraUrls (point:CGPoint, surveillance:Surveillance) {
+    func showCameraUrls (_ point:CGPoint, surveillance:Surveillance) {
         let scu = SurveilenceUrlsVC(point: point, surv: surveillance)
-        self.presentViewController(scu, animated: true, completion: nil)
+        self.present(scu, animated: true, completion: nil)
     }
 }

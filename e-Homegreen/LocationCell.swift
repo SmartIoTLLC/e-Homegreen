@@ -9,9 +9,9 @@
 import Foundation
 
 protocol GatewayCellDelegate{
-    func deleteGateway(gateway:Gateway, sender:UIButton)
-    func scanDevice(gateway:Gateway)
-    func changeSwitchValue(gateway:Gateway, gatewaySwitch:UISwitch)
+    func deleteGateway(_ gateway:Gateway, sender:UIButton)
+    func scanDevice(_ gateway:Gateway)
+    func changeSwitchValue(_ gateway:Gateway, gatewaySwitch:UISwitch)
 }
 
 // Gateway cell
@@ -23,7 +23,7 @@ class GatewayCell: UITableViewCell {
     @IBOutlet weak var lblGatewayDescription: MarqueeLabel!
     var gradientLayer: CAGradientLayer?
     
-    var backColor:CGColor = UIColor().e_homegreenColor().CGColor
+    var backColor:CGColor = UIColor().e_homegreenColor().cgColor
     
     @IBOutlet weak var buttonGatewayScan: UIButton!
     @IBOutlet weak var switchGatewayState: UISwitch!
@@ -32,19 +32,19 @@ class GatewayCell: UITableViewCell {
     @IBOutlet weak var add2: UILabel!
     @IBOutlet weak var add3: UILabel!
     
-    @IBAction func scanDevicesAction(sender: AnyObject) {
+    @IBAction func scanDevicesAction(_ sender: AnyObject) {
         if let gate = gateway{
             delegate?.scanDevice(gate)
         }
     }
     
-    @IBAction func deleteGateway(sender: UIButton) {
+    @IBAction func deleteGateway(_ sender: UIButton) {
         if let gate = gateway{
             delegate?.deleteGateway(gate, sender: sender)
         }
     }
     
-    @IBAction func changeSwitchValue(sender: AnyObject) {
+    @IBAction func changeSwitchValue(_ sender: AnyObject) {
         if let gatewaySwitch = sender as? UISwitch, let gate = gateway{
             delegate?.changeSwitchValue(gate, gatewaySwitch: gatewaySwitch)
         }
@@ -62,14 +62,14 @@ class GatewayCell: UITableViewCell {
         self.add2.layer.borderWidth = 1
         self.add3.layer.borderWidth = 1
         
-        self.add1.layer.borderColor = UIColor.darkGrayColor().CGColor
-        self.add2.layer.borderColor = UIColor.darkGrayColor().CGColor
-        self.add3.layer.borderColor = UIColor.darkGrayColor().CGColor
+        self.add1.layer.borderColor = UIColor.darkGray.cgColor
+        self.add2.layer.borderColor = UIColor.darkGray.cgColor
+        self.add3.layer.borderColor = UIColor.darkGray.cgColor
         
     }
     
-    func setItem(gateway:Gateway){
-        self.backgroundColor = UIColor.clearColor()
+    func setItem(_ gateway:Gateway){
+        self.backgroundColor = UIColor.clear
         self.gateway = gateway
         
         self.lblGatewayDescription.text = gateway.gatewayDescription
@@ -77,43 +77,43 @@ class GatewayCell: UITableViewCell {
         self.add1.text = returnThreeCharactersForByte(Int(gateway.addressOne))
         self.add2.text = returnThreeCharactersForByte(Int(gateway.addressTwo))
         self.add3.text = returnThreeCharactersForByte(Int(gateway.addressThree))
-        self.switchGatewayState.on = gateway.turnedOn.boolValue
+        self.switchGatewayState.isOn = gateway.turnedOn.boolValue
         if gateway.turnedOn.boolValue {
-            self.buttonGatewayScan.enabled = true
+            self.buttonGatewayScan.isEnabled = true
         } else {
-            self.buttonGatewayScan.enabled = false
+            self.buttonGatewayScan.isEnabled = false
         }
     }
     
     func setEhomeblue(){
-        backColor = UIColor().e_homeblueColor().CGColor
+        backColor = UIColor().e_homeblueColor().cgColor
         setNeedsDisplay()
     }
     
     func setEhomegreen(){
-        backColor = UIColor().e_homegreenColor().CGColor
+        backColor = UIColor().e_homegreenColor().cgColor
         setNeedsDisplay()
     }
     
-    override func drawRect(rect: CGRect) {
-        let rectNew = CGRectMake(3, 3, rect.size.width - 6, rect.size.height - 6)
+    override func draw(_ rect: CGRect) {
+        let rectNew = CGRect(x: 3, y: 3, width: rect.size.width - 6, height: rect.size.height - 6)
         let path = UIBezierPath(roundedRect: rectNew,
-                                byRoundingCorners: UIRectCorner.AllCorners,
+                                byRoundingCorners: UIRectCorner.allCorners,
                                 cornerRadii: CGSize(width: 5.0, height: 5.0))
         path.addClip()
         path.lineWidth = 1
         
-        UIColor.darkGrayColor().setStroke()
+        UIColor.darkGray.setStroke()
         let context = UIGraphicsGetCurrentContext()
-        let colors = [backColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor, UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor]
+        let colors = [backColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).cgColor, UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).cgColor]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 0.35, 1.0]
-        let gradient = CGGradientCreateWithColors(colorSpace,
-                                                  colors,
-                                                  colorLocations)
+        let gradient = CGGradient(colorsSpace: colorSpace,
+                                                  colors: colors as CFArray,
+                                                  locations: colorLocations)
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:self.bounds.width , y:0)
-        CGContextDrawLinearGradient(context!, gradient!, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+        context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
         path.stroke()
     }
     
@@ -127,7 +127,7 @@ class LocationCell: UITableViewCell {
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var deleteButton: UIButton!
     
-    func setItem(location:Location, isColapsed:Bool){
+    func setItem(_ location:Location, isColapsed:Bool){
         locationNameLabel.text = location.name
         if isColapsed{
             arrowImage.image = UIImage(named: "strelica_gore")
@@ -140,8 +140,8 @@ class LocationCell: UITableViewCell {
 
 //surveillance cell
 protocol SurveillanceCellDelegate{
-    func deleteSurveillance(surveillance:Surveillance, sender:UIButton)
-    func scanURL(surveillance:Surveillance)
+    func deleteSurveillance(_ surveillance:Surveillance, sender:UIButton)
+    func scanURL(_ surveillance:Surveillance)
 }
 
 class SurvCell: UITableViewCell{
@@ -152,41 +152,41 @@ class SurvCell: UITableViewCell{
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var btnUrl: CustomGradientButton!
     
-    func setItem(surveillance:Surveillance){
-        self.backgroundColor = UIColor.clearColor()
+    func setItem(_ surveillance:Surveillance){
+        self.backgroundColor = UIColor.clear
         self.surveillance = surveillance
         self.lblName.text = surveillance.name
     }
-    @IBAction func deleteSurveillance(sender: UIButton) {
+    @IBAction func deleteSurveillance(_ sender: UIButton) {
         if let surv  = surveillance{
             delegate?.deleteSurveillance(surv, sender: sender)
         }
     }
     
-    @IBAction func URLActions(sender: AnyObject) {
+    @IBAction func URLActions(_ sender: AnyObject) {
         if let surv  = surveillance{
             delegate?.scanURL(surv)
         }
     }
-    override func drawRect(rect: CGRect) {
-        let rectNew = CGRectMake(3, 3, rect.size.width - 6, rect.size.height - 6)
+    override func draw(_ rect: CGRect) {
+        let rectNew = CGRect(x: 3, y: 3, width: rect.size.width - 6, height: rect.size.height - 6)
         let path = UIBezierPath(roundedRect: rectNew,
-                                byRoundingCorners: UIRectCorner.AllCorners,
+                                byRoundingCorners: UIRectCorner.allCorners,
                                 cornerRadii: CGSize(width: 5.0, height: 5.0))
         path.addClip()
         path.lineWidth = 1
-        UIColor.darkGrayColor().setStroke()
+        UIColor.darkGray.setStroke()
         
         let context = UIGraphicsGetCurrentContext()
-        let colors = [UIColor().surveillanceColor().CGColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor, UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor]
+        let colors = [UIColor().surveillanceColor().cgColor, UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).cgColor, UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).cgColor]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 0.35, 1.0]
-        let gradient = CGGradientCreateWithColors(colorSpace,
-                                                  colors,
-                                                  colorLocations)
+        let gradient = CGGradient(colorsSpace: colorSpace,
+                                                  colors: colors as CFArray,
+                                                  locations: colorLocations)
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:self.bounds.width , y:0)
-        CGContextDrawLinearGradient(context!, gradient!, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+        context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
         path.stroke()
     }
 }

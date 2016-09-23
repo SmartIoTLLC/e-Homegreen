@@ -8,22 +8,22 @@
 
 import Foundation
 class DataImporter {
-    class func createZonesFromFile (fileName:String) -> [ZoneJSON]? {
-        var data:NSData!
-        let paths: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
-        let filePath = paths.stringByAppendingPathComponent(fileName)
-        let checkValidation = NSFileManager.defaultManager()
-        if checkValidation.fileExistsAtPath(filePath) {
+    class func createZonesFromFile (_ fileName:String) -> [ZoneJSON]? {
+        var data:Data!
+        let paths: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let filePath = "" //paths.appendingPathComponent(fileName)
+        let checkValidation = FileManager.default
+        if checkValidation.fileExists(atPath: filePath) {
             print("Postoji.")
-            data = NSData(contentsOfFile: filePath)
+            data = try? Data(contentsOf: URL(fileURLWithPath: filePath))
             let jsonError: NSError?
 //            ”
             
             do {
-                var string = NSString(data: data, encoding: NSUTF8StringEncoding)
-                string = string!.stringByReplacingOccurrencesOfString("\u{201D}", withString: "\"")
-                let dataFormatted = string?.dataUsingEncoding(NSUTF8StringEncoding)
-                let file = try NSJSONSerialization.JSONObjectWithData(dataFormatted!, options: []) as! JSONDictionary
+                var string = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+                string = string!.replacingOccurrences(of: "\u{201D}", with: "\"") as NSString?
+                let dataFormatted = string?.data(using: String.Encoding.utf8.rawValue)
+                let file = try JSONSerialization.jsonObject(with: dataFormatted!, options: []) as! JSONDictionary
                 print(file["Zones"])
                 if let zonesDictionary = file["Zones"] as? [JSONDictionary] {
                     var zones:[ZoneJSON] = []
@@ -45,20 +45,20 @@ class DataImporter {
         return nil
     }
     class func createZonesFromFileFromNSBundle () -> [ZoneJSON]? {
-        var data:NSData!
-        if let filePath = NSBundle.mainBundle().pathForResource("Zones List", ofType: "json") {
+        var data:Data!
+        if let filePath = Bundle.main.path(forResource: "Zones List", ofType: "json") {
             //        let filePath = paths.stringByAppendingPathComponent(fileName)
-            let checkValidation = NSFileManager.defaultManager()
-            if checkValidation.fileExistsAtPath(filePath) {
+            let checkValidation = FileManager.default
+            if checkValidation.fileExists(atPath: filePath) {
                 print("Postoji.")
-                data = NSData(contentsOfFile: filePath)
+                data = try? Data(contentsOf: URL(fileURLWithPath: filePath))
                 let jsonError: NSError?
                 
                 do {
-                    var string = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    string = string!.stringByReplacingOccurrencesOfString("\u{201D}", withString: "\"")
-                    let dataFormatted = string?.dataUsingEncoding(NSUTF8StringEncoding)
-                    let file = try NSJSONSerialization.JSONObjectWithData(dataFormatted!, options: []) as! JSONDictionary
+                    var string = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+                    string = string!.replacingOccurrences(of: "\u{201D}", with: "\"") as NSString?
+                    let dataFormatted = string?.data(using: String.Encoding.utf8.rawValue)
+                    let file = try JSONSerialization.jsonObject(with: dataFormatted!, options: []) as! JSONDictionary
                     print(file["Zones"])
                     if let zonesDictionary = file["Zones"] as? [JSONDictionary] {
                         var zones:[ZoneJSON] = []
@@ -80,21 +80,21 @@ class DataImporter {
         }
         return nil
     }
-    class func createCategoriesFromFile (fileName:String) -> [CategoryJSON]? {
-        var data:NSData!
-        let paths: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
-        let filePath = paths.stringByAppendingPathComponent(fileName)
-        let checkValidation = NSFileManager.defaultManager()
-        if checkValidation.fileExistsAtPath(filePath) {
+    class func createCategoriesFromFile (_ fileName:String) -> [CategoryJSON]? {
+        var data:Data!
+        let paths: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let filePath = "" // paths.appendingPathComponent(fileName)
+        let checkValidation = FileManager.default
+        if checkValidation.fileExists(atPath: filePath) {
             print("Postoji.")
-            data = NSData(contentsOfFile: filePath)
+            data = try? Data(contentsOf: URL(fileURLWithPath: filePath))
             let jsonError: NSError?
             
             do {
-                var string = NSString(data: data, encoding: NSUTF8StringEncoding)
-                string = string!.stringByReplacingOccurrencesOfString("\u{201D}", withString: "\"")
-                let dataFormatted = string?.dataUsingEncoding(NSUTF8StringEncoding)
-                let file = try NSJSONSerialization.JSONObjectWithData(dataFormatted!, options: []) as! JSONDictionary
+                var string = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+                string = string!.replacingOccurrences(of: "\u{201D}", with: "\"") as NSString?
+                let dataFormatted = string?.data(using: String.Encoding.utf8.rawValue)
+                let file = try JSONSerialization.jsonObject(with: dataFormatted!, options: []) as! JSONDictionary
                 print(file["Categories"])
                 if let categoriesDictionary = file["Categories"] as? [JSONDictionary] {
                     var categories:[CategoryJSON] = []
@@ -102,9 +102,9 @@ class DataImporter {
                         do {
                             let categoryJson = try CategoryJSON.createCategory(category)
                             categories.append(categoryJson)
-                        } catch InputError.InputMissing {
+                        } catch InputError.inputMissing {
                             return nil
-                        } catch InputError.IdIncorrect {
+                        } catch InputError.idIncorrect {
                             return nil
                         }
                     }
@@ -124,20 +124,20 @@ class DataImporter {
         return nil
     }
     class func createCategoriesFromFileFromNSBundle () -> [CategoryJSON]? {
-        var data:NSData!
-        if let filePath = NSBundle.mainBundle().pathForResource("Categories List", ofType: "json") {
+        var data:Data!
+        if let filePath = Bundle.main.path(forResource: "Categories List", ofType: "json") {
             //        let filePath = paths.stringByAppendingPathComponent(fileName)
-            let checkValidation = NSFileManager.defaultManager()
-            if checkValidation.fileExistsAtPath(filePath) {
+            let checkValidation = FileManager.default
+            if checkValidation.fileExists(atPath: filePath) {
                 print("Postoji.")
-                data = NSData(contentsOfFile: filePath)
+                data = try? Data(contentsOf: URL(fileURLWithPath: filePath))
                 let jsonError: NSError?
                 
                 do {
-                    var string = NSString(data: data, encoding: NSUTF8StringEncoding)
-                    string = string!.stringByReplacingOccurrencesOfString("\u{201D}", withString: "\"")
-                    let dataFormatted = string?.dataUsingEncoding(NSUTF8StringEncoding)
-                    let file = try NSJSONSerialization.JSONObjectWithData(dataFormatted!, options: []) as! JSONDictionary
+                    var string = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+                    string = string!.replacingOccurrences(of: "\u{201D}", with: "\"") as NSString?
+                    let dataFormatted = string?.data(using: String.Encoding.utf8.rawValue)
+                    let file = try JSONSerialization.jsonObject(with: dataFormatted!, options: []) as! JSONDictionary
                     print(file["Categories"])
                     if let categoriesDictionary = file["Categories"] as? [JSONDictionary] {
                         var categories:[CategoryJSON] = []
@@ -145,9 +145,9 @@ class DataImporter {
                             do {
                                 let categoryJson = try CategoryJSON.createCategory(category)
                                 categories.append(categoryJson)
-                            } catch InputError.InputMissing {
+                            } catch InputError.inputMissing {
                                 return nil
-                            } catch InputError.IdIncorrect {
+                            } catch InputError.idIncorrect {
                                 return nil
                             }
                         }
@@ -167,21 +167,21 @@ class DataImporter {
         }
         return nil
     }
-    class func createSecuritiesFromFile (filePath:String) -> [SecurityJSON]? {
-        var data:NSData!
+    class func createSecuritiesFromFile (_ filePath:String) -> [SecurityJSON]? {
+        var data:Data!
         //        let paths: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
         //        let filePath = paths.stringByAppendingPathComponent(fileName)
-        let checkValidation = NSFileManager.defaultManager()
-        if checkValidation.fileExistsAtPath(filePath) {
+        let checkValidation = FileManager.default
+        if checkValidation.fileExists(atPath: filePath) {
             print("Postoji.")
-            data = NSData(contentsOfFile: filePath)
+            data = try? Data(contentsOf: URL(fileURLWithPath: filePath))
             let jsonError: NSError?
             
             do {
-                var string = NSString(data: data, encoding: NSUTF8StringEncoding)
-                string = string!.stringByReplacingOccurrencesOfString("\u{201D}", withString: "\"")
-                let dataFormatted = string?.dataUsingEncoding(NSUTF8StringEncoding)
-                let file = try NSJSONSerialization.JSONObjectWithData(dataFormatted!, options: []) as! JSONDictionary
+                var string = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+                string = string!.replacingOccurrences(of: "\u{201D}", with: "\"") as NSString?
+                let dataFormatted = string?.data(using: String.Encoding.utf8.rawValue)
+                let file = try JSONSerialization.jsonObject(with: dataFormatted!, options: []) as! JSONDictionary
                 print(file["Securities"])
                 if let securitiesDictionary = file["Securities"] as? [JSONDictionary] {
                     var securities:[SecurityJSON] = []
@@ -219,7 +219,7 @@ extension ZoneJSON {
         if var id = dictionary["ID"] as? String, var level = dictionary["Level"] as? String, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String {
             if id == "" {id = "0"}
             if level == "" {level = "0"}
-            if let idInt = Int(id), levelInt = Int(level) {
+            if let idInt = Int(id), let levelInt = Int(level) {
                 self.id = idInt
                 self.level = levelInt
                 self.name = name
@@ -241,13 +241,13 @@ struct CategoryJSON {
 //    
 //}
 extension CategoryJSON {
-    static func createCategory(dictionary:JSONDictionary) throws -> CategoryJSON {
+    static func createCategory(_ dictionary:JSONDictionary) throws -> CategoryJSON {
         guard var id  = dictionary["ID"] as? String, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String else {
-            throw InputError.InputMissing
+            throw InputError.inputMissing
         }
         if id == "" {id = "0"}
         guard let idInt = Int(id) else {
-            throw InputError.IdIncorrect
+            throw InputError.idIncorrect
         }
 //        if var id  = dictionary["ID"] as? String, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String {
 //            if id == "" {id = "0"}

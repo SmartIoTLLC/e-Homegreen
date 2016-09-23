@@ -10,16 +10,16 @@ import UIKit
 import SystemConfiguration.CaptiveNetwork
 
 class SendingHandler {
-    static func sendCommand(byteArray byteArray:[UInt8], gateway:Gateway) {
+    static func sendCommand(byteArray:[UInt8], gateway:Gateway) {
         print("Command sent: \(byteArray) na: \(gateway)")
-        let appDel:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDel:AppDelegate = UIApplication.shared.delegate as! AppDelegate
         if appDel.inOutSockets.count > 0 {
             
-            if let ssid = UIDevice.currentDevice().SSID {
+            if let ssid = UIDevice.current.SSID {
                 // Checks if ssid exists
                 var doesSSIDExist = false
                 if let ssids = gateway.location.ssids?.allObjects as? [SSID]  {
-                    doesSSIDExist = ssids.contains({ (let item) -> Bool in
+                    doesSSIDExist = ssids.contains(where: { (item) -> Bool in
                         return item.name == ssid ? true : false
                     })
                 }
@@ -52,9 +52,9 @@ class SendingHandler {
             }
         }
     }
-    static func sendCommand(byteArray byteArray:[UInt8], ip:String, port:UInt16) {
+    static func sendCommand(byteArray:[UInt8], ip:String, port:UInt16) {
         print("Command sent: \(byteArray)")
-        let appDel:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDel:AppDelegate = UIApplication.shared.delegate as! AppDelegate
        
         for inOutSocket in appDel.inOutSockets {
             if inOutSocket.port == UInt16(Int(port)) {
@@ -75,12 +75,12 @@ extension UIDevice {
         get {
             if let interfaces = CNCopySupportedInterfaces(){
                 for i in 0..<CFArrayGetCount(interfaces){
-                    let interfaceName: UnsafePointer<Void> = CFArrayGetValueAtIndex(interfaces, i)
-                    let rec = unsafeBitCast(interfaceName, AnyObject.self)
-                    let unsafeInterfaceData = CNCopyCurrentNetworkInfo("\(rec)")
+                    let interfaceName: UnsafeRawPointer = CFArrayGetValueAtIndex(interfaces, i)
+                    let rec = unsafeBitCast(interfaceName, to: AnyObject.self)
+                    let unsafeInterfaceData = CNCopyCurrentNetworkInfo("\(rec)" as CFString)
                     if unsafeInterfaceData != nil {
                         let interfaceData = unsafeInterfaceData! as NSDictionary!
-                        return (interfaceData["SSID"] as! String)
+                        return (interfaceData?["SSID"] as! String)
                     }
                 }
             }

@@ -13,16 +13,16 @@ class FilterController: NSObject {
     
     static let shared = FilterController()
     
-    let prefs = NSUserDefaults.standardUserDefaults()
+    let prefs = Foundation.UserDefaults.standard
     
-    let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    func getLocationByObjectId(objectId:String) -> Location?{
+    func getLocationByObjectId(_ objectId:String) -> Location?{
         if objectId != "" && objectId != "0" && objectId != "255"{
-            if let url = NSURL(string: objectId){
-                if let id = appDel.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
+            if let url = URL(string: objectId){
+                if let id = appDel.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) {
                     do{
-                        let location = try appDel.managedObjectContext?.existingObjectWithID(id) as? Location
+                        let location = try appDel.managedObjectContext?.existingObject(with: id) as? Location
                         return location
                     }catch {
                         
@@ -33,12 +33,12 @@ class FilterController: NSObject {
         return nil
     }
     
-    func getZoneByObjectId(objectId:String) -> Zone?{
+    func getZoneByObjectId(_ objectId:String) -> Zone?{
         if objectId != "" && objectId != "0" && objectId != "255"{
-            if let url = NSURL(string: objectId){
-                if let id = appDel.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
+            if let url = URL(string: objectId){
+                if let id = appDel.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) {
                     do{
-                        let zone = try appDel.managedObjectContext?.existingObjectWithID(id) as? Zone
+                        let zone = try appDel.managedObjectContext?.existingObject(with: id) as? Zone
                         return zone
                     }catch {
                         
@@ -49,12 +49,12 @@ class FilterController: NSObject {
         return nil
     }
     
-    func getCategoryByObjectId(objectId:String) -> Category?{
+    func getCategoryByObjectId(_ objectId:String) -> Category?{
         if objectId != "" && objectId != "0" && objectId != "255"{
-            if let url = NSURL(string: objectId){
-                if let id = appDel.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
+            if let url = URL(string: objectId){
+                if let id = appDel.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) {
                     do{
-                        let category = try appDel.managedObjectContext?.existingObjectWithID(id) as? Category
+                        let category = try appDel.managedObjectContext?.existingObject(with: id) as? Category
                         return category
                     }catch {
                         
@@ -66,7 +66,7 @@ class FilterController: NSObject {
     }
     
     func getLocationForFilterByUser() -> [Location]{
-        let fetchRequest = NSFetchRequest(entityName: "Location")
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Location.fetchRequest()
         
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         
@@ -81,7 +81,7 @@ class FilterController: NSObject {
         }
         
         do {
-            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Location]
+            let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Location]
             return results
             
         } catch  {
@@ -89,20 +89,20 @@ class FilterController: NSObject {
         return []
     }
     
-    func getLevelsByLocation(location:Location) -> [Zone]{
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
+    func getLevelsByLocation(_ location:Location) -> [Zone]{
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
         let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
         
         var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "level == %@", NSNumber(integer: 0)))
-        predicateArray.append(NSPredicate(format: "isVisible == %@", NSNumber(bool: true)))
+        predicateArray.append(NSPredicate(format: "level == %@", NSNumber(value: 0 as Int)))
+        predicateArray.append(NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool)))
         predicateArray.append(NSPredicate(format: "location == %@", location))
         
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.sortDescriptors = [sortDescriptors]
         fetchRequest.predicate = compoundPredicate
         do {
-            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
+            let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Zone]
             return results
         } catch {
             
@@ -110,22 +110,22 @@ class FilterController: NSObject {
         return[]
     }
     
-    func getZoneByLevel(location:Location, parentZone:Zone) -> [Zone]{
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
+    func getZoneByLevel(_ location:Location, parentZone:Zone) -> [Zone]{
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
         let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
         
         var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "isVisible == %@", NSNumber(bool: true)))
+        predicateArray.append(NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool)))
         predicateArray.append(NSPredicate(format: "location == %@", location))
-        predicateArray.append(NSPredicate(format: "level != %@", NSNumber(integer: 0)))
+        predicateArray.append(NSPredicate(format: "level != %@", NSNumber(value: 0 as Int)))
         predicateArray.append(NSPredicate(format: "level == %@", parentZone.id!))
 
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.sortDescriptors = [sortDescriptors]
         fetchRequest.predicate = compoundPredicate
         
         do {
-            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
+            let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Zone]
             return results
         } catch{
             
@@ -134,19 +134,19 @@ class FilterController: NSObject {
         
     }
     
-    func getCategoriesByLocation(location:Location) -> [Category]{
-            let fetchRequest = NSFetchRequest(entityName: "Category")
+    func getCategoriesByLocation(_ location:Location) -> [Category]{
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Category.fetchRequest()
             let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
         
             var predicateArray:[NSPredicate] = []
-            predicateArray.append(NSPredicate(format: "isVisible == %@", NSNumber(bool: true)))
+            predicateArray.append(NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool)))
             predicateArray.append(NSPredicate(format: "location == %@", location))
         
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
             fetchRequest.sortDescriptors = [sortDescriptors]
             fetchRequest.predicate = compoundPredicate
             do {
-                let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Category]
+                let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Category]
                 return results
             } catch{
                 

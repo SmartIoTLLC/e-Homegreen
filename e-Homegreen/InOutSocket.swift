@@ -22,12 +22,12 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     }
     func setupConnection(){
         var error : NSError?
-        socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
+        socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: DispatchQueue.main)
         socket.setIPv4Enabled(true)
         socket.setIPv6Enabled(false)
         
         do {
-            try socket.bindToPort(port)
+            try socket.bind(toPort: port)
         } catch let error1 as NSError {
             error = error1
             print("1 \(error)")
@@ -42,12 +42,12 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
             print("U pitanju je \(ip) \(port)")
         }
     }
-    func udpSocket(sock: GCDAsyncUdpSocket!, didReceiveData data: NSData!, fromAddress address: NSData!, withFilterContext filterContext: AnyObject!) {
+    func udpSocket(_ sock: GCDAsyncUdpSocket!, didReceive data: Data!, fromAddress address: Data!, withFilterContext filterContext: Any!) {
         if filterContext != nil {
             print(filterContext)
         }
         print("INOUT SOCKET incoming message: \(address.convertToBytes())")
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.IndicatorLamp, object: self, userInfo: ["lamp":"red"])
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.IndicatorLamp), object: self, userInfo: ["lamp":"red"])
         var host:NSString?
         var hostPort:UInt16 = 0
         GCDAsyncUdpSocket.getHost(&host, port: &hostPort, fromAddress: address)
@@ -56,17 +56,21 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
             _ = IncomingHandler(byteArrayToHandle: data.convertToBytes(), host: hostHost, port: hostPort)
         }
     }
-    func udpSocketDidClose(sock: GCDAsyncUdpSocket!, withError error: NSError!) {
+    
+//    private func udpSocket(_ sock: GCDAsyncUdpSocket!, didReceive data: Data!, fromAddress address: Data!, withFilterContext filterContext: AnyObject!) {
+//        
+//    }
+    func udpSocketDidClose(_ sock: GCDAsyncUdpSocket!, withError error: Error!) {
     }
     func setupConnection1(){
-        socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
+        socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: DispatchQueue.main)
         do {
-            try socket.bindToPort(port)
+            try socket.bind(toPort: port)
         } catch let error1 as NSError {
             print("Unresolved error \(error1), \(error1.userInfo)")
         }
         do {
-            try socket.connectToHost(ip, onPort: port)
+            try socket.connect(toHost: ip, onPort: port)
         } catch let error1 as NSError {
             print("Unresolved error \(error1), \(error1.userInfo)")
         }
@@ -78,38 +82,38 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
         send("ping")
     }
     
-    func send(message:String){
-        let data = message.dataUsingEncoding(NSUTF8StringEncoding)
-        socket.sendData(data, withTimeout: -1, tag: 0)
+    func send(_ message:String){
+        let data = message.data(using: String.Encoding.utf8)
+        socket.send(data, withTimeout: -1, tag: 0)
         
     }
-    func sendByte(ip:String, arrayByte: [UInt8]) {
-        let data = NSData(bytes: arrayByte, length: arrayByte.count)
-        socket.sendData(data, toHost: ip, port: port, withTimeout: -1, tag: 1)
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.IndicatorLamp, object: self, userInfo: ["lamp":"green"])
+    func sendByte(_ ip:String, arrayByte: [UInt8]) {
+        let data = Data(bytes: UnsafePointer<UInt8>(arrayByte), count: arrayByte.count)
+        socket.send(data, toHost: ip, port: port, withTimeout: -1, tag: 1)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.IndicatorLamp), object: self, userInfo: ["lamp":"green"])
     }
     
-    func udpSocket(sock: GCDAsyncUdpSocket!, didConnectToAddress address: NSData!) {
+    func udpSocket(_ sock: GCDAsyncUdpSocket!, didConnectToAddress address: Data!) {
         print("didConnectToAddress")
     }
     
-    func udpSocket(sock: GCDAsyncUdpSocket!, didNotConnect error: NSError!) {
+    func udpSocket(_ sock: GCDAsyncUdpSocket!, didNotConnect error: Error!) {
         print("didNotConnect \(error)")
     }
     
-    func udpSocket(sock: GCDAsyncUdpSocket!, didSendDataWithTag tag: Int) {
+    func udpSocket(_ sock: GCDAsyncUdpSocket!, didSendDataWithTag tag: Int) {
         print("didSendDataWithTag")
     }
     
-    func udpSocket(sock: GCDAsyncUdpSocket!, didNotSendDataWithTag tag: Int, dueToError error: NSError!) {
+    func udpSocket(_ sock: GCDAsyncUdpSocket!, didNotSendDataWithTag tag: Int, dueToError error: Error!) {
         print("didNotSendDataWithTag")
     }
 }
-extension NSData {
+extension Data {
     public func convertToBytes() -> [UInt8] {
-        let count = self.length / sizeof(UInt8)
-        var bytesArray = [UInt8](count: count, repeatedValue: 0)
-        self.getBytes(&bytesArray, length:count * sizeof(UInt8))
+        let count = self.count / MemoryLayout<UInt8>.size
+        var bytesArray = [UInt8](repeating: 0, count: count)
+        (self as NSData).getBytes(&bytesArray, length:count * MemoryLayout<UInt8>.size)
         return bytesArray
     }
 }

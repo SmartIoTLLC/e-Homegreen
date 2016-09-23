@@ -16,11 +16,11 @@ class SceneCollectionCell: UICollectionViewCell {
     var imageOne:UIImage?
     var imageTwo:UIImage?
     
-    func setItem(scene:Scene, filterParametar:FilterItem){
+    func setItem(_ scene:Scene, filterParametar:FilterItem){
         sceneCellLabel.text = getName(scene, filterParametar: filterParametar)
     }
     
-    func getName(scene:Scene, filterParametar:FilterItem) -> String{
+    func getName(_ scene:Scene, filterParametar:FilterItem) -> String{
         var name:String = ""
         if scene.gateway.location.name != filterParametar.location{
             name += scene.gateway.location.name! + " "
@@ -45,7 +45,7 @@ class SceneCollectionCell: UICollectionViewCell {
         return name
     }
     
-    func getImagesFrom(scene:Scene) {
+    func getImagesFrom(_ scene:Scene) {
         
         if let id = scene.sceneImageOneCustom{
             if let image = DatabaseImageController.shared.getImageById(id){
@@ -103,7 +103,7 @@ class SceneCollectionCell: UICollectionViewCell {
     }
     func changeImageForOneSecond() {
         sceneCellImageView.image = imageTwo
-        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(SceneCollectionCell.changeImageToNormal), userInfo: nil, repeats: false)
+        Foundation.Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(SceneCollectionCell.changeImageToNormal), userInfo: nil, repeats: false)
     }
     func changeImageBack() {
         sceneCellImageView.image = imageOne
@@ -113,23 +113,23 @@ class SceneCollectionCell: UICollectionViewCell {
         sceneCellImageView.image = imageOne
     }
     
-    @IBAction func btnSet(sender: AnyObject) {
+    @IBAction func btnSet(_ sender: AnyObject) {
         
     }
     
-    override func drawRect(rect: CGRect) {
-        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: UIRectCorner.AllCorners, cornerRadii: CGSize(width: 5.0, height: 5.0))
+    override func draw(_ rect: CGRect) {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: UIRectCorner.allCorners, cornerRadii: CGSize(width: 5.0, height: 5.0))
         path.addClip()
         path.lineWidth = 2
-        UIColor.lightGrayColor().setStroke()
+        UIColor.lightGray.setStroke()
         let context = UIGraphicsGetCurrentContext()
-        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
+        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).withAlphaComponent(0.95).cgColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).withAlphaComponent(1.0).cgColor]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
-        let gradient = CGGradientCreateWithColors(colorSpace, colors, colorLocations)
+        let gradient = CGGradient(colorsSpace: colorSpace, colors: colors as CFArray, locations: colorLocations)
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:0, y:self.bounds.height)
-        CGContextDrawLinearGradient(context!, gradient!, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+        context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
         path.stroke()
     }
 }

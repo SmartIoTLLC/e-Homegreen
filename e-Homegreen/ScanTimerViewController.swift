@@ -10,30 +10,30 @@ import UIKit
 import CoreData
 
 enum TimerType:Int{
-    case Once = 0, Daily, Monthly, Yearly, Hourly, Minutely , Timer , Stopwatch
+    case once = 0, daily, monthly, yearly, hourly, minutely , timer , stopwatch
     
     var description: String {
         switch self{
-        case Once:
+        case .once:
             return "Once"
-        case Daily:
+        case .daily:
            return "Daily"
-        case Monthly:
+        case .monthly:
             return "Monthly"
-        case Yearly:
+        case .yearly:
             return "Yearly"
-        case Hourly:
+        case .hourly:
             return "Hourly"
-        case Minutely:
+        case .minutely:
             return "Minutely"
-        case Timer:
+        case .timer:
             return "Timer"
-        case Stopwatch:
+        case .stopwatch:
             return "Stopwatch/User"
         }
     }
 
-    static let allItem:[TimerType] = [Once, Daily, Monthly, Yearly, Hourly, Minutely, Timer, Stopwatch]
+    static let allItem:[TimerType] = [once, daily, monthly, yearly, hourly, minutely, timer, stopwatch]
 }
 
 class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
@@ -69,11 +69,11 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     
     var timerTypeId:Int?
     
-    var imageDataOne:NSData?
+    var imageDataOne:Data?
     var customImageOne:String?
     var defaultImageOne:String?
     
-    var imageDataTwo:NSData?
+    var imageDataTwo:Data?
     var customImageTwo:String?
     var defaultImageTwo:String?
     
@@ -88,24 +88,24 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         
         nameEdit.delegate = self
         
-        imageTimerOne.userInteractionEnabled = true
+        imageTimerOne.isUserInteractionEnabled = true
         imageTimerOne.tag = 1
         imageTimerOne.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ScanTimerViewController.handleTap(_:))))
-        imageTimerTwo.userInteractionEnabled = true
+        imageTimerTwo.isUserInteractionEnabled = true
         imageTimerTwo.tag = 2
         imageTimerTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ScanTimerViewController.handleTap(_:))))
         
         devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne)))"
-        devAddressOne.enabled = false
+        devAddressOne.isEnabled = false
         devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway.addressTwo)))"
-        devAddressTwo.enabled = false
+        devAddressTwo.isEnabled = false
         
         broadcastSwitch.tag = 100
-        broadcastSwitch.on = false
-        broadcastSwitch.addTarget(self, action: #selector(ScanTimerViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        broadcastSwitch.isOn = false
+        broadcastSwitch.addTarget(self, action: #selector(ScanTimerViewController.changeValue(_:)), for: UIControlEvents.valueChanged)
         localcastSwitch.tag = 200
-        localcastSwitch.on = false
-        localcastSwitch.addTarget(self, action: #selector(ScanTimerViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        localcastSwitch.isOn = false
+        localcastSwitch.addTarget(self, action: #selector(ScanTimerViewController.changeValue(_:)), for: UIControlEvents.valueChanged)
         
         btnLevel.tag = 1
         btnZone.tag = 2
@@ -115,32 +115,32 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         addObservers()
         refreshTimerList()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         removeObservers()
     }
     
-    override func sendFilterParametar(filterParametar: FilterItem) {
+    override func sendFilterParametar(_ filterParametar: FilterItem) {
         self.filterParametar = filterParametar
         refreshTimerList()
     }
     
-    override func sendSearchBarText(text: String) {
+    override func sendSearchBarText(_ text: String) {
         searchBarText = text
         refreshTimerList()
         
     }
     
-    override func nameAndId(name: String, id: String) {
+    override func nameAndId(_ name: String, id: String) {
         
         switch button.tag{
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
-            btnZone.setTitle("All", forState: .Normal)
+            btnZone.setTitle("All", for: UIControlState())
             zoneSelected = nil
             break
         case 2:
@@ -156,14 +156,14 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             break
         }
         
-        button.setTitle(name, forState: .Normal)
+        button.setTitle(name, for: UIControlState())
     }
     
-    func changeValue (sender:UISwitch){
+    func changeValue (_ sender:UISwitch){
         if sender.tag == 100 {
-            localcastSwitch.on = false
+            localcastSwitch.isOn = false
         } else if sender.tag == 200 {
-            broadcastSwitch.on = false
+            broadcastSwitch.isOn = false
         }
     }
     func refreshTimerList() {
@@ -171,7 +171,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         if !searchBarText.isEmpty{
             timers = self.timers.filter() {
                 timer in
-                if timer.timerName.lowercaseString.rangeOfString(searchBarText.lowercaseString) != nil{
+                if timer.timerName.lowercased().range(of: searchBarText.lowercased()) != nil{
                     return true
                 }else{
                     return false
@@ -181,26 +181,26 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         timerTableView.reloadData()
     }
     
-    func handleTap (gesture:UITapGestureRecognizer) {
+    func handleTap (_ gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
             showGallery(index, user: gateway.location.user).delegate = self
         }
     }
     func addObservers(){
         // Notification that tells us that timer is received and stored
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanTimerViewController.nameReceivedFromPLC(_:)), name: NotificationKey.DidReceiveTimerFromGateway, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanTimerViewController.timerParametarReceivedFromPLC(_:)), name: NotificationKey.DidReceiveTimerParameterFromGateway, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ScanTimerViewController.nameReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveTimerFromGateway), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ScanTimerViewController.timerParametarReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveTimerParameterFromGateway), object: nil)
         
     }
     func removeObservers(){
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningTimerNames)
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningTimerParameters)
+        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningTimerNames)
+        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningTimerParameters)
         // Notification that tells us that timer is received and stored
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidReceiveTimerFromGateway, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidReceiveTimerParameterFromGateway, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidReceiveTimerFromGateway), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidReceiveTimerParameterFromGateway), object: nil)
     }
     
-    @IBAction func btnAdd(sender: AnyObject) {
+    @IBAction func btnAdd(_ sender: AnyObject) {
         if let timerId = Int(IDedit.text!), let timerName = nameEdit.text, let address = Int(devAddressThree.text!), let type = btnType.titleLabel?.text {
             if timerId <= 32767 && address <= 255 && type != "--" {
                 
@@ -217,64 +217,64 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
                     categoryId = Int(categoryIdNumber)
                 }
                 
-                DatabaseTimersController.shared.addTimer(timerId, timerName: timerName, moduleAddress: address, gateway: gateway, type: timerTypeId, levelId: levelId, selectedZoneId: zoneId, categoryId: categoryId, isBroadcast: broadcastSwitch.on, isLocalcast: localcastSwitch.on, sceneImageOneDefault: defaultImageOne, sceneImageTwoDefault: defaultImageTwo, sceneImageOneCustom: customImageOne, sceneImageTwoCustom: customImageTwo, imageDataOne: imageDataOne, imageDataTwo: imageDataTwo)
+                DatabaseTimersController.shared.addTimer(timerId, timerName: timerName, moduleAddress: address, gateway: gateway, type: timerTypeId, levelId: levelId, selectedZoneId: zoneId, categoryId: categoryId, isBroadcast: broadcastSwitch.isOn, isLocalcast: localcastSwitch.isOn, sceneImageOneDefault: defaultImageOne, sceneImageTwoDefault: defaultImageTwo, sceneImageOneCustom: customImageOne, sceneImageTwoCustom: customImageTwo, imageDataOne: imageDataOne, imageDataTwo: imageDataTwo)
                 
             }
             refreshTimerList()
             self.view.endEditing(true)
         }
     }
-    @IBAction func scanTimers(sender: AnyObject) {
+    @IBAction func scanTimers(_ sender: AnyObject) {
         findNames()
     }
-    @IBAction func clearRangeFields(sender: AnyObject) {
+    @IBAction func clearRangeFields(_ sender: AnyObject) {
         fromTextField.text = ""
         toTextField.text = ""
     }
-    @IBAction func btnRemove(sender: UIButton) {
+    @IBAction func btnRemove(_ sender: UIButton) {
         showAlertView(sender, message: "Are you sure you want to delete all scenes?") { (action) in
-            if action == ReturnedValueFromAlertView.Delete {
+            if action == ReturnedValueFromAlertView.delete {
                 DatabaseTimersController.shared.deleteAllTimers(self.gateway)
                 self.refreshTimerList()
                 self.view.endEditing(true)
             }
         }
     }
-    @IBAction func btnLevel(sender: UIButton) {
+    @IBAction func btnLevel(_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(gateway.location)
         for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
         }
-        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
-    @IBAction func btnCategory(sender: UIButton) {
+    @IBAction func btnCategory(_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(gateway.location)
         for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
         }
         
-        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
-    @IBAction func btnZone(sender: UIButton) {
+    @IBAction func btnZone(_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         if let level = level{
             let list:[Zone] = DatabaseZoneController.shared.getZoneByLevel(gateway.location, parentZone: level)
             for item in list {
-                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
+                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
             }
         }
         
-        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
-    @IBAction func btnTimerType(sender: UIButton) {
+    @IBAction func btnTimerType(_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         for item in TimerType.allItem{
@@ -285,8 +285,8 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
 
     // MARK: - FINDING NAMES FOR DEVICE
     // Info: Add observer for received info from PLC (e.g. nameReceivedFromPLC)
-    var timerNameTimer:NSTimer?
-    var timerParameterTimer: NSTimer?
+    var timerNameTimer:Foundation.Timer?
+    var timerParameterTimer: Foundation.Timer?
     var timesRepeatedCounterNames:Int = 0
     var timesRepeatedCounterParameters: Int = 0
     var arrayOfNamesToBeSearched = [Int]()
@@ -349,22 +349,22 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             }
             shouldFindTimerParameters = true
         
-            UIApplication.sharedApplication().idleTimerDisabled = true
+            UIApplication.shared.isIdleTimerDisabled = true
             if arrayOfNamesToBeSearched.count != 0{
                 let firstTimerIndexThatDontHaveName = arrayOfNamesToBeSearched[indexOfNamesToBeSearched]
                 timesRepeatedCounterNames = 0
                 progressBarScreenTimerNames = ProgressBarVC(title: "Finding name", percentage: Float(1)/Float(arrayOfNamesToBeSearched.count), howMuchOf: "1 / \(arrayOfNamesToBeSearched.count)")
                 progressBarScreenTimerNames?.delegate = self
-                self.presentViewController(progressBarScreenTimerNames!, animated: true, completion: nil)
-                timerNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: firstTimerIndexThatDontHaveName, repeats: false)
+                self.present(progressBarScreenTimerNames!, animated: true, completion: nil)
+                timerNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: firstTimerIndexThatDontHaveName, repeats: false)
                 NSLog("func findNames \(firstTimerIndexThatDontHaveName)")
-                NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningTimerNames)
+                Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningTimerNames)
                 sendCommandForFindingNameWithTimerAddress(firstTimerIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
     }
     // Called from findNames or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingNames for that specific timer id.
-    func checkIfTimerDidGetName (timer:NSTimer) {
+    func checkIfTimerDidGetName (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated. 
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -374,16 +374,16 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         }
         timesRepeatedCounterNames += 1
         if timesRepeatedCounterNames < 3 {
-            timerNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: timerIndex, repeats: false)
+            timerNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: timerIndex, repeats: false)
             NSLog("func checkIfDeviceDidGetName \(timerIndex)")
             sendCommandForFindingNameWithTimerAddress(timerIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
         }else{
-            if let indexOfTimerIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(timerIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            if let indexOfTimerIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: timerIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                 if indexOfTimerIndexInArrayOfNamesToBeSearched+1 < arrayOfNamesToBeSearched.count{ // if next exists
                     indexOfNamesToBeSearched = indexOfTimerIndexInArrayOfNamesToBeSearched+1
                     let nextTimerIndexToBeSearched = arrayOfNamesToBeSearched[indexOfTimerIndexInArrayOfNamesToBeSearched+1]
                     timesRepeatedCounterNames = 0
-                    timerNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                    timerNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
                     NSLog("func checkIfDeviceDidGetName \(nextTimerIndexToBeSearched)")
                     sendCommandForFindingNameWithTimerAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
                 }else{
@@ -396,15 +396,15 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     }
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
-    func nameReceivedFromPLC (notification:NSNotification) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningTimerNames) {
-            guard let info = notification.userInfo! as? [String:Int] else{
+    func nameReceivedFromPLC (_ notification:Notification) {
+        if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningTimerNames) {
+            guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
             }
             guard let timerIndex = info["timerId"] else{
                 return
             }
-            guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                 return
             }
         
@@ -414,7 +414,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
                 
                 timesRepeatedCounterNames = 0
                 timerNameTimer?.invalidate()
-                timerNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                timerNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
                 NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextTimerIndexToBeSearched)")
                 sendCommandForFindingNameWithTimerAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }else{
@@ -423,14 +423,14 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         }
     }
     // Sends byteArray to PLC
-    func sendCommandForFindingNameWithTimerAddress(timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
+    func sendCommandForFindingNameWithTimerAddress(_ timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametarsForFindingNames(timerId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getTimerName(address, timerId: UInt8(timerId)) , gateway: self.gateway)
     }
-    func setProgressBarParametarsForFindingNames (timerId:Int) {
+    func setProgressBarParametarsForFindingNames (_ timerId:Int) {
         print("Progresbar for Names: \(timerId)")
-        if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(timerId){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+        if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: timerId){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
             if let _ = progressBarScreenTimerNames?.lblHowMuchOf, let _ = progressBarScreenTimerNames?.lblPercentage, let _ = progressBarScreenTimerNames?.progressView{
                 progressBarScreenTimerNames?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfNamesToBeSearched+1) / \(arrayOfNamesToBeSearched.count)"
                 progressBarScreenTimerNames?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfNamesToBeSearched.count)*100) + " %"
@@ -478,24 +478,24 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             
             for i in from...to{
                 for timerTemp in timers {
-                    if timerTemp.timerId.integerValue == i{
+                    if timerTemp.timerId.intValue == i{
                         arrayOfParametersToBeSearched.append(i)
                     }
                 }
             }
             
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningTimerParameters)
+            Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningTimerParameters)
             
-            UIApplication.sharedApplication().idleTimerDisabled = true
+            UIApplication.shared.isIdleTimerDisabled = true
             if arrayOfParametersToBeSearched.count != 0{
                 let parameterIndex = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
                 timesRepeatedCounterParameters = 0
                 progressBarScreenTimerNames = nil
                 progressBarScreenTimerNames = ProgressBarVC(title: "Finding timer parametars", percentage: Float(1)/Float(self.arrayOfParametersToBeSearched.count), howMuchOf: "1 / \(self.arrayOfParametersToBeSearched.count)")
                 progressBarScreenTimerNames?.delegate = self
-                self.presentViewController(progressBarScreenTimerNames!, animated: true, completion: nil)
+                self.present(progressBarScreenTimerNames!, animated: true, completion: nil)
                 timerParameterTimer?.invalidate()
-                timerParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: parameterIndex, repeats: false)
+                timerParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: parameterIndex, repeats: false)
                 NSLog("func findNames \(parameterIndex)")
                 sendCommandForFindingParameterWithTimerAddress(parameterIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
                 print("Command sent for parameter from FindParameter")
@@ -503,7 +503,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     }
     // Called from findParametarsForTimer or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingParameterWithTimerAddress for that specific timer id.
-    func checkIfTimerDidGetParametar (timer:NSTimer) {
+    func checkIfTimerDidGetParametar (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -513,17 +513,17 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         }
         timesRepeatedCounterParameters += 1
         if timesRepeatedCounterParameters < 3 {
-            timerParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: timerIndex, repeats: false)
+            timerParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: timerIndex, repeats: false)
             NSLog("func checkIfDeviceDidGetParameter \(timerIndex)")
             sendCommandForFindingParameterWithTimerAddress(timerIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             print("Command sent for parameter from CheckIfTimerDidGetParameter (repeat \(timesRepeatedCounterParameters))")
         }else{
-            if let indexOfTimerIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.indexOf(timerIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            if let indexOfTimerIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: timerIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                 if indexOfTimerIndexInArrayOfParametersToBeSearched+1 < arrayOfParametersToBeSearched.count{ // if next exists
                     indexOfParametersToBeSearched = indexOfTimerIndexInArrayOfParametersToBeSearched+1
                     let nextTimerIndexToBeSearched = arrayOfParametersToBeSearched[indexOfTimerIndexInArrayOfParametersToBeSearched+1]
                     timesRepeatedCounterParameters = 0
-                    timerParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                    timerParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
                     NSLog("func checkIfDeviceDidGetParameter \(nextTimerIndexToBeSearched)")
                     sendCommandForFindingParameterWithTimerAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
                     print("Command sent for parameter from checkIfTimerDidGetParametar: next parameter")
@@ -536,15 +536,15 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     }
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
-    func timerParametarReceivedFromPLC (notification:NSNotification) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningTimerParameters) {
-            guard let info = notification.userInfo! as? [String:Int] else{
+    func timerParametarReceivedFromPLC (_ notification:Notification) {
+        if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningTimerParameters) {
+            guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
             }
             guard let timerIndex = info["timerId"] else{
                 return
             }
-            guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.indexOf(timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                 return
             }
             
@@ -553,7 +553,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
                 let nextTimerIndexToBeSearched = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
                 timesRepeatedCounterParameters = 0
                 timerParameterTimer?.invalidate()
-                timerParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                timerParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
                 NSLog("func parameterReceivedFromPLC index:\(index) :deviceIndex\(nextTimerIndexToBeSearched)")
                 sendCommandForFindingParameterWithTimerAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
                 print("Command sent for parameter from timerParameterReceivedFromPLC: next parameter")
@@ -564,13 +564,13 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         }
     }
     // Sends byteArray to PLC
-    func sendCommandForFindingParameterWithTimerAddress(timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
+    func sendCommandForFindingParameterWithTimerAddress(_ timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametarsForFindingParameters(timerId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getTimerParametar(address, id: UInt8(timerId)) , gateway: self.gateway)
     }
-    func setProgressBarParametarsForFindingParameters (timerId:Int) {
-        if let indexOfDeviceIndexInArrayOfPatametersToBeSearched = arrayOfParametersToBeSearched.indexOf(timerId){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+    func setProgressBarParametarsForFindingParameters (_ timerId:Int) {
+        if let indexOfDeviceIndexInArrayOfPatametersToBeSearched = arrayOfParametersToBeSearched.index(of: timerId){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
             print("Progresbar for Parameters: \(indexOfDeviceIndexInArrayOfPatametersToBeSearched)")
             if let _ = progressBarScreenTimerNames?.lblHowMuchOf {
                 if let _ = progressBarScreenTimerNames?.lblPercentage{
@@ -595,8 +595,8 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         timesRepeatedCounterParameters = 0
         timerNameTimer?.invalidate()
         timerParameterTimer?.invalidate()
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningTimerNames)
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningTimerParameters)
+        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningTimerNames)
+        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningTimerParameters)
         progressBarScreenTimerNames!.dissmissProgressBar()
 
         arrayOfNamesToBeSearched = [Int]()
@@ -604,37 +604,37 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         arrayOfParametersToBeSearched = [Int]()
         indexOfParametersToBeSearched = 0
         if !shouldFindTimerParameters {
-            UIApplication.sharedApplication().idleTimerDisabled = false
+            UIApplication.shared.isIdleTimerDisabled = false
             refreshTimerList()
         } else {
-            _ = NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(ScanTimerViewController.findParametarsForTimer), userInfo: nil, repeats: false)
+            _ = Foundation.Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(ScanTimerViewController.findParametarsForTimer), userInfo: nil, repeats: false)
         }
     }
 }
 
 extension ScanTimerViewController: UITextFieldDelegate{
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
 }
 
 extension ScanTimerViewController: SceneGalleryDelegate{
-    func backImage(image: Image, imageIndex: Int) {
+    func backImage(_ image: Image, imageIndex: Int) {
         if imageIndex == 1 {
             defaultImageOne = nil
             customImageOne = image.imageId
             imageDataOne = nil
-            self.imageTimerOne.image = UIImage(data: image.imageData!)
+            self.imageTimerOne.image = UIImage(data: image.imageData! as Data)
         }
         if imageIndex == 2 {
             defaultImageTwo = nil
             customImageTwo = image.imageId
             imageDataTwo = nil
-            self.imageTimerTwo.image = UIImage(data: image.imageData!)
+            self.imageTimerTwo.image = UIImage(data: image.imageData! as Data)
         }
     }
-    func backString(strText: String, imageIndex:Int) {
+    func backString(_ strText: String, imageIndex:Int) {
         if imageIndex == 1 {
             defaultImageOne = strText
             customImageOne = nil
@@ -648,7 +648,7 @@ extension ScanTimerViewController: SceneGalleryDelegate{
             self.imageTimerTwo.image = UIImage(named: strText)
         }
     }
-    func backImageFromGallery(data: NSData, imageIndex:Int ) {
+    func backImageFromGallery(_ data: Data, imageIndex:Int ) {
         if imageIndex == 1 {
             defaultImageOne = nil
             customImageOne = nil
@@ -665,152 +665,152 @@ extension ScanTimerViewController: SceneGalleryDelegate{
 }
 
 extension ScanTimerViewController: UITableViewDataSource {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        IDedit.text = "\(timers[indexPath.row].timerId)"
-        nameEdit.text = "\(timers[indexPath.row].timerName)"
-        devAddressThree.text = "\(returnThreeCharactersForByte(Int(timers[indexPath.row].address)))"
+    func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath) {
+        IDedit.text = "\(timers[(indexPath as NSIndexPath).row].timerId)"
+        nameEdit.text = "\(timers[(indexPath as NSIndexPath).row].timerName)"
+        devAddressThree.text = "\(returnThreeCharactersForByte(Int(timers[(indexPath as NSIndexPath).row].address)))"
         
-        if let type = TimerType(rawValue: Int(timers[indexPath.row].type)){
-            btnType.setTitle(type.description, forState: UIControlState.Normal)
+        if let type = TimerType(rawValue: Int(timers[(indexPath as NSIndexPath).row].type)){
+            btnType.setTitle(type.description, for: UIControlState())
             timerTypeId = type.rawValue
         }else{
-            btnType.setTitle("--", forState: UIControlState.Normal)
+            btnType.setTitle("--", for: UIControlState())
             timerTypeId = nil
         }
         
-        broadcastSwitch.on = timers[indexPath.row].isBroadcast.boolValue
-        localcastSwitch.on = timers[indexPath.row].isLocalcast.boolValue
+        broadcastSwitch.isOn = timers[(indexPath as NSIndexPath).row].isBroadcast.boolValue
+        localcastSwitch.isOn = timers[(indexPath as NSIndexPath).row].isLocalcast.boolValue
         
-        if let levelId = timers[indexPath.row].entityLevelId as? Int {
+        if let levelId = timers[(indexPath as NSIndexPath).row].entityLevelId as? Int {
             level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location)
-            btnLevel.setTitle(level?.name, forState: UIControlState.Normal)
+            btnLevel.setTitle(level?.name, for: UIControlState())
         }else{
-            btnLevel.setTitle("All", forState: UIControlState.Normal)
+            btnLevel.setTitle("All", for: UIControlState())
         }
-        if let zoneId = timers[indexPath.row].timeZoneId as? Int {
+        if let zoneId = timers[(indexPath as NSIndexPath).row].timeZoneId as? Int {
             zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location)
-            btnZone.setTitle(zoneSelected?.name, forState: UIControlState.Normal)
+            btnZone.setTitle(zoneSelected?.name, for: UIControlState())
         }else{
-            btnZone.setTitle("All", forState: UIControlState.Normal)
+            btnZone.setTitle("All", for: UIControlState())
         }
-        if let categoryId = timers[indexPath.row].timerCategoryId as? Int {
+        if let categoryId = timers[(indexPath as NSIndexPath).row].timerCategoryId as? Int {
             category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location)
-            btnCategory.setTitle(category?.name, forState: UIControlState.Normal)
+            btnCategory.setTitle(category?.name, for: UIControlState())
         }else{
-            btnCategory.setTitle("All", forState: UIControlState.Normal)
+            btnCategory.setTitle("All", for: UIControlState())
         }
         
-        defaultImageOne = timers[indexPath.row].timerImageOneDefault
-        customImageOne = timers[indexPath.row].timerImageOneCustom
+        defaultImageOne = timers[(indexPath as NSIndexPath).row].timerImageOneDefault
+        customImageOne = timers[(indexPath as NSIndexPath).row].timerImageOneCustom
         imageDataOne = nil
         
-        defaultImageTwo = timers[indexPath.row].timerImageTwoDefault
-        customImageTwo = timers[indexPath.row].timerImageTwoCustom
+        defaultImageTwo = timers[(indexPath as NSIndexPath).row].timerImageTwoDefault
+        customImageTwo = timers[(indexPath as NSIndexPath).row].timerImageTwoCustom
         imageDataTwo = nil
         
-        if let id = timers[indexPath.row].timerImageOneCustom{
+        if let id = timers[(indexPath as NSIndexPath).row].timerImageOneCustom{
             if let image = DatabaseImageController.shared.getImageById(id){
                 if let data =  image.imageData {
                     imageTimerOne.image = UIImage(data: data)
                 }else{
-                    if let defaultImage = timers[indexPath.row].timerImageOneDefault{
+                    if let defaultImage = timers[(indexPath as NSIndexPath).row].timerImageOneDefault{
                         imageTimerOne.image = UIImage(named: defaultImage)
                     }
                 }
             }else{
-                if let defaultImage = timers[indexPath.row].timerImageOneDefault{
+                if let defaultImage = timers[(indexPath as NSIndexPath).row].timerImageOneDefault{
                     imageTimerOne.image = UIImage(named: defaultImage)
                 }
             }
         }else{
-            if let defaultImage = timers[indexPath.row].timerImageOneDefault{
+            if let defaultImage = timers[(indexPath as NSIndexPath).row].timerImageOneDefault{
                 imageTimerOne.image = UIImage(named: defaultImage)
             }
         }
         
-        if let id = timers[indexPath.row].timerImageTwoCustom{
+        if let id = timers[(indexPath as NSIndexPath).row].timerImageTwoCustom{
             if let image = DatabaseImageController.shared.getImageById(id){
                 if let data =  image.imageData {
                     imageTimerTwo.image = UIImage(data: data)
                 }else{
-                    if let defaultImage = timers[indexPath.row].timerImageTwoDefault{
+                    if let defaultImage = timers[(indexPath as NSIndexPath).row].timerImageTwoDefault{
                         imageTimerTwo.image = UIImage(named: defaultImage)
                     }
                 }
             }else{
-                if let defaultImage = timers[indexPath.row].timerImageTwoDefault{
+                if let defaultImage = timers[(indexPath as NSIndexPath).row].timerImageTwoDefault{
                     imageTimerTwo.image = UIImage(named: defaultImage)
                 }
             }
         }else{
-            if let defaultImage = timers[indexPath.row].timerImageTwoDefault{
+            if let defaultImage = timers[(indexPath as NSIndexPath).row].timerImageTwoDefault{
                 imageTimerTwo.image = UIImage(named: defaultImage)
             }
         }
     }
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return timers.count
     }
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
-            self.tableView(self.timerTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
+    func tableView(_ tableView: UITableView, editActionsForRowAtIndexPath indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
+            self.tableView(self.timerTableView, commit: UITableViewCellEditingStyle.delete, forRowAt: indexPath)
         })
         
-        button.backgroundColor = UIColor.redColor()
+        button.backgroundColor = UIColor.red
         return [button]
     }
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            DatabaseTimersController.shared.deleteTimer(timers[indexPath.row])
-            timers.removeAtIndex(indexPath.row)
-            timerTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            DatabaseTimersController.shared.deleteTimer(timers[(indexPath as NSIndexPath).row])
+            timers.remove(at: (indexPath as NSIndexPath).row)
+            timerTableView.deleteRows(at: [indexPath], with: .fade)
         }
         
     }
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if let cell = tableView.dequeueReusableCellWithIdentifier("timersCell") as? TimersCell {
-            cell.backgroundColor = UIColor.clearColor()
-            cell.labelID.text = "\(timers[indexPath.row].timerId)"
-            cell.labelName.text = timers[indexPath.row].timerName
-            cell.address.text = "\(returnThreeCharactersForByte(Int(timers[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(timers[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(timers[indexPath.row].address)))"
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "timersCell") as? TimersCell {
+            cell.backgroundColor = UIColor.clear
+            cell.labelID.text = "\(timers[(indexPath as NSIndexPath).row].timerId)"
+            cell.labelName.text = timers[(indexPath as NSIndexPath).row].timerName
+            cell.address.text = "\(returnThreeCharactersForByte(Int(timers[(indexPath as NSIndexPath).row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(timers[(indexPath as NSIndexPath).row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(timers[(indexPath as NSIndexPath).row].address)))"
             
-            if let id = timers[indexPath.row].timerImageOneCustom{
+            if let id = timers[(indexPath as NSIndexPath).row].timerImageOneCustom{
                 if let image = DatabaseImageController.shared.getImageById(id){
                     if let data =  image.imageData {
                         cell.imageOne.image = UIImage(data: data)
                     }else{
-                        if let defaultImage = timers[indexPath.row].timerImageOneDefault{
+                        if let defaultImage = timers[(indexPath as NSIndexPath).row].timerImageOneDefault{
                             cell.imageOne.image = UIImage(named: defaultImage)
                         }
                     }
                 }else{
-                    if let defaultImage = timers[indexPath.row].timerImageOneDefault{
+                    if let defaultImage = timers[(indexPath as NSIndexPath).row].timerImageOneDefault{
                         cell.imageOne.image = UIImage(named: defaultImage)
                     }
                 }
             }else{
-                if let defaultImage = timers[indexPath.row].timerImageOneDefault{
+                if let defaultImage = timers[(indexPath as NSIndexPath).row].timerImageOneDefault{
                     cell.imageOne.image = UIImage(named: defaultImage)
                 }
             }
             
-            if let id = timers[indexPath.row].timerImageTwoCustom{
+            if let id = timers[(indexPath as NSIndexPath).row].timerImageTwoCustom{
                 if let image = DatabaseImageController.shared.getImageById(id){
                     if let data =  image.imageData {
                         cell.imageTwo.image = UIImage(data: data)
                     }else{
-                        if let defaultImage = timers[indexPath.row].timerImageTwoDefault{
+                        if let defaultImage = timers[(indexPath as NSIndexPath).row].timerImageTwoDefault{
                             cell.imageTwo.image = UIImage(named: defaultImage)
                         }
                     }
                 }else{
-                    if let defaultImage = timers[indexPath.row].timerImageTwoDefault{
+                    if let defaultImage = timers[(indexPath as NSIndexPath).row].timerImageTwoDefault{
                         cell.imageTwo.image = UIImage(named: defaultImage)
                     }
                 }
             }else{
-                if let defaultImage = timers[indexPath.row].timerImageTwoDefault{
+                if let defaultImage = timers[(indexPath as NSIndexPath).row].timerImageTwoDefault{
                     cell.imageTwo.image = UIImage(named: defaultImage)
                 }
             }
@@ -818,7 +818,7 @@ extension ScanTimerViewController: UITableViewDataSource {
             return cell
         }
         
-        let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
         return cell
         
     }

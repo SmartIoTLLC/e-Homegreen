@@ -27,6 +27,6 @@ extension User {
     @NSManaged var locations: NSSet?
     @NSManaged var menu: NSSet?
     
-    @NSManaged func addImagesObject(value:Image)
+    @NSManaged func addImagesObject(_ value:Image)
 
 }

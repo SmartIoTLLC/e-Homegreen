@@ -12,20 +12,20 @@ import CoreData
 class DatabaseCategoryController: NSObject {
     
     static let shared = DatabaseCategoryController()
-    let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    func getCategoriesByLocation(location:Location) -> [Category]{
-        let fetchRequest = NSFetchRequest(entityName: "Category")
+    func getCategoriesByLocation(_ location:Location) -> [Category]{
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Category.fetchRequest()
         let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
         
         var predicateArray:[NSPredicate] = []
         predicateArray.append(NSPredicate(format: "location == %@", location))
         
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.sortDescriptors = [sortDescriptors]
         fetchRequest.predicate = compoundPredicate
         do {
-            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Category]
+            let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Category]
             return results
         } catch{
             
@@ -33,17 +33,17 @@ class DatabaseCategoryController: NSObject {
         return []
     }
     
-    func getCategoryById(id:Int, location:Location) -> Category? {
-        let fetchRequest = NSFetchRequest(entityName: "Category")
+    func getCategoryById(_ id:Int, location:Location) -> Category? {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Category.fetchRequest()
         
         var predicateArray:[NSPredicate] = []
         predicateArray.append(NSPredicate(format: "location == %@", location))
-        predicateArray.append(NSPredicate(format: "id == %@", NSNumber(integer: id)))
+        predicateArray.append(NSPredicate(format: "id == %@", NSNumber(value: id as Int)))
         
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Category]
+            let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Category]
             if results.count != 0{
                 return results[0]
             }
@@ -53,8 +53,8 @@ class DatabaseCategoryController: NSObject {
         return nil
     }
     
-    func changeAllowOption(option:Int, category:Category){
-        category.allowOption = option
+    func changeAllowOption(_ option:Int, category:Category){
+        category.allowOption = option as NSNumber!
         CoreDataController.shahredInstance.saveChanges()
     }
 }

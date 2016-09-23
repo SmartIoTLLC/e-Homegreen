@@ -8,7 +8,7 @@
 
 import Foundation
 extension UInt {
-    static func convertFourBytesToUInt(byteArray: [Byte]) -> UInt {
+    static func convertFourBytesToUInt(_ byteArray: [Byte]) -> UInt {
         // тврдити || claim, assert, contend, aver, vouch, purport || истицати || assert, run out, outflow || изјавити
         assert(byteArray.count <= 4)
         var result: UInt = 0

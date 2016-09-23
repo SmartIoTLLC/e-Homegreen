@@ -13,27 +13,27 @@ extension UIView {
     var parentViewController: UIViewController? {
         var parentResponder: UIResponder? = self
         while parentResponder != nil {
-            parentResponder = parentResponder!.nextResponder()
+            parentResponder = parentResponder!.next
             if let viewController = parentResponder as? UIViewController {
                 return viewController
             }
         }
         return nil
     }
-    func rotate(times:Float){
+    func rotate(_ times:Float){
         let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
         rotateAnimation.fromValue = 0.0
         rotateAnimation.toValue = CGFloat(M_PI * 2.0)
         rotateAnimation.duration = 1
         rotateAnimation.repeatCount = times
-        layer.addAnimation(rotateAnimation, forKey: "rotate")
+        layer.add(rotateAnimation, forKey: "rotate")
     }
-    func collapseInReturnToNormal (times:Float) {
+    func collapseInReturnToNormal (_ times:Float) {
         let scaleAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
         scaleAnimation.values = [1.0, 0.7, 1.0]
         scaleAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         scaleAnimation.repeatCount = times
         scaleAnimation.duration = 1
-        layer.addAnimation(scaleAnimation, forKey: "bouncingEffectOnTouch")
+        layer.add(scaleAnimation, forKey: "bouncingEffectOnTouch")
     }
 }

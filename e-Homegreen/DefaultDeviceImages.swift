@@ -17,15 +17,18 @@ struct DeviceImageState {
 
 
 class DefaultDeviceImages: NSObject {
-    func getNewImagesForDevice (device:Device) -> [DeviceImageState] {
+    func getNewImagesForDevice (_ device:Device) -> [DeviceImageState] {
         
         let categoryId = device.categoryId
         let controlType = device.controlType
-        let controlMode = device.digitalInputMode?.integerValue
+        var controlMode = 1
+        if let mode = device.digitalInputMode{
+            controlMode = Int(mode)
+        }
         
         switch controlType {
         case ControlType.Dimmer:
-            switch categoryId {
+            switch Int(categoryId) {
             case CategoryId.Blind:
                 return blindImagesMultistate
             case CategoryId.Curtain:
@@ -34,7 +37,7 @@ class DefaultDeviceImages: NSObject {
                 return lightningImagesMultistate
             }
         case ControlType.Curtain:
-            switch categoryId {
+            switch Int(categoryId) {
             case CategoryId.Blind:
                 return blindImagesThreeStateNO
             default:
@@ -51,10 +54,7 @@ class DefaultDeviceImages: NSObject {
         case ControlType.DigitalInput:
             return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
         case ControlType.DigitalOutput:
-            guard let controlModeTemp = controlMode else{
-                return lightningImagesTwoStateNO
-            }
-            if (DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description()){
+            if (DigitalInput.modeInfo[controlMode] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlMode] == DigitalInput.NormallyClosed.description()){
                 return appliancePowerImagesTwoStateNC
             }else{
                 return appliancePowerImagesTwoStateNO
@@ -68,8 +68,8 @@ class DefaultDeviceImages: NSObject {
         }
     }
     
-    func returnImagesArrayDependingOnCategoryId(categoryId: NSNumber, controlMode: Int?) -> [DeviceImageState]{
-        switch categoryId {
+    func returnImagesArrayDependingOnCategoryId(_ categoryId: NSNumber, controlMode: Int?) -> [DeviceImageState]{
+        switch Int(categoryId) {
         case CategoryId.GatewayControl:
             guard let controlModeTemp = controlMode else{
                 return lightningImagesTwoStateNO

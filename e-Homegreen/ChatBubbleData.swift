@@ -10,8 +10,8 @@ import Foundation
 import UIKit
 
 enum BubbleDataType: Int{
-    case Mine = 0
-    case Opponent
+    case mine = 0
+    case opponent
 }
 
 /// DataModel for maintaining the message data for a single chat bubble
@@ -20,11 +20,11 @@ class ChatBubbleData {
     // 2.Properties
     var text: String?
     var image: UIImage?
-    var date: NSDate?
+    var date: Date?
     var type: BubbleDataType
     
     // 3. Initialization
-    init(text: String?,image: UIImage?,date: NSDate? , type:BubbleDataType = .Mine) {
+    init(text: String?,image: UIImage?,date: Date? , type:BubbleDataType = .mine) {
         // Default type is Mine
         self.text = text
         self.image = image

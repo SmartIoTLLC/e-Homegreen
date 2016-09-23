@@ -15,11 +15,11 @@ class SurveillenceCell:UICollectionViewCell{
     @IBOutlet weak var image: UIImageView!
     
     var camera:Surveillance!
-    var timer:NSTimer?
+    var timer:Foundation.Timer?
     
-    func setItem(surv:Surveillance, filterParametar:FilterItem){
+    func setItem(_ surv:Surveillance, filterParametar:FilterItem){
         camera = surv
-        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SurveillenceCell.update), userInfo: nil, repeats: true)
+        timer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(SurveillenceCell.update), userInfo: nil, repeats: true)
         lblName.text = getName(surv, filterParametar: filterParametar)
     }
     
@@ -30,16 +30,16 @@ class SurveillenceCell:UICollectionViewCell{
 //        SurveillanceHandler.shared.getCameraImage(camera) { (success) in
         
             if let data = self.camera.imageData {
-                self.setImageForSurveillance(UIImage(data: data))
+                self.setImageForSurveillance(UIImage(data: data as Data))
             }else{
                 self.setImageForSurveillance(UIImage(named: "loading")!)
             }
             
             if self.camera.lastDate != nil {
-                let formatter = NSDateFormatter()
-                formatter.timeZone = NSTimeZone.localTimeZone()
+                let formatter = DateFormatter()
+                formatter.timeZone = TimeZone.autoupdatingCurrent
                 formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
-                self.lblTime.text = formatter.stringFromDate(self.camera.lastDate!)
+                self.lblTime.text = formatter.string(from: self.camera.lastDate! as Date)
             } else {
                 self.lblTime.text = " "
             }
@@ -47,7 +47,7 @@ class SurveillenceCell:UICollectionViewCell{
 //        }
     }
     
-    func getName(surv:Surveillance, filterParametar:FilterItem) -> String{
+    func getName(_ surv:Surveillance, filterParametar:FilterItem) -> String{
         var name:String = ""
         if surv.location!.name != filterParametar.location{
             name += surv.location!.name! + " "
@@ -62,7 +62,7 @@ class SurveillenceCell:UICollectionViewCell{
         return name
     }
     
-    func setImageForSurveillance (image:UIImage?) {
+    func setImageForSurveillance (_ image:UIImage?) {
         self.image.image = image
         setNeedsDisplay()
     }

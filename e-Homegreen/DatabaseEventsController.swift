@@ -12,17 +12,17 @@ import CoreData
 class DatabaseEventsController: NSObject {
     
     static let shared = DatabaseEventsController()
-    let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
 
-    func getEvents(filterParametar:FilterItem) -> [Event] {
+    func getEvents(_ filterParametar:FilterItem) -> [Event] {
         if let user = DatabaseUserController.shared.logedUserOrAdmin(){
-            let fetchRequest = NSFetchRequest(entityName: "Event")
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Event.fetchRequest()
             let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
             let sortDescriptorTwo = NSSortDescriptor(key: "eventId", ascending: true)
             let sortDescriptorThree = NSSortDescriptor(key: "eventName", ascending: true)
             fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
             
-            var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))]
+            var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool))]
             predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
             
             if filterParametar.location != "All" {
@@ -44,11 +44,11 @@ class DatabaseEventsController: NSObject {
                     predicateArray.append(NSPredicate(format: "eventCategoryId == %@", category.id!))
                 }
             }
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
             
             do {
-                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Event]
+                let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Event]
                 return fetResults!
             } catch _ as NSError {
                 abort()
@@ -58,8 +58,8 @@ class DatabaseEventsController: NSObject {
     }
     
     
-    func updateEventList(gateway:Gateway, filterParametar:FilterItem) -> [Event] {
-        let fetchRequest = NSFetchRequest(entityName: "Event")
+    func updateEventList(_ gateway:Gateway, filterParametar:FilterItem) -> [Event] {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Event.fetchRequest()
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "eventId", ascending: true)
         let sortDescriptorThree = NSSortDescriptor(key: "eventName", ascending: true)
@@ -84,17 +84,17 @@ class DatabaseEventsController: NSObject {
             }
         }
         
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Event]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Event]
             return fetResults!
         } catch{
         }
         return []
     }
     
-    func createEvent(eventId: Int, eventName: String, moduleAddress: Int, gateway: Gateway, levelId: Int?, zoneId: Int?, categoryId: Int?, isBroadcast:Bool = true, isLocalcast:Bool = true, sceneImageOneDefault:String? = "17 Event - Up Down - 00", sceneImageTwoDefault:String? = "17 Event - Up Down - 01", sceneImageOneCustom:String? = nil, sceneImageTwoCustom:String? = nil, imageDataOne:NSData? = nil, imageDataTwo:NSData? = nil, report:Bool = false){
+    func createEvent(_ eventId: Int, eventName: String, moduleAddress: Int, gateway: Gateway, levelId: Int?, zoneId: Int?, categoryId: Int?, isBroadcast:Bool = true, isLocalcast:Bool = true, sceneImageOneDefault:String? = "17 Event - Up Down - 00", sceneImageTwoDefault:String? = "17 Event - Up Down - 01", sceneImageOneCustom:String? = nil, sceneImageTwoCustom:String? = nil, imageDataOne:Data? = nil, imageDataTwo:Data? = nil, report:Bool = false){
         var itExists = false
         var existingEvent:Event?
         let eventsArray = fetchEventWithIdAndAddress(eventId, gateway: gateway, moduleAddress: moduleAddress)
@@ -103,15 +103,15 @@ class DatabaseEventsController: NSObject {
             itExists = true
         }
         if !itExists {
-            let event = NSEntityDescription.insertNewObjectForEntityForName("Event", inManagedObjectContext: appDel.managedObjectContext!) as! Event
-            event.eventId = eventId
+            let event = NSEntityDescription.insertNewObject(forEntityName: "Event", into: appDel.managedObjectContext!) as! Event
+            event.eventId = NSNumber(value: eventId)
             event.eventName = eventName
-            event.address = moduleAddress
+            event.address = NSNumber(value: moduleAddress)
             
             if let imageDataOne = imageDataOne{
-                if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
                     image.imageData = imageDataOne
-                    image.imageId = NSUUID().UUIDString
+                    image.imageId = UUID().uuidString
                     event.eventImageOneCustom = image.imageId
                     event.eventImageOneDefault = nil
                     gateway.location.user!.addImagesObject(image)
@@ -122,9 +122,9 @@ class DatabaseEventsController: NSObject {
             }
             
             if let imageDataTwo = imageDataTwo{
-                if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
                     image.imageData = imageDataTwo
-                    image.imageId = NSUUID().UUIDString
+                    image.imageId = UUID().uuidString
                     event.eventImageTwoCustom = image.imageId
                     event.eventImageTwoDefault = nil
                     gateway.location.user!.addImagesObject(image)
@@ -135,14 +135,14 @@ class DatabaseEventsController: NSObject {
                 event.eventImageTwoCustom = sceneImageTwoCustom
             }
             
-            event.entityLevelId = levelId
-            event.eventZoneId = zoneId
-            event.eventCategoryId = categoryId
+            event.entityLevelId = levelId as NSNumber?
+            event.eventZoneId = zoneId as NSNumber?
+            event.eventCategoryId = categoryId as NSNumber?
             
-            event.isBroadcast = isBroadcast
-            event.isLocalcast = isLocalcast
+            event.isBroadcast = isBroadcast as NSNumber
+            event.isLocalcast = isLocalcast as NSNumber
             
-            event.report = report
+            event.report = report as NSNumber
             
             event.gateway = gateway
             CoreDataController.shahredInstance.saveChanges()
@@ -151,14 +151,14 @@ class DatabaseEventsController: NSObject {
             
             existingEvent!.eventName = eventName
             
-            existingEvent!.entityLevelId = levelId
-            existingEvent!.eventZoneId = zoneId
-            existingEvent!.eventCategoryId = categoryId
+            existingEvent!.entityLevelId = levelId as NSNumber?
+            existingEvent!.eventZoneId = zoneId as NSNumber?
+            existingEvent!.eventCategoryId = categoryId as NSNumber?
             
             if let imageDataOne = imageDataOne{
-                if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
                     image.imageData = imageDataOne
-                    image.imageId = NSUUID().UUIDString
+                    image.imageId = UUID().uuidString
                     existingEvent!.eventImageOneCustom = image.imageId
                     existingEvent!.eventImageOneDefault = nil
                     gateway.location.user!.addImagesObject(image)
@@ -169,9 +169,9 @@ class DatabaseEventsController: NSObject {
             }
             
             if let imageDataTwo = imageDataTwo{
-                if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
                     image.imageData = imageDataTwo
-                    image.imageId = NSUUID().UUIDString
+                    image.imageId = UUID().uuidString
                     existingEvent!.eventImageTwoCustom = image.imageId
                     existingEvent!.eventImageTwoDefault = nil
                     gateway.location.user!.addImagesObject(image)
@@ -182,25 +182,25 @@ class DatabaseEventsController: NSObject {
                 existingEvent!.eventImageTwoCustom = sceneImageTwoCustom
             }
             
-            existingEvent!.isBroadcast = isBroadcast
-            existingEvent!.isLocalcast = isLocalcast
+            existingEvent!.isBroadcast = isBroadcast as NSNumber
+            existingEvent!.isLocalcast = isLocalcast as NSNumber
             
-            existingEvent!.report = report
+            existingEvent!.report = report as NSNumber
             
             CoreDataController.shahredInstance.saveChanges()
         }
     }
     
-    func fetchEventWithIdAndAddress(eventId: Int, gateway: Gateway, moduleAddress:Int) -> [Event]{
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Event")
-        let predicateLocation = NSPredicate(format: "eventId == %@", NSNumber(integer: eventId))
+    func fetchEventWithIdAndAddress(_ eventId: Int, gateway: Gateway, moduleAddress:Int) -> [Event]{
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Event.fetchRequest()
+        let predicateLocation = NSPredicate(format: "eventId == %@", NSNumber(value: eventId as Int))
         let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
-        let predicateAddress = NSPredicate(format: "address == %@", NSNumber(integer: moduleAddress))
+        let predicateAddress = NSPredicate(format: "address == %@", NSNumber(value: moduleAddress as Int))
         let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway, predicateAddress])
         
         fetchRequest.predicate = combinedPredicate
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Event]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Event]
             return fetResults!
         } catch let error1 as NSError {
             print("Unresolved error \(error1), \(error1.userInfo)")
@@ -209,17 +209,17 @@ class DatabaseEventsController: NSObject {
         return []
     }
     
-    func deleteAllEvents(gateway:Gateway){
+    func deleteAllEvents(_ gateway:Gateway){
         let events = gateway.events.allObjects as! [Event]
         for event in events {
-            self.appDel.managedObjectContext!.deleteObject(event)
+            self.appDel.managedObjectContext!.delete(event)
         }
         
         CoreDataController.shahredInstance.saveChanges()
     }
     
-    func deleteEvent(event:Event){
-        self.appDel.managedObjectContext!.deleteObject(event)
+    func deleteEvent(_ event:Event){
+        self.appDel.managedObjectContext!.delete(event)
         CoreDataController.shahredInstance.saveChanges()
     }
 }

@@ -19,12 +19,12 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
     var appDel:AppDelegate
 //    var imags = [DeviceImageState]()
     
-    @IBAction func btnBack(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true) { () -> Void in
+    @IBAction func btnBack(_ sender: AnyObject) {
+        self.dismiss(animated: true) { () -> Void in
         }
     }
     
-    @IBAction func addNewImage(sender: AnyObject) {
+    @IBAction func addNewImage(_ sender: AnyObject) {
         showGallery(-1, user: device.gateway.location.user!).delegate = self
     }
     
@@ -35,12 +35,12 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
     init(device:Device, point:CGPoint){
         self.device = device
         self.point = point
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         let sort = NSSortDescriptor(key: "state", ascending: true)
-        deviceImages = device.deviceImages!.sortedArrayUsingDescriptors([sort]) as! [DeviceImage]
+        deviceImages = device.deviceImages!.sortedArray(using: [sort]) as! [DeviceImage]
         super.init(nibName: "DeviceImagesPickerVC", bundle: nil)
         transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
+        modalPresentationStyle = UIModalPresentationStyle.custom
 //        deviceImages = device.deviceImages
     }
     
@@ -50,16 +50,16 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.registerNib(UINib(nibName: "DeviceImagePickerTVC", bundle: nil), forCellReuseIdentifier: "deviceImageCell")
+        tableView.register(UINib(nibName: "DeviceImagePickerTVC", bundle: nil), forCellReuseIdentifier: "deviceImageCell")
 //        imags = DefaultDeviceImages().getNewImagesForDevice(device)
         // Do any additional setup after loading the view.
         tableView.reloadData()
     }
     
-    func backString(strText: String, imageIndex:Int) {
+    func backString(_ strText: String, imageIndex:Int) {
         if imageIndex == -1 {
             let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
-            deviceImage.state = Int(deviceImages[deviceImages.count-1].state!) + 1
+            deviceImage.state = NSNumber(value: (Int(deviceImages[deviceImages.count-1].state!) + 1))
             deviceImage.defaultImage = strText
             deviceImage.device = device
             deviceImage.customImageId = nil
@@ -76,17 +76,17 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
         tableView.reloadData()
     }
     
-    func backImageFromGallery(data: NSData, imageIndex: Int) {
+    func backImageFromGallery(_ data: Data, imageIndex: Int) {
         if imageIndex == -1 {
             // This coudl be a problem because it doesn't have default image. So default image was putt in this case:
             let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
-            deviceImage.state = Int(deviceImages[deviceImages.count-1].state!) + 1
+            deviceImage.state = NSNumber(value: (Int(deviceImages[deviceImages.count-1].state!) + 1))
             deviceImage.defaultImage = "12 Appliance - Power - 02"
             deviceImage.device = device
             
-            if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+            if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
                 image.imageData = data
-                image.imageId = NSUUID().UUIDString
+                image.imageId = UUID().uuidString
                 deviceImage.customImageId = image.imageId
                 
                 
@@ -97,9 +97,9 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
             
             deviceImages.append(deviceImage)
         } else {
-            if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+            if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
                 image.imageData = data
-                image.imageId = NSUUID().UUIDString
+                image.imageId = UUID().uuidString
                 deviceImages[imageIndex].customImageId = image.imageId
                 
                 if let user  = deviceImages[imageIndex].device?.gateway.location.user{
@@ -117,11 +117,11 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
 
     }
     
-    func backImage(image:Image, imageIndex:Int) {
+    func backImage(_ image:Image, imageIndex:Int) {
         if imageIndex == -1 {
             // This coudl be a problem because it doesn't have default image. So default image was putt in this case:
             let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
-            deviceImage.state = Int(deviceImages[deviceImages.count-1].state!) + 1
+            deviceImage.state = NSNumber(value: (Int(deviceImages[deviceImages.count-1].state!) + 1))
             deviceImage.defaultImage = "12 Appliance - Power - 02"
             deviceImage.device = device
             deviceImage.customImageId = image.imageId
@@ -138,42 +138,42 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
         tableView.reloadData()
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return deviceImages.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("deviceImageCell", forIndexPath: indexPath) as! DeviceImagePickerTVC
-        cell.backgroundColor = UIColor.clearColor()
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "deviceImageCell", for: indexPath) as! DeviceImagePickerTVC
+        cell.backgroundColor = UIColor.clear
 
         cell.deviceState.text = ""
-        if let stateText = deviceImages[indexPath.row].text {
+        if let stateText = deviceImages[(indexPath as NSIndexPath).row].text {
             cell.deviceState.text = stateText
         }else{
             let av = Int(100/(deviceImages.count-1))
             
-            if indexPath.row == 0 {
+            if (indexPath as NSIndexPath).row == 0 {
                 cell.deviceState.text = "0"
-            }else if indexPath.row == deviceImages.count-1{
-                cell.deviceState.text = "\((indexPath.row-1)*av+1) - 100"
+            }else if (indexPath as NSIndexPath).row == deviceImages.count-1{
+                cell.deviceState.text = "\(((indexPath as NSIndexPath).row-1)*av+1) - 100"
             }else{
-                cell.deviceState.text = "\((indexPath.row-1)*av+1) - \((indexPath.row-1)*av + av)"
+                cell.deviceState.text = "\(((indexPath as NSIndexPath).row-1)*av+1) - \(((indexPath as NSIndexPath).row-1)*av + av)"
             }
 
         }
         
-        if let id = deviceImages[indexPath.row].customImageId{
+        if let id = deviceImages[(indexPath as NSIndexPath).row].customImageId{
             if let image = DatabaseImageController.shared.getImageById(id){
                 if let data =  image.imageData {
                     cell.deviceImage.image = UIImage(data: data)
                 }else{
-                    cell.deviceImage.image = UIImage(named: deviceImages[indexPath.row].defaultImage!)
+                    cell.deviceImage.image = UIImage(named: deviceImages[(indexPath as NSIndexPath).row].defaultImage!)
                 }
             }else{
-                cell.deviceImage.image = UIImage(named: deviceImages[indexPath.row].defaultImage!)
+                cell.deviceImage.image = UIImage(named: deviceImages[(indexPath as NSIndexPath).row].defaultImage!)
             }
         }else{
-            cell.deviceImage.image = UIImage(named: deviceImages[indexPath.row].defaultImage!)
+            cell.deviceImage.image = UIImage(named: deviceImages[(indexPath as NSIndexPath).row].defaultImage!)
         }
 
         return cell
@@ -182,38 +182,38 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
         
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        showGallery(indexPath.row, user: device.gateway.location.user).delegate = self
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        showGallery((indexPath as NSIndexPath).row, user: device.gateway.location.user).delegate = self
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
-            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive){(action) -> Void in
-                self.tableView(self.tableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
+            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.destructive){(action) -> Void in
+                self.tableView(self.tableView, commit: UITableViewCellEditingStyle.delete, forRowAt: indexPath)
             }
-            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
+            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
             deleteMenu.addAction(delete)
             deleteMenu.addAction(cancelDelete)
             if let presentationController = deleteMenu.popoverPresentationController {
-                presentationController.sourceView = tableView.cellForRowAtIndexPath(indexPath)
-                presentationController.sourceRect = tableView.cellForRowAtIndexPath(indexPath)!.bounds
+                presentationController.sourceView = tableView.cellForRow(at: indexPath)
+                presentationController.sourceRect = tableView.cellForRow(at: indexPath)!.bounds
             }
-            self.presentViewController(deleteMenu, animated: true, completion: nil)
+            self.present(deleteMenu, animated: true, completion: nil)
         })
         
-        button.backgroundColor = UIColor.redColor()
+        button.backgroundColor = UIColor.red
         return [button]
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
-        if editingStyle == .Delete {
+        if editingStyle == .delete {
             // Here needs to be deleted even devices that are from gateway that is going to be deleted
-            appDel.managedObjectContext?.deleteObject(deviceImages[indexPath.row])
-            deviceImages.removeAtIndex(indexPath.row)
+            appDel.managedObjectContext?.delete(deviceImages[(indexPath as NSIndexPath).row])
+            deviceImages.remove(at: (indexPath as NSIndexPath).row)
             appDel.saveContext()
-            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
             tableView.reloadData()
         }
         
@@ -221,44 +221,44 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
 }
 extension DeviceImagesPickerVC : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5 //Add your own duration here
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         //Add presentation and dismiss animation transition here.
         if isPresenting == true{
             isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
+            let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
+            let containerView = transitionContext.containerView
             
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
             self.oldPoint = presentedControllerView.center
             presentedControllerView.center = self.point!
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+            presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
             containerView.addSubview(presentedControllerView)
             
-            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 
                 presentedControllerView.center = self.oldPoint!
                 presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
                 
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
             //            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 
                 presentedControllerView.center = self.point!
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
                 
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
@@ -267,10 +267,10 @@ extension DeviceImagesPickerVC : UIViewControllerAnimatedTransitioning {
     }
 }
 extension DeviceImagesPickerVC : UIViewControllerTransitioningDelegate {
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if dismissed == self {
             return self
         }
@@ -280,9 +280,9 @@ extension DeviceImagesPickerVC : UIViewControllerTransitioningDelegate {
     }
 }
 extension UIViewController {
-    func showDeviceImagesPicker(device:Device, point:CGPoint) {
+    func showDeviceImagesPicker(_ device:Device, point:CGPoint) {
         let dip = DeviceImagesPickerVC(device:device, point:point)
-        self.presentViewController(dip, animated: true, completion: nil)
+        self.present(dip, animated: true, completion: nil)
     }
 }
 extension UIImage {

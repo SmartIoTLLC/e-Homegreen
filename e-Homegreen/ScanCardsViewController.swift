@@ -24,7 +24,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
         cardsTableView.tableFooterView = UIView()
         
@@ -37,24 +37,24 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
         fromTextField.delegate = self
         
         devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne)))"
-        devAddressOne.enabled = false
+        devAddressOne.isEnabled = false
         devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway.addressTwo)))"
-        devAddressTwo.enabled = false
+        devAddressTwo.isEnabled = false
         
         reloadCards()
 
     }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         addObservers()
     }
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         removeObservers()
     }
 
-    @IBAction func scanCards(sender: AnyObject) {
+    @IBAction func scanCards(_ sender: AnyObject) {
         findNames()
     }
-    @IBAction func clearRangeTextFields(sender: AnyObject) {
+    @IBAction func clearRangeTextFields(_ sender: AnyObject) {
         fromTextField.text = ""
         toTextField.text = ""
     }
@@ -67,8 +67,8 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     
     // MARK: - FINDING NAMES FOR DEVICE
     // Info: Add observer for received info from PLC (e.g. cardNameReceivedFromPLC)
-    var cardNameTimer:NSTimer?
-    var cardParameterTimer: NSTimer?
+    var cardNameTimer:Foundation.Timer?
+    var cardParameterTimer: Foundation.Timer?
     var timesRepeatedCounterNames:Int = 0
     var timesRepeatedCounterParameters: Int = 0
     var arrayOfNamesToBeSearched = [Int]()
@@ -123,23 +123,23 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
             }
             shouldFindCardParameters = true
             
-            UIApplication.sharedApplication().idleTimerDisabled = true
+            UIApplication.shared.isIdleTimerDisabled = true
             if arrayOfNamesToBeSearched.count != 0{
                 let firstTimerIndexThatDontHaveName = arrayOfNamesToBeSearched[indexOfNamesToBeSearched]
                 timesRepeatedCounterNames = 0
                 progressBarScreenTimerNames = ProgressBarVC(title: "Finding name", percentage: Float(1)/Float(arrayOfNamesToBeSearched.count), howMuchOf: "1 / \(arrayOfNamesToBeSearched.count)")
                 progressBarScreenTimerNames?.delegate = self
-                self.presentViewController(progressBarScreenTimerNames!, animated: true, completion: nil)
-                cardNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetName(_:)), userInfo: firstTimerIndexThatDontHaveName, repeats: false)
+                self.present(progressBarScreenTimerNames!, animated: true, completion: nil)
+                cardNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetName(_:)), userInfo: firstTimerIndexThatDontHaveName, repeats: false)
                 NSLog("func findNames \(firstTimerIndexThatDontHaveName)")
-                NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningCardNames)
+                Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningCardNames)
                 sendCommandForFindingNameWithCardAddress(firstTimerIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
         
     }
     // Called from findNames or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingNames for that specific timer id.
-    func checkIfCardDidGetName (timer:NSTimer) {
+    func checkIfCardDidGetName (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -149,16 +149,16 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
         }
         timesRepeatedCounterNames += 1
         if timesRepeatedCounterNames < 3 {
-            cardNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetName(_:)), userInfo: timerIndex, repeats: false)
+            cardNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetName(_:)), userInfo: timerIndex, repeats: false)
             NSLog("func checkIfDeviceDidGetName \(timerIndex)")
             sendCommandForFindingNameWithCardAddress(timerIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
         }else{
-            if let indexOfTimerIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(timerIndex){ // Get the index of received cardId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            if let indexOfTimerIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: timerIndex){ // Get the index of received cardId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                 if indexOfTimerIndexInArrayOfNamesToBeSearched+1 < arrayOfNamesToBeSearched.count{ // if next exists
                     indexOfNamesToBeSearched = indexOfTimerIndexInArrayOfNamesToBeSearched+1
                     let nextTimerIndexToBeSearched = arrayOfNamesToBeSearched[indexOfTimerIndexInArrayOfNamesToBeSearched+1]
                     timesRepeatedCounterNames = 0
-                    cardNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetName(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                    cardNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetName(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
                     NSLog("func checkIfDeviceDidGetName \(nextTimerIndexToBeSearched)")
                     sendCommandForFindingNameWithCardAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
                 }else{
@@ -171,15 +171,15 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     }
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
-    func cardNameReceivedFromPLC (notification:NSNotification) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningCardNames) {
-            guard let info = notification.userInfo! as? [String:Int] else{
+    func cardNameReceivedFromPLC (_ notification:Notification) {
+        if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningCardNames) {
+            guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
             }
             guard let timerIndex = info["cardId"] else{
                 return
             }
-            guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                 return
             }
             
@@ -189,7 +189,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
                 
                 timesRepeatedCounterNames = 0
                 cardNameTimer?.invalidate()
-                cardNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetName(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                cardNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetName(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
                 NSLog("func cardNameReceivedFromPLC index:\(index) :deviceIndex\(nextTimerIndexToBeSearched)")
                 sendCommandForFindingNameWithCardAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }else{
@@ -198,14 +198,14 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
         }
     }
     // Sends byteArray to PLC
-    func sendCommandForFindingNameWithCardAddress(cardId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
+    func sendCommandForFindingNameWithCardAddress(_ cardId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametarsForFindingNames(cardId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getCardName(address, cardId: UInt8(cardId)) , gateway: self.gateway)
     }
-    func setProgressBarParametarsForFindingNames (cardId:Int) {
+    func setProgressBarParametarsForFindingNames (_ cardId:Int) {
         print("Progresbar for Names: \(cardId)")
-        if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(cardId){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+        if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: cardId){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
             if let _ = progressBarScreenTimerNames?.lblHowMuchOf, let _ = progressBarScreenTimerNames?.lblPercentage, let _ = progressBarScreenTimerNames?.progressView{
                 progressBarScreenTimerNames?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfNamesToBeSearched+1) / \(arrayOfNamesToBeSearched.count)"
                 progressBarScreenTimerNames?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfNamesToBeSearched.count)*100) + " %"
@@ -254,31 +254,31 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
             
             for i in from...to{
                 for cardTemp in cards {
-                    if cardTemp.id.integerValue == i{
+                    if cardTemp.id.intValue == i{
                         arrayOfParametersToBeSearched.append(i)
                     }
                 }
             }
             
-            UIApplication.sharedApplication().idleTimerDisabled = true
+            UIApplication.shared.isIdleTimerDisabled = true
             if arrayOfParametersToBeSearched.count != 0{
                 let parameterIndex = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
                 timesRepeatedCounterParameters = 0
                 progressBarScreenTimerNames = nil
                 progressBarScreenTimerNames = ProgressBarVC(title: "Finding card parametars", percentage: Float(1)/Float(self.arrayOfParametersToBeSearched.count), howMuchOf: "1 / \(self.arrayOfParametersToBeSearched.count)")
                 progressBarScreenTimerNames?.delegate = self
-                self.presentViewController(progressBarScreenTimerNames!, animated: true, completion: nil)
+                self.present(progressBarScreenTimerNames!, animated: true, completion: nil)
                 cardParameterTimer?.invalidate()
-                cardParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetParametar(_:)), userInfo: parameterIndex, repeats: false)
+                cardParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetParametar(_:)), userInfo: parameterIndex, repeats: false)
                 NSLog("func findNames \(parameterIndex)")
-                NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningCardParameters)
+                Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningCardParameters)
                 sendCommandForFindingParameterWithCardAddress(parameterIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
                 print("Command sent for parameter from FindParameter")
             }
     }
     // Called from findParametarsForTimer or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingParameterWithCardAddress for that specific timer id.
-    func checkIfCardDidGetParametar (timer:NSTimer) {
+    func checkIfCardDidGetParametar (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -288,17 +288,17 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
         }
         timesRepeatedCounterParameters += 1
         if timesRepeatedCounterParameters < 3 {
-            cardParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetParametar(_:)), userInfo: cardIndex, repeats: false)
+            cardParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetParametar(_:)), userInfo: cardIndex, repeats: false)
             NSLog("func checkIfDeviceDidGetParameter \(cardIndex)")
             sendCommandForFindingParameterWithCardAddress(cardIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             print("Command sent for parameter from CheckIfTimerDidGetParameter (repeat \(timesRepeatedCounterParameters))")
         }else{
-            if let indexOfTimerIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.indexOf(cardIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            if let indexOfTimerIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: cardIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                 if indexOfTimerIndexInArrayOfParametersToBeSearched+1 < arrayOfParametersToBeSearched.count{ // if next exists
                     indexOfParametersToBeSearched = indexOfTimerIndexInArrayOfParametersToBeSearched+1
                     let nextTimerIndexToBeSearched = arrayOfParametersToBeSearched[indexOfTimerIndexInArrayOfParametersToBeSearched+1]
                     timesRepeatedCounterParameters = 0
-                    cardParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                    cardParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
                     NSLog("func checkIfDeviceDidGetParameter \(nextTimerIndexToBeSearched)")
                     sendCommandForFindingParameterWithCardAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
                     print("Command sent for parameter from checkIfTimerDidGetParametar: next parameter")
@@ -311,15 +311,15 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     }
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
-    func cardParametarReceivedFromPLC (notification:NSNotification) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningCardParameters) {
-            guard let info = notification.userInfo! as? [String:Int] else{
+    func cardParametarReceivedFromPLC (_ notification:Notification) {
+        if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningCardParameters) {
+            guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
             }
             guard let cardIndex = info["cardId"] else{
                 return
             }
-            guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.indexOf(cardIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: cardIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                 return
             }
             
@@ -328,7 +328,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
                 let nextTimerIndexToBeSearched = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
                 timesRepeatedCounterParameters = 0
                 cardParameterTimer?.invalidate()
-                cardParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                cardParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
                 NSLog("func parameterReceivedFromPLC index:\(index) :deviceIndex\(nextTimerIndexToBeSearched)")
                 sendCommandForFindingParameterWithCardAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
                 print("Command sent for parameter from timerParameterReceivedFromPLC: next parameter")
@@ -339,13 +339,13 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
         }
     }
     // Sends byteArray to PLC
-    func sendCommandForFindingParameterWithCardAddress(timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
+    func sendCommandForFindingParameterWithCardAddress(_ timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametarsForFindingParameters(timerId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getCardParametar(address, cardId: UInt8(timerId)) , gateway: self.gateway)
     }
-    func setProgressBarParametarsForFindingParameters (timerId:Int) {
-        if let indexOfDeviceIndexInArrayOfPatametersToBeSearched = arrayOfParametersToBeSearched.indexOf(timerId){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+    func setProgressBarParametarsForFindingParameters (_ timerId:Int) {
+        if let indexOfDeviceIndexInArrayOfPatametersToBeSearched = arrayOfParametersToBeSearched.index(of: timerId){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
             print("Progresbar for Parameters: \(indexOfDeviceIndexInArrayOfPatametersToBeSearched)")
             if let _ = progressBarScreenTimerNames?.lblHowMuchOf {
                 if let _ = progressBarScreenTimerNames?.lblPercentage{
@@ -363,8 +363,8 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     
     // MARK: - FINDING NAMES FOR DEVICE
     // Info: Add observer for received info from PLC (e.g. cardNameReceivedFromPLC)
-    var timerNameTimer:NSTimer?
-    var timerParameterTimer: NSTimer?
+    var timerNameTimer:Foundation.Timer?
+    var timerParameterTimer: Foundation.Timer?
     var arrayTimerAddresses = [Int]()
 
     // Gets all input parameters and prepares everything for scanning, and initiates scanning.
@@ -379,28 +379,28 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
             // make array of timers to be searched
             // make array of gateway addresses for timers to be searched
             for i in cards{
-                arrayOfNamesToBeSearched.append(i.timerId.integerValue)
-                arrayTimerAddresses.append(i.timerAddress.integerValue)
+                arrayOfNamesToBeSearched.append(i.timerId.intValue)
+                arrayTimerAddresses.append(i.timerAddress.intValue)
             }
             shouldFindTimerParameters = true
             
-            UIApplication.sharedApplication().idleTimerDisabled = true
+            UIApplication.shared.isIdleTimerDisabled = true
             if arrayOfNamesToBeSearched.count != 0{
                 let firstTimerIndexThatDontHaveName = arrayOfNamesToBeSearched[indexOfNamesToBeSearched]
                 let timerAddress = arrayTimerAddresses[indexOfNamesToBeSearched]
                 timesRepeatedCounterNames = 0
                 progressBarScreenTimerNames = ProgressBarVC(title: "Finding timer names", percentage: Float(1)/Float(arrayOfNamesToBeSearched.count), howMuchOf: "1 / \(arrayOfNamesToBeSearched.count)")
                 progressBarScreenTimerNames?.delegate = self
-                self.presentViewController(progressBarScreenTimerNames!, animated: true, completion: nil)
-                timerNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: firstTimerIndexThatDontHaveName, repeats: false)
+                self.present(progressBarScreenTimerNames!, animated: true, completion: nil)
+                timerNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: firstTimerIndexThatDontHaveName, repeats: false)
                 NSLog("func findNames \(firstTimerIndexThatDontHaveName)")
-                NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningTimerNames)
+                Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningTimerNames)
                 sendCommandForFindingNameWithTimerAddress(firstTimerIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: timerAddress)
             }
     }
     // Called from findNames or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingNames for that specific timer id.
-    func checkIfTimerDidGetName (timer:NSTimer) {
+    func checkIfTimerDidGetName (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -410,20 +410,20 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
         }
         timesRepeatedCounterNames += 1
         if timesRepeatedCounterNames < 3 {
-            if let indexOfTimerIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(timerIndex) {
+            if let indexOfTimerIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: timerIndex) {
                 let timerAddress = arrayTimerAddresses[indexOfTimerIndexInArrayOfNamesToBeSearched]
-                timerNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: timerIndex, repeats: false)
+                timerNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: timerIndex, repeats: false)
                 NSLog("func checkIfDeviceDidGetName \(timerIndex)")
                 sendCommandForFindingNameWithTimerAddress(timerIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: timerAddress)
             }
         }else{
-            if let indexOfTimerIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(timerIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            if let indexOfTimerIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: timerIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                 if indexOfTimerIndexInArrayOfNamesToBeSearched+1 < arrayOfNamesToBeSearched.count{ // if next exists
                     indexOfNamesToBeSearched = indexOfTimerIndexInArrayOfNamesToBeSearched+1
                     let nextTimerIndexToBeSearched = arrayOfNamesToBeSearched[indexOfNamesToBeSearched]
                     let timerAddress = arrayTimerAddresses[indexOfNamesToBeSearched]
                     timesRepeatedCounterNames = 0
-                    timerNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                    timerNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
                     NSLog("func checkIfDeviceDidGetName \(nextTimerIndexToBeSearched)")
                     sendCommandForFindingNameWithTimerAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: timerAddress)
                 }else{
@@ -438,15 +438,15 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     }
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
-    func timerNameReceivedFromPLC (notification:NSNotification) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningTimerNames) {
-            guard let info = notification.userInfo! as? [String:Int] else{
+    func timerNameReceivedFromPLC (_ notification:Notification) {
+        if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningTimerNames) {
+            guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
             }
             guard let timerIndex = info["timerId"] else{
                 return
             }
-            guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.indexOf(timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                 return
             }
             
@@ -456,7 +456,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
                 let timerAddress = arrayTimerAddresses[indexOfNamesToBeSearched]
                 timesRepeatedCounterNames = 0
                 timerNameTimer?.invalidate()
-                timerNameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                timerNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
                 NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextTimerIndexToBeSearched)")
                 sendCommandForFindingNameWithTimerAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: timerAddress)
             }else{
@@ -466,7 +466,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
         }
     }
     // Sends byteArray to PLC
-    func sendCommandForFindingNameWithTimerAddress(timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
+    func sendCommandForFindingNameWithTimerAddress(_ timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         print("KOMANDA ZA TRAZENJE TIMER IMENA: \((addressOne)) : \((addressTwo)) : \((addressThree)), timerId: \((timerId))")
         setProgressBarParametarsForFindingNames(timerId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
@@ -484,13 +484,13 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
             indexOfParametersToBeSearched = 0
             
             for i in cards{
-                arrayOfParametersToBeSearched.append(i.timerId.integerValue)
-                arrayTimerAddresses.append(i.timerAddress.integerValue)
+                arrayOfParametersToBeSearched.append(i.timerId.intValue)
+                arrayTimerAddresses.append(i.timerAddress.intValue)
             }
             
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningTimerParameters)
+            Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningTimerParameters)
             
-            UIApplication.sharedApplication().idleTimerDisabled = true
+            UIApplication.shared.isIdleTimerDisabled = true
             if arrayOfParametersToBeSearched.count != 0{
                 let parameterIndex = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
                 let timerAddress = arrayTimerAddresses[indexOfParametersToBeSearched]
@@ -498,9 +498,9 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
                 progressBarScreenTimerNames = nil
                 progressBarScreenTimerNames = ProgressBarVC(title: "Finding timer parametars", percentage: Float(1)/Float(self.arrayOfParametersToBeSearched.count), howMuchOf: "1 / \(self.arrayOfParametersToBeSearched.count)")
                 progressBarScreenTimerNames?.delegate = self
-                self.presentViewController(progressBarScreenTimerNames!, animated: true, completion: nil)
+                self.present(progressBarScreenTimerNames!, animated: true, completion: nil)
                 timerParameterTimer?.invalidate()
-                timerParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: parameterIndex, repeats: false)
+                timerParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: parameterIndex, repeats: false)
                 NSLog("func findNames \(parameterIndex)")
                 sendCommandForFindingParameterWithTimerAddress(parameterIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: timerAddress)
                 print("Command sent for parameter from FindParameter")
@@ -508,7 +508,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     }
     // Called from findParametarsForTimer or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingParameterWithTimerAddress for that specific timer id.
-    func checkIfTimerDidGetParametar (timer:NSTimer) {
+    func checkIfTimerDidGetParametar (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -518,21 +518,21 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
         }
         timesRepeatedCounterParameters += 1
         if timesRepeatedCounterParameters < 3 {
-            if let indexOfTimerIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.indexOf(timerIndex){
-                timerParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: timerIndex, repeats: false)
+            if let indexOfTimerIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: timerIndex){
+                timerParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: timerIndex, repeats: false)
                 let timerAddress = arrayTimerAddresses[indexOfTimerIndexInArrayOfParametersToBeSearched]
                 NSLog("func checkIfDeviceDidGetParameter \(timerIndex)")
                 sendCommandForFindingParameterWithTimerAddress(timerIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: timerAddress)
                 print("Command sent for parameter from CheckIfTimerDidGetParameter (repeat \(timesRepeatedCounterParameters))")
             }
         }else{
-            if let indexOfTimerIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.indexOf(timerIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            if let indexOfTimerIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: timerIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                 if indexOfTimerIndexInArrayOfParametersToBeSearched+1 < arrayOfParametersToBeSearched.count{ // if next exists
                     indexOfParametersToBeSearched = indexOfTimerIndexInArrayOfParametersToBeSearched+1
                     let nextTimerIndexToBeSearched = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
                     let timerAddress = arrayTimerAddresses[indexOfParametersToBeSearched]
                     timesRepeatedCounterParameters = 0
-                    timerParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                    timerParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
                     NSLog("func checkIfDeviceDidGetParameter \(nextTimerIndexToBeSearched)")
                     sendCommandForFindingParameterWithTimerAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: timerAddress)
                     print("Command sent for parameter from checkIfTimerDidGetParametar: next parameter")
@@ -545,15 +545,15 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     }
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
-    func timerParametarReceivedFromPLC (notification:NSNotification) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningTimerParameters) {
-            guard let info = notification.userInfo! as? [String:Int] else{
+    func timerParametarReceivedFromPLC (_ notification:Notification) {
+        if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningTimerParameters) {
+            guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
             }
             guard let timerIndex = info["timerId"] else{
                 return
             }
-            guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.indexOf(timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                 return
             }
             
@@ -563,7 +563,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
                 let timerAddress = arrayTimerAddresses[indexOfParametersToBeSearched]
                 timesRepeatedCounterParameters = 0
                 timerParameterTimer?.invalidate()
-                timerParameterTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                timerParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
                 NSLog("func parameterReceivedFromPLC index:\(index) :deviceIndex\(nextTimerIndexToBeSearched)")
                 sendCommandForFindingParameterWithTimerAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: timerAddress)
                 print("Command sent for parameter from timerParameterReceivedFromPLC: next parameter")
@@ -574,7 +574,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
         }
     }
     // Sends byteArray to PLC
-    func sendCommandForFindingParameterWithTimerAddress(timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
+    func sendCommandForFindingParameterWithTimerAddress(_ timerId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametarsForFindingParameters(timerId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getTimerParametar(address, id: UInt8(timerId)) , gateway: self.gateway)
@@ -590,10 +590,10 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
         timesRepeatedCounterParameters = 0
         cardNameTimer?.invalidate()
         cardParameterTimer?.invalidate()
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningCardNames)
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningCardParameters)
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningTimerNames)
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningTimerParameters)
+        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningCardNames)
+        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningCardParameters)
+        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningTimerNames)
+        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningTimerParameters)
         progressBarScreenTimerNames!.dissmissProgressBar()
         
         arrayOfNamesToBeSearched = [Int]()
@@ -603,81 +603,81 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
         indexOfParametersToBeSearched = 0
         reloadCards()
         if !shouldFindCardParameters && !shouldFindTimerNames && !shouldFindTimerParameters{
-            UIApplication.sharedApplication().idleTimerDisabled = false
+            UIApplication.shared.isIdleTimerDisabled = false
         }else{
             if shouldFindCardParameters {
-                _ = NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(ScanCardsViewController.findParametarsForCard), userInfo: nil, repeats: false)
+                _ = Foundation.Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(ScanCardsViewController.findParametarsForCard), userInfo: nil, repeats: false)
             }
             if shouldFindTimerNames {
-                _ = NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(ScanCardsViewController.findTimerNames), userInfo: nil, repeats: false)
+                _ = Foundation.Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(ScanCardsViewController.findTimerNames), userInfo: nil, repeats: false)
             }
             if shouldFindTimerParameters{
-                _ = NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(ScanCardsViewController.findParametarsForTimer), userInfo: nil, repeats: false)
+                _ = Foundation.Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(ScanCardsViewController.findParametarsForTimer), userInfo: nil, repeats: false)
             }
         }
     }
     
     func addObservers(){
         // Notification that tells us that card is received and stored
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanCardsViewController.cardNameReceivedFromPLC(_:)), name: NotificationKey.DidReceiveCardFromGateway, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanCardsViewController.cardParametarReceivedFromPLC(_:)), name: NotificationKey.DidReceiveCardParameterFromGateway, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ScanCardsViewController.cardNameReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveCardFromGateway), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ScanCardsViewController.cardParametarReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveCardParameterFromGateway), object: nil)
         // Notification that tells us that timer is received and stored
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanCardsViewController.timerNameReceivedFromPLC(_:)), name: NotificationKey.DidReceiveTimerFromGateway, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanCardsViewController.timerParametarReceivedFromPLC(_:)), name: NotificationKey.DidReceiveTimerParameterFromGateway, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ScanCardsViewController.timerNameReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveTimerFromGateway), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ScanCardsViewController.timerParametarReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveTimerParameterFromGateway), object: nil)
     }
     func removeObservers(){
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningCardNames)
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningCardParameters)
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningTimerNames)
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningTimerParameters)
+        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningCardNames)
+        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningCardParameters)
+        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningTimerNames)
+        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningTimerParameters)
         
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshDevice, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidFindDeviceName, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidFindDevice, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidFindSensorParametar, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidFindDeviceName), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidFindDevice), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidFindSensorParametar), object: nil)
     }
 }
 
 extension ScanCardsViewController: UITextFieldDelegate{
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool{
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool{
         let maxLength = 3
-        let currentString: NSString = textField.text!
+        let currentString: NSString = textField.text! as NSString
         let newString: NSString =
-            currentString.stringByReplacingCharactersInRange(range, withString: string)
+            currentString.replacingCharacters(in: range, with: string) as NSString
         return newString.length <= maxLength
     }
 }
 
 extension ScanCardsViewController: UITableViewDataSource, UITableViewDelegate{
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cards.count
     }
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCellWithIdentifier(String(CardsCell)) as? CardsCell {
-            cell.backgroundColor = UIColor.clearColor()
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: CardsCell())) as? CardsCell {
+            cell.backgroundColor = UIColor.clear
             
-            cell.labelID.text = "\(cards[indexPath.row].id)"
-            cell.cardNameLabel.text = cards[indexPath.row].cardName
-            cell.cardIdLabel.text = cards[indexPath.row].cardId
-            cell.address.text = "\(String(format: "%03d", cards[indexPath.row].gateway.addressOne.integerValue)):\(String(format: "%03d", cards[indexPath.row].gateway.addressTwo.integerValue)):\(String(format: "%03d", cards[indexPath.row].timerAddress.integerValue)):\(cards[indexPath.row].timerId)"
+            cell.labelID.text = "\(cards[(indexPath as NSIndexPath).row].id)"
+            cell.cardNameLabel.text = cards[(indexPath as NSIndexPath).row].cardName
+            cell.cardIdLabel.text = cards[(indexPath as NSIndexPath).row].cardId
+            cell.address.text = "\(String(format: "%03d", cards[(indexPath as NSIndexPath).row].gateway.addressOne.intValue)):\(String(format: "%03d", cards[(indexPath as NSIndexPath).row].gateway.addressTwo.intValue)):\(String(format: "%03d", cards[(indexPath as NSIndexPath).row].timerAddress.intValue)):\(cards[(indexPath as NSIndexPath).row].timerId)"
             
             return cell
         }
         
-        let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
         return cell
     }
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
-            self.tableView(self.cardsTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
+            self.tableView(self.cardsTableView, commit: UITableViewCellEditingStyle.delete, forRowAt: indexPath)
         })
         
-        button.backgroundColor = UIColor.redColor()
+        button.backgroundColor = UIColor.red
         return [button]
     }
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            appDel.managedObjectContext?.deleteObject(cards[indexPath.row])
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            appDel.managedObjectContext?.delete(cards[(indexPath as NSIndexPath).row])
             CoreDataController.shahredInstance.saveChanges()
             reloadCards()
         }

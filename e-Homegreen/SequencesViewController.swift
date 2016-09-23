@@ -20,13 +20,13 @@ class SequencesViewController: PopoverVC {
     
     var sidebarMenuOpen : Bool!
     
-    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
     
-    private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-    private let reuseIdentifier = "SequenceCell"
+    fileprivate var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+    fileprivate let reuseIdentifier = "SequenceCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
     var filterParametar:FilterItem!
@@ -34,9 +34,9 @@ class SequencesViewController: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UIView.hr_setToastThemeColor(color: UIColor.redColor())
+        UIView.hr_setToastThemeColor(color: UIColor.red)
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         
         scrollView.filterDelegate = self
         view.addSubview(scrollView)
@@ -50,10 +50,10 @@ class SequencesViewController: PopoverVC {
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
-        scrollView.setFilterItem(Menu.Sequences)
+        scrollView.setFilterItem(Menu.sequences)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         
         if self.revealViewController() != nil {
@@ -61,7 +61,7 @@ class SequencesViewController: PopoverVC {
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             revealViewController().toggleAnimationDuration = 0.5
-            if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
+            if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
                 revealViewController().rearViewRevealWidth = 200
             }else{
                 revealViewController().rearViewRevealWidth = 200
@@ -76,7 +76,7 @@ class SequencesViewController: PopoverVC {
         changeFullScreeenImage()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
     }
@@ -87,7 +87,7 @@ class SequencesViewController: PopoverVC {
             scrollView.setContentOffset(bottomOffset, animated: false)
         }
         scrollView.bottom.constant = -(self.view.frame.height - 2)
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+        if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
             headerTitleSubtitleView.setLandscapeTitle()
         }else{
             headerTitleSubtitleView.setPortraitTitle()
@@ -99,32 +99,32 @@ class SequencesViewController: PopoverVC {
         
     }
     
-    override func nameAndId(name : String, id:String){
+    override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
     }
     
     func updateConstraints() {
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0.0))
     }
     
-    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.Began {
-            scrollView.setDefaultFilterItem(Menu.Sequences)
+    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
+            scrollView.setDefaultFilterItem(Menu.sequences)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
     
-    @IBAction func fullScreen(sender: UIButton) {
+    @IBAction func fullScreen(_ sender: UIButton) {
         sender.collapseInReturnToNormal(1)
-        if UIApplication.sharedApplication().statusBarHidden {
-            UIApplication.sharedApplication().statusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        if UIApplication.shared.isStatusBarHidden {
+            UIApplication.shared.isStatusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
         } else {
-            UIApplication.sharedApplication().statusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            UIApplication.shared.isStatusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
             if scrollView.contentOffset.y != 0 {
                 let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
                 scrollView.setContentOffset(bottomOffset, animated: false)
@@ -133,14 +133,14 @@ class SequencesViewController: PopoverVC {
     }
     
     func changeFullScreeenImage(){
-        if UIApplication.sharedApplication().statusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        if UIApplication.shared.isStatusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
         } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
         }
     }
     
-    func updateSubtitle(location: String, level: String, zone: String){
+    func updateSubtitle(_ location: String, level: String, zone: String){
         headerTitleSubtitleView.setTitleAndSubtitle("Sequences", subtitle: location + " " + level + " " + zone)
     }
     
@@ -160,10 +160,10 @@ class SequencesViewController: PopoverVC {
 
 // Parametar from filter and relaod data
 extension SequencesViewController: FilterPullDownDelegate{
-    func filterParametars(filterItem: FilterItem){
+    func filterParametars(_ filterItem: FilterItem){
         filterParametar = filterItem
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Sequences)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.sequences)
         updateSequencesList()
     }
     
@@ -173,24 +173,24 @@ extension SequencesViewController: FilterPullDownDelegate{
 }
 
 extension SequencesViewController: SWRevealViewControllerDelegate{
-    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            sequenceCollectionView.userInteractionEnabled = true
+    func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
+        if(position == FrontViewPosition.left) {
+            sequenceCollectionView.isUserInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
-            sequenceCollectionView.userInteractionEnabled = false
+            sequenceCollectionView.isUserInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }
     
-    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            sequenceCollectionView.userInteractionEnabled = true
+    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
+        if(position == FrontViewPosition.left) {
+            sequenceCollectionView.isUserInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
             let tap = UITapGestureRecognizer(target: self, action: #selector(SequencesViewController.closeSideMenu))
             self.view.addGestureRecognizer(tap)
-            sequenceCollectionView.userInteractionEnabled = false
+            sequenceCollectionView.isUserInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }
@@ -198,7 +198,7 @@ extension SequencesViewController: SWRevealViewControllerDelegate{
     func closeSideMenu(){
         
         if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggleAnimated(true)
+            self.revealViewController().revealToggle(animated: true)
         }
         
     }
@@ -206,10 +206,10 @@ extension SequencesViewController: SWRevealViewControllerDelegate{
 
 extension SequencesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         return collectionViewCellSize
         
@@ -218,60 +218,60 @@ extension SequencesViewController: UICollectionViewDelegate, UICollectionViewDel
 
 extension SequencesViewController: UICollectionViewDataSource {
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return sequences.count
     }
     
-    func openCellParametar (gestureRecognizer: UILongPressGestureRecognizer){
+    func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer){
         let tag = gestureRecognizer.view!.tag
-        if gestureRecognizer.state == UIGestureRecognizerState.Began {
-            let location = gestureRecognizer.locationInView(sequenceCollectionView)
-            if let index = sequenceCollectionView.indexPathForItemAtPoint(location){
-                let cell = sequenceCollectionView.cellForItemAtIndexPath(index)
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
+            let location = gestureRecognizer.location(in: sequenceCollectionView)
+            if let index = sequenceCollectionView.indexPathForItem(at: location){
+                let cell = sequenceCollectionView.cellForItem(at: index)
                 showSequenceParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - sequenceCollectionView.contentOffset.y), sequence: sequences[tag])
             }
         }
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SequenceCollectionViewCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SequenceCollectionViewCell
 
-        cell.setItem(sequences[indexPath.row], filterParametar:filterParametar)
+        cell.setItem(sequences[(indexPath as NSIndexPath).row], filterParametar:filterParametar)
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SequencesViewController.openCellParametar(_:)))
         longPress.minimumPressDuration = 0.5
-        cell.sequenceTitle.userInteractionEnabled = true
+        cell.sequenceTitle.isUserInteractionEnabled = true
         cell.sequenceTitle.addGestureRecognizer(longPress)
         let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SequencesViewController.setSequence(_:)))
-        cell.sequenceImageView.tag = indexPath.row
-        cell.sequenceImageView.userInteractionEnabled = true
+        cell.sequenceImageView.tag = (indexPath as NSIndexPath).row
+        cell.sequenceImageView.isUserInteractionEnabled = true
         cell.sequenceImageView.addGestureRecognizer(set)
         cell.sequenceImageView.clipsToBounds = true
         cell.sequenceImageView.layer.cornerRadius = 5
         
-        cell.getImagesFrom(sequences[indexPath.row])
+        cell.getImagesFrom(sequences[(indexPath as NSIndexPath).row])
         
-        cell.sequenceButton.tag = indexPath.row
+        cell.sequenceButton.tag = (indexPath as NSIndexPath).row
         let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SequencesViewController.tapStop(_:)))
         cell.sequenceButton.addGestureRecognizer(tap)
         cell.layer.cornerRadius = 5
-        cell.layer.borderColor = UIColor.grayColor().CGColor
+        cell.layer.borderColor = UIColor.gray.cgColor
         cell.layer.borderWidth = 0.5
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    @objc(collectionView:layout:minimumLineSpacingForSectionAtIndex:) func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    @objc(collectionView:layout:minimumInteritemSpacingForSectionAtIndex:) func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
     
-    func setSequence (gesture:UIGestureRecognizer) {
+    func setSequence (_ gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
             var address:[UInt8] = []
             if sequences[tag].isBroadcast.boolValue {
@@ -285,18 +285,18 @@ extension SequencesViewController: UICollectionViewDataSource {
             if cycles >= 0 && cycles <= 255 {
                 SendingHandler.sendCommand(byteArray: OutgoingHandler.setSequence(address, id: Int(sequences[tag].sequenceId), cycle: UInt8(cycles)), gateway: sequences[tag].gateway)
             }
-            let pointInTable = gesture.view?.convertPoint(gesture.view!.bounds.origin, toView: sequenceCollectionView)
-            let indexPath = sequenceCollectionView.indexPathForItemAtPoint(pointInTable!)
-            if let cell = sequenceCollectionView.cellForItemAtIndexPath(indexPath!) as? SequenceCollectionViewCell {
+            let pointInTable = gesture.view?.convert(gesture.view!.bounds.origin, to: sequenceCollectionView)
+            let indexPath = sequenceCollectionView.indexPathForItem(at: pointInTable!)
+            if let cell = sequenceCollectionView.cellForItem(at: indexPath!) as? SequenceCollectionViewCell {
                 cell.commandSentChangeImage()
             }
         }
     }
-    func tapStop (gesture:UITapGestureRecognizer) {
+    func tapStop (_ gesture:UITapGestureRecognizer) {
         //   Take cell from touched point
-        let pointInTable = gesture.view?.convertPoint(gesture.view!.bounds.origin, toView: sequenceCollectionView)
-        let indexPath = sequenceCollectionView.indexPathForItemAtPoint(pointInTable!)
-        if let cell = sequenceCollectionView.cellForItemAtIndexPath(indexPath!) as? SequenceCollectionViewCell {
+        let pointInTable = gesture.view?.convert(gesture.view!.bounds.origin, to: sequenceCollectionView)
+        let indexPath = sequenceCollectionView.indexPathForItem(at: pointInTable!)
+        if let cell = sequenceCollectionView.cellForItem(at: indexPath!) as? SequenceCollectionViewCell {
             //   Take tag from touced vies
             let tag = gesture.view!.tag
             let sequenceId = Int(sequences[tag].sequenceId)

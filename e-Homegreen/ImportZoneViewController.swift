@@ -8,6 +8,35 @@
 
 import UIKit
 import CoreData
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
+fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l >= r
+  default:
+    return !(lhs < rhs)
+  }
+}
+
 
 class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDelegate, EditZoneDelegate, AddAddressDelegate, UITextFieldDelegate {
     
@@ -22,7 +51,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
     var beacon:IBeacon?
     var choosedIndex = -1
     var scanZones:ScanFunction?
-    var zoneScanTimer:NSTimer?
+    var zoneScanTimer:Foundation.Timer?
     
     var timesRepeatedCounter:Int = 0
     var currentIndex:Int = 0
@@ -39,9 +68,9 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         txtFrom.inputAccessoryView = CustomToolBar()
         txtTo.inputAccessoryView = CustomToolBar()
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
         let longpress = UILongPressGestureRecognizer(target: self, action: #selector(ImportZoneViewController.longPressGestureRecognized(_:)))
         importZoneTableView.addGestureRecognizer(longpress)
@@ -49,16 +78,16 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         refreshZoneList()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         removeObservers()
         addObservers()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         removeObservers()
     }
     
-    override func nameAndId(name: String, id: String) {
+    override func nameAndId(_ name: String, id: String) {
         
     }
     
@@ -67,60 +96,60 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         txtTo.resignFirstResponder()
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool{
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool{
         let maxLength = 3
-        let currentString: NSString = textField.text!
+        let currentString: NSString = textField.text! as NSString
         let newString: NSString =
-            currentString.stringByReplacingCharactersInRange(range, withString: string)
+            currentString.replacingCharacters(in: range, with: string) as NSString
         return newString.length <= maxLength
     }
     
     //move tableview cell on hold and swipe
-    func longPressGestureRecognized(gestureRecognizer: UIGestureRecognizer){
+    func longPressGestureRecognized(_ gestureRecognizer: UIGestureRecognizer){
         
         let longPress = gestureRecognizer as! UILongPressGestureRecognizer
         let state = longPress.state
-        let locationInView = longPress.locationInView(importZoneTableView)
-        let indexPath = importZoneTableView.indexPathForRowAtPoint(locationInView)
+        let locationInView = longPress.location(in: importZoneTableView)
+        let indexPath = importZoneTableView.indexPathForRow(at: locationInView)
         
         struct My {
             static var cellSnapshot : UIView? = nil
         }
         struct Path {
-            static var initialIndexPath : NSIndexPath? = nil
+            static var initialIndexPath : IndexPath? = nil
         }
     
         switch state {
-        case UIGestureRecognizerState.Began:
+        case UIGestureRecognizerState.began:
             
             if indexPath != nil {
                 
                 Path.initialIndexPath = indexPath
-                let cell = importZoneTableView.cellForRowAtIndexPath(indexPath!) as UITableViewCell!
-                My.cellSnapshot  = snapshopOfCell(cell)
-                var center = cell.center
+                let cell = importZoneTableView.cellForRow(at: indexPath!) as UITableViewCell!
+                My.cellSnapshot  = snapshopOfCell(cell!)
+                var center = cell?.center
                 
-                My.cellSnapshot!.center = center
+                My.cellSnapshot!.center = center!
                 My.cellSnapshot!.alpha = 0.0
                 importZoneTableView.addSubview(My.cellSnapshot!)
                 
                 
-                UIView.animateWithDuration(0.25, animations: { () -> Void in
+                UIView.animate(withDuration: 0.25, animations: { () -> Void in
                     
-                    center.y = locationInView.y
-                    My.cellSnapshot!.center = center
-                    My.cellSnapshot!.transform = CGAffineTransformMakeScale(1.02, 1.02)
+                    center?.y = locationInView.y
+                    My.cellSnapshot!.center = center!
+                    My.cellSnapshot!.transform = CGAffineTransform(scaleX: 1.02, y: 1.02)
                     My.cellSnapshot!.alpha = 0.98
-                    cell.alpha = 0.0
+                    cell?.alpha = 0.0
                     
                     }, completion: { (finished) -> Void in
                         if finished {
-                            cell.hidden = true
+                            cell?.isHidden = true
                         }
                 })
             }
             
-        case UIGestureRecognizerState.Changed:
+        case UIGestureRecognizerState.changed:
             var center = My.cellSnapshot!.center
             
             center.y = locationInView.y
@@ -129,33 +158,33 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
             
             if ((indexPath != nil) && (indexPath != Path.initialIndexPath)) {       
                 if let index = indexPath, let initial = Path.initialIndexPath {
-                    let pom = zones[index.row]
-                    zones[index.row] = zones[initial.row]
-                    zones[initial.row] = pom
-                    let id = zones[index.row].orderId
-                    zones[index.row].orderId = zones[initial.row].orderId
-                    zones[initial.row].orderId = id
+                    let pom = zones[(index as NSIndexPath).row]
+                    zones[(index as NSIndexPath).row] = zones[(initial as NSIndexPath).row]
+                    zones[(initial as NSIndexPath).row] = pom
+                    let id = zones[(index as NSIndexPath).row].orderId
+                    zones[(index as NSIndexPath).row].orderId = zones[(initial as NSIndexPath).row].orderId
+                    zones[(initial as NSIndexPath).row].orderId = id
                     CoreDataController.shahredInstance.saveChanges()
                     
                 }
                 
-                importZoneTableView.moveRowAtIndexPath(Path.initialIndexPath!, toIndexPath: indexPath!)
+                importZoneTableView.moveRow(at: Path.initialIndexPath!, to: indexPath!)
                 Path.initialIndexPath = indexPath
                 
             }
             
         default:
-            let cell = importZoneTableView.cellForRowAtIndexPath(Path.initialIndexPath!) as! ImportZoneTableViewCell!
-            cell.hidden = false
-            cell.alpha = 0.0
+            let cell = importZoneTableView.cellForRow(at: Path.initialIndexPath!) as! ImportZoneTableViewCell!
+            cell?.isHidden = false
+            cell?.alpha = 0.0
             
-            UIView.animateWithDuration(0.25, animations: { () -> Void in
+            UIView.animate(withDuration: 0.25, animations: { () -> Void in
                 
-                My.cellSnapshot!.center = cell.center
-                My.cellSnapshot!.transform = CGAffineTransformIdentity
+                My.cellSnapshot!.center = (cell?.center)!
+                My.cellSnapshot!.transform = CGAffineTransform.identity
                 My.cellSnapshot!.alpha = 0.0
                 
-                cell.alpha = 1.0
+                cell?.alpha = 1.0
                 }, completion: { (finished) -> Void in
                     
                     if finished {
@@ -171,10 +200,10 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         }
     }
     
-    func snapshopOfCell(inputView: UIView) -> UIView {
+    func snapshopOfCell(_ inputView: UIView) -> UIView {
         UIGraphicsBeginImageContextWithOptions(inputView.bounds.size, false, 0.0)
         
-        inputView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        inputView.layer.render(in: UIGraphicsGetCurrentContext()!)
         let image = UIGraphicsGetImageFromCurrentImageContext()! as UIImage
         
         UIGraphicsEndImageContext()
@@ -182,7 +211,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         let cellSnapshot : UIView = UIImageView(image: image)
         cellSnapshot.layer.masksToBounds = false
         cellSnapshot.layer.cornerRadius = 0.0
-        cellSnapshot.layer.shadowOffset = CGSizeMake(-5.0, 0.0)
+        cellSnapshot.layer.shadowOffset = CGSize(width: -5.0, height: 0.0)
         cellSnapshot.layer.shadowRadius = 5.0
         cellSnapshot.layer.shadowOpacity = 0.4
         
@@ -191,19 +220,19 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
     }
     
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ImportZoneViewController.zoneReceivedFromGateway(_:)), name: NotificationKey.DidReceiveZoneFromGateway, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ImportZoneViewController.zoneReceivedFromGateway(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveZoneFromGateway), object: nil)
     }
     
     func removeObservers() {
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningForZones)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "zoneReceivedFromGateway:", object: nil)
+        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningForZones)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "zoneReceivedFromGateway:"), object: nil)
     }
     
-    func backURL(strText: String) {
+    func backURL(_ strText: String) {
 //        First - Delete all zones
         for item in 0 ..< zones.count {
             if zones[item].location == location! {
-                appDel.managedObjectContext!.deleteObject(zones[item])
+                appDel.managedObjectContext!.delete(zones[item])
             }
         }
 //        Second - Take default zones from bundle
@@ -223,30 +252,30 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
                     }
                 }
                 for zoneJSON in zonesJSON {
-                    let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
-                    zone.id = zoneJSON.id
+                    let zone = NSEntityDescription.insertNewObject(forEntityName: "Zone", into: appDel.managedObjectContext!) as! Zone
+                    zone.id = zoneJSON.id as NSNumber?
                     zone.name = zoneJSON.name
                     zone.zoneDescription = zoneJSON.description
-                    zone.level = zoneJSON.level
+                    zone.level = zoneJSON.level as NSNumber?
                     zone.location = location!
                     zone.orderId = 1
                     if zoneJSON.id == 254 || zoneJSON.id == 255 {
-                        zone.isVisible = NSNumber(bool: false)
+                        zone.isVisible = NSNumber(value: false as Bool)
                     } else {
-                        zone.isVisible = NSNumber(bool: true)
+                        zone.isVisible = NSNumber(value: true as Bool)
                     }
                     CoreDataController.shahredInstance.saveChanges()
                 }
             } else {
-                let alert = UIAlertController(title: "Something Went Wrong", message: "There was problem parsing json file. Please configure your file.", preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-                presentViewController(alert, animated: true, completion: nil)
+                let alert = UIAlertController(title: "Something Went Wrong", message: "There was problem parsing json file. Please configure your file.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+                present(alert, animated: true, completion: nil)
                 createZones(location!)
             }
         } else {
-            let alert = UIAlertController(title: "Something Went Wrong", message: "There was problem parsing json file. Please configure your file.", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-            presentViewController(alert, animated: true, completion: nil)
+            let alert = UIAlertController(title: "Something Went Wrong", message: "There was problem parsing json file. Please configure your file.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            present(alert, animated: true, completion: nil)
             createZones(location!)
         }
         refreshZoneList()
@@ -254,15 +283,15 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
     
     
     // MARK: - ZONE SCANNING
-    @IBAction func addZone(sender: AnyObject) {
-        dispatch_async(dispatch_get_main_queue(),{
+    @IBAction func addZone(_ sender: AnyObject) {
+        DispatchQueue.main.async(execute: {
             self.showEditZone(nil, location: self.location).delegate = self
         })
     }
-    @IBAction func btnScanZones(sender: AnyObject) {
-        showAddAddress(ScanType.Zone).delegate = self
+    @IBAction func btnScanZones(_ sender: AnyObject) {
+        showAddAddress(ScanType.zone).delegate = self
     }
-    @IBAction func btnClearFields(sender: AnyObject) {
+    @IBAction func btnClearFields(_ sender: AnyObject) {
         txtFrom.text = ""
         txtTo.text = ""
     }
@@ -273,7 +302,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
     func progressBarDidPressedExit () {
         dismissScaningControls()
     }
-    func addAddressFinished(address: Address) {
+    func addAddressFinished(_ address: Address) {
         do {
             var gatewayForScan:Gateway?
             guard let location = location else{
@@ -283,7 +312,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
                 return
             }
             for gate in gateways{
-                if gate.addressOne == address.firstByte && gate.addressTwo == address.secondByte && gate.addressThree == address.thirdByte{
+                if Int(gate.addressOne) == address.firstByte && Int(gate.addressTwo) == address.secondByte && Int(gate.addressThree) == address.thirdByte{
                     gatewayForScan = gate
                 }
             }
@@ -295,15 +324,15 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
             
             
             let sp = try returnSearchParametars(txtFrom.text!, to: txtTo.text!)
-            scanZones = ScanFunction(from: sp.from, to: sp.to, gateway: gateway, scanForWhat: .Zone)
+            scanZones = ScanFunction(from: sp.from, to: sp.to, gateway: gateway, scanForWhat: .zone)
             pbSZ = ProgressBarVC(title: "Scanning Zones", percentage: sp.initialPercentage, howMuchOf: "1 / \(sp.count)")
             pbSZ?.delegate = self
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningForZones)
+            Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningForZones)
             scanZones?.sendCommandForFinding(id:Byte(sp.from))
-            zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: sp.from, repeats: false)
+            zoneScanTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: sp.from, repeats: false)
             timesRepeatedCounter = 1
-            self.presentViewController(pbSZ!, animated: true, completion: nil)
-            UIApplication.sharedApplication().idleTimerDisabled = true
+            self.present(pbSZ!, animated: true, completion: nil)
+            UIApplication.shared.isIdleTimerDisabled = true
             
         } catch let error as InputError {
             alertController("Error", message: error.description)
@@ -311,7 +340,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
             alertController("Error", message: "Something went wrong.")
         }
     }
-    func checkIfGatewayDidGetZones (timer:NSTimer) {
+    func checkIfGatewayDidGetZones (_ timer:Foundation.Timer) {
         guard var zoneId = timer.userInfo as? Int else{
             return
         }
@@ -320,7 +349,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
             scanZones?.sendCommandForFinding(id:Byte(zoneId))
             setProgressBarParametarsForScanningZones(id: zoneId)
             zoneScanTimer!.invalidate()
-            zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: zoneId, repeats: false)
+            zoneScanTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: zoneId, repeats: false)
             timesRepeatedCounter += 1
         }else{
             if (zoneId+1) > scanZones?.to { // Ako je poslednji
@@ -331,14 +360,14 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
                 scanZones?.sendCommandForFinding(id:Byte(zoneId))
                 setProgressBarParametarsForScanningZones(id: zoneId)
                 zoneScanTimer!.invalidate()
-                zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: zoneId, repeats: false)
+                zoneScanTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: zoneId, repeats: false)
                 timesRepeatedCounter = 1
             }
         }
     }
-    func zoneReceivedFromGateway (notification:NSNotification) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForZones) {
-            guard var zoneId = notification.userInfo as? [String:Int] else {
+    func zoneReceivedFromGateway (_ notification:Notification) {
+        if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningForZones) {
+            guard var zoneId = (notification as NSNotification).userInfo as? [String:Int] else {
                 return
             }
             timesRepeatedCounter = 0
@@ -351,7 +380,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
                 scanZones?.sendCommandForFinding(id:Byte(newZoneId))
                 setProgressBarParametarsForScanningZones(id: newZoneId)
                 zoneScanTimer!.invalidate()
-                zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: newZoneId, repeats: false)
+                zoneScanTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: newZoneId, repeats: false)
                 timesRepeatedCounter = 1
             }
             refreshZoneList()
@@ -366,20 +395,20 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         pbSZ?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(index)/Float(howMuchOf)*100) + " %"
         pbSZ?.progressView.progress = Float(index)/Float(howMuchOf)
     }
-    func returnSearchParametars (from:String, to:String) throws -> SearchParametars {
+    func returnSearchParametars (_ from:String, to:String) throws -> SearchParametars {
         if from == "" && to == "" {
             let count = 255
             let percent = Float(1)/Float(count)
             return SearchParametars(from: 1, to: 255, count: count, initialPercentage: percent)
         }
         guard let from = Int(from), let to = Int(to) else {
-            throw InputError.NotConvertibleToInt
+            throw InputError.notConvertibleToInt
         }
         if from < 0 || to < 0 {
-            throw InputError.NotPositiveNumbers
+            throw InputError.notPositiveNumbers
         }
         if from > to {
-            throw InputError.FromBiggerThanTo
+            throw InputError.fromBiggerThanTo
         }
         let count = to - from + 1
         let percent = Float(1)/Float(count)
@@ -388,38 +417,38 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
     func dismissScaningControls() {
         timesRepeatedCounter = 0
         zoneScanTimer?.invalidate()
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningForZones)
+        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningForZones)
         pbSZ?.dissmissProgressBar()
-        UIApplication.sharedApplication().idleTimerDisabled = false
+        UIApplication.shared.isIdleTimerDisabled = false
         refreshZoneList()
     }
     
     // MARK: Alert controller
     var alertController:UIAlertController?
-    func alertController (title:String, message:String) {
-        alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+    func alertController (_ title:String, message:String) {
+        alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
             // ...
         }
         alertController!.addAction(cancelAction)
         
-        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
             // ...
         }
         alertController!.addAction(OKAction)
         
-        self.presentViewController(alertController!, animated: true) {
+        self.present(alertController!, animated: true) {
             // ...
         }
     }
     
     // MARK:- Delete zones and other
-    @IBAction func btnDeleteAll(sender: UIButton) {
+    @IBAction func btnDeleteAll(_ sender: UIButton) {
         showAlertView(sender, message: "Are you sure you want to delete all devices?") { (action) in
-            if action == ReturnedValueFromAlertView.Delete {
+            if action == ReturnedValueFromAlertView.delete {
                 for item in 0 ..< self.zones.count {
                     if self.zones[item].location == self.location! {
-                        self.appDel.managedObjectContext!.deleteObject(self.zones[item])
+                        self.appDel.managedObjectContext!.delete(self.zones[item])
                     }
                 }
                 self.createZones(self.location!)
@@ -428,21 +457,21 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
             }
         }
     }
-    @IBAction func btnImportFile(sender: AnyObject) {
+    @IBAction func btnImportFile(_ sender: AnyObject) {
         showImportFiles().delegate = self
     }
-    @IBAction func doneAction(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func doneAction(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func createZones(location:Location) {
+    func createZones(_ location:Location) {
         if let zonesJSON = DataImporter.createZonesFromFileFromNSBundle() {
             for zoneJSON in zonesJSON {
-                let zone = NSEntityDescription.insertNewObjectForEntityForName("Zone", inManagedObjectContext: appDel.managedObjectContext!) as! Zone
+                let zone = NSEntityDescription.insertNewObject(forEntityName: "Zone", into: appDel.managedObjectContext!) as! Zone
                 if zoneJSON.id == 254 || zoneJSON.id == 255 {
-                    (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId, zone.allowOption) = (zoneJSON.id, zoneJSON.name, zoneJSON.description, zoneJSON.level, NSNumber(bool: false), location, zoneJSON.id, 1)
+                    (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId, zone.allowOption) = (zoneJSON.id as NSNumber?, zoneJSON.name, zoneJSON.description, zoneJSON.level as NSNumber?, NSNumber(value: false as Bool), location, zoneJSON.id as NSNumber?, 1)
                 } else {
-                    (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId, zone.allowOption) = (zoneJSON.id, zoneJSON.name, zoneJSON.description, zoneJSON.level, NSNumber(bool: true), location, zoneJSON.id, 1)
+                    (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId, zone.allowOption) = (zoneJSON.id as NSNumber?, zoneJSON.name, zoneJSON.description, zoneJSON.level as NSNumber?, NSNumber(value: true as Bool), location, zoneJSON.id as NSNumber?, 1)
                 }
                 CoreDataController.shahredInstance.saveChanges()
             }
@@ -455,13 +484,13 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
     }
     
     func updateZoneList () {
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
         let sortDescriptorTwo = NSSortDescriptor(key: "orderId", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorTwo]
         let predicate = NSPredicate(format: "location == %@", location!)
         fetchRequest.predicate = predicate
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Zone]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Zone]
             zones = fetResults!
         } catch let error1 as NSError {
             error = error1
@@ -470,8 +499,8 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         }
     }
     
-    func isVisibleValueChanged (sender:UISwitch) {
-        if sender.on == true {
+    func isVisibleValueChanged (_ sender:UISwitch) {
+        if sender.isOn == true {
             zones[sender.tag].isVisible = true
         }else {
             zones[sender.tag].isVisible = false
@@ -480,21 +509,21 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         importZoneTableView.reloadData()
     }
     
-    func chooseGateway (gestureRecognizer:UIGestureRecognizer) {
+    func chooseGateway (_ gestureRecognizer:UIGestureRecognizer) {
         if let tag = gestureRecognizer.view?.tag {
             choosedIndex = tag
             var popoverList:[PopOverItem] = []
-            popoverList.insert(PopOverItem(name: "  ", id: ""), atIndex: 0)
+            popoverList.insert(PopOverItem(name: "  ", id: ""), at: 0)
             openPopover(gestureRecognizer.view!, popOverList:popoverList)
         }
     }
     
-    func returniBeaconWithName(name:String) -> IBeacon? {
-        let fetchRequest = NSFetchRequest(entityName: "IBeacon")
+    func returniBeaconWithName(_ name:String) -> IBeacon? {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = IBeacon.fetchRequest()
         let predicate = NSPredicate(format: "name == %@", name)
         fetchRequest.predicate = predicate
         do {
-            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [IBeacon]
+            let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [IBeacon]
             return results[0]
         } catch let catchedError as NSError {
             error = catchedError
@@ -505,22 +534,22 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
 
 extension ImportZoneViewController: UITableViewDelegate {
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        dispatch_async(dispatch_get_main_queue(),{
-            self.showEditZone(self.zones[indexPath.row], location: self.location).delegate = self
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        DispatchQueue.main.async(execute: {
+            self.showEditZone(self.zones[(indexPath as NSIndexPath).row], location: self.location).delegate = self
         })
     }
     
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if zones[indexPath.row].id as! Int == 255 || zones[indexPath.row].id as! Int == 254{
+    @objc(tableView:canEditRowAtIndexPath:) func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if zones[(indexPath as NSIndexPath).row].id as! Int == 255 || zones[(indexPath as NSIndexPath).row].id as! Int == 254{
             return false
         }
         return true
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-         if editingStyle == .Delete {
-            appDel.managedObjectContext?.deleteObject(zones[indexPath.row])
+    @objc(tableView:commitEditingStyle:forRowAtIndexPath:) func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+         if editingStyle == .delete {
+            appDel.managedObjectContext?.delete(zones[(indexPath as NSIndexPath).row])
             appDel.saveContext()
             refreshZoneList()
          }
@@ -528,11 +557,11 @@ extension ImportZoneViewController: UITableViewDelegate {
 }
 
 extension ImportZoneViewController: UITableViewDataSource {
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if let cell = importZoneTableView.dequeueReusableCellWithIdentifier("importZone") as? ImportZoneTableViewCell {
-            cell.backgroundColor = UIColor.clearColor()
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let cell = importZoneTableView.dequeueReusableCell(withIdentifier: "importZone") as? ImportZoneTableViewCell {
+            cell.backgroundColor = UIColor.clear
             var name = ""
-            if let id = zones[indexPath.row].level?.integerValue{
+            if let id = zones[(indexPath as NSIndexPath).row].level?.intValue{
                 if id != 0 {
                     if let level = DatabaseZoneController.shared.getZoneById(id, location: location){
                         name = level.name! + " "
@@ -540,28 +569,28 @@ extension ImportZoneViewController: UITableViewDataSource {
                 }
             }
             
-            cell.lblName.text = name + "\(zones[indexPath.row].name!)"
-            cell.lblLevel.text = zones[indexPath.row].zoneDescription
-            cell.lblNo.text = "\(zones[indexPath.row].id!)"
-            cell.switchVisible.on = Bool(zones[indexPath.row].isVisible)
-            cell.switchVisible.tag = indexPath.row
-            cell.switchVisible.addTarget(self, action: #selector(ImportZoneViewController.isVisibleValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
-            cell.btnZonePicker.setTitle("Add iBeacon", forState: UIControlState.Normal)
-            cell.setItem(zones[indexPath.row])
-            if let iBeaconName = zones[indexPath.row].iBeacon?.name {
-                cell.btnZonePicker.setTitle(iBeaconName, forState: UIControlState.Normal)
+            cell.lblName.text = name + "\(zones[(indexPath as NSIndexPath).row].name!)"
+            cell.lblLevel.text = zones[(indexPath as NSIndexPath).row].zoneDescription
+            cell.lblNo.text = "\(zones[(indexPath as NSIndexPath).row].id!)"
+            cell.switchVisible.isOn = Bool(zones[(indexPath as NSIndexPath).row].isVisible)
+            cell.switchVisible.tag = (indexPath as NSIndexPath).row
+            cell.switchVisible.addTarget(self, action: #selector(ImportZoneViewController.isVisibleValueChanged(_:)), for: UIControlEvents.valueChanged)
+            cell.btnZonePicker.setTitle("Add iBeacon", for: UIControlState())
+            cell.setItem(zones[(indexPath as NSIndexPath).row])
+            if let iBeaconName = zones[(indexPath as NSIndexPath).row].iBeacon?.name {
+                cell.btnZonePicker.setTitle(iBeaconName, for: UIControlState())
             }
-            cell.btnZonePicker.tag = indexPath.row
+            cell.btnZonePicker.tag = (indexPath as NSIndexPath).row
             cell.btnZonePicker.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ImportZoneViewController.chooseGateway(_:))))
             return cell
         }
         
-        let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
         return cell
         
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return zones.count
     }
 }
@@ -577,27 +606,27 @@ class ImportZoneTableViewCell: UITableViewCell {
     @IBOutlet weak var controlTypeButton: CustomGradientButton!
     var zoneItem:Zone!
     
-    func setItem(zone: Zone){
+    func setItem(_ zone: Zone){
         self.zoneItem = zone
-        if let type = TypeOfControl(rawValue: (zone.allowOption.integerValue)){
-            controlTypeButton.setTitle(type.description, forState: .Normal)
+        if let type = TypeOfControl(rawValue: (zone.allowOption.intValue)){
+            controlTypeButton.setTitle(type.description, for: UIControlState())
         }
     }
     
-    @IBAction func changeControlType(sender: AnyObject) {
-        if zoneItem.allowOption.integerValue == 1{
+    @IBAction func changeControlType(_ sender: AnyObject) {
+        if zoneItem.allowOption.intValue == 1{
             DatabaseZoneController.shared.changeAllowOption(2, zone: zoneItem)
-            controlTypeButton.setTitle(TypeOfControl.Confirm.description , forState: .Normal)
+            controlTypeButton.setTitle(TypeOfControl.confirm.description , for: UIControlState())
             return
         }
-        if zoneItem.allowOption.integerValue == 2{
+        if zoneItem.allowOption.intValue == 2{
             DatabaseZoneController.shared.changeAllowOption(3, zone: zoneItem)
-            controlTypeButton.setTitle(TypeOfControl.NotAllowed.description , forState: .Normal)
+            controlTypeButton.setTitle(TypeOfControl.notAllowed.description , for: UIControlState())
             return
         }
-        if zoneItem.allowOption.integerValue == 3{
+        if zoneItem.allowOption.intValue == 3{
             DatabaseZoneController.shared.changeAllowOption(1, zone: zoneItem)
-            controlTypeButton.setTitle(TypeOfControl.Allowed.description , forState: .Normal)
+            controlTypeButton.setTitle(TypeOfControl.allowed.description , for: UIControlState())
             return
         }
     }

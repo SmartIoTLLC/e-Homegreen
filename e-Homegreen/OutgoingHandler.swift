@@ -12,10 +12,10 @@ import UIKit
 /// Incoming handler is responsible for reveiving commands and data.
 class OutgoingHandler {
     // Get Socket State Command:
-    static func refreshGatewayConnection (address:[Byte]) -> [Byte] {
+    static func refreshGatewayConnection (_ address:[Byte]) -> [Byte] {
         var messageInfo:[Byte] = []
         var message:[Byte] = []
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -30,10 +30,10 @@ class OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func setInternalClockRTC (address:[Byte], year:Byte, month:Byte, day:Byte, hour:Byte, minute:Byte, second:Byte, dayOfWeak:Byte) -> [Byte] {
+    static func setInternalClockRTC (_ address:[Byte], year:Byte, month:Byte, day:Byte, hour:Byte, minute:Byte, second:Byte, dayOfWeak:Byte) -> [Byte] {
         var messageInfo:[Byte] = [0xFF, year, month, day, hour, minute,  second, dayOfWeak]
         var message:[Byte] = []
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -49,12 +49,12 @@ class OutgoingHandler {
         return message
     }
     
-    static func resetRunningTime (address:[Byte], channel:Byte) -> [Byte]{
+    static func resetRunningTime (_ address:[Byte], channel:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         //        messageInfo = [channel, 0x00, 0x00, 0x00, 0x00]
         messageInfo = [channel]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -69,12 +69,12 @@ class OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func getZone(address:[Byte], id:Byte) -> [Byte] {
+    static func getZone(_ address:[Byte], id:Byte) -> [Byte] {
         var message:[Byte] = []
         //        Video sam da stoji i 0xFF
         //        var messageInfo:[Byte] = [0xFF, id]
         var messageInfo:[Byte] = [0x00, id]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -89,12 +89,12 @@ class OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func getCategory (address:[Byte], id:Byte) -> [Byte] {
+    static func getCategory (_ address:[Byte], id:Byte) -> [Byte] {
         var message:[Byte] = []
         //        Video sam da stoji i 0xFF
         //        var messageInfo:[Byte] = [0xFF, id]
         var messageInfo:[Byte] = [0x00, id]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -111,7 +111,7 @@ class OutgoingHandler {
     }
     
     // Helpers
-    static func getChkByte(byteArray byteArray:[Byte]) -> Byte {
+    static func getChkByte(byteArray:[Byte]) -> Byte {
         var chk:Int = 0
         for i in 1...(byteArray.count-3){
             let number = "\(byteArray[i])"
@@ -125,11 +125,11 @@ class OutgoingHandler {
 
 //MARK:- RELAY
 extension OutgoingHandler{
-    static func getLightRelayStatus (address:[Byte]) -> [Byte] {
+    static func getLightRelayStatus (_ address:[Byte]) -> [Byte] {
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [0xFF]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -144,7 +144,7 @@ extension OutgoingHandler{
         message[message.count-1] = 0x10
         return message
     }
-    static func setLightRelayStatus (address:[Byte], channel:Byte, value:Byte, delay:Int, runningTime:Int, skipLevel:Byte) -> [Byte]{
+    static func setLightRelayStatus (_ address:[Byte], channel:Byte, value:Byte, delay:Int, runningTime:Int, skipLevel:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         let delayOne = Byte((delay / 0x100) % 0x100)
@@ -152,7 +152,7 @@ extension OutgoingHandler{
         let runtimeOne = Byte((runningTime / 0x100) % 0x100)
         let runtimeTwo = Byte(runningTime % 0x100)
         messageInfo = [0xFF, 0xFF, 0xFF, 0x01, value, delayOne, delayTwo, runtimeOne, runtimeTwo, 0x00, skipLevel, 0x00, channel]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -171,11 +171,11 @@ extension OutgoingHandler{
 
 //MARK:- CHANNEL
 extension OutgoingHandler {
-    static func getChannelName (address:[Byte], channel:Byte) -> [Byte]{
+    static func getChannelName (_ address:[Byte], channel:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [channel]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -194,10 +194,10 @@ extension OutgoingHandler {
 
 //MARK:- MODULE
 extension OutgoingHandler {
-    static func getModuleName (address:[Byte]) -> [Byte]{
+    static func getModuleName (_ address:[Byte]) -> [Byte]{
         var messageInfo:[Byte] = [0x00]
         var message:[Byte] = []
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -216,11 +216,11 @@ extension OutgoingHandler {
 
 //MARK:- DEVICE
 extension OutgoingHandler {
-    static func searchForDevices (address:[Byte]) -> [Byte]{
+    static func searchForDevices (_ address:[Byte]) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [0x00]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -239,11 +239,11 @@ extension OutgoingHandler {
 
 //MARK:- SENSOR
 extension OutgoingHandler {
-    static func getSensorName (address:[Byte], channel:Byte) -> [Byte]{
+    static func getSensorName (_ address:[Byte], channel:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [channel]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -258,11 +258,11 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func getSensorParameters (address:[Byte], channel:Byte) -> [Byte]{
+    static func getSensorParameters (_ address:[Byte], channel:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [channel]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -281,11 +281,11 @@ extension OutgoingHandler {
 
 //MARK:- SALTO ACCESS
 extension OutgoingHandler {
-    static func getSaltoAccessInfoWithAddress(address:[Byte]) -> [Byte]{
+    static func getSaltoAccessInfoWithAddress(_ address:[Byte]) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [0x00]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -307,11 +307,11 @@ extension OutgoingHandler {
 
 //MARK:- CURTAIN
 extension OutgoingHandler {
-    static func setCurtainStatus (address:[Byte], value:Byte, groupId:Byte) -> [Byte]{
+    static func setCurtainStatus (_ address:[Byte], value:Byte, groupId:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
          messageInfo = [0xFF, 0xFF, 0xFF, 0x06, value, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, groupId]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -326,11 +326,11 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func getCurtainStatus (address:[Byte]) -> [Byte] {
+    static func getCurtainStatus (_ address:[Byte]) -> [Byte] {
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [0xF0]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -349,11 +349,11 @@ extension OutgoingHandler {
 
 //MARK:- CLIMATE
 extension OutgoingHandler {
-    static func getACName (address:[Byte], channel:Byte) -> [Byte]{
+    static func getACName (_ address:[Byte], channel:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [channel, 0x01]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -368,11 +368,11 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func getACStatus (address:[Byte]) -> [Byte]{
+    static func getACStatus (_ address:[Byte]) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [0xFF]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -387,11 +387,11 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func setACStatus (address:[Byte], channel:Byte, status:Byte) -> [Byte]{
+    static func setACStatus (_ address:[Byte], channel:Byte, status:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [channel, status, 0x00, 0x00]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -406,11 +406,11 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func setACmode (address:[Byte], channel:Byte, value:Byte) -> [Byte]{
+    static func setACmode (_ address:[Byte], channel:Byte, value:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [channel, 0x00, value, 0x00, 0x00]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -425,11 +425,11 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func setACSpeed (address:[Byte], channel:Byte, value:Byte) -> [Byte]{
+    static func setACSpeed (_ address:[Byte], channel:Byte, value:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [channel, 0x00, value, 0x00, 0x00]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -444,11 +444,11 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func setACSetPoint (address:[Byte], channel:Byte, coolingSetPoint:Byte, heatingSetPoint:Byte) -> [Byte]{
+    static func setACSetPoint (_ address:[Byte], channel:Byte, coolingSetPoint:Byte, heatingSetPoint:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [channel, coolingSetPoint, heatingSetPoint]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -463,11 +463,11 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func setACEnergySaving (address:[Byte], channel:Byte, status:Byte) -> [Byte]{
+    static func setACEnergySaving (_ address:[Byte], channel:Byte, status:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [channel, status]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -486,9 +486,9 @@ extension OutgoingHandler {
 
 //MARK:- FLAG
 extension OutgoingHandler {
-    static func setFlag (address:[Byte], id:Byte, command:Byte) -> [Byte]{
+    static func setFlag (_ address:[Byte], id:Byte, command:Byte) -> [Byte]{
         let messageInfo:[Byte] = [id, command]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -505,9 +505,9 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func refreshFlagStatus (address:[Byte]) -> [Byte]{
+    static func refreshFlagStatus (_ address:[Byte]) -> [Byte]{
         let messageInfo:[Byte] = [0xFF]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -524,11 +524,11 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func getFlagName(address:[Byte], flagId: Byte) -> [Byte]{
+    static func getFlagName(_ address:[Byte], flagId: Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [flagId]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -546,11 +546,11 @@ extension OutgoingHandler {
         
         return message
     }
-    static func getFlagParametar(address:[Byte], flagId: Byte) -> [Byte]{
+    static func getFlagParametar(_ address:[Byte], flagId: Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [flagId]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -572,9 +572,9 @@ extension OutgoingHandler {
 
 //MARK:- EVENT
 extension OutgoingHandler {
-    static func runEvent (address:[Byte], id:Byte) -> [Byte]{
+    static func runEvent (_ address:[Byte], id:Byte) -> [Byte]{
         var messageInfo:[Byte] = [id, 0xFF]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -589,9 +589,9 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func cancelEvent (address:[Byte], id:Byte) -> [Byte]{
+    static func cancelEvent (_ address:[Byte], id:Byte) -> [Byte]{
         var messageInfo:[Byte] = [id, 0xEF]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -606,11 +606,11 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func getEventNameAndParametar(address:[Byte], eventId: Byte) -> [Byte]{
+    static func getEventNameAndParametar(_ address:[Byte], eventId: Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [eventId]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -632,11 +632,11 @@ extension OutgoingHandler {
 
 //MARK:- SEQUENCE
 extension OutgoingHandler {
-    static func setSequence (address:[Byte], id:Int, cycle:Byte) -> [Byte]{
+    static func setSequence (_ address:[Byte], id:Int, cycle:Byte) -> [Byte]{
         let numberOne:Byte = Byte((id / 0x100) % 0x100)
         let numberTwo:Byte = Byte(id % 0x100)
         var messageInfo:[Byte] = [0xFF, 0xFF, 0xFF, 0x05, cycle, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, numberOne, numberTwo]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -651,11 +651,11 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func getSequenceNameAndParametar(address:[Byte], sequenceId: Byte) -> [Byte]{
+    static func getSequenceNameAndParametar(_ address:[Byte], sequenceId: Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [sequenceId]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -677,11 +677,11 @@ extension OutgoingHandler {
 
 //MARK:- SCENE
 extension OutgoingHandler {
-    static func setScene (address:[Byte], id:Int) -> [Byte]{
+    static func setScene (_ address:[Byte], id:Int) -> [Byte]{
         let numberOne:Byte = Byte((id / 0x100) % 0x100)
         let numberTwo:Byte = Byte(id % 0x100)
         var messageInfo:[Byte] = [0xFF, 0xFF, 0xFF, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, numberOne, numberTwo]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -696,11 +696,11 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func getSceneNameAndParametar(address:[Byte], sceneId: Byte) -> [Byte]{
+    static func getSceneNameAndParametar(_ address:[Byte], sceneId: Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [sceneId]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -722,11 +722,11 @@ extension OutgoingHandler {
 
 //MARK:- TIMER
 extension OutgoingHandler {
-    static func getTimerName(address:[Byte], timerId: Byte) -> [Byte]{
+    static func getTimerName(_ address:[Byte], timerId: Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [timerId]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -744,9 +744,9 @@ extension OutgoingHandler {
         
         return message
     }
-    static func getTimerParametar (address:[Byte], id:Byte) -> [Byte]{
+    static func getTimerParametar (_ address:[Byte], id:Byte) -> [Byte]{
         let messageInfo:[Byte] = [id]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -765,9 +765,9 @@ extension OutgoingHandler {
     }
     
     // 01 is Start, EF is Cancel, EE is Pause, ED is Resume
-    static func getCancelTimerStatus(address:[Byte], id:Byte, command:Byte) -> [Byte]{
+    static func getCancelTimerStatus(_ address:[Byte], id:Byte, command:Byte) -> [Byte]{
         let messageInfo:[Byte] = [id, command]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -784,9 +784,9 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func refreshTimerStatus(address:[Byte]) -> [Byte]{
+    static func refreshTimerStatus(_ address:[Byte]) -> [Byte]{
         let messageInfo:[Byte] = [0xFF, 0x00]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -803,9 +803,9 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func refreshTimerStatusCountApp(address:[Byte]) -> [Byte]{
+    static func refreshTimerStatusCountApp(_ address:[Byte]) -> [Byte]{
         let messageInfo:[Byte] = [0xFF, 0x01]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -826,11 +826,11 @@ extension OutgoingHandler {
 
 //MARK:- CARD
 extension OutgoingHandler {
-    static func getCardName(address:[Byte], cardId: Byte) -> [Byte]{
+    static func getCardName(_ address:[Byte], cardId: Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [0x00, cardId]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -848,11 +848,11 @@ extension OutgoingHandler {
         
         return message
     }
-    static func getCardParametar(address:[Byte], cardId: Byte) -> [Byte]{
+    static func getCardParametar(_ address:[Byte], cardId: Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [0x00, cardId]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -874,9 +874,9 @@ extension OutgoingHandler {
 
 //MARK:- ANALOG/ DIGITAL INPUT
 extension OutgoingHandler {
-    static func getInterfaceParametar (address:[Byte], channel:Byte) -> [Byte]{
+    static func getInterfaceParametar (_ address:[Byte], channel:Byte) -> [Byte]{
         let messageInfo:[Byte] = [channel]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -894,9 +894,9 @@ extension OutgoingHandler {
         return message
     }
     // Set interface parametar
-    static func setInterfaceParametar (address:[Byte], channel:Byte, isEnabled:Byte) -> [Byte]{
+    static func setInterfaceParametar (_ address:[Byte], channel:Byte, isEnabled:Byte) -> [Byte]{
         let messageInfo:[Byte] = [channel, isEnabled]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -914,9 +914,9 @@ extension OutgoingHandler {
         return message
     }
     // Set interface parametar
-    static func getInterfaceStatus (address:[Byte], channel:Byte, isEnabled:Byte) -> [Byte]{
+    static func getInterfaceStatus (_ address:[Byte], channel:Byte, isEnabled:Byte) -> [Byte]{
         let messageInfo:[Byte] = [channel, isEnabled]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -934,7 +934,7 @@ extension OutgoingHandler {
         return message
     }
     // Set interface parametar
-    static func setSensorState (address:[Byte], channel:Byte, status:Byte) -> [Byte]{
+    static func setSensorState (_ address:[Byte], channel:Byte, status:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         var s:Byte = 0x00
@@ -945,7 +945,7 @@ extension OutgoingHandler {
             s = 0x7F
         }
         messageInfo = [channel, s]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -961,11 +961,11 @@ extension OutgoingHandler {
         return message
     }
     // Get interface status
-    static func getSensorState (address:[Byte]) -> [Byte]{
+    static func getSensorState (_ address:[Byte]) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [0xFF]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -981,11 +981,11 @@ extension OutgoingHandler {
         return message
     }
     // Get interface parametar
-    static func getSensorEna (address:[Byte], channel:Byte) -> [Byte]{
+    static func getSensorEna (_ address:[Byte], channel:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [channel]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1001,11 +1001,11 @@ extension OutgoingHandler {
         return message
     }
     // Set interface parametar
-    static func sensorEnabled (address:[Byte], channel:Byte) -> [Byte]{
+    static func sensorEnabled (_ address:[Byte], channel:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [channel, 0x80]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1020,11 +1020,11 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func sensorDisabled (address:[Byte], channel:Byte) -> [Byte]{
+    static func sensorDisabled (_ address:[Byte], channel:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [channel, 0x7F]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1045,9 +1045,9 @@ extension OutgoingHandler {
 //MARK:- SECURITY
 extension OutgoingHandler {
     // Send command (password) for disarm
-    static func sendKeySecurity (address:[Byte], key:Byte) -> [Byte]{
+    static func sendKeySecurity (_ address:[Byte], key:Byte) -> [Byte]{
         let messageInfo:[Byte] = [0x01, key]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1071,9 +1071,9 @@ extension OutgoingHandler {
 //        let messageLength = 7 + messageInfo.count + 2
 //        var messageNew = [0xAA, Byte(messageInfo.count % 256)] + address + [0x05, 0x11] + messageInfo + [self.getChkByte(byteArray:message), 0x10]
     }
-    static func getCurrentSecurityMode (address:[Byte]) -> [Byte]{
+    static func getCurrentSecurityMode (_ address:[Byte]) -> [Byte]{
         let messageInfo:[Byte] = [0x02, 0x00]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1091,9 +1091,9 @@ extension OutgoingHandler {
         return message
     }
     // Message is created as protocol specifies. Look UCM_ehomeGrreen Command List.docx file
-    static func changeSecurityMode (address:[Byte], mode:Byte) -> [Byte]{
+    static func changeSecurityMode (_ address:[Byte], mode:Byte) -> [Byte]{
         let messageInfo:[Byte] = [0x02, mode]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1111,9 +1111,9 @@ extension OutgoingHandler {
         return message
     }
     // Message is created as protocol specifies. Look UCM_ehomeGrreen Command List.docx file
-    static func getCurrentAlarmState (address:[Byte]) -> [Byte]{
+    static func getCurrentAlarmState (_ address:[Byte]) -> [Byte]{
         let messageInfo:[Byte] = [0x03, 0x00]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1130,9 +1130,9 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func setPanic (address:[Byte], panic:Byte) -> [Byte]{
+    static func setPanic (_ address:[Byte], panic:Byte) -> [Byte]{
         let messageInfo:[Byte] = [0x04, panic]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1153,9 +1153,9 @@ extension OutgoingHandler {
 
 //MARK:- ANALOG/DIGITAL OUTPUT
 extension OutgoingHandler {
-    static func getInterfaceEnabled (address:[Byte], panic:Byte) -> [Byte]{
+    static func getInterfaceEnabled (_ address:[Byte], panic:Byte) -> [Byte]{
         let messageInfo:[Byte] = [0x04, panic]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1172,9 +1172,9 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func setInterfaceParametar (address:[Byte], panic:Byte) -> [Byte]{
+    static func setInterfaceParametar (_ address:[Byte], panic:Byte) -> [Byte]{
         let messageInfo:[Byte] = [0x04, panic]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1191,9 +1191,9 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func setInterfaceEnabled (address:[Byte], panic:Byte) -> [Byte]{
+    static func setInterfaceEnabled (_ address:[Byte], panic:Byte) -> [Byte]{
         let messageInfo:[Byte] = [0x04, panic]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1214,9 +1214,9 @@ extension OutgoingHandler {
 
 //MARK:- PC Control
 extension OutgoingHandler {
-    static func setPCVolume(address:[Byte], volume:Byte, mute:Byte=0x00) -> [Byte]{
+    static func setPCVolume(_ address:[Byte], volume:Byte, mute:Byte=0x00) -> [Byte]{
         let messageInfo:[Byte] = [volume, mute]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1233,11 +1233,11 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func playVideo(address:[Byte], fileName:String, fullScreen:Byte, by:Byte) -> [Byte]{
+    static func playVideo(_ address:[Byte], fileName:String, fullScreen:Byte, by:Byte) -> [Byte]{
         let fileNameByteArray = [Byte](fileName.utf8)
         var messageInfo:[Byte] = [by, fullScreen, 0xFF]
         messageInfo = messageInfo + fileNameByteArray
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1254,11 +1254,11 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func runApp (address:[Byte], cmdLine:String) -> [Byte] {
+    static func runApp (_ address:[Byte], cmdLine:String) -> [Byte] {
         let cmdLineByteArray = [Byte](cmdLine.utf8)
         var messageInfo:[Byte] = [0x01]
         messageInfo = messageInfo + cmdLineByteArray
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1275,10 +1275,10 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func sendNotificationToPC(address:[Byte], text:String, notificationType: NotificationType, notificationPosition: NotificationPosition, delayTime: Int, displayTime: Int) -> [Byte]{
+    static func sendNotificationToPC(_ address:[Byte], text:String, notificationType: NotificationType, notificationPosition: NotificationPosition, delayTime: Int, displayTime: Int) -> [Byte]{
         
         let textByteArray = [Byte](text.utf8)
-        var message:[Byte] = [Byte](count: textByteArray.count+15, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: textByteArray.count+15)
         
         //Control bytes:
         message[0] = 0xAA
@@ -1338,9 +1338,9 @@ extension OutgoingHandler {
 
 // NOT IMPLEMENTED FUNCTIONS
 extension OutgoingHandler {
-    static func setPCState (address:[Byte], command:Byte) -> [Byte]{
+    static func setPCState (_ address:[Byte], command:Byte) -> [Byte]{
         let messageInfo:[Byte] = [0x02, command]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1358,11 +1358,11 @@ extension OutgoingHandler {
         return message
     }
     //TODO:- Nije uradjeno report PC state
-    static func reportPCState(address:[Byte], text:String) -> [Byte]{
+    static func reportPCState(_ address:[Byte], text:String) -> [Byte]{
         let textByteArray = [Byte](text.utf8)
         var messageInfo:[Byte] = [0x01, 0x00, 0x00]
         messageInfo = messageInfo + textByteArray
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1379,11 +1379,11 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func textToSpeech (address:[Byte], text:String) -> [Byte]{
+    static func textToSpeech (_ address:[Byte], text:String) -> [Byte]{
         let textByteArray = [Byte](text.utf8)
         var messageInfo:[Byte] = [0x01, 0x00, 0x00]
         messageInfo = messageInfo + textByteArray
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1401,14 +1401,14 @@ extension OutgoingHandler {
         return message
     }
     //TODO:- Nije odradjeno budjenje iz lana
-    static func wakeOnLan (address:[Byte], mac:[Byte], password:[Byte]) -> [Byte]{
+    static func wakeOnLan (_ address:[Byte], mac:[Byte], password:[Byte]) -> [Byte]{
         guard mac.count == 6 || password.count == 6 || address.count == 3 else {
             return [0x00]
         }
         var messageInfo:[Byte] = [0x01, 0x00, 0x00]
         messageInfo += mac
         messageInfo += password
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1426,11 +1426,11 @@ extension OutgoingHandler {
         return message
     }
     // Not used
-    static func zoneControl (zone:Byte, value:Byte) -> [Byte]{
+    static func zoneControl (_ zone:Byte, value:Byte) -> [Byte]{
             var messageInfo:[Byte] = []
             var message:[Byte] = []
             messageInfo = [0x01, 0x00, 0x00, 0x02, value, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, zone]
-            message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+            message = [Byte](repeating: 0, count: messageInfo.count+9)
             message[0] = 0xAA
             message[1] = Byte(messageInfo.count % 256)
             message[2] = 0xFF
@@ -1445,11 +1445,11 @@ extension OutgoingHandler {
             message[message.count-1] = 0x10
             return message
         }
-    static func getWarnings (address:[Byte]) -> [Byte]{
+    static func getWarnings (_ address:[Byte]) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         messageInfo = [0x00]
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1464,12 +1464,12 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func sendIRLibrary (address:[Byte], channel:Byte, ir_id:Byte, times:Byte, interval:Byte) -> [Byte]{
+    static func sendIRLibrary (_ address:[Byte], channel:Byte, ir_id:Byte, times:Byte, interval:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         //messageInfo = [channel * 64 + times, interval, Byte(ir_id / 0x100), Byte((ir_id / 0x100) % 0x100)]
         messageInfo = [0x00] //  resi ovo
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1484,12 +1484,12 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func sendSerialLibrary (address:[Byte], channel:Byte, serialId:Byte) -> [Byte]{
+    static func sendSerialLibrary (_ address:[Byte], channel:Byte, serialId:Byte) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
         //messageInfo = [Byte((serialId / 0x100) % 0x100), Byte(serialId % 0x100), channel]
         messageInfo = [0x00] //  resi ovo
-        message = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]
@@ -1504,9 +1504,9 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func getRunningTime (address:[Byte]) -> [Byte]{
+    static func getRunningTime (_ address:[Byte]) -> [Byte]{
         var messageInfo:[Byte] = [0x00]
-        var message:[Byte] = [Byte](count: messageInfo.count+9, repeatedValue: 0)
+        var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
         message[0] = 0xAA
         message[1] = Byte(messageInfo.count % 256)
         message[2] = address[0]

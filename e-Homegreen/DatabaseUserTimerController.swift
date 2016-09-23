@@ -12,21 +12,21 @@ import CoreData
 class DatabaseUserTimerController: NSObject {
     
     static let shared = DatabaseUserTimerController()
-    let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    func getTimers(filterParametar:FilterItem) -> [Timer] {
+    func getTimers(_ filterParametar:FilterItem) -> [Timer] {
         if let user = DatabaseUserController.shared.logedUserOrAdmin(){
-            let fetchRequest = NSFetchRequest(entityName: "Timer")
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Timer.fetchRequest()
             let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
             let sortDescriptorTwo = NSSortDescriptor(key: "timerId", ascending: true)
             let sortDescriptorThree = NSSortDescriptor(key: "timerName", ascending: true)
             fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
             
-            var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))]
+            var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool))]
             predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
             
-            predicateArray.append(NSPredicate(format: "type == %@", NSNumber(integer: TimerType.Stopwatch.rawValue)))
-            predicateArray.append(NSPredicate(format: "timerCategoryId == %@", NSNumber(integer: 20)))
+            predicateArray.append(NSPredicate(format: "type == %@", NSNumber(value: TimerType.stopwatch.rawValue as Int)))
+            predicateArray.append(NSPredicate(format: "timerCategoryId == %@", NSNumber(value: 20 as Int)))
             
             if filterParametar.location != "All" {
                 predicateArray.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location))
@@ -40,10 +40,10 @@ class DatabaseUserTimerController: NSObject {
             if filterParametar.categoryName != "All" {
                 predicateArray.append(NSPredicate(format: "timerCategory == %@", filterParametar.categoryName))
             }
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
             do {
-                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Timer]
+                let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Timer]
                 return fetResults!
             } catch _ as NSError {
                 abort()

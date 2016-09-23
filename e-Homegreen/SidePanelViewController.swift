@@ -17,25 +17,25 @@
     
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var menuCollectionView: UICollectionView!
-    private var sectionInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    fileprivate var sectionInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     var menu:[MenuItem] = []
     
     var user:User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.blackColor()
+        view.backgroundColor = UIColor.black
         
         //get user if exist
         user = DatabaseUserController.shared.getLoggedUser()
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         reloadMenu()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         if let user = user{
             DatabaseMenuController.shared.changeOrder(menu, user: user)
         }
@@ -55,25 +55,25 @@
     
     //pragma mark - LXReorderableCollectionViewDataSource methods
     
-    func collectionView(collectionView: UICollectionView!, itemAtIndexPath fromIndexPath: NSIndexPath!, willMoveToIndexPath toIndexPath: NSIndexPath!) {
+    func collectionView(_ collectionView: UICollectionView!, itemAt fromIndexPath: IndexPath!, willMoveTo toIndexPath: IndexPath!) {
 
         let pom = menu[fromIndexPath.item]
-        menu.removeAtIndex(fromIndexPath.item)
-        menu.insert(pom, atIndex: toIndexPath.item)
+        menu.remove(at: fromIndexPath.item)
+        menu.insert(pom, at: toIndexPath.item)
 
     }
     
-    func collectionView(collectionView: UICollectionView, canMoveItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
         if AdminController.shared.isAdminLogged(){
             return false
         }
-        if indexPath.item == menu.count || indexPath.item == menu.count - 1 {
+        if (indexPath as NSIndexPath).item == menu.count || (indexPath as NSIndexPath).item == menu.count - 1 {
             return false
         }
         return true
     }
     
-    func collectionView(collectionView: UICollectionView!, itemAtIndexPath fromIndexPath: NSIndexPath!, canMoveToIndexPath toIndexPath: NSIndexPath!) -> Bool {
+    func collectionView(_ collectionView: UICollectionView!, itemAt fromIndexPath: IndexPath!, canMoveTo toIndexPath: IndexPath!) -> Bool {
         if AdminController.shared.isAdminLogged(){
             return false
         }
@@ -83,22 +83,22 @@
         return true
     }
     
-    @IBAction func logOutAction(sender: UIButton) {
-        let optionMenu = UIAlertController(title: nil, message: "Are you sure to want to log out?", preferredStyle: .ActionSheet)
+    @IBAction func logOutAction(_ sender: UIButton) {
+        let optionMenu = UIAlertController(title: nil, message: "Are you sure to want to log out?", preferredStyle: .actionSheet)
         
-        let logoutAction = UIAlertAction(title: "Log Out", style: .Default, handler: {
+        let logoutAction = UIAlertAction(title: "Log Out", style: .default, handler: {
             (alert: UIAlertAction!) -> Void in
             DatabaseLocationController.shared.stopAllLocationMonitoring()
             DatabaseUserController.shared.logoutUser()
             DatabaseUserController.shared.setUser(nil)
             AdminController.shared.logoutAdmin()
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            let logIn = storyboard.instantiateViewControllerWithIdentifier("LoginController") as! LogInViewController
-            self.presentViewController(logIn, animated: false, completion: nil)
+            let logIn = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LogInViewController
+            self.present(logIn, animated: false, completion: nil)
             
         })
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
             (alert: UIAlertAction!) -> Void in
             print("Cancelled")
         })
@@ -110,7 +110,7 @@
         
         optionMenu.addAction(logoutAction)
         optionMenu.addAction(cancelAction)
-        self.presentViewController(optionMenu, animated: true, completion: nil)
+        self.present(optionMenu, animated: true, completion: nil)
         
         
     }
@@ -120,31 +120,31 @@
    
    extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.row != menu.count {
-            if let item = Menu(rawValue: Int(menu[indexPath.row].id)){
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if (indexPath as NSIndexPath).row != menu.count {
+            if let item = Menu(rawValue: Int(menu[(indexPath as NSIndexPath).row].id)){
                 self.revealViewController().pushFrontViewController(item.controller, animated: true)
             }
         }
         if let user = user{
-            user.lastScreenId = Int(menu[indexPath.row].id)
+            user.lastScreenId = menu[indexPath.row].id
         }
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 8
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 8
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        if indexPath.row < menu.count{
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if (indexPath as NSIndexPath).row < menu.count{
             return CGSize(width: 88, height: 88)
         }else{
             return CGSize(width: 184, height: 70)
@@ -153,23 +153,23 @@
    }
    
    extension SidePanelViewController: UICollectionViewDataSource {
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return menu.count + 1
     }
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if indexPath.row < menu.count{
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("MenuItemCell", forIndexPath: indexPath) as! MenuItemCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if (indexPath as NSIndexPath).row < menu.count{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MenuItemCell", for: indexPath) as! MenuItemCell
             
-            cell.configureForMenu(menu[indexPath.row])
+            cell.configureForMenu(menu[(indexPath as NSIndexPath).row])
             
             
             cell.layer.cornerRadius = 5
             return cell
         }else{
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("LogOutCell", forIndexPath: indexPath) as! LogOutCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LogOutCell", for: indexPath) as! LogOutCell
             cell.setItem(user)
             return cell
         }
@@ -181,42 +181,42 @@
     @IBOutlet weak var menuItemImageView: UIImageView!
     @IBOutlet weak var menuItemName: UILabel!
     
-    var colorOne = UIColor(red: 52/255, green: 52/255, blue: 49/255, alpha: 1).CGColor
-    var colorTwo = UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).CGColor
+    var colorOne = UIColor(red: 52/255, green: 52/255, blue: 49/255, alpha: 1).cgColor
+    var colorTwo = UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).cgColor
     
-    func configureForMenu (menuItem:MenuItem) {
+    func configureForMenu (_ menuItem:MenuItem) {
         if let item = Menu(rawValue: Int(menuItem.id)){
             menuItemImageView.image = UIImage(named: item.description)
             menuItemName.text = item.description
         }
     }
     
-    override var highlighted: Bool {
+    override var isHighlighted: Bool {
         willSet(newValue) {
             if newValue {
-                colorOne = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).CGColor
-                colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
+                colorOne = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).cgColor
+                colorTwo = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).cgColor
             } else {
-                colorOne = UIColor(red: 52/255, green: 52/255, blue: 49/255, alpha: 1).CGColor
-                colorTwo = UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).CGColor
+                colorOne = UIColor(red: 52/255, green: 52/255, blue: 49/255, alpha: 1).cgColor
+                colorTwo = UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).cgColor
             }
         }
         didSet {
             setNeedsDisplay()
         }
     }
-    override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
         let context = UIGraphicsGetCurrentContext()
         let colors = [ colorOne, colorTwo]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
-        let gradient = CGGradientCreateWithColors(colorSpace,
-                                                  colors,
-                                                  colorLocations)
+        let gradient = CGGradient(colorsSpace: colorSpace,
+                                                  colors: colors as CFArray,
+                                                  locations: colorLocations)
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:0, y:bounds.height)
-        CGContextDrawLinearGradient(context!, gradient!, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+        context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
         
     }
    }
@@ -228,7 +228,7 @@
     @IBOutlet weak var dataBaseLabel: UILabel!
     @IBOutlet weak var logOutButton: UIButton!
     
-    func setItem(user:User?){
+    func setItem(_ user:User?){
         if let user = user{
             
             if let id = user.customImageId{

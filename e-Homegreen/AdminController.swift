@@ -17,22 +17,22 @@ class AdminController: NSObject {
     
     static let shared = AdminController()
     
-    let prefs = NSUserDefaults.standardUserDefaults()
+    let prefs = Foundation.UserDefaults.standard
     
-    func setAdmin(username:String, password:String) -> Bool{
+    func setAdmin(_ username:String, password:String) -> Bool{
         prefs.setValue(username, forKey: AdminConstants.Username)
         prefs.setValue(password, forKey: AdminConstants.Password)
         
-        if  let _ = prefs.stringForKey(AdminConstants.Username), let _ = prefs.stringForKey(AdminConstants.Password){
+        if  let _ = prefs.string(forKey: AdminConstants.Username), let _ = prefs.string(forKey: AdminConstants.Password){
             return true
         }
         return false
     }
     
     func getAdmin() -> Admin?{
-        print("admin username: \(prefs.stringForKey(AdminConstants.Username))")
-        print("admin password: \(prefs.stringForKey(AdminConstants.Password))")
-        if  let username = prefs.stringForKey(AdminConstants.Username), let password = prefs.stringForKey(AdminConstants.Password){
+        print("admin username: \(prefs.string(forKey: AdminConstants.Username))")
+        print("admin password: \(prefs.string(forKey: AdminConstants.Password))")
+        if  let username = prefs.string(forKey: AdminConstants.Username), let password = prefs.string(forKey: AdminConstants.Password){
             return Admin(username: username, password: password)
         }
         return nil
@@ -48,20 +48,20 @@ class AdminController: NSObject {
     }
     
     func isAdminLogged() -> Bool{
-        if let isLogged = prefs.valueForKey(AdminConstants.IsLogged) as? Bool{
+        if let isLogged = prefs.value(forKey: AdminConstants.IsLogged) as? Bool{
             return isLogged
         }
         return false
     }
     func getOtherUser() -> String?{
-        if let str = prefs.valueForKey(AdminConstants.OtherUserDatabase) as? String{
+        if let str = prefs.value(forKey: AdminConstants.OtherUserDatabase) as? String{
             return str
         }
         return nil
     }
-    func setOtherUser(url:String?) -> Bool{
+    func setOtherUser(_ url:String?) -> Bool{
         prefs.setValue(url, forKey: AdminConstants.OtherUserDatabase)
-        if let _ = prefs.valueForKey(AdminConstants.OtherUserDatabase) as? String{
+        if let _ = prefs.value(forKey: AdminConstants.OtherUserDatabase) as? String{
             return true
         }
         return false

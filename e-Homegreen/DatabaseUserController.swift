@@ -13,15 +13,15 @@ class DatabaseUserController: NSObject {
     
     static let shared = DatabaseUserController()
     
-    let prefs = NSUserDefaults.standardUserDefaults()
+    let prefs = Foundation.UserDefaults.standard
     
-    let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     func getLoggedUser() -> User?{
-        if let stringUrl = prefs.valueForKey(Login.User) as? String{
-            if let url = NSURL(string: stringUrl){
-                if let id = appDel.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
-                    if let user = appDel.managedObjectContext?.objectWithID(id) as? User {
+        if let stringUrl = prefs.value(forKey: Login.User) as? String{
+            if let url = URL(string: stringUrl){
+                if let id = appDel.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) {
+                    if let user = appDel.managedObjectContext?.object(with: id) as? User {
                         return user
                     }
                 }
@@ -33,9 +33,9 @@ class DatabaseUserController: NSObject {
     
     func getOtherUser() -> User?{
         if let stringUrl = AdminController.shared.getOtherUser(){
-            if let url = NSURL(string: stringUrl){
-                if let id = appDel.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url) {
-                    if let user = appDel.managedObjectContext?.objectWithID(id) as? User {
+            if let url = URL(string: stringUrl){
+                if let id = appDel.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) {
+                    if let user = appDel.managedObjectContext?.object(with: id) as? User {
                         return user
                     }
                 }
@@ -44,9 +44,9 @@ class DatabaseUserController: NSObject {
         }
         return nil
     }
-    func setUser(url:String?) -> Bool{
+    func setUser(_ url:String?) -> Bool{
         prefs.setValue(url, forKey: Login.User)
-        if let _ = prefs.valueForKey(Login.User){
+        if let _ = prefs.value(forKey: Login.User){
             return true
         }
         return false
@@ -54,10 +54,10 @@ class DatabaseUserController: NSObject {
     }
     
     func getUserForDropDownMenu() -> [User] {
-        let fetchRequest = NSFetchRequest(entityName: "User")
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = User.fetchRequest()
         
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [User]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [User]
             return fetResults!
             
         } catch  {
@@ -66,16 +66,16 @@ class DatabaseUserController: NSObject {
         return []
     }
     
-    func getUser(username:String, password:String) -> User? {
-        let fetchRequest = NSFetchRequest(entityName: "User")
+    func getUser(_ username:String, password:String) -> User? {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = User.fetchRequest()
         let predicateOne = NSPredicate(format: "username == %@", username)
         let predicateTwo = NSPredicate(format: "password == %@", password)
         let predicateArray:[NSPredicate] = [predicateOne, predicateTwo]
         
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [User]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [User]
             if fetResults?.count != 0{
                 return fetResults?[0]
             }else{
@@ -90,7 +90,7 @@ class DatabaseUserController: NSObject {
     }
     
     func isLogged() -> Bool{
-        return prefs.boolForKey(Login.IsLoged)
+        return prefs.bool(forKey: Login.IsLoged)
     }
     
     func loginUser(){
@@ -102,11 +102,11 @@ class DatabaseUserController: NSObject {
     }
     
     func getAllUsers() -> [User]{
-        let fetchRequest = NSFetchRequest(entityName: "User")
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = User.fetchRequest()
         let sortDescriptorOne = NSSortDescriptor(key: "username", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne]
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [User]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [User]
             return fetResults!
         } catch  {
             

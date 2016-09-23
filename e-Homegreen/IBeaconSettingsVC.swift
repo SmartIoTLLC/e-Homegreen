@@ -12,7 +12,7 @@ import CoreData
 class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
     
     var isPresenting: Bool = true
-    var uuidRegex = try! NSRegularExpression(pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", options: .CaseInsensitive)
+    var uuidRegex = try! NSRegularExpression(pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", options: .caseInsensitive)
     
     @IBOutlet weak var centarConstraint: NSLayoutConstraint!
     @IBOutlet weak var backView: UIView!
@@ -33,7 +33,7 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         super.init(nibName: "IBeaconSettingsVC", bundle: nil)
         transitioningDelegate = self
         self.iBeacon = iBeacon
-        modalPresentationStyle = UIModalPresentationStyle.Custom
+        modalPresentationStyle = UIModalPresentationStyle.custom
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -44,15 +44,15 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         editMajor.resignFirstResponder()
         editMinor.resignFirstResponder()
         centarConstraint.constant = 0
-        UIView.animateWithDuration(0.3,
+        UIView.animate(withDuration: 0.3,
             delay: 0,
-            options: UIViewAnimationOptions.CurveLinear,
+            options: UIViewAnimationOptions.curveLinear,
             animations: { self.view.layoutIfNeeded() },
             completion: nil)
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: backView){
             return false
         }
         return true
@@ -61,14 +61,14 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.2)
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
         editMajor.inputAccessoryView = CustomToolBar()
         editMinor.inputAccessoryView = CustomToolBar()
         
-        if UIScreen.mainScreen().scale > 2.5{
+        if UIScreen.main.scale > 2.5{
             editName.layer.borderWidth = 1
             editUUID.layer.borderWidth = 1
             editMajor.layer.borderWidth = 1
@@ -85,19 +85,19 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         editMajor.layer.cornerRadius = 2
         editMinor.layer.cornerRadius = 2
         
-        editName.layer.borderColor = UIColor.lightGrayColor().CGColor
-        editUUID.layer.borderColor = UIColor.lightGrayColor().CGColor
-        editMajor.layer.borderColor = UIColor.lightGrayColor().CGColor
-        editMinor.layer.borderColor = UIColor.lightGrayColor().CGColor
+        editName.layer.borderColor = UIColor.lightGray.cgColor
+        editUUID.layer.borderColor = UIColor.lightGray.cgColor
+        editMajor.layer.borderColor = UIColor.lightGray.cgColor
+        editMinor.layer.borderColor = UIColor.lightGray.cgColor
         
         editName.attributedPlaceholder = NSAttributedString(string:"Name",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
         editUUID.attributedPlaceholder = NSAttributedString(string:"UUID",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
         editMajor.attributedPlaceholder = NSAttributedString(string:"Major",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
         editMinor.attributedPlaceholder = NSAttributedString(string:"Minor",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
         
         btnCancel.layer.cornerRadius = 2
         btnSave.layer.cornerRadius = 2
@@ -113,7 +113,7 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         editUUID.text = "2B162531-FD29-4758-85B4-555A6DFF00FF"
         editUUID.tag = 2
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IBeaconSettingsVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(IBeaconSettingsVC.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(IBeaconSettingsVC.dismissViewController))
         tapGesture.delegate = self
@@ -123,15 +123,15 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     }
     
     func dismissViewController () {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         centarConstraint.constant = 0
-        UIView.animateWithDuration(0.3,
+        UIView.animate(withDuration: 0.3,
             delay: 0,
-            options: UIViewAnimationOptions.CurveLinear,
+            options: UIViewAnimationOptions.curveLinear,
             animations: { self.view.layoutIfNeeded() },
             completion: nil)
         return true
@@ -142,55 +142,55 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func btnCancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func btnCancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func btnSave(sender: AnyObject) {
+    @IBAction func btnSave(_ sender: AnyObject) {
         if editName.text == "" || editUUID.text == "" || editMinor.text == "" || editMajor.text == ""{
            
         } else {
             if let minor = UInt16(editMinor.text!), let major = UInt16(editMajor.text!) {
-                if uuidRegex.numberOfMatchesInString(editUUID.text!, options: [], range: NSMakeRange(0, editUUID.text!.characters.count)) > 0{
+                if uuidRegex.numberOfMatches(in: editUUID.text!, options: [], range: NSMakeRange(0, editUUID.text!.characters.count)) > 0{
                     if iBeacon == nil{
-                        let iBeaconNew = NSEntityDescription.insertNewObjectForEntityForName("IBeacon", inManagedObjectContext: appDel.managedObjectContext!) as! IBeacon
+                        let iBeaconNew = NSEntityDescription.insertNewObject(forEntityName: "IBeacon", into: appDel.managedObjectContext!) as! IBeacon
                         iBeaconNew.name = editName.text!
                         iBeaconNew.uuid = editUUID.text!
-                        iBeaconNew.major = NSNumber(unsignedShort: major)
-                        iBeaconNew.minor =  NSNumber(unsignedShort: minor)
+                        iBeaconNew.major = NSNumber(value: major as UInt16)
+                        iBeaconNew.minor =  NSNumber(value: minor as UInt16)
                     } else {
                         iBeacon!.name = editName.text!
                         iBeacon!.uuid = editUUID.text!
-                        iBeacon!.major =  NSNumber(unsignedShort: major)
-                        iBeacon!.minor = NSNumber(unsignedShort: minor)
+                        iBeacon!.major =  NSNumber(value: major as UInt16)
+                        iBeacon!.minor = NSNumber(value: minor as UInt16)
                     }
                     CoreDataController.shahredInstance.saveChanges()
-                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshIBeacon, object: self, userInfo: nil)
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshIBeacon), object: self, userInfo: nil)
+                    self.dismiss(animated: true, completion: nil)
                 }
             }
         }
     }
     
-    func keyboardWillShow(notification: NSNotification) {
-        var info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+    func keyboardWillShow(_ notification: Notification) {
+        var info = (notification as NSNotification).userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
-        if editUUID.isFirstResponder(){
+        if editUUID.isFirstResponder{
             if backView.frame.origin.y + editUUID.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editUUID.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height)))
                 
             }
         }
-        if editMajor.isFirstResponder(){
+        if editMajor.isFirstResponder{
             if backView.frame.origin.y + editMajor.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editMajor.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height)))
                 
             }
         }
-        if editMinor.isFirstResponder(){
+        if editMinor.isFirstResponder{
             if backView.frame.origin.y + editMinor.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editMinor.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height)))
@@ -200,7 +200,7 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
 
  
         
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
         
     }
 
@@ -209,36 +209,36 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
 
 extension IBeaconSettingsVC : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5 //Add your own duration here
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         //Add presentation and dismiss animation transition here.
         if isPresenting == true{
             isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
+            let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
+            let containerView = transitionContext.containerView
             
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
+            presentedControllerView.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
             containerView.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
             //            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -251,11 +251,11 @@ extension IBeaconSettingsVC : UIViewControllerAnimatedTransitioning {
 
 extension IBeaconSettingsVC : UIViewControllerTransitioningDelegate {
     
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if dismissed == self {
             return self
         }
@@ -267,8 +267,8 @@ extension IBeaconSettingsVC : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showiBeaconSettings(iBeacon:IBeacon?) {
+    func showiBeaconSettings(_ iBeacon:IBeacon?) {
         let iBeaSet = IBeaconSettingsVC(iBeacon: iBeacon)
-        self.presentViewController(iBeaSet, animated: true, completion: nil)
+        self.present(iBeaSet, animated: true, completion: nil)
     }
 }

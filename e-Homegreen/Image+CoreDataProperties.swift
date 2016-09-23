@@ -14,7 +14,7 @@ import CoreData
 
 extension Image {
 
-    @NSManaged var imageData: NSData?
+    @NSManaged var imageData: Data?
     @NSManaged var imageId: String?
     @NSManaged var user: User?
     

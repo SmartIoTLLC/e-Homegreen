@@ -14,15 +14,15 @@ class CustomGradientButtonWhite: UIButton {
     var defaultColorTwo = Colors.LightGrayColor
     var colorOne = Colors.VeryLightGrayColor
     var colorTwo = Colors.LightGrayColor
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         
         let path = UIBezierPath(roundedRect: rect,
-            byRoundingCorners: UIRectCorner.AllCorners,
+            byRoundingCorners: UIRectCorner.allCorners,
             cornerRadii: CGSize(width: 5.0, height: 5.0))
         path.addClip()
         path.lineWidth = 2
         
-        UIColor.lightGrayColor().setStroke()
+        UIColor.lightGray.setStroke()
         
         let context = UIGraphicsGetCurrentContext()
         let colors = [colorOne , colorTwo]
@@ -31,20 +31,20 @@ class CustomGradientButtonWhite: UIButton {
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
         
-        let gradient = CGGradientCreateWithColors(colorSpace,
-            colors,
-            colorLocations)
+        let gradient = CGGradient(colorsSpace: colorSpace,
+            colors: colors as CFArray,
+            locations: colorLocations)
         
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:0, y:self.bounds.height)
         
-        CGContextDrawLinearGradient(context!, gradient!, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+        context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
         path.stroke()
-        self.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        self.backgroundColor = UIColor.clearColor()
+        self.setTitleColor(UIColor.black, for: UIControlState())
+        self.backgroundColor = UIColor.clear
     }
     
-    override var highlighted: Bool {
+    override var isHighlighted: Bool {
         
         willSet(newValue) {
             if newValue {
@@ -57,7 +57,7 @@ class CustomGradientButtonWhite: UIButton {
         }
         
         didSet {
-            print("highlighted = \(highlighted)")
+            print("highlighted = \(isHighlighted)")
             //            if highlighted {
             //                colorOne = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).CGColor
             //                colorTwo = UIColor.lightGrayColor().CGColor
@@ -69,9 +69,9 @@ class CustomGradientButtonWhite: UIButton {
         }
     }
     
-    override var selected: Bool {
+    override var isSelected: Bool {
         willSet(newValue) {
-            print("changing from \(selected) to \(newValue)")
+            print("changing from \(isSelected) to \(newValue)")
             if newValue {
                 colorOne = Colors.DarkGrayColor
                 colorTwo = Colors.VeryLightGrayColor
@@ -83,7 +83,7 @@ class CustomGradientButtonWhite: UIButton {
         }
         
         didSet {
-            print("selected=\(selected)")
+            print("selected=\(isSelected)")
             
         }
     }

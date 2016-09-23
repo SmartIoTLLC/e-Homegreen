@@ -15,11 +15,11 @@ struct Address {
 }
 
 enum ScanType:Int {
-    case Zone=0, Categories
+    case zone=0, categories
 }
 
 protocol AddAddressDelegate{
-    func addAddressFinished(address:Address)
+    func addAddressFinished(_ address:Address)
 }
 
 class InsertGatewayAddressXIB: CommonXIBTransitionVC {
@@ -52,7 +52,7 @@ class InsertGatewayAddressXIB: CommonXIBTransitionVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UIView.hr_setToastThemeColor(color: UIColor.redColor())
+        UIView.hr_setToastThemeColor(color: UIColor.red)
         
         addressOne.delegate = self
         addressTwo.delegate = self
@@ -62,7 +62,7 @@ class InsertGatewayAddressXIB: CommonXIBTransitionVC {
         addressTwo.inputAccessoryView = CustomToolBar()
         addressThree.inputAccessoryView = CustomToolBar()
         
-        if whatToScan == ScanType.Zone{
+        if whatToScan == ScanType.zone{
             titleLabel.text = "Scan zones from address"
         }else{
             titleLabel.text = "Scan categories from address"
@@ -70,8 +70,8 @@ class InsertGatewayAddressXIB: CommonXIBTransitionVC {
 
     }
     
-    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: backView){
             self.view.endEditing(true)
             return false
         }
@@ -79,15 +79,15 @@ class InsertGatewayAddressXIB: CommonXIBTransitionVC {
     }
     
     func dismissViewController () {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func cancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func scan(sender: AnyObject) {
-        guard let firstAddress = addressOne.text where firstAddress != "", let secondAddress = addressTwo.text where secondAddress != "", let thirdAddress = addressThree.text where thirdAddress != "" else{
+    @IBAction func scan(_ sender: AnyObject) {
+        guard let firstAddress = addressOne.text , firstAddress != "", let secondAddress = addressTwo.text , secondAddress != "", let thirdAddress = addressThree.text , thirdAddress != "" else{
             self.view.makeToast(message: "All fields must be filled")
             return
         }
@@ -95,7 +95,7 @@ class InsertGatewayAddressXIB: CommonXIBTransitionVC {
             self.view.makeToast(message: "Insert number in field")
             return
         }
-        self.dismissViewControllerAnimated(true) { 
+        self.dismiss(animated: true) { 
             self.delegate?.addAddressFinished(Address(firstByte: addressOne, secondByte: addressTwo, thirdByte: addressThree))
         }
         
@@ -104,15 +104,15 @@ class InsertGatewayAddressXIB: CommonXIBTransitionVC {
 }
 
 extension InsertGatewayAddressXIB : UITextFieldDelegate {
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool{
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool{
         let maxLength = 3
-        let currentString: NSString = textField.text!
+        let currentString: NSString = textField.text! as NSString
         let newString: NSString =
-            currentString.stringByReplacingCharactersInRange(range, withString: string)
+            currentString.replacingCharacters(in: range, with: string) as NSString
         return newString.length <= maxLength
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
@@ -120,9 +120,9 @@ extension InsertGatewayAddressXIB : UITextFieldDelegate {
 }
 
 extension UIViewController {
-    func showAddAddress(whatToScan:ScanType) -> InsertGatewayAddressXIB {
+    func showAddAddress(_ whatToScan:ScanType) -> InsertGatewayAddressXIB {
         let addAddress = InsertGatewayAddressXIB(whatToScan: whatToScan)
-        self.presentViewController(addAddress, animated: true, completion: nil)
+        self.present(addAddress, animated: true, completion: nil)
         return addAddress
     }
 }

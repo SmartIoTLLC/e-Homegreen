@@ -8,14 +8,43 @@
 
 import UIKit
 import CoreData
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l >= r
+  default:
+    return !(lhs < rhs)
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 enum TypeOfControl:Int{
-    case Allowed = 1, Confirm, NotAllowed
+    case allowed = 1, confirm, notAllowed
     var description:String{
         switch self{
-        case Allowed: return "Allowed"
-        case Confirm: return "Confirm"
-        case NotAllowed: return "Not Allowed"
+        case .allowed: return "Allowed"
+        case .confirm: return "Confirm"
+        case .notAllowed: return "Not Allowed"
         }
     }
 }
@@ -32,7 +61,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     @IBOutlet weak var txtTo: UITextField!
     
     var scanZones:ScanFunction?
-    var zoneScanTimer:NSTimer?
+    var zoneScanTimer:Foundation.Timer?
     var timesRepeatedCounter:Int = 0
     
     var pbSZ:ProgressBarVC?
@@ -46,9 +75,9 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         txtFrom.inputAccessoryView = CustomToolBar()
         txtTo.inputAccessoryView = CustomToolBar()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         
         let longpress = UILongPressGestureRecognizer(target: self, action:#selector(ImportCategoryViewController.longPressGestureRecognized(_:)))
         importCategoryTableView.addGestureRecognizer(longpress)
@@ -56,18 +85,18 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         refreshCategoryList()
         
     }
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         removeObservers()
     }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         addObservers()
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool{
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool{
         let maxLength = 3
-        let currentString: NSString = textField.text!
+        let currentString: NSString = textField.text! as NSString
         let newString: NSString =
-            currentString.stringByReplacingCharactersInRange(range, withString: string)
+            currentString.replacingCharacters(in: range, with: string) as NSString
         return newString.length <= maxLength
     }
     func endEditingNow(){
@@ -76,48 +105,48 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     }
     
     //move tableview cell on hold and swipe
-    func longPressGestureRecognized(gestureRecognizer: UIGestureRecognizer){
+    func longPressGestureRecognized(_ gestureRecognizer: UIGestureRecognizer){
         
         let longPress = gestureRecognizer as! UILongPressGestureRecognizer
         let state = longPress.state
-        let locationInView = longPress.locationInView(importCategoryTableView)
-        let indexPath = importCategoryTableView.indexPathForRowAtPoint(locationInView)
+        let locationInView = longPress.location(in: importCategoryTableView)
+        let indexPath = importCategoryTableView.indexPathForRow(at: locationInView)
         
         struct My {
             static var cellSnapshot : UIView? = nil
         }
         struct Path {
-            static var initialIndexPath : NSIndexPath? = nil
+            static var initialIndexPath : IndexPath? = nil
         }
 
         switch state {
-        case UIGestureRecognizerState.Began:
+        case UIGestureRecognizerState.began:
             if indexPath != nil {
                 Path.initialIndexPath = indexPath
-                let cell = importCategoryTableView.cellForRowAtIndexPath(indexPath!) as UITableViewCell!
-                My.cellSnapshot  = snapshopOfCell(cell)
-                var center = cell.center
+                let cell = importCategoryTableView.cellForRow(at: indexPath!) as UITableViewCell!
+                My.cellSnapshot  = snapshopOfCell(cell!)
+                var center = cell?.center
                 
-                My.cellSnapshot!.center = center
+                My.cellSnapshot!.center = center!
                 My.cellSnapshot!.alpha = 0.0
                 importCategoryTableView.addSubview(My.cellSnapshot!)
 
-                UIView.animateWithDuration(0.25, animations: { () -> Void in
+                UIView.animate(withDuration: 0.25, animations: { () -> Void in
                     
-                    center.y = locationInView.y
-                    My.cellSnapshot!.center = center
-                    My.cellSnapshot!.transform = CGAffineTransformMakeScale(1.02, 1.02)
+                    center?.y = locationInView.y
+                    My.cellSnapshot!.center = center!
+                    My.cellSnapshot!.transform = CGAffineTransform(scaleX: 1.02, y: 1.02)
                     My.cellSnapshot!.alpha = 0.98
-                    cell.alpha = 0.0
+                    cell?.alpha = 0.0
                     
                     }, completion: { (finished) -> Void in
                         if finished {
-                            cell.hidden = true
+                            cell?.isHidden = true
                         }
                 })
             }
             
-        case UIGestureRecognizerState.Changed:
+        case UIGestureRecognizerState.changed:
             var center = My.cellSnapshot!.center
             
             center.y = locationInView.y
@@ -126,33 +155,33 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
             
             if ((indexPath != nil) && (indexPath != Path.initialIndexPath)) {
                 if let index = indexPath, let initial = Path.initialIndexPath {
-                    let pom = categories[index.row]
-                    categories[index.row] = categories[initial.row]
-                    categories[initial.row] = pom
-                    let id = categories[index.row].orderId
-                    categories[index.row].orderId = categories[initial.row].orderId
-                    categories[initial.row].orderId = id
+                    let pom = categories[(index as NSIndexPath).row]
+                    categories[(index as NSIndexPath).row] = categories[(initial as NSIndexPath).row]
+                    categories[(initial as NSIndexPath).row] = pom
+                    let id = categories[(index as NSIndexPath).row].orderId
+                    categories[(index as NSIndexPath).row].orderId = categories[(initial as NSIndexPath).row].orderId
+                    categories[(initial as NSIndexPath).row].orderId = id
                     CoreDataController.shahredInstance.saveChanges()
                     
                 }
                 
-                importCategoryTableView.moveRowAtIndexPath(Path.initialIndexPath!, toIndexPath: indexPath!)
+                importCategoryTableView.moveRow(at: Path.initialIndexPath!, to: indexPath!)
                 Path.initialIndexPath = indexPath
                 
             }
             
         default:
-            let cell = importCategoryTableView.cellForRowAtIndexPath(Path.initialIndexPath!) as! ImportCategoryTableViewCell!
-            cell.hidden = false
-            cell.alpha = 0.0
+            let cell = importCategoryTableView.cellForRow(at: Path.initialIndexPath!) as! ImportCategoryTableViewCell!
+            cell?.isHidden = false
+            cell?.alpha = 0.0
             
-            UIView.animateWithDuration(0.25, animations: { () -> Void in
+            UIView.animate(withDuration: 0.25, animations: { () -> Void in
                 
-                My.cellSnapshot!.center = cell.center
-                My.cellSnapshot!.transform = CGAffineTransformIdentity
+                My.cellSnapshot!.center = (cell?.center)!
+                My.cellSnapshot!.transform = CGAffineTransform.identity
                 My.cellSnapshot!.alpha = 0.0
                 
-                cell.alpha = 1.0
+                cell?.alpha = 1.0
                 }, completion: { (finished) -> Void in
                     
                     if finished {
@@ -164,10 +193,10 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
             
         }
     }
-    func snapshopOfCell(inputView: UIView) -> UIView {
+    func snapshopOfCell(_ inputView: UIView) -> UIView {
         UIGraphicsBeginImageContextWithOptions(inputView.bounds.size, false, 0.0)
         
-        inputView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        inputView.layer.render(in: UIGraphicsGetCurrentContext()!)
         let image = UIGraphicsGetImageFromCurrentImageContext()! as UIImage
         
         UIGraphicsEndImageContext()
@@ -175,7 +204,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         let cellSnapshot : UIView = UIImageView(image: image)
         cellSnapshot.layer.masksToBounds = false
         cellSnapshot.layer.cornerRadius = 0.0
-        cellSnapshot.layer.shadowOffset = CGSizeMake(-5.0, 0.0)
+        cellSnapshot.layer.shadowOffset = CGSize(width: -5.0, height: 0.0)
         cellSnapshot.layer.shadowRadius = 5.0
         cellSnapshot.layer.shadowOpacity = 0.4
         
@@ -183,18 +212,18 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         
     }
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ImportCategoryViewController.categoryReceivedFromGateway(_:)), name: NotificationKey.DidReceiveCategoryFromGateway, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ImportCategoryViewController.categoryReceivedFromGateway(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveCategoryFromGateway), object: nil)
     }
     func removeObservers() {
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningForCategories)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "categoryReceivedFromGateway:", object: nil)
+        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningForCategories)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "categoryReceivedFromGateway:"), object: nil)
     }
     
-    @IBAction func brnDeleteAll(sender: UIButton) {
+    @IBAction func brnDeleteAll(_ sender: UIButton) {
         showAlertView(sender, message: "Are you sure you want to delete all devices?") { (action) in
-            if action == ReturnedValueFromAlertView.Delete {
+            if action == ReturnedValueFromAlertView.delete {
                 for category in self.categories{
-                    self.appDel.managedObjectContext!.deleteObject(category)
+                    self.appDel.managedObjectContext!.delete(category)
                 }
                 
                 self.createCategories()
@@ -203,29 +232,29 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
             }
         }
     }
-    @IBAction func btnCleearFields(sender: AnyObject) {
+    @IBAction func btnCleearFields(_ sender: AnyObject) {
         txtFrom.text = ""
         txtTo.text = ""
     }
-    @IBAction func btnImportFile(sender: AnyObject) {
+    @IBAction func btnImportFile(_ sender: AnyObject) {
         showImportFiles().delegate = self
     }
-    @IBAction func addCategory(sender: AnyObject) {
+    @IBAction func addCategory(_ sender: AnyObject) {
         showEditCategory(nil, location: location).delegate = self
     }
-    @IBAction func doneAction(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func doneAction(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
-    @IBAction func btnScanCategories(sender: AnyObject) {
-        showAddAddress(ScanType.Categories).delegate = self
+    @IBAction func btnScanCategories(_ sender: AnyObject) {
+        showAddAddress(ScanType.categories).delegate = self
     }
-    func addAddressFinished(address: Address) {
+    func addAddressFinished(_ address: Address) {
         do {
             var gatewayForScan:Gateway?
             if let location = location{
                 if let gateways = location.gateways?.allObjects as? [Gateway]{
                     for gate in gateways{
-                        if gate.addressOne == address.firstByte && gate.addressTwo == address.secondByte && gate.addressThree == address.thirdByte{
+                        if Int(gate.addressOne) == address.firstByte && Int(gate.addressTwo) == address.secondByte && Int(gate.addressThree) == address.thirdByte{
                             gatewayForScan = gate
                         }
                     }
@@ -236,22 +265,22 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
                 return
             }
             let sp = try returnSearchParametars(txtFrom.text!, to: txtTo.text!)
-            scanZones = ScanFunction(from: sp.from, to: sp.to, gateway: gateway, scanForWhat: .Category)
+            scanZones = ScanFunction(from: sp.from, to: sp.to, gateway: gateway, scanForWhat: .category)
             pbSZ = ProgressBarVC(title: "Scanning Categories", percentage: sp.initialPercentage, howMuchOf: "1 / \(sp.count)")
             pbSZ?.delegate = self
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningForCategories)
+            Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningForCategories)
             scanZones?.sendCommandForFinding(id:Byte(sp.from))
-            zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportCategoryViewController.checkIfGatewayDidGetCategory(_:)), userInfo: sp.from, repeats: false)
+            zoneScanTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ImportCategoryViewController.checkIfGatewayDidGetCategory(_:)), userInfo: sp.from, repeats: false)
             timesRepeatedCounter = 1
-            self.presentViewController(pbSZ!, animated: true, completion: nil)
-            UIApplication.sharedApplication().idleTimerDisabled = true
+            self.present(pbSZ!, animated: true, completion: nil)
+            UIApplication.shared.isIdleTimerDisabled = true
         } catch {
             
         }
     }
-    func categoryReceivedFromGateway (notification:NSNotification) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningForZones) {
-            guard var categoryId = notification.userInfo as? [String:Int] else {
+    func categoryReceivedFromGateway (_ notification:Notification) {
+        if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningForZones) {
+            guard var categoryId = (notification as NSNotification).userInfo as? [String:Int] else {
                 return
             }
             timesRepeatedCounter = 0
@@ -264,14 +293,14 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
                 scanZones?.sendCommandForFinding(id:Byte(newCategoryId))
                 setProgressBarParametarsForScanningZones(id: newCategoryId)
                 zoneScanTimer!.invalidate()
-                zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportCategoryViewController.checkIfGatewayDidGetCategory(_:)), userInfo: newCategoryId, repeats: false)
+                zoneScanTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ImportCategoryViewController.checkIfGatewayDidGetCategory(_:)), userInfo: newCategoryId, repeats: false)
                 timesRepeatedCounter = 1
             }
             refreshCategoryList()
             return
         }
     }
-    func checkIfGatewayDidGetCategory (timer:NSTimer) {
+    func checkIfGatewayDidGetCategory (_ timer:Foundation.Timer) {
         guard var categoryId = timer.userInfo as? Int else{
             return
         }
@@ -280,7 +309,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
             scanZones?.sendCommandForFinding(id:Byte(categoryId))
             setProgressBarParametarsForScanningZones(id: categoryId)
             zoneScanTimer!.invalidate()
-            zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportCategoryViewController.checkIfGatewayDidGetCategory(_:)), userInfo: categoryId, repeats: false)
+            zoneScanTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ImportCategoryViewController.checkIfGatewayDidGetCategory(_:)), userInfo: categoryId, repeats: false)
             timesRepeatedCounter += 1
         }else{
             if (categoryId+1) > scanZones?.to { // Ako je poslednji
@@ -291,7 +320,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
                 scanZones?.sendCommandForFinding(id:Byte(categoryId))
                 setProgressBarParametarsForScanningZones(id: categoryId)
                 zoneScanTimer!.invalidate()
-                zoneScanTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ImportCategoryViewController.checkIfGatewayDidGetCategory(_:)), userInfo: categoryId, repeats: false)
+                zoneScanTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ImportCategoryViewController.checkIfGatewayDidGetCategory(_:)), userInfo: categoryId, repeats: false)
                 timesRepeatedCounter = 1
             }
         }
@@ -301,9 +330,9 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     func dismissScaningControls() {
         timesRepeatedCounter = 0
         zoneScanTimer?.invalidate()
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningForZones)
+        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningForZones)
         pbSZ?.dissmissProgressBar()
-        UIApplication.sharedApplication().idleTimerDisabled = false
+        UIApplication.shared.isIdleTimerDisabled = false
         refreshCategoryList()
     }
     func setProgressBarParametarsForScanningZones(id zoneId:Int) {
@@ -314,20 +343,20 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         pbSZ?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(index)/Float(howMuchOf)*100) + " %"
         pbSZ?.progressView.progress = Float(index)/Float(howMuchOf)
     }
-    func returnSearchParametars (from:String, to:String) throws -> SearchParametars {
+    func returnSearchParametars (_ from:String, to:String) throws -> SearchParametars {
         if from == "" && to == "" {
             let count = 255
             let percent = Float(1)/Float(count)
             return SearchParametars(from: 1, to: 255, count: count, initialPercentage: percent)
         }
         guard let from = Int(from), let to = Int(to) else {
-            throw InputError.NotConvertibleToInt
+            throw InputError.notConvertibleToInt
         }
         if from < 0 || to < 0 {
-            throw InputError.NotPositiveNumbers
+            throw InputError.notPositiveNumbers
         }
         if from > to {
-            throw InputError.FromBiggerThanTo
+            throw InputError.fromBiggerThanTo
         }
         let count = to - from + 1
         let percent = Float(1)/Float(count)
@@ -338,7 +367,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     }
     
     
-    func backURL(strText: String) {
+    func backURL(_ strText: String) {
 //        Second - Take default categories from bundle
         let categoriesJSONBundle = DataImporter.createCategoriesFromFileFromNSBundle()
 //        Third - Add new zones and edit zones from bundle if needed
@@ -356,15 +385,15 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
                     }
                 }
                 for categoryJSON in categoriesJSON {
-                    let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
-                    category.id = categoryJSON.id
+                    let category = NSEntityDescription.insertNewObject(forEntityName: "Category", into: appDel.managedObjectContext!) as! Category
+                    category.id = categoryJSON.id as NSNumber?
                     category.name = categoryJSON.name
                     category.categoryDescription = categoryJSON.description
                     category.allowOption = 3
                     if categoryJSON.id == 1 || categoryJSON.id == 2 || categoryJSON.id == 3 || categoryJSON.id == 5 || categoryJSON.id == 6 || categoryJSON.id == 7 || categoryJSON.id == 8 || categoryJSON.id == 9 || categoryJSON.id == 10 || categoryJSON.id == 255 {
-                        category.isVisible = NSNumber(bool: false)
+                        category.isVisible = NSNumber(value: false as Bool)
                     } else {
-                        category.isVisible = NSNumber(bool: true)
+                        category.isVisible = NSNumber(value: true as Bool)
                     }
                     CoreDataController.shahredInstance.saveChanges()
                 }
@@ -375,11 +404,11 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     func createCategories() {
         if let categoriesJSON = DataImporter.createCategoriesFromFileFromNSBundle() {
             for categoryJSON in categoriesJSON {
-                let category = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as! Category
+                let category = NSEntityDescription.insertNewObject(forEntityName: "Category", into: appDel.managedObjectContext!) as! Category
                 if categoryJSON.id == 1 || categoryJSON.id == 2 || categoryJSON.id == 3 || categoryJSON.id == 5 || categoryJSON.id == 6 || categoryJSON.id == 7 || categoryJSON.id == 8 || categoryJSON.id == 9 || categoryJSON.id == 10 || categoryJSON.id == 255 {
-                    (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId, category.allowOption) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: false), location, categoryJSON.id, 3)
+                    (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId, category.allowOption) = (categoryJSON.id as NSNumber?, categoryJSON.name, categoryJSON.description, NSNumber(value: false as Bool), location, categoryJSON.id as NSNumber?, 3)
                 } else {
-                    (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId, category.allowOption) = (categoryJSON.id, categoryJSON.name, categoryJSON.description, NSNumber(bool: true), location, categoryJSON.id, 3)
+                    (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId, category.allowOption) = (categoryJSON.id as NSNumber?, categoryJSON.name, categoryJSON.description, NSNumber(value: true as Bool), location, categoryJSON.id as NSNumber?, 3)
                 }
                 CoreDataController.shahredInstance.saveChanges()
             }
@@ -395,13 +424,13 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     }
     
     func updateCategoryList () {
-        let fetchRequest = NSFetchRequest(entityName: "Category")
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Category.fetchRequest()
         let sortDescriptorTwo = NSSortDescriptor(key: "orderId", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorTwo]
         let predicate = NSPredicate(format: "location == %@", location!)
         fetchRequest.predicate = predicate
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Category]
             categories = fetResults!
         } catch let error1 as NSError {
             error = error1
@@ -410,8 +439,8 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         }
     }
     
-    func isVisibleValueChanged (sender:UISwitch) {
-        if sender.on == true {
+    func isVisibleValueChanged (_ sender:UISwitch) {
+        if sender.isOn == true {
             categories[sender.tag].isVisible = true
         }else {
             categories[sender.tag].isVisible = false
@@ -422,18 +451,18 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
 }
 
 extension ImportCategoryViewController: UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        showEditCategory(categories[indexPath.row], location: nil).delegate = self
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        showEditCategory(categories[(indexPath as NSIndexPath).row], location: nil).delegate = self
     }
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if ((categories[indexPath.row].id as! Int) >= 1 && (categories[indexPath.row].id as! Int) <= 19) || (categories[indexPath.row].id as! Int) == 255 {
+    @objc(tableView:canEditRowAtIndexPath:) func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if ((categories[(indexPath as NSIndexPath).row].id as! Int) >= 1 && (categories[(indexPath as NSIndexPath).row].id as! Int) <= 19) || (categories[(indexPath as NSIndexPath).row].id as! Int) == 255 {
             return false
         }
         return true
     }
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            appDel.managedObjectContext?.deleteObject(categories[indexPath.row])
+    @objc(tableView:commitEditingStyle:forRowAtIndexPath:) func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            appDel.managedObjectContext?.delete(categories[(indexPath as NSIndexPath).row])
             appDel.saveContext()
             refreshCategoryList()
         }
@@ -441,22 +470,22 @@ extension ImportCategoryViewController: UITableViewDelegate {
 }
 
 extension ImportCategoryViewController: UITableViewDataSource {
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if let cell = importCategoryTableView.dequeueReusableCellWithIdentifier("importCategory") as? ImportCategoryTableViewCell {
-            cell.backgroundColor = UIColor.clearColor()
-            cell.lblName.text = "\(categories[indexPath.row].name!)"
-            cell.lblNo.text = "\(categories[indexPath.row].id!)"
-            cell.lblDescription.text = categories[indexPath.row].categoryDescription
-            cell.setItem(categories[indexPath.row])
-            cell.switchVisible.tag = indexPath.row
-            cell.switchVisible.on = Bool(categories[indexPath.row].isVisible)
-            cell.switchVisible.addTarget(self, action: #selector(ImportCategoryViewController.isVisibleValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let cell = importCategoryTableView.dequeueReusableCell(withIdentifier: "importCategory") as? ImportCategoryTableViewCell {
+            cell.backgroundColor = UIColor.clear
+            cell.lblName.text = "\(categories[(indexPath as NSIndexPath).row].name!)"
+            cell.lblNo.text = "\(categories[(indexPath as NSIndexPath).row].id!)"
+            cell.lblDescription.text = categories[(indexPath as NSIndexPath).row].categoryDescription
+            cell.setItem(categories[(indexPath as NSIndexPath).row])
+            cell.switchVisible.tag = (indexPath as NSIndexPath).row
+            cell.switchVisible.isOn = Bool(categories[(indexPath as NSIndexPath).row].isVisible)
+            cell.switchVisible.addTarget(self, action: #selector(ImportCategoryViewController.isVisibleValueChanged(_:)), for: UIControlEvents.valueChanged)
             return cell
         }
-        let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
         return cell
     }
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return categories.count
     }
 }
@@ -469,27 +498,27 @@ class ImportCategoryTableViewCell: UITableViewCell {
     @IBOutlet weak var controlTypeButton: CustomGradientButton!
     var category:Category!
     
-    func setItem(category: Category){
+    func setItem(_ category: Category){
         self.category = category
-        if let type = TypeOfControl(rawValue: (category.allowOption.integerValue)){
-            controlTypeButton.setTitle(type.description, forState: .Normal)
+        if let type = TypeOfControl(rawValue: (category.allowOption.intValue)){
+            controlTypeButton.setTitle(type.description, for: UIControlState())
         }
     }
     
-    @IBAction func changeControlType(sender: AnyObject) {
-        if category.allowOption.integerValue == 1{
+    @IBAction func changeControlType(_ sender: AnyObject) {
+        if category.allowOption.intValue == 1{
             DatabaseCategoryController.shared.changeAllowOption(2, category: category)
-            controlTypeButton.setTitle(TypeOfControl.Confirm.description , forState: .Normal)
+            controlTypeButton.setTitle(TypeOfControl.confirm.description , for: UIControlState())
             return
         }
-        if category.allowOption.integerValue == 2{
+        if category.allowOption.intValue == 2{
             DatabaseCategoryController.shared.changeAllowOption(3, category: category)
-            controlTypeButton.setTitle(TypeOfControl.NotAllowed.description , forState: .Normal)
+            controlTypeButton.setTitle(TypeOfControl.notAllowed.description , for: UIControlState())
             return
         }
-        if category.allowOption.integerValue == 3{
+        if category.allowOption.intValue == 3{
             DatabaseCategoryController.shared.changeAllowOption(1, category: category)
-            controlTypeButton.setTitle(TypeOfControl.Allowed.description , forState: .Normal)
+            controlTypeButton.setTitle(TypeOfControl.allowed.description , for: UIControlState())
             return
         }
     }

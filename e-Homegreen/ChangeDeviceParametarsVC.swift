@@ -50,7 +50,7 @@ class ChangeDeviceParametarsVC: PopoverVC {
         editedDevice = EditedDevice(levelId: Int(device.parentZoneId), zoneId: Int(device.zoneId), categoryId: Int(device.categoryId), controlType: device.controlType, digitalInputMode: Int(device.digitalInputMode!))
         super.init(nibName: "ChangeDeviceParametarsVC", bundle: nil)
         transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
+        modalPresentationStyle = UIModalPresentationStyle.custom
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -60,13 +60,13 @@ class ChangeDeviceParametarsVC: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ChangeDeviceParametarsVC.handleTap(_:)))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         self.title = "Device Parameters"
         
         txtFieldName.text = device.name
@@ -75,26 +75,26 @@ class ChangeDeviceParametarsVC: PopoverVC {
         
         level = DatabaseZoneController.shared.getZoneById(Int(device.parentZoneId), location: device.gateway.location)
         if level != nil{
-            btnLevel.setTitle(level!.name, forState: UIControlState.Normal)
+            btnLevel.setTitle(level!.name, for: UIControlState())
         }else{
-            btnLevel.setTitle("All", forState: UIControlState.Normal)
+            btnLevel.setTitle("All", for: UIControlState())
         }
         
         zoneSelected = DatabaseZoneController.shared.getZoneById(Int(device.zoneId), location: device.gateway.location)
         if zoneSelected != nil{
-            btnZone.setTitle(zoneSelected!.name, forState: UIControlState.Normal)
+            btnZone.setTitle(zoneSelected!.name, for: UIControlState())
         }else{
-            btnZone.setTitle("All", forState: UIControlState.Normal)
+            btnZone.setTitle("All", for: UIControlState())
         }
         
         let category = DatabaseCategoryController.shared.getCategoryById(Int(device.categoryId), location: device.gateway.location)
-        if category != ""{
-            btnCategory.setTitle(category?.name, forState: UIControlState.Normal)
+        if category != nil{
+            btnCategory.setTitle(category?.name, for: UIControlState())
         }else{
-           btnCategory.setTitle("All", forState: UIControlState.Normal)
+           btnCategory.setTitle("All", for: UIControlState())
         }
         
-        btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", forState: UIControlState.Normal)
+        btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", for: UIControlState())
         
         txtFieldName.delegate = self
         
@@ -104,23 +104,23 @@ class ChangeDeviceParametarsVC: PopoverVC {
         btnCategory.tag = 3
         btnControlType.tag = 4
     }
-    override func nameAndId(name: String, id: String) {
+    override func nameAndId(_ name: String, id: String) {
         
         switch button.tag{
         case 1: // "All" selected
             if let levelTemp = FilterController.shared.getZoneByObjectId(id), let id = levelTemp.id{
-                editedDevice?.levelId = (id.integerValue)
+                editedDevice?.levelId = (id.intValue)
                 level = levelTemp
             }else{
                 // Set default levelId
                 editedDevice?.levelId = 255
-                btnZone.setTitle("All", forState: .Normal)
+                btnZone.setTitle("All", for: UIControlState())
                 level = nil
             }
             break
         case 2:
             if let zoneTemp = FilterController.shared.getZoneByObjectId(id), let id = zoneTemp.id{
-                editedDevice?.zoneId = (id.integerValue)
+                editedDevice?.zoneId = (id.intValue)
                 zoneSelected = zoneTemp
             }else{
                 // Set default zoneId
@@ -130,7 +130,7 @@ class ChangeDeviceParametarsVC: PopoverVC {
             break
         case 3:
             if let categoryTemp = FilterController.shared.getCategoryByObjectId(id), let id = categoryTemp.id{
-                editedDevice?.categoryId = (id.integerValue)
+                editedDevice?.categoryId = (id.intValue)
                 category = categoryTemp
             }else{
                 // Set default categoryId
@@ -140,36 +140,36 @@ class ChangeDeviceParametarsVC: PopoverVC {
             break
         case 4:
             editedDevice?.controlType = name
-            btnControlType.setTitle(name, forState: UIControlState.Normal)
+            btnControlType.setTitle(name, for: UIControlState())
             break
         default:
             break
         }
         
-        button.setTitle(name, forState: .Normal)
+        button.setTitle(name, for: UIControlState())
     }
     
-    @IBAction func btnCancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func btnCancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
 
-    @IBAction func btnImages(sender: AnyObject, forEvent event: UIEvent) {
-        let touches = event.touchesForView(sender as! UIView)
+    @IBAction func btnImages(_ sender: AnyObject, forEvent event: UIEvent) {
+        let touches = event.touches(for: sender as! UIView)
         let touch:UITouch = touches!.first!
-        let touchPoint = touch.locationInView(self.view)
+        let touchPoint = touch.location(in: self.view)
         showDeviceImagesPicker(device, point: touchPoint)
     }
     
-    @IBAction func btnImages(sender: AnyObject) {
+    @IBAction func btnImages(_ sender: AnyObject) {
     }
-    @IBAction func changeDeviceInputMode(sender: UIButton) {
+    @IBAction func changeDeviceInputMode(_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         popoverList.append(PopOverItem(name: DigitalInput.NormallyOpen.description(), id: "")) // TODO: Dodati Id za NO
         popoverList.append(PopOverItem(name: DigitalInput.NormallyClosed.description(), id: "")) // TODO: Dodati Id za NC
         openPopover(sender, popOverList:popoverList)
     }
-    @IBAction func changeControlType(sender: UIButton) {
+    @IBAction func changeControlType(_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         if device.controlType == ControlType.Sensor{
@@ -182,74 +182,74 @@ class ChangeDeviceParametarsVC: PopoverVC {
         openPopover(sender, popOverList:popoverList)
     }
     
-    @IBAction func btnLevel (sender: UIButton) {
+    @IBAction func btnLevel (_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(device.gateway.location)
         for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
         }
-        popoverList.insert(PopOverItem(name: "All", id: "0"), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: "0"), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
     
-    @IBAction func btnZone (sender: UIButton) {
+    @IBAction func btnZone (_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         if let level = level{
             let list:[Zone] = DatabaseZoneController.shared.getZoneByLevel(device.gateway.location, parentZone: level)
             for item in list {
-                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
+                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
             }
         }
         
-        popoverList.insert(PopOverItem(name: "All", id: "0"), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: "0"), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
     
-    @IBAction func btnCategory (sender: UIButton) {
+    @IBAction func btnCategory (_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(device.gateway.location)
         for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
         }
         
-        popoverList.insert(PopOverItem(name: "All", id: "0"), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: "0"), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
     
-    @IBAction func btnSave(sender: AnyObject) {
+    @IBAction func btnSave(_ sender: AnyObject) {
         if txtFieldName.text != "" {
             device.name = txtFieldName.text!
-            device.parentZoneId = NSNumber(integer: editedDevice!.levelId)
-            device.zoneId = NSNumber(integer: editedDevice!.zoneId)
-            device.categoryId = NSNumber(integer: editedDevice!.categoryId)
+            device.parentZoneId = NSNumber(value: editedDevice!.levelId as Int)
+            device.zoneId = NSNumber(value: editedDevice!.zoneId as Int)
+            device.categoryId = NSNumber(value: editedDevice!.categoryId as Int)
             device.controlType = editedDevice!.controlType
-            device.digitalInputMode = NSNumber(integer:editedDevice!.digitalInputMode)
+            device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
             CoreDataController.shahredInstance.saveChanges()
             device.resetImages(appDel.managedObjectContext!)
             self.delegate?.saveClicked()
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         }
     }
 
-    func handleTap(gesture:UITapGestureRecognizer){
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func handleTap(_ gesture:UITapGestureRecognizer){
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
 extension ChangeDeviceParametarsVC : UITextFieldDelegate{
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
 }
 
 extension ChangeDeviceParametarsVC : UIGestureRecognizerDelegate{
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if let touchView = touch.view{
-            if touchView.isDescendantOfView(backView){
+            if touchView.isDescendant(of: backView){
                 self.view.endEditing(true)
                 return false
             }
@@ -260,39 +260,39 @@ extension ChangeDeviceParametarsVC : UIGestureRecognizerDelegate{
 
 extension ChangeDeviceParametarsVC : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5 //Add your own duration here
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         //Add presentation and dismiss animation transition here.
         if isPresenting == true{
             isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
+            let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
+            let containerView = transitionContext.containerView
             
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
             //        presentedControllerView.center.y -= containerView.bounds.size.height
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.5, 1.5)
+            presentedControllerView.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
             containerView.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 //            presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
             //            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 //                presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -302,10 +302,10 @@ extension ChangeDeviceParametarsVC : UIViewControllerAnimatedTransitioning {
 }
 
 extension ChangeDeviceParametarsVC : UIViewControllerTransitioningDelegate {
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if dismissed == self {
             return self
         }
@@ -316,36 +316,36 @@ extension ChangeDeviceParametarsVC : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showChangeDeviceParametar(point:CGPoint, device:Device, scanDevicesViewController: DevicePropertiesDelegate) {
+    func showChangeDeviceParametar(_ point:CGPoint, device:Device, scanDevicesViewController: DevicePropertiesDelegate) {
         let chn = Int(device.channel)
         // If any kind of relay
         if device.controlType == ControlType.Relay || device.controlType == ControlType.Curtain{
             let cdp = RelayParametersCell(device: device, point: point)
             cdp.delegate = scanDevicesViewController
-            self.presentViewController(cdp, animated: true, completion: nil)
+            self.present(cdp, animated: true, completion: nil)
         }
         // If any kind of Digital input. It can be:
         // DigitalInput control type
         // Digital input in Intelligent switch
         // Digital input in sensor
         else if (device.controlType == ControlType.DigitalInput) ||
-            (device.controlType == ControlType.IntelligentSwitch && (chn == DeviceInfo.IntelligentSwitchInputInterface.DigitalInput1.rawValue || chn == DeviceInfo.IntelligentSwitchInputInterface.DigitalInput2.rawValue)) ||
-            (device.controlType == ControlType.Sensor && (chn == DeviceInfo.Multisensor10in1.DigitalInput1.rawValue || chn == DeviceInfo.Multisensor10in1.DigitalInput2.rawValue || chn == DeviceInfo.Multisensor10in1.DigitalInput3.rawValue || chn == DeviceInfo.Multisensor10in1.DigitalInput4.rawValue)){
+            (device.controlType == ControlType.IntelligentSwitch && (chn == DeviceInfo.IntelligentSwitchInputInterface.digitalInput1.rawValue || chn == DeviceInfo.IntelligentSwitchInputInterface.digitalInput2.rawValue)) ||
+            (device.controlType == ControlType.Sensor && (chn == DeviceInfo.Multisensor10in1.digitalInput1.rawValue || chn == DeviceInfo.Multisensor10in1.digitalInput2.rawValue || chn == DeviceInfo.Multisensor10in1.digitalInput3.rawValue || chn == DeviceInfo.Multisensor10in1.digitalInput4.rawValue)){
             let cdp = DigitalInputPopup(device: device, point: point)
             cdp.delegate = scanDevicesViewController
-            self.presentViewController(cdp, animated: true, completion: nil)
+            self.present(cdp, animated: true, completion: nil)
         }
         // If any kind of clima
         else if device.controlType == ControlType.Climate {
             let cdp = HvacParametersCell(device: device, point: point)
             cdp.delegate = scanDevicesViewController
-            self.presentViewController(cdp, animated: true, completion: nil)
+            self.present(cdp, animated: true, completion: nil)
         }
         // If anything else
         else{
             let cdp = ChangeDeviceParametarsVC(device: device, point: point)
             cdp.delegate = scanDevicesViewController
-            self.presentViewController(cdp, animated: true, completion: nil)
+            self.present(cdp, animated: true, completion: nil)
         }
     }
 }

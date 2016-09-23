@@ -13,13 +13,17 @@ import Foundation
 import CoreData
 
 extension Gateway {
+    
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<Gateway> {
+        return NSFetchRequest<Gateway>(entityName: "Gateway");
+    }
 
     @NSManaged var addressOne: NSNumber
     @NSManaged var addressThree: NSNumber
     @NSManaged var addressTwo: NSNumber
     @NSManaged var gatewayId: String?
     @NSManaged var autoReconnectDelay: NSNumber?
-    @NSManaged var autoReconnectDelayLast: NSDate?
+    @NSManaged var autoReconnectDelayLast: Date?
     @NSManaged var gatewayDescription: String
     @NSManaged var localIp: String
     @NSManaged var localPort: NSNumber

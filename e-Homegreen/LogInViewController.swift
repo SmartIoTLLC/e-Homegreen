@@ -22,11 +22,11 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
         tableView.layer.borderWidth = 1
         tableView.layer.cornerRadius = 5
-        tableView.hidden = true
+        tableView.isHidden = true
         
         userNameTextField.delegate = self
         
@@ -43,33 +43,33 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
     }
     
     func dismissKeyboard(){
-        tableView.hidden = true
+        tableView.isHidden = true
         self.view.endEditing(true)
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(tableView){
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: tableView){
             return false
         }
         return true
     }
     
-    @IBAction func logInAction(sender: AnyObject) {
-        guard let username = userNameTextField.text where username != "", let password = passwordTextField.text where password != "" else{
+    @IBAction func logInAction(_ sender: AnyObject) {
+        guard let username = userNameTextField.text , username != "", let password = passwordTextField.text , password != "" else{
             self.view.makeToast(message: "All fields must be filled")
             return
         }
         
-        if let admin = AdminController.shared.getAdmin() where admin.username == username && admin.password == password {
+        if let admin = AdminController.shared.getAdmin() , admin.username == username && admin.password == password {
             
             AdminController.shared.loginAdmin()
             
             if AdminController.shared.isAdminLogged(){
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
-                let settings = Menu.Settings.controller
-                sideMenu.setFrontViewController(settings, animated: true)
-                self.presentViewController(sideMenu, animated: true, completion: nil)
+                let sideMenu = storyboard.instantiateViewController(withIdentifier: "SideMenu") as! SWRevealViewController
+                let settings = Menu.settings.controller
+                sideMenu.setFront(settings, animated: true)
+                self.present(sideMenu, animated: true, completion: nil)
             }else{
                 self.view.makeToast(message: "Something wrong, try again!")
                 return
@@ -78,21 +78,21 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
         }else{
             if let user = DatabaseUserController.shared.getUser(username, password: password){
                 DatabaseUserController.shared.loginUser()
-                if DatabaseUserController.shared.setUser(user.objectID.URIRepresentation().absoluteString){
+                if DatabaseUserController.shared.setUser(user.objectID.uriRepresentation().absoluteString){
                     
                     DatabaseLocationController.shared.startMonitoringAllLocationByUser(user)
                     
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let sideMenu = storyboard.instantiateViewControllerWithIdentifier("SideMenu") as! SWRevealViewController
-                    var controller:UINavigationController = Menu.Settings.controller
+                    let sideMenu = storyboard.instantiateViewController(withIdentifier: "SideMenu") as! SWRevealViewController
+                    var controller:UINavigationController = Menu.settings.controller
                     if user.openLastScreen.boolValue == true{
                         if let id = user.lastScreenId as? Int, let menu = Menu(rawValue: id) {
                             controller = menu.controller
                         }
                     }
                     
-                    sideMenu.setFrontViewController(controller, animated: true)
-                    self.presentViewController(sideMenu, animated: true, completion: nil)
+                    sideMenu.setFront(controller, animated: true)
+                    self.present(sideMenu, animated: true, completion: nil)
                 }else{
                     self.view.makeToast(message: "Error")
                 }
@@ -103,30 +103,30 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
         
     }
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         passwordTextField.resignFirstResponder()
-        tableView.hidden = false
+        tableView.isHidden = false
         return false
     }
 
 }
 
 extension LogInViewController: UITableViewDelegate, UITableViewDataSource{
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return users.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "defaultCell")
-        cell.textLabel?.text = users[indexPath.row]
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "defaultCell")
+        cell.textLabel?.text = users[(indexPath as NSIndexPath).row]
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = tableView.cellForRowAtIndexPath(indexPath)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
         userNameTextField.text = cell?.textLabel?.text
         self.dismissKeyboard()
-        tableView.hidden = true
+        tableView.isHidden = true
         passwordTextField.becomeFirstResponder()
     }
 }

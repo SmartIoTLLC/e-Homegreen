@@ -8,9 +8,29 @@
 
 import Foundation
 import CoreData
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 enum EmployeeStatus: Int {
-    case ReadyForHire, Hired, Retired, Resigned, Fired, Deceased
+    case readyForHire, hired, retired, resigned, fired, deceased
 }
 class Device: NSManagedObject {
     var interfaceParametar:[UInt8] = []
@@ -27,10 +47,10 @@ class Device: NSManagedObject {
     convenience init(context: NSManagedObjectContext, specificDeviceInformation information:DeviceInformation) {
         self.init(context: context)
         self.name = "Unknown"
-        self.address = information.address
-        self.channel = information.channel
-        self.deviceIdForScanningScreen = information.channel
-        self.numberOfDevices = information.numberOfDevices
+        self.address = NSNumber(value: information.address)
+        self.channel = NSNumber(value: information.channel)
+        self.deviceIdForScanningScreen = NSNumber(value: information.channel)
+        self.numberOfDevices = NSNumber(value: information.numberOfDevices)
         self.runningTime = "00:00:00,0s"
         self.currentValue = 0
         self.oldValue = 255
@@ -76,7 +96,7 @@ class Device: NSManagedObject {
         for defaultDeviceImage in defaultDeviceImages {
             let deviceImage = DeviceImage(context: context)
             deviceImage.defaultImage = defaultDeviceImage.defaultImage
-            deviceImage.state = NSNumber(integer:defaultDeviceImage.state)
+            deviceImage.state = NSNumber(value: defaultDeviceImage.state as Int)
             deviceImage.device = self
             deviceImage.text = defaultDeviceImage.text
         }
@@ -87,10 +107,10 @@ class Device: NSManagedObject {
     convenience init(context: NSManagedObjectContext, specificDeviceInformation information:DeviceInformation, channelName: String) {
         self.init(context: context)
         self.name = channelName
-        self.address = information.address
-        self.channel = information.channel
-        self.deviceIdForScanningScreen = information.channel
-        self.numberOfDevices = information.numberOfDevices
+        self.address = NSNumber(value: information.address)
+        self.channel = NSNumber(value: information.channel)
+        self.deviceIdForScanningScreen = NSNumber(value: information.channel)
+        self.numberOfDevices = NSNumber(value: information.numberOfDevices)
         self.runningTime = "00:00:00,0s"
         self.currentValue = 0
         self.oldValue = 255
@@ -135,22 +155,22 @@ class Device: NSManagedObject {
         for defaultDeviceImage in defaultDeviceImages {
             let deviceImage = DeviceImage(context: context)
             deviceImage.defaultImage = defaultDeviceImage.defaultImage
-            deviceImage.state = NSNumber(integer:defaultDeviceImage.state)
+            deviceImage.state = NSNumber(value: defaultDeviceImage.state as Int)
             deviceImage.device = self
             deviceImage.text = defaultDeviceImage.text
         }
     }
-    func resetImages(context:NSManagedObjectContext) {
+    func resetImages(_ context:NSManagedObjectContext) {
         if self.deviceImages?.count > 0 {
             for image in self.deviceImages! {
-                context.deleteObject(image as! DeviceImage)
+                context.delete(image as! DeviceImage)
             }
         }
         let defaultDeviceImages = DefaultDeviceImages().getNewImagesForDevice(self)
         for defaultDeviceImage in defaultDeviceImages {
             let deviceImage = DeviceImage(context: context)
             deviceImage.defaultImage = defaultDeviceImage.defaultImage
-            deviceImage.state = NSNumber(integer:defaultDeviceImage.state)
+            deviceImage.state = NSNumber(value: defaultDeviceImage.state as Int)
             deviceImage.device = self
             deviceImage.text = defaultDeviceImage.text
         }
@@ -161,7 +181,7 @@ class Device: NSManagedObject {
         let defaultImage:UIImage?
     }
     // MARK: Return image for specific state
-    func returnImage(newDeviceValue:Double) -> UIImage {
+    func returnImage(_ newDeviceValue:Double) -> UIImage {
         // Convert device images to array
         let deviceValue: Double = {
             return Double(newDeviceValue)
@@ -175,11 +195,11 @@ class Device: NSManagedObject {
         let sumOfDeviceImages = devImages.count
         let dblSection:Double = 100/Double(sumOfDeviceImages)
         // sort by state: 1 2 3 4 5 6
-        let preSort = devImages.sort { ( result1, result2) -> Bool in
-            if result1.state?.integerValue < result2.state?.integerValue {return true}
+        let preSort = devImages.sorted { ( result1, result2) -> Bool in
+            if result1.state?.intValue < result2.state?.intValue {return true}
             return false
         }
-        let mapedResult = preSort.enumerate().map { ( index, deviceImage) -> Result in
+        let mapedResult = preSort.enumerated().map { ( index, deviceImage) -> Result in
             let defaultImageNamed = deviceImage.defaultImage!
             let stateValue = (Double(index) + 1) * dblSection
             
@@ -204,7 +224,7 @@ class Device: NSManagedObject {
             if result.stateValue >= (deviceValue/255*100) {return true} //
             return false
         }
-        let sortedFilteredMapedResult = filteredMapedresult.sort { ( result1, result2) -> Bool in
+        let sortedFilteredMapedResult = filteredMapedresult.sorted { ( result1, result2) -> Bool in
             if result1.stateValue < result2.stateValue {return true}
             return false
         }

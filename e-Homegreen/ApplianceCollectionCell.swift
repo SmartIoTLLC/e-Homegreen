@@ -14,22 +14,22 @@ class ApplianceCollectionCell: UICollectionViewCell {
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var onOff: UIButton!
     
-    func refreshDevice(device:Device) {
+    func refreshDevice(_ device:Device) {
         let deviceValue:Double = {
             return Double(device.currentValue)
         }()
         image.image = device.returnImage(Double(device.currentValue))
         if deviceValue == 255 {
-            onOff.setTitle("ON", forState: .Normal)
+            onOff.setTitle("ON", for: UIControlState())
         } else if device.currentValue == 0 {
-            onOff.setTitle("OFF", forState: .Normal)
+            onOff.setTitle("OFF", for: UIControlState())
         }
         if device.info {
-            infoView.hidden = false
-            backView.hidden = true
+            infoView.isHidden = false
+            backView.isHidden = true
         }else {
-            infoView.hidden = true
-            backView.hidden = false
+            infoView.isHidden = true
+            backView.isHidden = false
         }
         labelRunningTime.text = "\(device.runningTime)"
         lblElectricity.text = "\(Float(device.current) * 0.01) A"
@@ -37,9 +37,9 @@ class ApplianceCollectionCell: UICollectionViewCell {
         labelPowrUsege.text = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
         // If device is enabled add all interactions
         if device.isEnabled.boolValue {
-            disabledCellView.hidden = true
+            disabledCellView.isHidden = true
         } else {
-            disabledCellView.hidden = false
+            disabledCellView.isHidden = false
         }
     }
     @IBOutlet weak var disabledCellView: UIView!

@@ -8,28 +8,28 @@
 
 import UIKit
 enum setMode:Int {
-    case Auto = 0
-    case Cool
-    case Heat
-    case Fan
+    case auto = 0
+    case cool
+    case heat
+    case fan
 }
 enum modeState:Int {
-    case Off = 0
-    case Cool
-    case Heat
-    case Fan
+    case off = 0
+    case cool
+    case heat
+    case fan
 }
 enum setSpeed:Int {
-    case Auto = 0
-    case Low
-    case Med
-    case High
+    case auto = 0
+    case low
+    case med
+    case high
 }
 enum speedState:Int {
-    case Off = 0
-    case Low
-    case Med
-    case High
+    case off = 0
+    case low
+    case med
+    case high
 }
 struct Channel {
     static let One = 1
@@ -133,43 +133,43 @@ struct DeviceInfo {
         3:"High"]
     
     enum Multisensor10in1Old: Int {
-        case TemperatureProbe = 1
-        case DigitalInput1 = 2
-        case DigitalInput2 = 3
-        case AnalogInput = 4
-        case TemperatureProbe2 = 5
-        case BrightnessSensorLUX = 6
-        case MotionSensorPIR = 7
-        case IRReceiver = 8
-        case DigitalInput3 = 9
-        case DigitalInput4 = 10
+        case temperatureProbe = 1
+        case digitalInput1 = 2
+        case digitalInput2 = 3
+        case analogInput = 4
+        case temperatureProbe2 = 5
+        case brightnessSensorLUX = 6
+        case motionSensorPIR = 7
+        case irReceiver = 8
+        case digitalInput3 = 9
+        case digitalInput4 = 10
     }
     enum Multisensor6in1: Int {
-        case TemperatureProbe = 1
-        case DigitalInput1 = 2
-        case DigitalInput2 = 3
-        case TemperatureProbe2 = 4
-        case BrightnessSensorLUX = 5
-        case MotionSensorPIR = 6
+        case temperatureProbe = 1
+        case digitalInput1 = 2
+        case digitalInput2 = 3
+        case temperatureProbe2 = 4
+        case brightnessSensorLUX = 5
+        case motionSensorPIR = 6
     }
     enum Multisensor10in1: Int {
-        case TemperatureProbe = 1
-        case DigitalInput1 = 2
-        case DigitalInput2 = 3
-        case TemperatureProbe2 = 4
-        case BrightnessSensorLUX = 5
-        case MotionSensorPIR = 6
-        case DigitalInput3 = 7
-        case IRReceiver = 8
-        case AnalogInput = 9
-        case DigitalInput4 = 10
+        case temperatureProbe = 1
+        case digitalInput1 = 2
+        case digitalInput2 = 3
+        case temperatureProbe2 = 4
+        case brightnessSensorLUX = 5
+        case motionSensorPIR = 6
+        case digitalInput3 = 7
+        case irReceiver = 8
+        case analogInput = 9
+        case digitalInput4 = 10
     }
     enum IntelligentSwitchInputInterface: Int{
-        case TemperatureProbe = 1
-        case DigitalInput1 = 2
-        case DigitalInput2 = 3
-        case Temperature = 4
-        case IRReceiver = 5
+        case temperatureProbe = 1
+        case digitalInput1 = 2
+        case digitalInput2 = 3
+        case temperature = 4
+        case irReceiver = 5
     }
     
     static let inputInterface10in1:[Int:String] = [

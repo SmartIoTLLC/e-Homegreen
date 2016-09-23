@@ -18,9 +18,9 @@ enum TypeOfLocationDevice:String{
     case Ehomegreen = "e-Homegreen", Surveillance = "IP Camera", Ehomeblue = "e-Homeblue"
     var description:String{
         switch self{
-        case Ehomegreen: return "e-Homegreen"
-        case Surveillance: return "IP Camera"
-        case Ehomeblue: return "e-Homeblue"
+        case .Ehomegreen: return "e-Homegreen"
+        case .Surveillance: return "IP Camera"
+        case .Ehomeblue: return "e-Homeblue"
         }
     }
     static let allValues = [Ehomegreen, Surveillance, Ehomeblue]
@@ -57,18 +57,18 @@ class LocationViewController: PopoverVC  {
         gatewayTableView.estimatedRowHeight = 44.0
         gatewayTableView.rowHeight = UITableViewAutomaticDimension
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
         updateLocationList()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         gatewayTableView.reloadData()
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "scan" {
-            if let vc = segue.destinationViewController as? ScanViewController {
+            if let vc = segue.destination as? ScanViewController {
                 if let gateway = sender as? Gateway{
                     vc.gateway = gateway
                 }
@@ -77,14 +77,14 @@ class LocationViewController: PopoverVC  {
     }
     
     // add, edit and delete location
-    @IBAction func btnAddNewLocation(sender: AnyObject) {
+    @IBAction func btnAddNewLocation(_ sender: AnyObject) {
         self.showAddLocation(nil, user: user).delegate = self
         
     }
     
-    @IBAction func deleteLocation(sender: UIButton) {
+    @IBAction func deleteLocation(_ sender: UIButton) {
         showAlertView(sender, message: "Delete location?") { (action) in
-            if action == ReturnedValueFromAlertView.Delete {
+            if action == ReturnedValueFromAlertView.delete {
                 DatabaseLocationController.shared.stopMonitoringLocation(self.locationList[sender.tag].location)
                 DatabaseLocationController.shared.deleteLocation(self.locationList[sender.tag].location)
                 self.reloadLocations()
@@ -92,11 +92,11 @@ class LocationViewController: PopoverVC  {
         }
     }
     
-    @IBAction func editLocation(sender: AnyObject) {
+    @IBAction func editLocation(_ sender: AnyObject) {
         self.showAddLocation(locationList[sender.tag].location, user: nil).delegate = self
     }
     
-    @IBAction func addNewElementInLocation(sender: UIButton) {
+    @IBAction func addNewElementInLocation(_ sender: UIButton) {
         index = sender.tag
         var popoverList:[PopOverItem] = []
         for item in TypeOfLocationDevice.allValues{
@@ -106,7 +106,7 @@ class LocationViewController: PopoverVC  {
         openPopover(sender, popOverList:popoverList)
     }   // add camera or gateway
 
-    override func nameAndId(name: String, id: String) {
+    override func nameAndId(_ name: String, id: String) {
         if TypeOfLocationDevice.Ehomegreen.rawValue == name{
             self.showConnectionSettings(nil, location: locationList[index].location, gatewayType: TypeOfLocationDevice.Ehomegreen.description).delegate = self
         }
@@ -140,7 +140,7 @@ class LocationViewController: PopoverVC  {
             }
             if let listOfSurveillance = item.surveillances {
                 for surv in listOfSurveillance{
-                    listOfChildrenDevice.append(LocationDevice(device: surv, typeOfLocationDevice: .Surveillance))
+                    listOfChildrenDevice.append(LocationDevice(device: surv as AnyObject, typeOfLocationDevice: .Surveillance))
                 }
             }
             locationList.append(CollapsableViewModel(location: item, children: listOfChildrenDevice))
@@ -163,7 +163,7 @@ class LocationViewController: PopoverVC  {
         }
         if let listOfSurveillance = locationEdit.surveillances {
             for surv in listOfSurveillance{
-                listOfChildrenDevice.append(LocationDevice(device: surv, typeOfLocationDevice: .Surveillance))
+                listOfChildrenDevice.append(LocationDevice(device: surv as AnyObject, typeOfLocationDevice: .Surveillance))
             }
         }
         locationList[index].children = listOfChildrenDevice
@@ -172,22 +172,22 @@ class LocationViewController: PopoverVC  {
 }
 
 extension LocationViewController: UITableViewDataSource {
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        if indexPath.row == 0{
-            if let cell = tableView.dequeueReusableCellWithIdentifier("locationCell") as? LocationCell {
-                cell.setItem(locationList[indexPath.section].location, isColapsed: locationList[indexPath.section].isCollapsed)
-                cell.addButton.tag = indexPath.section
-                cell.editButton.tag = indexPath.section
-                cell.deleteButton.tag = indexPath.section
+        if (indexPath as NSIndexPath).row == 0{
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "locationCell") as? LocationCell {
+                cell.setItem(locationList[(indexPath as NSIndexPath).section].location, isColapsed: locationList[(indexPath as NSIndexPath).section].isCollapsed)
+                cell.addButton.tag = (indexPath as NSIndexPath).section
+                cell.editButton.tag = (indexPath as NSIndexPath).section
+                cell.deleteButton.tag = (indexPath as NSIndexPath).section
                 return cell
             }
         }else{
-            let location = locationList[indexPath.section]
-            let device = location.children[indexPath.row - 1]
+            let location = locationList[(indexPath as NSIndexPath).section]
+            let device = location.children[(indexPath as NSIndexPath).row - 1]
             switch device.typeOfLocationDevice{
             case TypeOfLocationDevice.Ehomegreen:
-                if let cell = tableView.dequeueReusableCellWithIdentifier("gatewayCell") as? GatewayCell {
+                if let cell = tableView.dequeueReusableCell(withIdentifier: "gatewayCell") as? GatewayCell {
                     if let gateway = device.device as? Gateway{
                         cell.setEhomegreen()
                         cell.delegate = self
@@ -197,7 +197,7 @@ extension LocationViewController: UITableViewDataSource {
                 }
                 break
             case TypeOfLocationDevice.Surveillance:
-                if let cell = tableView.dequeueReusableCellWithIdentifier("survCell") as? SurvCell {
+                if let cell = tableView.dequeueReusableCell(withIdentifier: "survCell") as? SurvCell {
                     if let surv = device.device as? Surveillance{
                         cell.delegate = self
                         cell.setItem(surv)
@@ -206,7 +206,7 @@ extension LocationViewController: UITableViewDataSource {
                 }
                 break
             case TypeOfLocationDevice.Ehomeblue:
-                if let cell = tableView.dequeueReusableCellWithIdentifier("gatewayCell") as? GatewayCell {
+                if let cell = tableView.dequeueReusableCell(withIdentifier: "gatewayCell") as? GatewayCell {
                     if let gateway = device.device as? Gateway{
                         cell.setEhomeblue()
                         cell.delegate = self
@@ -218,11 +218,11 @@ extension LocationViewController: UITableViewDataSource {
             }
             
         }
-        let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
         cell.textLabel?.text = ""
         return cell
     }
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if locationList[section].isCollapsed{
             return (locationList[section].children).count + 1
         }else{
@@ -230,83 +230,83 @@ extension LocationViewController: UITableViewDataSource {
         }
         
     }
-    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    private func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footer = UIView()
-        footer.backgroundColor = UIColor.clearColor()
+        footer.backgroundColor = UIColor.clear
         return footer
     }
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    private func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 10
     }
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return locationList.count
     }
 }
 
 extension LocationViewController: UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        if indexPath.row == 0{
-            locationList[indexPath.section].isCollapsed = !locationList[indexPath.section].isCollapsed
+        if (indexPath as NSIndexPath).row == 0{
+            locationList[(indexPath as NSIndexPath).section].isCollapsed = !locationList[(indexPath as NSIndexPath).section].isCollapsed
             tableView.reloadData()
         }else{
-            let device = locationList[indexPath.section].children[indexPath.row - 1]
+            let device = locationList[(indexPath as NSIndexPath).section].children[(indexPath as NSIndexPath).row - 1]
             if let surv = device.device as? Surveillance{
-                dispatch_async(dispatch_get_main_queue(),{
+                DispatchQueue.main.async(execute: {
                     self.showSurveillanceSettings(surv, location: surv.location).delegate = self
                 })
             }
             if let gateway = device.device as? Gateway{
-                dispatch_async(dispatch_get_main_queue(),{
+                DispatchQueue.main.async(execute: {
                     self.showConnectionSettings(gateway, location: nil, gatewayType: gateway.gatewayType).delegate = self
                 })
             }
         }
-        index = indexPath.section
+        index = (indexPath as NSIndexPath).section
     }
 }
 
 extension LocationViewController: GatewayCellDelegate{
-    func deleteGateway(gateway: Gateway, sender:UIButton) {
+    func deleteGateway(_ gateway: Gateway, sender:UIButton) {
         showAlertView(sender, message: "Delete e-Homegreen?") { (action) in
-            if action == ReturnedValueFromAlertView.Delete {
+            if action == ReturnedValueFromAlertView.delete {
                 DatabaseGatewayController.shared.deleteGateway(gateway)
-                dispatch_async(dispatch_get_main_queue(),{
+                DispatchQueue.main.async(execute: {
                     self.editLocation()
                 })
             }
         }
     }
     
-    func scanDevice(gateway: Gateway) {
-        performSegueWithIdentifier("scan", sender: gateway)
+    func scanDevice(_ gateway: Gateway) {
+        performSegue(withIdentifier: "scan", sender: gateway)
     }
     
     // Turn on/off gateway
-    func changeSwitchValue(gateway:Gateway, gatewaySwitch:UISwitch){
-        if gatewaySwitch.on == true {
+    func changeSwitchValue(_ gateway:Gateway, gatewaySwitch:UISwitch){
+        if gatewaySwitch.isOn == true {
             gateway.turnedOn = true
         }else {
             gateway.turnedOn = false
         }
         CoreDataController.shahredInstance.saveChanges()
         gatewayTableView.reloadData()
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }
 }
 
 extension LocationViewController: SurveillanceCellDelegate {
-    func deleteSurveillance(surveillance:Surveillance, sender:UIButton){
+    func deleteSurveillance(_ surveillance:Surveillance, sender:UIButton){
         showAlertView(sender, message: "Delete camera?") { (action) in
-            if action == ReturnedValueFromAlertView.Delete{
+            if action == ReturnedValueFromAlertView.delete{
                 DatabaseSurveillanceController.shared.deleteSurveillance(surveillance)
-                dispatch_async(dispatch_get_main_queue(),{
+                DispatchQueue.main.async(execute: {
                     self.editLocation()
                 })
             }
         }
     }
-    func scanURL(surveillance:Surveillance){
+    func scanURL(_ surveillance:Surveillance){
         showCameraUrls(self.view.center, surveillance: surveillance)
     }
 }

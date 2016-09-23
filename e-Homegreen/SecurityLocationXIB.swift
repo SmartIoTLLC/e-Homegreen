@@ -15,7 +15,7 @@ class SecurityLocationXIB: CommonXIBTransitionVC {
     @IBOutlet weak var textView: UITextView!
     
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: "SecurityLocationXIB", bundle: nil)
     }
     
@@ -26,27 +26,27 @@ class SecurityLocationXIB: CommonXIBTransitionVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let path = UIBezierPath(roundedRect:textView.bounds, byRoundingCorners:[.TopRight, .TopLeft], cornerRadii: CGSizeMake(5, 5))
+        let path = UIBezierPath(roundedRect:textView.bounds, byRoundingCorners:[.topRight, .topLeft], cornerRadii: CGSize(width: 5, height: 5))
         let maskLayer = CAShapeLayer()
-        maskLayer.path = path.CGPath
+        maskLayer.path = path.cgPath
         textView.layer.mask = maskLayer
 
     }
     
-    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: backView){
             return false
         }
         return true
     }
 
-    @IBAction func update(sender: AnyObject) {
+    @IBAction func update(_ sender: AnyObject) {
         
     }
 }
 
 extension SecurityLocationXIB: UITextViewDelegate{
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
             return false
@@ -58,7 +58,7 @@ extension SecurityLocationXIB: UITextViewDelegate{
 extension UIViewController {
     func showSecurityLocationParametar() -> SecurityLocationXIB {
         let vc = SecurityLocationXIB()
-        self.presentViewController(vc, animated: true, completion: nil)
+        self.present(vc, animated: true, completion: nil)
         return vc
     }
 }

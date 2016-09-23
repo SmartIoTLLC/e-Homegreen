@@ -20,7 +20,7 @@ class EnergyViewController: PopoverVC  {
     
     var scrollView = FilterPullDown()
     
-    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
     var appDel:AppDelegate!
     var devices:[Device] = []
@@ -33,7 +33,7 @@ class EnergyViewController: PopoverVC  {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UIView.hr_setToastThemeColor(color: UIColor.redColor())
+        UIView.hr_setToastThemeColor(color: UIColor.red)
         
         scrollView.filterDelegate = self
         view.addSubview(scrollView)
@@ -41,12 +41,12 @@ class EnergyViewController: PopoverVC  {
         scrollView.setItem(self.view)
         
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         
         self.navigationItem.titleView = headerTitleSubtitleView
         headerTitleSubtitleView.setTitleAndSubtitle("Energy", subtitle: "All All All")
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
         // Do any additional setup after loading the view.        
         
@@ -54,10 +54,10 @@ class EnergyViewController: PopoverVC  {
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
-        scrollView.setFilterItem(Menu.Energy)
+        scrollView.setFilterItem(Menu.energy)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         
         if self.revealViewController() != nil {
@@ -65,7 +65,7 @@ class EnergyViewController: PopoverVC  {
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             revealViewController().toggleAnimationDuration = 0.5
-            if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
+            if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
                 revealViewController().rearViewRevealWidth = 200
             }else{
                 revealViewController().rearViewRevealWidth = 200
@@ -80,7 +80,7 @@ class EnergyViewController: PopoverVC  {
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         refreshLocalParametars()
         addObservers()
@@ -93,7 +93,7 @@ class EnergyViewController: PopoverVC  {
             scrollView.setContentOffset(bottomOffset, animated: false)
         }
         scrollView.bottom.constant = -(self.view.frame.height - 2)
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+        if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
             headerTitleSubtitleView.setLandscapeTitle()
         }else{
             headerTitleSubtitleView.setPortraitTitle()
@@ -101,41 +101,41 @@ class EnergyViewController: PopoverVC  {
 
     }
     
-    override func nameAndId(name : String, id:String){
+    override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
     }
     
     func updateConstraints() {
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0.0))
     }
     
-    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){        
-        if gestureRecognizer.state == UIGestureRecognizerState.Began {
-            scrollView.setDefaultFilterItem(Menu.Energy)
+    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){        
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
+            scrollView.setDefaultFilterItem(Menu.energy)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
 
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         removeObservers()
     }
     
-    func updateSubtitle(location: String, level: String, zone: String){
+    func updateSubtitle(_ location: String, level: String, zone: String){
         headerTitleSubtitleView.setTitleAndSubtitle("Energy", subtitle: location + " " + level + " " + zone)
     }
     
-    @IBAction func fullScreen(sender: UIButton) {
+    @IBAction func fullScreen(_ sender: UIButton) {
         sender.collapseInReturnToNormal(1)
-        if UIApplication.sharedApplication().statusBarHidden {
-            UIApplication.sharedApplication().statusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        if UIApplication.shared.isStatusBarHidden {
+            UIApplication.shared.isStatusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
         } else {
-            UIApplication.sharedApplication().statusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            UIApplication.shared.isStatusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
             if scrollView.contentOffset.y != 0 {
                 let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
                 scrollView.setContentOffset(bottomOffset, animated: false)
@@ -144,10 +144,10 @@ class EnergyViewController: PopoverVC  {
     }
     
     func changeFullScreeenImage(){
-        if UIApplication.sharedApplication().statusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        if UIApplication.shared.isStatusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
         } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
         }
     }
     
@@ -157,17 +157,17 @@ class EnergyViewController: PopoverVC  {
     }
 
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(EnergyViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(EnergyViewController.refreshLocalParametars), name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
     }
     
     func removeObservers() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
     }
     
     func updateDeviceList() {
         sumAmp = 0
         sumPow = 0
-        let fetchRequest = NSFetchRequest(entityName: "Device")
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.location.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
         let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
@@ -175,8 +175,8 @@ class EnergyViewController: PopoverVC  {
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
         
         let predicateNull = NSPredicate(format: "categoryId != 0")
-        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))
-        let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(bool: true))
+        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool))
+        let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool))
         var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo]
         //        fetchRequest.predicate = predicate
         if filterParametar.location != "All" {
@@ -184,28 +184,28 @@ class EnergyViewController: PopoverVC  {
             predicateArray.append(locationPredicate)
         }
         if filterParametar.levelId != 0 && filterParametar.levelId != 255{
-            let levelPredicate = NSPredicate(format: "parentZoneId == %@", NSNumber(integer: filterParametar.levelId))
+            let levelPredicate = NSPredicate(format: "parentZoneId == %@", NSNumber(value: filterParametar.levelId as Int))
 //            let levelPredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", levelSearchName)
             let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [levelPredicate])
             predicateArray.append(copmpoundPredicate)
         }
         if filterParametar.zoneId != 0 && filterParametar.zoneId != 255{
-            let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(integer: filterParametar.zoneId))
+            let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(value: filterParametar.zoneId as Int))
 //            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", zoneSearchName)
             let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicate])
             predicateArray.append(copmpoundPredicate)
         }
         if filterParametar.categoryId != 0 && filterParametar.categoryId != 255{
-            let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(integer: filterParametar.categoryId))
+            let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(value: filterParametar.categoryId as Int))
 //            let categoryPredicateTwo = NSPredicate(format: "ANY gateway.categories.name == %@", categorySearchName)
             let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate])
             predicateArray.append(copmpoundPredicate)
         }
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Device]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Device]
             devices = fetResults!
         } catch let error1 as NSError {
             error = error1
@@ -226,12 +226,12 @@ class EnergyViewController: PopoverVC  {
 
 // Parametar from filter and relaod data
 extension EnergyViewController: FilterPullDownDelegate{
-    func filterParametars(filterItem: FilterItem){
+    func filterParametars(_ filterItem: FilterItem){
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Energy)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
         
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Energy)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.energy)
         refreshLocalParametars()
     }
     

@@ -12,9 +12,9 @@ import UIKit
 class CustomButton: UIButton {
     
     
-    @IBInspectable var fillColor: UIColor = UIColor.orangeColor()
+    @IBInspectable var fillColor: UIColor = UIColor.orange
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         
         let point1 = CGPoint(x:0, y: bounds.height/2)
         let point2 = CGPoint(x:bounds.width, y: 0)
@@ -22,27 +22,27 @@ class CustomButton: UIButton {
         
         let pathButton:UIBezierPath = UIBezierPath()
         
-        pathButton.moveToPoint(point1)
-        pathButton.addLineToPoint(point2)
-        pathButton.addLineToPoint(point3)
+        pathButton.move(to: point1)
+        pathButton.addLine(to: point2)
+        pathButton.addLine(to: point3)
         
-        pathButton.closePath()
+        pathButton.close()
         fillColor.setFill()
         pathButton.fill()
     }
     
-    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         let point1 = CGPoint(x:0, y: bounds.height/2)
         let point2 = CGPoint(x:bounds.width, y: 0)
         let point3 = CGPoint(x:bounds.width, y: bounds.height)
         
         let pathButton:UIBezierPath = UIBezierPath()
-        pathButton.moveToPoint(point1)
-        pathButton.addLineToPoint(point2)
-        pathButton.addLineToPoint(point3)
-        pathButton.closePath()
+        pathButton.move(to: point1)
+        pathButton.addLine(to: point2)
+        pathButton.addLine(to: point3)
+        pathButton.close()
         
-        if pathButton.containsPoint(point){
+        if pathButton.contains(point){
             return self
         }else{
             return nil
@@ -50,13 +50,13 @@ class CustomButton: UIButton {
     }
 
     
-    override var highlighted: Bool {
+    override var isHighlighted: Bool {
         didSet {
-            if highlighted {
-                fillColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.35)
+            if isHighlighted {
+                fillColor = UIColor.lightGray.withAlphaComponent(0.35)
                 setNeedsDisplay()
             } else {
-                fillColor = UIColor.clearColor()
+                fillColor = UIColor.clear
                 setNeedsDisplay()
             }
         }

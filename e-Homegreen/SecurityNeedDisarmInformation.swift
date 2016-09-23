@@ -31,24 +31,24 @@ class SecurityNeedDisarmInformation: CommonXIBTransitionVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
         self.infoLabel.text = Messages.Security.NeedToDisarmFirst
         
     }
     
-    func handleTap(gesture:UITapGestureRecognizer){
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func handleTap(_ gesture:UITapGestureRecognizer){
+        self.dismiss(animated: true, completion: nil)
     }
     
-    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(popUpView){
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: popUpView){
             return false
         }
         return true
     }
     
-    @IBAction func btnOk(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func btnOk(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
 }

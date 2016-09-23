@@ -18,7 +18,7 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
     var appDel:AppDelegate!
     var error:NSError? = nil
     var security:Security!
-    var defaults = NSUserDefaults.standardUserDefaults()
+    var defaults = Foundation.UserDefaults.standard
     var isPresenting: Bool = true
     
     @IBOutlet weak var backViewHeight: NSLayoutConstraint!
@@ -29,7 +29,7 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
     init(point:CGPoint, security: Security){
         super.init(nibName: "SecuirtyCommandVC", bundle: nil)
         transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
+        modalPresentationStyle = UIModalPresentationStyle.custom
         self.point = point
         self.security = security
     }
@@ -40,7 +40,7 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(SecuirtyCommandVC.handleTap(_:)))
         tapGesture.delegate = self
@@ -54,8 +54,8 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
     
     func sizeText(){
         let fixedWidth = popUpTextView.frame.size.width
-        popUpTextView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
-        let newSize = popUpTextView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
+        popUpTextView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+        let newSize = popUpTextView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
         var newFrame = popUpTextView.frame
         newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
         if newFrame.size.height + 60 < 200{
@@ -66,100 +66,100 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    func handleTap(gesture:UITapGestureRecognizer){
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func handleTap(_ gesture:UITapGestureRecognizer){
+        self.dismiss(animated: true, completion: nil)
     }
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(popUpView){
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: popUpView){
             return false
         }
         return true
     }
     
-    @IBAction func btnOk(sender: AnyObject) {
+    @IBAction func btnOk(_ sender: AnyObject) {
         
-        let address = [security.addressOne.unsignedCharValue, security.addressTwo.unsignedCharValue, security.addressThree.unsignedCharValue]
+        let address = [security.addressOne.uint8Value, security.addressTwo.uint8Value, security.addressThree.uint8Value]
         if let gatewayId = self.security.gatewayId {
             if let gateway = CoreDataController.shahredInstance.fetchGatewayWithId(gatewayId){
                 let notificationName = NotificationKey.Security.ControlModeStartBlinking
                 switch security.securityName! {
                 case "Away":
                     SendingHandler.sendCommand(byteArray: OutgoingHandler.changeSecurityMode(address, mode: 0x01), gateway: gateway)
-                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Away]))
+                    NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: notificationName) , object: self, userInfo: ["controlMode": SecurityControlMode.Away]))
                     break
                 case "Night":
                     SendingHandler.sendCommand(byteArray: OutgoingHandler.changeSecurityMode(address, mode: 0x02), gateway: gateway)
-                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Night]))
+                    NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: notificationName) , object: self, userInfo: ["controlMode": SecurityControlMode.Night]))
                     break
                 case "Day":
                     SendingHandler.sendCommand(byteArray: OutgoingHandler.changeSecurityMode(address, mode: 0x03), gateway: gateway)
-                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Day]))
+                    NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: notificationName) , object: self, userInfo: ["controlMode": SecurityControlMode.Day]))
                     break
                 case "Vacation":
                     SendingHandler.sendCommand(byteArray: OutgoingHandler.changeSecurityMode(address, mode: 0x04), gateway: gateway)
-                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Vacation]))
+                    NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: notificationName) , object: self, userInfo: ["controlMode": SecurityControlMode.Vacation]))
                     break
                 case "Panic":
-                    if defaults.boolForKey(UserDefaults.Security.IsPanic) {
+                    if defaults.bool(forKey: UserDefaults.Security.IsPanic) {
                         SendingHandler.sendCommand(byteArray: OutgoingHandler.setPanic(address, panic: 0x01), gateway: gateway)
-                        defaults.setBool(false, forKey: UserDefaults.Security.IsPanic)
+                        defaults.set(false, forKey: UserDefaults.Security.IsPanic)
                     } else {
                         SendingHandler.sendCommand(byteArray: OutgoingHandler.setPanic(address, panic: 0x00), gateway: gateway)
-                        defaults.setBool(true, forKey: UserDefaults.Security.IsPanic)
+                        defaults.set(true, forKey: UserDefaults.Security.IsPanic)
                     }
-                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: notificationName , object: self, userInfo: ["controlMode": SecurityControlMode.Panic]))
+                    NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: notificationName) , object: self, userInfo: ["controlMode": SecurityControlMode.Panic]))
                 default: break
                 }
             }
         }
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
-    @IBAction func btnCancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func btnCancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
 extension SecuirtyCommandVC : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5 //Add your own duration here
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         //Add presentation and dismiss animation transition here.
         if isPresenting == true{
             isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
+            let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
+            let containerView = transitionContext.containerView
             
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
             self.oldPoint = presentedControllerView.center
             presentedControllerView.center = self.point!
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+            presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
             containerView.addSubview(presentedControllerView)
             
-            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 
                 presentedControllerView.center = self.oldPoint!
                 presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
                 
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
             //            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 
                 presentedControllerView.center = self.point!
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
                 
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
@@ -170,11 +170,11 @@ extension SecuirtyCommandVC : UIViewControllerAnimatedTransitioning {
 
 extension SecuirtyCommandVC : UIViewControllerTransitioningDelegate {
     
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if dismissed == self {
             return self
         }
@@ -185,12 +185,12 @@ extension SecuirtyCommandVC : UIViewControllerTransitioningDelegate {
     
 }
 extension UIViewController {
-    func showSecurityCommand(point:CGPoint, text:String, security: Security) {
+    func showSecurityCommand(_ point:CGPoint, text:String, security: Security) {
         let sc = SecuirtyCommandVC(point: point, security: security)
-        self.presentViewController(sc, animated: true, completion: nil)
+        self.present(sc, animated: true, completion: nil)
     }
-    func showSecurityInformation(point:CGPoint){
+    func showSecurityInformation(_ point:CGPoint){
         let sc = SecurityNeedDisarmInformation(point: point)
-        self.presentViewController(sc, animated: true, completion: nil)
+        self.present(sc, animated: true, completion: nil)
     }
 }

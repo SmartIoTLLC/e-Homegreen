@@ -11,43 +11,43 @@ import Foundation
 extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if devices[indexPath.row].isEnabled.boolValue {
-            if devices[indexPath.row].controlType == ControlType.Climate {
-                showClimaSettings(indexPath.row, devices: devices)
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if devices[(indexPath as NSIndexPath).row].isEnabled.boolValue {
+            if devices[(indexPath as NSIndexPath).row].controlType == ControlType.Climate {
+                showClimaSettings((indexPath as NSIndexPath).row, devices: devices)
             }
         }
         
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionViewCellSize.width, height: collectionViewCellSize.height)
     }
 }
 
 extension DevicesViewController: UICollectionViewDataSource {
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return devices.count
     }
     
-    func updateDeviceStatus (indexPathRow indexPathRow: Int) {
+    func updateDeviceStatus (indexPathRow: Int) {
         for device in devices {
             if device.gateway == devices[indexPathRow].gateway && device.address == devices[indexPathRow].address {
-                device.stateUpdatedAt = NSDate()
+                device.stateUpdatedAt = Date()
             }
         }
         let address = [UInt8(Int(devices[indexPathRow].gateway.addressOne)), UInt8(Int(devices[indexPathRow].gateway.addressTwo)), UInt8(Int(devices[indexPathRow].address))]
@@ -70,25 +70,25 @@ extension DevicesViewController: UICollectionViewDataSource {
         CoreDataController.shahredInstance.saveChanges()
     }
     func refreshVisibleDevicesInScrollView () {
-        let indexPaths = deviceCollectionView.indexPathsForVisibleItems()
+        let indexPaths = deviceCollectionView.indexPathsForVisibleItems
         for indexPath in indexPaths {
-            updateDeviceStatus (indexPathRow: indexPath.row)
+            updateDeviceStatus (indexPathRow: (indexPath as NSIndexPath).row)
         }        
     }
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             if let collectionView = scrollView as? UICollectionView {
-                let indexPaths = collectionView.indexPathsForVisibleItems()
+                let indexPaths = collectionView.indexPathsForVisibleItems
                 for indexPath in indexPaths {
-                    if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as NSDate? {
-                        if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayHours) as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayMinutes) as? Int {
+                    if let stateUpdatedAt = devices[(indexPath as NSIndexPath).row].stateUpdatedAt as Date? {
+                        if let hourValue = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayHours) as? Int, let minuteValue = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayMinutes) as? Int {
                             let minutes = (hourValue * 60 + minuteValue) * 60
-                            if NSDate().timeIntervalSinceDate(stateUpdatedAt.dateByAddingTimeInterval(NSTimeInterval(NSNumber(integer: minutes)))) >= 0 {
-                                updateDeviceStatus (indexPathRow: indexPath.row)
+                            if Date().timeIntervalSince(stateUpdatedAt.addingTimeInterval(TimeInterval(NSNumber(value: minutes as Int)))) >= 0 {
+                                updateDeviceStatus (indexPathRow: (indexPath as NSIndexPath).row)
                             }
                         }
                     } else {
-                        updateDeviceStatus (indexPathRow: indexPath.row)
+                        updateDeviceStatus (indexPathRow: (indexPath as NSIndexPath).row)
                     }
                 }
                 
@@ -99,19 +99,19 @@ extension DevicesViewController: UICollectionViewDataSource {
             isScrolling = false
         }
     }
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if let collectionView = scrollView as? UICollectionView {
-            let indexPaths = collectionView.indexPathsForVisibleItems()
+            let indexPaths = collectionView.indexPathsForVisibleItems
             for indexPath in indexPaths {
-                if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as NSDate? {
-                    if let hourValue = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayHours) as? Int, let minuteValue = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayMinutes) as? Int {
+                if let stateUpdatedAt = devices[(indexPath as NSIndexPath).row].stateUpdatedAt as Date? {
+                    if let hourValue = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayHours) as? Int, let minuteValue = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayMinutes) as? Int {
                         let minutes = (hourValue * 60 + minuteValue) * 60
-                        if NSDate().timeIntervalSinceDate(stateUpdatedAt.dateByAddingTimeInterval(NSTimeInterval(NSNumber(integer: minutes)))) >= 0 {
-                            updateDeviceStatus (indexPathRow: indexPath.row)
+                        if Date().timeIntervalSince(stateUpdatedAt.addingTimeInterval(TimeInterval(NSNumber(value: minutes as Int)))) >= 0 {
+                            updateDeviceStatus (indexPathRow: (indexPath as NSIndexPath).row)
                         }
                     }
                 } else {
-                    updateDeviceStatus (indexPathRow: indexPath.row)
+                    updateDeviceStatus (indexPathRow: (indexPath as NSIndexPath).row)
                 }
             }
         }
@@ -120,51 +120,51 @@ extension DevicesViewController: UICollectionViewDataSource {
         }
         isScrolling = false
     }
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         isScrolling = true
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if devices[indexPath.row].controlType == ControlType.Dimmer {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DeviceCollectionCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if devices[(indexPath as NSIndexPath).row].controlType == ControlType.Dimmer {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! DeviceCollectionCell
             // Set cell data
-            cell.getDevice(devices[indexPath.row])
-            cell.typeOfLight.text = returnNameForDeviceAccordingToFilter(devices[indexPath.row]) //devices[indexPath.row].cellTitle
-            cell.typeOfLight.tag = indexPath.row
-            cell.lightSlider.continuous = true
-            cell.lightSlider.tag = indexPath.row
+            cell.getDevice(devices[(indexPath as NSIndexPath).row])
+            cell.typeOfLight.text = returnNameForDeviceAccordingToFilter(devices[(indexPath as NSIndexPath).row]) //devices[indexPath.row].cellTitle
+            cell.typeOfLight.tag = (indexPath as NSIndexPath).row
+            cell.lightSlider.isContinuous = true
+            cell.lightSlider.tag = (indexPath as NSIndexPath).row
             let deviceValue:Double = {
-                return Double(devices[indexPath.row].currentValue)///255
+                return Double(devices[(indexPath as NSIndexPath).row].currentValue)///255
             }()
-            cell.picture.image = devices[indexPath.row].returnImage(Double(devices[indexPath.row].currentValue))
+            cell.picture.image = devices[(indexPath as NSIndexPath).row].returnImage(Double(devices[(indexPath as NSIndexPath).row].currentValue))
             cell.lightSlider.value = Float(deviceValue)/255 // Slider accepts values 0-1
-            cell.picture.userInteractionEnabled = true
-            cell.picture.tag = indexPath.row
-            cell.lblElectricity.text = "\(Float(devices[indexPath.row].current) * 0.01) A"
-            cell.lblVoltage.text = "\(Float(devices[indexPath.row].voltage)) V"
-            cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
-            cell.labelRunningTime.text = devices[indexPath.row].runningTime
-            if devices[indexPath.row].info {
-                cell.infoView.hidden = false
-                cell.backView.hidden = true
+            cell.picture.isUserInteractionEnabled = true
+            cell.picture.tag = (indexPath as NSIndexPath).row
+            cell.lblElectricity.text = "\(Float(devices[(indexPath as NSIndexPath).row].current) * 0.01) A"
+            cell.lblVoltage.text = "\(Float(devices[(indexPath as NSIndexPath).row].voltage)) V"
+            cell.labelPowrUsege.text = "\(Float(devices[(indexPath as NSIndexPath).row].current) * Float(devices[(indexPath as NSIndexPath).row].voltage) * 0.01)" + " W"
+            cell.labelRunningTime.text = devices[(indexPath as NSIndexPath).row].runningTime
+            if devices[(indexPath as NSIndexPath).row].info {
+                cell.infoView.isHidden = false
+                cell.backView.isHidden = true
             }else {
-                cell.infoView.hidden = true
-                cell.backView.hidden = false
+                cell.infoView.isHidden = true
+                cell.backView.isHidden = false
             }
-            if devices[indexPath.row].warningState == 0 {
+            if devices[(indexPath as NSIndexPath).row].warningState == 0 {
                 cell.backView.colorTwo = Colors.MediumGray
                 
-            } else if devices[indexPath.row].warningState == 1 {
+            } else if devices[(indexPath as NSIndexPath).row].warningState == 1 {
                 // Uppet state
                 cell.backView.colorTwo = Colors.DirtyRedColor
                 
-            } else if devices[indexPath.row].warningState == 2 {
+            } else if devices[(indexPath as NSIndexPath).row].warningState == 2 {
                 // Lower state
                 cell.backView.colorTwo = Colors.DirtyBlueColor
             }
             // If device is enabled add all interactions
-            if devices[indexPath.row].isEnabled.boolValue {
-                cell.typeOfLight.userInteractionEnabled = true
+            if devices[(indexPath as NSIndexPath).row].isEnabled.boolValue {
+                cell.typeOfLight.isUserInteractionEnabled = true
                 
                 let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DevicesViewController.cellParametarLongPress(_:)))
                 longPress.minimumPressDuration = 0.5
@@ -174,9 +174,9 @@ extension DevicesViewController: UICollectionViewDataSource {
                 oneTap.numberOfTapsRequired = 2
                 cell.typeOfLight.addGestureRecognizer(oneTap)
                 
-                cell.lightSlider.addTarget(self, action: #selector(DevicesViewController.changeSliderValue(_:)), forControlEvents: .ValueChanged)
-                cell.lightSlider.addTarget(self, action: #selector(DevicesViewController.changeSliderValueEnded(_:)), forControlEvents:  UIControlEvents.TouchUpInside)
-                cell.lightSlider.addTarget(self, action: #selector(DevicesViewController.changeSliderValueStarted(_:)), forControlEvents: UIControlEvents.TouchDown)
+                cell.lightSlider.addTarget(self, action: #selector(DevicesViewController.changeSliderValue(_:)), for: .valueChanged)
+                cell.lightSlider.addTarget(self, action: #selector(DevicesViewController.changeSliderValueEnded(_:)), for:  UIControlEvents.touchUpInside)
+                cell.lightSlider.addTarget(self, action: #selector(DevicesViewController.changeSliderValueStarted(_:)), for: UIControlEvents.touchDown)
                 cell.lightSlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.changeSliderValueOnOneTap(_:))))
                 
                 let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.oneTap(_:)))
@@ -186,42 +186,42 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.picture.addGestureRecognizer(lpgr)
                 cell.picture.addGestureRecognizer(tap)
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.handleTap2(_:))))
-                cell.disabledCellView.hidden = true
+                cell.disabledCellView.isHidden = true
                 cell.disabledCellView.layer.cornerRadius = 5
             } else {
-                cell.disabledCellView.hidden = false
+                cell.disabledCellView.isHidden = false
                 cell.disabledCellView.layer.cornerRadius = 5
             }
             return cell
         }
-        else if devices[indexPath.row].controlType == ControlType.Curtain {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("curtainCell", forIndexPath: indexPath) as! CurtainCollectionCell
-            cell.curtainName.text = devices[indexPath.row].cellTitle
-            cell.curtainImage.tag = indexPath.row
-            cell.openButton.tag = indexPath.row
-            cell.closeButton.tag = indexPath.row
-            cell.setImageForDevice(devices[indexPath.row])
+        else if devices[(indexPath as NSIndexPath).row].controlType == ControlType.Curtain {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "curtainCell", for: indexPath) as! CurtainCollectionCell
+            cell.curtainName.text = devices[(indexPath as NSIndexPath).row].cellTitle
+            cell.curtainImage.tag = (indexPath as NSIndexPath).row
+            cell.openButton.tag = (indexPath as NSIndexPath).row
+            cell.closeButton.tag = (indexPath as NSIndexPath).row
+            cell.setImageForDevice(devices[(indexPath as NSIndexPath).row])
         
-            cell.curtainName.userInteractionEnabled = true
-            cell.curtainImage.userInteractionEnabled = true
+            cell.curtainName.isUserInteractionEnabled = true
+            cell.curtainImage.isUserInteractionEnabled = true
 
-            cell.lblAddress.text = "\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPath.row].address)))"
+            cell.lblAddress.text = "\(returnThreeCharactersForByte(Int(devices[(indexPath as NSIndexPath).row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[(indexPath as NSIndexPath).row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[(indexPath as NSIndexPath).row].address)))"
             
-            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[indexPath.row].parentZoneId), location: devices[indexPath.row].gateway.location), let name = zone.name{
+            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[(indexPath as NSIndexPath).row].parentZoneId), location: devices[(indexPath as NSIndexPath).row].gateway.location), let name = zone.name{
                 cell.lblLevel.text = "\(name)"
             }else{
                 cell.lblLevel.text = ""
             }
-            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[indexPath.row].zoneId), location: devices[indexPath.row].gateway.location), let name = zone.name{
+            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[(indexPath as NSIndexPath).row].zoneId), location: devices[(indexPath as NSIndexPath).row].gateway.location), let name = zone.name{
                 cell.lblZone.text = "\(name)"
             }else{
                 cell.lblZone.text = ""
             }
-            cell.lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(devices[indexPath.row].categoryId), location: devices[indexPath.row].gateway.location))"
+            cell.lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(devices[(indexPath as NSIndexPath).row].categoryId), location: devices[(indexPath as NSIndexPath).row].gateway.location))"
 
             
             // If device is enabled add all interactions
-            if devices[indexPath.row].isEnabled.boolValue {
+            if devices[(indexPath as NSIndexPath).row].isEnabled.boolValue {
                 let curtainOpenTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.openCurtain(_:)))
                 let curtainCloseTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.closeCurtain(_:)))
                 let curtainStopTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.stopCurtain(_:)))
@@ -232,7 +232,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 
                 let curtainNameTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.handleTap(_:)))
                 curtainNameTap.numberOfTapsRequired = 2
-                cell.curtainName.tag = indexPath.row
+                cell.curtainName.tag = (indexPath as NSIndexPath).row
                 cell.curtainName.addGestureRecognizer(curtainNameTap)
                 
                 let curtainNameLongPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DevicesViewController.cellParametarLongPress(_:)))
@@ -240,101 +240,101 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.curtainName.addGestureRecognizer(curtainNameLongPress)
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.handleTap2(_:))))
 
-                cell.disabledCellView.hidden = true
+                cell.disabledCellView.isHidden = true
                 cell.disabledCellView.layer.cornerRadius = 5
             } else {
-                cell.disabledCellView.hidden = false
+                cell.disabledCellView.isHidden = false
                 cell.disabledCellView.layer.cornerRadius = 5
             }
             
-            if devices[indexPath.row].info {
-                cell.infoView.hidden = false
-                cell.backView.hidden = true
+            if devices[(indexPath as NSIndexPath).row].info {
+                cell.infoView.isHidden = false
+                cell.backView.isHidden = true
             }else {
-                cell.infoView.hidden = true
-                cell.backView.hidden = false
+                cell.infoView.isHidden = true
+                cell.backView.isHidden = false
             }
             
             return cell
         }
-        else if devices[indexPath.row].controlType == ControlType.Relay || devices[indexPath.row].controlType == ControlType.DigitalOutput {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("applianceCell", forIndexPath: indexPath) as! ApplianceCollectionCell
-            cell.name.text = devices[indexPath.row].cellTitle
-            cell.name.tag = indexPath.row
+        else if devices[(indexPath as NSIndexPath).row].controlType == ControlType.Relay || devices[(indexPath as NSIndexPath).row].controlType == ControlType.DigitalOutput {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "applianceCell", for: indexPath) as! ApplianceCollectionCell
+            cell.name.text = devices[(indexPath as NSIndexPath).row].cellTitle
+            cell.name.tag = (indexPath as NSIndexPath).row
             let deviceValue:Double = {
-                return Double(devices[indexPath.row].currentValue)
+                return Double(devices[(indexPath as NSIndexPath).row].currentValue)
             }()
-            cell.image.image = devices[indexPath.row].returnImage(Double(devices[indexPath.row].currentValue))
+            cell.image.image = devices[(indexPath as NSIndexPath).row].returnImage(Double(devices[(indexPath as NSIndexPath).row].currentValue))
             if deviceValue == 255 {
-                cell.onOff.setTitle("ON", forState: .Normal)
-            } else if devices[indexPath.row].currentValue == 0 {
-                cell.onOff.setTitle("OFF", forState: .Normal)
+                cell.onOff.setTitle("ON", for: UIControlState())
+            } else if devices[(indexPath as NSIndexPath).row].currentValue == 0 {
+                cell.onOff.setTitle("OFF", for: UIControlState())
             }
-            cell.onOff.tag = indexPath.row
+            cell.onOff.tag = (indexPath as NSIndexPath).row
             
-            if devices[indexPath.row].info {
-                cell.infoView.hidden = false
-                cell.backView.hidden = true
+            if devices[(indexPath as NSIndexPath).row].info {
+                cell.infoView.isHidden = false
+                cell.backView.isHidden = true
             }else {
-                cell.infoView.hidden = true
-                cell.backView.hidden = false
+                cell.infoView.isHidden = true
+                cell.backView.isHidden = false
             }
             
-            cell.labelRunningTime.text = "\(devices[indexPath.row].runningTime)"
-            cell.lblElectricity.text = "\(Float(devices[indexPath.row].current) * 0.01) A"
-            cell.lblVoltage.text = "\(Float(devices[indexPath.row].voltage)) V"
-            cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
+            cell.labelRunningTime.text = "\(devices[(indexPath as NSIndexPath).row].runningTime)"
+            cell.lblElectricity.text = "\(Float(devices[(indexPath as NSIndexPath).row].current) * 0.01) A"
+            cell.lblVoltage.text = "\(Float(devices[(indexPath as NSIndexPath).row].voltage)) V"
+            cell.labelPowrUsege.text = "\(Float(devices[(indexPath as NSIndexPath).row].current) * Float(devices[(indexPath as NSIndexPath).row].voltage) * 0.01)" + " W"
             
             
             // If device is enabled add all interactions
-            if devices[indexPath.row].isEnabled.boolValue {
-                cell.name.userInteractionEnabled = true
+            if devices[(indexPath as NSIndexPath).row].isEnabled.boolValue {
+                cell.name.isUserInteractionEnabled = true
                 let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.oneTap(_:)))
-                cell.image.tag = indexPath.row
-                cell.image.userInteractionEnabled = true
+                cell.image.tag = (indexPath as NSIndexPath).row
+                cell.image.isUserInteractionEnabled = true
                 cell.image.addGestureRecognizer(tap)
                 let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DevicesViewController.cellParametarLongPress(_:)))
                 longPress.minimumPressDuration = 0.5
                 cell.name.addGestureRecognizer(longPress)
                 cell.name.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.handleTap(_:))))
                 let tap1:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.oneTap(_:)))
-                cell.onOff.userInteractionEnabled = true
+                cell.onOff.isUserInteractionEnabled = true
                 cell.onOff.addGestureRecognizer(tap1)
                 cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.handleTap2(_:))))
-                cell.btnRefresh.tag = indexPath.row
+                cell.btnRefresh.tag = (indexPath as NSIndexPath).row
                 //                cell.btnRefresh.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "refreshDevice:"))
-                cell.btnRefresh.addTarget(self, action: #selector(DevicesViewController.refreshDevice(_:)), forControlEvents:  UIControlEvents.TouchUpInside)
-                cell.disabledCellView.hidden = true
+                cell.btnRefresh.addTarget(self, action: #selector(DevicesViewController.refreshDevice(_:)), for:  UIControlEvents.touchUpInside)
+                cell.disabledCellView.isHidden = true
                 cell.disabledCellView.layer.cornerRadius = 5
             } else {
-                cell.disabledCellView.hidden = false
+                cell.disabledCellView.isHidden = false
                 cell.disabledCellView.layer.cornerRadius = 5
             }
             
             return cell
             
         }
-        else if devices[indexPath.row].controlType == ControlType.Climate {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("climaCell", forIndexPath: indexPath) as! ClimateCell
-            cell.energySavingImage.hidden = devices[indexPath.row].allowEnergySaving == NSNumber(bool: true) ? false : true
-            cell.climateName.text = devices[indexPath.row].cellTitle
-            cell.climateName.tag = indexPath.row
+        else if devices[(indexPath as NSIndexPath).row].controlType == ControlType.Climate {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "climaCell", for: indexPath) as! ClimateCell
+            cell.energySavingImage.isHidden = devices[(indexPath as NSIndexPath).row].allowEnergySaving == NSNumber(value: true as Bool) ? false : true
+            cell.climateName.text = devices[(indexPath as NSIndexPath).row].cellTitle
+            cell.climateName.tag = (indexPath as NSIndexPath).row
             cell.temperature.font = UIFont(name: "Tahoma", size: 17)
-            cell.temperature.text = "\(devices[indexPath.row].roomTemperature) \u{00B0}c"
+            cell.temperature.text = "\(devices[(indexPath as NSIndexPath).row].roomTemperature) \u{00B0}c"
             cell.temperatureSetPoint.font = UIFont(name: "Tahoma", size: 17)
             cell.temperatureSetPoint.text = "00 \u{00B0}c"
             
-            cell.climateMode.text = devices[indexPath.row].mode
-            cell.climateSpeed.text = devices[indexPath.row].speed
+            cell.climateMode.text = devices[(indexPath as NSIndexPath).row].mode
+            cell.climateSpeed.text = devices[(indexPath as NSIndexPath).row].speed
             
             var fanSpeed = 0.0
-            let speedState = devices[indexPath.row].speedState
-            if devices[indexPath.row].filterWarning {
+            let speedState = devices[(indexPath as NSIndexPath).row].speedState
+            if devices[(indexPath as NSIndexPath).row].filterWarning {
                 cell.backView.colorTwo = Colors.DirtyRedColor
             } else {
                 cell.backView.colorTwo = Colors.MediumGray
             }
-            if devices[indexPath.row].currentValue == 255 {
+            if devices[(indexPath as NSIndexPath).row].currentValue == 255 {
                 switch speedState {
                 case "Low":
                     cell.fanSpeedImage.image = UIImage(named: "fanlow")
@@ -351,67 +351,67 @@ extension DevicesViewController: UICollectionViewDataSource {
                 }
                 
                 let animationImages:[UIImage] = [UIImage(named: "h1")!, UIImage(named: "h2")!, UIImage(named: "h3")!, UIImage(named: "h4")!, UIImage(named: "h5")!, UIImage(named: "h6")!, UIImage(named: "h7")!, UIImage(named: "h8")!]
-                let modeState = devices[indexPath.row].modeState
+                let modeState = devices[(indexPath as NSIndexPath).row].modeState
                 cell.temperatureSetPoint.font = UIFont(name: "Tahoma", size: 17)
                 cell.temperatureSetPoint.text = "00 \u{00B0}c"
                 switch modeState {
                 case "Cool":
                     cell.modeImage.stopAnimating()
                     cell.modeImage.image = UIImage(named: "cool")
-                    cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) \u{00B0}c"
+                    cell.temperatureSetPoint.text = "\(devices[(indexPath as NSIndexPath).row].coolTemperature) \u{00B0}c"
                 case "Heat":
                     cell.modeImage.stopAnimating()
                     cell.modeImage.image = UIImage(named: "heat")
-                    cell.temperatureSetPoint.text = "\(devices[indexPath.row].heatTemperature) \u{00B0}c"
+                    cell.temperatureSetPoint.text = "\(devices[(indexPath as NSIndexPath).row].heatTemperature) \u{00B0}c"
                 case "Fan":
-                    cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) \u{00B0}c"
+                    cell.temperatureSetPoint.text = "\(devices[(indexPath as NSIndexPath).row].coolTemperature) \u{00B0}c"
                     if fanSpeed == 0 {
                         cell.modeImage.image = UIImage(named: "fanauto")
                         cell.modeImage.stopAnimating()
                     } else {
                         cell.modeImage.animationImages = animationImages
-                        cell.modeImage.animationDuration = NSTimeInterval(fanSpeed)
+                        cell.modeImage.animationDuration = TimeInterval(fanSpeed)
                         cell.modeImage.animationRepeatCount = 0
                         cell.modeImage.startAnimating()
                     }
                 default:
                     cell.modeImage.stopAnimating()
                     cell.modeImage.image = nil
-                    let mode = devices[indexPath.row].mode
+                    let mode = devices[(indexPath as NSIndexPath).row].mode
                     switch mode {
                     case "Cool":
-                        cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) \u{00B0}c"
+                        cell.temperatureSetPoint.text = "\(devices[(indexPath as NSIndexPath).row].coolTemperature) \u{00B0}c"
                     case "Heat":
-                        cell.temperatureSetPoint.text = "\(devices[indexPath.row].heatTemperature) \u{00B0}c"
+                        cell.temperatureSetPoint.text = "\(devices[(indexPath as NSIndexPath).row].heatTemperature) \u{00B0}c"
                     case "Fan":
-                        cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) \u{00B0}c"
+                        cell.temperatureSetPoint.text = "\(devices[(indexPath as NSIndexPath).row].coolTemperature) \u{00B0}c"
                     default:
                         //  Hoce i tu da zezne
-                        cell.temperatureSetPoint.text = "\(devices[indexPath.row].coolTemperature) \u{00B0}c"
+                        cell.temperatureSetPoint.text = "\(devices[(indexPath as NSIndexPath).row].coolTemperature) \u{00B0}c"
                     }
                 }
             } else {
                 cell.fanSpeedImage.image = UIImage(named: "fanoff")
                 cell.modeImage.stopAnimating()
             }
-            if devices[indexPath.row].currentValue == 0 {
+            if devices[(indexPath as NSIndexPath).row].currentValue == 0 {
                 cell.imageOnOff.image = UIImage(named: "poweroff")
                 cell.modeImage.image = nil
             } else {
                 cell.imageOnOff.image = UIImage(named: "poweron")
             }
             
-            if devices[indexPath.row].info {
-                cell.infoView.hidden = false
-                cell.backView.hidden = true
+            if devices[(indexPath as NSIndexPath).row].info {
+                cell.infoView.isHidden = false
+                cell.backView.isHidden = true
             }else {
-                cell.infoView.hidden = true
-                cell.backView.hidden = false
+                cell.infoView.isHidden = true
+                cell.backView.isHidden = false
             }
-            cell.imageOnOff.tag = indexPath.row
-            cell.imageOnOff.userInteractionEnabled = true
+            cell.imageOnOff.tag = (indexPath as NSIndexPath).row
+            cell.imageOnOff.isUserInteractionEnabled = true
             cell.imageOnOff.addGestureRecognizer(UITapGestureRecognizer(target:self, action: #selector(DevicesViewController.setACPowerStatus(_:))))
-            cell.climateName.userInteractionEnabled = true
+            cell.climateName.isUserInteractionEnabled = true
             
             let doublePress = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.handleTap(_:)))
             doublePress.numberOfTapsRequired = 2
@@ -423,24 +423,24 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.climateName.addGestureRecognizer(longPress)
             
             // If device is enabled add all interactions
-            if devices[indexPath.row].isEnabled.boolValue {
-                cell.disabledCellView.hidden = true
+            if devices[(indexPath as NSIndexPath).row].isEnabled.boolValue {
+                cell.disabledCellView.isHidden = true
                 cell.disabledCellView.layer.cornerRadius = 5
             } else {
-                cell.disabledCellView.hidden = false
+                cell.disabledCellView.isHidden = false
                 cell.disabledCellView.layer.cornerRadius = 5
             }
             return cell
         }
-        else if devices[indexPath.row].controlType == ControlType.Sensor || devices[indexPath.row].controlType == ControlType.IntelligentSwitch || devices[indexPath.row].controlType == ControlType.Gateway || devices[indexPath.row].controlType == ControlType.DigitalInput || devices[indexPath.row].controlType == ControlType.SaltoAccess{
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("multiSensorCell", forIndexPath: indexPath) as! MultiSensorCell
-            cell.populateCellWithData(devices[indexPath.row], tag: indexPath.row)
+        else if devices[(indexPath as NSIndexPath).row].controlType == ControlType.Sensor || devices[(indexPath as NSIndexPath).row].controlType == ControlType.IntelligentSwitch || devices[(indexPath as NSIndexPath).row].controlType == ControlType.Gateway || devices[(indexPath as NSIndexPath).row].controlType == ControlType.DigitalInput || devices[(indexPath as NSIndexPath).row].controlType == ControlType.SaltoAccess{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "multiSensorCell", for: indexPath) as! MultiSensorCell
+            cell.populateCellWithData(devices[(indexPath as NSIndexPath).row], tag: (indexPath as NSIndexPath).row)
             // If device is enabled add all interactions
             let longPressOne:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DevicesViewController.cellParametarLongPress(_:)))
             longPressOne.minimumPressDuration = 0.5
             let longPressTwo:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DevicesViewController.cellParametarLongPress(_:)))
             longPressTwo.minimumPressDuration = 0.5
-            cell.disabledCellView.tag = indexPath.row
+            cell.disabledCellView.tag = (indexPath as NSIndexPath).row
             
             let doublePress = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.handleTap(_:)))
             doublePress.numberOfTapsRequired = 2
@@ -449,17 +449,17 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.sensorTitle.addGestureRecognizer(longPressOne)
             cell.disabledCellView.addGestureRecognizer(longPressTwo)
             cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.handleTap2(_:))))
-            if devices[indexPath.row].isEnabled.boolValue {
-                cell.disabledCellView.hidden = true
+            if devices[(indexPath as NSIndexPath).row].isEnabled.boolValue {
+                cell.disabledCellView.isHidden = true
                 cell.disabledCellView.layer.cornerRadius = 5
             } else {
-                cell.disabledCellView.hidden = false
+                cell.disabledCellView.isHidden = false
                 cell.disabledCellView.layer.cornerRadius = 5
             }
             return cell
         }
         else {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("dafaultCell", forIndexPath: indexPath) as! DefaultCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dafaultCell", for: indexPath) as! DefaultCell
             cell.defaultLabel.text = ""
             return cell
         }

@@ -32,29 +32,29 @@ class HVACButton: UIButton {
         self.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         
         if selectedButton{
             let path = UIBezierPath(roundedRect: rect,
-                                    byRoundingCorners: UIRectCorner.AllCorners,
+                                    byRoundingCorners: UIRectCorner.allCorners,
                                     cornerRadii: CGSize(width: 5.0, height: 5.0))
             path.addClip()
             
-            UIColor.lightTextColor().setFill()
+            UIColor.lightText.setFill()
             
             path.fill()
             
-            self.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-            self.backgroundColor = UIColor.clearColor()
+            self.setTitleColor(UIColor.white, for: UIControlState())
+            self.backgroundColor = UIColor.clear
         }else{
             
             let path = UIBezierPath(roundedRect: rect,
-                                    byRoundingCorners: UIRectCorner.AllCorners,
+                                    byRoundingCorners: UIRectCorner.allCorners,
                                     cornerRadii: CGSize(width: 5.0, height: 5.0))
             path.addClip()
             path.lineWidth = 2
             
-            UIColor.darkGrayColor().setStroke()
+            UIColor.darkGray.setStroke()
             
             let context = UIGraphicsGetCurrentContext()
             let colors = [colorTwo, colorOne]
@@ -63,18 +63,18 @@ class HVACButton: UIButton {
             let colorSpace = CGColorSpaceCreateDeviceRGB()
             let colorLocations:[CGFloat] = [0.0, 1.0]
             
-            let gradient = CGGradientCreateWithColors(colorSpace,
-                                                      colors,
-                                                      colorLocations)
+            let gradient = CGGradient(colorsSpace: colorSpace,
+                                                      colors: colors as CFArray,
+                                                      locations: colorLocations)
             
             let startPoint = CGPoint.zero
             let endPoint = CGPoint(x:0, y:self.bounds.height)
             
-            CGContextDrawLinearGradient(context!, gradient!, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+            context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
             
             path.stroke()
-            self.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-            self.backgroundColor = UIColor.clearColor()
+            self.setTitleColor(UIColor.white, for: UIControlState())
+            self.backgroundColor = UIColor.clear
         }
     }
     

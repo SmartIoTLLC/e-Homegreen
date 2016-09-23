@@ -50,26 +50,26 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let date = NSDate()
-        let calendarUnit = NSCalendar.currentCalendar()
-        let components = calendarUnit.components([.Hour, .Minute], fromDate: date)
+        let date = Date()
+        let calendarUnit = Calendar.current
+        let components = (calendarUnit as NSCalendar).components([.hour, .minute], from: date)
         let hour = components.hour
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         
-        if hour < 20 && hour > 6{
+        if hour! < 20 && hour! > 6{
             backgroundImage.image = UIImage(named: "dashboardDay")
         }else{
             backgroundImage.image = UIImage(named: "dashboardNight")
         }
         
-        calendar.frame = CGRectMake(50, 50, 200, 200)
+        calendar.frame = CGRect(x: 50, y: 50, width: 200, height: 200)
         self.view.addSubview(calendar)
-        calendar.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.55)
+        calendar.backgroundColor = UIColor.white.withAlphaComponent(0.55)
         calendar.layer.cornerRadius = 10
         
-        clock = SPClockView(frame: CGRectMake(170, 220, 140, 140))
-        clock.timeZone = NSTimeZone.localTimeZone()
+        clock = SPClockView(frame: CGRect(x: 170, y: 220, width: 140, height: 140))
+        clock.timeZone = TimeZone.autoupdatingCurrent
         self.view.addSubview(clock)
         
         locationManager.delegate = self
@@ -86,7 +86,7 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         // Do any additional setup after loading the view.
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         
         if self.revealViewController() != nil {
@@ -94,7 +94,7 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             revealViewController().toggleAnimationDuration = 0.5
-            if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
+            if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
                 revealViewController().rearViewRevealWidth = 200
             }else{
                 revealViewController().rearViewRevealWidth = 200
@@ -107,26 +107,26 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         changeFullScreeenImage()
     }
     
-    @IBAction func fullScreen(sender: UIButton) {
+    @IBAction func fullScreen(_ sender: UIButton) {
         sender.collapseInReturnToNormal(1)
-        if UIApplication.sharedApplication().statusBarHidden {
-            UIApplication.sharedApplication().statusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        if UIApplication.shared.isStatusBarHidden {
+            UIApplication.shared.isStatusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
         } else {
-            UIApplication.sharedApplication().statusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            UIApplication.shared.isStatusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
         }
     }
     
     func changeFullScreeenImage(){
-        if UIApplication.sharedApplication().statusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        if UIApplication.shared.isStatusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
         } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
         }
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.last!
         let long = NSString(format: "%.15lf", location.coordinate.longitude)
         let lat = NSString(format: "%.15lf", location.coordinate.latitude)
@@ -139,49 +139,49 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         // Dispose of any resources that can be recreated.
     }
     
-    func detectPan(recognizer:UIPanGestureRecognizer) {
+    func detectPan(_ recognizer:UIPanGestureRecognizer) {
         
-        let translation  = recognizer.translationInView(self.view)
-        recognizer.view!.center = CGPointMake(recognizer.view!.center.x + translation.x,
-                                              recognizer.view!.center.y + translation.y)
-        recognizer.setTranslation(CGPointMake(0, 0), inView: self.view!)
+        let translation  = recognizer.translation(in: self.view)
+        recognizer.view!.center = CGPoint(x: recognizer.view!.center.x + translation.x,
+                                              y: recognizer.view!.center.y + translation.y)
+        recognizer.setTranslation(CGPoint(x: 0, y: 0), in: self.view!)
     }
     
-    func detectPan1(recognizer:UIPanGestureRecognizer) {
+    func detectPan1(_ recognizer:UIPanGestureRecognizer) {
         
-        let translation  = recognizer.translationInView(self.view)
-        recognizer.view!.center = CGPointMake(recognizer.view!.center.x + translation.x,
-                                              recognizer.view!.center.y + translation.y)
-        recognizer.setTranslation(CGPointMake(0, 0), inView: self.view!)
+        let translation  = recognizer.translation(in: self.view)
+        recognizer.view!.center = CGPoint(x: recognizer.view!.center.x + translation.x,
+                                              y: recognizer.view!.center.y + translation.y)
+        recognizer.setTranslation(CGPoint(x: 0, y: 0), in: self.view!)
     }
     
-    func getWeatherData(urlString:String){
-        let url = NSURL(string: urlString)
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url!) { (data, response, error) -> Void in
+    func getWeatherData(_ urlString:String){
+        let url = URL(string: urlString)
+        let task = URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) -> Void in
             
             if error == nil{
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     self.setLabel(data!)
                 })
             }
-        }
+        }) 
         task.resume()
     }
     
-    func setLabel(weatherData: NSData){
-        let date = NSDate()
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components([.Hour, .Minute], fromDate: date)
+    func setLabel(_ weatherData: Data){
+        let date = Date()
+        let calendar = Calendar.current
+        let components = (calendar as NSCalendar).components([.hour, .minute], from: date)
         let hour = components.hour
         
-        if hour < 20 && hour > 6{
+        if hour! < 20 && hour! > 6{
             backgroundImage.image = UIImage(named: "dashboardDay")
         }else{
             backgroundImage.image = UIImage(named: "dashboardNight")
         }
         
         do {
-            let json = try NSJSONSerialization.JSONObjectWithData(weatherData, options:NSJSONReadingOptions.MutableContainers ) as! NSDictionary
+            let json = try JSONSerialization.jsonObject(with: weatherData, options:JSONSerialization.ReadingOptions.mutableContainers ) as! NSDictionary
             
             if let name = json["name"] as? String{
                 lblPlace.text = name
@@ -212,7 +212,7 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
                 }
                 
                 if let temp_max = main["temp_max"] as? Double{
-                    lblMinMaxTemp.text = str.stringByAppendingString(String(format: "%.1f", temp_max - 273) + "°C")
+                    lblMinMaxTemp.text = str + (String(format: "%.1f", temp_max - 273) + "°C")
                 }
             }
             
@@ -225,33 +225,33 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
     func closeSideMenu(){
         
         if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggleAnimated(true)
+            self.revealViewController().revealToggle(animated: true)
         }
         
     }
     
-    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            calendar.userInteractionEnabled = true
-            clock.userInteractionEnabled = true
+    func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
+        if(position == FrontViewPosition.left) {
+            calendar.isUserInteractionEnabled = true
+            clock.isUserInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
-            calendar.userInteractionEnabled = false
-            clock.userInteractionEnabled = false
+            calendar.isUserInteractionEnabled = false
+            clock.isUserInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }
     
-    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            calendar.userInteractionEnabled = true
-            clock.userInteractionEnabled = true
+    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
+        if(position == FrontViewPosition.left) {
+            calendar.isUserInteractionEnabled = true
+            clock.isUserInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
             let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
             self.view.addGestureRecognizer(tap)
-            calendar.userInteractionEnabled = false
-            clock.userInteractionEnabled = false
+            calendar.isUserInteractionEnabled = false
+            clock.isUserInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }

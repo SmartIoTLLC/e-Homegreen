@@ -43,7 +43,7 @@ class RelayParametarVC: CommonXIBTransitionVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
         editDelay.delegate = self
         
@@ -53,12 +53,12 @@ class RelayParametarVC: CommonXIBTransitionVC {
         editDelay.text = "\(devices[indexPathRow].delay)"
         lblName.text = "\(devices[indexPathRow].name)"
         
-        if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[indexPathRow].parentZoneId), location: devices[indexPathRow].gateway.location), name = zone.name{
+        if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[indexPathRow].parentZoneId), location: devices[indexPathRow].gateway.location), let name = zone.name{
             lblLevel.text = "\(name)"
         }else{
             lblLevel.text = ""
         }
-        if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[indexPathRow].zoneId), location: devices[indexPathRow].gateway.location), name = zone.name{
+        if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[indexPathRow].zoneId), location: devices[indexPathRow].gateway.location), let name = zone.name{
             lblZone.text = "\(name)"
         }else{
             lblZone.text = ""
@@ -67,54 +67,54 @@ class RelayParametarVC: CommonXIBTransitionVC {
         deviceAddress.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].address)))"
         deviceChannel.text = "\(devices[indexPathRow].channel)"
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RelayParametarVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RelayParametarVC.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(RelayParametarVC.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(RelayParametarVC.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: backView){
             editDelay.resignFirstResponder()
             return false
         }
         return true
     }
 
-    @IBAction func btnCancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func btnCancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func btnSave(sender: AnyObject) {
+    @IBAction func btnSave(_ sender: AnyObject) {
         if let numberOne = Int(editDelay.text!) {
             if numberOne <= 65534 {
                 getDeviceAndSave(numberOne)
                 self.delegate?.saveClicked()
-                self.dismissViewControllerAnimated(true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
             }
         }
     }
     
-    func getDeviceAndSave (numberOne:Int) {
-        if let deviceObject = appDel.managedObjectContext!.objectWithID(devices[indexPathRow].objectID) as? Device {
+    func getDeviceAndSave (_ numberOne:Int) {
+        if let deviceObject = appDel.managedObjectContext!.object(with: devices[indexPathRow].objectID) as? Device {
             device = deviceObject
             print(device)
-            device!.delay = numberOne
+            device!.delay = NSNumber(value: numberOne)
             CoreDataController.shahredInstance.saveChanges()
         }
     }
     
     func dismissViewController () {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func returnCategoryWithId(id:Int) -> String {
+    func returnCategoryWithId(_ id:Int) -> String {
         if id == 0{
             return "All"
         }
-        let fetchRequest = NSFetchRequest(entityName: "Category")
-        let predicate = NSPredicate(format: "id == %@", NSNumber(integer: id))
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Category.fetchRequest()
+        let predicate = NSPredicate(format: "id == %@", NSNumber(value: id as Int))
         fetchRequest.predicate = predicate
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Category]
             if fetResults!.count != 0 {
                 return "\(fetResults![0].name)"
             } else {
@@ -127,11 +127,11 @@ class RelayParametarVC: CommonXIBTransitionVC {
         return ""
     }
     
-    func keyboardWillShow(notification: NSNotification) {
-        var info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+    func keyboardWillShow(_ notification: Notification) {
+        var info = (notification as NSNotification).userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
-        if editDelay.isFirstResponder(){
+        if editDelay.isFirstResponder{
             if backView.frame.origin.y + editDelay.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.editDelay.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height)))
@@ -139,27 +139,27 @@ class RelayParametarVC: CommonXIBTransitionVC {
             }
         }
         
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
-    func keyboardWillHide(notification: NSNotification) {
+    func keyboardWillHide(_ notification: Notification) {
         self.centerY.constant = 0
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
 }
 
 extension RelayParametarVC: UITextFieldDelegate{
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
 }
 
 extension UIViewController {
-    func showRelayParametar(indexPathRow: Int, devices:[Device]) {
+    func showRelayParametar(_ indexPathRow: Int, devices:[Device]) {
         let ad = RelayParametarVC()
         ad.indexPathRow = indexPathRow
         ad.devices = devices
-        self.presentViewController(ad, animated: true, completion: nil)
+        self.present(ad, animated: true, completion: nil)
     }
 }

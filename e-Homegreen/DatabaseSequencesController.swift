@@ -12,17 +12,17 @@ import CoreData
 class DatabaseSequencesController: NSObject {
     
     static let shared = DatabaseSequencesController()
-    let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    func getSequences(filterParametar:FilterItem) -> [Sequence] {
+    func getSequences(_ filterParametar:FilterItem) -> [Sequence] {
         if let user = DatabaseUserController.shared.logedUserOrAdmin(){
-            let fetchRequest = NSFetchRequest(entityName: "Sequence")
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Sequence.fetchRequest()
             let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
             let sortDescriptorTwo = NSSortDescriptor(key: "sequenceId", ascending: true)
             let sortDescriptorThree = NSSortDescriptor(key: "sequenceName", ascending: true)
             fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
             
-            var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))]
+            var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool))]
             predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
             if filterParametar.location != "All" {
                 let locationPredicate = NSPredicate(format: "gateway.location.name == %@", filterParametar.location)
@@ -43,11 +43,11 @@ class DatabaseSequencesController: NSObject {
                     predicateArray.append(NSPredicate(format: "sequenceCategoryId == %@", category.id!))
                 }
             }
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
             
             do {
-                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
+                let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Sequence]
                 return fetResults!
             } catch _ as NSError {
                 abort()
@@ -56,8 +56,8 @@ class DatabaseSequencesController: NSObject {
         return []
     }
     
-    func updateSequenceList(gateway:Gateway, filterParametar:FilterItem) -> [Sequence] {
-        let fetchRequest = NSFetchRequest(entityName: "Sequence")
+    func updateSequenceList(_ gateway:Gateway, filterParametar:FilterItem) -> [Sequence] {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Sequence.fetchRequest()
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "sequenceId", ascending: true)
         let sortDescriptorThree = NSSortDescriptor(key: "sequenceName", ascending: true)
@@ -81,18 +81,18 @@ class DatabaseSequencesController: NSObject {
                 predicateArray.append(NSPredicate(format: "sequenceCategoryId == %@", category.id!))
             }
         }
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Sequence]
             return fetResults!
         } catch{
         }
         return []
     }
     
-    func createSequence(sequenceId: Int, sequenceName: String, moduleAddress: Int, gateway: Gateway, levelId: Int?, zoneId: Int?, categoryId: Int?, isBroadcast:Bool = true, isLocalcast:Bool = true, sceneImageOneDefault:String? = "lightBulb", sceneImageTwoDefault:String? = "lightBulb", sceneImageOneCustom:String? = nil, sceneImageTwoCustom:String? = nil, imageDataOne:NSData? = nil, imageDataTwo:NSData? = nil, sequenceCycles:Int = 2){
+    func createSequence(_ sequenceId: Int, sequenceName: String, moduleAddress: Int, gateway: Gateway, levelId: Int?, zoneId: Int?, categoryId: Int?, isBroadcast:Bool = true, isLocalcast:Bool = true, sceneImageOneDefault:String? = "lightBulb", sceneImageTwoDefault:String? = "lightBulb", sceneImageOneCustom:String? = nil, sceneImageTwoCustom:String? = nil, imageDataOne:Data? = nil, imageDataTwo:Data? = nil, sequenceCycles:Int = 2){
         var itExists = false
         var existingSequence:Sequence?
         let sequencaArray = fetchSequenceWithIdAndAddress(sequenceId, gateway: gateway, moduleAddress: moduleAddress)
@@ -101,15 +101,15 @@ class DatabaseSequencesController: NSObject {
             itExists = true
         }
         if !itExists {
-            let sequence = NSEntityDescription.insertNewObjectForEntityForName("Sequence", inManagedObjectContext: appDel.managedObjectContext!) as! Sequence
-            sequence.sequenceId = sequenceId
+            let sequence = NSEntityDescription.insertNewObject(forEntityName: "Sequence", into: appDel.managedObjectContext!) as! Sequence
+            sequence.sequenceId = NSNumber(value: sequenceId)
             sequence.sequenceName = sequenceName
-            sequence.address = moduleAddress
+            sequence.address = NSNumber(value: moduleAddress)
             
             if let imageDataOne = imageDataOne{
-                if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
                     image.imageData = imageDataOne
-                    image.imageId = NSUUID().UUIDString
+                    image.imageId = UUID().uuidString
                     sequence.sequenceImageOneCustom = image.imageId
                     sequence.sequenceImageOneDefault = nil
                     gateway.location.user!.addImagesObject(image)
@@ -120,9 +120,9 @@ class DatabaseSequencesController: NSObject {
             }
             
             if let imageDataTwo = imageDataTwo{
-                if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
                     image.imageData = imageDataTwo
-                    image.imageId = NSUUID().UUIDString
+                    image.imageId = UUID().uuidString
                     sequence.sequenceImageTwoCustom = image.imageId
                     sequence.sequenceImageTwoDefault = nil
                     gateway.location.user!.addImagesObject(image)
@@ -133,14 +133,14 @@ class DatabaseSequencesController: NSObject {
                 sequence.sequenceImageTwoCustom = sceneImageTwoCustom
             }
             
-            sequence.entityLevelId = levelId
-            sequence.sequenceZoneId = zoneId
-            sequence.sequenceCategoryId = categoryId
+            sequence.entityLevelId = levelId as NSNumber?
+            sequence.sequenceZoneId = zoneId as NSNumber?
+            sequence.sequenceCategoryId = categoryId as NSNumber?
             
-            sequence.isBroadcast = isBroadcast
-            sequence.isLocalcast = isLocalcast
+            sequence.isBroadcast = isBroadcast as NSNumber
+            sequence.isLocalcast = isLocalcast as NSNumber
             
-            sequence.sequenceCycles = sequenceCycles
+            sequence.sequenceCycles = NSNumber(value: sequenceCycles)
             
             sequence.gateway = gateway
             CoreDataController.shahredInstance.saveChanges()
@@ -150,9 +150,9 @@ class DatabaseSequencesController: NSObject {
             existingSequence!.sequenceName = sequenceName
             
             if let imageDataOne = imageDataOne{
-                if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
                     image.imageData = imageDataOne
-                    image.imageId = NSUUID().UUIDString
+                    image.imageId = UUID().uuidString
                     existingSequence!.sequenceImageOneCustom = image.imageId
                     existingSequence!.sequenceImageOneDefault = nil
                     gateway.location.user!.addImagesObject(image)
@@ -163,9 +163,9 @@ class DatabaseSequencesController: NSObject {
             }
             
             if let imageDataTwo = imageDataTwo{
-                if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
                     image.imageData = imageDataTwo
-                    image.imageId = NSUUID().UUIDString
+                    image.imageId = UUID().uuidString
                     existingSequence!.sequenceImageTwoCustom = image.imageId
                     existingSequence!.sequenceImageTwoDefault = nil
                     gateway.location.user!.addImagesObject(image)
@@ -176,29 +176,29 @@ class DatabaseSequencesController: NSObject {
                 existingSequence!.sequenceImageTwoCustom = sceneImageTwoCustom
             }
             
-            existingSequence!.entityLevelId = levelId
-            existingSequence!.sequenceZoneId = zoneId
-            existingSequence!.sequenceCategoryId = categoryId
+            existingSequence!.entityLevelId = levelId as NSNumber?
+            existingSequence!.sequenceZoneId = zoneId as NSNumber?
+            existingSequence!.sequenceCategoryId = categoryId as NSNumber?
             
-            existingSequence!.isBroadcast = isBroadcast
-            existingSequence!.isLocalcast = isLocalcast
+            existingSequence!.isBroadcast = isBroadcast as NSNumber
+            existingSequence!.isLocalcast = isLocalcast as NSNumber
             
-            existingSequence!.sequenceCycles = sequenceCycles
+            existingSequence!.sequenceCycles = NSNumber(value: sequenceCycles)
             
             CoreDataController.shahredInstance.saveChanges()
         }
     }
     
-    func fetchSequenceWithIdAndAddress(sceneId: Int, gateway: Gateway, moduleAddress:Int) -> [Sequence]{
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Sequence")
-        let predicateLocation = NSPredicate(format: "sequenceId == %@", NSNumber(integer: sceneId))
+    func fetchSequenceWithIdAndAddress(_ sceneId: Int, gateway: Gateway, moduleAddress:Int) -> [Sequence]{
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Sequence.fetchRequest()
+        let predicateLocation = NSPredicate(format: "sequenceId == %@", NSNumber(value: sceneId as Int))
         let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
-        let predicateAddress = NSPredicate(format: "address == %@", NSNumber(integer: moduleAddress))
+        let predicateAddress = NSPredicate(format: "address == %@", NSNumber(value: moduleAddress as Int))
         let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway, predicateAddress])
         
         fetchRequest.predicate = combinedPredicate
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Sequence]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Sequence]
             return fetResults!
         } catch let error1 as NSError {
             print("Unresolved error \(error1), \(error1.userInfo)")
@@ -207,17 +207,17 @@ class DatabaseSequencesController: NSObject {
         return []
     }
     
-    func deleteAllSequences(gateway:Gateway){
+    func deleteAllSequences(_ gateway:Gateway){
         let sequences = gateway.sequences.allObjects as! [Sequence]
         for sequence in sequences {
-            self.appDel.managedObjectContext!.deleteObject(sequence)
+            self.appDel.managedObjectContext!.delete(sequence)
         }
         
         CoreDataController.shahredInstance.saveChanges()
     }
     
-    func deleteSequence(sequence:Sequence){
-        self.appDel.managedObjectContext!.deleteObject(sequence)
+    func deleteSequence(_ sequence:Sequence){
+        self.appDel.managedObjectContext!.delete(sequence)
         CoreDataController.shahredInstance.saveChanges()
     }
 }

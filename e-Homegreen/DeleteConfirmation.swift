@@ -21,13 +21,13 @@ class DeleteConfirmation: UIViewController {
 
     }
 
-    @IBAction func deleteAll(sender: AnyObject) {
+    @IBAction func deleteAll(_ sender: AnyObject) {
         delegate?.deleteConfirmed()
-        self.dismissViewControllerAnimated(false, completion: nil)
+        self.dismiss(animated: false, completion: nil)
     }
     
-    @IBAction func cancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(false, completion: nil)
+    @IBAction func cancel(_ sender: AnyObject) {
+        self.dismiss(animated: false, completion: nil)
     }
     
 }

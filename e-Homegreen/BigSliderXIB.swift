@@ -9,9 +9,9 @@
 import UIKit
 
 protocol BigSliderDelegate {
-    func valueChanged(sender:UISlider)
-    func endValueChanged(sender:UISlider)
-    func setONOFFDimmer(index:Int, turnOff: Bool)
+    func valueChanged(_ sender:UISlider)
+    func endValueChanged(_ sender:UISlider)
+    func setONOFFDimmer(_ index:Int, turnOff: Bool)
 }
 
 class BigSliderXIB: CommonXIBTransitionVC {
@@ -47,19 +47,19 @@ class BigSliderXIB: CommonXIBTransitionVC {
         // Do any additional setup after loading the view.
     }
     
-    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: backView){
             return false
         }
         return true
     }
     
-    func changeSliderValueOnOneTap (gesture:UIGestureRecognizer) {
+    func changeSliderValueOnOneTap (_ gesture:UIGestureRecognizer) {
         let s = gesture.view as! UISlider
-        if s.highlighted{
+        if s.isHighlighted{
             return // tap on thumb, let slider deal with it
         }
-        let pt:CGPoint = gesture.locationInView(s)
+        let pt:CGPoint = gesture.location(in: s)
         let percentage:CGFloat = pt.x / s.bounds.size.width
         let delta:CGFloat = percentage * (CGFloat(s.maximumValue) - CGFloat(s.minimumValue))
         let value:CGFloat = CGFloat(s.minimumValue) + delta;
@@ -67,30 +67,30 @@ class BigSliderXIB: CommonXIBTransitionVC {
         delegate?.valueChanged(slider)
     }
     
-    @IBAction func on(sender: AnyObject) {
+    @IBAction func on(_ sender: AnyObject) {
         delegate?.setONOFFDimmer(index, turnOff: false)
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func off(sender: AnyObject) {
+    @IBAction func off(_ sender: AnyObject) {
         delegate?.setONOFFDimmer(index, turnOff: true)
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 
-    @IBAction func changeValue(sender: UISlider) {
+    @IBAction func changeValue(_ sender: UISlider) {
         delegate?.valueChanged(sender)
     }
     
-    @IBAction func end(sender: UISlider) {
+    @IBAction func end(_ sender: UISlider) {
         delegate?.endValueChanged(sender)
     }
     
 }
 
 extension UIViewController {
-    func showBigSlider(device: Device, index:Int) -> BigSliderXIB {
+    func showBigSlider(_ device: Device, index:Int) -> BigSliderXIB {
         let vc = BigSliderXIB(device: device, index: index)
-        self.presentViewController(vc, animated: true, completion: nil)
+        self.present(vc, animated: true, completion: nil)
         return vc
     }
 }

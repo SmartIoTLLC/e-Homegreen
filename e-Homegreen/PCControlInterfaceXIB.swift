@@ -10,47 +10,47 @@ import UIKit
 //import wol.h
 
 enum FileType{
-    case Video
-    case App
+    case video
+    case app
     
     var description:String{
         switch self {
-        case Video: return "Media"
-        case App: return "Application"
+        case .video: return "Media"
+        case .app: return "Application"
         }
     }
 }
 
 enum PlayVideoWith: Byte{
-    case WindowsMediaPlayer = 0x01
-    case WindowsMediaCenter = 0x02
+    case windowsMediaPlayer = 0x01
+    case windowsMediaCenter = 0x02
 }
 
 enum CommandsForPCControll: Byte {
-    case ShutDown = 0x01
-    case Restart = 0x02
-    case Sleep = 0x03
-    case Hibernate = 0x04
-    case LogOff = 0x05
+    case shutDown = 0x01
+    case restart = 0x02
+    case sleep = 0x03
+    case hibernate = 0x04
+    case logOff = 0x05
 }
 
 enum PowerOption: Byte{
-    case ShutDown = 0x01
-    case Restart = 0x02
-    case Sleep = 0x03
-    case Hibernate = 0x04
-    case LogOff = 0x05
+    case shutDown = 0x01
+    case restart = 0x02
+    case sleep = 0x03
+    case hibernate = 0x04
+    case logOff = 0x05
     
     var description:String{
         switch self{
-        case ShutDown: return "Shut Down"
-        case Restart: return "Restart"
-        case Sleep: return "Sleep"
-        case Hibernate: return "Hibernate"
-        case LogOff: return "LogOff"
+        case .shutDown: return "Shut Down"
+        case .restart: return "Restart"
+        case .sleep: return "Sleep"
+        case .hibernate: return "Hibernate"
+        case .logOff: return "LogOff"
         }
     }
-    static let allValues = [ShutDown, Restart, Sleep, Hibernate, LogOff]
+    static let allValues = [shutDown, restart, sleep, hibernate, logOff]
 }
 
 class PCControlInterfaceXIB: PopoverVC {
@@ -92,7 +92,7 @@ class PCControlInterfaceXIB: PopoverVC {
         socketIO = InOutSocket(port: 5000)
         super.init(nibName: "PCControlInterfaceXIB", bundle: nil)
         transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
+        modalPresentationStyle = UIModalPresentationStyle.custom
 
     }
     
@@ -113,26 +113,26 @@ class PCControlInterfaceXIB: PopoverVC {
         }
 
         commandTextField.attributedPlaceholder = NSAttributedString(string:"Enter Command",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
         commandTextField.delegate = self
         
         titleLabel.text = pc.name
         
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(PCControlInterfaceXIB.dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PCControlInterfaceXIB.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PCControlInterfaceXIB.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(PCControlInterfaceXIB.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(PCControlInterfaceXIB.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         refreshLists()
     }
     
-    override func nameAndId(name: String, id: String) {
+    override func nameAndId(_ name: String, id: String) {
         if button.tag == 1{
             powerLabel.text = name
         }
@@ -154,10 +154,10 @@ class PCControlInterfaceXIB: PopoverVC {
         if let list = pc.pcCommands {
             if let commandArray = Array(list) as? [PCCommand] {
                 for item in commandArray{
-                    if item.commandType == CommandType.Application.rawValue {
+                    if Int(item.commandType!) == CommandType.application.rawValue {
                         runCommandList.append(PopOverItem(name: item.name!, id: item.comand!))
                     }
-                    if item.commandType == CommandType.Media.rawValue {
+                    if Int(item.commandType!) == CommandType.media.rawValue {
                         playCommandList.append(PopOverItem(name: item.name!, id: item.comand!))
                     }
                 }
@@ -175,25 +175,25 @@ class PCControlInterfaceXIB: PopoverVC {
     }
     
     func dismissViewController () {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func powerAction(sender: AnyObject) {
+    @IBAction func powerAction(_ sender: AnyObject) {
         if let text = powerLabel.text{
             switch text{
-            case PowerOption.ShutDown.description:
+            case PowerOption.shutDown.description:
                 
                 break
-            case PowerOption.Restart.description:
+            case PowerOption.restart.description:
                 
                 break
-            case PowerOption.Sleep.description:
+            case PowerOption.sleep.description:
                 
                 break
-            case PowerOption.Hibernate.description:
+            case PowerOption.hibernate.description:
                 
                 break
-            case PowerOption.LogOff.description:
+            case PowerOption.logOff.description:
                 
                 break
             default: print("")
@@ -202,23 +202,23 @@ class PCControlInterfaceXIB: PopoverVC {
         }
     }
     
-    @IBAction func playAction(sender: AnyObject) {
-        guard let videoName = playLabel.text where videoName != "-", let path =  pathForVideo  else {
+    @IBAction func playAction(_ sender: AnyObject) {
+        guard let videoName = playLabel.text , videoName != "-", let path =  pathForVideo  else {
             return
         }
-        if fullScreenSwitch.on {
+        if fullScreenSwitch.isOn {
             fullScreenByte = 0x00
         }else{
             fullScreenByte = 0x01
         }
-        SendingHandler.sendCommand(byteArray: OutgoingHandler.playVideo(pc.moduleAddress, fileName: path, fullScreen: fullScreenByte, by: PlayVideoWith.WindowsMediaPlayer.rawValue), gateway: pc.gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.playVideo(pc.moduleAddress, fileName: path, fullScreen: fullScreenByte, by: PlayVideoWith.windowsMediaPlayer.rawValue), gateway: pc.gateway)
     }
 
-    @IBAction func runAction(sender: AnyObject) {
-        guard let appName = runLabel.text where appName != "-", let command =  runCommand  else {
+    @IBAction func runAction(_ sender: AnyObject) {
+        guard let appName = runLabel.text , appName != "-", let command =  runCommand  else {
             return
         }
-        if runSwitch.on {
+        if runSwitch.isOn {
             fullScreenByte = 0x00
         }else{
             fullScreenByte = 0x01
@@ -228,59 +228,59 @@ class PCControlInterfaceXIB: PopoverVC {
     
     var socketIO:InOutSocket
     
-    @IBAction func sendAction(sender: AnyObject) {
+    @IBAction func sendAction(_ sender: AnyObject) {
         guard let text = commandTextField.text else {
             return
         }
         
-        SendingHandler.sendCommand(byteArray: OutgoingHandler.sendNotificationToPC(pc.moduleAddress, text: text, notificationType: NotificationType(rawValue: Int((pc.notificationType?.intValue)!))!, notificationPosition: NotificationPosition(rawValue: Int((pc.notificationPosition?.intValue)!))!, delayTime: Int((pc.notificationDelay?.intValue)!), displayTime: Int((pc.notificationDisplayTime?.intValue)!)), gateway: pc.gateway)
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.sendNotificationToPC(pc.moduleAddress, text: text, notificationType: NotificationType(rawValue: Int((pc.notificationType?.int32Value)!))!, notificationPosition: NotificationPosition(rawValue: Int((pc.notificationPosition?.int32Value)!))!, delayTime: Int((pc.notificationDelay?.int32Value)!), displayTime: Int((pc.notificationDisplayTime?.int32Value)!)), gateway: pc.gateway)
     }
     
-    @IBAction func addPathForVideo(sender: AnyObject) {        
-        if let navVC = UIStoryboard(name: "PCControl", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ListViewController") as? UINavigationController{
+    @IBAction func addPathForVideo(_ sender: AnyObject) {        
+        if let navVC = UIStoryboard(name: "PCControl", bundle: Bundle.main).instantiateViewController(withIdentifier: "ListViewController") as? UINavigationController{
             if let vc = navVC.topViewController as? ListOfDevice_AppViewController{
-                vc.typeOfFile = .Video
+                vc.typeOfFile = .video
                 vc.device = pc
-                self.presentViewController(navVC, animated: true, completion: nil)
+                self.present(navVC, animated: true, completion: nil)
             }
         }
     }
     
-    @IBAction func addPathForRunApp(sender: AnyObject) {
-        if let navVC = UIStoryboard(name: "PCControl", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("ListViewController") as? UINavigationController{
+    @IBAction func addPathForRunApp(_ sender: AnyObject) {
+        if let navVC = UIStoryboard(name: "PCControl", bundle: Bundle.main).instantiateViewController(withIdentifier: "ListViewController") as? UINavigationController{
             if let vc = navVC.topViewController as? ListOfDevice_AppViewController{
-                vc.typeOfFile = .App
+                vc.typeOfFile = .app
                 vc.device = pc
-                self.presentViewController(navVC, animated: true, completion: nil)
+                self.present(navVC, animated: true, completion: nil)
             }
         }
     }
     
-    @IBAction func powerOption(sender: UIButton) {
+    @IBAction func powerOption(_ sender: UIButton) {
         button = sender
         openPopover(sender, popOverList:powerCommandList)
 
     }
     
-    @IBAction func playOption(sender: UIButton) {
+    @IBAction func playOption(_ sender: UIButton) {
         button = sender
         openPopoverWithTwoRows(sender, popOverList: playCommandList)
     }
     
-    @IBAction func runOption(sender: UIButton) {
+    @IBAction func runOption(_ sender: UIButton) {
         button = sender
         openPopoverWithTwoRows(sender, popOverList:runCommandList)
     }
     
-    @IBAction func voiceCommand(sender: AnyObject) {
+    @IBAction func voiceCommand(_ sender: AnyObject) {
         print("Send voice command!")
     }
     
-    func keyboardWillShow(notification: NSNotification) {
-        var info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+    func keyboardWillShow(_ notification: Notification) {
+        var info = (notification as NSNotification).userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
-        if commandTextField.isFirstResponder(){
+        if commandTextField.isFirstResponder{
             if backView.frame.origin.y + commandTextField.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centerX.constant = 0 - (5 + (self.backView.frame.origin.y + self.commandTextField.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height)))
@@ -288,19 +288,19 @@ class PCControlInterfaceXIB: PopoverVC {
             }
         }
         
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
         
     }
     
-    func keyboardWillHide(notification: NSNotification) {
+    func keyboardWillHide(_ notification: Notification) {
         self.centerX.constant = 0
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
 }
 
 extension PCControlInterfaceXIB : UITextFieldDelegate {
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
@@ -308,9 +308,9 @@ extension PCControlInterfaceXIB : UITextFieldDelegate {
 
 extension PCControlInterfaceXIB : UIGestureRecognizerDelegate {
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if let touchView = touch.view{
-            if touchView.isDescendantOfView(backView){
+            if touchView.isDescendant(of: backView){
                 self.view.endEditing(true)
                 return false
             }
@@ -322,39 +322,39 @@ extension PCControlInterfaceXIB : UIGestureRecognizerDelegate {
 
 extension PCControlInterfaceXIB : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5 //Add your own duration here
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         //Add presentation and dismiss animation transition here.
         if isPresenting == true{
             isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
+            let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
+            let containerView = transitionContext.containerView
             
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
             //        presentedControllerView.center.y -= containerView.bounds.size.height
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.5, 1.5)
+            presentedControllerView.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
             containerView.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 //            presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
             //            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 //                presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -365,11 +365,11 @@ extension PCControlInterfaceXIB : UIViewControllerAnimatedTransitioning {
 
 extension PCControlInterfaceXIB : UIViewControllerTransitioningDelegate {
     
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if dismissed == self {
             return self
         }
@@ -381,8 +381,8 @@ extension PCControlInterfaceXIB : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showPCInterface(pc:Device) {
+    func showPCInterface(_ pc:Device) {
         let pci = PCControlInterfaceXIB(pc:pc)
-        self.presentViewController(pci, animated: true, completion: nil)
+        self.present(pci, animated: true, completion: nil)
     }
 }

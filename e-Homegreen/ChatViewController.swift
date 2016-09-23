@@ -30,7 +30,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
-    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
     var scrollView = FilterPullDown()
     
@@ -54,14 +54,14 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UIView.hr_setToastThemeColor(color: UIColor.redColor())
+        UIView.hr_setToastThemeColor(color: UIColor.red)
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         
         chatTextView.delegate = self
         chatTextView.layer.borderWidth = 1
         chatTextView.layer.cornerRadius = 5
-        chatTextView.layer.borderColor = UIColor.lightGrayColor().CGColor
+        chatTextView.layer.borderColor = UIColor.lightGray.cgColor
         
         scrollView.filterDelegate = self
         view.addSubview(scrollView)
@@ -73,8 +73,8 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         self.navigationItem.titleView = headerTitleSubtitleView
         headerTitleSubtitleView.setTitleAndSubtitle("Chat", subtitle: "All All All")
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
 
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
         adjustScrollInsetsPullDownViewAndBackgroudImage()
@@ -83,11 +83,11 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
-        scrollView.setFilterItem(Menu.Chat)
+        scrollView.setFilterItem(Menu.chat)
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         
         if self.revealViewController() != nil {
@@ -95,7 +95,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             revealViewController().toggleAnimationDuration = 0.5
-            if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
+            if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
                 revealViewController().rearViewRevealWidth = 200
             }else{
                 revealViewController().rearViewRevealWidth = 200
@@ -109,7 +109,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         changeFullScreeenImage()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
         refreshLocalParametars()
@@ -122,7 +122,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
             scrollView.setContentOffset(bottomOffset, animated: false)
         }
         scrollView.bottom.constant = -(self.view.frame.height - 2)
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+        if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
             headerTitleSubtitleView.setLandscapeTitle()
         }else{
             headerTitleSubtitleView.setPortraitTitle()
@@ -130,36 +130,36 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         
     }
     
-    override func nameAndId(name : String, id:String){
+    override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
     }
     
-    func updateSubtitle(location: String, level: String, zone: String){
+    func updateSubtitle(_ location: String, level: String, zone: String){
         headerTitleSubtitleView.setTitleAndSubtitle("Chat", subtitle: location + " " + level + " " + zone)
     }
     
-    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-            scrollView.setDefaultFilterItem(Menu.Chat)
+            scrollView.setDefaultFilterItem(Menu.chat)
         }
     }
     
     func updateConstraints() {
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0.0))
     }
     
-    @IBAction func fullScreen(sender: UIButton) {
+    @IBAction func fullScreen(_ sender: UIButton) {
         sender.collapseInReturnToNormal(1)
-        if UIApplication.sharedApplication().statusBarHidden {
-            UIApplication.sharedApplication().statusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        if UIApplication.shared.isStatusBarHidden {
+            UIApplication.shared.isStatusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
         } else {
-            UIApplication.sharedApplication().statusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            UIApplication.shared.isStatusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
             if scrollView.contentOffset.y != 0 {
                 let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
                 scrollView.setContentOffset(bottomOffset, animated: false)
@@ -168,10 +168,10 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     }
     
     func changeFullScreeenImage(){
-        if UIApplication.sharedApplication().statusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        if UIApplication.shared.isStatusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
         } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
         }
     }
     
@@ -181,25 +181,25 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     }
     
     func addObservers() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatViewController.refreshLocalParametars), name: NotificationKey.RefreshFilter, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.refreshLocalParametars), name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
     }
     
     func removeObservers() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshFilter, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         removeObservers()
         stopTextToSpeech()
     }
     
-    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         adjustScrollInsetsPullDownViewAndBackgroudImage()
     }
     
     func adjustScrollInsetsPullDownViewAndBackgroudImage() {
 
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+        if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
             layout = "Landscape"
         }else{
             layout = "Portrait"
@@ -207,66 +207,66 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         chatTableView.reloadData()
     }
     
-    @IBAction func controlValleryVOice(sender: AnyObject) {
+    @IBAction func controlValleryVOice(_ sender: AnyObject) {
         stopTextToSpeech()
         if isValeryVoiceOn {
-            controlValleryVoice.setImage(UIImage(named: "mute"), forState: .Normal)
+            controlValleryVoice.setImage(UIImage(named: "mute"), for: UIControlState())
             isValeryVoiceOn = false
         } else {
-            controlValleryVoice.setImage(UIImage(named: "unmute"), forState: .Normal)
+            controlValleryVoice.setImage(UIImage(named: "unmute"), for: UIControlState())
             isValeryVoiceOn = true
         }
     }
     
-    func textToSpeech(text:String) {
+    func textToSpeech(_ text:String) {
         let utterance = AVSpeechUtterance(string: text)
-        synth.speakUtterance(utterance)
+        synth.speak(utterance)
     }
     
     func stopTextToSpeech() {
-        synth.stopSpeakingAtBoundary(.Word)
+        synth.stopSpeaking(at: .word)
     }
     
-    func searchForTermInString (text:String, searchTerm:String) {
-        let string:NSString = text.lowercaseString
-        let searchTerm = searchTerm.lowercaseString
-        let trimmedString = string.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+    func searchForTermInString (_ text:String, searchTerm:String) {
+        let string:NSString = text.lowercased() as NSString
+        let searchTerm = searchTerm.lowercased()
+        let trimmedString = string.trimmingCharacters(in: CharacterSet.whitespaces)
         print(string)
         print(trimmedString)
-        let range = string.rangeOfString(searchTerm)
-        print(string.componentsSeparatedByString(searchTerm).count-1)
-        if string.rangeOfString(searchTerm).location != NSNotFound {
+        let range = string.range(of: searchTerm)
+        print(string.components(separatedBy: searchTerm).count-1)
+        if string.range(of: searchTerm).location != NSNotFound {
             print("exists")
             print(range.location)
             print(range.location+range.length-1)
         }
     }
     
-    @IBAction func sendBtnAction(sender: AnyObject) {
+    @IBAction func sendBtnAction(_ sender: AnyObject) {
         if  chatTextView.text != ""{
             stopTextToSpeech()
-            chatList.append(ChatItem(text: chatTextView.text!, type: .Mine))
+            chatList.append(ChatItem(text: chatTextView.text!, type: .mine))
             calculateHeight()
             chatTableView.reloadData()
-            findCommand((chatTextView.text?.lowercaseString)!)
+            findCommand((chatTextView.text?.lowercased())!)
             chatTextView.text = ""
             chatTextView.resignFirstResponder()
         }
     }
     
-    func refreshChatListWithAnswer (text: String, isValeryVoiceOn:Bool) {
-        self.chatList.append(ChatItem(text: text, type: .Opponent))
+    func refreshChatListWithAnswer (_ text: String, isValeryVoiceOn:Bool) {
+        self.chatList.append(ChatItem(text: text, type: .opponent))
         self.calculateHeight()
         self.chatTableView.reloadData()
         if isValeryVoiceOn {
             self.textToSpeech(text)
         }
         if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
-            self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: true)
+            self.chatTableView.setContentOffset(CGPoint(x: 0, y: self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: true)
         }
     }
     
-    func choosedDevice(object: AnyObject, message:String) {
+    func choosedDevice(_ object: AnyObject, message:String) {
         let handler = ChatHandler()
         if let device = object as? Device {
             let command = handler.getCommand(message)
@@ -287,7 +287,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         }
     }
     
-    func setCommand(command:ChatCommand, object:AnyObject) {
+    func setCommand(_ command:ChatCommand, object:AnyObject) {
         //   Set scene
         if command == .SetScene {
             if let scene = object as? Scene {
@@ -330,7 +330,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         }
     }
     
-    func commandWasSent(command:ChatCommand, deviceType:String) -> String {
+    func commandWasSent(_ command:ChatCommand, deviceType:String) -> String {
         var array = ["Command was sent...", "Your wish is my command.", "As you wish.", "I'll do it.", "It is done.", "Whatever you want.", "Consider it done."]
         switch command {
         case .TurnOnDevice:
@@ -368,7 +368,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         return "\u{1f601}"
     }
     
-    func sendCommand(command:ChatCommand, forDevice device:Device, withDimming dimValue:Int) {
+    func sendCommand(_ command:ChatCommand, forDevice device:Device, withDimming dimValue:Int) {
         if command == .TurnOnDevice {
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
             if device.controlType == ControlType.Dimmer {
@@ -414,7 +414,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         }
     }
     
-    func findCommand(message:String) {
+    func findCommand(_ message:String) {
         let helper = ChatHandler()
         let command = helper.getCommand(message) // treba
         let typeOfControl = helper.getTypeOfControl(command)
@@ -464,43 +464,43 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
             } else if command == .TellMeJoke {
                 let joke = TellMeAJokeHandler()
                 joke.getJokeCompletion({ (result) -> Void in
-                    dispatch_async(dispatch_get_main_queue(),{
+                    DispatchQueue.main.async(execute: {
                         self.refreshChatListWithAnswer(result, isValeryVoiceOn:self.isValeryVoiceOn)
                     })
                 })
             } else if command == .CurrentTime {
-                dispatch_async(dispatch_get_main_queue(),{
-                    let date = NSDate()
-                    let formatter = NSDateFormatter()
-                    formatter.timeZone = NSTimeZone.localTimeZone()
+                DispatchQueue.main.async(execute: {
+                    let date = Date()
+                    let formatter = DateFormatter()
+                    formatter.timeZone = TimeZone.autoupdatingCurrent
                     formatter.dateFormat = "HH:mm:ss"
-                    self.refreshChatListWithAnswer("It is \(formatter.stringFromDate(date))", isValeryVoiceOn:self.isValeryVoiceOn)
+                    self.refreshChatListWithAnswer("It is \(formatter.string(from: date))", isValeryVoiceOn:self.isValeryVoiceOn)
                 })
             } else if command == .HowAreYou {
-                dispatch_async(dispatch_get_main_queue(),{
+                DispatchQueue.main.async(execute: {
                     self.refreshChatListWithAnswer(self.answerOnHowAreYou(), isValeryVoiceOn:self.isValeryVoiceOn)
                 })
             } else if command == .ILoveYou {
-                dispatch_async(dispatch_get_main_queue(),{
+                DispatchQueue.main.async(execute: {
                     self.refreshChatListWithAnswer(self.answerOnILoveYou(), isValeryVoiceOn:self.isValeryVoiceOn)
                 })
             } else if command == .BestDeveloper {
-                dispatch_async(dispatch_get_main_queue(),{
+                DispatchQueue.main.async(execute: {
                     self.refreshChatListWithAnswer("One whose work you don't notice!", isValeryVoiceOn:self.isValeryVoiceOn)
                 })
             } else if command == .ListAllCommands {
                 var answer = "These are all commands:\n"
                 for command in helper.CHAT_COMMANDS.keys {
-                    answer = answer + "\(command) for \(helper.CHAT_COMMANDS[command]!.rawValue.lowercaseString)\n"
+                    answer = answer + "\(command) for \(helper.CHAT_COMMANDS[command]!.rawValue.lowercased())\n"
                 }
-                dispatch_async(dispatch_get_main_queue(),{
+                DispatchQueue.main.async(execute: {
                     self.refreshChatListWithAnswer(answer, isValeryVoiceOn:self.isValeryVoiceOn)
                 })
             } else if command == .SetLocation {
                 let location = helper.getLocation(message)
                 if location != "" {
                     LocalSearchParametar.setLocalParametar("Chat", parametar: [location, "All", "All", "All", "All", "All", "All"])
-                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: nil)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
                     refreshChatListWithAnswer("Location was set.", isValeryVoiceOn: isValeryVoiceOn)
                 } else {
                     refreshChatListWithAnswer("There is no known location with that name.", isValeryVoiceOn: isValeryVoiceOn)
@@ -508,7 +508,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
             } else if command == .SetLevel {
                 if let zone = helper.getZone(message, isLevel: true) {
                     LocalSearchParametar.setLocalParametar("Chat", parametar: [zone.location!.name!, "\(zone.id)", "All", "All", "\(zone.name)", "All", "All"])
-                    NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: nil)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
                     refreshChatListWithAnswer("Level was set.", isValeryVoiceOn: isValeryVoiceOn)
                 } else {
                     refreshChatListWithAnswer("You haven't set which level to set.", isValeryVoiceOn: isValeryVoiceOn)
@@ -517,7 +517,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
                 if let zone = helper.getZone(message, isLevel: false) {
                     if let level = DatabaseHandler.sharedInstance.returnLevelWithId(Int(zone.level!), location: zone.location!) {
                     LocalSearchParametar.setLocalParametar("Chat", parametar: [zone.location!.name!, "\(level.id)", "\(zone.id)", "All","\(level.name)", "\(zone.name)", "All"])
-                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshFilter, object: nil)
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
                         refreshChatListWithAnswer("Zone was set.", isValeryVoiceOn: isValeryVoiceOn)
                     } else {
                         refreshChatListWithAnswer("I'm embarrassed... Couldn't find level for zone...", isValeryVoiceOn: isValeryVoiceOn)
@@ -648,7 +648,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
                             let devices = helper.returnAllSequences(filterParametar, onlyZoneName: "")
                             if devices.count != 0 {
                                 var answer = "These are all sequences in \(zone):\n"
-                                for (index, device) in devices.enumerate() {
+                                for (index, device) in devices.enumerated() {
                                     print(index)
                                     answer = answer + "\(device.sequenceName)\n"
                                 }
@@ -682,11 +682,11 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
                 let answ = AnswersHandler()
                 answ.getAnswerComplition(chatTextView.text!, completion: { (result) -> Void in
                     if result != ""{
-                        dispatch_async(dispatch_get_main_queue(),{
+                        DispatchQueue.main.async(execute: {
                             self.refreshChatListWithAnswer(result, isValeryVoiceOn:self.isValeryVoiceOn)
                         })
                     }else{
-                        dispatch_async(dispatch_get_main_queue(),{
+                        DispatchQueue.main.async(execute: {
                             self.refreshChatListWithAnswer(self.questionNotUnderstandable(), isValeryVoiceOn:self.isValeryVoiceOn)
                         })
                     }
@@ -742,42 +742,42 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     func calculateHeight(){
         rowHeight = []
         for item in chatList{
-            let chatBubbleDataMine = ChatBubbleData(text: item.text, image: nil, date: NSDate(), type: item.type)
+            let chatBubbleDataMine = ChatBubbleData(text: item.text, image: nil, date: Date(), type: item.type)
             let chatBubbleMine = ChatBubble(data: chatBubbleDataMine, startY: 5, orientation: layout)
-            rowHeight.append(CGRectGetMaxY(chatBubbleMine.frame))
+            rowHeight.append(chatBubbleMine.frame.maxY)
         }
     }
     
-    func keyboardWillShow(notification: NSNotification) {
-        var info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-        let duration:NSTimeInterval = (info[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+    func keyboardWillShow(_ notification: Notification) {
+        var info = (notification as NSNotification).userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let duration:TimeInterval = (info[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
         self.bottomConstraint.constant = keyboardFrame.size.height
-        UIView.animateWithDuration(duration,
+        UIView.animate(withDuration: duration,
             delay: 0,
-            options: UIViewAnimationOptions.CurveLinear,
+            options: UIViewAnimationOptions.curveLinear,
             animations: { self.view.layoutIfNeeded() },
             completion: nil)
         if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
-            self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: true)
+            self.chatTableView.setContentOffset(CGPoint(x: 0, y: self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: true)
         }
         
     }
     
-    func keyboardWillHide(notification: NSNotification) {
-        var info = notification.userInfo!
-        let duration:NSTimeInterval = (info[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+    func keyboardWillHide(_ notification: Notification) {
+        var info = (notification as NSNotification).userInfo!
+        let duration:TimeInterval = (info[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
         self.bottomConstraint.constant = 0
         if chatTextView.text.isEmpty{
             viewHeight.constant = 49
         }
-        UIView.animateWithDuration(duration,
+        UIView.animate(withDuration: duration,
             delay: 0,
-            options: UIViewAnimationOptions.CurveLinear,
+            options: UIViewAnimationOptions.curveLinear,
             animations: { self.view.layoutIfNeeded() },
             completion: nil)
         if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
-            self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: false)
+            self.chatTableView.setContentOffset(CGPoint(x: 0, y: self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: false)
         }
     }
     
@@ -785,11 +785,11 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
 
 // Parametar from filter and relaod data
 extension ChatViewController: FilterPullDownDelegate{
-    func filterParametars(filterItem: FilterItem){
+    func filterParametars(_ filterItem: FilterItem){
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Chat)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Chat)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.chat)
         chatTableView.reloadData()
     }
     
@@ -799,30 +799,30 @@ extension ChatViewController: FilterPullDownDelegate{
 }
 
 extension ChatViewController: SWRevealViewControllerDelegate{
-    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            chatTextView.userInteractionEnabled = true
-            chatTableView.userInteractionEnabled = true
+    func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
+        if(position == FrontViewPosition.left) {
+            chatTextView.isUserInteractionEnabled = true
+            chatTableView.isUserInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
             self.view.endEditing(true)
-            chatTextView.userInteractionEnabled = false
-            chatTableView.userInteractionEnabled = false
+            chatTextView.isUserInteractionEnabled = false
+            chatTableView.isUserInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }
     
-    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            chatTextView.userInteractionEnabled = true
-            chatTableView.userInteractionEnabled = true
+    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
+        if(position == FrontViewPosition.left) {
+            chatTextView.isUserInteractionEnabled = true
+            chatTableView.isUserInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
             self.view.endEditing(true)
             let tap = UITapGestureRecognizer(target: self, action: #selector(ChatViewController.closeSideMenu))
             self.view.addGestureRecognizer(tap)
-            chatTextView.userInteractionEnabled = false
-            chatTableView.userInteractionEnabled = false
+            chatTextView.isUserInteractionEnabled = false
+            chatTableView.isUserInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }
@@ -830,14 +830,14 @@ extension ChatViewController: SWRevealViewControllerDelegate{
     func closeSideMenu(){
         
         if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggleAnimated(true)
+            self.revealViewController().revealToggle(animated: true)
         }
         
     }
 }
 
 extension ChatViewController: UITextViewDelegate{
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n"{
             textView.resignFirstResponder()
             return false
@@ -845,18 +845,18 @@ extension ChatViewController: UITextViewDelegate{
         return true
     }
     
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         
         let fixedWidth = textView.frame.size.width
-        textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
-        let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
+        textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+        let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
         var newFrame = textView.frame
         newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
         if newFrame.size.height + 60 < 150{
             textView.frame = newFrame
             viewHeight.constant = textView.frame.size.height + 16
             if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
-                self.chatTableView.setContentOffset(CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: false)
+                self.chatTableView.setContentOffset(CGPoint(x: 0, y: self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: false)
             }
         }
         
@@ -868,44 +868,44 @@ extension ChatViewController: UITableViewDelegate {
 }
 
 extension ChatViewController: UITableViewDataSource {
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
-        let chatBubbleDataMine = ChatBubbleData(text: chatList[indexPath.row].text, image: nil, date: NSDate(), type: chatList[indexPath.row].type)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
+        let chatBubbleDataMine = ChatBubbleData(text: chatList[(indexPath as NSIndexPath).row].text, image: nil, date: Date(), type: chatList[(indexPath as NSIndexPath).row].type)
         let chatBubbleMine = ChatBubble(data: chatBubbleDataMine, startY: 5, orientation: layout)
-        chatBubbleMine.tag = indexPath.row
+        chatBubbleMine.tag = (indexPath as NSIndexPath).row
         let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ChatViewController.oneTap(_:)))
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ChatViewController.longPress(_:)))
         longPress.minimumPressDuration = 1.0
         chatBubbleMine.addGestureRecognizer(tap)
         chatBubbleMine.addGestureRecognizer(longPress)
-        cell.backgroundColor = UIColor.clearColor()
+        cell.backgroundColor = UIColor.clear
         cell.contentView.addSubview(chatBubbleMine)
         return cell
     }
-    func oneTap (gesture:UIGestureRecognizer) {
+    func oneTap (_ gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
             self.chatTextView.text = chatList[tag].text
         }
     }
-    func longPress (gesture:UIGestureRecognizer) {
+    func longPress (_ gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
-            if gesture.state == UIGestureRecognizerState.Began {
-                chatList.append(ChatItem(text: chatList[tag].text, type: .Mine))
+            if gesture.state == UIGestureRecognizerState.began {
+                chatList.append(ChatItem(text: chatList[tag].text, type: .mine))
                 calculateHeight()
                 chatTableView.reloadData()
-                findCommand(chatList[tag].text.lowercaseString)
+                findCommand(chatList[tag].text.lowercased())
             }
         }
     }
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return rowHeight[indexPath.row]
+    @objc(tableView:heightForRowAtIndexPath:) func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return rowHeight[(indexPath as NSIndexPath).row]
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return chatList.count
     }
     
-    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+    @objc(tableView:willSelectRowAtIndexPath:) func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if(sidebarMenuOpen == true){
             return nil
         } else {

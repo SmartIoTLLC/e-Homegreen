@@ -8,35 +8,36 @@
 
 import UIKit
 
-class TellMeAJokeHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
+class TellMeAJokeHandler: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
     
-    func getJokeCompletion(completion:(result:String) -> Void){
+    func getJokeCompletion(_ completion:@escaping (_ result:String) -> Void){
         
-        let url = NSURL(string: "http://api.icndb.com/jokes/random")!
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "GET"
+        let url = URL(string: "http://api.icndb.com/jokes/random")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
         
-        let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        let session = NSURLSession(configuration: configuration, delegate: self, delegateQueue: NSOperationQueue())
+        let configuration = URLSessionConfiguration.default
+        let session = URLSession(configuration: configuration, delegate: self, delegateQueue: OperationQueue())
         
-        let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
+        let task = session.dataTask(with: request) { (data, response, error) in
             if error == nil{
                 do {
-                    let json = try NSJSONSerialization.JSONObjectWithData(data!, options:NSJSONReadingOptions.MutableContainers ) as! NSDictionary
+                    let json = try JSONSerialization.jsonObject(with: data!, options:JSONSerialization.ReadingOptions.mutableContainers ) as! NSDictionary
                     print(json)
                     if let value = json["value"] as? NSDictionary{
                         if let joke = value["joke"] as? String{
-                            completion(result: joke)
+                            completion(joke)
                         }
                     }
                 } catch _ {
-                    completion(result: "Something went wrong!!!")
+                    completion("Something went wrong!!!")
                 }
                 
             }else{
-                completion(result: "Something went wrong!!!")
+                completion("Something went wrong!!!")
             }
         }
+         
         task.resume()
     }
     

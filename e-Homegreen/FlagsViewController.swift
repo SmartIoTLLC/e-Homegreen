@@ -19,11 +19,11 @@ class FlagsViewController: PopoverVC {
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
     
-    private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-    private let reuseIdentifier = "FlagsCell"
+    fileprivate var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+    fileprivate let reuseIdentifier = "FlagsCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
-    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
     @IBOutlet weak var flagsCollectionView: UICollectionView!
     
@@ -32,9 +32,9 @@ class FlagsViewController: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UIView.hr_setToastThemeColor(color: UIColor.redColor())
+        UIView.hr_setToastThemeColor(color: UIColor.red)
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         
         scrollView.filterDelegate = self
         view.addSubview(scrollView)
@@ -48,10 +48,10 @@ class FlagsViewController: PopoverVC {
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
-        scrollView.setFilterItem(Menu.Flags)
+        scrollView.setFilterItem(Menu.flags)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         
         if self.revealViewController() != nil {
@@ -59,7 +59,7 @@ class FlagsViewController: PopoverVC {
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             revealViewController().toggleAnimationDuration = 0.5
-            if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
+            if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
                 revealViewController().rearViewRevealWidth = 200
             }else{
                 revealViewController().rearViewRevealWidth = 200
@@ -75,7 +75,7 @@ class FlagsViewController: PopoverVC {
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
     }
@@ -86,7 +86,7 @@ class FlagsViewController: PopoverVC {
             scrollView.setContentOffset(bottomOffset, animated: false)
         }
         scrollView.bottom.constant = -(self.view.frame.height - 2)
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+        if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
             headerTitleSubtitleView.setLandscapeTitle()
         }else{
             headerTitleSubtitleView.setPortraitTitle()
@@ -98,22 +98,22 @@ class FlagsViewController: PopoverVC {
         
     }
     
-    override func nameAndId(name : String, id:String){
+    override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
     }
     
-    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.Began {
-            scrollView.setDefaultFilterItem(Menu.Flags)
+    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
+            scrollView.setDefaultFilterItem(Menu.flags)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
     
     func updateConstraints() {
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0.0))
     }
 
     func reloadFlagsList(){
@@ -121,14 +121,14 @@ class FlagsViewController: PopoverVC {
         flagsCollectionView.reloadData()
     }
     
-    @IBAction func fullScreen(sender: UIButton) {
+    @IBAction func fullScreen(_ sender: UIButton) {
         sender.collapseInReturnToNormal(1)
-        if UIApplication.sharedApplication().statusBarHidden {
-            UIApplication.sharedApplication().statusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        if UIApplication.shared.isStatusBarHidden {
+            UIApplication.shared.isStatusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
         } else {
-            UIApplication.sharedApplication().statusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            UIApplication.shared.isStatusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
             if scrollView.contentOffset.y != 0 {
                 let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
                 scrollView.setContentOffset(bottomOffset, animated: false)
@@ -136,15 +136,15 @@ class FlagsViewController: PopoverVC {
         }
     }
     
-    func updateSubtitle(location: String, level: String, zone: String){
+    func updateSubtitle(_ location: String, level: String, zone: String){
         headerTitleSubtitleView.setTitleAndSubtitle("Flags", subtitle: location + " " + level + " " + zone)
     }
     
     func changeFullScreeenImage(){
-        if UIApplication.sharedApplication().statusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        if UIApplication.shared.isStatusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
         } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
         }
     }
     
@@ -159,24 +159,24 @@ class FlagsViewController: PopoverVC {
 }
 
 extension FlagsViewController: SWRevealViewControllerDelegate {
-    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            flagsCollectionView.userInteractionEnabled = true
+    func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
+        if(position == FrontViewPosition.left) {
+            flagsCollectionView.isUserInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
-            flagsCollectionView.userInteractionEnabled = false
+            flagsCollectionView.isUserInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }
     
-    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            flagsCollectionView.userInteractionEnabled = true
+    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
+        if(position == FrontViewPosition.left) {
+            flagsCollectionView.isUserInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
             let tap = UITapGestureRecognizer(target: self, action: #selector(FlagsViewController.closeSideMenu))
             self.view.addGestureRecognizer(tap)
-            flagsCollectionView.userInteractionEnabled = false
+            flagsCollectionView.isUserInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }
@@ -184,7 +184,7 @@ extension FlagsViewController: SWRevealViewControllerDelegate {
     func closeSideMenu(){
         
         if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggleAnimated(true)
+            self.revealViewController().revealToggle(animated: true)
         }
         
     }
@@ -192,10 +192,10 @@ extension FlagsViewController: SWRevealViewControllerDelegate {
 
 // Parametar from filter and relaod data
 extension FlagsViewController: FilterPullDownDelegate{
-    func filterParametars(filterItem: FilterItem){
+    func filterParametars(_ filterItem: FilterItem){
         filterParametar = filterItem
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Flags)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.flags)
         reloadFlagsList()
     }
     
@@ -205,90 +205,90 @@ extension FlagsViewController: FilterPullDownDelegate{
 }
 
 extension FlagsViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let flagId = Int(flags[indexPath.row].flagId)
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let flagId = Int(flags[(indexPath as NSIndexPath).row].flagId)
             var address:[UInt8] = []
-            if flags[indexPath.row].isBroadcast.boolValue {
+            if flags[(indexPath as NSIndexPath).row].isBroadcast.boolValue {
                 address = [0xFF, 0xFF, 0xFF]
-            } else if flags[indexPath.row].isLocalcast.boolValue {
-                address = [UInt8(Int(flags[indexPath.row].gateway.addressOne)), UInt8(Int(flags[indexPath.row].gateway.addressTwo)), 0xFF]
+            } else if flags[(indexPath as NSIndexPath).row].isLocalcast.boolValue {
+                address = [UInt8(Int(flags[(indexPath as NSIndexPath).row].gateway.addressOne)), UInt8(Int(flags[(indexPath as NSIndexPath).row].gateway.addressTwo)), 0xFF]
             } else {
-                address = [UInt8(Int(flags[indexPath.row].gateway.addressOne)), UInt8(Int(flags[indexPath.row].gateway.addressTwo)), UInt8(Int(flags[indexPath.row].address))]
+                address = [UInt8(Int(flags[(indexPath as NSIndexPath).row].gateway.addressOne)), UInt8(Int(flags[(indexPath as NSIndexPath).row].gateway.addressTwo)), UInt8(Int(flags[(indexPath as NSIndexPath).row].address))]
             }
-            if flags[indexPath.row].setState.boolValue {
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.setFlag(address, id: UInt8(flagId), command: 0x01), gateway: flags[indexPath.row].gateway)
+            if flags[(indexPath as NSIndexPath).row].setState.boolValue {
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setFlag(address, id: UInt8(flagId), command: 0x01), gateway: flags[(indexPath as NSIndexPath).row].gateway)
             } else {
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.setFlag(address, id: UInt8(flagId), command: 0x00), gateway: flags[indexPath.row].gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setFlag(address, id: UInt8(flagId), command: 0x00), gateway: flags[(indexPath as NSIndexPath).row].gateway)
             }
         
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         return collectionViewCellSize
         
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
 }
 
 extension FlagsViewController: UICollectionViewDataSource {
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return flags.count
     }
     
-    func openCellParametar (gestureRecognizer: UILongPressGestureRecognizer){
+    func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer){
         let tag = gestureRecognizer.view!.tag
-        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
             showFlagParametar(flags[tag])
         }
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! FlagCollectionViewCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! FlagCollectionViewCell
 
-        cell.setItem(flags[indexPath.row], filterParametar: filterParametar)
+        cell.setItem(flags[(indexPath as NSIndexPath).row], filterParametar: filterParametar)
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(FlagsViewController.openCellParametar(_:)))
         longPress.minimumPressDuration = 0.5
-        cell.flagTitle.userInteractionEnabled = true
+        cell.flagTitle.isUserInteractionEnabled = true
         cell.flagTitle.addGestureRecognizer(longPress)
         
-        cell.getImagesFrom(flags[indexPath.row])
+        cell.getImagesFrom(flags[(indexPath as NSIndexPath).row])
         let set:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(FlagsViewController.setFlag(_:)))
-        cell.flagImageView.tag = indexPath.row
-        cell.flagImageView.userInteractionEnabled = true
+        cell.flagImageView.tag = (indexPath as NSIndexPath).row
+        cell.flagImageView.isUserInteractionEnabled = true
         cell.flagImageView.addGestureRecognizer(set)
         let tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(FlagsViewController.buttonPressed(_:)))
-        cell.flagButton.tag = indexPath.row
+        cell.flagButton.tag = (indexPath as NSIndexPath).row
         cell.flagButton.addGestureRecognizer(tap)
-        if flags[indexPath.row].setState.boolValue {
-            cell.flagButton.setTitle("Set False", forState: UIControlState.Normal)
+        if flags[(indexPath as NSIndexPath).row].setState.boolValue {
+            cell.flagButton.setTitle("Set False", for: UIControlState())
         } else {
-            cell.flagButton.setTitle("Set True", forState: UIControlState.Normal)
+            cell.flagButton.setTitle("Set True", for: UIControlState())
         }
         
         cell.flagImageView.layer.cornerRadius = 5
         cell.flagImageView.clipsToBounds = true
         
         cell.layer.cornerRadius = 5
-        cell.layer.borderColor = UIColor.grayColor().CGColor
+        cell.layer.borderColor = UIColor.gray.cgColor
         cell.layer.borderWidth = 0.5
         return cell
     }
     
-    func setFlag (gesture:UIGestureRecognizer) {
+    func setFlag (_ gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
             let flagId = Int(flags[tag].flagId)
             var address:[UInt8] = []
@@ -308,7 +308,7 @@ extension FlagsViewController: UICollectionViewDataSource {
         }
     }
     
-    func buttonPressed (gestureRecognizer:UITapGestureRecognizer) {
+    func buttonPressed (_ gestureRecognizer:UITapGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
         let flagId = Int(flags[tag].flagId)
         var address:[UInt8] = []

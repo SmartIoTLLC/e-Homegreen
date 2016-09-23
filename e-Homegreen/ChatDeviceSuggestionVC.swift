@@ -9,7 +9,7 @@
 import UIKit
 
 protocol ChatDeviceDelegate{
-    func choosedDevice(device: AnyObject, message:String)
+    func choosedDevice(_ device: AnyObject, message:String)
 }
 
 
@@ -28,7 +28,7 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ChatDeviceSuggestionVC.handleTap(_:)))
         tapGesture.delegate = self
@@ -41,29 +41,29 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
         
         height.constant = sugestionTableView.contentSize.height
         
-        sugestionTableView.registerNib(UINib(nibName: "VoiceControllerTableViewCell", bundle: nil), forCellReuseIdentifier: "sugestionCell")
+        sugestionTableView.register(UINib(nibName: "VoiceControllerTableViewCell", bundle: nil), forCellReuseIdentifier: "sugestionCell")
 
         // Do any additional setup after loading the view.
     }
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         print(sugestionTableView.contentSize.height)
         height.constant = sugestionTableView.contentSize.height
     }
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(sugestionTableView){
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: sugestionTableView){
             return false
         }
         return true
     }
     
-    func handleTap(gesture:UITapGestureRecognizer){
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func handleTap(_ gesture:UITapGestureRecognizer){
+        self.dismiss(animated: true, completion: nil)
     }
     
     init(){
         super.init(nibName: "ChatDeviceSuggestionVC", bundle: nil)
         transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
+        modalPresentationStyle = UIModalPresentationStyle.custom
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -81,56 +81,56 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
 //        return 80
 //    }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listOfDevice.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("sugestionCell", forIndexPath: indexPath) as! VoiceControllerTableViewCell
-        cell.deviceLbl.text = listOfDevice[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "sugestionCell", for: indexPath) as! VoiceControllerTableViewCell
+        cell.deviceLbl.text = listOfDevice[(indexPath as NSIndexPath).row]
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        delegate?.choosedDevice(objects[indexPath.row], message: message)
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        delegate?.choosedDevice(objects[(indexPath as NSIndexPath).row], message: message)
+        self.dismiss(animated: true, completion: nil)
     }
 
 }
 
 extension ChatDeviceSuggestionVC : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5 //Add your own duration here
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         //Add presentation and dismiss animation transition here.
         if isPresenting == true{
             isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
+            let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
+            let containerView = transitionContext.containerView
             
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.05, 1.05)
+            presentedControllerView.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
             containerView.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
             //            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -143,11 +143,11 @@ extension ChatDeviceSuggestionVC : UIViewControllerAnimatedTransitioning {
 
 extension ChatDeviceSuggestionVC : UIViewControllerTransitioningDelegate {
     
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if dismissed == self {
             return self
         }
@@ -159,7 +159,7 @@ extension ChatDeviceSuggestionVC : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showSuggestion(objects:[AnyObject], message:String) -> ChatDeviceSuggestionVC{
+    func showSuggestion(_ objects:[AnyObject], message:String) -> ChatDeviceSuggestionVC{
         let suggVC = ChatDeviceSuggestionVC()
         suggVC.message = message
         suggVC.objects = objects
@@ -187,13 +187,13 @@ extension UIViewController {
                 suggVC.listOfDevice.append("Event: \(anyObject.eventName) Location: \(anyObject.gateway.name) Address: \(address)")
             }
         }
-        self.presentViewController(suggVC, animated: true, completion: nil)
+        self.present(suggVC, animated: true, completion: nil)
         return suggVC
     }
 }
 extension NSObject {
     
-    func returnThreeCharactersForByte (number:Int) -> String {
+    func returnThreeCharactersForByte (_ number:Int) -> String {
         return String(format: "%03d",number)
     }
 }

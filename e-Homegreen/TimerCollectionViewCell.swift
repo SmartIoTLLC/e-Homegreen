@@ -23,13 +23,13 @@ class TimerCollectionViewCell: UICollectionViewCell {
     var imageTwo:UIImage?
     
     var cellTimer:Timer!
-    var time:NSTimer?
+    var time:Foundation.Timer?
 //    var count:Int = 0
     
-    func setItem(timer:Timer, filterParametar:FilterItem){
+    func setItem(_ timer:Timer, filterParametar:FilterItem){
         cellTimer = timer
         timerTitle.text = getName(timer, filterParametar: filterParametar)
-        if cellTimer.type == "Timer" || cellTimer.type == "Stopwatch/User"{
+        if Int(cellTimer.type) == TimerType.timer.rawValue || Int(cellTimer.type) == TimerType.stopwatch.rawValue{
             let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
             timerCOuntingLabel.text = String(format: "%02d", h) + ":" + String(format: "%02d", m) + ":" + String(format: "%02d", s)
         }else{
@@ -37,19 +37,19 @@ class TimerCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func secondsToHoursMinutesSeconds (seconds : Int) -> (Int, Int, Int) {
+    func secondsToHoursMinutesSeconds (_ seconds : Int) -> (Int, Int, Int) {
         return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
     }
     
     func startTimer(){
-        if cellTimer.type == "Timer"{
+        if Int(cellTimer.type) == TimerType.timer.rawValue{
             time?.invalidate()
-            time = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: #selector(TimerCollectionViewCell.countDown(_:)), userInfo:nil, repeats: true)
+            time = Foundation.Timer.scheduledTimer(timeInterval: 1, target:self, selector: #selector(TimerCollectionViewCell.countDown(_:)), userInfo:nil, repeats: true)
             
         }
-        if cellTimer.type == "Stopwatch/User"{
+        if Int(cellTimer.type) == TimerType.stopwatch.rawValue{
             time?.invalidate()
-            time = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: #selector(TimerCollectionViewCell.countUp(_:)), userInfo:nil, repeats: true)
+            time = Foundation.Timer.scheduledTimer(timeInterval: 1, target:self, selector: #selector(TimerCollectionViewCell.countUp(_:)), userInfo:nil, repeats: true)
             
         }
     }
@@ -58,7 +58,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
         time?.invalidate()
     }
     
-    func countUp(timer:NSTimer){
+    func countUp(_ timer:Foundation.Timer){
         cellTimer.timerCount += 1
         let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
         timerCOuntingLabel.text = String(format: "%02d", h) + ":" + String(format: "%02d", m) + ":" + String(format: "%02d", s)
@@ -68,7 +68,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
         time?.invalidate()
     }
     
-    func countDown(timer:NSTimer){
+    func countDown(_ timer:Foundation.Timer){
         if cellTimer.timerCount > 0{
             cellTimer.timerCount -= 1
             let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
@@ -77,7 +77,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
         
     }
     
-    func getName(timer:Timer, filterParametar:FilterItem) -> String{
+    func getName(_ timer:Timer, filterParametar:FilterItem) -> String{
         var name:String = ""
         if timer.gateway.location.name != filterParametar.location{
             name += timer.gateway.location.name! + " "
@@ -100,7 +100,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
         return name
     }
     
-    func getImagesFrom(timer:Timer) {
+    func getImagesFrom(_ timer:Timer) {
         
         if let id = timer.timerImageOneCustom{
             if let image = DatabaseImageController.shared.getImageById(id){
@@ -160,7 +160,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
     func commandSentChangeImage () {
         timerImageView.image = imageTwo
         setNeedsDisplay()
-        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(TimerCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
+        Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
     }
     
     func changeImageToNormal () {
@@ -168,23 +168,23 @@ class TimerCollectionViewCell: UICollectionViewCell {
         setNeedsDisplay()
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         let path = UIBezierPath(roundedRect: rect,
-                                byRoundingCorners: UIRectCorner.AllCorners,
+                                byRoundingCorners: UIRectCorner.allCorners,
                                 cornerRadii: CGSize(width: 5.0, height: 5.0))
         path.addClip()
         path.lineWidth = 2
-        UIColor.lightGrayColor().setStroke()
+        UIColor.lightGray.setStroke()
         let context = UIGraphicsGetCurrentContext()
-        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).colorWithAlphaComponent(0.95).CGColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).colorWithAlphaComponent(1.0).CGColor]
+        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).withAlphaComponent(0.95).cgColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).withAlphaComponent(1.0).cgColor]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
-        let gradient = CGGradientCreateWithColors(colorSpace,
-                                                  colors,
-                                                  colorLocations)
+        let gradient = CGGradient(colorsSpace: colorSpace,
+                                                  colors: colors as CFArray,
+                                                  locations: colorLocations)
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:0, y:self.bounds.height)
-        CGContextDrawLinearGradient(context!, gradient!, startPoint, endPoint, CGGradientDrawingOptions(rawValue: 0))
+        context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
         path.stroke()
     }
 }

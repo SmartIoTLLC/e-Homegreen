@@ -12,24 +12,24 @@ import CoreData
 class CoreDataController: NSObject {
     var context:NSManagedObjectContext
     static let shahredInstance = CoreDataController()
-    let appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDel = UIApplication.shared.delegate as! AppDelegate
     
     override init() {
-        context = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!
+        context = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext!
     }
     
-    func fetchGatewaysForHost(host:String, port:UInt16) -> [Gateway]{
+    func fetchGatewaysForHost(_ host:String, port:UInt16) -> [Gateway]{
         var gateways: [Gateway] = []
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
-        let predicateOne = NSPredicate(format: "turnedOn == %@", NSNumber(bool: true))
-        let predicateTwo = NSPredicate(format: "remoteIpInUse == %@ AND remotePort == %@", host, NSNumber(unsignedShort: port))
-        let predicateThree = NSPredicate(format: "localIp == %@ AND localPort == %@", host, NSNumber(unsignedShort: port))
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.OrPredicateType, subpredicates: [predicateTwo,predicateThree])
-        fetchRequest.predicate = NSCompoundPredicate(type:NSCompoundPredicateType.AndPredicateType, subpredicates: [predicateOne,compoundPredicate])
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Gateway.fetchRequest()
+        let predicateOne = NSPredicate(format: "turnedOn == %@", NSNumber(value: true as Bool))
+        let predicateTwo = NSPredicate(format: "remoteIpInUse == %@ AND remotePort == %@", host, NSNumber(value: port as UInt16))
+        let predicateThree = NSPredicate(format: "localIp == %@ AND localPort == %@", host, NSNumber(value: port as UInt16))
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.or, subpredicates: [predicateTwo,predicateThree])
+        fetchRequest.predicate = NSCompoundPredicate(type:NSCompoundPredicate.LogicalType.and, subpredicates: [predicateOne,compoundPredicate])
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
         do {
-            if let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]{
+            if let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Gateway]{
                 gateways = fetResults
             }
         } catch let error1 as NSError {
@@ -38,12 +38,12 @@ class CoreDataController: NSObject {
         }
         return gateways
     }
-    func fetchGatewayWithId(id: String) -> Gateway?{
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
+    func fetchGatewayWithId(_ id: String) -> Gateway?{
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Gateway.fetchRequest()
         let predicateTwo = NSPredicate(format: "gatewayId = %@", id)
         fetchRequest.predicate = predicateTwo
         do {
-            if let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]{
+            if let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Gateway]{
                 if fetResults.count > 0{
                     return fetResults.first!
                 }
@@ -54,8 +54,8 @@ class CoreDataController: NSObject {
         }
         return nil
     }
-    func fetchDevicesForGateway(gateway: Gateway) -> [Device] {
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
+    func fetchDevicesForGateway(_ gateway: Gateway) -> [Device] {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
         let predicate = NSPredicate(format: "gateway == %@", gateway.objectID)
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
@@ -64,7 +64,7 @@ class CoreDataController: NSObject {
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
         fetchRequest.predicate = predicate
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Device]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Device]
             return fetResults
         } catch let error as NSError {
             print("Unresolved error \(error), \(error.userInfo)")
@@ -72,8 +72,8 @@ class CoreDataController: NSObject {
         }
         return []
     }
-    func fetchSortedPCRequest (gatewayName:String, parentZone:Int, zone:Int, category:Int) -> NSFetchRequest {
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Device")
+    func fetchSortedPCRequest (_ gatewayName:String, parentZone:Int, zone:Int, category:Int) -> NSFetchRequest<NSFetchRequestResult> {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
 //        let predicate = NSPredicate(format: "gateway.name == %@", gatewayName)
         let predicateOne = NSPredicate(format: "type == %@", ControlType.PC)
 //        let predicateArray = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicateOne])
@@ -86,10 +86,10 @@ class CoreDataController: NSObject {
         fetchRequest.predicate = predicateArray
         return fetchRequest
     }
-    func fetchPCController (gatewayName:String, parentZone:Int, zone:Int, category:Int) -> [Device] {
+    func fetchPCController (_ gatewayName:String, parentZone:Int, zone:Int, category:Int) -> [Device] {
         let fetchRequest = fetchSortedPCRequest(gatewayName, parentZone:parentZone, zone:zone, category:category)
         do {
-            let fetResults = try context.executeFetchRequest(fetchRequest) as! [Device]
+            let fetResults = try context.fetch(fetchRequest) as! [Device]
             return fetResults
         } catch let error as NSError {
             print("Unresolved error \(error), \(error.userInfo)")

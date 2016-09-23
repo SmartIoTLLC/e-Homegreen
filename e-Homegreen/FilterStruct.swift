@@ -32,25 +32,25 @@ class FilterItem: NSObject {
     }
     
     required init(coder aDecoder: NSCoder) {
-        self.location = aDecoder.decodeObjectForKey(FilterKey.location) as! String
-        self.levelId = aDecoder.decodeIntegerForKey(FilterKey.levelId)
-        self.zoneId = aDecoder.decodeIntegerForKey(FilterKey.zoneId)
-        self.categoryId = aDecoder.decodeIntegerForKey(FilterKey.categoryId)
-        self.levelName = aDecoder.decodeObjectForKey(FilterKey.levelName) as! String
-        self.zoneName = aDecoder.decodeObjectForKey(FilterKey.zoneName) as! String
-        self.categoryName = aDecoder.decodeObjectForKey(FilterKey.categoryName) as! String
+        self.location = aDecoder.decodeObject(forKey: FilterKey.location) as! String
+        self.levelId = aDecoder.decodeInteger(forKey: FilterKey.levelId)
+        self.zoneId = aDecoder.decodeInteger(forKey: FilterKey.zoneId)
+        self.categoryId = aDecoder.decodeInteger(forKey: FilterKey.categoryId)
+        self.levelName = aDecoder.decodeObject(forKey: FilterKey.levelName) as! String
+        self.zoneName = aDecoder.decodeObject(forKey: FilterKey.zoneName) as! String
+        self.categoryName = aDecoder.decodeObject(forKey: FilterKey.categoryName) as! String
         
         super.init()
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(location, forKey: FilterKey.location)
-        aCoder.encodeInteger(levelId, forKey: FilterKey.levelId)
-        aCoder.encodeInteger(zoneId, forKey: FilterKey.zoneId)
-        aCoder.encodeInteger(categoryId, forKey: FilterKey.categoryId)
-        aCoder.encodeObject(levelName, forKey: FilterKey.levelName)
-        aCoder.encodeObject(zoneName, forKey: FilterKey.zoneName)
-        aCoder.encodeObject(categoryName, forKey: FilterKey.categoryName)
+    func encodeWithCoder(_ aCoder: NSCoder) {
+        aCoder.encode(location, forKey: FilterKey.location)
+        aCoder.encode(levelId, forKey: FilterKey.levelId)
+        aCoder.encode(zoneId, forKey: FilterKey.zoneId)
+        aCoder.encode(categoryId, forKey: FilterKey.categoryId)
+        aCoder.encode(levelName, forKey: FilterKey.levelName)
+        aCoder.encode(zoneName, forKey: FilterKey.zoneName)
+        aCoder.encode(categoryName, forKey: FilterKey.categoryName)
     }
 }
 class Filter:NSObject {
@@ -58,18 +58,18 @@ class Filter:NSObject {
     
     func returnFilter(forTab tab: FilterEnumeration) -> FilterItem {
         let object:FilterItem?
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let savedUser = defaults.objectForKey(tab.rawValue) as? NSData {
-            object = NSKeyedUnarchiver.unarchiveObjectWithData(savedUser) as? FilterItem
+        let defaults = Foundation.UserDefaults.standard
+        if let savedUser = defaults.object(forKey: tab.rawValue) as? Data {
+            object = NSKeyedUnarchiver.unarchiveObject(with: savedUser) as? FilterItem
             return object!
         }
         return FilterItem(location: "All", levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
     }
     
     func saveFilter(item filterItem:FilterItem, forTab tab: FilterEnumeration) {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        let encodedData = NSKeyedArchiver.archivedDataWithRootObject(filterItem)
-        defaults.setObject(encodedData, forKey: tab.rawValue)
+        let defaults = Foundation.UserDefaults.standard
+        let encodedData = NSKeyedArchiver.archivedData(withRootObject: filterItem)
+        defaults.set(encodedData, forKey: tab.rawValue)
         defaults.synchronize()
     }
 }

@@ -51,7 +51,7 @@ class SurveillanceSettingsVC: PopoverVC {
         self.surv = surv
         self.parentLocation = location
         transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
+        modalPresentationStyle = UIModalPresentationStyle.custom
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -61,7 +61,7 @@ class SurveillanceSettingsVC: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
 
         editPortRemote.inputAccessoryView = CustomToolBar()
         editPortLocal.inputAccessoryView = CustomToolBar()
@@ -70,7 +70,7 @@ class SurveillanceSettingsVC: PopoverVC {
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         
         editIPRemote.delegate = self
         editPortRemote.delegate = self
@@ -90,9 +90,9 @@ class SurveillanceSettingsVC: PopoverVC {
             editPassword.text = surv.password
             editName.text = surv.name
             
-            levelButton.setTitle(surv.surveillanceLevel, forState: .Normal)
-            zoneButton.setTitle(surv.surveillanceZone, forState: .Normal)
-            categoryButton.setTitle(surv.surveillanceCategory, forState: .Normal)
+            levelButton.setTitle(surv.surveillanceLevel, for: UIControlState())
+            zoneButton.setTitle(surv.surveillanceZone, for: UIControlState())
+            categoryButton.setTitle(surv.surveillanceCategory, for: UIControlState())
             
             if let levelId = surv.surveillanceLevelId as? Int {
                 level = DatabaseZoneController.shared.getZoneById(levelId, location: surv.location!)
@@ -114,17 +114,17 @@ class SurveillanceSettingsVC: PopoverVC {
             
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SurveillanceSettingsVC.keyboardWillShow(_:)), name:UIKeyboardWillShowNotification, object: nil)        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SurveillanceSettingsVC.keyboardWillHide(_:)), name:UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SurveillanceSettingsVC.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)        
+        NotificationCenter.default.addObserver(self, selector: #selector(SurveillanceSettingsVC.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
 
     }
     
-    override func nameAndId(name: String, id: String) {
+    override func nameAndId(_ name: String, id: String) {
         
         switch button.tag{
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
-            zoneButton.setTitle("All", forState: .Normal)
+            zoneButton.setTitle("All", for: UIControlState())
             zoneSelected = nil
             break
         case 2:
@@ -137,55 +137,55 @@ class SurveillanceSettingsVC: PopoverVC {
             break
         }
         
-        button.setTitle(name, forState: .Normal)
+        button.setTitle(name, for: UIControlState())
     }
 
     func dismissViewController () {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func btnCancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func btnCancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func btnLevel(sender: UIButton) {
+    @IBAction func btnLevel(_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(parentLocation)
         for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
         }
-        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
     
-    @IBAction func btnCategoryAction(sender: UIButton) {
+    @IBAction func btnCategoryAction(_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(parentLocation)
         for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
         }
         
-        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
     
-    @IBAction func btnZoneAction(sender: UIButton) {
+    @IBAction func btnZoneAction(_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         if let level = level{
             let list:[Zone] = DatabaseZoneController.shared.getZoneByLevel(parentLocation, parentZone: level)
             for item in list {
-                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
+                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
             }
         }
         
-        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
     
-    @IBAction func btnSave(sender: AnyObject) {
+    @IBAction func btnSave(_ sender: AnyObject) {
         if  let remoteIp = editIPRemote.text,let remotePort = editPortRemote.text, let username =  editUserName.text, let password = editPassword.text, let name =  editName.text, let remotePortNumber = Int(remotePort),let localIp = editIPLocal.text, let localPort = editPortLocal.text  {
             if surv == nil{
                 if let parentLocation = parentLocation{
@@ -200,7 +200,7 @@ class SurveillanceSettingsVC: PopoverVC {
                     surveillance.localIp = localIp
                     surveillance.localPort = localPort
                     surveillance.ip = remoteIp
-                    surveillance.port = remotePortNumber
+                    surveillance.port = remotePortNumber as NSNumber?
                     
                     surveillance.isVisible = true
                     
@@ -243,56 +243,56 @@ class SurveillanceSettingsVC: PopoverVC {
                 surv.localIp = localIp
                 surv.localPort = localPort
                 surv.ip = remoteIp
-                surv.port = remotePortNumber
+                surv.port = remotePortNumber as NSNumber?
                 
                 CoreDataController.shahredInstance.saveChanges()
             }
             
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
             delegate?.addEditSurveillanceFinished()
         }
     }
     
-    func keyboardWillShow(notification: NSNotification) {
-        var info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+    func keyboardWillShow(_ notification: Notification) {
+        var info = (notification as NSNotification).userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
-        if editPortRemote.isFirstResponder(){
+        if editPortRemote.isFirstResponder{
             if backView.frame.origin.y + editPortRemote.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPortRemote.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
                 
             }
         }
-        if editIPRemote.isFirstResponder(){
+        if editIPRemote.isFirstResponder{
             if backView.frame.origin.y + editIPRemote.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editIPRemote.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
                 
             }
         }
-        if editPortLocal.isFirstResponder(){
+        if editPortLocal.isFirstResponder{
             if backView.frame.origin.y + editPortLocal.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPortLocal.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
                 
             }
         }
-        if editIPLocal.isFirstResponder(){
+        if editIPLocal.isFirstResponder{
             if backView.frame.origin.y + editIPLocal.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editIPLocal.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
                 
             }
         }
-        if editUserName.isFirstResponder(){
+        if editUserName.isFirstResponder{
             if backView.frame.origin.y + editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
                 
             }
         }
-        if editPassword.isFirstResponder(){
+        if editPassword.isFirstResponder{
             if backView.frame.origin.y + editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
@@ -300,14 +300,14 @@ class SurveillanceSettingsVC: PopoverVC {
             }
         }
         
-        if editUserName.isFirstResponder(){
+        if editUserName.isFirstResponder{
             if backView.frame.origin.y + editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
                 
             }
         }
-        if editPassword.isFirstResponder(){
+        if editPassword.isFirstResponder{
             if backView.frame.origin.y + editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
                 
                 self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
@@ -315,20 +315,20 @@ class SurveillanceSettingsVC: PopoverVC {
             }
         }
         
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
         
     }
     
-    func keyboardWillHide(notification: NSNotification) {
+    func keyboardWillHide(_ notification: Notification) {
         self.centarConstraint.constant = 0
-        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
 }
 
 extension SurveillanceSettingsVC : UIGestureRecognizerDelegate {
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if let touchView = touch.view{
-            if touchView.isDescendantOfView(backView){
+            if touchView.isDescendant(of: backView){
                 self.view.endEditing(true)
                 return false
             }
@@ -339,39 +339,39 @@ extension SurveillanceSettingsVC : UIGestureRecognizerDelegate {
 
 extension SurveillanceSettingsVC : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5 //Add your own duration here
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         //Add presentation and dismiss animation transition here.
         if isPresenting == true{
             isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
+            let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
+            let containerView = transitionContext.containerView
             
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
             //        presentedControllerView.center.y -= containerView.bounds.size.height
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(1.5, 1.5)
+            presentedControllerView.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
             containerView.addSubview(presentedControllerView)
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 //            presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
             //            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 //                presentedControllerView.center.y += containerView.bounds.size.height
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(1.1, 1.1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
@@ -382,11 +382,11 @@ extension SurveillanceSettingsVC : UIViewControllerAnimatedTransitioning {
 
 extension SurveillanceSettingsVC : UIViewControllerTransitioningDelegate {
     
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if dismissed == self {
             return self
         }
@@ -399,16 +399,16 @@ extension SurveillanceSettingsVC : UIViewControllerTransitioningDelegate {
 
 extension SurveillanceSettingsVC: UITextFieldDelegate{
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
 }
 
 extension UIViewController {
-    func showSurveillanceSettings(surv: Surveillance?, location:Location?) -> SurveillanceSettingsVC {
+    func showSurveillanceSettings(_ surv: Surveillance?, location:Location?) -> SurveillanceSettingsVC {
         let survSettVC = SurveillanceSettingsVC(surv: surv, location:location)
-        self.presentViewController(survSettVC, animated: true, completion: nil)
+        self.present(survSettVC, animated: true, completion: nil)
         return survSettVC
     }
 }

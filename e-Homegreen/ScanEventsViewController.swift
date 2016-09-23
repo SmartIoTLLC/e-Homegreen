@@ -42,11 +42,11 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     var zoneSelected:Zone?
     var category:Category?
     
-    var imageDataOne:NSData?
+    var imageDataOne:Data?
     var customImageOne:String?
     var defaultImageOne:String?
     
-    var imageDataTwo:NSData?
+    var imageDataTwo:Data?
     var customImageTwo:String?
     var defaultImageTwo:String?
 
@@ -61,10 +61,10 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         toTextField.inputAccessoryView = CustomToolBar()
         nameEdit.delegate = self
         
-        imageSceneOne.userInteractionEnabled = true
+        imageSceneOne.isUserInteractionEnabled = true
         imageSceneOne.tag = 1
         imageSceneOne.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ScanEventsViewController.handleTap(_:))))
-        imageSceneTwo.userInteractionEnabled = true
+        imageSceneTwo.isUserInteractionEnabled = true
         imageSceneTwo.tag = 2
         imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ScanEventsViewController.handleTap(_:))))
         
@@ -72,41 +72,41 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway.addressTwo)))"
         
         broadcastSwitch.tag = 100
-        broadcastSwitch.on = false
-        broadcastSwitch.addTarget(self, action: #selector(ScanEventsViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        broadcastSwitch.isOn = false
+        broadcastSwitch.addTarget(self, action: #selector(ScanEventsViewController.changeValue(_:)), for: UIControlEvents.valueChanged)
         localcastSwitch.tag = 200
-        localcastSwitch.on = false
-        localcastSwitch.addTarget(self, action: #selector(ScanEventsViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        localcastSwitch.isOn = false
+        localcastSwitch.addTarget(self, action: #selector(ScanEventsViewController.changeValue(_:)), for: UIControlEvents.valueChanged)
         
         btnLevel.tag = 1
         btnZone.tag = 2
         btnCategory.tag = 3
 
     }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         addObservers()
         refreshEventList()
     }
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         removeObservers()
     }
 
-    override func sendFilterParametar(filterParametar: FilterItem) {
+    override func sendFilterParametar(_ filterParametar: FilterItem) {
         self.filterParametar = filterParametar
         refreshEventList()
     }
-    override func sendSearchBarText(text: String) {
+    override func sendSearchBarText(_ text: String) {
         searchBarText = text
         refreshEventList()
     }
     
-    override func nameAndId(name: String, id: String) {
+    override func nameAndId(_ name: String, id: String) {
         
         switch button.tag{
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
             
-            btnZone.setTitle("All", forState: .Normal)
+            btnZone.setTitle("All", for: UIControlState())
             zoneSelected = nil
             break
         case 2:
@@ -119,14 +119,14 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
             break
         }
         
-        button.setTitle(name, forState: .Normal)
+        button.setTitle(name, for: UIControlState())
     }
     
-    func changeValue (sender:UISwitch){
+    func changeValue (_ sender:UISwitch){
         if sender.tag == 100 {
-            localcastSwitch.on = false
+            localcastSwitch.isOn = false
         } else if sender.tag == 200 {
-            broadcastSwitch.on = false
+            broadcastSwitch.isOn = false
         }
     }
     func refreshEventList() {
@@ -134,7 +134,7 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         if !searchBarText.isEmpty{
             events = self.events.filter() {
                 event in
-                if event.eventName.lowercaseString.rangeOfString(searchBarText.lowercaseString) != nil{
+                if event.eventName.lowercased().range(of: searchBarText.lowercased()) != nil{
                     return true
                 }else{
                     return false
@@ -144,59 +144,59 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         eventTableView.reloadData()
     }
     
-    func handleTap (gesture:UITapGestureRecognizer) {
+    func handleTap (_ gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
             showGallery(index, user: gateway.location.user).delegate = self
         }
     }
     func addObservers(){
         // Notification that tells us that timer is received and stored
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanSequencesesViewController.nameReceivedFromPLC(_:)), name: NotificationKey.DidReceiveEventFromGateway, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ScanSequencesesViewController.nameReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveEventFromGateway), object: nil)
     }
     func removeObservers(){
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningEventsNameAndParameters)
+        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningEventsNameAndParameters)
         // Notification that tells us that timer is received and stored
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.DidReceiveEventFromGateway, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidReceiveEventFromGateway), object: nil)
     }
     
-    @IBAction func btnLevel(sender: UIButton) {
+    @IBAction func btnLevel(_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(gateway.location)
         for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
         }
-        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
     
-    @IBAction func btnCategoryAction(sender: UIButton) {
+    @IBAction func btnCategoryAction(_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(gateway.location)
         for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
+            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
         }
         
-        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
     
-    @IBAction func btnZoneAction(sender: UIButton) {
+    @IBAction func btnZoneAction(_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         if let level = level{
             let list:[Zone] = DatabaseZoneController.shared.getZoneByLevel(gateway.location, parentZone: level)
             for item in list {
-                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.URIRepresentation().absoluteString!))
+                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
             }
         }
         
-        popoverList.insert(PopOverItem(name: "All", id: ""), atIndex: 0)
+        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
     
-    @IBAction func btnAdd(sender: AnyObject) {
+    @IBAction func btnAdd(_ sender: AnyObject) {
         if let eventId = Int(IDedit.text!), let eventName = nameEdit.text, let address = Int(devAddressThree.text!) {
             if eventId <= 32767 && address <= 255 {
                 
@@ -213,7 +213,7 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
                     categoryId = Int(categoryIdNumber)
                 }
                 
-                DatabaseEventsController.shared.createEvent(eventId, eventName: eventName, moduleAddress: address, gateway: gateway, levelId: levelId, zoneId: zoneId, categoryId: categoryId, isBroadcast: broadcastSwitch.on, isLocalcast: localcastSwitch.on, sceneImageOneDefault: defaultImageOne, sceneImageTwoDefault: defaultImageTwo, sceneImageOneCustom: customImageOne, sceneImageTwoCustom: customImageTwo, imageDataOne: imageDataOne, imageDataTwo: imageDataTwo, report: reportSwitch.on)
+                DatabaseEventsController.shared.createEvent(eventId, eventName: eventName, moduleAddress: address, gateway: gateway, levelId: levelId, zoneId: zoneId, categoryId: categoryId, isBroadcast: broadcastSwitch.isOn, isLocalcast: localcastSwitch.isOn, sceneImageOneDefault: defaultImageOne, sceneImageTwoDefault: defaultImageTwo, sceneImageOneCustom: customImageOne, sceneImageTwoCustom: customImageTwo, imageDataOne: imageDataOne, imageDataTwo: imageDataTwo, report: reportSwitch.isOn)
                 
             }
             refreshEventList()
@@ -221,18 +221,18 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         }
     }
     
-    @IBAction func scanEvents(sender: AnyObject) {
+    @IBAction func scanEvents(_ sender: AnyObject) {
         findEvents()
     }
     
-    @IBAction func clearRangeFields(sender: AnyObject) {
+    @IBAction func clearRangeFields(_ sender: AnyObject) {
         fromTextField.text = ""
         toTextField.text = ""
     }
     
-    @IBAction func btnRemove(sender: UIButton) {
+    @IBAction func btnRemove(_ sender: UIButton) {
         showAlertView(sender, message: "Are you sure you want to delete all scenes?") { (action) in
-            if action == ReturnedValueFromAlertView.Delete{
+            if action == ReturnedValueFromAlertView.delete{
                 DatabaseEventsController.shared.deleteAllEvents(self.gateway)
                 self.refreshEventList()
                 self.view.endEditing(true)
@@ -242,7 +242,7 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     
     // MARK: - FINDING EVENTS
     // Info: Add observer for received info from PLC (e.g. nameReceivedFromPLC)
-    var eventsTimer:NSTimer?
+    var eventsTimer:Foundation.Timer?
     var timesRepeatedCounter:Int = 0
     var arrayOfEventsToBeSearched = [Int]()
     var indexOfEventsToBeSearched = 0
@@ -311,22 +311,22 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
                 arrayOfEventsToBeSearched.append(i)
             }
             
-            UIApplication.sharedApplication().idleTimerDisabled = true
+            UIApplication.shared.isIdleTimerDisabled = true
             if arrayOfEventsToBeSearched.count != 0{
                 let firstEventIndexThatDontHaveName = arrayOfEventsToBeSearched[indexOfEventsToBeSearched]
                 timesRepeatedCounter = 0
                 progressBarScreenEvents = ProgressBarVC(title: "Finding name", percentage: Float(1)/Float(arrayOfEventsToBeSearched.count), howMuchOf: "1 / \(arrayOfEventsToBeSearched.count)")
                 progressBarScreenEvents?.delegate = self
-                self.presentViewController(progressBarScreenEvents!, animated: true, completion: nil)
-                eventsTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanEventsViewController.checkIfEventDidGetName(_:)), userInfo: firstEventIndexThatDontHaveName, repeats: false)
+                self.present(progressBarScreenEvents!, animated: true, completion: nil)
+                eventsTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanEventsViewController.checkIfEventDidGetName(_:)), userInfo: firstEventIndexThatDontHaveName, repeats: false)
                 NSLog("func findNames \(firstEventIndexThatDontHaveName)")
-                NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaults.IsScaningEventsNameAndParameters)
+                Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningEventsNameAndParameters)
                 sendCommandWithEventAddress(firstEventIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
     }
     // Called from findEvents or from it self.
     // Checks which sequence ID should be searched for and calls sendCommandWithEventAddress for that specific sequence id.
-    func checkIfEventDidGetName (timer:NSTimer) {
+    func checkIfEventDidGetName (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -336,16 +336,16 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         }
         timesRepeatedCounter += 1
         if timesRepeatedCounter < 3 {
-            eventsTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanEventsViewController.checkIfEventDidGetName(_:)), userInfo: eventIndex, repeats: false)
+            eventsTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanEventsViewController.checkIfEventDidGetName(_:)), userInfo: eventIndex, repeats: false)
             NSLog("func checkIfEventDidGetName \(eventIndex)")
             sendCommandWithEventAddress(eventIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
         }else{
-            if let indexOfEventIndexInArrayOfNamesToBeSearched = arrayOfEventsToBeSearched.indexOf(eventIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            if let indexOfEventIndexInArrayOfNamesToBeSearched = arrayOfEventsToBeSearched.index(of: eventIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                 if indexOfEventsToBeSearched+1 < arrayOfEventsToBeSearched.count{ // if next exists
                     indexOfEventsToBeSearched = indexOfEventIndexInArrayOfNamesToBeSearched+1
                     let nextEventIndexToBeSearched = arrayOfEventsToBeSearched[indexOfEventsToBeSearched]
                     timesRepeatedCounter = 0
-                    eventsTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanEventsViewController.checkIfEventDidGetName(_:)), userInfo: nextEventIndexToBeSearched, repeats: false)
+                    eventsTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanEventsViewController.checkIfEventDidGetName(_:)), userInfo: nextEventIndexToBeSearched, repeats: false)
                     NSLog("func checkIfEventDidGetName \(nextEventIndexToBeSearched)")
                     sendCommandWithEventAddress(nextEventIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
                 }else{
@@ -358,15 +358,15 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     }
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next sequence ID to search for. If there is not, dismiss progres bar and end the search.
-    func nameReceivedFromPLC (notification:NSNotification) {
-        if NSUserDefaults.standardUserDefaults().boolForKey(UserDefaults.IsScaningEventsNameAndParameters) {
-            guard let info = notification.userInfo! as? [String:Int] else{
+    func nameReceivedFromPLC (_ notification:Notification) {
+        if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningEventsNameAndParameters) {
+            guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
             }
             guard let timerIndex = info["eventId"] else{
                 return
             }
-            guard let indexOfEventIndexInArrayOfNamesToBeSearched = arrayOfEventsToBeSearched.indexOf(timerIndex) else{
+            guard let indexOfEventIndexInArrayOfNamesToBeSearched = arrayOfEventsToBeSearched.index(of: timerIndex) else{
                 return
             }
             
@@ -376,20 +376,20 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
                 
                 timesRepeatedCounter = 0
                 eventsTimer?.invalidate()
-                eventsTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ScanEventsViewController.checkIfEventDidGetName(_:)), userInfo: nextEventIndexToBeSearched, repeats: false)
+                eventsTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanEventsViewController.checkIfEventDidGetName(_:)), userInfo: nextEventIndexToBeSearched, repeats: false)
                 sendCommandWithEventAddress(nextEventIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }else{
                 dismissScaningControls()
             }
         }
     }
-    func sendCommandWithEventAddress(eventId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
+    func sendCommandWithEventAddress(_ eventId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
         setProgressBarParametars(eventId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getEventNameAndParametar(address, eventId: UInt8(eventId)), gateway: self.gateway)
     }
-    func setProgressBarParametars (eventId:Int) {
-        if let indexOfEventIndexInArrayOfNamesToBeSearched = arrayOfEventsToBeSearched.indexOf(eventId){
+    func setProgressBarParametars (_ eventId:Int) {
+        if let indexOfEventIndexInArrayOfNamesToBeSearched = arrayOfEventsToBeSearched.index(of: eventId){
             if let _ = progressBarScreenEvents?.lblHowMuchOf, let _ = progressBarScreenEvents?.lblPercentage, let _ = progressBarScreenEvents?.progressView{
                 progressBarScreenEvents?.lblHowMuchOf.text = "\(indexOfEventIndexInArrayOfNamesToBeSearched+1) / \(arrayOfEventsToBeSearched.count)"
                 progressBarScreenEvents?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfEventIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfEventsToBeSearched.count)*100) + " %"
@@ -405,34 +405,34 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     func dismissScaningControls() {
         timesRepeatedCounter = 0
         eventsTimer?.invalidate()
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: UserDefaults.IsScaningEventsNameAndParameters)
+        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningEventsNameAndParameters)
         progressBarScreenEvents!.dissmissProgressBar()
         
         arrayOfEventsToBeSearched = [Int]()
         indexOfEventsToBeSearched = 0
-        UIApplication.sharedApplication().idleTimerDisabled = false
+        UIApplication.shared.isIdleTimerDisabled = false
         refreshEventList()
     }
 }
 
 extension ScanEventsViewController: SceneGalleryDelegate{
     
-    func backImage(image: Image, imageIndex: Int) {
+    func backImage(_ image: Image, imageIndex: Int) {
         if imageIndex == 1 {
             defaultImageOne = nil
             customImageOne = image.imageId
             imageDataOne = nil
-            self.imageSceneOne.image = UIImage(data: image.imageData!)
+            self.imageSceneOne.image = UIImage(data: image.imageData! as Data)
         }
         if imageIndex == 2 {
             defaultImageTwo = nil
             customImageTwo = image.imageId
             imageDataTwo = nil
-            self.imageSceneTwo.image = UIImage(data: image.imageData!)
+            self.imageSceneTwo.image = UIImage(data: image.imageData! as Data)
         }
     }
     
-    func backString(strText: String, imageIndex:Int) {
+    func backString(_ strText: String, imageIndex:Int) {
         if imageIndex == 1 {
             defaultImageOne = strText
             customImageOne = nil
@@ -447,7 +447,7 @@ extension ScanEventsViewController: SceneGalleryDelegate{
         }
     }
     
-    func backImageFromGallery(data: NSData, imageIndex:Int ) {
+    func backImageFromGallery(_ data: Data, imageIndex:Int ) {
         if imageIndex == 1 {
             defaultImageOne = nil
             customImageOne = nil
@@ -464,7 +464,7 @@ extension ScanEventsViewController: SceneGalleryDelegate{
 }
 
 extension ScanEventsViewController: UITextFieldDelegate{
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
@@ -472,53 +472,53 @@ extension ScanEventsViewController: UITextFieldDelegate{
 
 extension ScanEventsViewController: UITableViewDataSource, UITableViewDelegate {
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if let cell = tableView.dequeueReusableCellWithIdentifier("eventsCell") as? EventsCell {
-            cell.backgroundColor = UIColor.clearColor()
-            cell.labelID.text = "\(events[indexPath.row].eventId)"
-            cell.labelName.text = "\(events[indexPath.row].eventName)"
-            print("\(returnThreeCharactersForByte(Int(events[indexPath.row].gateway.addressOne)))")
-            print("\(returnThreeCharactersForByte(Int(events[indexPath.row].gateway.addressTwo)))")
-            print("\(returnThreeCharactersForByte(Int(events[indexPath.row].address)))")
-            cell.address.text = "\(returnThreeCharactersForByte(Int(events[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(events[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(events[indexPath.row].address)))"
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "eventsCell") as? EventsCell {
+            cell.backgroundColor = UIColor.clear
+            cell.labelID.text = "\(events[(indexPath as NSIndexPath).row].eventId)"
+            cell.labelName.text = "\(events[(indexPath as NSIndexPath).row].eventName)"
+            print("\(returnThreeCharactersForByte(Int(events[(indexPath as NSIndexPath).row].gateway.addressOne)))")
+            print("\(returnThreeCharactersForByte(Int(events[(indexPath as NSIndexPath).row].gateway.addressTwo)))")
+            print("\(returnThreeCharactersForByte(Int(events[(indexPath as NSIndexPath).row].address)))")
+            cell.address.text = "\(returnThreeCharactersForByte(Int(events[(indexPath as NSIndexPath).row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(events[(indexPath as NSIndexPath).row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(events[(indexPath as NSIndexPath).row].address)))"
             
-            if let id = events[indexPath.row].eventImageOneCustom{
+            if let id = events[(indexPath as NSIndexPath).row].eventImageOneCustom{
                 if let image = DatabaseImageController.shared.getImageById(id){
                     if let data =  image.imageData {
                         cell.imageOne.image = UIImage(data: data)
                     }else{
-                        if let defaultImage = events[indexPath.row].eventImageOneDefault{
+                        if let defaultImage = events[(indexPath as NSIndexPath).row].eventImageOneDefault{
                             cell.imageOne.image = UIImage(named: defaultImage)
                         }
                     }
                 }else{
-                    if let defaultImage = events[indexPath.row].eventImageOneDefault{
+                    if let defaultImage = events[(indexPath as NSIndexPath).row].eventImageOneDefault{
                         cell.imageOne.image = UIImage(named: defaultImage)
                     }
                 }
             }else{
-                if let defaultImage = events[indexPath.row].eventImageOneDefault{
+                if let defaultImage = events[(indexPath as NSIndexPath).row].eventImageOneDefault{
                     cell.imageOne.image = UIImage(named: defaultImage)
                 }
             }
             
-            if let id = events[indexPath.row].eventImageTwoCustom{
+            if let id = events[(indexPath as NSIndexPath).row].eventImageTwoCustom{
                 if let image = DatabaseImageController.shared.getImageById(id){
                     if let data =  image.imageData {
                         cell.imageTwo.image = UIImage(data: data)
                     }else{
-                        if let defaultImage = events[indexPath.row].eventImageTwoDefault{
+                        if let defaultImage = events[(indexPath as NSIndexPath).row].eventImageTwoDefault{
                             cell.imageTwo.image = UIImage(named: defaultImage)
                         }
                     }
                 }else{
-                    if let defaultImage = events[indexPath.row].eventImageTwoDefault{
+                    if let defaultImage = events[(indexPath as NSIndexPath).row].eventImageTwoDefault{
                         cell.imageTwo.image = UIImage(named: defaultImage)
                     }
                 }
             }else{
-                if let defaultImage = events[indexPath.row].eventImageTwoDefault{
+                if let defaultImage = events[(indexPath as NSIndexPath).row].eventImageTwoDefault{
                     cell.imageTwo.image = UIImage(named: defaultImage)
                 }
             }
@@ -526,106 +526,106 @@ extension ScanEventsViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         }
         
-        let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
         return cell
         
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        IDedit.text = "\(events[indexPath.row].eventId)"
-        nameEdit.text = "\(events[indexPath.row].eventName)"
-        devAddressThree.text = "\(returnThreeCharactersForByte(Int(events[indexPath.row].address)))"
-        broadcastSwitch.on = events[indexPath.row].isBroadcast.boolValue
-        localcastSwitch.on = events[indexPath.row].isLocalcast.boolValue
-        reportSwitch.on = events[indexPath.row].report.boolValue
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        IDedit.text = "\(events[(indexPath as NSIndexPath).row].eventId)"
+        nameEdit.text = "\(events[(indexPath as NSIndexPath).row].eventName)"
+        devAddressThree.text = "\(returnThreeCharactersForByte(Int(events[(indexPath as NSIndexPath).row].address)))"
+        broadcastSwitch.isOn = events[(indexPath as NSIndexPath).row].isBroadcast.boolValue
+        localcastSwitch.isOn = events[(indexPath as NSIndexPath).row].isLocalcast.boolValue
+        reportSwitch.isOn = events[(indexPath as NSIndexPath).row].report.boolValue
         
-        if let levelId = events[indexPath.row].entityLevelId as? Int {
+        if let levelId = events[(indexPath as NSIndexPath).row].entityLevelId as? Int {
             level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location)
-            btnLevel.setTitle(level?.name, forState: UIControlState.Normal)
+            btnLevel.setTitle(level?.name, for: UIControlState())
         }else{
-            btnLevel.setTitle("All", forState: UIControlState.Normal)
+            btnLevel.setTitle("All", for: UIControlState())
         }
-        if let zoneId = events[indexPath.row].eventZoneId as? Int {
+        if let zoneId = events[(indexPath as NSIndexPath).row].eventZoneId as? Int {
             zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location)
-            btnZone.setTitle(zoneSelected?.name, forState: UIControlState.Normal)
+            btnZone.setTitle(zoneSelected?.name, for: UIControlState())
         }else{
-            btnZone.setTitle("All", forState: UIControlState.Normal)
+            btnZone.setTitle("All", for: UIControlState())
         }
-        if let categoryId = events[indexPath.row].eventCategoryId as? Int {
+        if let categoryId = events[(indexPath as NSIndexPath).row].eventCategoryId as? Int {
             category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location)
-            btnCategory.setTitle(category?.name, forState: UIControlState.Normal)
+            btnCategory.setTitle(category?.name, for: UIControlState())
         }else{
-            btnCategory.setTitle(category?.name, forState: UIControlState.Normal)
+            btnCategory.setTitle(category?.name, for: UIControlState())
         }
         
-        defaultImageOne = events[indexPath.row].eventImageOneDefault
-        customImageOne = events[indexPath.row].eventImageOneCustom
+        defaultImageOne = events[(indexPath as NSIndexPath).row].eventImageOneDefault
+        customImageOne = events[(indexPath as NSIndexPath).row].eventImageOneCustom
         imageDataOne = nil
         
-        defaultImageTwo = events[indexPath.row].eventImageTwoDefault
-        customImageTwo = events[indexPath.row].eventImageTwoCustom
+        defaultImageTwo = events[(indexPath as NSIndexPath).row].eventImageTwoDefault
+        customImageTwo = events[(indexPath as NSIndexPath).row].eventImageTwoCustom
         imageDataTwo = nil
         
-        if let id = events[indexPath.row].eventImageOneCustom{
+        if let id = events[(indexPath as NSIndexPath).row].eventImageOneCustom{
             if let image = DatabaseImageController.shared.getImageById(id){
                 if let data =  image.imageData {
                     imageSceneOne.image = UIImage(data: data)
                 }else{
-                    if let defaultImage = events[indexPath.row].eventImageOneDefault{
+                    if let defaultImage = events[(indexPath as NSIndexPath).row].eventImageOneDefault{
                         imageSceneOne.image = UIImage(named: defaultImage)
                     }
                 }
             }else{
-                if let defaultImage = events[indexPath.row].eventImageOneDefault{
+                if let defaultImage = events[(indexPath as NSIndexPath).row].eventImageOneDefault{
                     imageSceneOne.image = UIImage(named: defaultImage)
                 }
             }
         }else{
-            if let defaultImage = events[indexPath.row].eventImageOneDefault{
+            if let defaultImage = events[(indexPath as NSIndexPath).row].eventImageOneDefault{
                 imageSceneOne.image = UIImage(named: defaultImage)
             }
         }
         
-        if let id = events[indexPath.row].eventImageTwoCustom{
+        if let id = events[(indexPath as NSIndexPath).row].eventImageTwoCustom{
             if let image = DatabaseImageController.shared.getImageById(id){
                 if let data =  image.imageData {
                     imageSceneTwo.image = UIImage(data: data)
                 }else{
-                    if let defaultImage = events[indexPath.row].eventImageTwoDefault{
+                    if let defaultImage = events[(indexPath as NSIndexPath).row].eventImageTwoDefault{
                         imageSceneTwo.image = UIImage(named: defaultImage)
                     }
                 }
             }else{
-                if let defaultImage = events[indexPath.row].eventImageTwoDefault{
+                if let defaultImage = events[(indexPath as NSIndexPath).row].eventImageTwoDefault{
                     imageSceneTwo.image = UIImage(named: defaultImage)
                 }
             }
         }else{
-            if let defaultImage = events[indexPath.row].eventImageTwoDefault{
+            if let defaultImage = events[(indexPath as NSIndexPath).row].eventImageTwoDefault{
                 imageSceneTwo.image = UIImage(named: defaultImage)
             }
         }
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return events.count
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:NSIndexPath) in
-            self.tableView(self.eventTableView, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
+            self.tableView(self.eventTableView, commit: UITableViewCellEditingStyle.delete, forRowAt: indexPath)
         })
         
-        button.backgroundColor = UIColor.redColor()
+        button.backgroundColor = UIColor.red
         return [button]
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
-        if editingStyle == .Delete {
-            DatabaseEventsController.shared.deleteEvent(events[indexPath.row])
-            events.removeAtIndex(indexPath.row)
-            eventTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        if editingStyle == .delete {
+            DatabaseEventsController.shared.deleteEvent(events[(indexPath as NSIndexPath).row])
+            events.remove(at: (indexPath as NSIndexPath).row)
+            eventTableView.deleteRows(at: [indexPath], with: .fade)
         }
         
     }

@@ -14,7 +14,7 @@ protocol ImportPathDelegate{
 }
 
 enum CommandType:Int {
-    case Media=0, Application, Notification
+    case media=0, application, notification
 }
 
 class AddVideo_AppXIB: CommonXIBTransitionVC{
@@ -52,9 +52,9 @@ class AddVideo_AppXIB: CommonXIBTransitionVC{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
-        self.view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.2)
         
         nameTextField.layer.borderWidth = 1
         pathTextField.layer.borderWidth = 1
@@ -62,19 +62,19 @@ class AddVideo_AppXIB: CommonXIBTransitionVC{
         nameTextField.layer.cornerRadius = 2
         pathTextField.layer.cornerRadius = 2
         
-        nameTextField.layer.borderColor = UIColor.lightGrayColor().CGColor
-        pathTextField.layer.borderColor = UIColor.lightGrayColor().CGColor
+        nameTextField.layer.borderColor = UIColor.lightGray.cgColor
+        pathTextField.layer.borderColor = UIColor.lightGray.cgColor
         
         nameTextField.attributedPlaceholder = NSAttributedString(string:"Name",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
-        if typeOfFile == FileType.App {
+            attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+        if typeOfFile == FileType.app {
             pathTextField.attributedPlaceholder = NSAttributedString(string:"Command",
-                attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+                attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
             pathOrCmdLabel.text = "Command"
         }
         else{
             pathTextField.attributedPlaceholder = NSAttributedString(string:"Path",
-                attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+                attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
             pathOrCmdLabel.text = "Path"
         }
 
@@ -97,32 +97,32 @@ class AddVideo_AppXIB: CommonXIBTransitionVC{
         // Do any additional setup after loading the view.
     }
     
-    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: backView){
             return false
         }
         return true
     }
     
     func dismissViewController () {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
 
-    @IBAction func saveAction(sender: AnyObject) {
-        guard let name = nameTextField.text where !name.isEmpty, let commandText = pathTextField.text where !commandText.isEmpty else{
+    @IBAction func saveAction(_ sender: AnyObject) {
+        guard let name = nameTextField.text , !name.isEmpty, let commandText = pathTextField.text , !commandText.isEmpty else{
             return
         }
         
         if command == nil{
-            if let path = NSEntityDescription.insertNewObjectForEntityForName("PCCommand", inManagedObjectContext: appDel.managedObjectContext!) as? PCCommand{
+            if let path = NSEntityDescription.insertNewObject(forEntityName: "PCCommand", into: appDel.managedObjectContext!) as? PCCommand{
                 
                 path.comand = commandText
-                if typeOfFile == FileType.Video{
+                if typeOfFile == FileType.video{
                     print("Dodat video fajl")
-                    path.commandType = CommandType.Media.rawValue
+                    path.commandType = CommandType.media.rawValue as NSNumber?
                 }else{
                     print("Dodata aplikacija")
-                    path.commandType = CommandType.Application.rawValue
+                    path.commandType = CommandType.application.rawValue as NSNumber?
                 }
                 path.name = name
                 path.device = device
@@ -134,28 +134,28 @@ class AddVideo_AppXIB: CommonXIBTransitionVC{
         }
         CoreDataController.shahredInstance.saveChanges()
         delegate?.importFinished()
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
         
     }
     
-    @IBAction func cancelAction(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelAction(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
 
 }
 
 extension AddVideo_AppXIB : UITextFieldDelegate {
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
 }
 
 extension UIViewController {
-    func showAddVideoAppXIB(typeOfFile:FileType, device:Device,command:PCCommand?) -> AddVideo_AppXIB {
+    func showAddVideoAppXIB(_ typeOfFile:FileType, device:Device,command:PCCommand?) -> AddVideo_AppXIB {
         let addInList = AddVideo_AppXIB(typeOfFile:typeOfFile, device:device, command:command)
-        self.presentViewController(addInList, animated: true, completion: nil)
+        self.present(addInList, animated: true, completion: nil)
         return addInList
     }
 }

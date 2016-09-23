@@ -14,19 +14,19 @@ extension AppDelegate {
     
     func startTimer() {
         if BroadcastPreference.getIsBroadcastOnEvery() {
-            let queue = dispatch_queue_create("com.domain.app.broadcast.time.and.date.timer", nil)
-            timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue)
+            let queue = DispatchQueue(label: "com.domain.app.broadcast.time.and.date.timer", attributes: [])
+            timer = DispatchSource.makeTimerSource(flags: DispatchSource.TimerFlags(rawValue: UInt(0)), queue: queue) /*Migrator FIXME: Use DispatchSourceTimer to avoid the cast*/ as! DispatchSource
             let minutes = BroadcastPreference.getBroadcastMin()
             let hourMinutes = BroadcastPreference.getBroadcastHour()*60
             let sumMinutes = minutes + hourMinutes
             let seconds:UInt64 = UInt64(((sumMinutes*60)-10))
             NSLog("\(seconds)")
-            dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, seconds * NSEC_PER_SEC, 1 * NSEC_PER_SEC) // every 60 seconds, with leeway of 1 second
-            dispatch_source_set_event_handler(timer) {
+//            timer.setTimer(start: DispatchTime.now(), interval: seconds * NSEC_PER_SEC, leeway: 1 * NSEC_PER_SEC) // every 60 seconds, with leeway of 1 second
+            timer.setEventHandler {
                 // do whatever you want here
                 self.broadcastTimeAndDateEveryNowAndThen()
             }
-            dispatch_resume(timer)
+            timer.resume()
 
             return
         }
@@ -34,31 +34,31 @@ extension AppDelegate {
     }
     
     func refreshAllConnections() {
-        let queue = dispatch_queue_create("com.domain.app.refresh.connections.timer", nil)
+        let queue = DispatchQueue(label: "com.domain.app.refresh.connections.timer", attributes: [])
         let minutes = 1
         let seconds:UInt64 = UInt64(((minutes*60)-10))
-        refreshTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue)
-        dispatch_source_set_timer(refreshTimer, DISPATCH_TIME_NOW, seconds * NSEC_PER_SEC, 1 * NSEC_PER_SEC) // every 60 seconds, with leeway of 1 second
-        dispatch_source_set_event_handler(refreshTimer) {
+        refreshTimer = DispatchSource.makeTimerSource(flags: DispatchSource.TimerFlags(rawValue: UInt(0)), queue: queue) /*Migrator FIXME: Use DispatchSourceTimer to avoid the cast*/ as! DispatchSource
+//        refreshTimer.setTimer(start: DispatchTime.now(), interval: seconds * NSEC_PER_SEC, leeway: 1 * NSEC_PER_SEC) // every 60 seconds, with leeway of 1 second
+        refreshTimer.setEventHandler {
             NSLog("Upravo se sve osvezilo")
-            dispatch_async(dispatch_get_main_queue(),{
+            DispatchQueue.main.async(execute: {
                 self.refreshAllConnectionsToEHomeGreenPLC()
             })
         }
-        dispatch_resume(refreshTimer)
+        refreshTimer.resume()
         
         return
     }
     
     func stopTimer() {
         if timer != nil {
-            dispatch_source_cancel(timer)
+            timer.cancel()
             timer = nil
         }
     }
     func stopRefreshTimer() {
         if refreshTimer != nil {
-            dispatch_source_cancel(refreshTimer)
+            refreshTimer.cancel()
             refreshTimer = nil
         }
     }
@@ -68,7 +68,7 @@ extension AppDelegate {
             broadcastTimeAndDateOnStartUp()
             return
         }
-        startTimer()
+//        startTimer()
     }
     
     func broadcastTimeAndDateOnStartUp() {
@@ -76,11 +76,11 @@ extension AppDelegate {
     }
     
     func broadcastTimeAndDateEveryNowAndThen() {
-        if let date = BroadcastPreference.getBroadcastUpdateDate() as NSDate! {
+        if let date = BroadcastPreference.getBroadcastUpdateDate() as Date! {
             let minutes = BroadcastPreference.getBroadcastMin()
             let hourMinutes = BroadcastPreference.getBroadcastHour()*60
             let sumMinutes = minutes + hourMinutes
-            if NSDate().timeIntervalSinceDate(date.dateByAddingTimeInterval(NSTimeInterval(NSNumber(integer: sumMinutes)))) >= Double(sumMinutes)  {
+            if Date().timeIntervalSince(date.addingTimeInterval(TimeInterval(NSNumber(value: sumMinutes as Int)))) >= Double(sumMinutes)  {
                 sendDataToBroadcastTimeAndDate()
             }
         }
@@ -88,19 +88,19 @@ extension AppDelegate {
     
     func sendDataToBroadcastTimeAndDate() {
         
-        let date = NSDate()
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components([.Year , .Month , .Day, .Hour, .Minute, .Second, .Weekday] , fromDate: date)
+        let date = Date()
+        let calendar = Calendar.current
+        let components = (calendar as NSCalendar).components([.year , .month , .day, .hour, .minute, .second, .weekday] , from: date)
         
-        let year =  components.year-2000
+        let year =  components.year!-2000
         let month = components.month
         let day = components.day
         let hour =  components.hour
         let minute = components.minute
         let second = components.second
-        let weekday = components.weekday-1
+        let weekday = components.weekday!-1
         
-        SendingHandler.sendCommand(byteArray: OutgoingHandler.setInternalClockRTC([0xFF,0xFF,0xFF], year: Byte(year), month: Byte(month), day: Byte(day), hour: Byte(hour), minute: Byte(minute), second: Byte(second), dayOfWeak: Byte(weekday)), ip: BroadcastPreference.getBroadcastIp(), port: UInt16 (BroadcastPreference.getBroadcastPort()))
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.setInternalClockRTC([0xFF,0xFF,0xFF], year: Byte(year), month: Byte(month!), day: Byte(day!), hour: Byte(hour!), minute: Byte(minute!), second: Byte(second!), dayOfWeak: Byte(weekday)), ip: BroadcastPreference.getBroadcastIp(), port: UInt16 (BroadcastPreference.getBroadcastPort()))
         BroadcastPreference.setBroadcastUpdateDate()
         
     }
@@ -108,69 +108,69 @@ extension AppDelegate {
 
 class BroadcastPreference {
     class func getBroadcastIp() -> String {
-        if let ip = NSUserDefaults.standardUserDefaults().stringForKey("kBroadcastIp") {
+        if let ip = Foundation.UserDefaults.standard.string(forKey: "kBroadcastIp") {
             return ip
         } else {
             return ""
         }
     }
-    class func setBroadcastIp(ip:String) {
-        NSUserDefaults.standardUserDefaults().setValue(ip, forKey: "kBroadcastIp")
+    class func setBroadcastIp(_ ip:String) {
+        Foundation.UserDefaults.standard.setValue(ip, forKey: "kBroadcastIp")
     }
     
     class func getBroadcastPort() -> Int {
-        let port = NSUserDefaults.standardUserDefaults().integerForKey("kBroadcastPort")
+        let port = Foundation.UserDefaults.standard.integer(forKey: "kBroadcastPort")
         return port
     }
-    class func setBroadcastPort(port:Int) {
-        NSUserDefaults.standardUserDefaults().setValue(port, forKey: "kBroadcastPort")
+    class func setBroadcastPort(_ port:Int) {
+        Foundation.UserDefaults.standard.setValue(port, forKey: "kBroadcastPort")
     }
     
     class func getIsBroadcastOnStartUp() -> Bool {
-        let port = NSUserDefaults.standardUserDefaults().boolForKey("kIsBroadcastOnStartUp")
+        let port = Foundation.UserDefaults.standard.bool(forKey: "kIsBroadcastOnStartUp")
         return port
     }
-    class func setIsBroadcastOnStartUp(port:Bool) {
-        NSUserDefaults.standardUserDefaults().setBool(port, forKey: "kIsBroadcastOnStartUp")
+    class func setIsBroadcastOnStartUp(_ port:Bool) {
+        Foundation.UserDefaults.standard.set(port, forKey: "kIsBroadcastOnStartUp")
     }
     
     class func getIsBroadcastOnEvery() -> Bool {
-        let port = NSUserDefaults.standardUserDefaults().boolForKey("kIsBroadcastOnEvery")
+        let port = Foundation.UserDefaults.standard.bool(forKey: "kIsBroadcastOnEvery")
         return port
     }
-    class func setIsBroadcastOnEvery(isUpdateRequired:Bool) {
+    class func setIsBroadcastOnEvery(_ isUpdateRequired:Bool) {
         if isUpdateRequired {
-            (UIApplication.sharedApplication().delegate as! AppDelegate).startTimer()
+//            (UIApplication.shared.delegate as! AppDelegate).startTimer()
         } else {
-            (UIApplication.sharedApplication().delegate as! AppDelegate).stopTimer()
+//            (UIApplication.shared.delegate as! AppDelegate).stopTimer()
         }
-        NSUserDefaults.standardUserDefaults().setBool(isUpdateRequired, forKey: "kIsBroadcastOnEvery")
+        Foundation.UserDefaults.standard.set(isUpdateRequired, forKey: "kIsBroadcastOnEvery")
     }
     
     class func getBroadcastHour() -> Int {
-        let port = NSUserDefaults.standardUserDefaults().integerForKey("kBroadcastHour")
+        let port = Foundation.UserDefaults.standard.integer(forKey: "kBroadcastHour")
         return port
     }
-    class func setBroadcastHour(port:Int) {
-        NSUserDefaults.standardUserDefaults().setValue(port, forKey: "kBroadcastHour")
+    class func setBroadcastHour(_ port:Int) {
+        Foundation.UserDefaults.standard.setValue(port, forKey: "kBroadcastHour")
     }
     
     class func getBroadcastMin() -> Int {
-        let port = NSUserDefaults.standardUserDefaults().integerForKey("kBroadcastMin")
+        let port = Foundation.UserDefaults.standard.integer(forKey: "kBroadcastMin")
         return port
     }
-    class func setBroadcastMin(port:Int) {
-        NSUserDefaults.standardUserDefaults().setValue(port, forKey: "kBroadcastMin")
+    class func setBroadcastMin(_ port:Int) {
+        Foundation.UserDefaults.standard.setValue(port, forKey: "kBroadcastMin")
     }
     
-    class func getBroadcastUpdateDate() -> NSDate? {
-        if let date = NSUserDefaults.standardUserDefaults().objectForKey("kBroadcastUpdateDate") as? NSDate {
+    class func getBroadcastUpdateDate() -> Date? {
+        if let date = Foundation.UserDefaults.standard.object(forKey: "kBroadcastUpdateDate") as? Date {
             return date
         }
         return nil
     }
     class func setBroadcastUpdateDate() {
-        NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: "kBroadcastUpdateDate")
+        Foundation.UserDefaults.standard.set(Date(), forKey: "kBroadcastUpdateDate")
     }
 }
 // Ovo se vise ne koristi, ali svakako proveri

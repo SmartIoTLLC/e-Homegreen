@@ -12,21 +12,21 @@ import CoreData
 class DatabaseZoneController: NSObject {
     
     static let shared = DatabaseZoneController()
-    let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    func getLevelsByLocation(location:Location) -> [Zone]{
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
+    func getLevelsByLocation(_ location:Location) -> [Zone]{
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
         let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
         
         var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "level == %@", NSNumber(integer: 0)))
+        predicateArray.append(NSPredicate(format: "level == %@", NSNumber(value: 0 as Int)))
         predicateArray.append(NSPredicate(format: "location == %@", location))
         
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.sortDescriptors = [sortDescriptors]
         fetchRequest.predicate = compoundPredicate
         do {
-            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
+            let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Zone]
             return results
         } catch {
             
@@ -34,21 +34,21 @@ class DatabaseZoneController: NSObject {
         return[]
     }
     
-    func getZoneByLevel(location:Location, parentZone:Zone) -> [Zone]{
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
+    func getZoneByLevel(_ location:Location, parentZone:Zone) -> [Zone]{
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
         let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
         
         var predicateArray:[NSPredicate] = []
         predicateArray.append(NSPredicate(format: "location == %@", location))
-        predicateArray.append(NSPredicate(format: "level != %@", NSNumber(integer: 0)))
+        predicateArray.append(NSPredicate(format: "level != %@", NSNumber(value: 0 as Int)))
         predicateArray.append(NSPredicate(format: "level == %@", parentZone.id!))
         
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.sortDescriptors = [sortDescriptors]
         fetchRequest.predicate = compoundPredicate
         
         do {
-            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
+            let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Zone]
             return results
         } catch{
             
@@ -57,17 +57,17 @@ class DatabaseZoneController: NSObject {
         
     }
     
-    func getZoneById(id:Int, location:Location) -> Zone? {
-        let fetchRequest = NSFetchRequest(entityName: "Zone")
+    func getZoneById(_ id:Int, location:Location) -> Zone? {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
         
         var predicateArray:[NSPredicate] = []
         predicateArray.append(NSPredicate(format: "location == %@", location))
-        predicateArray.append(NSPredicate(format: "id == %@", NSNumber(integer: id)))        
+        predicateArray.append(NSPredicate(format: "id == %@", NSNumber(value: id as Int)))        
         
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let results = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as! [Zone]
+            let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Zone]
             if results.count != 0{
                 return results[0]
             }
@@ -77,8 +77,8 @@ class DatabaseZoneController: NSObject {
         return nil
     }
     
-    func changeAllowOption(option:Int, zone:Zone){
-        zone.allowOption = option
+    func changeAllowOption(_ option:Int, zone:Zone){
+        zone.allowOption = option as NSNumber!
         CoreDataController.shahredInstance.saveChanges()
     }
 

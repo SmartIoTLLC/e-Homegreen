@@ -13,18 +13,18 @@ import AudioToolbox
 class SecurityViewController: PopoverVC{
     
     enum SecurityItem{
-        case Location, Security
+        case location, security
     }
     
-    private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-    private let reuseIdentifier = "SecurityCell"
+    fileprivate var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+    fileprivate let reuseIdentifier = "SecurityCell"
     
     var sidebarMenuOpen : Bool!
     var securities:[Security] = []
     var location:[Location] = []
     
     var scrollView = FilterPullDown()
-    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Security)
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
@@ -34,35 +34,35 @@ class SecurityViewController: PopoverVC{
     @IBOutlet weak var securityCollectionView: UICollectionView!
     @IBOutlet weak var refreshBtn: UIButton!
     
-    var securityItem:SecurityItem = SecurityItem.Location
+    var securityItem:SecurityItem = SecurityItem.location
     
-    @IBAction func fullScreen(sender: AnyObject) {
-        if UIApplication.sharedApplication().statusBarHidden {
-            UIApplication.sharedApplication().statusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+    @IBAction func fullScreen(_ sender: AnyObject) {
+        if UIApplication.shared.isStatusBarHidden {
+            UIApplication.shared.isStatusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
         } else {
-            UIApplication.sharedApplication().statusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            UIApplication.shared.isStatusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
             if scrollView.contentOffset.y != 0 {
                 let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
                 scrollView.setContentOffset(bottomOffset, animated: false)
             }
         }
     }
-    @IBAction func refresh(sender: AnyObject) {
+    @IBAction func refresh(_ sender: AnyObject) {
         let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
         rotateAnimation.fromValue = 1
         rotateAnimation.toValue = CGFloat(M_PI)
-        refreshBtn.layer.addAnimation(rotateAnimation, forKey: nil)
+        refreshBtn.layer.add(rotateAnimation, forKey: nil)
         refreshSecurityAlarmStateAndSecurityMode()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UIView.hr_setToastThemeColor(color: UIColor.redColor())
+        UIView.hr_setToastThemeColor(color: UIColor.red)
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         
         scrollView.filterDelegate = self
         view.addSubview(scrollView)
@@ -72,8 +72,8 @@ class SecurityViewController: PopoverVC{
         self.navigationItem.titleView = headerTitleSubtitleView
         headerTitleSubtitleView.setTitleAndSubtitle("Security", subtitle: "All All All")
         
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let alarmState = defaults.valueForKey(UserDefaults.Security.AlarmState){
+        let defaults = Foundation.UserDefaults.standard
+        if let alarmState = defaults.value(forKey: UserDefaults.Security.AlarmState){
             lblAlarmState.text = "Alarm state: \(alarmState)"
         }
         
@@ -83,10 +83,10 @@ class SecurityViewController: PopoverVC{
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
-        scrollView.setFilterItem(Menu.Security)
+        scrollView.setFilterItem(Menu.security)
         
     }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         
         if self.revealViewController() != nil {
@@ -94,7 +94,7 @@ class SecurityViewController: PopoverVC{
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             revealViewController().toggleAnimationDuration = 0.5
-            if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
+            if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
                 revealViewController().rearViewRevealWidth = 200
             }else{
                 revealViewController().rearViewRevealWidth = 200
@@ -110,14 +110,14 @@ class SecurityViewController: PopoverVC{
         changeFullScreeenImage()
         
     }
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SecurityViewController.refreshSecurity), name: NotificationKey.RefreshSecurity, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SecurityViewController.refreshSecurity), name: NSNotification.Name(rawValue: NotificationKey.RefreshSecurity), object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SecurityViewController.startBlinking(_:)), name: NotificationKey.Security.ControlModeStartBlinking, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SecurityViewController.stopBlinking(_:)), name: NotificationKey.Security.ControlModeStopBlinking, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SecurityViewController.startBlinking(_:)), name: NSNotification.Name(rawValue: NotificationKey.Security.ControlModeStartBlinking), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SecurityViewController.stopBlinking(_:)), name: NSNotification.Name(rawValue: NotificationKey.Security.ControlModeStopBlinking), object: nil)
         
     }
     override func viewWillLayoutSubviews() {
@@ -126,7 +126,7 @@ class SecurityViewController: PopoverVC{
             scrollView.setContentOffset(bottomOffset, animated: false)
         }
         scrollView.bottom.constant = -(self.view.frame.height - 2)
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+        if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
             headerTitleSubtitleView.setLandscapeTitle()
         }else{
             headerTitleSubtitleView.setPortraitTitle()
@@ -137,16 +137,16 @@ class SecurityViewController: PopoverVC{
         securityCollectionView.reloadData()
         
     }
-    override func nameAndId(name : String, id:String){
+    override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
     }
-    override func viewDidDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationKey.RefreshSecurity, object: nil)
+    override func viewDidDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshSecurity), object: nil)
     }
     
-    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.Began {
-            scrollView.setDefaultFilterItem(Menu.Security)
+    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
+            scrollView.setDefaultFilterItem(Menu.security)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
@@ -156,17 +156,17 @@ class SecurityViewController: PopoverVC{
     }
     
     func updateConstraints() {
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0.0))
     }
     
     func changeFullScreeenImage(){
-        if UIApplication.sharedApplication().statusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        if UIApplication.shared.isStatusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
         } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
         }
     }
     
@@ -219,52 +219,52 @@ class SecurityViewController: PopoverVC{
     
     func updateSecurityList () {
         if filterParametar.location == "All"{
-            securityItem = SecurityItem.Location
+            securityItem = SecurityItem.location
             location = FilterController.shared.getLocationForFilterByUser()
         }else{
-            securityItem = SecurityItem.Security
+            securityItem = SecurityItem.security
             securities = DatabaseSecurityController.shared.getSecurity(filterParametar)
         }
     }
     
-    func openParametar (gestureRecognizer:UITapGestureRecognizer) {
+    func openParametar (_ gestureRecognizer:UITapGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
-        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
             switch securities[tag].securityName! {
             case "Away":
-                let location = gestureRecognizer.locationInView(securityCollectionView)
-                if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                    let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                let location = gestureRecognizer.location(in: securityCollectionView)
+                if let index = securityCollectionView.indexPathForItem(at: location){
+                    let cell = securityCollectionView.cellForItem(at: index)
                     showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
                 }
             case "Night":
-                let location = gestureRecognizer.locationInView(securityCollectionView)
-                if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                    let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                let location = gestureRecognizer.location(in: securityCollectionView)
+                if let index = securityCollectionView.indexPathForItem(at: location){
+                    let cell = securityCollectionView.cellForItem(at: index)
                     showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
                 }
             case "Day":
-                let location = gestureRecognizer.locationInView(securityCollectionView)
-                if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                    let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                let location = gestureRecognizer.location(in: securityCollectionView)
+                if let index = securityCollectionView.indexPathForItem(at: location){
+                    let cell = securityCollectionView.cellForItem(at: index)
                     showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
                 }
             case "Vacation":
-                let location = gestureRecognizer.locationInView(securityCollectionView)
-                if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                    let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                let location = gestureRecognizer.location(in: securityCollectionView)
+                if let index = securityCollectionView.indexPathForItem(at: location){
+                    let cell = securityCollectionView.cellForItem(at: index)
                     showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
                 }
             case "Disarm":
-                let location = gestureRecognizer.locationInView(securityCollectionView)
-                if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                    let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                let location = gestureRecognizer.location(in: securityCollectionView)
+                if let index = securityCollectionView.indexPathForItem(at: location){
+                    let cell = securityCollectionView.cellForItem(at: index)
                     showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
                 }
             case "Panic":
-                let location = gestureRecognizer.locationInView(securityCollectionView)
-                if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                    let cell = securityCollectionView.cellForItemAtIndexPath(index)
+                let location = gestureRecognizer.location(in: securityCollectionView)
+                if let index = securityCollectionView.indexPathForItem(at: location){
+                    let cell = securityCollectionView.cellForItem(at: index)
                     showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
                 }
             default: break
@@ -272,21 +272,21 @@ class SecurityViewController: PopoverVC{
         }
     }
     
-    func openMode(gestureRecognizer:UITapGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+    func openMode(_ gestureRecognizer:UITapGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
             showSecurityLocationParametar()
         }
     }
     
-    func buttonPressed (gestureRecognizer:UITapGestureRecognizer) {
+    func buttonPressed (_ gestureRecognizer:UITapGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
         switch securities[tag].securityName! {
         case "Away":
-            let location = gestureRecognizer.locationInView(securityCollectionView)
-            if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                let defaults = NSUserDefaults.standardUserDefaults()
-                if let securityMode = defaults.valueForKey(UserDefaults.Security.SecurityMode) as? String {
+            let location = gestureRecognizer.location(in: securityCollectionView)
+            if let index = securityCollectionView.indexPathForItem(at: location){
+                let cell = securityCollectionView.cellForItem(at: index)
+                let defaults = Foundation.UserDefaults.standard
+                if let securityMode = defaults.value(forKey: UserDefaults.Security.SecurityMode) as? String {
                     if securityMode != SecurityControlMode.Disarm{
                         showSecurityInformation(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y))
                     }else{
@@ -295,12 +295,12 @@ class SecurityViewController: PopoverVC{
                 }
             }
         case "Night":
-            let location = gestureRecognizer.locationInView(securityCollectionView)
-            if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                let cell = securityCollectionView.cellForItemAtIndexPath(index)
+            let location = gestureRecognizer.location(in: securityCollectionView)
+            if let index = securityCollectionView.indexPathForItem(at: location){
+                let cell = securityCollectionView.cellForItem(at: index)
                 
-                let defaults = NSUserDefaults.standardUserDefaults()
-                if let securityMode = defaults.valueForKey(UserDefaults.Security.SecurityMode) as? String {
+                let defaults = Foundation.UserDefaults.standard
+                if let securityMode = defaults.value(forKey: UserDefaults.Security.SecurityMode) as? String {
                     if securityMode != SecurityControlMode.Disarm{
                         showSecurityInformation(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y))
                     }else{
@@ -309,11 +309,11 @@ class SecurityViewController: PopoverVC{
                 }
             }
         case "Day":
-            let location = gestureRecognizer.locationInView(securityCollectionView)
-            if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                let defaults = NSUserDefaults.standardUserDefaults()
-                if let securityMode = defaults.valueForKey(UserDefaults.Security.SecurityMode) as? String {
+            let location = gestureRecognizer.location(in: securityCollectionView)
+            if let index = securityCollectionView.indexPathForItem(at: location){
+                let cell = securityCollectionView.cellForItem(at: index)
+                let defaults = Foundation.UserDefaults.standard
+                if let securityMode = defaults.value(forKey: UserDefaults.Security.SecurityMode) as? String {
                     if securityMode != SecurityControlMode.Disarm{
                         showSecurityInformation(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y))
                     }else{
@@ -322,11 +322,11 @@ class SecurityViewController: PopoverVC{
                 }
             }
         case "Vacation":
-            let location = gestureRecognizer.locationInView(securityCollectionView)
-            if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                let cell = securityCollectionView.cellForItemAtIndexPath(index)
-                let defaults = NSUserDefaults.standardUserDefaults()
-                if let securityMode = defaults.valueForKey(UserDefaults.Security.SecurityMode) as? String {
+            let location = gestureRecognizer.location(in: securityCollectionView)
+            if let index = securityCollectionView.indexPathForItem(at: location){
+                let cell = securityCollectionView.cellForItem(at: index)
+                let defaults = Foundation.UserDefaults.standard
+                if let securityMode = defaults.value(forKey: UserDefaults.Security.SecurityMode) as? String {
                     if securityMode != SecurityControlMode.Disarm{
                         showSecurityInformation(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y))
                     }else{
@@ -336,36 +336,36 @@ class SecurityViewController: PopoverVC{
                 }
             }
         case "Disarm":
-            let location = gestureRecognizer.locationInView(securityCollectionView)
-            if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                let cell = securityCollectionView.cellForItemAtIndexPath(index)
+            let location = gestureRecognizer.location(in: securityCollectionView)
+            if let index = securityCollectionView.indexPathForItem(at: location){
+                let cell = securityCollectionView.cellForItem(at: index)
                 
                 showSecurityPad(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
             }
         case "Panic":
-            let location = gestureRecognizer.locationInView(securityCollectionView)
-            if let index = securityCollectionView.indexPathForItemAtPoint(location){
-                let cell = securityCollectionView.cellForItemAtIndexPath(index)
+            let location = gestureRecognizer.location(in: securityCollectionView)
+            if let index = securityCollectionView.indexPathForItem(at: location){
+                let cell = securityCollectionView.cellForItem(at: index)
                 showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].securityDescription!, security: securities[tag])
             }
         default: break
         }
     }
     
-    func startBlinking(notification: NSNotification){
-        securityCollectionView.scrollEnabled = false
+    func startBlinking(_ notification: Notification){
+        securityCollectionView.isScrollEnabled = false
     }
-    func stopBlinking(notification: NSNotification){
-        securityCollectionView.scrollEnabled = true
+    func stopBlinking(_ notification: Notification){
+        securityCollectionView.isScrollEnabled = true
     }
 
 }
 
 // Parametar from filter and relaod data
 extension SecurityViewController: FilterPullDownDelegate{
-    func filterParametars(filterItem: FilterItem){
+    func filterParametars(_ filterItem: FilterItem){
         filterParametar = filterItem
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Security)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.security)
         updateSubtitle()
         refreshSecurity()
     }
@@ -376,30 +376,30 @@ extension SecurityViewController: FilterPullDownDelegate{
 }
 
 extension SecurityViewController: SWRevealViewControllerDelegate {
-    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            securityCollectionView.userInteractionEnabled = true
+    func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
+        if(position == FrontViewPosition.left) {
+            securityCollectionView.isUserInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
-            securityCollectionView.userInteractionEnabled = false
+            securityCollectionView.isUserInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }
-    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            securityCollectionView.userInteractionEnabled = true
+    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
+        if(position == FrontViewPosition.left) {
+            securityCollectionView.isUserInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
             let tap = UITapGestureRecognizer(target: self, action: #selector(SecurityViewController.closeSideMenu))
             self.view.addGestureRecognizer(tap)
-            securityCollectionView.userInteractionEnabled = false
+            securityCollectionView.isUserInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }
     func closeSideMenu(){
         
         if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggleAnimated(true)
+            self.revealViewController().revealToggle(animated: true)
         }
         
     }
@@ -407,52 +407,52 @@ extension SecurityViewController: SWRevealViewControllerDelegate {
 
 extension SecurityViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if (collectionView.cellForItemAtIndexPath(indexPath) as? SecurityLocationCell) != nil{
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if (collectionView.cellForItem(at: indexPath) as? SecurityLocationCell) != nil{
             
-            filterParametar.location = location[indexPath.row].name!
-            filterParametar.locationObjectId = location[indexPath.row].objectID.URIRepresentation().absoluteString!
-            DatabaseFilterController.shared.saveFilter(filterParametar, menu: Menu.Security)
-            scrollView.setFilterItem(Menu.Security)
+            filterParametar.location = location[(indexPath as NSIndexPath).row].name!
+            filterParametar.locationObjectId = location[(indexPath as NSIndexPath).row].objectID.uriRepresentation().absoluteString
+            DatabaseFilterController.shared.saveFilter(filterParametar, menu: Menu.security)
+            scrollView.setFilterItem(Menu.security)
             updateSubtitle()
             refreshSecurity()
         }
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {        return collectionViewCellSize
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {        return collectionViewCellSize
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
 }
 
 extension SecurityViewController: UICollectionViewDataSource {
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if securityItem == SecurityItem.Security{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if securityItem == SecurityItem.security{
             return securities.count
         }else{
             return location.count
         }
     }
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if securityItem == SecurityItem.Security{
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SecurityCollectionCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if securityItem == SecurityItem.security{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SecurityCollectionCell
             var name:String = ""
             if filterParametar.location == "All" {
-                name += securities[indexPath.row].location!.name! + " "
+                name += securities[(indexPath as NSIndexPath).row].location!.name! + " "
             }
-            name += securities[indexPath.row].securityName!
+            name += securities[(indexPath as NSIndexPath).row].securityName!
             
-            let securityName = securities[indexPath.row].securityName!
+            let securityName = securities[(indexPath as NSIndexPath).row].securityName!
             var securityBtnTitle = ""
             if securityName == SecurityControlMode.Disarm{
                 securityBtnTitle = "ENTER CODE"
@@ -463,8 +463,8 @@ extension SecurityViewController: UICollectionViewDataSource {
             }
             cell.setCell(name, securityName: securityName, securityBtnTitle: securityBtnTitle)
             
-            cell.securityTitle.tag = indexPath.row
-            cell.securityButton.tag = indexPath.row
+            cell.securityTitle.tag = (indexPath as NSIndexPath).row
+            cell.securityButton.tag = (indexPath as NSIndexPath).row
             
             let openParametar:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SecurityViewController.openParametar(_:)))
             openParametar.minimumPressDuration = 0.5
@@ -475,14 +475,14 @@ extension SecurityViewController: UICollectionViewDataSource {
             
             return cell
         }else{
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(String(SecurityLocationCell), forIndexPath: indexPath) as! SecurityLocationCell
-            cell.setItem(location[indexPath.row])
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: SecurityLocationCell()), for: indexPath) as! SecurityLocationCell
+            cell.setItem(location[(indexPath as NSIndexPath).row])
             
             let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SecurityViewController.openMode(_:)))
             longPress.minimumPressDuration = 0.5
             
-            cell.loactionTitleLabel.tag = indexPath.row
-            cell.loactionTitleLabel.userInteractionEnabled = true
+            cell.loactionTitleLabel.tag = (indexPath as NSIndexPath).row
+            cell.loactionTitleLabel.isUserInteractionEnabled = true
             cell.loactionTitleLabel.addGestureRecognizer(longPress)
             
             return cell

@@ -12,18 +12,18 @@ import CoreData
 class DatabaseScenesController: NSObject {
     
     static let shared = DatabaseScenesController()
-    let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    func getScene(filterParametar:FilterItem) -> [Scene] {
+    func getScene(_ filterParametar:FilterItem) -> [Scene] {
         if let user = DatabaseUserController.shared.logedUserOrAdmin(){
-            let fetchRequest = NSFetchRequest(entityName: "Scene")
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Scene.fetchRequest()
             
             let sortDescriptorOne = NSSortDescriptor(key: "gateway.location.name", ascending: true)
             let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
             let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
             fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
             
-            var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway.turnedOn == %@", NSNumber(bool: true))]
+            var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool))]
             predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
             
             if filterParametar.location != "All" {
@@ -45,11 +45,11 @@ class DatabaseScenesController: NSObject {
                 }
             }
             
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
             
             fetchRequest.predicate = compoundPredicate
             do {
-                let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
+                let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Scene]
                 return fetResults!
             } catch  {
                 
@@ -59,8 +59,8 @@ class DatabaseScenesController: NSObject {
         
     }
     
-    func updateSceneList(gateway:Gateway, filterParametar:FilterItem) -> [Scene]{
-        let fetchRequest = NSFetchRequest(entityName: "Scene")
+    func updateSceneList(_ gateway:Gateway, filterParametar:FilterItem) -> [Scene]{
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Scene.fetchRequest()
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "sceneId", ascending: true)
         let sortDescriptorThree = NSSortDescriptor(key: "sceneName", ascending: true)
@@ -84,17 +84,17 @@ class DatabaseScenesController: NSObject {
                 predicateArray.append(NSPredicate(format: "sceneCategoryId == %@", category.id!))
             }
         }
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Scene]
             return fetResults!
         } catch {
         }
         return []
     }
     
-    func createScene(sceneId: Int, sceneName: String, moduleAddress: Int, gateway: Gateway, levelId: Int?, zoneId: Int?, categoryId: Int?, isBroadcast:Bool = true, isLocalcast:Bool = true, sceneImageOneDefault:String? = "Scene - All On - 00", sceneImageTwoDefault:String? = "Scene - All On - 01", sceneImageOneCustom:String? = nil, sceneImageTwoCustom:String? = nil, imageDataOne:NSData? = nil, imageDataTwo:NSData? = nil){
+    func createScene(_ sceneId: Int, sceneName: String, moduleAddress: Int, gateway: Gateway, levelId: Int?, zoneId: Int?, categoryId: Int?, isBroadcast:Bool = true, isLocalcast:Bool = true, sceneImageOneDefault:String? = "Scene - All On - 00", sceneImageTwoDefault:String? = "Scene - All On - 01", sceneImageOneCustom:String? = nil, sceneImageTwoCustom:String? = nil, imageDataOne:Data? = nil, imageDataTwo:Data? = nil){
         var itExists = false
         var existingScene:Scene?
         let sceneArray = fetchSceneWithIdAndAddress(sceneId, gateway: gateway, moduleAddress: moduleAddress)
@@ -103,18 +103,18 @@ class DatabaseScenesController: NSObject {
             itExists = true
         }
         if !itExists {
-            let scene = NSEntityDescription.insertNewObjectForEntityForName("Scene", inManagedObjectContext: appDel.managedObjectContext!) as! Scene
-            scene.sceneId = sceneId
+            let scene = NSEntityDescription.insertNewObject(forEntityName: "Scene", into: appDel.managedObjectContext!) as! Scene
+            scene.sceneId = NSNumber(value: sceneId)
             scene.sceneName = sceneName
-            scene.address = moduleAddress
+            scene.address = NSNumber(value: moduleAddress)
             
             scene.sceneImageOneCustom = nil
             scene.sceneImageTwoCustom = nil
             
             if let imageDataOne = imageDataOne{
-                if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
                     image.imageData = imageDataOne
-                    image.imageId = NSUUID().UUIDString
+                    image.imageId = UUID().uuidString
                     scene.sceneImageOneCustom = image.imageId
                     scene.sceneImageOneDefault = nil
                     gateway.location.user!.addImagesObject(image)
@@ -125,9 +125,9 @@ class DatabaseScenesController: NSObject {
             }
             
             if let imageDataTwo = imageDataTwo{
-                if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
                     image.imageData = imageDataTwo
-                    image.imageId = NSUUID().UUIDString
+                    image.imageId = UUID().uuidString
                     scene.sceneImageTwoCustom = image.imageId
                     scene.sceneImageTwoDefault = nil
                     gateway.location.user!.addImagesObject(image)
@@ -138,12 +138,12 @@ class DatabaseScenesController: NSObject {
                 scene.sceneImageTwoCustom = sceneImageTwoCustom
             }
             
-            scene.entityLevelId = levelId
-            scene.sceneZoneId = zoneId
-            scene.sceneCategoryId = categoryId
+            scene.entityLevelId = levelId as NSNumber?
+            scene.sceneZoneId = zoneId as NSNumber?
+            scene.sceneCategoryId = categoryId as NSNumber?
             
-            scene.isBroadcast = isBroadcast
-            scene.isLocalcast = isLocalcast
+            scene.isBroadcast = isBroadcast as NSNumber
+            scene.isLocalcast = isLocalcast as NSNumber
             
             scene.gateway = gateway
             CoreDataController.shahredInstance.saveChanges()
@@ -153,9 +153,9 @@ class DatabaseScenesController: NSObject {
             existingScene!.sceneName = sceneName
             
             if let imageDataOne = imageDataOne{
-                if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
                     image.imageData = imageDataOne
-                    image.imageId = NSUUID().UUIDString
+                    image.imageId = UUID().uuidString
                     existingScene!.sceneImageOneCustom = image.imageId
                     existingScene!.sceneImageOneDefault = nil
                     gateway.location.user!.addImagesObject(image)
@@ -166,9 +166,9 @@ class DatabaseScenesController: NSObject {
             }
             
             if let imageDataTwo = imageDataTwo{
-                if let image = NSEntityDescription.insertNewObjectForEntityForName("Image", inManagedObjectContext: appDel.managedObjectContext!) as? Image{
+                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
                     image.imageData = imageDataTwo
-                    image.imageId = NSUUID().UUIDString
+                    image.imageId = UUID().uuidString
                     existingScene!.sceneImageTwoCustom = image.imageId
                     existingScene!.sceneImageTwoDefault = nil
                     gateway.location.user!.addImagesObject(image)
@@ -179,27 +179,27 @@ class DatabaseScenesController: NSObject {
                 existingScene!.sceneImageTwoCustom = sceneImageTwoCustom
             }
             
-            existingScene!.entityLevelId = levelId
-            existingScene!.sceneZoneId = zoneId
-            existingScene!.sceneCategoryId = categoryId
+            existingScene!.entityLevelId = levelId as NSNumber?
+            existingScene!.sceneZoneId = zoneId as NSNumber?
+            existingScene!.sceneCategoryId = categoryId as NSNumber?
             
-            existingScene!.isBroadcast = isBroadcast
-            existingScene!.isLocalcast = isLocalcast
+            existingScene!.isBroadcast = isBroadcast as NSNumber
+            existingScene!.isLocalcast = isLocalcast as NSNumber
             
             CoreDataController.shahredInstance.saveChanges()
         }
     }
     
-    func fetchSceneWithIdAndAddress(sceneId: Int, gateway: Gateway, moduleAddress:Int) -> [Scene]{
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Scene")
-        let predicateLocation = NSPredicate(format: "sceneId == %@", NSNumber(integer: sceneId))
+    func fetchSceneWithIdAndAddress(_ sceneId: Int, gateway: Gateway, moduleAddress:Int) -> [Scene]{
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Scene.fetchRequest()
+        let predicateLocation = NSPredicate(format: "sceneId == %@", NSNumber(value: sceneId as Int))
         let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
-        let predicateAddress = NSPredicate(format: "address == %@", NSNumber(integer: moduleAddress))
+        let predicateAddress = NSPredicate(format: "address == %@", NSNumber(value: moduleAddress as Int))
         let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway, predicateAddress])
         
         fetchRequest.predicate = combinedPredicate
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Scene]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Scene]
             return fetResults!
         } catch let error1 as NSError {
             print("Unresolved error \(error1), \(error1.userInfo)")
@@ -208,17 +208,17 @@ class DatabaseScenesController: NSObject {
         return []
     }
     
-    func deleteAllScenes(gateway:Gateway){
+    func deleteAllScenes(_ gateway:Gateway){
         let scenes = gateway.scenes.allObjects as! [Scene]
         for scene in scenes {
-            self.appDel.managedObjectContext!.deleteObject(scene)
+            self.appDel.managedObjectContext!.delete(scene)
         }
         
         CoreDataController.shahredInstance.saveChanges()
     }
     
-    func deleteScene(scene:Scene){
-        self.appDel.managedObjectContext!.deleteObject(scene)
+    func deleteScene(_ scene:Scene){
+        self.appDel.managedObjectContext!.delete(scene)
         CoreDataController.shahredInstance.saveChanges()
     }
 

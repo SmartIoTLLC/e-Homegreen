@@ -41,7 +41,7 @@ class IntelligentSwitchParameter: CommonXIBTransitionVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
         
         lblLocation.text = "\(devices[indexPathRow].gateway.name)"
@@ -64,33 +64,33 @@ class IntelligentSwitchParameter: CommonXIBTransitionVC {
 
     }
     
-    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: backView){
             return false
         }
         return true
     }
     
-    @IBAction func btnCancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func btnCancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func btnSave(sender: AnyObject) {
+    @IBAction func btnSave(_ sender: AnyObject) {
         self.delegate?.saveClicked()
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     func dismissViewController () {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func getDeviceAndSave (numberOne:Int, numberTwo:Int, numberThree:Int) {
-        if let deviceObject = appDel.managedObjectContext!.objectWithID(devices[indexPathRow].objectID) as? Device {
+    func getDeviceAndSave (_ numberOne:Int, numberTwo:Int, numberThree:Int) {
+        if let deviceObject = appDel.managedObjectContext!.object(with: devices[indexPathRow].objectID) as? Device {
             device = deviceObject
             print(device)
-            device!.delay = numberOne
-            device!.runtime = numberTwo
-            device!.skipState = numberThree
+            device!.delay = NSNumber(value: numberOne)
+            device!.runtime = NSNumber(value: numberTwo)
+            device!.skipState = NSNumber(value: numberThree)
             CoreDataController.shahredInstance.saveChanges()
         }
     }
@@ -98,7 +98,7 @@ class IntelligentSwitchParameter: CommonXIBTransitionVC {
 
 
 extension IntelligentSwitchParameter : UITextFieldDelegate {
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
@@ -106,10 +106,10 @@ extension IntelligentSwitchParameter : UITextFieldDelegate {
 }
 
 extension UIViewController {
-    func showIntelligentSwitchParameter(indexPathRow: Int, devices:[Device]) {
+    func showIntelligentSwitchParameter(_ indexPathRow: Int, devices:[Device]) {
         let ad = IntelligentSwitchParameter()
         ad.indexPathRow = indexPathRow
         ad.devices = devices
-        self.presentViewController(ad, animated: true, completion: nil)
+        self.present(ad, animated: true, completion: nil)
     }
 }

@@ -47,7 +47,7 @@ class EditCategoryViewController: CommonXIBTransitionVC {
         idTextField.inputAccessoryView = CustomToolBar()
 
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
         nameTextField.delegate = self
         descriptionTextField.delegate = self
@@ -57,29 +57,29 @@ class EditCategoryViewController: CommonXIBTransitionVC {
             idTextField.text = "\(category.id!)"
             nameTextField.text = category.name
             descriptionTextField.text = category.categoryDescription
-            idTextField.enabled = false
+            idTextField.isEnabled = false
         }
     }
     
-    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: backView){
             return false
         }
         return true
     }
     
     func dismissViewController () {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func fetchCategory(id:Int, location:Location) -> [Category]? {
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Category")
+    func fetchCategory(_ id:Int, location:Location) -> [Category]? {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Category.fetchRequest()
         let predicate = NSPredicate(format: "location == %@", location)
-        let predicateTwo = NSPredicate(format: "id == %@", NSNumber(integer: id))
+        let predicateTwo = NSPredicate(format: "id == %@", NSNumber(value: id as Int))
         let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicateTwo])
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Category]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Category]
             return fetResults!
         } catch let error1 as NSError {
             error = error1
@@ -89,7 +89,7 @@ class EditCategoryViewController: CommonXIBTransitionVC {
         return nil
     }
     
-    @IBAction func saveAction(sender: AnyObject) {
+    @IBAction func saveAction(_ sender: AnyObject) {
         if let name = nameTextField.text, let id = idTextField.text, let idValid = Int(id) {
             if category == nil{
                 if let location = location, let category = fetchCategory(idValid, location: location){
@@ -101,20 +101,20 @@ class EditCategoryViewController: CommonXIBTransitionVC {
                             }
                         }
                     }else{
-                        if let categoryNew = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as? Category{
-                            categoryNew.id = idValid
+                        if let categoryNew = NSEntityDescription.insertNewObject(forEntityName: "Category", into: appDel.managedObjectContext!) as? Category{
+                            categoryNew.id = idValid as NSNumber?
                             categoryNew.name = name
                             if let desc = descriptionTextField.text{
                                 categoryNew.categoryDescription = desc
                             }
                             categoryNew.location = location
-                            categoryNew.orderId = idValid
+                            categoryNew.orderId = idValid as NSNumber?
                             categoryNew.allowOption = 3
                             categoryNew.isVisible = true
                         }
                     }
-                }else if let categoryNew = NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: appDel.managedObjectContext!) as? Category{
-                    categoryNew.id = idValid
+                }else if let categoryNew = NSEntityDescription.insertNewObject(forEntityName: "Category", into: appDel.managedObjectContext!) as? Category{
+                    categoryNew.id = idValid as NSNumber?
                     categoryNew.name = name
                     categoryNew.allowOption = 3
                     if let desc = descriptionTextField.text{
@@ -130,27 +130,27 @@ class EditCategoryViewController: CommonXIBTransitionVC {
                 CoreDataController.shahredInstance.saveChanges()
             }
             delegate?.editCategoryFInished()
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         }
     }
     
-    @IBAction func cancelAction(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelAction(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
 
 }
 
 extension EditCategoryViewController: UITextFieldDelegate{
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
 }
 
 extension UIViewController {
-    func showEditCategory(category:Category?, location:Location?) -> EditCategoryViewController{
+    func showEditCategory(_ category:Category?, location:Location?) -> EditCategoryViewController{
         let editCategory = EditCategoryViewController(category: category, location: location)
-        self.presentViewController(editCategory, animated: true, completion: nil)
+        self.present(editCategory, animated: true, completion: nil)
         return editCategory
     }
 }

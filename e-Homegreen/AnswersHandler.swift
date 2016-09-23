@@ -8,47 +8,46 @@
 
 import UIKit
 
-class AnswersHandler: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
+class AnswersHandler: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
     
-    func getAnswerComplition(question:String, completion:(result:String) -> Void){
+    func getAnswerComplition(_ question:String, completion:@escaping (_ result:String) -> Void){
         
-        let questionTemp = question.stringByReplacingOccurrencesOfString(" ", withString: "_")
-        let url = NSURL(string: "http://answers.com/Q/\(questionTemp)")!
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "GET"
+        let questionTemp = question.replacingOccurrences(of: " ", with: "_")
+        let url = URL(string: "http://answers.com/Q/\(questionTemp)")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
         
-        let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        let session = NSURLSession(configuration: configuration, delegate: self, delegateQueue: NSOperationQueue())
+        let configuration = URLSessionConfiguration.default
+        let session = URLSession(configuration: configuration, delegate: self, delegateQueue: OperationQueue())
         
-        let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
-            
+        let task = session.dataTask(with: request) { (data, rasponse, error) in
             if error == nil{
-                if let returnS = String(data: data!, encoding: NSUTF8StringEncoding){
+                if let returnS = String(data: data!, encoding: String.Encoding.utf8){
                     if var returnString = returnS.sliceFrom("<div class=\"answer_text\">\n\t\t\t\t\t\t\t\t", to: "\t\t\t\t\t\t\t</div>"){
-                        returnString = returnString.stringByReplacingOccurrencesOfString("\n", withString: "", options: .RegularExpressionSearch, range: nil)
-                        returnString = returnString.stringByReplacingOccurrencesOfString("<[^>]+>", withString: "", options: .RegularExpressionSearch, range: nil)
-                        completion(result: returnString)
+                        returnString = returnString.replacingOccurrences(of: "\n", with: "", options: .regularExpression, range: nil)
+                        returnString = returnString.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
+                        completion(returnString)
                     }else{
-                        completion(result: "")
+                        completion("")
                     }
                 }else{
-                    completion(result: "")
+                    completion("")
                 }
                 
             }else{
-                completion(result: "")
+                completion("")
             }
-            
         }
+         
         task.resume()
     }
 }
 
 extension String {
-    func sliceFrom(start: String, to: String) -> String? {
-        return (rangeOfString(start)?.endIndex).flatMap { sInd in
-            (rangeOfString(to, range: sInd..<endIndex)?.startIndex).map { eInd in
-                substringWithRange(sInd..<eInd)
+    func sliceFrom(_ start: String, to: String) -> String? {
+        return (range(of: start)?.upperBound).flatMap { sInd in
+            (range(of: to, range: sInd..<endIndex)?.lowerBound).map { eInd in
+                substring(with: sInd..<eInd)
             }
         }
     }

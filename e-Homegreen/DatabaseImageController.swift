@@ -12,15 +12,15 @@ import CoreData
 class DatabaseImageController: NSObject {
     
     static let shared = DatabaseImageController()
-    let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
 
-    func getImageById(id:String) -> Image?{
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Image")
+    func getImageById(_ id:String) -> Image?{
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Image.fetchRequest()
         let predicateArray:[NSPredicate] = [NSPredicate(format: "imageId == %@", id)]
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicateType.AndPredicateType, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Image]
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Image]
             if fetResults?.count != 0{
                 return fetResults?.first
             }

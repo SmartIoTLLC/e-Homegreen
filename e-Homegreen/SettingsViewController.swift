@@ -9,17 +9,17 @@
 import UIKit
 
 enum SettingsItem{
-    case MainMenu, Interfaces, RefreshStatusDelay, OpenLastScreen, Broadcast, RefreshConnection, LockProfile, ResetPassword
+    case mainMenu, interfaces, refreshStatusDelay, openLastScreen, broadcast, refreshConnection, lockProfile, resetPassword
     var description:String{
         switch self{
-            case MainMenu: return "Main Menu"
-            case Interfaces: return "Locations"
-            case RefreshStatusDelay: return "Refresh Status Delay"
-            case OpenLastScreen: return "Open Last Screen"
-            case Broadcast: return "Broadcast"
-            case RefreshConnection: return "Refresh Connection"
-            case .LockProfile: return "Lock Profile"
-            case .ResetPassword: return "Reset Password"
+            case .mainMenu: return "Main Menu"
+            case .interfaces: return "Locations"
+            case .refreshStatusDelay: return "Refresh Status Delay"
+            case .openLastScreen: return "Open Last Screen"
+            case .broadcast: return "Broadcast"
+            case .refreshConnection: return "Refresh Connection"
+            case .lockProfile: return "Lock Profile"
+            case .resetPassword: return "Reset Password"
         }
     }
     
@@ -48,32 +48,32 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
             navigationItem.leftBarButtonItems = []
         }
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SettingsViewController.KeyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SettingsViewController.KeyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.KeyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.KeyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
-        settingArray = [.MainMenu, .Interfaces, .RefreshStatusDelay, .OpenLastScreen, .Broadcast]
+        settingArray = [.mainMenu, .interfaces, .refreshStatusDelay, .openLastScreen, .broadcast]
         
         if !AdminController.shared.isAdminLogged() {
-            settingArray.append(.LockProfile)
+            settingArray.append(.lockProfile)
         }
         
-        settingArray.append(.ResetPassword)
+        settingArray.append(.resetPassword)
         
-        if let hour = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayHours) as? Int {
+        if let hour = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayHours) as? Int {
             hourRefresh = hour
         }
         
-        if let min = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaults.RefreshDelayMinutes) as? Int {
+        if let min = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayMinutes) as? Int {
             minRefresh = min
         }
 
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         if !AdminController.shared.isAdminLogged() && user == nil{
             self.revealViewController().delegate = self
             
@@ -82,7 +82,7 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
                 menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
                 self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
                 revealViewController().toggleAnimationDuration = 0.5
-                if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
+                if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
                     revealViewController().rearViewRevealWidth = 200
                 }else{
                     revealViewController().rearViewRevealWidth = 200
@@ -99,7 +99,7 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
         self.view.makeToast(message: "Passwords was changed successfully")
     }
     
-    func btnAddHourPressed(sender:UIButton){
+    func btnAddHourPressed(_ sender:UIButton){
         if sender.tag == 1{
             if hourRefresh < 23 {
                 hourRefresh += 1
@@ -107,8 +107,8 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
                 hourRefresh = 0
             }
             settingsTableView.reloadData()
-            NSUserDefaults.standardUserDefaults().setValue(hourRefresh, forKey: UserDefaults.RefreshDelayHours)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            Foundation.UserDefaults.standard.setValue(hourRefresh, forKey: UserDefaults.RefreshDelayHours)
+            Foundation.UserDefaults.standard.synchronize()
         }else{
             if minRefresh < 59 {
                 minRefresh += 1
@@ -116,13 +116,13 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
                 minRefresh = 0
             }
             settingsTableView.reloadData()
-            NSUserDefaults.standardUserDefaults().setValue(minRefresh, forKey: UserDefaults.RefreshDelayMinutes)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            Foundation.UserDefaults.standard.setValue(minRefresh, forKey: UserDefaults.RefreshDelayMinutes)
+            Foundation.UserDefaults.standard.synchronize()
         }
         
     }
     
-    func btnDecHourPressed(sender:UIButton){
+    func btnDecHourPressed(_ sender:UIButton){
         if sender.tag == 1{
             if hourRefresh > 0 {
                 hourRefresh -= 1
@@ -130,8 +130,8 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
                 hourRefresh = 23
             }
             settingsTableView.reloadData()
-            NSUserDefaults.standardUserDefaults().setValue(hourRefresh, forKey: UserDefaults.RefreshDelayHours)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            Foundation.UserDefaults.standard.setValue(hourRefresh, forKey: UserDefaults.RefreshDelayHours)
+            Foundation.UserDefaults.standard.synchronize()
         }else{
             if minRefresh > 0 {
                 minRefresh -= 1
@@ -139,48 +139,48 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
                 minRefresh = 59
             }
             settingsTableView.reloadData()
-            NSUserDefaults.standardUserDefaults().setValue(minRefresh, forKey: UserDefaults.RefreshDelayMinutes)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            Foundation.UserDefaults.standard.setValue(minRefresh, forKey: UserDefaults.RefreshDelayMinutes)
+            Foundation.UserDefaults.standard.synchronize()
         }
     }
     
-    func changeValue(sender:UISwitch){
+    func changeValue(_ sender:UISwitch){
         if let user = user{
-            user.openLastScreen = sender.on
+            user.openLastScreen = sender.isOn as NSNumber!
         }else{
             if let tempUser = DatabaseUserController.shared.getLoggedUser(){
-                tempUser.openLastScreen = sender.on
+                tempUser.openLastScreen = sender.isOn as NSNumber!
             }
         }
     }
     
-    func lockProfile(sender:UISwitch){
+    func lockProfile(_ sender:UISwitch){
         if let user = user{
-            user.isLocked = sender.on
+            user.isLocked = sender.isOn as NSNumber?
         }else if let user = DatabaseUserController.shared.getLoggedUser(){
-            user.isLocked = sender.on
+            user.isLocked = sender.isOn as NSNumber?
         }
         CoreDataController.shahredInstance.saveChanges()
         
     }
     
-    func didTouchSettingButton (sender:AnyObject) {
+    func didTouchSettingButton (_ sender:AnyObject) {
         if let view = sender as? UIButton {
             let tag = view.tag
             
-            if settingArray[tag] == SettingsItem.MainMenu {
-                dispatch_async(dispatch_get_main_queue(),{
-                    self.performSegueWithIdentifier("mainMenu", sender: self)
+            if settingArray[tag] == SettingsItem.mainMenu {
+                DispatchQueue.main.async(execute: {
+                    self.performSegue(withIdentifier: "mainMenu", sender: self)
                 })
 
             }
-            if settingArray[tag] == SettingsItem.Interfaces {
-                dispatch_async(dispatch_get_main_queue(),{
-                    self.performSegueWithIdentifier("connection", sender: self)
+            if settingArray[tag] == SettingsItem.interfaces {
+                DispatchQueue.main.async(execute: {
+                    self.performSegue(withIdentifier: "connection", sender: self)
                 })
             }
-            if settingArray[tag] == SettingsItem.ResetPassword{
-                dispatch_async(dispatch_get_main_queue(),{
+            if settingArray[tag] == SettingsItem.resetPassword{
+                DispatchQueue.main.async(execute: {
                     if let user = self.user{
                         self.showResetPassword(user).delegate = self
                     }else{
@@ -195,9 +195,9 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "connection"{
-            if let destinationVC = segue.destinationViewController as? LocationViewController{
+            if let destinationVC = segue.destination as? LocationViewController{
                 if let user = user{
                     destinationVC.user = user
                 }else{
@@ -207,7 +207,7 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
             }
         }
         if segue.identifier == "mainMenu"{
-            if let destinationVC = segue.destinationViewController as? MenuSettingsViewController{
+            if let destinationVC = segue.destination as? MenuSettingsViewController{
                 if let user = user{
                     destinationVC.user = user
                 }else{
@@ -219,44 +219,44 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
     }
     
     var isMore = false
-    @IBAction func btnMore(sender: AnyObject) {
+    @IBAction func btnMore(_ sender: AnyObject) {
         isMore = !isMore
         settingsTableView.reloadData()
     }
     
-    @IBAction func broadcastTimeAndDateFromPhone(sender: AnyObject) {
-        (UIApplication.sharedApplication().delegate as! AppDelegate).sendDataToBroadcastTimeAndDate()
+    @IBAction func broadcastTimeAndDateFromPhone(_ sender: AnyObject) {
+        (UIApplication.shared.delegate as! AppDelegate).sendDataToBroadcastTimeAndDate()
     }
     
-    func KeyboardWillShow(notification: NSNotification){
-        if let userInfo = notification.userInfo {
-            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
-            let duration:NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+    func KeyboardWillShow(_ notification: Notification){
+        if let userInfo = (notification as NSNotification).userInfo {
+            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
             let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
-            let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
+            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions().rawValue
             let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
             if let endFrame = endFrame{
                 self.tableBottomConstraint.constant = endFrame.size.height + 5
             }
-            UIView.animateWithDuration(duration,
-                delay: NSTimeInterval(0),
+            UIView.animate(withDuration: duration,
+                delay: TimeInterval(0),
                 options: animationCurve,
                 animations: { self.view.layoutIfNeeded() },
                 completion: nil)
         }
     }
     
-    func KeyboardWillHide(notification: NSNotification){
-        if let userInfo = notification.userInfo {
-            let duration:NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+    func KeyboardWillHide(_ notification: Notification){
+        if let userInfo = (notification as NSNotification).userInfo {
+            let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
             let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
-            let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
+            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions().rawValue
             let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
             
             self.tableBottomConstraint.constant = 0
             
-            UIView.animateWithDuration(duration,
-                delay: NSTimeInterval(0),
+            UIView.animate(withDuration: duration,
+                delay: TimeInterval(0),
                 options: animationCurve,
                 animations: { self.view.layoutIfNeeded() },
                 completion: nil)
@@ -265,128 +265,128 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
 }
 
 extension SettingsViewController: UITableViewDelegate, UITableViewDataSource{
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if settingArray[indexPath.section] == SettingsItem.MainMenu || settingArray[indexPath.section] == SettingsItem.Interfaces || settingArray[indexPath.section] == SettingsItem.ResetPassword{
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if settingArray[(indexPath as NSIndexPath).section] == SettingsItem.mainMenu || settingArray[(indexPath as NSIndexPath).section] == SettingsItem.interfaces || settingArray[(indexPath as NSIndexPath).section] == SettingsItem.resetPassword{
             
-            let cell = tableView.dequeueReusableCellWithIdentifier("settingsCell") as! SettinsTableViewCell
-            cell.settingsButton.tag = indexPath.section
-            cell.settingsButton.addTarget(self, action: #selector(SettingsViewController.didTouchSettingButton(_:)), forControlEvents: .TouchUpInside)
-            cell.settingsButton.setTitle(settingArray[indexPath.section].description, forState: .Normal)
-            cell.backgroundColor = UIColor.clearColor()
+            let cell = tableView.dequeueReusableCell(withIdentifier: "settingsCell") as! SettinsTableViewCell
+            cell.settingsButton.tag = (indexPath as NSIndexPath).section
+            cell.settingsButton.addTarget(self, action: #selector(SettingsViewController.didTouchSettingButton(_:)), for: .touchUpInside)
+            cell.settingsButton.setTitle(settingArray[(indexPath as NSIndexPath).section].description, for: UIControlState())
+            cell.backgroundColor = UIColor.clear
             cell.layer.cornerRadius = 5
             
             return cell
-        } else if settingArray[indexPath.section] == SettingsItem.RefreshStatusDelay {
-            let cell = tableView.dequeueReusableCellWithIdentifier("delayRefreshStatus") as! SettingsRefreshDelayTableViewCell
+        } else if settingArray[(indexPath as NSIndexPath).section] == SettingsItem.refreshStatusDelay {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "delayRefreshStatus") as! SettingsRefreshDelayTableViewCell
             cell.layer.cornerRadius = 5
             
-            cell.btnAddHourPressed.addTarget(self, action: #selector(SettingsViewController.btnAddHourPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.btnAddHourPressed.addTarget(self, action: #selector(SettingsViewController.btnAddHourPressed(_:)), for: UIControlEvents.touchUpInside)
             cell.btnAddHourPressed.tag = 1
-            cell.btnDecHourPressed.addTarget(self, action: #selector(SettingsViewController.btnDecHourPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.btnDecHourPressed.addTarget(self, action: #selector(SettingsViewController.btnDecHourPressed(_:)), for: UIControlEvents.touchUpInside)
             cell.btnDecHourPressed.tag = 1
             cell.hourLabel.text = "\(hourRefresh)"
             
-            cell.backgroundColor = UIColor.clearColor()
+            cell.backgroundColor = UIColor.clear
             
-            cell.btnAddMinPressed.addTarget(self, action: #selector(SettingsViewController.btnAddHourPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            cell.btnDecMinPressed.addTarget(self, action: #selector(SettingsViewController.btnDecHourPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.btnAddMinPressed.addTarget(self, action: #selector(SettingsViewController.btnAddHourPressed(_:)), for: UIControlEvents.touchUpInside)
+            cell.btnDecMinPressed.addTarget(self, action: #selector(SettingsViewController.btnDecHourPressed(_:)), for: UIControlEvents.touchUpInside)
             
             cell.minLabel.text = "\(minRefresh)"
             
             return cell
-        } else if settingArray[indexPath.section] == SettingsItem.OpenLastScreen {
-            let cell = tableView.dequeueReusableCellWithIdentifier("openLastScreen") as! SettingsLastScreenTableViewCell
-            cell.openLastScreen.tag = indexPath.section
-            cell.backgroundColor = UIColor.clearColor()
-            cell.openLastScreen.addTarget(self, action: #selector(SettingsViewController.changeValue(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        } else if settingArray[(indexPath as NSIndexPath).section] == SettingsItem.openLastScreen {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "openLastScreen") as! SettingsLastScreenTableViewCell
+            cell.openLastScreen.tag = (indexPath as NSIndexPath).section
+            cell.backgroundColor = UIColor.clear
+            cell.openLastScreen.addTarget(self, action: #selector(SettingsViewController.changeValue(_:)), for: UIControlEvents.valueChanged)
             
             if let user = user{
-                cell.openLastScreen.on = user.openLastScreen.boolValue
+                cell.openLastScreen.isOn = user.openLastScreen.boolValue
             }else{
                 if let tempUser = DatabaseUserController.shared.getLoggedUser(){
-                    cell.openLastScreen.on = tempUser.openLastScreen.boolValue
+                    cell.openLastScreen.isOn = tempUser.openLastScreen.boolValue
                 }
             }
-            cell.backgroundColor = UIColor.clearColor()
+            cell.backgroundColor = UIColor.clear
             cell.layer.cornerRadius = 5
             return cell
-        } else if settingArray[indexPath.section] == SettingsItem.Broadcast {
-            let cell = tableView.dequeueReusableCellWithIdentifier("idBroadcastCurrentAppTimeAndDate") as! BroadcastTimeAndDateTVC
+        } else if settingArray[(indexPath as NSIndexPath).section] == SettingsItem.broadcast {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "idBroadcastCurrentAppTimeAndDate") as! BroadcastTimeAndDateTVC
             cell.setBroadcast()
             cell.txtIp.delegate = self
             cell.txtPort.delegate = self
             cell.txtH.delegate = self
             cell.txtM.delegate = self
-            cell.backgroundColor = UIColor.clearColor()
+            cell.backgroundColor = UIColor.clear
             cell.layer.cornerRadius = 5
             return cell
         }
-        else if settingArray[indexPath.section] == SettingsItem.LockProfile {
+        else if settingArray[(indexPath as NSIndexPath).section] == SettingsItem.lockProfile {
             
-            let cell = tableView.dequeueReusableCellWithIdentifier("openLastScreen") as! SettingsLastScreenTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "openLastScreen") as! SettingsLastScreenTableViewCell
             
-            cell.nameLabel.text = settingArray[indexPath.section].description
+            cell.nameLabel.text = settingArray[(indexPath as NSIndexPath).section].description
             if let user = user{
                 if let locked = user.isLocked as? Bool{
-                    cell.openLastScreen.on = locked
+                    cell.openLastScreen.isOn = locked
                 }else{
-                    cell.openLastScreen.on = false
+                    cell.openLastScreen.isOn = false
                 }
             }else if let user = DatabaseUserController.shared.getLoggedUser(){
                 if let locked = user.isLocked as? Bool{
-                    cell.openLastScreen.on = locked
+                    cell.openLastScreen.isOn = locked
                 }else{
-                    cell.openLastScreen.on = false
+                    cell.openLastScreen.isOn = false
                 }
             }else{
-                cell.openLastScreen.on = false
+                cell.openLastScreen.isOn = false
             }
             
-            cell.openLastScreen.tag = indexPath.section
-            cell.backgroundColor = UIColor.clearColor()
-            cell.openLastScreen.addTarget(self, action: #selector(SettingsViewController.lockProfile(_:)), forControlEvents: UIControlEvents.ValueChanged)
+            cell.openLastScreen.tag = (indexPath as NSIndexPath).section
+            cell.backgroundColor = UIColor.clear
+            cell.openLastScreen.addTarget(self, action: #selector(SettingsViewController.lockProfile(_:)), for: UIControlEvents.valueChanged)
             
-            cell.backgroundColor = UIColor.clearColor()
+            cell.backgroundColor = UIColor.clear
             cell.layer.cornerRadius = 5
             return cell
             
         }else {
-            let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
+            let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
             return cell
         }
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return settingArray.count
     }
     
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 3
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 3
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView:UIView = UIView(frame: CGRectMake(0, 0, 1024, 3))
-        headerView.backgroundColor = UIColor.clearColor()
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView:UIView = UIView(frame: CGRect(x: 0, y: 0, width: 1024, height: 3))
+        headerView.backgroundColor = UIColor.clear
         return headerView
     }
     
-    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView:UIView = UIView(frame: CGRectMake(0, 0, 1024, 3))
-        footerView.backgroundColor = UIColor.clearColor()
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView:UIView = UIView(frame: CGRect(x: 0, y: 0, width: 1024, height: 3))
+        footerView.backgroundColor = UIColor.clear
         return footerView
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.section == 2 { return 90 }
-        if settingArray[indexPath.section] == SettingsItem.Broadcast {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (indexPath as NSIndexPath).section == 2 { return 90 }
+        if settingArray[(indexPath as NSIndexPath).section] == SettingsItem.broadcast {
             if isMore {
                 return 192
             }
@@ -397,15 +397,15 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource{
 
 extension SettingsViewController: UITextFieldDelegate{
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let cell = textField.superview?.superview as? BroadcastTimeAndDateTVC {
             cell.saveData()
         }
         return true
     }
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         if let cell = textField.superview?.superview as? BroadcastTimeAndDateTVC {
-            settingsTableView.scrollToRowAtIndexPath(settingsTableView.indexPathForCell(cell)!, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
+            settingsTableView.scrollToRow(at: settingsTableView.indexPath(for: cell)!, at: UITableViewScrollPosition.middle, animated: true)
         }
     }
 }
@@ -447,12 +447,12 @@ class BroadcastTimeAndDateTVC: UITableViewCell, UITextFieldDelegate {
     @IBOutlet weak var isBroadcastOnStartUp: UISwitch!
     @IBOutlet weak var isBroadcastEvery: UISwitch!
     
-    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         saveData()
         return true
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         saveData()
         return true
     }
@@ -462,8 +462,8 @@ class BroadcastTimeAndDateTVC: UITableViewCell, UITextFieldDelegate {
         self.txtPort.text = "\(BroadcastPreference.getBroadcastPort())"
         self.txtH.text = "\(BroadcastPreference.getBroadcastHour())"
         self.txtM.text = "\(BroadcastPreference.getBroadcastMin())"
-        self.isBroadcastOnStartUp.on = BroadcastPreference.getIsBroadcastOnStartUp()
-        self.isBroadcastEvery.on = BroadcastPreference.getIsBroadcastOnEvery()
+        self.isBroadcastOnStartUp.isOn = BroadcastPreference.getIsBroadcastOnStartUp()
+        self.isBroadcastEvery.isOn = BroadcastPreference.getIsBroadcastOnEvery()
     }
     func saveData() {
         self.txtIp.resignFirstResponder()
@@ -492,14 +492,14 @@ class BroadcastTimeAndDateTVC: UITableViewCell, UITextFieldDelegate {
         self.txtM.text = "\(BroadcastPreference.getBroadcastMin())"
         
     }
-    @IBAction func isBroadcastOnStartUp(sender: AnyObject) {
+    @IBAction func isBroadcastOnStartUp(_ sender: AnyObject) {
         if let swtitchIs = sender as? UISwitch {
-            BroadcastPreference.setIsBroadcastOnStartUp(swtitchIs.on)
+            BroadcastPreference.setIsBroadcastOnStartUp(swtitchIs.isOn)
         }
     }
-    @IBAction func isBroadcastEvery(sender: AnyObject) {
+    @IBAction func isBroadcastEvery(_ sender: AnyObject) {
         if let swtitchIs = sender as? UISwitch {
-            BroadcastPreference.setIsBroadcastOnEvery(swtitchIs.on)
+            BroadcastPreference.setIsBroadcastOnEvery(swtitchIs.isOn)
         }
     }
 }

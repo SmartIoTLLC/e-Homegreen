@@ -34,7 +34,7 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
     init(point:CGPoint, surv:Surveillance){
         super.init(nibName: "CameraParametarXIBViewController", bundle: nil)
         transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.Custom
+        modalPresentationStyle = UIModalPresentationStyle.custom
         self.point = point
         self.surv = surv
     }
@@ -46,14 +46,14 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
-        self.view.backgroundColor = UIColor.clearColor()
+        self.view.backgroundColor = UIColor.clear
         
-        panStepSlider.addTarget(self, action: #selector(CameraParametarXIBViewController.changePanStep(_:)), forControlEvents: .ValueChanged)
-        tiltStepSlider.addTarget(self, action: #selector(CameraParametarXIBViewController.changeTiltStep(_:)), forControlEvents: .ValueChanged)
-        autoPanStepSlider.addTarget(self, action: #selector(CameraParametarXIBViewController.changeAutoPanStep(_:)), forControlEvents: .ValueChanged)
-        dwellTimeSlider.addTarget(self, action: #selector(CameraParametarXIBViewController.changeDwellTimeSlider(_:)), forControlEvents: .ValueChanged)
+        panStepSlider.addTarget(self, action: #selector(CameraParametarXIBViewController.changePanStep(_:)), for: .valueChanged)
+        tiltStepSlider.addTarget(self, action: #selector(CameraParametarXIBViewController.changeTiltStep(_:)), for: .valueChanged)
+        autoPanStepSlider.addTarget(self, action: #selector(CameraParametarXIBViewController.changeAutoPanStep(_:)), for: .valueChanged)
+        dwellTimeSlider.addTarget(self, action: #selector(CameraParametarXIBViewController.changeDwellTimeSlider(_:)), for: .valueChanged)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CameraParametarXIBViewController.dismissViewController))
         tapGesture.delegate = self
@@ -72,90 +72,90 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
         // Do any additional setup after loading the view.
     }
     
-    func changePanStep(slider: UISlider){
+    func changePanStep(_ slider: UISlider){
         slider.value = round(slider.value)
         panStepLabel.text = "\(round(slider.value))"
     }
     
-    func changeTiltStep(slider: UISlider){
+    func changeTiltStep(_ slider: UISlider){
         slider.value = round(slider.value)
         tiltStepLabel.text = "\(round(slider.value))"
     }
     
-    func changeAutoPanStep(slider: UISlider){
+    func changeAutoPanStep(_ slider: UISlider){
         slider.value = round(slider.value)
         autoPanStepLabel.text = "\(round(slider.value))"
     }
     
-    func changeDwellTimeSlider(slider: UISlider){
+    func changeDwellTimeSlider(_ slider: UISlider){
         slider.value = round(slider.value)
         dwellTimeLabel.text = "\(round(slider.value))"
     }
     
-    @IBAction func btnSave(sender: AnyObject) {
+    @IBAction func btnSave(_ sender: AnyObject) {
         
-        surv!.panStep = panStepSlider.value
-        surv!.tiltStep = tiltStepSlider.value
-        surv!.autSpanStep = autoPanStepSlider.value
-        surv!.dwellTime = dwellTimeSlider.value
+        surv!.panStep = panStepSlider.value as NSNumber?
+        surv!.tiltStep = tiltStepSlider.value as NSNumber?
+        surv!.autSpanStep = autoPanStepSlider.value as NSNumber?
+        surv!.dwellTime = dwellTimeSlider.value as NSNumber?
         CoreDataController.shahredInstance.saveChanges()
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        if touch.view!.isDescendantOfView(backView){
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: backView){
             return false
         }
         return true
     }
     
     func dismissViewController () {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
 }
 
 extension CameraParametarXIBViewController : UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5 //Add your own duration here
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         //Add presentation and dismiss animation transition here.
         if isPresenting == true{
             isPresenting = false
-            let presentedController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextToViewKey)!
-            let containerView = transitionContext.containerView()
+            let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
+            let containerView = transitionContext.containerView
             
-            presentedControllerView.frame = transitionContext.finalFrameForViewController(presentedController)
+            presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
             self.oldPoint = presentedControllerView.center
             presentedControllerView.center = self.point!
             presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+            presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
             containerView.addSubview(presentedControllerView)
             
-            UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 
                 presentedControllerView.center = self.oldPoint!
                 presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransformMakeScale(1, 1)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
                 
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
         }else{
-            let presentedControllerView = transitionContext.viewForKey(UITransitionContextFromViewKey)!
+            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
             //            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
-            UIView.animateWithDuration(0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 
                 presentedControllerView.center = self.point!
                 presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransformMakeScale(0.2, 0.2)
+                presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
                 
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
@@ -167,11 +167,11 @@ extension CameraParametarXIBViewController : UIViewControllerAnimatedTransitioni
 
 extension CameraParametarXIBViewController : UIViewControllerTransitioningDelegate {
     
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if dismissed == self {
             return self
         }
@@ -182,8 +182,8 @@ extension CameraParametarXIBViewController : UIViewControllerTransitioningDelega
     
 }
 extension UIViewController {
-    func showCameraParametar(point:CGPoint, surveillance:Surveillance) {
+    func showCameraParametar(_ point:CGPoint, surveillance:Surveillance) {
         let sp = CameraParametarXIBViewController(point: point, surv: surveillance)
-        self.presentViewController(sp, animated: true, completion: nil)
+        self.present(sp, animated: true, completion: nil)
     }
 }

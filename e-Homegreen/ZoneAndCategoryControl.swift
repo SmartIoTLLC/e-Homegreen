@@ -10,7 +10,7 @@ class ZoneAndCategoryControl: NSObject {
 
     static let shared = ZoneAndCategoryControl()
     
-    func turnOnByZone(zoneId:Int, location:String){
+    func turnOnByZone(_ zoneId:Int, location:String){
         let gateways = DatabaseGatewayController.shared.getGatewayByLocation(location)
         let command = OutgoingHandlerForZoneAndCategory.shared.getCommandTurnOnByZone(zoneId)
         for gateway in gateways{
@@ -18,7 +18,7 @@ class ZoneAndCategoryControl: NSObject {
         }
     }
     
-    func turnOffByZone(zoneId:Int, location:String){
+    func turnOffByZone(_ zoneId:Int, location:String){
         let gateways = DatabaseGatewayController.shared.getGatewayByLocation(location)
         let command = OutgoingHandlerForZoneAndCategory.shared.getCommandTurnOffByZone(zoneId)
         for gateway in gateways{
@@ -26,7 +26,7 @@ class ZoneAndCategoryControl: NSObject {
         }
     }
     
-    func turnOnByCategory(categoryId:Int, location:String){
+    func turnOnByCategory(_ categoryId:Int, location:String){
         let gateways = DatabaseGatewayController.shared.getGatewayByLocation(location)
         let command = OutgoingHandlerForZoneAndCategory.shared.getCommandTurnOnByCategory(categoryId)
         for gateway in gateways{
@@ -34,7 +34,7 @@ class ZoneAndCategoryControl: NSObject {
         }
     }
     
-    func turnOffByCategory(categoryId:Int, location:String){
+    func turnOffByCategory(_ categoryId:Int, location:String){
         let gateways = DatabaseGatewayController.shared.getGatewayByLocation(location)
         let command = OutgoingHandlerForZoneAndCategory.shared.getCommandTurnOffByCategory(categoryId)
         for gateway in gateways{
@@ -42,7 +42,7 @@ class ZoneAndCategoryControl: NSObject {
         }
     }
     
-    func changeValueByZone(zoneId:Int, location:String, value:Int){
+    func changeValueByZone(_ zoneId:Int, location:String, value:Int){
         let gateways = DatabaseGatewayController.shared.getGatewayByLocation(location)
         let command = OutgoingHandlerForZoneAndCategory.shared.getCommandChangeValueByZone(zoneId, value:value)
         for gateway in gateways{
@@ -50,7 +50,7 @@ class ZoneAndCategoryControl: NSObject {
         }
     }
     
-    func changeValueByCategory(zoneId:Int, location:String, value:Int){
+    func changeValueByCategory(_ zoneId:Int, location:String, value:Int){
         let gateways = DatabaseGatewayController.shared.getGatewayByLocation(location)
         let command = OutgoingHandlerForZoneAndCategory.shared.getCommandChangeValueByCategory(zoneId, value:value)
         for gateway in gateways{

@@ -13,17 +13,17 @@ import CoreLocation
 class DatabaseLocationController: NSObject {
 
     static let shared = DatabaseLocationController()
-    let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     let locationManager = CLLocationManager()
     
-    func getNextAvailableId(user:User) -> Int{
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Location")
+    func getNextAvailableId(_ user:User) -> Int{
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Location.fetchRequest()
         let sortDescriptorTwo = NSSortDescriptor(key: "orderId", ascending: true)
         let predicate = NSPredicate(format: "user == %@", user)
         fetchRequest.sortDescriptors = [sortDescriptorTwo]
         fetchRequest.predicate = predicate
         do {
-            let fetchResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Location]
+            let fetchResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Location]
             if let last = fetchResults?.last{
                 if let id = last.orderId as? Int {
                     return id + 1
@@ -36,28 +36,28 @@ class DatabaseLocationController: NSObject {
         return 1
     }
     
-    func startMonitoringLocation(location: Location){
+    func startMonitoringLocation(_ location: Location){
         if !AdminController.shared.isAdminLogged(){
-            if !CLLocationManager.isMonitoringAvailableForClass(CLCircularRegion) || CLLocationManager.authorizationStatus() != .AuthorizedAlways {
+            if CLLocationManager.authorizationStatus() != .authorizedAlways {
                 return
             }
             let region = regionWithLocation(location)
-            locationManager.startMonitoringForRegion(region)
+            locationManager.startMonitoring(for: region)
         }
     }
     
-    func regionWithLocation(location: Location) -> CLCircularRegion {
-        let region = CLCircularRegion(center: CLLocationCoordinate2DMake(Double(location.latitude!), Double(location.longitude!)) , radius: Double(location.radius!), identifier: location.objectID.URIRepresentation().absoluteString!)
+    func regionWithLocation(_ location: Location) -> CLCircularRegion {
+        let region = CLCircularRegion(center: CLLocationCoordinate2DMake(Double(location.latitude!), Double(location.longitude!)) , radius: Double(location.radius!), identifier: location.objectID.uriRepresentation().absoluteString)
         region.notifyOnEntry = true
         region.notifyOnExit = true
         return region
     }
     
-    func stopMonitoringLocation(location: Location) {
+    func stopMonitoringLocation(_ location: Location) {
         for region in locationManager.monitoredRegions {
             if let circularRegion = region as? CLCircularRegion {
-                if circularRegion.identifier == location.objectID.URIRepresentation().absoluteString {
-                    locationManager.stopMonitoringForRegion(circularRegion)
+                if circularRegion.identifier == location.objectID.uriRepresentation().absoluteString {
+                    locationManager.stopMonitoring(for: circularRegion)
                 }
             }
         }
@@ -66,12 +66,12 @@ class DatabaseLocationController: NSObject {
     func stopAllLocationMonitoring(){
         for region in locationManager.monitoredRegions {
             if let circularRegion = region as? CLCircularRegion {
-                locationManager.stopMonitoringForRegion(circularRegion)
+                locationManager.stopMonitoring(for: circularRegion)
             }
         }
     }
     
-    func startMonitoringAllLocationByUser(user:User){
+    func startMonitoringAllLocationByUser(_ user:User){
         if let locations = user.locations?.allObjects as? [Location] {
             for location in locations{
                 startMonitoringLocation(location)
@@ -79,20 +79,20 @@ class DatabaseLocationController: NSObject {
         }
     }
     
-    func deleteLocation(location:Location){
-        appDel.managedObjectContext?.deleteObject(location)
+    func deleteLocation(_ location:Location){
+        appDel.managedObjectContext?.delete(location)
         CoreDataController.shahredInstance.saveChanges()
     }
     
-    func getLocation(user:User) -> [Location]{
-        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Location")
+    func getLocation(_ user:User) -> [Location]{
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Location.fetchRequest()
         let sortDescriptorOne = NSSortDescriptor(key: "orderId", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "name", ascending: true)
         let predicate = NSPredicate(format: "user == %@", user)
         fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo]
         fetchRequest.predicate = predicate
         do {
-            let fetchResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Location]
+            let fetchResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Location]
             return fetchResults!
         } catch _ as NSError {
             abort()

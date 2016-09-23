@@ -20,17 +20,17 @@ class TimersViewController: PopoverVC {
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
     
-    private var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-    private let reuseIdentifier = "TimersCell"
+    fileprivate var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+    fileprivate let reuseIdentifier = "TimersCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
     @IBOutlet weak var timersCollectionView: UICollectionView!
     
-    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRectMake(0, 0, CGFloat.max, 44))
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
     var filterParametar:FilterItem!
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         
         if self.revealViewController() != nil {
@@ -38,7 +38,7 @@ class TimersViewController: PopoverVC {
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             revealViewController().toggleAnimationDuration = 0.5
-            if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft {
+            if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
                 revealViewController().rearViewRevealWidth = 200
             }else{
                 revealViewController().rearViewRevealWidth = 200
@@ -56,9 +56,9 @@ class TimersViewController: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UIView.hr_setToastThemeColor(color: UIColor.redColor())
+        UIView.hr_setToastThemeColor(color: UIColor.red)
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), forBarMetrics: UIBarMetrics.Default)
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         
         scrollView.filterDelegate = self
         view.addSubview(scrollView)
@@ -68,25 +68,25 @@ class TimersViewController: PopoverVC {
         self.navigationItem.titleView = headerTitleSubtitleView
         headerTitleSubtitleView.setTitleAndSubtitle("Timers", subtitle: "All All All")
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NotificationKey.RefreshTimer, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TimersViewController.refreshTimerList), name: NSNotification.Name(rawValue: NotificationKey.RefreshTimer), object: nil)
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(TimersViewController.defaultFilter(_:)))
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
-        scrollView.setFilterItem(Menu.Timers)
+        scrollView.setFilterItem(Menu.timers)
 
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        if let cells = self.timersCollectionView.visibleCells() as? [TimerCollectionViewCell]{
+    override func viewWillDisappear(_ animated: Bool) {
+        if let cells = self.timersCollectionView.visibleCells as? [TimerCollectionViewCell]{
             for cell in cells{
                 cell.time?.invalidate()
             }
         }        
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
     }
@@ -97,7 +97,7 @@ class TimersViewController: PopoverVC {
             scrollView.setContentOffset(bottomOffset, animated: false)
         }
         scrollView.bottom.constant = -(self.view.frame.height - 2)
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft || UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight {
+        if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
             headerTitleSubtitleView.setLandscapeTitle()
         }else{
             headerTitleSubtitleView.setPortraitTitle()
@@ -109,25 +109,25 @@ class TimersViewController: PopoverVC {
         
     }
     
-    override func nameAndId(name : String, id:String){
+    override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
     }
     
     func updateConstraints() {
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0.0))
     }
     
-    @IBAction func fullScreen(sender: UIButton) {
+    @IBAction func fullScreen(_ sender: UIButton) {
         sender.collapseInReturnToNormal(1)
-        if UIApplication.sharedApplication().statusBarHidden {
-            UIApplication.sharedApplication().statusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+        if UIApplication.shared.isStatusBarHidden {
+            UIApplication.shared.isStatusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
         } else {
-            UIApplication.sharedApplication().statusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+            UIApplication.shared.isStatusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
             if scrollView.contentOffset.y != 0 {
                 let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
                 scrollView.setContentOffset(bottomOffset, animated: false)
@@ -135,22 +135,22 @@ class TimersViewController: PopoverVC {
         }
     }
     
-    func defaultFilter(gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.Began {
-            scrollView.setDefaultFilterItem(Menu.Timers)
+    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
+            scrollView.setDefaultFilterItem(Menu.timers)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
     
     func changeFullScreeenImage(){
-        if UIApplication.sharedApplication().statusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), forState: UIControlState.Normal)
+        if UIApplication.shared.isStatusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
         } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), forState: UIControlState.Normal)
+            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
         }
     }
     
-    @IBAction func refreshTimers(sender: UIButton) {
+    @IBAction func refreshTimers(_ sender: UIButton) {
         refreshTimersStatus()
         sender.rotate(1)
     }
@@ -170,7 +170,7 @@ class TimersViewController: PopoverVC {
         }
     }
     
-    func updateSubtitle(location: String, level: String, zone: String){
+    func updateSubtitle(_ location: String, level: String, zone: String){
         headerTitleSubtitleView.setTitleAndSubtitle("Timers", subtitle: location + " " + level + " " + zone)
     }
     
@@ -181,7 +181,7 @@ class TimersViewController: PopoverVC {
     
     //cell action
     
-    func pressedPause (button:UIButton) {
+    func pressedPause (_ button:UIButton) {
         let tag = button.tag
         var address:[UInt8] = []
         if timers[tag].isBroadcast.boolValue {
@@ -195,7 +195,7 @@ class TimersViewController: PopoverVC {
         changeImageInCell(button)
     }
     
-    func pressedStart (button:UIButton) {
+    func pressedStart (_ button:UIButton) {
         let tag = button.tag
         var address:[UInt8] = []
         if timers[tag].isBroadcast.boolValue {
@@ -209,7 +209,7 @@ class TimersViewController: PopoverVC {
         changeImageInCell(button)
     }
     
-    func pressedResume (button:UIButton) {
+    func pressedResume (_ button:UIButton) {
         let tag = button.tag
         var address:[UInt8] = []
         if timers[tag].isBroadcast.boolValue {
@@ -223,7 +223,7 @@ class TimersViewController: PopoverVC {
         changeImageInCell(button)
     }
     
-    func pressedCancel (button:UIButton) {
+    func pressedCancel (_ button:UIButton) {
         let tag = button.tag
         var address:[UInt8] = []
         if timers[tag].isBroadcast.boolValue {
@@ -237,10 +237,10 @@ class TimersViewController: PopoverVC {
         changeImageInCell(button)
     }
     
-    func changeImageInCell(button:UIButton) {
-        let pointInTable = button.convertPoint(button.bounds.origin, toView: timersCollectionView)
-        let indexPath = timersCollectionView.indexPathForItemAtPoint(pointInTable)
-        if let cell = timersCollectionView.cellForItemAtIndexPath(indexPath!) as? TimerCollectionViewCell {
+    func changeImageInCell(_ button:UIButton) {
+        let pointInTable = button.convert(button.bounds.origin, to: timersCollectionView)
+        let indexPath = timersCollectionView.indexPathForItem(at: pointInTable)
+        if let cell = timersCollectionView.cellForItem(at: indexPath!) as? TimerCollectionViewCell {
             cell.commandSentChangeImage()
         }
     }
@@ -249,10 +249,10 @@ class TimersViewController: PopoverVC {
 
 // Parametar from filter and relaod data
 extension TimersViewController: FilterPullDownDelegate{
-    func filterParametars(filterItem: FilterItem){
+    func filterParametars(_ filterItem: FilterItem){
         filterParametar = filterItem
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.Timers)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.timers)
         refreshTimerList()
     }
     
@@ -263,147 +263,147 @@ extension TimersViewController: FilterPullDownDelegate{
 
 extension TimersViewController: SWRevealViewControllerDelegate{
     
-    func revealController(revealController: SWRevealViewController!,  willMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            timersCollectionView.userInteractionEnabled = true
+    func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
+        if(position == FrontViewPosition.left) {
+            timersCollectionView.isUserInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
-            timersCollectionView.userInteractionEnabled = false
+            timersCollectionView.isUserInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }
     
-    func revealController(revealController: SWRevealViewController!,  didMoveToPosition position: FrontViewPosition){
-        if(position == FrontViewPosition.Left) {
-            timersCollectionView.userInteractionEnabled = true
+    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
+        if(position == FrontViewPosition.left) {
+            timersCollectionView.isUserInteractionEnabled = true
             sidebarMenuOpen = false
         } else {
             let tap = UITapGestureRecognizer(target: self, action: #selector(TimersViewController.closeSideMenu))
             self.view.addGestureRecognizer(tap)
-            timersCollectionView.userInteractionEnabled = false
+            timersCollectionView.isUserInteractionEnabled = false
             sidebarMenuOpen = true
         }
     }
     
     func closeSideMenu(){
         if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggleAnimated(true)
+            self.revealViewController().revealToggle(animated: true)
         }
     }
 }
 
 extension TimersViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         return collectionViewCellSize
         
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
 }
 
 extension TimersViewController: UICollectionViewDataSource {
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return timers.count
     }
     
-    func openCellParametar (gestureRecognizer: UILongPressGestureRecognizer){
+    func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer){
         let tag = gestureRecognizer.view!.tag
-        if gestureRecognizer.state == UIGestureRecognizerState.Began {
-            let location = gestureRecognizer.locationInView(timersCollectionView)
-            if let index = timersCollectionView.indexPathForItemAtPoint(location){
-                let cell = timersCollectionView.cellForItemAtIndexPath(index)
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
+            let location = gestureRecognizer.location(in: timersCollectionView)
+            if let index = timersCollectionView.indexPathForItem(at: location){
+                let cell = timersCollectionView.cellForItem(at: index)
                 showTimerParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - timersCollectionView.contentOffset.y), timer: timers[tag])
             }
         }
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! TimerCollectionViewCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TimerCollectionViewCell
         
-        cell.setItem(timers[indexPath.row], filterParametar: filterParametar)
+        cell.setItem(timers[(indexPath as NSIndexPath).row], filterParametar: filterParametar)
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(TimersViewController.openCellParametar(_:)))
         longPress.minimumPressDuration = 0.5
-        cell.timerTitle.userInteractionEnabled = true
+        cell.timerTitle.isUserInteractionEnabled = true
         cell.timerTitle.addGestureRecognizer(longPress)
         
-        cell.getImagesFrom(timers[indexPath.row])
+        cell.getImagesFrom(timers[(indexPath as NSIndexPath).row])
         
-        cell.timerButton.tag = indexPath.row
-        cell.timerButtonLeft.tag = indexPath.row
-        cell.timerButtonRight.tag = indexPath.row
-        if timers[indexPath.row].type == TimerType.Timer.rawValue || timers[indexPath.row].type == TimerType.Stopwatch.rawValue {
+        cell.timerButton.tag = (indexPath as NSIndexPath).row
+        cell.timerButtonLeft.tag = (indexPath as NSIndexPath).row
+        cell.timerButtonRight.tag = (indexPath as NSIndexPath).row
+        if Int(timers[indexPath.row].type) == TimerType.timer.rawValue || Int(timers[indexPath.row].type) == TimerType.stopwatch.rawValue {
             //   ===   Default   ===
-            cell.timerButton.hidden = false
-            cell.timerButtonLeft.hidden = true
-            cell.timerButtonRight.hidden = true
-            cell.timerButton.enabled = true
-            cell.timerButton.setTitle("Start", forState: UIControlState.Normal)
-            cell.timerButton.addTarget(self, action: #selector(TimersViewController.pressedStart(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            cell.timerButton.isHidden = false
+            cell.timerButtonLeft.isHidden = true
+            cell.timerButtonRight.isHidden = true
+            cell.timerButton.isEnabled = true
+            cell.timerButton.setTitle("Start", for: UIControlState())
+            cell.timerButton.addTarget(self, action: #selector(TimersViewController.pressedStart(_:)), for: UIControlEvents.touchUpInside)
 
-            if timers[indexPath.row].timerState == 1 {
-                cell.timerButton.hidden = true
-                cell.timerButtonLeft.hidden = false
-                cell.timerButtonRight.hidden = false
+            if timers[(indexPath as NSIndexPath).row].timerState == 1 {
+                cell.timerButton.isHidden = true
+                cell.timerButtonLeft.isHidden = false
+                cell.timerButtonRight.isHidden = false
                 cell.startTimer()
-                cell.timerButtonRight.setTitle("Pause", forState: UIControlState.Normal)
-                cell.timerButtonLeft.setTitle("Cancel", forState: UIControlState.Normal)
-                cell.timerButtonRight.addTarget(self, action: #selector(TimersViewController.pressedPause(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-                cell.timerButtonLeft.addTarget(self, action: #selector(TimersViewController.pressedCancel(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.timerButtonRight.setTitle("Pause", for: UIControlState())
+                cell.timerButtonLeft.setTitle("Cancel", for: UIControlState())
+                cell.timerButtonRight.addTarget(self, action: #selector(TimersViewController.pressedPause(_:)), for: UIControlEvents.touchUpInside)
+                cell.timerButtonLeft.addTarget(self, action: #selector(TimersViewController.pressedCancel(_:)), for: UIControlEvents.touchUpInside)
             }
-            if timers[indexPath.row].timerState == 240 {
-                cell.timerButton.hidden = false
-                cell.timerButtonLeft.hidden = true
-                cell.timerButtonRight.hidden = true
+            if timers[(indexPath as NSIndexPath).row].timerState == 240 {
+                cell.timerButton.isHidden = false
+                cell.timerButtonLeft.isHidden = true
+                cell.timerButtonRight.isHidden = true
                 cell.stopTimer()
-                cell.timerButton.enabled = true
-                cell.timerButton.setTitle("Start", forState: UIControlState.Normal)
-                cell.timerButton.addTarget(self, action: #selector(TimersViewController.pressedStart(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.timerButton.isEnabled = true
+                cell.timerButton.setTitle("Start", for: UIControlState())
+                cell.timerButton.addTarget(self, action: #selector(TimersViewController.pressedStart(_:)), for: UIControlEvents.touchUpInside)
             }
-            if timers[indexPath.row].timerState == 238 {
-                cell.timerButton.hidden = true
-                cell.timerButtonLeft.hidden = false
-                cell.timerButtonRight.hidden = false
+            if timers[(indexPath as NSIndexPath).row].timerState == 238 {
+                cell.timerButton.isHidden = true
+                cell.timerButtonLeft.isHidden = false
+                cell.timerButtonRight.isHidden = false
                 cell.stopTimer()
-                cell.timerButtonRight.setTitle("Resume", forState: UIControlState.Normal)
-                cell.timerButtonLeft.setTitle("Cancel", forState: UIControlState.Normal)
-                cell.timerButtonRight.addTarget(self, action: #selector(TimersViewController.pressedResume(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-                cell.timerButtonLeft.addTarget(self, action: #selector(TimersViewController.pressedCancel(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                cell.timerButtonRight.setTitle("Resume", for: UIControlState())
+                cell.timerButtonLeft.setTitle("Cancel", for: UIControlState())
+                cell.timerButtonRight.addTarget(self, action: #selector(TimersViewController.pressedResume(_:)), for: UIControlEvents.touchUpInside)
+                cell.timerButtonLeft.addTarget(self, action: #selector(TimersViewController.pressedCancel(_:)), for: UIControlEvents.touchUpInside)
             }
         } else {
             cell.timerCOuntingLabel.text = ""
-            if timers[indexPath.row].timerState == 240 {
-                cell.timerButton.hidden = false
-                cell.timerButtonLeft.hidden = true
-                cell.timerButtonRight.hidden = true
-                cell.timerButton.setTitle("Cancel", forState: UIControlState.Normal)
+            if timers[(indexPath as NSIndexPath).row].timerState == 240 {
+                cell.timerButton.isHidden = false
+                cell.timerButtonLeft.isHidden = true
+                cell.timerButtonRight.isHidden = true
+                cell.timerButton.setTitle("Cancel", for: UIControlState())
 //                cell.timerButton.setTitle("Start", forState: UIControlState.Normal)
-                cell.timerButton.addTarget(self, action: #selector(TimersViewController.pressedCancel(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-                cell.timerButton.enabled = false
+                cell.timerButton.addTarget(self, action: #selector(TimersViewController.pressedCancel(_:)), for: UIControlEvents.touchUpInside)
+                cell.timerButton.isEnabled = false
             } else {
-                cell.timerButton.hidden = false
-                cell.timerButtonLeft.hidden = true
-                cell.timerButtonRight.hidden = true
-                cell.timerButton.setTitle("Cancel", forState: UIControlState.Normal)
-                cell.timerButton.addTarget(self, action: #selector(TimersViewController.pressedCancel(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-                cell.timerButton.enabled = true
+                cell.timerButton.isHidden = false
+                cell.timerButtonLeft.isHidden = true
+                cell.timerButtonRight.isHidden = true
+                cell.timerButton.setTitle("Cancel", for: UIControlState())
+                cell.timerButton.addTarget(self, action: #selector(TimersViewController.pressedCancel(_:)), for: UIControlEvents.touchUpInside)
+                cell.timerButton.isEnabled = true
             }
         }
         

@@ -9,67 +9,67 @@
 import UIKit
 
 enum Menu:Int{
-    case Dashboard = 0, Devices, Scenes, Events, Sequences, Timers, Security, Surveillance, Flags, Users, PCControl, Chat, Energy, Settings, NotSuperUserSettings
+    case dashboard = 0, devices, scenes, events, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, settings, notSuperUserSettings
     var description:String{
         switch self{
-            case .Dashboard: return "Dashboard"
-            case .Devices: return "Devices"
-            case .Scenes: return "Scenes"
-            case .Events: return "Events"
-            case .Sequences: return "Sequences"
-            case .Timers: return "Timers"
-            case .Flags: return "Flags"
-            case .Chat: return "Chat"
-            case .Security: return "Security"
-            case .Surveillance: return "Surveillance"
-            case .Energy: return "Energy"
-            case .Users: return "Users"
-            case .PCControl: return "PC Control"
-            case .Settings: return "Settings"
-            case .NotSuperUserSettings: return "Settings"
+            case .dashboard: return "Dashboard"
+            case .devices: return "Devices"
+            case .scenes: return "Scenes"
+            case .events: return "Events"
+            case .sequences: return "Sequences"
+            case .timers: return "Timers"
+            case .flags: return "Flags"
+            case .chat: return "Chat"
+            case .security: return "Security"
+            case .surveillance: return "Surveillance"
+            case .energy: return "Energy"
+            case .users: return "Users"
+            case .pcControl: return "PC Control"
+            case .settings: return "Settings"
+            case .notSuperUserSettings: return "Settings"
         }
     }
     
     var controller:UINavigationController{
         switch self{
-        case .Dashboard: return MenuViewController.dushboardVC
-        case .Devices: return MenuViewController.devicesVC
-        case .Scenes: return MenuViewController.scenesVC
-        case .Events: return MenuViewController.eventsVC
-        case .Sequences: return MenuViewController.sequencesVC
-        case .Timers: return MenuViewController.timersVC
-        case .Flags: return MenuViewController.flagsVC
-        case .Chat: return MenuViewController.chatVC
-        case .Security: return MenuViewController.securityVC
-        case .Surveillance: return MenuViewController.surveillanceVC
-        case .Energy: return MenuViewController.energyVC
-        case .Users: return MenuViewController.usersVC
-        case .PCControl: return MenuViewController.pccontrolVC
-        case .Settings: return MenuViewController.settingsVC
-        case .NotSuperUserSettings: return MenuViewController.notSuperUserVC
+        case .dashboard: return MenuViewController.dushboardVC
+        case .devices: return MenuViewController.devicesVC
+        case .scenes: return MenuViewController.scenesVC
+        case .events: return MenuViewController.eventsVC
+        case .sequences: return MenuViewController.sequencesVC
+        case .timers: return MenuViewController.timersVC
+        case .flags: return MenuViewController.flagsVC
+        case .chat: return MenuViewController.chatVC
+        case .security: return MenuViewController.securityVC
+        case .surveillance: return MenuViewController.surveillanceVC
+        case .energy: return MenuViewController.energyVC
+        case .users: return MenuViewController.usersVC
+        case .pcControl: return MenuViewController.pccontrolVC
+        case .settings: return MenuViewController.settingsVC
+        case .notSuperUserSettings: return MenuViewController.notSuperUserVC
         }
     }
     
-    static let allMenuItem = [Dashboard, Devices, Scenes, Events, Sequences, Timers, Security, Surveillance, Flags, Users, PCControl, Chat, Energy, Settings]
-    static let allMenuItemNotSuperUser = [Dashboard, Devices, Scenes, Events, Sequences, Timers, Security, Surveillance, Flags, Users, PCControl, Chat, Energy, NotSuperUserSettings]
+    static let allMenuItem = [dashboard, devices, scenes, events, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, settings]
+    static let allMenuItemNotSuperUser = [dashboard, devices, scenes, events, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, notSuperUserSettings]
 }
 
 class MenuViewController{
-    static let dushboardVC = (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Dashboard") as! UINavigationController)
-    static let devicesVC = (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Devices") as! UINavigationController)
-    static let scenesVC = (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Scenes") as! UINavigationController)
-    static let eventsVC = (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Events") as! UINavigationController)
-    static let sequencesVC = (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Sequences") as! UINavigationController)
-    static let timersVC = (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Timers") as! UINavigationController)
-    static let flagsVC = (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Flags") as! UINavigationController)
-    static let chatVC = (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Chat") as! UINavigationController)
-    static let securityVC = (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Security") as! UINavigationController)
-    static let surveillanceVC = (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Surveillance") as! UINavigationController)
-    static let energyVC = (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Energy") as! UINavigationController)
-    static let usersVC = (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Users") as! UINavigationController)
-    static let pccontrolVC = (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("PC Control") as! UINavigationController)
-    static let settingsVC = (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("Settings") as! UINavigationController)
-    static let notSuperUserVC = (UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()).instantiateViewControllerWithIdentifier("NotSuperUserSettings") as! UINavigationController)
+    static let dushboardVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Dashboard") as! UINavigationController)
+    static let devicesVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Devices") as! UINavigationController)
+    static let scenesVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Scenes") as! UINavigationController)
+    static let eventsVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Events") as! UINavigationController)
+    static let sequencesVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Sequences") as! UINavigationController)
+    static let timersVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Timers") as! UINavigationController)
+    static let flagsVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Flags") as! UINavigationController)
+    static let chatVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Chat") as! UINavigationController)
+    static let securityVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Security") as! UINavigationController)
+    static let surveillanceVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Surveillance") as! UINavigationController)
+    static let energyVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Energy") as! UINavigationController)
+    static let usersVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Users") as! UINavigationController)
+    static let pccontrolVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "PC Control") as! UINavigationController)
+    static let settingsVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Settings") as! UINavigationController)
+    static let notSuperUserVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "NotSuperUserSettings") as! UINavigationController)
 }
 
 class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate  {
@@ -88,18 +88,18 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
       
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCellWithIdentifier("menuSettingsCell") as? MenuSettingsCell {
-            cell.setItem(menu[indexPath.row])
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "menuSettingsCell") as? MenuSettingsCell {
+            cell.setItem(menu[(indexPath as NSIndexPath).row])
             return cell
         }
-        let cell = UITableViewCell(style: .Default, reuseIdentifier: "DefaultCell")
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
         cell.textLabel?.text = ""
-        cell.contentView.backgroundColor = UIColor.clearColor()
+        cell.contentView.backgroundColor = UIColor.clear
         return cell
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return menu.count
     }
 
@@ -114,22 +114,22 @@ class MenuSettingsCell:UITableViewCell{
     
     var menuItem:MenuItem!
     
-    func setItem(menuItem:MenuItem){
+    func setItem(_ menuItem:MenuItem){
         self.menuItem = menuItem
         if let item = Menu(rawValue: Int(menuItem.id)){
             menuImage.image = UIImage(named: item.description)
             menuLabel.text = item.description
-            menuSwitch.on = Bool(menuItem.isVisible)
-            if item == Menu.Settings{
-                menuSwitch.enabled = false
+            menuSwitch.isOn = Bool(menuItem.isVisible)
+            if item == Menu.settings{
+                menuSwitch.isEnabled = false
             }else{
-                menuSwitch.enabled = true
+                menuSwitch.isEnabled = true
             }
             
         }
     }
     
-    @IBAction func changeValue(sender: AnyObject) {
+    @IBAction func changeValue(_ sender: AnyObject) {
         DatabaseMenuController.shared.changeState(menuItem)
     }
 }

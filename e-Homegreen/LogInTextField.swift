@@ -23,12 +23,12 @@ class LogInTextField: UITextField {
     
     func updateTextField(){
         self.font = UIFont(name: "Tahoma", size: 13)
-        self.layer.borderColor = UIColor.blackColor().CGColor
+        self.layer.borderColor = UIColor.black.cgColor
         self.layer.borderWidth = 1
         self.layer.cornerRadius = 5
         if let place = self.placeholder{
             self.attributedPlaceholder = NSAttributedString(string: place,
-                attributes:[NSForegroundColorAttributeName: UIColor.lightGrayColor()])
+                attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
         }
     }
 

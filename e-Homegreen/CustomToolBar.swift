@@ -20,9 +20,9 @@ class CustomToolBar: UIToolbar {
     }
     
     func updateToolBar(){
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: self, action: nil)
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
         self.sizeToFit()
-        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(CustomToolBar.endEditingNow) )
+        let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: self, action: #selector(CustomToolBar.endEditingNow) )
         let toolbarButtons = [flexibleSpace, item]
         self.setItems(toolbarButtons, animated: false)
     }

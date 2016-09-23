@@ -21,19 +21,19 @@ class ClimateCell: UICollectionViewCell {
     @IBOutlet weak var fanSpeedImage: UIImageView!
     @IBOutlet weak var energySavingImage: UIImageView!
     var device:Device?
-    @IBAction func switchAllowEnergySaving(sender: AnyObject) {
+    @IBAction func switchAllowEnergySaving(_ sender: AnyObject) {
         guard let switchAES = sender as? UISwitch else {return}
-        device?.allowEnergySaving = NSNumber(bool: switchAES.on)
+        device?.allowEnergySaving = NSNumber(value: switchAES.isOn as Bool)
         let address = [UInt8(Int(device!.gateway.addressOne)),UInt8(Int(device!.gateway.addressTwo)),UInt8(Int(device!.address))]
-        let status:Byte = switchAES.on ? 0x01 : 0x00
+        let status:Byte = switchAES.isOn ? 0x01 : 0x00
         SendingHandler.sendCommand(byteArray: OutgoingHandler.setACEnergySaving(address, channel: Byte(Int(device!.channel)), status: status), gateway: device!.gateway)
         
     }
-    func refreshDevice(device:Device) {
+    func refreshDevice(_ device:Device) {
         self.device = device
         temperature.font = UIFont(name: "Tahoma", size: 17)
         temperature.text = "\(device.roomTemperature) \u{00B0}c"
-        energySavingImage.hidden = device.allowEnergySaving == NSNumber(bool: true) ? false : true
+        energySavingImage.isHidden = device.allowEnergySaving == NSNumber(value: true as Bool) ? false : true
         if device.filterWarning {
             backView.colorTwo = Colors.DirtyRedColor
         } else {
@@ -77,7 +77,7 @@ class ClimateCell: UICollectionViewCell {
                     modeImage.stopAnimating()
                 } else {
                     modeImage.animationImages = animationImages
-                    modeImage.animationDuration = NSTimeInterval(fanSpeed)
+                    modeImage.animationDuration = TimeInterval(fanSpeed)
                     modeImage.animationRepeatCount = 0
                     modeImage.startAnimating()
                 }
@@ -110,17 +110,17 @@ class ClimateCell: UICollectionViewCell {
             imageOnOff.image = UIImage(named: "poweron")
         }
         if device.info {
-            infoView.hidden = false
-            backView.hidden = true
+            infoView.isHidden = false
+            backView.isHidden = true
         }else {
-            infoView.hidden = true
-            backView.hidden = false
+            infoView.isHidden = true
+            backView.isHidden = false
         }
         // If device is enabled add all interactions
         if device.isEnabled.boolValue {
-            disabledCellView.hidden = true
+            disabledCellView.isHidden = true
         } else {
-            disabledCellView.hidden = false
+            disabledCellView.isHidden = false
         }
     }
     

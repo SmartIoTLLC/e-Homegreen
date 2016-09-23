@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 class ImageHandler: NSObject {
-    static func returnPictures(categoryId:Int, deviceValue:Double, motionSensor:Bool) -> UIImage? {
+    static func returnPictures(_ categoryId:Int, deviceValue:Double, motionSensor:Bool) -> UIImage? {
     
         //        1 - Gateway & Control
         //        2 - Dimming Control *
