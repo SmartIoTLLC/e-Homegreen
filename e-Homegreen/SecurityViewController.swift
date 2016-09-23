@@ -19,13 +19,12 @@ class SecurityViewController: PopoverVC{
     fileprivate var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     fileprivate let reuseIdentifier = "SecurityCell"
     
-    var sidebarMenuOpen : Bool!
     var securities:[Security] = []
     var location:[Location] = []
     
     var scrollView = FilterPullDown()
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
-    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Security)
+    var filterParametar:FilterItem!
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
@@ -94,14 +93,8 @@ class SecurityViewController: PopoverVC{
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             revealViewController().toggleAnimationDuration = 0.5
-            if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
-                revealViewController().rearViewRevealWidth = 200
-            }else{
-                revealViewController().rearViewRevealWidth = 200
-            }
             
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            revealViewController().rearViewRevealWidth = 200
             
         }
         
@@ -379,29 +372,16 @@ extension SecurityViewController: SWRevealViewControllerDelegate {
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             securityCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
             securityCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             securityCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(SecurityViewController.closeSideMenu))
-            self.view.addGestureRecognizer(tap)
             securityCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
-    }
-    func closeSideMenu(){
-        
-        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggle(animated: true)
-        }
-        
     }
 }
 
@@ -410,8 +390,8 @@ extension SecurityViewController: UICollectionViewDelegate, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if (collectionView.cellForItem(at: indexPath) as? SecurityLocationCell) != nil{
             
-            filterParametar.location = location[(indexPath as NSIndexPath).row].name!
-            filterParametar.locationObjectId = location[(indexPath as NSIndexPath).row].objectID.uriRepresentation().absoluteString
+            filterParametar.location = location[indexPath.row].name!
+            filterParametar.locationObjectId = location[indexPath.row].objectID.uriRepresentation().absoluteString
             DatabaseFilterController.shared.saveFilter(filterParametar, menu: Menu.security)
             scrollView.setFilterItem(Menu.security)
             updateSubtitle()
@@ -475,7 +455,7 @@ extension SecurityViewController: UICollectionViewDataSource {
             
             return cell
         }else{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: SecurityLocationCell()), for: indexPath) as! SecurityLocationCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SecurityLocationCell", for: indexPath) as! SecurityLocationCell
             cell.setItem(location[(indexPath as NSIndexPath).row])
             
             let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SecurityViewController.openMode(_:)))

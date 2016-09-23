@@ -462,50 +462,50 @@ extension ScanScenesViewController: UITextFieldDelegate{
 }
 
 extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         if let cell = tableView.dequeueReusableCell(withIdentifier: "scenesCell") as? ScenesCell {
             cell.backgroundColor = UIColor.clear
-            cell.labelID.text = "\(scenes[(indexPath as NSIndexPath).row].sceneId)"
-            cell.labelName.text = "\(scenes[(indexPath as NSIndexPath).row].sceneName)"
-            cell.address.text = "\(returnThreeCharactersForByte(Int(scenes[(indexPath as NSIndexPath).row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(scenes[(indexPath as NSIndexPath).row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(scenes[(indexPath as NSIndexPath).row].address)))"
+            cell.labelID.text = "\(scenes[indexPath.row].sceneId)"
+            cell.labelName.text = "\(scenes[indexPath.row].sceneName)"
+            cell.address.text = "\(returnThreeCharactersForByte(Int(scenes[indexPath.row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(scenes[indexPath.row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(scenes[indexPath.row].address)))"
             
-            if let id = scenes[(indexPath as NSIndexPath).row].sceneImageOneCustom{
+            if let id = scenes[indexPath.row].sceneImageOneCustom{
                 if let image = DatabaseImageController.shared.getImageById(id){
                     if let data =  image.imageData {
                         cell.imageOne.image = UIImage(data: data)
                     }else{
-                        if let defaultImage = scenes[(indexPath as NSIndexPath).row].sceneImageOneDefault{
+                        if let defaultImage = scenes[indexPath.row].sceneImageOneDefault{
                             cell.imageOne.image = UIImage(named: defaultImage)
                         }
                     }
                 }else{
-                    if let defaultImage = scenes[(indexPath as NSIndexPath).row].sceneImageOneDefault{
+                    if let defaultImage = scenes[indexPath.row].sceneImageOneDefault{
                         cell.imageOne.image = UIImage(named: defaultImage)
                     }
                 }
             }else{
-                if let defaultImage = scenes[(indexPath as NSIndexPath).row].sceneImageOneDefault{
+                if let defaultImage = scenes[indexPath.row].sceneImageOneDefault{
                     cell.imageOne.image = UIImage(named: defaultImage)
                 }
             }
             
-            if let id = scenes[(indexPath as NSIndexPath).row].sceneImageTwoCustom{
+            if let id = scenes[indexPath.row].sceneImageTwoCustom{
                 if let image = DatabaseImageController.shared.getImageById(id){
                     if let data =  image.imageData {
                         cell.imageTwo.image = UIImage(data: data)
                     }else{
-                        if let defaultImage = scenes[(indexPath as NSIndexPath).row].sceneImageTwoDefault{
+                        if let defaultImage = scenes[indexPath.row].sceneImageTwoDefault{
                             cell.imageTwo.image = UIImage(named: defaultImage)
                         }
                     }
                 }else{
-                    if let defaultImage = scenes[(indexPath as NSIndexPath).row].sceneImageTwoDefault{
+                    if let defaultImage = scenes[indexPath.row].sceneImageTwoDefault{
                         cell.imageTwo.image = UIImage(named: defaultImage)
                     }
                 }
             }else{
-                if let defaultImage = scenes[(indexPath as NSIndexPath).row].sceneImageTwoDefault{
+                if let defaultImage = scenes[indexPath.row].sceneImageTwoDefault{
                     cell.imageTwo.image = UIImage(named: defaultImage)
                 }
             }
@@ -515,7 +515,6 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
         
         let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
         return cell
-        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

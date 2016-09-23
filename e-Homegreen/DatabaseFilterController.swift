@@ -92,6 +92,7 @@ class DatabaseFilterController: NSObject {
     }
     
     func getFilterByMenu(_ menu:Menu) -> FilterParametar?{
+        
         if let user = DatabaseUserController.shared.getLoggedUser(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FilterParametar.fetchRequest()
             var predicateArray:[NSPredicate] = []
@@ -108,6 +109,23 @@ class DatabaseFilterController: NSObject {
             } catch {
                 
             }            
+        }
+        if let user = DatabaseUserController.shared.getOtherUser(){
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FilterParametar.fetchRequest()
+            var predicateArray:[NSPredicate] = []
+            predicateArray.append(NSPredicate(format: "user == %@", user))
+            predicateArray.append(NSPredicate(format: "filterId == %@", NSNumber(value: menu.rawValue as Int)))
+            predicateArray.append(NSPredicate(format: "isDefault == %@", NSNumber(value: false as Bool)))
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+            fetchRequest.predicate = compoundPredicate
+            do {
+                let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [FilterParametar]
+                if results.count != 0{
+                    return results[0]
+                }
+            } catch {
+                
+            }
         }
         return nil
     }

@@ -57,6 +57,17 @@ class DevicesViewController: PopoverVC{
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if self.revealViewController() != nil {
+            menuButton.target = self.revealViewController()
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+            self.revealViewController().panGestureRecognizer().delegate = self
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            revealViewController().toggleAnimationDuration = 0.5
+            
+            revealViewController().rearViewRevealWidth = 200
+            
+        }
+        
         UIView.hr_setToastThemeColor(color: UIColor.red)
         
         appDel = UIApplication.shared.delegate as! AppDelegate
@@ -94,22 +105,6 @@ class DevicesViewController: PopoverVC{
     override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         
-        if self.revealViewController() != nil {
-            menuButton.target = self.revealViewController()
-            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-            self.revealViewController().panGestureRecognizer().delegate = self
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            revealViewController().toggleAnimationDuration = 0.5
-            if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
-                revealViewController().rearViewRevealWidth = 200
-            }else{
-                revealViewController().rearViewRevealWidth = 200
-            }
-            
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            
-        }
         if AdminController.shared.isAdminLogged(){
             if let user = DatabaseUserController.shared.getOtherUser(){
                 userLogged = user
@@ -1156,32 +1151,19 @@ extension DevicesViewController: SWRevealViewControllerDelegate{
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             deviceCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
             deviceCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     
     func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             deviceCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.closeSideMenu))
-            self.view.addGestureRecognizer(tap)
             deviceCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     
-    func closeSideMenu(){
-        
-        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggle(animated: true)
-        }
-        
-    }
     
 }
 
