@@ -26,7 +26,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/ConnectionSettingsVC.swift"
-                  timestampString = "496566276.137255"
+                  timestampString = "496582139.057097"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "165"
@@ -41,7 +41,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/ConnectionSettingsVC.swift"
-                  timestampString = "496566276.140903"
+                  timestampString = "496582139.059243"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "165"
@@ -160,22 +160,6 @@
             startingLineNumber = "60"
             endingLineNumber = "60"
             landmarkName = "getOtherUser()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/DevicesViewController.swift"
-            timestampString = "496565779.990949"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1216"
-            endingLineNumber = "1216"
-            landmarkName = "setONOFFDimmer(_:turnOff:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

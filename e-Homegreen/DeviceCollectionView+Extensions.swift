@@ -129,10 +129,10 @@ extension DevicesViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! DeviceCollectionCell
             // Set cell data
             cell.getDevice(devices[(indexPath as NSIndexPath).row])
-            cell.typeOfLight.text = returnNameForDeviceAccordingToFilter(devices[(indexPath as NSIndexPath).row]) //devices[indexPath.row].cellTitle
-            cell.typeOfLight.tag = (indexPath as NSIndexPath).row
+            cell.typeOfLight.text = devices[indexPath.row].cellTitle
+            cell.typeOfLight.tag = indexPath.row
             cell.lightSlider.isContinuous = true
-            cell.lightSlider.tag = (indexPath as NSIndexPath).row
+            cell.lightSlider.tag = indexPath.row
             let deviceValue:Double = {
                 return Double(devices[(indexPath as NSIndexPath).row].currentValue)///255
             }()
@@ -196,7 +196,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         }
         else if devices[(indexPath as NSIndexPath).row].controlType == ControlType.Curtain {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "curtainCell", for: indexPath) as! CurtainCollectionCell
-            cell.curtainName.text = devices[(indexPath as NSIndexPath).row].cellTitle
+            cell.curtainName.text = devices[indexPath.row].cellTitle
             cell.curtainImage.tag = (indexPath as NSIndexPath).row
             cell.openButton.tag = (indexPath as NSIndexPath).row
             cell.closeButton.tag = (indexPath as NSIndexPath).row
@@ -205,19 +205,19 @@ extension DevicesViewController: UICollectionViewDataSource {
             cell.curtainName.isUserInteractionEnabled = true
             cell.curtainImage.isUserInteractionEnabled = true
 
-            cell.lblAddress.text = "\(returnThreeCharactersForByte(Int(devices[(indexPath as NSIndexPath).row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[(indexPath as NSIndexPath).row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[(indexPath as NSIndexPath).row].address)))"
-            
-            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[(indexPath as NSIndexPath).row].parentZoneId), location: devices[(indexPath as NSIndexPath).row].gateway.location), let name = zone.name{
-                cell.lblLevel.text = "\(name)"
-            }else{
-                cell.lblLevel.text = ""
-            }
-            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[(indexPath as NSIndexPath).row].zoneId), location: devices[(indexPath as NSIndexPath).row].gateway.location), let name = zone.name{
-                cell.lblZone.text = "\(name)"
-            }else{
-                cell.lblZone.text = ""
-            }
-            cell.lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(devices[(indexPath as NSIndexPath).row].categoryId), location: devices[(indexPath as NSIndexPath).row].gateway.location))"
+//            cell.lblAddress.text = "\(returnThreeCharactersForByte(Int(devices[(indexPath as NSIndexPath).row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[(indexPath as NSIndexPath).row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[(indexPath as NSIndexPath).row].address)))"
+//            
+//            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[(indexPath as NSIndexPath).row].parentZoneId), location: devices[(indexPath as NSIndexPath).row].gateway.location), let name = zone.name{
+//                cell.lblLevel.text = "\(name)"
+//            }else{
+//                cell.lblLevel.text = ""
+//            }
+//            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[(indexPath as NSIndexPath).row].zoneId), location: devices[(indexPath as NSIndexPath).row].gateway.location), let name = zone.name{
+//                cell.lblZone.text = "\(name)"
+//            }else{
+//                cell.lblZone.text = ""
+//            }
+//            cell.lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(devices[(indexPath as NSIndexPath).row].categoryId), location: devices[(indexPath as NSIndexPath).row].gateway.location))"
 
             
             // If device is enabled add all interactions
@@ -259,7 +259,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         }
         else if devices[(indexPath as NSIndexPath).row].controlType == ControlType.Relay || devices[(indexPath as NSIndexPath).row].controlType == ControlType.DigitalOutput {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "applianceCell", for: indexPath) as! ApplianceCollectionCell
-            cell.name.text = devices[(indexPath as NSIndexPath).row].cellTitle
+            cell.name.text = devices[indexPath.row].cellTitle
             cell.name.tag = (indexPath as NSIndexPath).row
             let deviceValue:Double = {
                 return Double(devices[(indexPath as NSIndexPath).row].currentValue)
@@ -317,7 +317,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         else if devices[(indexPath as NSIndexPath).row].controlType == ControlType.Climate {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "climaCell", for: indexPath) as! ClimateCell
             cell.energySavingImage.isHidden = devices[(indexPath as NSIndexPath).row].allowEnergySaving == NSNumber(value: true as Bool) ? false : true
-            cell.climateName.text = devices[(indexPath as NSIndexPath).row].cellTitle
+            cell.climateName.text = devices[indexPath.row].cellTitle
             cell.climateName.tag = (indexPath as NSIndexPath).row
             cell.temperature.font = UIFont(name: "Tahoma", size: 17)
             cell.temperature.text = "\(devices[(indexPath as NSIndexPath).row].roomTemperature) \u{00B0}c"

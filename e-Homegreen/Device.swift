@@ -35,8 +35,6 @@ enum EmployeeStatus: Int {
 class Device: NSManagedObject {
     var interfaceParametar:[UInt8] = []
     var warningState:Int = 0
-    var opening:Bool = true
-    var on:Bool = false
     var info:Bool = false
     var cellTitle:String = ""
     var filterWarning:Bool = false
@@ -211,11 +209,6 @@ class Device: NSManagedObject {
                     }
                 }
             }
-            
-//            if let imageData = deviceImage.image?.imageData {
-//                let image = UIImage(data: imageData)
-//                return Result(stateValue: stateValue, imageData: image, defaultImage: UIImage(named: defaultImageNamed)!)
-//            }
             
             return Result(stateValue: stateValue, imageData: nil, defaultImage: UIImage(named: defaultImageNamed)!)
         }

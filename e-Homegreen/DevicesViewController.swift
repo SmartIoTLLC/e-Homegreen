@@ -21,14 +21,11 @@ class DevicesViewController: PopoverVC{
     var scrollView = FilterPullDown()
     var isScrolling:Bool = false
     var shouldUpdate:Bool = false
-    var sidebarMenuOpen : Bool!
-    
-    var senderButton:UIButton?
     
     var deviceInControlMode = false
-    var timer:Foundation.Timer = Foundation.Timer()
     var userLogged:User?
     
+    //zone and category control
     var panRecognizer:UIPanGestureRecognizer!
     var panStartPoint:CGPoint!
     var startingBottomConstraint:CGFloat?
@@ -36,9 +33,7 @@ class DevicesViewController: PopoverVC{
     var appDel:AppDelegate!
     var devices:[Device] = []
     var error:NSError? = nil
-    var inte = 0
     var changeSliderValueOldValue = 0
-    var longTouchOldValue = 0
     
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
@@ -554,54 +549,6 @@ class DevicesViewController: PopoverVC{
             }
         }
     }
-    func update(_ timer: Foundation.Timer){
-        if let tag = timer.userInfo as? Int {
-            var deviceValue = Double(devices[tag].currentValue)
-            if devices[tag].opening == true{
-                if deviceValue < 250 {
-                    deviceValue += 5
-                }
-            } else {
-                if deviceValue >= 5 {
-                    deviceValue -= 5
-                }
-            }
-            devices[tag].currentValue = NSNumber(value: Int(deviceValue)) //*100)
-            let indexPath = IndexPath(item: tag, section: 0)
-            if let cell = self.deviceCollectionView.cellForItem(at: indexPath) as? DeviceCollectionCell {
-                cell.picture.image = devices[tag].returnImage(Double(deviceValue))
-                cell.lightSlider.value = Float(deviceValue/255)
-                cell.setNeedsDisplay()
-            } else if let cell = self.deviceCollectionView.cellForItem(at: indexPath) as? CurtainCollectionCell {
-                cell.setImageForDevice(devices[tag])
-                cell.setNeedsDisplay()
-            }
-        }
-    }
-    func updateCurtain(_ timer: Foundation.Timer){
-        if let tag = timer.userInfo as? Int {
-            var deviceValue = Double(devices[tag].currentValue)///100
-            if devices[tag].opening == true{
-                if deviceValue < 235 {
-                    deviceValue += 20
-                }
-            } else {
-                if deviceValue >= 20 {
-                    deviceValue -= 20
-                }
-            }
-            devices[tag].currentValue = NSNumber(value: Int(deviceValue))//*100)
-            let indexPath = IndexPath(item: tag, section: 0)
-            if let cell = self.deviceCollectionView.cellForItem(at: indexPath) as? DeviceCollectionCell {
-                cell.picture.image = devices[tag].returnImage(Double(deviceValue))
-                cell.lightSlider.value = Float(deviceValue)/255 // Slider accepts values from 0 to 1
-                cell.setNeedsDisplay()
-            } else if let cell = self.deviceCollectionView.cellForItem(at: indexPath) as? CurtainCollectionCell {
-                cell.setImageForDevice(devices[tag])
-                cell.setNeedsDisplay()
-            }
-        }
-    }
     func calculateCellSize(_ size:inout CGSize) {
         var i:CGFloat = 2
         while i >= 2 {
@@ -751,12 +698,6 @@ class DevicesViewController: PopoverVC{
     func changeSliderValue(_ sender: UISlider){
         let tag = sender.tag
         devices[tag].currentValue = NSNumber(value: Int(sender.value * 255))   // device values is Int, 0 to 255 (0x00 to 0xFF)
-        if sender.value == 1{
-            devices[tag].opening = false
-        }
-        if sender.value == 0{
-            devices[tag].opening = true
-        }
         
         let indexPath = IndexPath(item: tag, section: 0)
         if let cell = self.deviceCollectionView.cellForItem(at: indexPath) as? DeviceCollectionCell {
@@ -816,6 +757,7 @@ class DevicesViewController: PopoverVC{
             text += " " + device.name
             return text
         }
+//        return "dasd"
     }
     
     //MARK: Zone and category controll
@@ -1164,7 +1106,6 @@ extension DevicesViewController: SWRevealViewControllerDelegate{
             deviceCollectionView.isUserInteractionEnabled = false
         }
     }
-    
     
 }
 

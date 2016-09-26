@@ -24,20 +24,6 @@ class MultiSensorCell: UICollectionViewCell {
         sensorTitle.text = device.cellTitle
         sensorTitle.tag = tag
         populateCell(device)
-        labelID.text = "\(device.channel)"
-        labelName.text = "\(device.name)"
-        labelCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(device.categoryId), location: device.gateway.location))"
-        
-        if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location), let name = zone.name{
-            labelLevel.text = "\(name)"
-        }else{
-            labelLevel.text = ""
-        }
-        if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.zoneId), location: device.gateway.location), let name = zone.name{
-            labelZone.text = "\(name)"
-        }else{
-            labelZone.text = ""
-        }
         if device.info {
             infoView.isHidden = false
             backView.isHidden = true
@@ -68,11 +54,6 @@ class MultiSensorCell: UICollectionViewCell {
 
         sensorState.text = " "
         populateCell(device)
-        labelID.text = "\(device.channel)"
-        labelName.text = "\(device.name)"
-        labelCategory.text = "\(device.categoryId)"
-        labelLevel.text = "\(device.parentZoneId)"
-        labelZone.text = "\(device.zoneId)"
         if device.info {
             infoView.isHidden = false
             backView.isHidden = true
