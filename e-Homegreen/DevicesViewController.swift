@@ -701,7 +701,8 @@ class DevicesViewController: PopoverVC{
         //   Dimmer
         if devices[tag].controlType == ControlType.Dimmer {
             let setValue = UInt8(Int(self.devices[tag].currentValue.doubleValue*100/255))
-            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async(execute: {
+            
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: {
                 DispatchQueue.main.async(execute: {
                     _ = RepeatSendingHandler(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
                 })
@@ -710,7 +711,7 @@ class DevicesViewController: PopoverVC{
         //  Curtain
         if devices[tag].controlType == ControlType.Curtain {
             let deviceGroupId = devices[tag].curtainGroupID.intValue
-            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async(execute: {
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: {
                 DispatchQueue.main.async(execute: {
                     _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: UInt8(Int(self.devices[tag].currentValue)), groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
                 })
