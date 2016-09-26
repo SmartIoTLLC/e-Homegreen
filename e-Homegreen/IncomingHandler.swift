@@ -670,11 +670,6 @@ class IncomingHandler: NSObject {
                 device.categoryId = NSNumber(value: Int(byteArray[8]))
                 // When we change category it will reset images
                 device.digitalInputMode = Int(byteArray[14]) as NSNumber?
-                //                var interfaceParametar:[Byte] = []
-                //                for var i = 7; i < byteArray.count-2; i++ {
-                //                    interfaceParametar.append(byteArray[i])
-                //                }
-                //                device.interfaceParametar = interfaceParametar
                 if byteArray[11] >= 0x80 {
                     device.isEnabled = NSNumber(value: true as Bool)
                     device.isVisible = NSNumber(value: true as Bool)
@@ -744,7 +739,7 @@ class IncomingHandler: NSObject {
         for i in 0..<self.devices.count{
             if Int(self.devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(self.devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(self.devices[i].address) == Int(byteArray[4]) {
                 let channel = Int(self.devices[i].channel)
-                self.devices[i].currentValue = NSNumber(value: Int(byteArray[7+channel]) * 255/100) // This calculation is added because app uses 0-255 range, and PLC is sending 0-100
+                self.devices[i].currentValue = NSNumber(value: Int(byteArray[7+channel]))
                 print(Int(byteArray[7+channel]))
             }
             

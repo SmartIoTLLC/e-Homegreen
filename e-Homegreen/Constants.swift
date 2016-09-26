@@ -572,9 +572,9 @@ struct Colors {
 struct DeviceValue {
     struct MotionSensor {
         static let Idle = Int(0x00)
-        static let Motion = (0x01)
-        static let IdleWarning = (0xFE)
-        static let ResetTimer = (0xEF)
+        static let Motion = Int(0x01)
+        static let IdleWarning = Int(0xFE)
+        static let ResetTimer = Int(0xEF)
     }
 }
 
