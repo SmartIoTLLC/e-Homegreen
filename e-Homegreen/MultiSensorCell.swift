@@ -69,6 +69,10 @@ class MultiSensorCell: UICollectionViewCell {
         }
     }
     func populateCell(_ device:Device) {
+        NSLog("DEVICE_DEBUG_MOTIONSENSOR:")
+        NSLog("Address: \(device.address)")
+        NSLog("Address: \(device.controlType)")
+        NSLog("Address: \(device.currentValue)")
         if device.numberOfDevices == 10 {
             switch device.channel {
             case 1:
@@ -103,7 +107,8 @@ class MultiSensorCell: UICollectionViewCell {
                 case DeviceValue.MotionSensor.ResetTimer:
                     sensorImage.image = UIImage(named: "sensor_third")
                     sensorState.text = "Reset Timer"
-                default: break
+                default:
+                    break
                 }
             case 8:
                 sensorImage.image = device.returnImage(Double(device.currentValue))
@@ -146,7 +151,8 @@ class MultiSensorCell: UICollectionViewCell {
                 case DeviceValue.MotionSensor.ResetTimer:
                     sensorImage.image = UIImage(named: "sensor_third")
                     sensorState.text = "Reset Timer"
-                default: break
+                default:
+                    break
                 }
             case 6:
                 sensorImage.image = device.returnImage(Double(device.currentValue))
