@@ -454,19 +454,6 @@ extension ImportCategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         showEditCategory(categories[(indexPath as NSIndexPath).row], location: nil).delegate = self
     }
-    @objc(tableView:canEditRowAtIndexPath:) func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if ((categories[(indexPath as NSIndexPath).row].id as! Int) >= 1 && (categories[(indexPath as NSIndexPath).row].id as! Int) <= 19) || (categories[(indexPath as NSIndexPath).row].id as! Int) == 255 {
-            return false
-        }
-        return true
-    }
-    @objc(tableView:commitEditingStyle:forRowAtIndexPath:) func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            appDel.managedObjectContext?.delete(categories[(indexPath as NSIndexPath).row])
-            appDel.saveContext()
-            refreshCategoryList()
-        }
-    }
 }
 
 extension ImportCategoryViewController: UITableViewDataSource {
@@ -487,6 +474,20 @@ extension ImportCategoryViewController: UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return categories.count
+    }
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if ((categories[(indexPath as NSIndexPath).row].id as! Int) >= 1 && (categories[(indexPath as NSIndexPath).row].id as! Int) <= 19) || (categories[(indexPath as NSIndexPath).row].id as! Int) == 255 {
+            return false
+        }
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            appDel.managedObjectContext?.delete(categories[(indexPath as NSIndexPath).row])
+            appDel.saveContext()
+            refreshCategoryList()
+        }
     }
 }
 

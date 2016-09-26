@@ -700,8 +700,7 @@
                                             <frame key="frameInset" width="369" height="117"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mc5-6T-ikg">
-                                                    <frame key="frameInset" minX="257" minY="10" width="51" height="31"/>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mc5-6T-ikg">
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <connections>
                                                         <action selector="changeSwitchValue:" destination="2FZ-vT-EF0" eventType="valueChanged" id="7rp-r9-hU2"/>
@@ -748,14 +747,12 @@
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Beu-kq-fdu">
-                                                    <frame key="frameInset" minX="8" minY="81" width="213" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Beu-kq-fdu">
                                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xX0-Xk-B5e">
-                                                    <frame key="frameInset" minX="271" minY="75" width="35" height="35"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xX0-Xk-B5e">
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="35" id="uJC-uX-aAW"/>
@@ -769,8 +766,7 @@
                                                         <action selector="scanDevicesAction:" destination="2FZ-vT-EF0" eventType="touchUpInside" id="Iao-9d-cmo"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="za4-4D-VF7">
-                                                    <frame key="frameInset" minX="231" minY="77" width="30" height="30"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="za4-4D-VF7">
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="seR-Eo-GsJ"/>
                                                     </constraints>
@@ -1053,8 +1049,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="gtp-UZ-een"/>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nYW-QY-eqC" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
-                                <frame key="frameInset" minX="109" minY="104" width="102" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nYW-QY-eqC" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="kDu-Ls-L5Z"/>
@@ -1302,8 +1297,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="EGp-UL-Znr"/>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fPm-aX-Ev4" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
-                                <frame key="frameInset" minX="108" minY="104" width="99" height="31"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fPm-aX-Ev4" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                 <state key="normal" title="DELETE ALL">
@@ -4146,7 +4140,7 @@
             <objects>
                 <navigationController storyboardIdentifier="ImportCategory" automaticallyAdjustsScrollViewInsets="NO" id="ZOT-6i-c1q" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="X0A-Ek-OkY">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="X0A-Ek-OkY">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -4164,7 +4158,7 @@
             <objects>
                 <navigationController storyboardIdentifier="ImportSSID" automaticallyAdjustsScrollViewInsets="NO" id="N3C-iI-Bpu" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="icq-0O-iSO">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="icq-0O-iSO">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -4182,7 +4176,7 @@
             <objects>
                 <navigationController storyboardIdentifier="ImportZone" automaticallyAdjustsScrollViewInsets="NO" id="jAm-lh-v5y" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Ygh-vG-8fn">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Ygh-vG-8fn">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

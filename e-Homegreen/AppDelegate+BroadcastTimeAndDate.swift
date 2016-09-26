@@ -35,8 +35,8 @@ extension AppDelegate {
     
     func refreshAllConnections() {
         let queue = DispatchQueue(label: "com.domain.app.refresh.connections.timer", attributes: [])
-        let minutes = 1
-        let seconds:UInt64 = UInt64(((minutes*60)-10))
+//        let minutes = 1
+//        let seconds:UInt64 = UInt64(((minutes*60)-10))
         refreshTimer = DispatchSource.makeTimerSource(flags: DispatchSource.TimerFlags(rawValue: UInt(0)), queue: queue) /*Migrator FIXME: Use DispatchSourceTimer to avoid the cast*/ as! DispatchSource
 //        refreshTimer.setTimer(start: DispatchTime.now(), interval: seconds * NSEC_PER_SEC, leeway: 1 * NSEC_PER_SEC) // every 60 seconds, with leeway of 1 second
         refreshTimer.setEventHandler {

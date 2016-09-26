@@ -162,7 +162,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     @IBAction func deleteAll(_ sender: UIButton) {
         showAlertView(sender, message: "Are you sure you want to delete all devices?") { (action) in
             if action == ReturnedValueFromAlertView.delete{
-                DatabaseDeviceController.shared
                 for item in self.devices {
                     if item.gateway.objectID == self.gateway.objectID {
                         self.appDel.managedObjectContext!.delete(item)

@@ -56,9 +56,8 @@ extension SecurityLocationXIB: UITextViewDelegate{
 }
 
 extension UIViewController {
-    func showSecurityLocationParametar() -> SecurityLocationXIB {
+    func showSecurityLocationParametar(){
         let vc = SecurityLocationXIB()
         self.present(vc, animated: true, completion: nil)
-        return vc
     }
 }

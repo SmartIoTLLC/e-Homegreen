@@ -30,7 +30,7 @@ struct PopOverItem {
     var id:String
 }
 
-class PopOverViewController: UIViewController, UITableViewDataSource {
+class PopOverViewController: UIViewController  {
     
     @IBOutlet weak var table: UITableView!
     
@@ -49,21 +49,20 @@ class PopOverViewController: UIViewController, UITableViewDataSource {
     }
 }
 
-extension PopOverViewController: UITableViewDelegate{
+extension PopOverViewController: UITableViewDelegate, UITableViewDataSource{
     
-    @objc(tableView:cellForRowAtIndexPath:) func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if cellWithTwoTextRows {
             if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: PullDownViewTwoRowsCell())) as? PullDownViewTwoRowsCell {
                 
-                cell.tableItemName.text = popOverList[(indexPath as NSIndexPath).row].name
+                cell.tableItemName.text = popOverList[indexPath.row].name
                 cell.tableItemDescription.text = popOverList[(indexPath as NSIndexPath).row].id
                 return cell
             }
-
+            
         }else{
             if let cell = tableView.dequeueReusableCell(withIdentifier: "pullCell") as? PullDownViewCell {
-                cell.tableItem.text = popOverList[(indexPath as NSIndexPath).row].name
+                cell.tableItem.text = popOverList[indexPath.row].name
                 return cell
             }
         }

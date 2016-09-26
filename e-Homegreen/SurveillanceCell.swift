@@ -25,7 +25,7 @@ class SurveillenceCell:UICollectionViewCell{
     
     func update(){
         print(camera.name)
-        SurveillanceHandler(surv: camera)
+        let _ = SurveillanceHandler(surv: camera)
         
 //        SurveillanceHandler.shared.getCameraImage(camera) { (success) in
         

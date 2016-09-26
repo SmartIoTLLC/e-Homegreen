@@ -540,20 +540,8 @@ extension ImportZoneViewController: UITableViewDelegate {
         })
     }
     
-    @objc(tableView:canEditRowAtIndexPath:) func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if zones[(indexPath as NSIndexPath).row].id as! Int == 255 || zones[(indexPath as NSIndexPath).row].id as! Int == 254{
-            return false
-        }
-        return true
-    }
-    
-    @objc(tableView:commitEditingStyle:forRowAtIndexPath:) func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-         if editingStyle == .delete {
-            appDel.managedObjectContext?.delete(zones[(indexPath as NSIndexPath).row])
-            appDel.saveContext()
-            refreshZoneList()
-         }
-    }
+
+
 }
 
 extension ImportZoneViewController: UITableViewDataSource {
@@ -592,6 +580,22 @@ extension ImportZoneViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return zones.count
+    }
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if zones[(indexPath as NSIndexPath).row].id as! Int == 255 || zones[(indexPath as NSIndexPath).row].id as! Int == 254{
+            return false
+        }
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == UITableViewCellEditingStyle.delete) {
+            if editingStyle == .delete {
+                appDel.managedObjectContext?.delete(zones[(indexPath as NSIndexPath).row])
+                appDel.saveContext()
+                refreshZoneList()
+            }
+        }
     }
 }
 

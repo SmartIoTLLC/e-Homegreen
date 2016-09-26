@@ -39,7 +39,7 @@ class ImportFilesViewController: UIViewController, UITableViewDataSource, UITabl
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.2)
         backView.layer.cornerRadius = 10
         
-        let isFileInDir = enumerateDirectory() ?? []
+        let isFileInDir = enumerateDirectory() 
         for item in isFileInDir{
             if "json" == URL(string: item.replacingOccurrences(of: " ", with: ""))?.pathExtension{
                 listOfJson.append(item)

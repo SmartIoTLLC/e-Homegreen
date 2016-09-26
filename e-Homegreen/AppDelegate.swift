@@ -129,8 +129,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 //        configureStateForTheFirstTime()
         
-        application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil))
-        UIApplication.shared.cancelAllLocalNotifications()
+//        application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil))
+//        UIApplication.shared.cancelAllLocalNotifications()
         
         setFilterBySSIDOrByiBeaconAgain()
         
@@ -160,10 +160,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         } else {
             // Otherwise present a local notification
-            let notification = UILocalNotification()
-            notification.alertBody = notefromRegionIdentifier(region.identifier)
-            notification.soundName = "Default";
-            UIApplication.shared.presentLocalNotificationNow(notification)
+//            let notification = UILocalNotification()
+//            notification.alertBody = notefromRegionIdentifier(region.identifier)
+//            notification.soundName = "Default";
+//            UIApplication.shared.presentLocalNotificationNow(notification)
         }
     }
     

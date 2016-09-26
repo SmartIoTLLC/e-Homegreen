@@ -26,7 +26,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/ConnectionSettingsVC.swift"
-                  timestampString = "496322023.471536"
+                  timestampString = "496563440.518211"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "165"
@@ -41,7 +41,7 @@
                   moduleName = "e-Homegreen"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/ConnectionSettingsVC.swift"
-                  timestampString = "496322023.475604"
+                  timestampString = "496563440.521989"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "165"
@@ -64,38 +64,6 @@
             startingLineNumber = "181"
             endingLineNumber = "181"
             landmarkName = "save(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/ScanScenesViewController.swift"
-            timestampString = "496314750.491066"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "467"
-            endingLineNumber = "467"
-            landmarkName = "tableView(_:cellForRowAt:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/ScanScenesViewController.swift"
-            timestampString = "496314751.342152"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "468"
-            endingLineNumber = "468"
-            landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -144,198 +112,6 @@
             startingLineNumber = "215"
             endingLineNumber = "215"
             landmarkName = "updateSecurityList()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/DatabaseUserController.swift"
-            timestampString = "496319923.133936"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "35"
-            endingLineNumber = "35"
-            landmarkName = "getOtherUser()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "e_Homegreen.DatabaseUserController.getOtherUser () -&gt; Swift.Optional&lt;e_Homegreen.User&gt;"
-                  moduleName = "e-Homegreen"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/DatabaseUserController.swift"
-                  timestampString = "496322023.572634"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "35"
-                  endingLineNumber = "35"
-                  offsetFromSymbolStart = "20">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "e_Homegreen.DatabaseUserController.getOtherUser () -&gt; Swift.Optional&lt;e_Homegreen.User&gt;"
-                  moduleName = "e-Homegreen"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/DatabaseUserController.swift"
-                  timestampString = "496322023.577062"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "35"
-                  endingLineNumber = "35"
-                  offsetFromSymbolStart = "172">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/DatabaseUserController.swift"
-            timestampString = "496319928.16865"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
-            landmarkName = "getOtherUser()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "e_Homegreen.DatabaseUserController.getOtherUser () -&gt; Swift.Optional&lt;e_Homegreen.User&gt;"
-                  moduleName = "e-Homegreen"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/DatabaseUserController.swift"
-                  timestampString = "496322023.596831"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "36"
-                  endingLineNumber = "36"
-                  offsetFromSymbolStart = "200">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "e_Homegreen.DatabaseUserController.getOtherUser () -&gt; Swift.Optional&lt;e_Homegreen.User&gt;"
-                  moduleName = "e-Homegreen"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/DatabaseUserController.swift"
-                  timestampString = "496322023.598881"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "36"
-                  endingLineNumber = "36"
-                  offsetFromSymbolStart = "256">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/DatabaseUserController.swift"
-            timestampString = "496319928.55379"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
-            landmarkName = "getOtherUser()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "e_Homegreen.DatabaseUserController.getOtherUser () -&gt; Swift.Optional&lt;e_Homegreen.User&gt;"
-                  moduleName = "e-Homegreen"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/DatabaseUserController.swift"
-                  timestampString = "496322023.617314"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "37"
-                  endingLineNumber = "37"
-                  offsetFromSymbolStart = "268">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "e_Homegreen.DatabaseUserController.getOtherUser () -&gt; Swift.Optional&lt;e_Homegreen.User&gt;"
-                  moduleName = "e-Homegreen"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vladimirzivanov/e-Homegreen/e-Homegreen/DatabaseUserController.swift"
-                  timestampString = "496322023.619599"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "37"
-                  endingLineNumber = "37"
-                  offsetFromSymbolStart = "552">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/DatabaseUserController.swift"
-            timestampString = "496319929.126345"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
-            landmarkName = "getOtherUser()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/DatabaseUserController.swift"
-            timestampString = "496319929.646598"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
-            landmarkName = "getOtherUser()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "e-Homegreen/DatabaseUserController.swift"
-            timestampString = "496319930.04769"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
-            landmarkName = "getOtherUser()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -19,7 +19,7 @@ import CoreData
     @objc optional func backImage(_ image:Image, imageIndex:Int)
 }
 
-class SceneGalleryVC: CommonXIBTransitionVC, UICollectionViewDataSource {
+class SceneGalleryVC: CommonXIBTransitionVC {
     
     var delegate : SceneGalleryDelegate?
     
@@ -359,12 +359,12 @@ class SceneGalleryVC: CommonXIBTransitionVC, UICollectionViewDataSource {
     
 }
 
-extension SceneGalleryVC : UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
+extension SceneGalleryVC : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return galleryImages.count
     }
     
-    @objc(collectionView:cellForItemAtIndexPath:) func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = gallery.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! GalleryCollectionViewCell
         if let image = galleryImages[(indexPath as NSIndexPath).row] as? Image {
             cell.cellImage.image = UIImage(data: image.imageData! as Data)
@@ -372,9 +372,9 @@ extension SceneGalleryVC : UICollectionViewDelegate, UICollectionViewDelegateFlo
         if let string = galleryImages[(indexPath as NSIndexPath).row] as? String {
             cell.cellImage.image = UIImage(named:string)
         }
-
+        
         cell.layer.masksToBounds = true
-        cell.layer.cornerRadius = 5        
+        cell.layer.cornerRadius = 5
         
         return cell
     }

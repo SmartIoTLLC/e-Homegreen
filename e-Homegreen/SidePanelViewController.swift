@@ -90,7 +90,7 @@
             (alert: UIAlertAction!) -> Void in
             DatabaseLocationController.shared.stopAllLocationMonitoring()
             DatabaseUserController.shared.logoutUser()
-            DatabaseUserController.shared.setUser(nil)
+            let _ = DatabaseUserController.shared.setUser(nil)
             AdminController.shared.logoutAdmin()
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
             let logIn = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LogInViewController

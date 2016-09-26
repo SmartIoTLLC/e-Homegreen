@@ -10,7 +10,7 @@ import Foundation
 class DataImporter {
     class func createZonesFromFile (_ fileName:String) -> [ZoneJSON]? {
         var data:Data!
-        let paths: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+//        let paths: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         let filePath = "" //paths.appendingPathComponent(fileName)
         let checkValidation = FileManager.default
         if checkValidation.fileExists(atPath: filePath) {
@@ -82,7 +82,7 @@ class DataImporter {
     }
     class func createCategoriesFromFile (_ fileName:String) -> [CategoryJSON]? {
         var data:Data!
-        let paths: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+//        let paths: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         let filePath = "" // paths.appendingPathComponent(fileName)
         let checkValidation = FileManager.default
         if checkValidation.fileExists(atPath: filePath) {

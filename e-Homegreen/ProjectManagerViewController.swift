@@ -119,7 +119,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
             if action == ReturnedValueFromAlertView.delete{
                 self.appDel.managedObjectContext?.delete(self.users[sender.tag])
                 if self.users[sender.tag].username == DatabaseUserController.shared.getOtherUser()?.username{
-                    AdminController.shared.setOtherUser(nil)
+                    let _ = AdminController.shared.setOtherUser(nil)
                 }
                 self.reloadData()
             }

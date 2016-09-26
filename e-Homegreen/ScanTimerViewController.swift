@@ -664,8 +664,8 @@ extension ScanTimerViewController: SceneGalleryDelegate{
     }
 }
 
-extension ScanTimerViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath) {
+extension ScanTimerViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         IDedit.text = "\(timers[(indexPath as NSIndexPath).row].timerId)"
         nameEdit.text = "\(timers[(indexPath as NSIndexPath).row].timerName)"
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(timers[(indexPath as NSIndexPath).row].address)))"
@@ -751,7 +751,7 @@ extension ScanTimerViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return timers.count
     }
-    func tableView(_ tableView: UITableView, editActionsForRowAtIndexPath indexPath: IndexPath) -> [UITableViewRowAction]? {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
             self.tableView(self.timerTableView, commit: UITableViewCellEditingStyle.delete, forRowAt: indexPath)
         })
