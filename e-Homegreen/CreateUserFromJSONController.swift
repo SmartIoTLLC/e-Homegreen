@@ -7,7 +7,7 @@
 //
 
 import UIKit
-//import Zip
+import Zip
 import CoreData
 
 class CreateUserFromJSONController: NSObject {
@@ -18,28 +18,28 @@ class CreateUserFromJSONController: NSObject {
     
     func unzipAndDeleteFile(_ url:URL){
 //        if let filePath = url.path {
-//            let documentsDirectoryPathString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
-//            let documentsDirectoryPath = URL(string: documentsDirectoryPathString)!
-//            do{
-//                try Zip.unzipFile(url, destination: documentsDirectoryPath, overwrite: true, password: nil, progress: { (progress) -> () in
-//                    print(progress)
-//                })
-//            }
-//            catch {
-//                print("Something went wrong")
-//            }
-//            if FileManager.default.fileExists(atPath: filePath) {
-//                do {
-//                    try FileManager.default.removeItem(atPath: filePath)
-//                    print("file has been removed")
-//                } catch {
-//                    print("file didn't remove")
-//                }
-//            }
-//            
-//            let jsonFilePath = documentsDirectoryPath.appendingPathComponent("test.json")
-//            createUserFromJSON(jsonFilePath.path)
-//            
+            let documentsDirectoryPathString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+            let documentsDirectoryPath = URL(string: documentsDirectoryPathString)!
+            do{
+                try Zip.unzipFile(url, destination: documentsDirectoryPath, overwrite: true, password: nil, progress: { (progress) -> () in
+                    print(progress)
+                })
+            }
+            catch {
+                print("Something went wrong")
+            }
+            if FileManager.default.fileExists(atPath: url.path) {
+                do {
+                    try FileManager.default.removeItem(atPath: url.path)
+                    print("file has been removed")
+                } catch {
+                    print("file didn't remove")
+                }
+            }
+            
+            let jsonFilePath = documentsDirectoryPath.appendingPathComponent("test.json")
+            createUserFromJSON(jsonFilePath.path)
+            
 //        }
     }
     

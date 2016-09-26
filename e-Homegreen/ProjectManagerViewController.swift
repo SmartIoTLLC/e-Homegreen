@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 import NSManagedObject_HYPPropertyMapper
-//import Zip
+import Zip
 
 class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddUserDelegate, SWRevealViewControllerDelegate {
     
@@ -174,15 +174,15 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
             try? data.write(to: URL(fileURLWithPath: jsonFilePath.path), options: [.atomic])
         }
         
-//        do {
-//            let zipFilePath = documentsDirectoryPath.URLByAppendingPathComponent("archive.zip")
-//            try Zip.zipFiles([jsonFilePath], zipFilePath: zipFilePath, password: nil, progress: { (progress) -> () in
-//                print(progress)
-//            })
-//        }
-//        catch {
-//            print("Something went wrong")
-//        }
+        do {
+            let zipFilePath = documentsDirectoryPath.appendingPathComponent("archive.zip")
+            try Zip.zipFiles(paths: [jsonFilePath], zipFilePath: zipFilePath, password: nil, progress: { (progress) -> () in
+                print(progress)
+            })
+        }
+        catch {
+            print("Something went wrong")
+        }
         
         do {
             try fileManager.removeItem(atPath: jsonFilePath.path)
