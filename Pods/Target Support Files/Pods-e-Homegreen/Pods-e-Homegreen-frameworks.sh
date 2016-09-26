@@ -90,6 +90,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/NSEntityDescription-SYNCPrimaryKey/NSEntityDescription_SYNCPrimaryKey.framework"
   install_framework "$BUILT_PRODUCTS_DIR/NSManagedObject-HYPPropertyMapper/NSManagedObject_HYPPropertyMapper.framework"
   install_framework "$BUILT_PRODUCTS_DIR/NSString-HYPNetworking/NSString_HYPNetworking.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Zip/Zip.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/ALCameraViewController/ALCameraViewController.framework"
@@ -98,4 +99,5 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/NSEntityDescription-SYNCPrimaryKey/NSEntityDescription_SYNCPrimaryKey.framework"
   install_framework "$BUILT_PRODUCTS_DIR/NSManagedObject-HYPPropertyMapper/NSManagedObject_HYPPropertyMapper.framework"
   install_framework "$BUILT_PRODUCTS_DIR/NSString-HYPNetworking/NSString_HYPNetworking.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Zip/Zip.framework"
 fi

@@ -9,5 +9,6 @@ target 'e-Homegreen' do
     pod 'CocoaAsyncSocket'
     pod 'NSManagedObject-HYPPropertyMapper'
     pod 'ALCameraViewController'
+    pod 'Zip', '~> 0.6'
 
 end

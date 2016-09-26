@@ -10,11 +10,13 @@ PODS:
     - DateParser (~> 0.1.0)
     - NSEntityDescription-SYNCPrimaryKey (~> 1.2.6)
   - NSString-HYPNetworking (1.0.5)
+  - Zip (0.6.0)
 
 DEPENDENCIES:
   - ALCameraViewController
   - CocoaAsyncSocket
   - NSManagedObject-HYPPropertyMapper
+  - Zip (~> 0.6)
 
 SPEC CHECKSUMS:
   ALCameraViewController: 3ce731eed0b58f2791ce7404f9d039d10f2235c3
@@ -23,7 +25,8 @@ SPEC CHECKSUMS:
   NSEntityDescription-SYNCPrimaryKey: 9449ab486b46ee949421d17d11de8cd7d4c31904
   NSManagedObject-HYPPropertyMapper: 2ed97ce16ff3ad3adafb6c76b3c865ef4697d66b
   NSString-HYPNetworking: a42e1fddceabb89735e53cbbb4b5865edd4f2bb6
+  Zip: 805fc2fa9d2f05bbb7762d982d7a42ccdcc51f42
 
-PODFILE CHECKSUM: d9cf4f3b92c426fc04dee569ede00d3f45e43b08
+PODFILE CHECKSUM: 05b8273a1b3bfb50fabca7dee71fa43410f67b2c
 
 COCOAPODS: 1.0.1
