@@ -93,5 +93,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Allow photo library in order to select images</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Allow camera in order to take photos</string>
 </dict>
 </plist>

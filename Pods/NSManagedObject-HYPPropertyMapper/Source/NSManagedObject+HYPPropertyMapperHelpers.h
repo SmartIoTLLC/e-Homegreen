@@ -2,9 +2,8 @@
 
 #import "NSManagedObject+HYPPropertyMapper.h"
 
-static NSString * const HYPPropertyMapperDefaultRemoteValue = @"id";
-static NSString * const HYPPropertyMapperDefaultLocalValue = @"remoteID";
 static NSString * const HYPPropertyMapperDestroyKey = @"destroy";
+static NSString * const HYPPropertyMapperCustomValueTransformerKey = @"hyper.valueTransformer";
 
 @interface NSManagedObject (HYPPropertyMapperHelpers)
 
@@ -13,6 +12,7 @@ static NSString * const HYPPropertyMapperDestroyKey = @"destroy";
                   relationshipType:(HYPPropertyMapperRelationshipType)relationshipType;
 
 - (NSAttributeDescription *)attributeDescriptionForRemoteKey:(NSString *)key;
+- (NSArray *)attributeDescriptionsForRemoteKeyPath:(NSString *)key;
 
 - (id)valueForAttributeDescription:(id)attributeDescription
                   usingRemoteValue:(id)removeValue;

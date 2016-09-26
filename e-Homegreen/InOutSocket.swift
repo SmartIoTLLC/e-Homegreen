@@ -83,8 +83,9 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     }
     
     func send(_ message:String){
-        let data = message.data(using: String.Encoding.utf8)
-        socket.send(data, withTimeout: -1, tag: 0)
+        if let data = message.data(using: String.Encoding.utf8){
+            socket.send(data, withTimeout: -1, tag: 0)
+        }
         
     }
     func sendByte(_ ip:String, arrayByte: [UInt8]) {
