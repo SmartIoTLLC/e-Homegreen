@@ -52,17 +52,6 @@ class DevicesViewController: PopoverVC{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if self.revealViewController() != nil {
-            menuButton.target = self.revealViewController()
-            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-            self.revealViewController().panGestureRecognizer().delegate = self
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            revealViewController().toggleAnimationDuration = 0.5
-            
-            revealViewController().rearViewRevealWidth = 200
-            
-        }
-        
         UIView.hr_setToastThemeColor(color: UIColor.red)
         
         appDel = UIApplication.shared.delegate as! AppDelegate
@@ -99,6 +88,17 @@ class DevicesViewController: PopoverVC{
     }
     override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
+        
+        if self.revealViewController() != nil {
+            menuButton.target = self.revealViewController()
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+            self.revealViewController().panGestureRecognizer().delegate = self
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            revealViewController().toggleAnimationDuration = 0.5
+            
+            revealViewController().rearViewRevealWidth = 200
+            
+        }
         
         if AdminController.shared.isAdminLogged(){
             if let user = DatabaseUserController.shared.getOtherUser(){

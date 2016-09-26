@@ -204,21 +204,6 @@ extension DevicesViewController: UICollectionViewDataSource {
         
             cell.curtainName.isUserInteractionEnabled = true
             cell.curtainImage.isUserInteractionEnabled = true
-
-//            cell.lblAddress.text = "\(returnThreeCharactersForByte(Int(devices[(indexPath as NSIndexPath).row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[(indexPath as NSIndexPath).row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[(indexPath as NSIndexPath).row].address)))"
-//            
-//            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[(indexPath as NSIndexPath).row].parentZoneId), location: devices[(indexPath as NSIndexPath).row].gateway.location), let name = zone.name{
-//                cell.lblLevel.text = "\(name)"
-//            }else{
-//                cell.lblLevel.text = ""
-//            }
-//            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[(indexPath as NSIndexPath).row].zoneId), location: devices[(indexPath as NSIndexPath).row].gateway.location), let name = zone.name{
-//                cell.lblZone.text = "\(name)"
-//            }else{
-//                cell.lblZone.text = ""
-//            }
-//            cell.lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(devices[(indexPath as NSIndexPath).row].categoryId), location: devices[(indexPath as NSIndexPath).row].gateway.location))"
-
             
             // If device is enabled add all interactions
             if devices[(indexPath as NSIndexPath).row].isEnabled.boolValue {
@@ -230,10 +215,10 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.closeButton.addGestureRecognizer(curtainCloseTap)
                 cell.curtainImage.addGestureRecognizer(curtainStopTap)
                 
-                let curtainNameTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.handleTap(_:)))
-                curtainNameTap.numberOfTapsRequired = 2
+//                let curtainNameTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.handleTap(_:)))
+//                curtainNameTap.numberOfTapsRequired = 2
                 cell.curtainName.tag = (indexPath as NSIndexPath).row
-                cell.curtainName.addGestureRecognizer(curtainNameTap)
+//                cell.curtainName.addGestureRecognizer(curtainNameTap)
                 
                 let curtainNameLongPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DevicesViewController.cellParametarLongPress(_:)))
                 curtainNameLongPress.minimumPressDuration = 0.5
@@ -442,9 +427,9 @@ extension DevicesViewController: UICollectionViewDataSource {
             longPressTwo.minimumPressDuration = 0.5
             cell.disabledCellView.tag = (indexPath as NSIndexPath).row
             
-            let doublePress = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.handleTap(_:)))
-            doublePress.numberOfTapsRequired = 2
-            cell.sensorTitle.addGestureRecognizer(doublePress)
+//            let doublePress = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.handleTap(_:)))
+//            doublePress.numberOfTapsRequired = 2
+//            cell.sensorTitle.addGestureRecognizer(doublePress)
             
             cell.sensorTitle.addGestureRecognizer(longPressOne)
             cell.disabledCellView.addGestureRecognizer(longPressTwo)
