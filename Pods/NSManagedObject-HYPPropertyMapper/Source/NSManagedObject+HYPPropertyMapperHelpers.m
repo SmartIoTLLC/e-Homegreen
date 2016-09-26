@@ -2,7 +2,8 @@
 
 #import "NSManagedObject+HYPPropertyMapper.h"
 #import "NSString+HYPNetworking.h"
-#import "NSDate+HYPPropertyMapper.h"
+#import "NSEntityDescription+SYNCPrimaryKey.h"
+@import DateParser;
 
 @implementation NSManagedObject (HYPPropertyMapperHelpers)
 
@@ -14,10 +15,16 @@
         value = [self valueForKey:attributeDescription.name];
         BOOL nilOrNullValue = (!value ||
                                [value isKindOfClass:[NSNull class]]);
+        NSString *customTransformerName = attributeDescription.userInfo[HYPPropertyMapperCustomValueTransformerKey];
         if (nilOrNullValue) {
             value = [NSNull null];
         } else if ([value isKindOfClass:[NSDate class]]) {
             value = [dateFormatter stringFromDate:value];
+        } else if (customTransformerName) {
+            NSValueTransformer *transformer = [NSValueTransformer valueTransformerForName:customTransformerName];
+            if (transformer) {
+                value = [transformer reverseTransformedValue:value];
+            }
         }
     }
 
@@ -35,6 +42,13 @@
             NSString *customRemoteKey = userInfo[HYPPropertyMapperCustomRemoteKey];
             BOOL currentAttributeHasTheSameRemoteKey = (customRemoteKey.length > 0 && [customRemoteKey isEqualToString:remoteKey]);
             if (currentAttributeHasTheSameRemoteKey) {
+                foundAttributeDescription = attributeDescription;
+                *stop = YES;
+            }
+            
+            NSString *customRootRemoteKey = [[customRemoteKey componentsSeparatedByString:@"."] firstObject];
+            BOOL currentAttributeHasTheSameRootRemoteKey = (customRootRemoteKey.length > 0 && [customRootRemoteKey isEqualToString:remoteKey]);
+            if (currentAttributeHasTheSameRootRemoteKey) {
                 foundAttributeDescription = attributeDescription;
                 *stop = YES;
             }
@@ -63,8 +77,8 @@
             if ([propertyDescription isKindOfClass:[NSAttributeDescription class]]) {
                 NSAttributeDescription *attributeDescription = (NSAttributeDescription *)propertyDescription;
 
-                if ([remoteKey isEqualToString:HYPPropertyMapperDefaultRemoteValue] &&
-                    [attributeDescription.name isEqualToString:HYPPropertyMapperDefaultLocalValue]) {
+                if ([remoteKey isEqualToString:SYNCDefaultRemotePrimaryKey] &&
+                    ([attributeDescription.name isEqualToString:SYNCDefaultLocalPrimaryKey] || [attributeDescription.name isEqualToString:SYNCDefaultLocalCompatiblePrimaryKey])) {
                     foundAttributeDescription = self.entity.propertiesByName[attributeDescription.name];
                 }
 
@@ -76,6 +90,27 @@
     }
 
     return foundAttributeDescription;
+}
+
+- (NSArray *)attributeDescriptionsForRemoteKeyPath:(NSString *)remoteKey {
+    __block NSMutableArray *foundAttributeDescriptions = [NSMutableArray array];
+    
+    [self.entity.properties enumerateObjectsUsingBlock:^(id propertyDescription, NSUInteger idx, BOOL *stop) {
+        if ([propertyDescription isKindOfClass:[NSAttributeDescription class]]) {
+            NSAttributeDescription *attributeDescription = (NSAttributeDescription *)propertyDescription;
+            
+            NSDictionary *userInfo = [self.entity.propertiesByName[attributeDescription.name] userInfo];
+            NSString *customRemoteKeyPath = userInfo[HYPPropertyMapperCustomRemoteKey];
+            NSString *customRootRemoteKey = [[customRemoteKeyPath componentsSeparatedByString:@"."] firstObject];
+            NSString *rootRemoteKey = [[remoteKey componentsSeparatedByString:@"."] firstObject];
+            BOOL currentAttributeHasTheSameRootRemoteKey = (customRootRemoteKey.length > 0 && [customRootRemoteKey isEqualToString:rootRemoteKey]);
+            if (currentAttributeHasTheSameRootRemoteKey) {
+                [foundAttributeDescriptions addObject:attributeDescription];
+            }
+        }
+    }];
+    
+    return foundAttributeDescriptions;
 }
 
 - (NSString *)remoteKeyForAttributeDescription:(NSAttributeDescription *)attributeDescription {
@@ -90,8 +125,8 @@
     NSString *customRemoteKey = userInfo[HYPPropertyMapperCustomRemoteKey];
     if (customRemoteKey) {
         remoteKey = customRemoteKey;
-    } else if ([localKey isEqualToString:HYPPropertyMapperDefaultLocalValue]) {
-        remoteKey = HYPPropertyMapperDefaultRemoteValue;
+    } else if ([localKey isEqualToString:SYNCDefaultLocalPrimaryKey] || [localKey isEqualToString:SYNCDefaultLocalCompatiblePrimaryKey]) {
+        remoteKey = SYNCDefaultRemotePrimaryKey;
     } else if ([localKey isEqualToString:HYPPropertyMapperDestroyKey] &&
                relationshipType == HYPPropertyMapperRelationshipTypeNested) {
         remoteKey = [NSString stringWithFormat:@"_%@", HYPPropertyMapperDestroyKey];
@@ -120,6 +155,14 @@
 
     if ([remoteValue isKindOfClass:attributedClass]) {
         value = remoteValue;
+    }
+
+    NSString *customTransformerName = attributeDescription.userInfo[HYPPropertyMapperCustomValueTransformerKey];
+    if (customTransformerName) {
+        NSValueTransformer *transformer = [NSValueTransformer valueTransformerForName:customTransformerName];
+        if (transformer) {
+            value = [transformer transformedValue:value];
+        }
     }
 
     BOOL stringValueAndNumberAttribute  = ([remoteValue isKindOfClass:[NSString class]] &&
@@ -151,9 +194,9 @@
     } else if (numberValueAndStringAttribute) {
         value = [NSString stringWithFormat:@"%@", remoteValue];
     } else if (stringValueAndDateAttribute) {
-        value = [NSDate hyp_dateFromDateString:remoteValue];
+        value = [NSDate dateFromDateString:remoteValue];
     } else if (numberValueAndDateAttribute) {
-        value = [NSDate hyp_dateFromUnixTimestampNumber:remoteValue];
+        value = [NSDate dateFromUnixTimestampNumber:remoteValue];
     } else if (dataAttribute) {
         value = [NSKeyedArchiver archivedDataWithRootObject:remoteValue];
     } else if (numberValueAndDecimalAttribute) {
@@ -175,7 +218,7 @@
 }
 
 - (NSString *)remotePrefix {
-    return [NSString stringWithFormat:@"%@_", [self.entity.name lowercaseString]];
+    return [NSString stringWithFormat:@"%@_", [self.entity.name hyp_remoteString]];
 }
 
 - (NSString *)prefixedAttribute:(NSString *)attribute {

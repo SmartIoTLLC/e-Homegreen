@@ -1,6 +1,5 @@
 #import <UIKit/UIKit.h>
 
-#import "NSDate+HYPPropertyMapper.h"
 #import "NSManagedObject+HYPPropertyMapper.h"
 #import "NSManagedObject+HYPPropertyMapperHelpers.h"
 

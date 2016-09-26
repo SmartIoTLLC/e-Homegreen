@@ -1,5 +1,50 @@
 #import "NSString+HYPNetworking.h"
 
+typedef void (^HYPNetworkingStringStorageBlock)(void);
+
+@interface HYPNetworkingStringStorage : NSObject
+
+@property (nonatomic, strong) NSMutableDictionary *storage;
+@property (nonatomic, strong) dispatch_queue_t serialQueue;
+
+@end
+
+@implementation HYPNetworkingStringStorage
+
++ (instancetype)sharedInstance {
+    static dispatch_once_t once;
+    static HYPNetworkingStringStorage *sharedInstance;
+    dispatch_once(&once, ^{
+        sharedInstance = [self new];
+    });
+    return sharedInstance;
+}
+
+- (instancetype)init {
+    self = [super init];
+	if (self) {
+		_serialQueue = dispatch_queue_create("com.hyper.NSString_HYPNetworking.serialQueue", DISPATCH_QUEUE_SERIAL);
+	}
+
+	return self;
+
+}
+
+- (NSMutableDictionary *)storage {
+    if (!_storage) {
+        _storage = [NSMutableDictionary new];
+    }
+
+    return _storage;
+}
+
+- (void)performOnDictionary:(HYPNetworkingStringStorageBlock)block {
+	dispatch_sync(_serialQueue, block);
+
+}
+
+@end
+
 @interface NSString (PrivateInflections)
 
 - (BOOL)hyp_containsWord:(NSString *)word;
@@ -12,26 +57,53 @@
 
 #pragma mark - Private methods
 
-- (nonnull NSString *)hyp_remoteString
-{
-    NSString *processedString = [self hyp_replaceIdentifierWithString:@"_"];
+- (nonnull NSString *)hyp_remoteString {
+	HYPNetworkingStringStorage *const stringStorage = [HYPNetworkingStringStorage sharedInstance];
+	__block NSString *storedResult = nil;
 
-    return [processedString hyp_lowerCaseFirstLetter];
+	[stringStorage performOnDictionary:^{
+		storedResult = [[stringStorage storage] objectForKey:self];
+	}];
+
+    if (storedResult) {
+        return storedResult;
+    } else {
+        NSString *firstLetterLowercase = [self hyp_lowerCaseFirstLetter];
+        NSString *result = [firstLetterLowercase hyp_replaceIdentifierWithString:@"_"];
+
+		[stringStorage performOnDictionary:^{
+			[stringStorage storage][self] = result;
+		}];
+
+        return result;
+    }
 }
 
-- (nonnull NSString *)hyp_localString
-{
-    NSString *processedString = self;
+- (nullable NSString *)hyp_localString {
+	HYPNetworkingStringStorage *const stringStorage = [HYPNetworkingStringStorage sharedInstance];
+	__block NSString *storedResult = nil;
 
-    processedString = [processedString hyp_replaceIdentifierWithString:@""];
+	[stringStorage performOnDictionary:^{
+		storedResult = [[stringStorage storage] objectForKey:self];
+	}];
 
-    BOOL remoteStringIsAnAcronym = ([[NSString acronyms] containsObject:[processedString lowercaseString]]);
+    if (storedResult) {
+        return storedResult;
+    } else {
+        NSString *processedString = self;
+        processedString = [processedString hyp_replaceIdentifierWithString:@""];
+        BOOL remoteStringIsAnAcronym = ([[NSString acronyms] containsObject:[processedString lowercaseString]]);
+        NSString *result = (remoteStringIsAnAcronym) ? [processedString lowercaseString] : [processedString hyp_lowerCaseFirstLetter];
 
-    return (remoteStringIsAnAcronym) ? [processedString lowercaseString] : [processedString hyp_lowerCaseFirstLetter];
+		[stringStorage performOnDictionary:^{
+			[stringStorage storage][self] = result;
+		}];
+
+        return result;
+    }
 }
 
-- (BOOL)hyp_containsWord:(NSString *)word
-{
+- (BOOL)hyp_containsWord:(NSString *)word {
     BOOL found = NO;
 
     NSArray *components = [self componentsSeparatedByString:@"_"];
@@ -46,8 +118,7 @@
     return found;
 }
 
-- (nonnull NSString *)hyp_lowerCaseFirstLetter
-{
+- (nonnull NSString *)hyp_lowerCaseFirstLetter {
     NSMutableString *mutableString = [[NSMutableString alloc] initWithString:self];
     NSString *firstLetter = [[mutableString substringToIndex:1] lowercaseString];
     [mutableString replaceCharactersInRange:NSMakeRange(0,1)
@@ -56,8 +127,7 @@
     return [mutableString copy];
 }
 
-- (nonnull NSString *)hyp_replaceIdentifierWithString:(NSString *)replacementString
-{
+- (nullable NSString *)hyp_replaceIdentifierWithString:(NSString *)replacementString {
     NSScanner *scanner = [NSScanner scannerWithString:self];
     scanner.caseSensitive = YES;
 
@@ -116,8 +186,7 @@
     return output;
 }
 
-+ (nonnull NSArray *)acronyms
-{
++ (nonnull NSArray *)acronyms {
     return @[@"id", @"pdf", @"url", @"png", @"jpg", @"uri", @"json", @"xml"];
 }
 
