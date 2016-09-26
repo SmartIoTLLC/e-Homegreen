@@ -67,6 +67,11 @@ extension DevicesViewController: UICollectionViewDataSource {
         if devices[indexPathRow].controlType == ControlType.Curtain {
             SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurtainStatus(address), gateway: devices[indexPathRow].gateway)
         }
+// TODO: CHECK
+        if devices[indexPathRow].controlType == ControlType.SaltoAccess {
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessState(address, lockId: devices[indexPathRow].channel.intValue), gateway: devices[indexPathRow].gateway)
+        }
+        
         CoreDataController.shahredInstance.saveChanges()
     }
     func refreshVisibleDevicesInScrollView () {

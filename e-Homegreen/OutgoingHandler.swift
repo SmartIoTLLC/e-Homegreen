@@ -281,6 +281,122 @@ extension OutgoingHandler {
 
 //MARK:- SALTO ACCESS
 extension OutgoingHandler {
+    static func setSaltoAccessMode(_ address:[Byte], lockId: Int, mode: Int) -> [Byte]{
+        //MODE
+//        GRANT ACCESS - 01
+//        OPEN AND STAY IN OFFICE MODE - 02
+//        FINISH OFFICE MODE - 03
+        var messageInfo:[Byte] = []
+        // lock id is the Id which is ackuired from PLC. It represents the channel number which needs to be shown to the user. It is 2 bytes long. It is stored in device.channel
+        switch lockId {
+        case 1:
+            messageInfo = [0x00, 0x01, UInt8(mode), 0x00]
+        case 2:
+            messageInfo = [0x00, 0x02, UInt8(mode), 0x00]
+        case 3:
+            messageInfo = [0x00, 0x04, UInt8(mode), 0x00]
+        case 4:
+            messageInfo = [0x00, 0x08, UInt8(mode), 0x00]
+        case 5:
+            messageInfo = [0x00, 0x10, UInt8(mode), 0x00]
+        case 6:
+            messageInfo = [0x00, 0x20, UInt8(mode), 0x00]
+        case 7:
+            messageInfo = [0x00, 0x40, UInt8(mode), 0x00]
+        case 8:
+            messageInfo = [0x00, 0x80, UInt8(mode), 0x00]
+        case 9:
+            messageInfo = [0x01, 0x00, UInt8(mode), 0x00]
+        case 10:
+            messageInfo = [0x02, 0x00, UInt8(mode), 0x00]
+        case 11:
+            messageInfo = [0x04, 0x00, UInt8(mode), 0x00]
+        case 12:
+            messageInfo = [0x08, 0x00, UInt8(mode), 0x00]
+        case 13:
+            messageInfo = [0x10, 0x00, UInt8(mode), 0x00]
+        case 14:
+            messageInfo = [0x20, 0x00, UInt8(mode), 0x00]
+        case 15:
+            messageInfo = [0x40, 0x00, UInt8(mode), 0x00]
+        default:
+            messageInfo = [0x80, 0x00, UInt8(mode), 0x00]
+        }
+        var message:[Byte] = []
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count % 256)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x51
+        
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        
+        return message
+    }
+    static func getSaltoAccessState(_ address:[Byte], lockId: Int) -> [Byte]{
+        // lock id is the Id which is ackuired from PLC. It represents the channel number which needs to be shown to the user. It is 2 bytes long. It is stored in device.channel
+        var messageInfo:[Byte] = []
+        switch lockId {
+        case 1:
+            messageInfo = [0x00, 0x01]
+        case 2:
+            messageInfo = [0x00, 0x02]
+        case 3:
+            messageInfo = [0x00, 0x04]
+        case 4:
+            messageInfo = [0x00, 0x08]
+        case 5:
+            messageInfo = [0x00, 0x10]
+        case 6:
+            messageInfo = [0x00, 0x20]
+        case 7:
+            messageInfo = [0x00, 0x40]
+        case 8:
+            messageInfo = [0x00, 0x80]
+        case 9:
+            messageInfo = [0x01, 0x00]
+        case 10:
+            messageInfo = [0x02, 0x00]
+        case 11:
+            messageInfo = [0x04, 0x00]
+        case 12:
+            messageInfo = [0x08, 0x00]
+        case 13:
+            messageInfo = [0x10, 0x00]
+        case 14:
+            messageInfo = [0x20, 0x00]
+        case 15:
+            messageInfo = [0x40, 0x00]
+        default:
+            messageInfo = [0x80, 0x00]
+        }
+        var message:[Byte] = []
+        message = [Byte](repeating: 0, count: messageInfo.count+9)
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count % 256)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x05
+        message[6] = 0x50
+        
+        for i in 0...messageInfo.count - 1 {
+            message[7+i] = messageInfo[i]
+        }
+        
+        message[message.count-2] = self.getChkByte(byteArray:message)
+        message[message.count-1] = 0x10
+        
+        return message
+    }
     static func getSaltoAccessInfoWithAddress(_ address:[Byte]) -> [Byte]{
         var messageInfo:[Byte] = []
         var message:[Byte] = []
