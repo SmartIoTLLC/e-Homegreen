@@ -868,7 +868,6 @@ class IncomingHandler: NSObject {
         let sortDescriptor = NSSortDescriptor(key: "timerName", ascending: true)
         let timers = DatabaseTimersController.shared.getAllTimersSortedBy(sortDescriptor)
         for i in 1...16 {
-            print(timers.count)
             for item in timers {
                 if  Int(item.gateway.addressOne) == Int(byteArray[2]) && Int(item.gateway.addressTwo) == Int(byteArray[3]) && Int(item.address) == Int(byteArray[4]) && Int(item.timerId) == Int(i) {
                     item.timerState = NSNumber(value: Int(byteArray[7+i]) as Int)

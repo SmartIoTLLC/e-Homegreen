@@ -126,6 +126,7 @@
 		495726B51D4F491D004F2A3D /* CurtainCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B41D4F491D004F2A3D /* CurtainCollectionCell.swift */; };
 		495726B71D4F493C004F2A3D /* ClimateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B61D4F493C004F2A3D /* ClimateCell.swift */; };
 		495726B91D4F4966004F2A3D /* MultiSensorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B81D4F4966004F2A3D /* MultiSensorCell.swift */; };
+		495D63721D9A49B300D9DC26 /* SaltoAccessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495D63711D9A49B300D9DC26 /* SaltoAccessCell.swift */; };
 		4983C7E51D4B5F2D00C8E865 /* RelayParametersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4983C7E31D4B5F2D00C8E865 /* RelayParametersCell.swift */; };
 		4983C7E61D4B5F2D00C8E865 /* RelayParametersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4983C7E41D4B5F2D00C8E865 /* RelayParametersCell.xib */; };
 		49C059641D9136E50061A544 /* PopoverVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C059631D9136E50061A544 /* PopoverVC.swift */; };
@@ -484,6 +485,7 @@
 		495726B41D4F491D004F2A3D /* CurtainCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurtainCollectionCell.swift; sourceTree = "<group>"; };
 		495726B61D4F493C004F2A3D /* ClimateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ClimateCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		495726B81D4F4966004F2A3D /* MultiSensorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiSensorCell.swift; sourceTree = "<group>"; };
+		495D63711D9A49B300D9DC26 /* SaltoAccessCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaltoAccessCell.swift; sourceTree = "<group>"; };
 		4983C7E31D4B5F2D00C8E865 /* RelayParametersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelayParametersCell.swift; sourceTree = "<group>"; };
 		4983C7E41D4B5F2D00C8E865 /* RelayParametersCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RelayParametersCell.xib; sourceTree = "<group>"; };
 		49C059631D9136E50061A544 /* PopoverVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverVC.swift; sourceTree = "<group>"; };
@@ -1149,6 +1151,7 @@
 				495726B41D4F491D004F2A3D /* CurtainCollectionCell.swift */,
 				495726B61D4F493C004F2A3D /* ClimateCell.swift */,
 				495726B81D4F4966004F2A3D /* MultiSensorCell.swift */,
+				495D63711D9A49B300D9DC26 /* SaltoAccessCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -2198,6 +2201,7 @@
 				222889B41CBBD5E0004EBADD /* FlagCollectionViewCell.swift in Sources */,
 				734DBFBF1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift in Sources */,
 				7372EB411BC410800097806D /* Sequence+CoreDataProperties.swift in Sources */,
+				495D63721D9A49B300D9DC26 /* SaltoAccessCell.swift in Sources */,
 				E7F57B091BA7FE5D006B0D71 /* ScanScenesViewController.swift in Sources */,
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
 				E79FD4EE1BCE43D600CA17DB /* Util.swift in Sources */,

@@ -247,6 +247,53 @@ extension DevicesViewController: UICollectionViewDataSource {
             
             return cell
         }
+        else if devices[(indexPath as NSIndexPath).row].controlType == ControlType.SaltoAccess {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "saltoAccessCell", for: indexPath) as! SaltoAccessCell
+            cell.saltoName.text = devices[indexPath.row].cellTitle
+            cell.saltoImage.tag = (indexPath as NSIndexPath).row
+            cell.unlockButton.tag = (indexPath as NSIndexPath).row
+            cell.lockButton.tag = (indexPath as NSIndexPath).row
+            
+            cell.saltoName.isUserInteractionEnabled = true
+            cell.saltoImage.isUserInteractionEnabled = true
+            
+            // If device is enabled add all interactions
+            if devices[(indexPath as NSIndexPath).row].isEnabled.boolValue {
+                let saltoOpenTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.openCurtain(_:)))
+                let saltoCloseTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.closeCurtain(_:)))
+                let saltoStopTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.stopCurtain(_:)))
+                
+                cell.unlockButton.addGestureRecognizer(saltoOpenTap)
+                cell.lockButton.addGestureRecognizer(saltoCloseTap)
+                cell.saltoImage.addGestureRecognizer(saltoStopTap)
+                
+                //                let curtainNameTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.handleTap(_:)))
+                //                curtainNameTap.numberOfTapsRequired = 2
+                cell.saltoName.tag = (indexPath as NSIndexPath).row
+                //                cell.curtainName.addGestureRecognizer(curtainNameTap)
+                
+                let curtainNameLongPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DevicesViewController.cellParametarLongPress(_:)))
+                curtainNameLongPress.minimumPressDuration = 0.5
+                cell.saltoName.addGestureRecognizer(curtainNameLongPress)
+                cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.handleTap2(_:))))
+                
+                cell.disabledCellView.isHidden = true
+                cell.disabledCellView.layer.cornerRadius = 5
+            } else {
+                cell.disabledCellView.isHidden = false
+                cell.disabledCellView.layer.cornerRadius = 5
+            }
+            
+            if devices[(indexPath as NSIndexPath).row].info {
+                cell.infoView.isHidden = false
+                cell.backView.isHidden = true
+            }else {
+                cell.infoView.isHidden = true
+                cell.backView.isHidden = false
+            }
+            
+            return cell
+        }
         else if devices[(indexPath as NSIndexPath).row].controlType == ControlType.Relay || devices[(indexPath as NSIndexPath).row].controlType == ControlType.DigitalOutput {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "applianceCell", for: indexPath) as! ApplianceCollectionCell
             cell.name.text = devices[indexPath.row].cellTitle
