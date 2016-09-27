@@ -49,6 +49,7 @@ class CurtainCollectionCell: UICollectionViewCell {
             backView.isHidden = false
         }
     }
+    
     @IBOutlet weak var disabledCellView: UIView!
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var lblAddress: UILabel!
@@ -61,7 +62,7 @@ class CurtainCollectionCell: UICollectionViewCell {
     func setImageForDevice(_ device: Device){
         // Find the device that is the pair of this device for reley control
         // First or second channel will always be presented (not 3 and 4), so we are looking for 3 and 4 channels
-        let devices = CoreDataController.shahredInstance.fetchDevicesForGateway(device.gateway)
+        let devices = CoreDataController.shahredInstance.fetchDevicesByGatewayAndAddress(device.gateway, address: device.address)
         var devicePair: Device? = nil
         for deviceTemp in devices{
             if deviceTemp.address == device.address {
@@ -76,7 +77,7 @@ class CurtainCollectionCell: UICollectionViewCell {
                 }
             }
         }
-        if devicePair == nil { // new module
+        if devicePair == nil { // three state module
             guard let devImages = Array(device.deviceImages!) as? [DeviceImage] else {
                 print("error")
                 return
@@ -92,7 +93,7 @@ class CurtainCollectionCell: UICollectionViewCell {
             }else {//device.currentValue.integerValue == 0{
                 curtainImage.image = UIImage(named: preSort[1].defaultImage!)
             }
-        }else{
+        }else{   //old relay for curtain control
             guard let devImages = Array(device.deviceImages!) as? [DeviceImage] else {
                 print("error")
                 return

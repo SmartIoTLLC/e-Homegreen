@@ -24,6 +24,7 @@ class MultiSensorCell: UICollectionViewCell {
         sensorTitle.text = device.cellTitle
         sensorTitle.tag = tag
         populateCell(device)
+        
         if device.info {
             infoView.isHidden = false
             backView.isHidden = true
@@ -69,10 +70,6 @@ class MultiSensorCell: UICollectionViewCell {
         }
     }
     func populateCell(_ device:Device) {
-        NSLog("DEVICE_DEBUG_MOTIONSENSOR:")
-        NSLog("Address: \(device.address)")
-        NSLog("Address: \(device.controlType)")
-        NSLog("Address: \(device.currentValue)")
         if device.numberOfDevices == 10 {
             switch device.channel {
             case 1:
