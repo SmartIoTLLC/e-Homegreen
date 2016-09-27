@@ -894,8 +894,7 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         DispatchQueue.main.async(execute: {
-            let cell = self.deviceTableView.cellForRow(at: indexPath)
-            self.showChangeDeviceParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - self.deviceTableView.contentOffset.y), device: self.devices[(indexPath as NSIndexPath).row], scanDevicesViewController: self)
+            self.showChangeDeviceParametar(device: self.devices[(indexPath as NSIndexPath).row], scanDevicesViewController: self)
         })
         
     }

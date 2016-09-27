@@ -59,6 +59,8 @@ class LocationViewController: PopoverVC  {
         
         appDel = UIApplication.shared.delegate as! AppDelegate
         
+        self.gatewayTableView.contentInset = UIEdgeInsets(top: 15, left: 0, bottom: 15, right: 0)
+        
         updateLocationList()
     }
     
@@ -174,17 +176,17 @@ class LocationViewController: PopoverVC  {
 extension LocationViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        if (indexPath as NSIndexPath).row == 0{
+        if indexPath.row == 0{
             if let cell = tableView.dequeueReusableCell(withIdentifier: "locationCell") as? LocationCell {
-                cell.setItem(locationList[(indexPath as NSIndexPath).section].location, isColapsed: locationList[(indexPath as NSIndexPath).section].isCollapsed)
-                cell.addButton.tag = (indexPath as NSIndexPath).section
-                cell.editButton.tag = (indexPath as NSIndexPath).section
-                cell.deleteButton.tag = (indexPath as NSIndexPath).section
+                cell.setItem(locationList[(indexPath as NSIndexPath).section].location, isColapsed: locationList[indexPath.section].isCollapsed)
+                cell.addButton.tag = indexPath.section
+                cell.editButton.tag = indexPath.section
+                cell.deleteButton.tag = indexPath.section
                 return cell
             }
         }else{
-            let location = locationList[(indexPath as NSIndexPath).section]
-            let device = location.children[(indexPath as NSIndexPath).row - 1]
+            let location = locationList[indexPath.section]
+            let device = location.children[indexPath.row - 1]
             switch device.typeOfLocationDevice{
             case TypeOfLocationDevice.Ehomegreen:
                 if let cell = tableView.dequeueReusableCell(withIdentifier: "gatewayCell") as? GatewayCell {
@@ -230,14 +232,7 @@ extension LocationViewController: UITableViewDataSource {
         }
         
     }
-    private func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footer = UIView()
-        footer.backgroundColor = UIColor.clear
-        return footer
-    }
-    private func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 10
-    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return locationList.count
     }
@@ -246,11 +241,11 @@ extension LocationViewController: UITableViewDataSource {
 extension LocationViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        if (indexPath as NSIndexPath).row == 0{
-            locationList[(indexPath as NSIndexPath).section].isCollapsed = !locationList[(indexPath as NSIndexPath).section].isCollapsed
+        if indexPath.row == 0{
+            locationList[indexPath.section].isCollapsed = !locationList[indexPath.section].isCollapsed
             tableView.reloadData()
         }else{
-            let device = locationList[(indexPath as NSIndexPath).section].children[(indexPath as NSIndexPath).row - 1]
+            let device = locationList[indexPath.section].children[indexPath.row - 1]
             if let surv = device.device as? Surveillance{
                 DispatchQueue.main.async(execute: {
                     self.showSurveillanceSettings(surv, location: surv.location).delegate = self
@@ -262,7 +257,17 @@ extension LocationViewController: UITableViewDelegate {
                 })
             }
         }
-        index = (indexPath as NSIndexPath).section
+        index = indexPath.section
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footer = UIView()
+        footer.backgroundColor = UIColor.clear
+        return footer
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 5
     }
 }
 
@@ -307,7 +312,7 @@ extension LocationViewController: SurveillanceCellDelegate {
         }
     }
     func scanURL(_ surveillance:Surveillance){
-        showCameraUrls(self.view.center, surveillance: surveillance)
+        showCameraUrls(surveillance: surveillance)
     }
 }
 

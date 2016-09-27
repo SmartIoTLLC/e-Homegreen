@@ -25,17 +25,14 @@ class DigitalInputPopup: PopoverVC {
     var level:Zone?
     var zoneSelected:Zone?
     var category:Category?
-    var point:CGPoint?
-    var oldPoint:CGPoint?
     var device:Device
     var appDel:AppDelegate!
     var editedDevice:EditedDevice?
     var isPresenting: Bool = true
     var delegate: DevicePropertiesDelegate?
     
-    init(device: Device, point:CGPoint){
+    init(device: Device){
         self.device = device
-        self.point = point
         editedDevice = EditedDevice(levelId: Int(device.parentZoneId), zoneId: Int(device.zoneId), categoryId: Int(device.categoryId), controlType: device.controlType, digitalInputMode: Int(device.digitalInputMode!))
         super.init(nibName: "DigitalInputPopup", bundle: nil)
         transitioningDelegate = self

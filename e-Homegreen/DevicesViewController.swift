@@ -48,7 +48,6 @@ class DevicesViewController: PopoverVC{
     @IBOutlet weak var zoneCategoryControl: UISegmentedControl!
     @IBOutlet weak var zoneAndCategorySlider: UISlider!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         

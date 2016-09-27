@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SurveilenceUrlsVC: UIViewController {
+class SurveilenceUrlsVC: CommonXIBTransitionVC {
     
     var getImage = "/dms?nowprofileid=2"
     var moveRight = "/cgi-bin/longcctvmove.cgi?action=move&amp;direction=right&amp;panstep=1&amp;tiltstep=15"
@@ -20,11 +20,6 @@ class SurveilenceUrlsVC: UIViewController {
     var presetSequence = "/cgi-bin/longcctvseq.cgi?action=go"
     var stopPresetSequence = "/cgi-bin/longcctvseq.cgi?action=stop"
     var home = "/cgi-bin/longcctvhome.cgi?action=gohome"
-    
-    var point:CGPoint?
-    var oldPoint:CGPoint?
-    
-    var isPresenting: Bool = true
     
     var surv:Surveillance?
     var appDel:AppDelegate!
@@ -46,11 +41,8 @@ class SurveilenceUrlsVC: UIViewController {
     @IBOutlet weak var centerY: NSLayoutConstraint!
     @IBOutlet weak var scroll: UIScrollView!
     
-    init(point:CGPoint, surv:Surveillance){
+    init(surv:Surveillance){
         super.init(nibName: "SurveilenceUrlsVC", bundle: nil)
-        transitioningDelegate = self
-        modalPresentationStyle = UIModalPresentationStyle.custom
-        self.point = point
         self.surv = surv
     }
     
@@ -102,6 +94,16 @@ class SurveilenceUrlsVC: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(SurveilenceUrlsVC.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(SurveilenceUrlsVC.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if let touchView = touch.view{
+            if touchView.isDescendant(of: backView){
+                self.view.endEditing(true)
+                return false
+            }
+        }
+        return true
     }
     
     func dismissViewController () {
@@ -241,85 +243,10 @@ extension SurveilenceUrlsVC : UITextFieldDelegate {
     }
 }
 
-extension SurveilenceUrlsVC : UIGestureRecognizerDelegate {
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: backView){
-            dismissKeyboard()
-            return false
-        }
-        return true
-    }
-}
-
-extension SurveilenceUrlsVC : UIViewControllerAnimatedTransitioning {
-    
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.5 //Add your own duration here
-    }
-    
-    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        //Add presentation and dismiss animation transition here.
-        if isPresenting == true{
-            isPresenting = false
-            let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
-            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
-            let containerView = transitionContext.containerView
-            
-            presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
-            self.oldPoint = presentedControllerView.center
-            presentedControllerView.center = self.point!
-            presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
-            containerView.addSubview(presentedControllerView)
-            
-            UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
-                
-                presentedControllerView.center = self.oldPoint!
-                presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
-                
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }else{
-            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
-            //            let containerView = transitionContext.containerView()
-            
-            // Animate the presented view off the bottom of the view
-            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
-                
-                presentedControllerView.center = self.point!
-                presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
-                
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }
-        
-    }
-}
-
-extension SurveilenceUrlsVC : UIViewControllerTransitioningDelegate {
-    
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return self
-    }
-    
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
-    }
-}
 
 extension UIViewController {
-    func showCameraUrls (_ point:CGPoint, surveillance:Surveillance) {
-        let scu = SurveilenceUrlsVC(point: point, surv: surveillance)
+    func showCameraUrls (surveillance:Surveillance) {
+        let scu = SurveilenceUrlsVC(surv: surveillance)
         self.present(scu, animated: true, completion: nil)
     }
 }

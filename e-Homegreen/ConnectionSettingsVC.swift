@@ -44,7 +44,7 @@ class ConnectionSettingsVC: CommonXIBTransitionVC {
     var appDel:AppDelegate!
     var error:NSError? = nil
     
-    init(gateway:Gateway?, location:Location?,gatewayType:String){
+    init(gateway:Gateway?, location:Location?, gatewayType:String){
         super.init(nibName: "ConnectionSettingsVC", bundle: nil)
         
         self.location = location

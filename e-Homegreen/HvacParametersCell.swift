@@ -51,17 +51,14 @@ class HvacParametersCell: PopoverVC {
     var zoneSelected:Zone?
     var category:Category?
 
-    var point:CGPoint?
-    var oldPoint:CGPoint?
     var device:Device
     var appDel:AppDelegate!
     var editedDevice:EditedDevice?
     var isPresenting: Bool = true
     var delegate: DevicePropertiesDelegate?
     
-    init(device: Device, point:CGPoint){
+    init(device: Device){
         self.device = device
-        self.point = point
         editedDevice = EditedDevice(levelId: Int(device.parentZoneId), zoneId: Int(device.zoneId), categoryId: Int(device.categoryId), controlType: device.controlType, digitalInputMode: Int(device.digitalInputMode!))
         super.init(nibName: "HvacParametersCell", bundle: nil)
         transitioningDelegate = self
@@ -75,7 +72,6 @@ class HvacParametersCell: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         switchHumidity.tag = SwitchTag.humidity.rawValue
         switchTemperature.tag = SwitchTag.temperature.rawValue
         switchCool.tag = SwitchTag.cool.rawValue
@@ -86,7 +82,6 @@ class HvacParametersCell: PopoverVC {
         switchHigh.tag = SwitchTag.high.rawValue
         switchMed.tag = SwitchTag.med.rawValue
         switchAutoSpeed.tag = SwitchTag.autoSpeed.rawValue
-
         
         appDel = UIApplication.shared.delegate as! AppDelegate
         

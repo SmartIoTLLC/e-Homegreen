@@ -34,9 +34,6 @@ class ChangeDeviceParametarsVC: PopoverVC {
     var zoneSelected:Zone?
     var category:Category?
 
-    
-    var point:CGPoint?
-    var oldPoint:CGPoint?
     var device:Device
     var appDel:AppDelegate!
     var editedDevice:EditedDevice?
@@ -44,9 +41,8 @@ class ChangeDeviceParametarsVC: PopoverVC {
     var isPresenting: Bool = true
     var delegate: DevicePropertiesDelegate?
     
-    init(device: Device, point:CGPoint){
+    init(device: Device){
         self.device = device
-        self.point = point
         editedDevice = EditedDevice(levelId: Int(device.parentZoneId), zoneId: Int(device.zoneId), categoryId: Int(device.categoryId), controlType: device.controlType, digitalInputMode: Int(device.digitalInputMode!))
         super.init(nibName: "ChangeDeviceParametarsVC", bundle: nil)
         transitioningDelegate = self
@@ -162,13 +158,13 @@ class ChangeDeviceParametarsVC: PopoverVC {
     
     @IBAction func btnImages(_ sender: AnyObject) {
     }
-    @IBAction func changeDeviceInputMode(_ sender: UIButton) {
-        button = sender
-        var popoverList:[PopOverItem] = []
-        popoverList.append(PopOverItem(name: DigitalInput.NormallyOpen.description(), id: "")) // TODO: Dodati Id za NO
-        popoverList.append(PopOverItem(name: DigitalInput.NormallyClosed.description(), id: "")) // TODO: Dodati Id za NC
-        openPopover(sender, popOverList:popoverList)
-    }
+//    @IBAction func changeDeviceInputMode(_ sender: UIButton) {
+//        button = sender
+//        var popoverList:[PopOverItem] = []
+//        popoverList.append(PopOverItem(name: DigitalInput.NormallyOpen.description(), id: "")) // TODO: Dodati Id za NO
+//        popoverList.append(PopOverItem(name: DigitalInput.NormallyClosed.description(), id: "")) // TODO: Dodati Id za NC
+//        openPopover(sender, popOverList:popoverList)
+//    }
     @IBAction func changeControlType(_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
@@ -178,6 +174,8 @@ class ChangeDeviceParametarsVC: PopoverVC {
         }else if device.controlType == ControlType.Dimmer{
             popoverList.append(PopOverItem(name: ControlType.Dimmer, id: "")) // TODO: Dodati Id za Dimmer
             popoverList.append(PopOverItem(name: ControlType.Relay, id: "")) // TODO: Dodati Id za Relay
+        }else if device.controlType == ControlType.SaltoAccess{
+            popoverList.append(PopOverItem(name: ControlType.SaltoAccess, id: ""))
         }
         openPopover(sender, popOverList:popoverList)
     }
@@ -316,11 +314,11 @@ extension ChangeDeviceParametarsVC : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showChangeDeviceParametar(_ point:CGPoint, device:Device, scanDevicesViewController: DevicePropertiesDelegate) {
+    func showChangeDeviceParametar(device:Device, scanDevicesViewController: DevicePropertiesDelegate) {
         let chn = Int(device.channel)
         // If any kind of relay
         if device.controlType == ControlType.Relay || device.controlType == ControlType.Curtain{
-            let cdp = RelayParametersCell(device: device, point: point)
+            let cdp = RelayParametersCell(device: device)
             cdp.delegate = scanDevicesViewController
             self.present(cdp, animated: true, completion: nil)
         }
@@ -331,19 +329,19 @@ extension UIViewController {
         else if (device.controlType == ControlType.DigitalInput) ||
             (device.controlType == ControlType.IntelligentSwitch && (chn == DeviceInfo.IntelligentSwitchInputInterface.digitalInput1.rawValue || chn == DeviceInfo.IntelligentSwitchInputInterface.digitalInput2.rawValue)) ||
             (device.controlType == ControlType.Sensor && (chn == DeviceInfo.Multisensor10in1.digitalInput1.rawValue || chn == DeviceInfo.Multisensor10in1.digitalInput2.rawValue || chn == DeviceInfo.Multisensor10in1.digitalInput3.rawValue || chn == DeviceInfo.Multisensor10in1.digitalInput4.rawValue)){
-            let cdp = DigitalInputPopup(device: device, point: point)
+            let cdp = DigitalInputPopup(device: device)
             cdp.delegate = scanDevicesViewController
             self.present(cdp, animated: true, completion: nil)
         }
         // If any kind of clima
         else if device.controlType == ControlType.Climate {
-            let cdp = HvacParametersCell(device: device, point: point)
+            let cdp = HvacParametersCell(device: device)
             cdp.delegate = scanDevicesViewController
             self.present(cdp, animated: true, completion: nil)
         }
         // If anything else
         else{
-            let cdp = ChangeDeviceParametarsVC(device: device, point: point)
+            let cdp = ChangeDeviceParametarsVC(device: device)
             cdp.delegate = scanDevicesViewController
             self.present(cdp, animated: true, completion: nil)
         }
