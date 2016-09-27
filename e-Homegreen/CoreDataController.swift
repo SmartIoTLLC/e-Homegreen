@@ -72,6 +72,27 @@ class CoreDataController: NSObject {
         }
         return []
     }
+    func fetchDevicesByGatewayAndAddress(_ gateway: Gateway, address:NSNumber) -> [Device] {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
+
+        let sortDescriptor = NSSortDescriptor(key: "address", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway == %@", gateway)]
+        predicateArray.append(NSPredicate(format: "address == %@", address))
+        
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
+        
+        do {
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Device]
+            return fetResults
+        } catch let error as NSError {
+            print("Unresolved error \(error), \(error.userInfo)")
+            abort()
+        }
+        return []
+    }
     func fetchSortedPCRequest (_ gatewayName:String, parentZone:Int, zone:Int, category:Int) -> NSFetchRequest<NSFetchRequestResult> {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
 //        let predicate = NSPredicate(format: "gateway.name == %@", gatewayName)

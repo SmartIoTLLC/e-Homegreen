@@ -181,15 +181,12 @@ class Device: NSManagedObject {
     // MARK: Return image for specific state
     func returnImage(_ newDeviceValue:Double) -> UIImage {
         // Convert device images to array
-        let deviceValue: Double = {
-            return Double(newDeviceValue)
-        }()
-        guard let checkDeviceImages = self.deviceImages else {
+        guard let devImages = self.deviceImages?.allObjects as? [DeviceImage] else {
             return UIImage(named: "")!
         }
-        guard let devImages = Array(checkDeviceImages) as? [DeviceImage] else {
-            return UIImage(named: "")!
-        }
+//        guard let devImages = Array(checkDeviceImages) as? [DeviceImage] else {
+//            return UIImage(named: "")!
+//        }
         let sumOfDeviceImages = devImages.count
         let dblSection:Double = 100/Double(sumOfDeviceImages)
         // sort by state: 1 2 3 4 5 6
@@ -214,15 +211,15 @@ class Device: NSManagedObject {
         }
         // Compares state value (example: 20, 40, 60, 80, 100 for 5 images) with device value (which is in percent 0-100)
         let filteredMapedresult = mapedResult.filter { ( result) -> Bool in
-            if result.stateValue >= (deviceValue/255*100) {return true} //
+            if result.stateValue >= (newDeviceValue/255*100) {return true} //
             return false
         }
-        let sortedFilteredMapedResult = filteredMapedresult.sorted { ( result1, result2) -> Bool in
-            if result1.stateValue < result2.stateValue {return true}
-            return false
-        }
-        if sortedFilteredMapedResult.count > 0{
-            let result = sortedFilteredMapedResult[0]
+//        let sortedFilteredMapedResult = filteredMapedresult.sorted { ( result1, result2) -> Bool in
+//            if result1.stateValue < result2.stateValue {return true}
+//            return false
+//        }
+        if filteredMapedresult.count > 0{
+            let result = filteredMapedresult[0]
             if let image = result.imageData {
                 return image
             }
