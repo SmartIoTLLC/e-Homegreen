@@ -39,6 +39,9 @@ class Device: NSManagedObject {
     var cellTitle:String = ""
     var filterWarning:Bool = false
     var pcVolume:Byte = 0
+    var bateryStatus: Int = 0
+    var saltoMode: Int = -1
+    
     lazy var moduleAddress:[Byte] = {
         return [Byte(Int(self.gateway.addressOne)), Byte(Int(self.gateway.addressTwo)), Byte(Int(self.address))]
     }()
@@ -65,6 +68,7 @@ class Device: NSManagedObject {
         self.zoneId = -1
         self.parentZoneId = -1
         self.categoryId = -1
+        self.bateryStatus = -1
         
         if information.isClimate {
             self.mode = "AUTO"
@@ -125,6 +129,7 @@ class Device: NSManagedObject {
         self.zoneId = -1
         self.parentZoneId = -1
         self.categoryId = -1
+        self.bateryStatus = -1
         if information.isClimate {
             self.mode = "AUTO"
             self.modeState = "Off"

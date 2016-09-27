@@ -21,7 +21,17 @@ class SaltoAccessCell: UICollectionViewCell {
     }
     
     func refreshDevice(_ device:Device) {
-        saltoImage.image = UIImage(named: "14 Security - Lock - 01")
+        if device.currentValue == 0 {
+            saltoImage.image = UIImage(named: "14 Security - Lock - 00")
+        }else{
+            saltoImage.image = UIImage(named: "14 Security - Lock - 01")
+        }
+        
+        // Do something with saltoMode
+        
+        // Do something with batery status
+        
+        
         // If device is enabled add all interactions
         if device.isEnabled.boolValue {
             disabledCellView.isHidden = true
@@ -35,8 +45,6 @@ class SaltoAccessCell: UICollectionViewCell {
             infoView.isHidden = true
             backView.isHidden = false
         }
-        
-        
     }
     @IBOutlet weak var disabledCellView: UIView!
     @IBOutlet weak var infoView: UIView!

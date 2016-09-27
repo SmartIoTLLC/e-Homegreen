@@ -137,6 +137,9 @@ class IncomingHandler: NSObject {
                 if messageIsNewDeviceSaltoParameter() {
                     self.parseMessageSaltoParameters(self.byteArray)
                 }
+                if messageIsSaltoStatus() {
+                    self.parseMessageSaltoStatus(self.byteArray)
+                }
             }
         }
     }
@@ -546,6 +549,48 @@ class IncomingHandler: NSObject {
             let data = ["deviceIndexForFoundName":Int(byteArray[4])]
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDeviceName), object: self, userInfo: data)
             CoreDataController.shahredInstance.saveChanges()
+        }
+    }
+    func parseMessageSaltoStatus(_ byteArray: [Byte]){
+        let channel = byteArray[9]
+        let allInformationByte = byteArray[9]
+        var bateryStatusByte = (0x03 & allInformationByte)
+        let onOffIndicatorTemp = (0x80 & allInformationByte)
+        let onOffIndicator = onOffIndicatorTemp >> 7
+        let modeTemp = (0x70 & allInformationByte)
+        let mode:Int = Int(modeTemp >> 4)
+        
+        var devicesForSalto: [Device] = []
+        // Get needed devices and be sure that everything is in good order
+        for i in 1..<devices.count{
+            if  Int(devices[i].gateway.addressOne) == Int(byteArray[2]) &&
+                Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) &&
+                Int(devices[i].address) == Int(byteArray[4]) &&
+                Int(devices[i].channel.intValue) == Int(channel) {
+                devicesForSalto.append(self.devices[i])
+            }
+        }
+        if let device = devicesForSalto.first {
+            // Cuurent state - On-Off
+            device.currentValue = onOffIndicator == 0x1 ? 1 : 0
+            
+            // Mode 0, 1, 2, 3
+            switch mode{
+            case 0:
+                device.saltoMode = 0
+            case 1:
+                device.saltoMode = 1
+            case 2:
+                device.saltoMode = 2
+            case 4:
+                device.saltoMode = 3
+            default:
+                device.saltoMode = 0
+            }
+        
+            // Batery 3 - High, 2 - Normal, 1 - Low, 0 - Very low
+            device.bateryStatus = Int(bateryStatusByte)
+            
         }
     }
     
@@ -1127,6 +1172,12 @@ extension IncomingHandler {
     }
     func messageIsNewDeviceSaltoParameter() -> Bool {
         if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x55 {
+            return true
+        }
+        return false
+    }
+    func messageIsSaltoStatus() -> Bool{
+        if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x50 {
             return true
         }
         return false
