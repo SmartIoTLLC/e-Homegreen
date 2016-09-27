@@ -63,6 +63,8 @@ class DefaultDeviceImages: NSObject {
             return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
         case ControlType.IRTransmitter:
             return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
+        case ControlType.SaltoAccess:
+            return securityImagesTwoStateNO
         default: // ControlType == Relay
             return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
         }

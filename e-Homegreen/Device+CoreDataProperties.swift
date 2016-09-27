@@ -41,8 +41,8 @@ extension Device {
     @NSManaged var isEnabled: NSNumber
     @NSManaged var isDimmerModeAllowed: NSNumber
     @NSManaged var isCurtainModeAllowed: NSNumber   // If ControlType is 'Relay' and isCurtainModeAllowed value is 'true' -> ControlType must be set to 'Curtain'
-    @NSManaged var mode: String
-    @NSManaged var modeState: String
+    @NSManaged var mode: String                     // Mode for clima. Heat/Cold/Auto
+    @NSManaged var modeState: String                // Mode for clima. Heat/Cold/Auto
     @NSManaged var name: String
     @NSManaged var numberOfDevices: NSNumber
     @NSManaged var overrideControl1: NSNumber

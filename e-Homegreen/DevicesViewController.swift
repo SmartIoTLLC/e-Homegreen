@@ -526,6 +526,41 @@ class DevicesViewController: PopoverVC{
         updateCells()
     }
     
+    func lockSalto(_ gestureRecognizer:UITapGestureRecognizer){
+        let tag = gestureRecognizer.view!.tag
+        let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+        let setDeviceValue:UInt8 = 0xFF
+        let deviceCurrentValue = Int(devices[tag].currentValue)
+        devices[tag].currentValue = 0xFF
+        CoreDataController.shahredInstance.saveChanges()
+        DispatchQueue.main.async(execute: {
+            _ = RepeatSendingHandler(byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: self.devices[tag].channel.intValue, mode: 2), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+        })
+    }
+    func unlockSalto(_ gestureRecognizer:UITapGestureRecognizer){
+        let tag = gestureRecognizer.view!.tag
+        let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+                let setDeviceValue:UInt8 = 0xFF
+                let deviceCurrentValue = Int(devices[tag].currentValue)
+                devices[tag].currentValue = 0xFF
+        CoreDataController.shahredInstance.saveChanges()
+        DispatchQueue.main.async(execute: {
+            _ = RepeatSendingHandler(byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: self.devices[tag].channel.intValue, mode: 1), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+        })
+    }
+    
+    func thirdFcnSalto(_ gestureRecognizer:UITapGestureRecognizer){
+        let tag = gestureRecognizer.view!.tag
+        let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
+                let setDeviceValue:UInt8 = 0xFF
+                let deviceCurrentValue = Int(devices[tag].currentValue)
+                devices[tag].currentValue = 0xFF
+        CoreDataController.shahredInstance.saveChanges()
+        DispatchQueue.main.async(execute: {
+            _ = RepeatSendingHandler(byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: self.devices[tag].channel.intValue, mode: 3), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+        })
+    }
+    
     //    This has to be done, because we dont receive updates immmediately from gateway
     func updateCells() {
         let indexPaths = deviceCollectionView.indexPathsForVisibleItems
