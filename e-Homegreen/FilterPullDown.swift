@@ -134,6 +134,7 @@ class FilterPullDown: UIScrollView {
         secundsTextField.inputAccessoryView = CustomToolBar()
         secundsTextField.keyboardType = .numberPad
         contentView.addSubview(secundsTextField)
+        secundsTextField.text = "0"
         secundsTextField.backgroundColor = UIColor.white
         
         //minutes label
@@ -149,6 +150,7 @@ class FilterPullDown: UIScrollView {
         minTextField.inputAccessoryView = CustomToolBar()
         minTextField.keyboardType = .numberPad
         contentView.addSubview(minTextField)
+        minTextField.text = "0"
         minTextField.backgroundColor = UIColor.white
         
         //hours label
@@ -164,6 +166,7 @@ class FilterPullDown: UIScrollView {
         hoursTextField.inputAccessoryView = CustomToolBar()
         hoursTextField.keyboardType = .numberPad
         contentView.addSubview(hoursTextField)
+        hoursTextField.text = "0"
         hoursTextField.backgroundColor = UIColor.white
         
         //set as default button
@@ -680,6 +683,26 @@ class FilterPullDown: UIScrollView {
     }
     
     func setDefaultParametar(){
+        guard let h = hoursTextField.text else {
+            return
+        }
+        guard let m = minTextField.text else {
+            return
+        }
+        guard let s = secundsTextField.text else {
+            return
+        }
+        
+        guard let hours = Int(h) else {
+            return
+        }
+        guard let minutes = Int(m) else{
+            return
+        }
+        guard let socunds  = Int(s) else{
+            return
+        }
+        
         let filterItem = FilterItem(location: "All", levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
         if let location = location {
             filterItem.location = location.name!
@@ -701,8 +724,10 @@ class FilterPullDown: UIScrollView {
             filterItem.zoneName = zone.name!
             filterItem.zoneObjectId = zone.objectID.uriRepresentation().absoluteString
         }
-
-        DatabaseFilterController.shared.saveDeafultFilter(filterItem, menu: menuItem)
+        
+        let time = socunds + minutes*60 + hours*3600
+        
+        DatabaseFilterController.shared.saveDeafultFilter(filterItem, menu: menuItem, time: time)
         
         filterDelegate?.saveDefaultFilter()
     }

@@ -114,6 +114,11 @@ class DatabaseUserController: NSObject {
         return []
     }
     
+    func removeUser(user: User){
+        appDel.managedObjectContext?.delete(user)
+        CoreDataController.shahredInstance.saveChanges()
+    }
+    
     func logedUserOrAdmin() -> User?{
         if AdminController.shared.isAdminLogged(){
             if let user = DatabaseUserController.shared.getOtherUser(){

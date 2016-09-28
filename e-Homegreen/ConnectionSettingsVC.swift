@@ -39,12 +39,12 @@ class ConnectionSettingsVC: CommonXIBTransitionVC {
     
     var location:Location?
     var gateway:Gateway?
-    var gatewayType:String!
+    var gatewayType:TypeOfLocationDevice!
     
     var appDel:AppDelegate!
     var error:NSError? = nil
     
-    init(gateway:Gateway?, location:Location?, gatewayType:String){
+    init(gateway:Gateway?, location:Location?, gatewayType:TypeOfLocationDevice){
         super.init(nibName: "ConnectionSettingsVC", bundle: nil)
         
         self.location = location
@@ -157,7 +157,7 @@ class ConnectionSettingsVC: CommonXIBTransitionVC {
             gateway.addressThree = NSNumber(value: aThird)
             gateway.gatewayDescription = gatewayName
             gateway.autoReconnectDelay = hb as NSNumber?
-            gateway.gatewayType = gatewayType
+            
             CoreDataController.shahredInstance.saveChanges()
             self.dismiss(animated: true, completion: nil)
             delegate?.addEditGatewayFinished()
@@ -177,7 +177,7 @@ class ConnectionSettingsVC: CommonXIBTransitionVC {
                 gateway.location = location
                 gateway.gatewayId = UUID().uuidString
                 gateway.autoReconnectDelay = NSNumber(value: hb as Int)
-                gateway.gatewayType = gatewayType
+                gateway.gatewayType = NSNumber(value: gatewayType.rawValue)
                 CoreDataController.shahredInstance.saveChanges()
                 self.dismiss(animated: true, completion: nil)
                 delegate?.addEditGatewayFinished()
@@ -264,7 +264,7 @@ extension ConnectionSettingsVC: UITextFieldDelegate{
 }
 
 extension UIViewController {
-    func showConnectionSettings(_ gateway: Gateway?, location:Location?, gatewayType:String) -> ConnectionSettingsVC{
+    func showConnectionSettings(_ gateway: Gateway?, location:Location?, gatewayType:TypeOfLocationDevice) -> ConnectionSettingsVC{
         let connSettVC = ConnectionSettingsVC(gateway: gateway, location: location, gatewayType: gatewayType)
         self.present(connSettVC, animated: true, completion: nil)
         return connSettVC
