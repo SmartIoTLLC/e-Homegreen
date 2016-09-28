@@ -84,7 +84,14 @@ class DevicesViewController: PopoverVC{
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
         scrollView.setFilterItem(Menu.devices)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.blabla), name: NSNotification.Name(rawValue: "TimerEndedNotification"), object: nil)
+        
     }
+    func blabla(){
+        self.view.makeToast(message: "Istekao tajmer")
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         
@@ -1114,6 +1121,7 @@ class DevicesViewController: PopoverVC{
         }
     }
     @IBAction func reload(_ sender: UIButton) {
+        TimerForFilter.shared.startTimer()
         refreshVisibleDevicesInScrollView()
         sender.rotate(1)
     }

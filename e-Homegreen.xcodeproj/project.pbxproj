@@ -139,6 +139,7 @@
 		49C059741D913ACA0061A544 /* CardsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C059731D913ACA0061A544 /* CardsCell.swift */; };
 		49C059761D913D7D0061A544 /* ScanZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C059751D913D7D0061A544 /* ScanZone.swift */; };
 		49C059781D913DB90061A544 /* ScanCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C059771D913DB90061A544 /* ScanCategory.swift */; };
+		49DFFE351D9BDE2400551D28 /* TimerForFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DFFE341D9BDE2400551D28 /* TimerForFilter.swift */; };
 		49E4055B1D2D0A870031130B /* PullDownViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4055A1D2D0A870031130B /* PullDownViewCell.swift */; };
 		49FDD1E21D52043F00884E12 /* DigitalInputPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FDD1E01D52043F00884E12 /* DigitalInputPopup.swift */; };
 		49FDD1E31D52043F00884E12 /* DigitalInputPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49FDD1E11D52043F00884E12 /* DigitalInputPopup.xib */; };
@@ -498,6 +499,7 @@
 		49C059731D913ACA0061A544 /* CardsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardsCell.swift; sourceTree = "<group>"; };
 		49C059751D913D7D0061A544 /* ScanZone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ScanZone.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		49C059771D913DB90061A544 /* ScanCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ScanCategory.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		49DFFE341D9BDE2400551D28 /* TimerForFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerForFilter.swift; sourceTree = "<group>"; };
 		49E4055A1D2D0A870031130B /* PullDownViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullDownViewCell.swift; sourceTree = "<group>"; };
 		49FDD1E01D52043F00884E12 /* DigitalInputPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalInputPopup.swift; sourceTree = "<group>"; };
 		49FDD1E11D52043F00884E12 /* DigitalInputPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalInputPopup.xib; sourceTree = "<group>"; };
@@ -1453,6 +1455,7 @@
 				73331C171CA029DF009BA1DE /* FilterStruct.swift */,
 				22495D321CAA868E0034FC94 /* UIGradient + Extension.swift */,
 				4D0D97211CAD4087001A1E89 /* HRToast+UIView.swift */,
+				49DFFE341D9BDE2400551D28 /* TimerForFilter.swift */,
 			);
 			name = "Extensions and Helpers";
 			sourceTree = "<group>";
@@ -2126,6 +2129,7 @@
 				220176391CD0FED400A1470A /* MenuItem+CoreDataProperties.swift in Sources */,
 				E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */,
 				7372EB421BC410800097806D /* Sequence.swift in Sources */,
+				49DFFE351D9BDE2400551D28 /* TimerForFilter.swift in Sources */,
 				223362971CA2E624006C80C4 /* UsersViewController.swift in Sources */,
 				22FD29911CBBC9D100BCE823 /* SequencesCollectionViewCell.swift in Sources */,
 				734E35781C8239990096E043 /* ScanFunction.swift in Sources */,

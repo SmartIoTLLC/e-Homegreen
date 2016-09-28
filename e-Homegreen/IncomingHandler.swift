@@ -559,7 +559,7 @@ class IncomingHandler: NSObject {
         let onOffIndicator = onOffIndicatorTemp >> 7
         let modeTemp = (0x70 & allInformationByte)
         let mode:Int = Int(modeTemp >> 4)
-          
+        
         var devicesForSalto: [Device] = []
         // Get needed devices and be sure that everything is in good order
         for i in 0..<devices.count{
