@@ -129,7 +129,7 @@ class DevicesViewController: PopoverVC{
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
             self.refreshVisibleDevicesInScrollView()
         }
-        appDel.setFilterBySSIDOrByiBeaconAgain()
+//        appDel.setFilterBySSIDOrByiBeaconAgain()
     }
     override func viewWillLayoutSubviews() {
         if scrollView.contentOffset.y != 0 {
