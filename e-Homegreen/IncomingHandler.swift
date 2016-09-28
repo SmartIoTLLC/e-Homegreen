@@ -522,7 +522,7 @@ class IncomingHandler: NSObject {
             }
             var devicesForSalto: [Device] = []
             // Get needed devices and be sure that everything is in good order
-            for i in 1..<devices.count{
+            for i in 0..<devices.count{
                 if  Int(devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(devices[i].address) == Int(byteArray[4]){
                     devicesForSalto.append(devices[i])
                 }
@@ -552,17 +552,17 @@ class IncomingHandler: NSObject {
         }
     }
     func parseMessageSaltoStatus(_ byteArray: [Byte]){
-        let channel = byteArray[9]
+        let channel = byteArray[7]
         let allInformationByte = byteArray[9]
         var bateryStatusByte = (0x03 & allInformationByte)
         let onOffIndicatorTemp = (0x80 & allInformationByte)
         let onOffIndicator = onOffIndicatorTemp >> 7
         let modeTemp = (0x70 & allInformationByte)
         let mode:Int = Int(modeTemp >> 4)
-        
+          
         var devicesForSalto: [Device] = []
         // Get needed devices and be sure that everything is in good order
-        for i in 1..<devices.count{
+        for i in 0..<devices.count{
             if  Int(devices[i].gateway.addressOne) == Int(byteArray[2]) &&
                 Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) &&
                 Int(devices[i].address) == Int(byteArray[4]) &&
