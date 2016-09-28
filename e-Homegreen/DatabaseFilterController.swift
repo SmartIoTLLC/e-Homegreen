@@ -25,6 +25,7 @@ class DatabaseFilterController: NSObject {
                     filter.levelId = "All"
                     filter.zoneId = "All"
                     filter.categoryId = "All"
+                    filter.timerDuration = 0
                     filter.user = user
                 }
                 if let filter = NSEntityDescription.insertNewObject(forEntityName: "FilterParametar", into: appDel.managedObjectContext!) as? FilterParametar{
@@ -34,6 +35,7 @@ class DatabaseFilterController: NSObject {
                     filter.levelId = "All"
                     filter.zoneId = "All"
                     filter.categoryId = "All"
+                    filter.timerDuration = 0
                     filter.user = user
                 }
             }
@@ -66,7 +68,7 @@ class DatabaseFilterController: NSObject {
         }
     }
     
-    func saveDeafultFilter(_ filterItem:FilterItem, menu:Menu){
+    func saveDeafultFilter(_ filterItem:FilterItem, menu:Menu, time: Int){
         if let user = DatabaseUserController.shared.getLoggedUser(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FilterParametar.fetchRequest()
             var predicateArray:[NSPredicate] = []
@@ -82,6 +84,7 @@ class DatabaseFilterController: NSObject {
                     results[0].levelId = filterItem.levelObjectId
                     results[0].zoneId = filterItem.zoneObjectId
                     results[0].categoryId = filterItem.categoryObjectId
+                    results[0].timerDuration = NSNumber(value: time)
                     CoreDataController.shahredInstance.saveChanges()
                 }
             } catch {

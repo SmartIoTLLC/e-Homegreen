@@ -37,7 +37,7 @@ class CreateUserFromJSONController: NSObject {
                 }
             }
             
-            let jsonFilePath = documentsDirectoryPath.appendingPathComponent("test.json")
+            let jsonFilePath = documentsDirectoryPath.appendingPathComponent("user.json")
             createUserFromJSON(jsonFilePath.path)
             
 //        }
@@ -259,8 +259,8 @@ class CreateUserFromJSONController: NSObject {
                 if let remoteIpInUSe = gateway["remote_ip_in_use"] as? String{
                     newGateway.remoteIpInUse = remoteIpInUSe
                 }
-                if let type = gateway["type"] as? String{
-                    newGateway.gatewayType = type
+                if let type = gateway["type"] as? Int{
+                    newGateway.gatewayType = NSNumber(value: type)
                 }
                 if let turnedOn = gateway["turned_on"] as? Bool{
                     newGateway.turnedOn = turnedOn as NSNumber

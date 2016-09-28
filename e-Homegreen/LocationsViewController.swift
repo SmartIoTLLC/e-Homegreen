@@ -14,8 +14,8 @@ struct LocationDevice {
     var typeOfLocationDevice:TypeOfLocationDevice
 }
 
-enum TypeOfLocationDevice:String{
-    case Ehomegreen = "e-Homegreen", Surveillance = "IP Camera", Ehomeblue = "e-Homeblue"
+enum TypeOfLocationDevice:Int{
+    case Ehomegreen = 0, Surveillance, Ehomeblue
     var description:String{
         switch self{
         case .Ehomegreen: return "e-Homegreen"
@@ -102,21 +102,21 @@ class LocationViewController: PopoverVC  {
         index = sender.tag
         var popoverList:[PopOverItem] = []
         for item in TypeOfLocationDevice.allValues{
-            popoverList.append(PopOverItem(name: item.rawValue, id: ""))
+            popoverList.append(PopOverItem(name: item.description, id: ""))
         }
         
         openPopover(sender, popOverList:popoverList)
     }   // add camera or gateway
 
     override func nameAndId(_ name: String, id: String) {
-        if TypeOfLocationDevice.Ehomegreen.rawValue == name{
-            self.showConnectionSettings(nil, location: locationList[index].location, gatewayType: TypeOfLocationDevice.Ehomegreen.description).delegate = self
+        if TypeOfLocationDevice.Ehomegreen.description == name{
+            self.showConnectionSettings(nil, location: locationList[index].location, gatewayType: TypeOfLocationDevice.Ehomegreen).delegate = self
         }
-        if TypeOfLocationDevice.Surveillance.rawValue == name{
+        if TypeOfLocationDevice.Surveillance.description == name{
             showSurveillanceSettings(nil, location: locationList[index].location).delegate = self
         }
-        if TypeOfLocationDevice.Ehomeblue.rawValue == name{
-            self.showConnectionSettings(nil, location: locationList[index].location, gatewayType: TypeOfLocationDevice.Ehomeblue.description).delegate = self
+        if TypeOfLocationDevice.Ehomeblue.description == name{
+            self.showConnectionSettings(nil, location: locationList[index].location, gatewayType: TypeOfLocationDevice.Ehomeblue).delegate = self
         }
     }
     
@@ -133,7 +133,7 @@ class LocationViewController: PopoverVC  {
             var listOfChildrenDevice:[LocationDevice] = []
             if let listOfGateway = item.gateways?.allObjects as? [Gateway]{
                 for gateway in listOfGateway{
-                    if gateway.gatewayType == TypeOfLocationDevice.Ehomegreen.description{
+                    if Int(gateway.gatewayType) == TypeOfLocationDevice.Ehomegreen.rawValue{
                         listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomegreen))
                     }else{
                         listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomeblue))
@@ -156,7 +156,7 @@ class LocationViewController: PopoverVC  {
         var listOfChildrenDevice:[LocationDevice] = []
         if let listOfGateway = locationEdit.gateways?.allObjects as? [Gateway] {
             for gateway in listOfGateway{
-                if gateway.gatewayType == TypeOfLocationDevice.Ehomegreen.description{
+                if Int(gateway.gatewayType) == TypeOfLocationDevice.Ehomegreen.rawValue{
                     listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomegreen))
                 }else{
                     listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomeblue))
@@ -253,7 +253,9 @@ extension LocationViewController: UITableViewDelegate {
             }
             if let gateway = device.device as? Gateway{
                 DispatchQueue.main.async(execute: {
-                    self.showConnectionSettings(gateway, location: nil, gatewayType: gateway.gatewayType).delegate = self
+                    if let type = TypeOfLocationDevice(rawValue: Int(gateway.gatewayType)){
+                        self.showConnectionSettings(gateway, location: nil, gatewayType: type).delegate = self
+                    }
                 })
             }
         }

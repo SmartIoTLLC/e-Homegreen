@@ -11,19 +11,14 @@ import Foundation
 import NSManagedObject_HYPPropertyMapper
 import Zip
 
-class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddUserDelegate, SWRevealViewControllerDelegate {
+class ProjectManagerViewController: UIViewController {
     
     @IBOutlet weak var usersTableView: UITableView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
     @IBOutlet weak var addButton: UIButton!
     
-    var appDel:AppDelegate!
     var users:[User] = []
-    var sidebarMenuOpen : Bool = false
-    var tap : UITapGestureRecognizer!
-    
-    
     
     override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
@@ -33,38 +28,29 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             revealViewController().toggleAnimationDuration = 0.5
-            if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
-                revealViewController().rearViewRevealWidth = 200
-            }else{
-                revealViewController().rearViewRevealWidth = 200
-            }
             
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            
+            revealViewController().rearViewRevealWidth = 200
         }
-        usersTableView.tableFooterView = UIView()
-        usersTableView.reloadData()
+        
+        reloadData()
         
         changeFullScreeenImage()
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        tap = UITapGestureRecognizer(target: self, action: #selector(ProjectManagerViewController.closeSideMenu))
 
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         UIView.hr_setToastThemeColor(color: UIColor.red)
-        
-        appDel = UIApplication.shared.delegate as! AppDelegate
         
         if !AdminController.shared.isAdminLogged() {
             addButton.isHidden = true
         }
         
-        users = DatabaseUserController.shared.getAllUsers()
+        usersTableView.tableFooterView = UIView()
         
-        // Do any additional setup after loading the view.
     }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "settings"{
             if let button = sender as? UIButton{
@@ -117,11 +103,13 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     @IBAction func deleteUser(_ sender: UIButton) {
         showAlertView(sender, message: "Delete user?") { (action) in
             if action == ReturnedValueFromAlertView.delete{
-                self.appDel.managedObjectContext?.delete(self.users[sender.tag])
+                DatabaseUserController.shared.removeUser(user: self.users[sender.tag])
                 if self.users[sender.tag].username == DatabaseUserController.shared.getOtherUser()?.username{
                     let _ = AdminController.shared.setOtherUser(nil)
                 }
-                self.reloadData()
+                self.users.remove(at: sender.tag)
+                self.usersTableView.deleteRows(at: [IndexPath(row: sender.tag, section: 0)], with: .fade)
+                
             }
         }
     }
@@ -136,7 +124,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         print(user_value)
 
         let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let jsonFilePath = documentsUrl.appendingPathComponent("archive.zip")
+        let jsonFilePath = documentsUrl.appendingPathComponent("userJSON.zip")
         
         let activityViewController = UIActivityViewController(activityItems: [jsonFilePath], applicationActivities: nil)
         if let presentationController = activityViewController.popoverPresentationController {
@@ -153,7 +141,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         let documentsDirectoryPathString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
         let documentsDirectoryPath = URL(string: documentsDirectoryPathString)!
         
-        let jsonFilePath = documentsDirectoryPath.appendingPathComponent("test.json")
+        let jsonFilePath = documentsDirectoryPath.appendingPathComponent("user.json")
         let fileManager = FileManager.default
         var isDirectory: ObjCBool = false
         
@@ -175,7 +163,7 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         }
         
         do {
-            let zipFilePath = documentsDirectoryPath.appendingPathComponent("archive.zip")
+            let zipFilePath = documentsDirectoryPath.appendingPathComponent("userJSON.zip")
             try Zip.zipFiles(paths: [jsonFilePath], zipFilePath: zipFilePath, password: nil, progress: { (progress) -> () in
                 print(progress)
             })
@@ -193,38 +181,27 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         
     }
     
-    
-    
-    func addUserFinished() {
-        reloadData()
-    }
-    
     func reloadData(){
         users = DatabaseUserController.shared.getAllUsers()
         usersTableView.reloadData()
     }
     
+}
+
+extension ProjectManagerViewController: UITableViewDelegate, UITableViewDataSource{
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "userCell") as? UserCell{
-            cell.chooseDatabaseButton.tag = (indexPath as NSIndexPath).row
-            cell.editDatabaseButton.tag = (indexPath as NSIndexPath).row
-            cell.deleteUser.tag = (indexPath as NSIndexPath).row
-            cell.shareUser.tag = (indexPath as NSIndexPath).row
-            print((indexPath as NSIndexPath).row)
-            cell.setItem(users[(indexPath as NSIndexPath).row])
+            cell.chooseDatabaseButton.tag = indexPath.row
+            cell.editDatabaseButton.tag = indexPath.row
+            cell.deleteUser.tag = indexPath.row
+            cell.shareUser.tag = indexPath.row
+            cell.setItem(users[indexPath.row])
             return cell
         }
         let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
         cell.textLabel?.text = "dads"
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if(sidebarMenuOpen == true){
-            return nil
-        } else {
-            return indexPath
-        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -233,19 +210,19 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         DispatchQueue.main.async(execute: {
-            if self.users[(indexPath as NSIndexPath).row].isLocked == false || self.users[(indexPath as NSIndexPath).row].username == DatabaseUserController.shared.getLoggedUser()?.username{
-                self.showAddUser(self.users[(indexPath as NSIndexPath).row]).delegate = self
+            if self.users[indexPath.row].isLocked == false || self.users[indexPath.row].username == DatabaseUserController.shared.getLoggedUser()?.username{
+                self.showAddUser(self.users[indexPath.row]).delegate = self
             }
         })
     }
-    
+}
+
+extension ProjectManagerViewController: SWRevealViewControllerDelegate {
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             usersTableView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
             usersTableView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     
@@ -253,21 +230,15 @@ class ProjectManagerViewController: UIViewController, UITableViewDelegate, UITab
         
         if(position == FrontViewPosition.left) {
             usersTableView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
-            self.view.removeGestureRecognizer(tap)
         } else {
-            self.view.addGestureRecognizer(tap)
             usersTableView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
-    
-    func closeSideMenu(){
-        
-        if sidebarMenuOpen == true {
-            self.revealViewController().revealToggle(animated: true)
-        }
-        
+}
+
+extension ProjectManagerViewController: AddUserDelegate{
+    func addUserFinished() {
+        reloadData()
     }
 }
 

@@ -21,5 +21,6 @@ extension FilterParametar {
     @NSManaged var zoneId: String
     @NSManaged var categoryId: String
     @NSManaged var user: User
+    @NSManaged var timerDuration: NSNumber
 
 }
