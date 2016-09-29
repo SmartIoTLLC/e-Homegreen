@@ -40,23 +40,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var timer: DispatchSource!
     var refreshTimer: DispatchSource!
     
-    func refreshDevicesToYesterday () {
-        var error:NSError?
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
-        do {
-            if let devices = try managedObjectContext!.fetch(fetchRequest) as? [Device] {
-                for device in devices {
-                    
-                    device.stateUpdatedAt = Date.yesterDay()
-                }
-                saveContext()
-            }
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-    }
+//    func refreshDevicesToYesterday () {
+//        var error:NSError?
+//        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
+//        do {
+//            if let devices = try managedObjectContext!.fetch(fetchRequest) as? [Device] {
+//                for device in devices {
+//                    
+//                    device.stateUpdatedAt = Date.yesterDay()
+//                }
+//                saveContext()
+//            }
+//        } catch let error1 as NSError {
+//            error = error1
+//            print("Unresolved error \(error), \(error!.userInfo)")
+//            abort()
+//        }
+//    }
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         

@@ -94,6 +94,28 @@ class DatabaseFilterController: NSObject {
         }
     }
     
+    func getDeafultFilterTimeDuration(menu:Menu) -> Int{
+        if let user = DatabaseUserController.shared.getLoggedUser(){
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FilterParametar.fetchRequest()
+            var predicateArray:[NSPredicate] = []
+            predicateArray.append(NSPredicate(format: "user == %@", user))
+            predicateArray.append(NSPredicate(format: "filterId == %@", NSNumber(value: menu.rawValue as Int)))
+            predicateArray.append(NSPredicate(format: "isDefault == %@", NSNumber(value: true as Bool)))
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+            fetchRequest.predicate = compoundPredicate
+            do {
+                let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [FilterParametar]
+                if results.count != 0{
+                    return Int(results[0].timerDuration)
+                }
+            } catch {
+                
+            }
+            
+        }
+        return 0
+    }
+    
     func getFilterByMenu(_ menu:Menu) -> FilterParametar?{
         
         if let user = DatabaseUserController.shared.getLoggedUser(){
