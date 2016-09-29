@@ -75,6 +75,7 @@ class ScenesViewController: PopoverVC {
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
         scrollView.setFilterItem(Menu.scenes)
+        NotificationCenter.default.addObserver(self, selector: #selector(ScenesViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerScenes), object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -157,6 +158,10 @@ class ScenesViewController: PopoverVC {
         scenesCollectionView.reloadData()
     }
 
+    // Helper functions
+    func setDefaultFilterFromTimer(){
+        scrollView.setDefaultFilterItem(Menu.scenes)
+    }
 }
 
 // Parametar from filter and relaod data
@@ -166,6 +171,8 @@ extension ScenesViewController: FilterPullDownDelegate{
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.scenes)
         updateSceneList()
+        TimerForFilter.shared.counterScenes = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.scenes)
+        TimerForFilter.shared.startTimer(type: Menu.scenes)
     }
     
     func saveDefaultFilter(){

@@ -14,21 +14,18 @@ class EnergyViewController: PopoverVC  {
     
     @IBOutlet weak var current: UILabel!
     @IBOutlet weak var powerUsage: UILabel!
-    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
     
     var scrollView = FilterPullDown()
-    
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
-    
     var appDel:AppDelegate!
     var devices:[Device] = []
     var error:NSError? = nil
     var sumAmp:Float = 0
     var sumPow:Float = 0
-    
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Energy)
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,6 +52,7 @@ class EnergyViewController: PopoverVC  {
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
         scrollView.setFilterItem(Menu.energy)
+        NotificationCenter.default.addObserver(self, selector: #selector(EnergyViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEnergy), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -105,6 +103,11 @@ class EnergyViewController: PopoverVC  {
         scrollView.setButtonTitle(name, id: id)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        removeObservers()
+    }
+    
+    
     func updateConstraints() {
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0.0))
@@ -118,29 +121,9 @@ class EnergyViewController: PopoverVC  {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
-
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        removeObservers()
-    }
     
     func updateSubtitle(_ location: String, level: String, zone: String){
         headerTitleSubtitleView.setTitleAndSubtitle("Energy", subtitle: location + " " + level + " " + zone)
-    }
-    
-    @IBAction func fullScreen(_ sender: UIButton) {
-        sender.collapseInReturnToNormal(1)
-        if UIApplication.shared.isStatusBarHidden {
-            UIApplication.shared.isStatusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
-        } else {
-            UIApplication.shared.isStatusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-            if scrollView.contentOffset.y != 0 {
-                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
-                scrollView.setContentOffset(bottomOffset, animated: false)
-            }
-        }
     }
     
     func changeFullScreeenImage(){
@@ -221,7 +204,24 @@ class EnergyViewController: PopoverVC  {
         powerUsage.text = "\(sumPow) W"
     }
     
-
+    func setDefaultFilterFromTimer(){
+        scrollView.setDefaultFilterItem(Menu.energy)
+    }
+    
+    @IBAction func fullScreen(_ sender: UIButton) {
+        sender.collapseInReturnToNormal(1)
+        if UIApplication.shared.isStatusBarHidden {
+            UIApplication.shared.isStatusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
+        } else {
+            UIApplication.shared.isStatusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
+            if scrollView.contentOffset.y != 0 {
+                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+                scrollView.setContentOffset(bottomOffset, animated: false)
+            }
+        }
+    }
 }
 
 // Parametar from filter and relaod data
@@ -233,6 +233,9 @@ extension EnergyViewController: FilterPullDownDelegate{
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.energy)
         refreshLocalParametars()
+        
+        TimerForFilter.shared.counterEnergy = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.energy)
+        TimerForFilter.shared.startTimer(type: Menu.energy)
     }
     
     func saveDefaultFilter(){

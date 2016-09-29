@@ -1442,6 +1442,7 @@
 		73F04EC71C92C728009696EF /* Extensions and Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				73ECD4A21B332A6F00767740 /* Constants.swift */,
 				73F04EC81C92C74C009696EF /* Int+Extensions.swift */,
 				73F51A0B1C9490B9003EE702 /* NSObject+Extensions.swift */,
 				22320C881C9ACE0900F15B36 /* UIColor + Extension.swift */,
@@ -1449,7 +1450,6 @@
 				223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */,
 				73E427B91B4D0B870083A747 /* DeviceInfo.swift */,
 				736A5B261B5A678F008FD745 /* HashTable.swift */,
-				73ECD4A21B332A6F00767740 /* Constants.swift */,
 				73331C171CA029DF009BA1DE /* FilterStruct.swift */,
 				22495D321CAA868E0034FC94 /* UIGradient + Extension.swift */,
 				4D0D97211CAD4087001A1E89 /* HRToast+UIView.swift */,

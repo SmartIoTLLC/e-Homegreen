@@ -85,10 +85,9 @@ class DevicesViewController: PopoverVC{
         
         scrollView.setFilterItem(Menu.devices)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: "TimerEndedNotification"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerDevices), object: nil)
         
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
@@ -1173,7 +1172,8 @@ extension DevicesViewController: FilterPullDownDelegate{
             deviceCollectionView.reloadData()
             fetchDevicesInBackground()
         }
-        TimerForFilter.shared.startTimer()
+        TimerForFilter.shared.counterDevices = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.devices)
+        TimerForFilter.shared.startTimer(type: Menu.devices)
     }
     
     func saveDefaultFilter(){

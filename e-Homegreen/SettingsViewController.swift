@@ -26,20 +26,16 @@ enum SettingsItem{
 }
 
 class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWRevealViewControllerDelegate, SettingsDelegate {
-    
     var user:User?
     var appDel:AppDelegate!
     var error:NSError? = nil
-    
-    @IBOutlet weak var menuButton: UIBarButtonItem!
-
-    var settingArray:[SettingsItem]!
-    @IBOutlet weak var settingsTableView: UITableView!
-    
-    @IBOutlet weak var tableBottomConstraint: NSLayoutConstraint!
     var hourRefresh:Int = 0
     var minRefresh:Int = 0
-    
+    var settingArray:[SettingsItem]!
+    var isMore = false
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var settingsTableView: UITableView!
+    @IBOutlet weak var tableBottomConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,9 +66,7 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
         if let min = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayMinutes) as? Int {
             minRefresh = min
         }
-
     }
-
     override func viewWillAppear(_ animated: Bool) {
         if !AdminController.shared.isAdminLogged() && user == nil{
             self.revealViewController().delegate = self
@@ -94,11 +88,32 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
             }
         }
     }
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "connection"{
+            if let destinationVC = segue.destination as? LocationViewController{
+                if let user = user{
+                    destinationVC.user = user
+                }else{
+                    let tempUser = DatabaseUserController.shared.getLoggedUser()
+                    destinationVC.user = tempUser
+                }
+            }
+        }
+        if segue.identifier == "mainMenu"{
+            if let destinationVC = segue.destination as? MenuSettingsViewController{
+                if let user = user{
+                    destinationVC.user = user
+                }else{
+                    let tempUser = DatabaseUserController.shared.getLoggedUser()
+                    destinationVC.user = tempUser
+                }
+            }
+        }
+    }
+
     func resetPasswordFinished() {
         self.view.makeToast(message: "Passwords was changed successfully")
     }
-    
     func btnAddHourPressed(_ sender:UIButton){
         if sender.tag == 1{
             if hourRefresh < 23 {
@@ -121,7 +136,6 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
         }
         
     }
-    
     func btnDecHourPressed(_ sender:UIButton){
         if sender.tag == 1{
             if hourRefresh > 0 {
@@ -143,7 +157,6 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
             Foundation.UserDefaults.standard.synchronize()
         }
     }
-    
     func changeValue(_ sender:UISwitch){
         if let user = user{
             user.openLastScreen = sender.isOn as NSNumber!
@@ -153,7 +166,6 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
             }
         }
     }
-    
     func lockProfile(_ sender:UISwitch){
         if let user = user{
             user.isLocked = sender.isOn as NSNumber?
@@ -163,7 +175,6 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
         CoreDataController.shahredInstance.saveChanges()
         
     }
-    
     func didTouchSettingButton (_ sender:AnyObject) {
         if let view = sender as? UIButton {
             let tag = view.tag
@@ -194,40 +205,6 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
 
         }
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "connection"{
-            if let destinationVC = segue.destination as? LocationViewController{
-                if let user = user{
-                    destinationVC.user = user
-                }else{
-                    let tempUser = DatabaseUserController.shared.getLoggedUser()
-                    destinationVC.user = tempUser
-                }
-            }
-        }
-        if segue.identifier == "mainMenu"{
-            if let destinationVC = segue.destination as? MenuSettingsViewController{
-                if let user = user{
-                    destinationVC.user = user
-                }else{
-                    let tempUser = DatabaseUserController.shared.getLoggedUser()
-                    destinationVC.user = tempUser
-                }
-            }
-        }
-    }
-    
-    var isMore = false
-    @IBAction func btnMore(_ sender: AnyObject) {
-        isMore = !isMore
-        settingsTableView.reloadData()
-    }
-    
-    @IBAction func broadcastTimeAndDateFromPhone(_ sender: AnyObject) {
-        (UIApplication.shared.delegate as! AppDelegate).sendDataToBroadcastTimeAndDate()
-    }
-    
     func KeyboardWillShow(_ notification: Notification){
         if let userInfo = (notification as NSNotification).userInfo {
             let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
@@ -239,13 +216,12 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
                 self.tableBottomConstraint.constant = endFrame.size.height + 5
             }
             UIView.animate(withDuration: duration,
-                delay: TimeInterval(0),
-                options: animationCurve,
-                animations: { self.view.layoutIfNeeded() },
-                completion: nil)
+                           delay: TimeInterval(0),
+                           options: animationCurve,
+                           animations: { self.view.layoutIfNeeded() },
+                           completion: nil)
         }
     }
-    
     func KeyboardWillHide(_ notification: Notification){
         if let userInfo = (notification as NSNotification).userInfo {
             let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
@@ -256,12 +232,21 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
             self.tableBottomConstraint.constant = 0
             
             UIView.animate(withDuration: duration,
-                delay: TimeInterval(0),
-                options: animationCurve,
-                animations: { self.view.layoutIfNeeded() },
-                completion: nil)
+                           delay: TimeInterval(0),
+                           options: animationCurve,
+                           animations: { self.view.layoutIfNeeded() },
+                           completion: nil)
         }
     }
+
+    @IBAction func btnMore(_ sender: AnyObject) {
+        isMore = !isMore
+        settingsTableView.reloadData()
+    }
+    @IBAction func broadcastTimeAndDateFromPhone(_ sender: AnyObject) {
+        (UIApplication.shared.delegate as! AppDelegate).sendDataToBroadcastTimeAndDate()
+    }
+    
 }
 
 extension SettingsViewController: UITableViewDelegate, UITableViewDataSource{
@@ -355,35 +340,28 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource{
             return cell
         }
     }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         return settingArray.count
     }
-    
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 3
     }
-    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 3
     }
-    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView:UIView = UIView(frame: CGRect(x: 0, y: 0, width: 1024, height: 3))
         headerView.backgroundColor = UIColor.clear
         return headerView
     }
-    
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView:UIView = UIView(frame: CGRect(x: 0, y: 0, width: 1024, height: 3))
         footerView.backgroundColor = UIColor.clear
         return footerView
     }
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if (indexPath as NSIndexPath).section == 2 { return 90 }
         if settingArray[(indexPath as NSIndexPath).section] == SettingsItem.broadcast {
@@ -396,7 +374,6 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource{
 }
 
 extension SettingsViewController: UITextFieldDelegate{
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let cell = textField.superview?.superview as? BroadcastTimeAndDateTVC {
             cell.saveData()

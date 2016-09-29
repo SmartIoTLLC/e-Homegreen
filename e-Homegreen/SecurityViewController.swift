@@ -84,6 +84,7 @@ class SecurityViewController: PopoverVC{
         
         scrollView.setFilterItem(Menu.security)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(SecurityViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSecurity), object: nil)
     }
     override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
@@ -352,6 +353,9 @@ class SecurityViewController: PopoverVC{
         securityCollectionView.isScrollEnabled = true
     }
 
+    func setDefaultFilterFromTimer(){
+        scrollView.setDefaultFilterItem(Menu.security)
+    }
 }
 
 // Parametar from filter and relaod data
@@ -361,6 +365,8 @@ extension SecurityViewController: FilterPullDownDelegate{
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.security)
         updateSubtitle()
         refreshSecurity()
+        TimerForFilter.shared.counterSecurity = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.security)
+        TimerForFilter.shared.startTimer(type: Menu.security)
     }
     
     func saveDefaultFilter(){

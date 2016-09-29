@@ -64,7 +64,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
         // slider setup
@@ -247,9 +246,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        Foundation.UserDefaults.standard.set(Date(), forKey: "timeTimerStarted")
-        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counter1, forKey: "timerOldValue")
-        TimerForFilter.shared.stopTimer()
+        Foundation.UserDefaults.standard.set(Date(), forKey: "timeTimerExitedApp")
+        
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterDevices, forKey: "timerDevicesValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.devices)
+        
+
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterScenes, forKey: "timerScenesValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.scenes)
+
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterEvents, forKey: "timerEventsValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.events)
+
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterSequences, forKey: "timerSequencesValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.sequences)
+
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterTimers, forKey: "timerTimersValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.timers)
+        
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterSecurity, forKey: "timerSecurityValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.security)
+        
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterSurvailance, forKey: "timerSurvailanceValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.surveillance)
+        
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterFlags, forKey: "timerFlagsValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.flags)
+        
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterUsers, forKey: "timerUsersValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.users)
+        
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterPCControl, forKey: "timerPCControlValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.pcControl)
+        
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterEnergy, forKey: "timerEnergyValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.energy)
     }
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
@@ -257,17 +288,150 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        if let startDate = Foundation.UserDefaults.standard.value(forKey: "timeTimerStarted") as? Date{
-            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerOldValue") as? Double{
-                let startTime = startDate.timeIntervalSinceReferenceDate
+        if let dateExitedTheApp = Foundation.UserDefaults.standard.value(forKey: "timeTimerExitedApp") as? Date{
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerDevicesValueWhenExitedApp") as? Int{
+                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
                 let currentTime = Date.timeIntervalSinceReferenceDate
-                let counterValue = currentTime - startTime
-                let seconds = Double(counterValue)
-                TimerForFilter.shared.counter1 = timerOldValue - Double(seconds)
-                if TimerForFilter.shared.counter1 > 0 {
-                    TimerForFilter.shared.startTimer()
+                let counterValue = currentTime - timeExitedTheApp
+                let seconds = Int(counterValue)
+                TimerForFilter.shared.counterDevices = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterDevices > 0 {
+                    TimerForFilter.shared.startTimer(type: Menu.devices)
                 }else{
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "TimerEndedNotification"), object: nil)
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerDevices), object: nil)
+                }
+            }
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerScenesValueWhenExitedApp") as? Int{
+                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
+                let currentTime = Date.timeIntervalSinceReferenceDate
+                let counterValue = currentTime - timeExitedTheApp
+                let seconds = Int(counterValue)
+                TimerForFilter.shared.counterScenes = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterScenes > 0 {
+                    TimerForFilter.shared.startTimer(type: Menu.scenes)
+                }else{
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerScenes), object: nil)
+                }
+            }
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerEventsValueWhenExitedApp") as? Int{
+                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
+                let currentTime = Date.timeIntervalSinceReferenceDate
+                let counterValue = currentTime - timeExitedTheApp
+                let seconds = Int(counterValue)
+                TimerForFilter.shared.counterEvents = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterEvents > 0 {
+                    TimerForFilter.shared.startTimer(type: Menu.events)
+                }else{
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEvents), object: nil)
+                }
+            }
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerSequencesValueWhenExitedApp") as? Int{
+                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
+                let currentTime = Date.timeIntervalSinceReferenceDate
+                let counterValue = currentTime - timeExitedTheApp
+                let seconds = Int(counterValue)
+                TimerForFilter.shared.counterSequences = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterSequences > 0 {
+                    TimerForFilter.shared.startTimer(type: Menu.sequences)
+                }else{
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSequences), object: nil)
+                }
+            }
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerTimersValueWhenExitedApp") as? Int{
+                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
+                let currentTime = Date.timeIntervalSinceReferenceDate
+                let counterValue = currentTime - timeExitedTheApp
+                let seconds = Int(counterValue)
+                TimerForFilter.shared.counterTimers = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterTimers > 0 {
+                    TimerForFilter.shared.startTimer(type: Menu.timers)
+                }else{
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerTimers), object: nil)
+                }
+            }
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerSecurityValueWhenExitedApp") as? Int{
+                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
+                let currentTime = Date.timeIntervalSinceReferenceDate
+                let counterValue = currentTime - timeExitedTheApp
+                let seconds = Int(counterValue)
+                TimerForFilter.shared.counterSecurity = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterSecurity > 0 {
+                    TimerForFilter.shared.startTimer(type: Menu.security)
+                }else{
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSecurity), object: nil)
+                }
+            }
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerSurvailanceValueWhenExitedApp") as? Int{
+                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
+                let currentTime = Date.timeIntervalSinceReferenceDate
+                let counterValue = currentTime - timeExitedTheApp
+                let seconds = Int(counterValue)
+                TimerForFilter.shared.counterSurvailance = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterSurvailance > 0 {
+                    TimerForFilter.shared.startTimer(type: Menu.surveillance)
+                }else{
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSurvailance), object: nil)
+                }
+            }
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerFlagsValueWhenExitedApp") as? Int{
+                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
+                let currentTime = Date.timeIntervalSinceReferenceDate
+                let counterValue = currentTime - timeExitedTheApp
+                let seconds = Int(counterValue)
+                TimerForFilter.shared.counterFlags = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterFlags > 0 {
+                    TimerForFilter.shared.startTimer(type: Menu.flags)
+                }else{
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerFlags), object: nil)
+                }
+            }
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerUsersValueWhenExitedApp") as? Int{
+                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
+                let currentTime = Date.timeIntervalSinceReferenceDate
+                let counterValue = currentTime - timeExitedTheApp
+                let seconds = Int(counterValue)
+                TimerForFilter.shared.counterUsers = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterUsers > 0 {
+                    TimerForFilter.shared.startTimer(type: Menu.users)
+                }else{
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerUsers), object: nil)
+                }
+            }
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerPCControlValueWhenExitedApp") as? Int{
+                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
+                let currentTime = Date.timeIntervalSinceReferenceDate
+                let counterValue = currentTime - timeExitedTheApp
+                let seconds = Int(counterValue)
+                TimerForFilter.shared.counterPCControl = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterPCControl > 0 {
+                    TimerForFilter.shared.startTimer(type: Menu.pcControl)
+                }else{
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerPCControl), object: nil)
+                }
+            }
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerChatValueWhenExitedApp") as? Int{
+                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
+                let currentTime = Date.timeIntervalSinceReferenceDate
+                let counterValue = currentTime - timeExitedTheApp
+                let seconds = Int(counterValue)
+                TimerForFilter.shared.counterChat = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterChat > 0 {
+                    TimerForFilter.shared.startTimer(type: Menu.chat)
+                }else{
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerChat), object: nil)
+                }
+            }
+            
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerEnergyValueWhenExitedApp") as? Int{
+                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
+                let currentTime = Date.timeIntervalSinceReferenceDate
+                let counterValue = currentTime - timeExitedTheApp
+                let seconds = Int(counterValue)
+                TimerForFilter.shared.counterEnergy = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterEnergy > 0 {
+                    TimerForFilter.shared.startTimer(type: Menu.energy)
+                }else{
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEnergy), object: nil)
                 }
             }
         }
