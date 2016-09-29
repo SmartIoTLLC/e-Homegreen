@@ -85,12 +85,10 @@ class DevicesViewController: PopoverVC{
         
         scrollView.setFilterItem(Menu.devices)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.blabla), name: NSNotification.Name(rawValue: "TimerEndedNotification"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: "TimerEndedNotification"), object: nil)
         
     }
-    func blabla(){
-        self.view.makeToast(message: "Istekao tajmer")
-    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
@@ -972,6 +970,12 @@ class DevicesViewController: PopoverVC{
         }
     }
     
+    
+    // Helper functions
+    func setDefaultFilterFromTimer(){
+        scrollView.setDefaultFilterItem(Menu.devices)
+    }
+    
     @IBAction func zoneCategoryControlSlider(_ sender: UISlider) {
         let sliderValue = Int(sender.value)
         
@@ -1121,7 +1125,6 @@ class DevicesViewController: PopoverVC{
         }
     }
     @IBAction func reload(_ sender: UIButton) {
-        TimerForFilter.shared.startTimer()
         refreshVisibleDevicesInScrollView()
         sender.rotate(1)
     }
@@ -1170,7 +1173,7 @@ extension DevicesViewController: FilterPullDownDelegate{
             deviceCollectionView.reloadData()
             fetchDevicesInBackground()
         }
-        
+        TimerForFilter.shared.startTimer()
     }
     
     func saveDefaultFilter(){

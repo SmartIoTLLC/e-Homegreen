@@ -956,6 +956,7 @@
 			isa = PBXGroup;
 			children = (
 				225F59831D74402F00156BCD /* CommonXIBTransitionVC.swift */,
+				49DFFE341D9BDE2400551D28 /* TimerForFilter.swift */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -1452,7 +1453,6 @@
 				73331C171CA029DF009BA1DE /* FilterStruct.swift */,
 				22495D321CAA868E0034FC94 /* UIGradient + Extension.swift */,
 				4D0D97211CAD4087001A1E89 /* HRToast+UIView.swift */,
-				49DFFE341D9BDE2400551D28 /* TimerForFilter.swift */,
 			);
 			name = "Extensions and Helpers";
 			sourceTree = "<group>";

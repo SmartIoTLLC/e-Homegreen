@@ -15,7 +15,7 @@ import Foundation
 /// When app starts again (AppDelegate -> applicationWillEnterForeground), parameters are loaded and timer value from which counter should continue is calculated
 class TimerForFilter {
     var defaultTimer1: Foundation.Timer?
-    var counter1: Double = 5           // Starting value of timer
+    var counter1: Double = 10           // Starting value of timer
     var timerIsActive1 = false          // indicator that timer should continue runing in backgroung
     
     static var shared = TimerForFilter()
@@ -27,7 +27,6 @@ class TimerForFilter {
             self.resetTimer()
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "TimerEndedNotification"), object: nil)
         }
-        
     }
     
     func resetTimer(){
@@ -45,8 +44,8 @@ class TimerForFilter {
     
     func startTimer(){
         defaultTimer1?.invalidate()
+        defaultTimer1 = nil
         timerIsActive1 = true
-        
         defaultTimer1 = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimer), userInfo: nil, repeats: true)
     }
 }
