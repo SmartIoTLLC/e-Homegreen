@@ -572,6 +572,8 @@ class IncomingHandler: NSObject {
         }
         if let device = devicesForSalto.first {
             // Cuurent state - On-Off
+            // 1 - Open
+            // 2 - Closed
             device.currentValue = onOffIndicator == 0x1 ? 1 : 0
             
             // Mode 0, 1, 2, 3

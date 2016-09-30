@@ -52,6 +52,7 @@ class SendingHandler {
             }
         }
     }
+    
     static func sendCommand(byteArray:[UInt8], ip:String, port:UInt16) {
         print("Command sent: \(byteArray)")
         let appDel:AppDelegate = UIApplication.shared.delegate as! AppDelegate
