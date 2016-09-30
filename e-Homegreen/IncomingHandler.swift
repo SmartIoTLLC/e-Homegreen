@@ -546,7 +546,7 @@ class IncomingHandler: NSObject {
                     device.channel = 0
                 }
             }
-            let data = ["deviceIndexForFoundName":Int(byteArray[4])]
+            let data = ["deviceIndexForFoundName":Int(byteArray[4]), "saltoAccess": 1]
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDeviceName), object: self, userInfo: data)
             CoreDataController.shahredInstance.saveChanges()
         }

@@ -40,7 +40,7 @@ class RepeatSendingHandler: NSObject {
         self.deviceOldValue = oldValue
         self.delay = Double(device.delay) + 1
         
-        if device.controlType == ControlType.SaltoAccess{
+        if byteArray[5] == 5 && byteArray[6] == 80{
             sendCommandForSaltoAccess()
         }else{
             sendCommand()
