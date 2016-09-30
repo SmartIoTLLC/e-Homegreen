@@ -535,34 +535,37 @@ class DevicesViewController: PopoverVC{
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
         let setDeviceValue:UInt8 = 0xFF
         let deviceCurrentValue = Int(devices[tag].currentValue)
-        devices[tag].currentValue = 0xFF
+        devices[tag].currentValue = 0
         CoreDataController.shahredInstance.saveChanges()
         DispatchQueue.main.async(execute: {
-            _ = RepeatSendingHandler(byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: self.devices[tag].channel.intValue, mode: 2), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+            _ = RepeatSendingHandler(byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: self.devices[tag].channel.intValue, mode: 3), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
         })
+        updateCells()
     }
     func unlockSalto(_ gestureRecognizer:UITapGestureRecognizer){
         let tag = gestureRecognizer.view!.tag
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-                let setDeviceValue:UInt8 = 0xFF
-                let deviceCurrentValue = Int(devices[tag].currentValue)
-                devices[tag].currentValue = 0xFF
+        let setDeviceValue:UInt8 = 0xFF
+        let deviceCurrentValue = Int(devices[tag].currentValue)
+        devices[tag].currentValue = 1
         CoreDataController.shahredInstance.saveChanges()
         DispatchQueue.main.async(execute: {
-            _ = RepeatSendingHandler(byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: self.devices[tag].channel.intValue, mode: 1), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+            _ = RepeatSendingHandler(byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: self.devices[tag].channel.intValue, mode: 2), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
         })
+        updateCells()
     }
     
     func thirdFcnSalto(_ gestureRecognizer:UITapGestureRecognizer){
         let tag = gestureRecognizer.view!.tag
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
-                let setDeviceValue:UInt8 = 0xFF
-                let deviceCurrentValue = Int(devices[tag].currentValue)
-                devices[tag].currentValue = 0xFF
+        let setDeviceValue:UInt8 = 0xFF
+        let deviceCurrentValue = Int(devices[tag].currentValue)
+        devices[tag].currentValue = 0
         CoreDataController.shahredInstance.saveChanges()
         DispatchQueue.main.async(execute: {
-            _ = RepeatSendingHandler(byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: self.devices[tag].channel.intValue, mode: 3), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+            _ = RepeatSendingHandler(byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: self.devices[tag].channel.intValue, mode: 1), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
         })
+        updateCells()
     }
     
     //    This has to be done, because we dont receive updates immmediately from gateway
@@ -582,6 +585,9 @@ class DevicesViewController: PopoverVC{
                 cell.refreshDevice(devices[(indexPath as NSIndexPath).row])
                 cell.setNeedsDisplay()
             } else if let cell = self.deviceCollectionView.cellForItem(at: indexPath) as? ApplianceCollectionCell {
+                cell.refreshDevice(devices[(indexPath as NSIndexPath).row])
+                cell.setNeedsDisplay()
+            }else if let cell = self.deviceCollectionView.cellForItem(at: indexPath) as? SaltoAccessCell {
                 cell.refreshDevice(devices[(indexPath as NSIndexPath).row])
                 cell.setNeedsDisplay()
             }
