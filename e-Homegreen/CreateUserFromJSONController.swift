@@ -17,7 +17,6 @@ class CreateUserFromJSONController: NSObject {
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     func unzipAndDeleteFile(_ url:URL){
-//        if let filePath = url.path {
             let documentsDirectoryPathString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
             let documentsDirectoryPath = URL(string: documentsDirectoryPathString)!
             do{
@@ -39,8 +38,17 @@ class CreateUserFromJSONController: NSObject {
             
             let jsonFilePath = documentsDirectoryPath.appendingPathComponent("user.json")
             createUserFromJSON(jsonFilePath.path)
-            
-//        }
+        
+        if FileManager.default.fileExists(atPath: jsonFilePath.path) {
+            do {
+                try FileManager.default.removeItem(atPath: jsonFilePath.path)
+                print("file has been removed")
+            } catch {
+                print("file didn't remove")
+            }
+        }
+        
+
     }
     
     func createUserFromJSON(_ filePath:String){
@@ -129,6 +137,9 @@ class CreateUserFromJSONController: NSObject {
                 }
                 if let category = filter["category_id"] as? String{
                     filterItem.categoryId = category
+                }
+                if let duration = filter["timer_duration"] as? Int{
+                    filterItem.timerDuration = NSNumber(value: duration)
                 }
                 filterItem.user = user
             }

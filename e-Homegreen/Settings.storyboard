@@ -442,13 +442,13 @@
         <!--Project Manager-->
         <scene sceneID="lyA-hx-IpT">
             <objects>
-                <viewController storyboardIdentifier="ProjectManagerViewController" id="hrG-5v-WX4" customClass="ProjectManagerViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProjectManagerViewController" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="hrG-5v-WX4" customClass="ProjectManagerViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Dv0-Gm-qeZ"/>
                         <viewControllerLayoutGuide type="bottom" id="iGA-0e-J41"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="bzt-Ja-3Qw">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="gXH-xP-LdQ"/>
@@ -576,13 +576,12 @@
                             <constraint firstItem="gXH-xP-LdQ" firstAttribute="top" secondItem="bzt-Ja-3Qw" secondAttribute="top" id="OPC-dX-aTz"/>
                             <constraint firstAttribute="trailing" secondItem="ja3-vl-DFp" secondAttribute="trailing" id="OcO-00-nKG"/>
                             <constraint firstItem="iGA-0e-J41" firstAttribute="top" secondItem="gXH-xP-LdQ" secondAttribute="bottom" id="Q6N-9e-new"/>
-                            <constraint firstItem="ja3-vl-DFp" firstAttribute="top" secondItem="Dv0-Gm-qeZ" secondAttribute="bottom" constant="50" id="TZd-Fv-oeg"/>
                             <constraint firstItem="N3J-7x-2xC" firstAttribute="top" secondItem="Dv0-Gm-qeZ" secondAttribute="bottom" constant="10" id="har-Fe-ip6"/>
                             <constraint firstItem="ja3-vl-DFp" firstAttribute="top" secondItem="N3J-7x-2xC" secondAttribute="bottom" constant="10" id="j2k-Qe-aLo"/>
                             <constraint firstItem="gXH-xP-LdQ" firstAttribute="leading" secondItem="bzt-Ja-3Qw" secondAttribute="leading" id="xqU-ha-51a"/>
                         </constraints>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <navigationItem key="navigationItem" title="Project Manager" id="qEU-2K-KIP">
                         <barButtonItem key="leftBarButtonItem" image="Menu button" id="JNt-6f-ErI"/>
                         <rightBarButtonItems>

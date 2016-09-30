@@ -113,27 +113,77 @@ class ProjectManagerViewController: UIViewController {
             }
         }
     }
-    
+    let container: UIView = UIView()
+    let loadingView: UIView = UIView()
     @IBAction func shareUser(_ sender: UIButton) {
         
-        let user = self.users[sender.tag]
-        let user_value:NSDictionary = user.hyp_dictionary(using: HYPPropertyMapperRelationshipType.array) as NSDictionary
         
-        write(user_value)
+        container.bounds = self.view.bounds
+        container.center = self.view.center
+        container.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3)
         
-        print(user_value)
+        
+        loadingView.frame = CGRect(x: 0, y: 0, width: 80, height: 80)
+        loadingView.center = self.view.center
+        loadingView.backgroundColor = UIColor(red: 68/255, green: 68/255, blue: 68/255, alpha: 0.7)
+        loadingView.clipsToBounds = true
+        loadingView.layer.cornerRadius = 10
+        
+        let actInd: UIActivityIndicatorView = UIActivityIndicatorView()
+        actInd.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        actInd.activityIndicatorViewStyle =
+            UIActivityIndicatorViewStyle.whiteLarge
+        actInd.center = CGPoint(x: loadingView.frame.size.width / 2, y: loadingView.frame.size.height / 2)
+        loadingView.addSubview(actInd)
+        container.addSubview(loadingView)
+       
+        self.view.addSubview(self.container)
+        self.view.bringSubview(toFront: self.container)
+        actInd.startAnimating()
+        
+        
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+            
+            let user = self.users[sender.tag]
+            let user_value:NSDictionary = user.hyp_dictionary(using: HYPPropertyMapperRelationshipType.array) as NSDictionary
+            
+            self.write(user_value)
+            
+            DispatchQueue.main.async {
+                
+                let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                let jsonFilePath = documentsUrl.appendingPathComponent("userJSON.zip")
+                
+                let activityViewController = UIActivityViewController(activityItems: [jsonFilePath], applicationActivities: nil)
+                
+                activityViewController.completionWithItemsHandler = { activity, success, items, error in
 
-        let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let jsonFilePath = documentsUrl.appendingPathComponent("userJSON.zip")
-        
-        let activityViewController = UIActivityViewController(activityItems: [jsonFilePath], applicationActivities: nil)
-        if let presentationController = activityViewController.popoverPresentationController {
-            presentationController.sourceView = sender
-            presentationController.sourceRect = sender.bounds
+                        if FileManager.default.fileExists(atPath: jsonFilePath.path) {
+                            do {
+                                try FileManager.default.removeItem(atPath: jsonFilePath.path)
+                                print("file has been removed")
+                            } catch {
+                                print("file didn't remove")
+                            }
+                        }
+
+                }
+                
+                if let presentationController = activityViewController.popoverPresentationController {
+                    presentationController.sourceView = sender
+                    presentationController.sourceRect = sender.bounds
+                }
+                
+                actInd.stopAnimating()
+                self.container.removeFromSuperview()
+                
+                self.present(activityViewController, animated: true, completion: nil)
+                
+                
+                
+            }
+            
         }
-        
-        self.present(activityViewController, animated: true, completion: nil)
-
         
     }
     
