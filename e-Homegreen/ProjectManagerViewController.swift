@@ -122,10 +122,14 @@ class ProjectManagerViewController: UIViewController {
         container.center = self.view.center
         container.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3)
         
+        container.translatesAutoresizingMaskIntoConstraints = false
+        container.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
         loadingView.frame = CGRect(x: 0, y: 0, width: 80, height: 80)
         loadingView.center = self.view.center
         loadingView.backgroundColor = UIColor(red: 68/255, green: 68/255, blue: 68/255, alpha: 0.7)
+        loadingView.translatesAutoresizingMaskIntoConstraints = false
+        loadingView.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleLeftMargin, .flexibleRightMargin]
         loadingView.clipsToBounds = true
         loadingView.layer.cornerRadius = 10
         
@@ -161,9 +165,7 @@ class ProjectManagerViewController: UIViewController {
                         if FileManager.default.fileExists(atPath: jsonFilePath.path) {
                             do {
                                 try FileManager.default.removeItem(atPath: jsonFilePath.path)
-                                print("file has been removed")
                             } catch {
-                                print("file didn't remove")
                             }
                         }
 
@@ -197,14 +199,9 @@ class ProjectManagerViewController: UIViewController {
         
         // creating a .json file in the Documents folder
         if !fileManager.fileExists(atPath: jsonFilePath.absoluteString, isDirectory: &isDirectory) {
-            let created = fileManager.createFile(atPath: jsonFilePath.absoluteString, contents: nil, attributes: nil)
-            if created {
-                print("File created ")
-            } else {
-                print("Couldn't create file for some reason")
-            }
+            _ = fileManager.createFile(atPath: jsonFilePath.absoluteString, contents: nil, attributes: nil)
+            
         } else {
-            print("File already exists")
         }
         
         let data:Data? = NSKeyedArchiver.archivedData(withRootObject: userData)
@@ -215,17 +212,15 @@ class ProjectManagerViewController: UIViewController {
         do {
             let zipFilePath = documentsDirectoryPath.appendingPathComponent("userJSON.zip")
             try Zip.zipFiles(paths: [jsonFilePath], zipFilePath: zipFilePath, password: nil, progress: { (progress) -> () in
-                print(progress)
+                
             })
         }
         catch {
-            print("Something went wrong")
         }
         
         do {
             try fileManager.removeItem(atPath: jsonFilePath.path)
-        } catch let error as NSError {
-            print("ERROR: \(error)")
+        } catch{
         }
 
         

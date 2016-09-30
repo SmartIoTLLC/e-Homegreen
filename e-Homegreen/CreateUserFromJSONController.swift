@@ -17,38 +17,34 @@ class CreateUserFromJSONController: NSObject {
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     func unzipAndDeleteFile(_ url:URL){
-            let documentsDirectoryPathString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
-            let documentsDirectoryPath = URL(string: documentsDirectoryPathString)!
-            do{
-                try Zip.unzipFile(url, destination: documentsDirectoryPath, overwrite: true, password: nil, progress: { (progress) -> () in
-                    print(progress)
-                })
-            }
-            catch {
-                print("Something went wrong")
-            }
-            if FileManager.default.fileExists(atPath: url.path) {
-                do {
-                    try FileManager.default.removeItem(atPath: url.path)
-                    print("file has been removed")
-                } catch {
-                    print("file didn't remove")
-                }
-            }
+        let documentsDirectoryPathString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+        let documentsDirectoryPath = URL(string: documentsDirectoryPathString)!
+        do{
+            try Zip.unzipFile(url, destination: documentsDirectoryPath, overwrite: true, password: nil, progress: { (progress) -> () in
+                
+            })
+        }
+        catch {
             
-            let jsonFilePath = documentsDirectoryPath.appendingPathComponent("user.json")
-            createUserFromJSON(jsonFilePath.path)
+        }
+        if FileManager.default.fileExists(atPath: url.path) {
+            do {
+                try FileManager.default.removeItem(atPath: url.path)
+            } catch {
+            }
+        }
+        
+        let jsonFilePath = documentsDirectoryPath.appendingPathComponent("user.json")
+        createUserFromJSON(jsonFilePath.path)
         
         if FileManager.default.fileExists(atPath: jsonFilePath.path) {
             do {
                 try FileManager.default.removeItem(atPath: jsonFilePath.path)
-                print("file has been removed")
             } catch {
-                print("file didn't remove")
             }
         }
         
-
+        
     }
     
     func createUserFromJSON(_ filePath:String){
@@ -212,7 +208,6 @@ class CreateUserFromJSONController: NSObject {
     
     func createSecuritiesFromJSON(_ securities:[JSONDictionary], location:Location){
         for security in securities{
-            print(security)
             if let newSecurity = NSEntityDescription.insertNewObject(forEntityName: "Security", into: appDel.managedObjectContext!) as? Security{
                 if let addOne = security["address_one"] as? Int{
                     newSecurity.addressOne = NSNumber(value: addOne)
