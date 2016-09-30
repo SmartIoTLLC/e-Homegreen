@@ -197,6 +197,12 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             self.view.makeToast(message: "Range can be only number")
             return
         }
+        
+        if rangeFrom > 255 || rangeFrom < 0{
+            self.view.makeToast(message: "Incorrect value for \"From\" field")
+            return
+        }
+        
         from = rangeFrom
         
         guard let rangeToText = rangeTo.text else{
@@ -208,6 +214,12 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             self.view.makeToast(message: "Range can be only number")
             return
         }
+        
+        if rangeTo > 255 || rangeTo < 0{
+            self.view.makeToast(message: "Incorrect value for \"To\" field")
+            return
+        }
+        
         to = rangeTo
         
         if rangeTo < rangeFrom {
@@ -415,7 +427,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             // Example: devices: [device1, device2, device3], and device1 and device3 don't names. Then
             // arrayOfNamesToBeSearched = [0, 2]
             var from = 0
-            var to = 500
+            var to = 2000
             
             if rangeFrom.text != nil && rangeFrom.text! != ""{
                 from = Int(rangeFrom.text!)!-1
@@ -635,7 +647,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         // Example: devices: [device1, device2, device3], and device1 and device3 are of defined types. Then
         // arrayOfSensorAdresses = [0, 2]
         var from = 0
-        var to = 500
+        var to = 2000
         if rangeFrom.text != nil && rangeFrom.text != ""{
             from = Int(rangeFrom.text!)!-1
         }
