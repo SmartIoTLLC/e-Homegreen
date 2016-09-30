@@ -536,6 +536,24 @@ struct NotificationKey {
         // ControlModeStopBlinking is received in SecurityCollectionCell.swift, where timer is deactivated. Also it is received in ScanDevicesViewController, in order to activate scrolling of table again.
         // ControlModeStopBlinking does not contain any information. When call receives this information, if state (Defaults.) is not Disarm (that means that new state is received) timer is removed.
         static let ControlModeStopBlinking = "controlModeStopBlinking"
+        
+    }
+    
+    struct FilterTimers {
+        static let timerDashboard = "TimerDashboardEndedNotification"
+        static let timerDevices = "TimerDevicesEndedNotification"
+        static let timerEvents = "TimerEventsEndedNotification"
+        static let timerScenes = "TimerScenesEndedNotification"
+        static let timerSequences = "TimerSequencesEndedNotification"
+        static let timerTimers = "TimerTimersEndedNotification"
+        static let timerSecurity = "TimerSecurityEndedNotification"
+        static let timerSurvailance = "TimerSurvailanceEndedNotification"
+        static let timerFlags = "TimerFlagsEndedNotification"
+        static let timerUsers = "TimerUsersEndedNotification"
+        static let timerPCControl = "TimerPCControlEndedNotification"
+        static let timerChat = "TimerChatEndedNotification"
+        static let timerEnergy = "TimerEnergyEndedNotification"
+        static let timerSettings = "TimerSettingsEndedNotification"
     }
     
     static let RefreshFilter = "kRefreshLocalParametarsNotification"

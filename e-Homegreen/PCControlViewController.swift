@@ -51,6 +51,8 @@ class PCControlViewController: PopoverVC {
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
         scrollView.setFilterItem(Menu.pcControl)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(PCControlViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerPCControl), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -150,6 +152,11 @@ class PCControlViewController: PopoverVC {
         pccontrolCollectionView.reloadData()
     }
     
+    func setDefaultFilterFromTimer(){
+        scrollView.setDefaultFilterItem(Menu.pcControl)
+    }
+    
+    
     @IBAction func changeSliderValue(_ sender: AnyObject) {
         guard let slider = sender as? UISlider else {
             return
@@ -177,6 +184,8 @@ extension PCControlViewController: FilterPullDownDelegate{
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.pcControl)
         updatePCList()
+        TimerForFilter.shared.counterPCControl = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.pcControl)
+        TimerForFilter.shared.startTimer(type: Menu.pcControl)
     }
     
     func saveDefaultFilter(){

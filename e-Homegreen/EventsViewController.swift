@@ -50,7 +50,7 @@ class EventsViewController: PopoverVC{
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
         scrollView.setFilterItem(Menu.events)
-
+        NotificationCenter.default.addObserver(self, selector: #selector(EventsViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEvents), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -155,7 +155,11 @@ class EventsViewController: PopoverVC{
 //        updateEventsList()
         eventCollectionView.reloadData()
     }
-
+    
+    // Helper functions
+    func setDefaultFilterFromTimer(){
+        scrollView.setDefaultFilterItem(Menu.events)
+    }
 
 }
 
@@ -166,6 +170,9 @@ extension EventsViewController: FilterPullDownDelegate{
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.events)
         updateEventsList()
+        
+        TimerForFilter.shared.counterEvents = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.events)
+        TimerForFilter.shared.startTimer(type: Menu.events)
     }
     
     func saveDefaultFilter(){

@@ -10,25 +10,19 @@ import UIKit
 import AudioToolbox
 
 class UsersViewController: PopoverVC {
-    
     var timers:[Timer] = []
-    
     var scrollView = FilterPullDown()
-
     var sidebarMenuOpen : Bool!
+    var collectionViewCellSize = CGSize(width: 150, height: 180)
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
+    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Users)
+    fileprivate var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+    
     
     @IBOutlet weak var usersCollectionView: UICollectionView!
-    
-    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
-    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
     
-    fileprivate var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-    var collectionViewCellSize = CGSize(width: 150, height: 180)
-    
-    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Users)
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,8 +47,9 @@ class UsersViewController: PopoverVC {
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
         scrollView.setFilterItem(Menu.users)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(UsersViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerUsers), object: nil)
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         
@@ -77,12 +72,10 @@ class UsersViewController: PopoverVC {
         refreshTimersStatus()
         changeFullScreeenImage()
     }
-    
     override func viewDidAppear(_ animated: Bool) {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
     }
-    
     override func viewWillLayoutSubviews() {
         if scrollView.contentOffset.y != 0 {
             let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
@@ -100,29 +93,9 @@ class UsersViewController: PopoverVC {
         usersCollectionView.reloadData()
         
     }
-    
     override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
     }
-    
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
-            scrollView.setDefaultFilterItem(Menu.users)
-            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-        }
-    }
-    
-    func updateSubtitle(_ location: String, level: String, zone: String){
-        headerTitleSubtitleView.setTitleAndSubtitle("Users", subtitle: location + " " + level + " " + zone)
-    }
-    
-    func updateConstraints() {
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0.0))
-    }
-    
     override func viewWillDisappear(_ animated: Bool) {
         if let cells = self.usersCollectionView.visibleCells as? [TimerUserCell]{
             for cell in cells{
@@ -131,21 +104,21 @@ class UsersViewController: PopoverVC {
         }
     }
     
-    @IBAction func fullScreen(_ sender: UIButton) {
-        sender.collapseInReturnToNormal(1)
-        if UIApplication.shared.isStatusBarHidden {
-            UIApplication.shared.isStatusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
-        } else {
-            UIApplication.shared.isStatusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-            if scrollView.contentOffset.y != 0 {
-                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
-                scrollView.setContentOffset(bottomOffset, animated: false)
-            }
+    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
+            scrollView.setDefaultFilterItem(Menu.users)
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
-    
+    func updateSubtitle(_ location: String, level: String, zone: String){
+        headerTitleSubtitleView.setTitleAndSubtitle("Users", subtitle: location + " " + level + " " + zone)
+    }
+    func updateConstraints() {
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0.0))
+    }
     func changeFullScreeenImage(){
         if UIApplication.shared.isStatusBarHidden {
             fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
@@ -153,12 +126,6 @@ class UsersViewController: PopoverVC {
             fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
         }
     }
-    
-    @IBAction func refreshTimers(_ sender: UIButton) {
-        refreshTimersStatus()
-        sender.rotate(1)
-    }
-    
     func refreshTimersStatus(){
         for timer in timers{
             var address:[UInt8] = []
@@ -173,14 +140,10 @@ class UsersViewController: PopoverVC {
             SendingHandler.sendCommand(byteArray: OutgoingHandler.refreshTimerStatusCountApp(address), gateway: timer.gateway)
         }
     }
-    
     func refreshTimerList() {
         timers = DatabaseUserTimerController.shared.getTimers(filterParametar)
         usersCollectionView.reloadData()
     }
-
-    //cell action
-    
     func pressedPause (_ button:UIButton) {
         let tag = button.tag
         var address:[UInt8] = []
@@ -194,7 +157,6 @@ class UsersViewController: PopoverVC {
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xEE), gateway: timers[tag].gateway)
         changeImageInCell(button)
     }
-    
     func pressedStart (_ button:UIButton) {
         let tag = button.tag
         var address:[UInt8] = []
@@ -208,7 +170,6 @@ class UsersViewController: PopoverVC {
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0x01), gateway: timers[tag].gateway)
         changeImageInCell(button)
     }
-    
     func pressedResume (_ button:UIButton) {
         let tag = button.tag
         var address:[UInt8] = []
@@ -222,7 +183,6 @@ class UsersViewController: PopoverVC {
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xED), gateway: timers[tag].gateway)
         changeImageInCell(button)
     }
-    
     func pressedCancel (_ button:UIButton) {
         let tag = button.tag
         var address:[UInt8] = []
@@ -236,7 +196,6 @@ class UsersViewController: PopoverVC {
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getCancelTimerStatus(address, id: UInt8(Int(timers[tag].timerId)), command: 0xEF), gateway: timers[tag].gateway)
         changeImageInCell(button)
     }
-    
     func changeImageInCell(_ button:UIButton) {
         let pointInTable = button.convert(button.bounds.origin, to: usersCollectionView)
         let indexPath = usersCollectionView.indexPathForItem(at: pointInTable)
@@ -244,7 +203,28 @@ class UsersViewController: PopoverVC {
             cell.commandSentChangeImage()
         }
     }
-
+    func setDefaultFilterFromTimer(){
+        scrollView.setDefaultFilterItem(Menu.users)
+    }
+    
+    @IBAction func refreshTimers(_ sender: UIButton) {
+        refreshTimersStatus()
+        sender.rotate(1)
+    }
+    @IBAction func fullScreen(_ sender: UIButton) {
+        sender.collapseInReturnToNormal(1)
+        if UIApplication.shared.isStatusBarHidden {
+            UIApplication.shared.isStatusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
+        } else {
+            UIApplication.shared.isStatusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
+            if scrollView.contentOffset.y != 0 {
+                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+                scrollView.setContentOffset(bottomOffset, animated: false)
+            }
+        }
+    }
 }
 
 // Parametar from filter and relaod data
@@ -255,6 +235,8 @@ extension UsersViewController: FilterPullDownDelegate{
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.users)
         refreshTimerList()
+        TimerForFilter.shared.counterUsers = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.users)
+        TimerForFilter.shared.startTimer(type: Menu.users)
     }
     
     func saveDefaultFilter(){

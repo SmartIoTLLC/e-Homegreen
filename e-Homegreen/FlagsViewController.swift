@@ -10,24 +10,18 @@ import UIKit
 import AudioToolbox
 
 class FlagsViewController: PopoverVC {
-    
-    var flags:[Flag] = []
-    var sidebarMenuOpen : Bool!
-    
-    var scrollView = FilterPullDown()
-    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
+    @IBOutlet weak var flagsCollectionView: UICollectionView!
     
     fileprivate var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     fileprivate let reuseIdentifier = "FlagsCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
-    
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
-    
-    @IBOutlet weak var flagsCollectionView: UICollectionView!
-    
     var filterParametar:FilterItem!
+    var flags:[Flag] = []
+    var sidebarMenuOpen : Bool!
+    var scrollView = FilterPullDown()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,8 +43,8 @@ class FlagsViewController: PopoverVC {
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
         scrollView.setFilterItem(Menu.flags)
+        NotificationCenter.default.addObserver(self, selector: #selector(FlagsViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerFlags), object: nil)
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         
@@ -74,12 +68,10 @@ class FlagsViewController: PopoverVC {
         changeFullScreeenImage()
         
     }
-    
     override func viewDidAppear(_ animated: Bool) {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
     }
-    
     override func viewWillLayoutSubviews() {
         if scrollView.contentOffset.y != 0 {
             let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
@@ -97,7 +89,6 @@ class FlagsViewController: PopoverVC {
         flagsCollectionView.reloadData()
         
     }
-    
     override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
     }
@@ -108,19 +99,36 @@ class FlagsViewController: PopoverVC {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
-    
     func updateConstraints() {
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0.0))
     }
-
     func reloadFlagsList(){
         flags = DatabaseFlagsController.shared.getFlags(filterParametar)
         flagsCollectionView.reloadData()
     }
-    
+    func updateSubtitle(_ location: String, level: String, zone: String){
+        headerTitleSubtitleView.setTitleAndSubtitle("Flags", subtitle: location + " " + level + " " + zone)
+    }
+    func changeFullScreeenImage(){
+        if UIApplication.shared.isStatusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
+        } else {
+            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
+        }
+    }
+    func refreshLocalParametars() {
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
+//        pullDown.drawMenu(filterParametar)
+//        updateFlagsList()
+        flagsCollectionView.reloadData()
+    }
+    func setDefaultFilterFromTimer(){
+        scrollView.setDefaultFilterItem(Menu.flags)
+    }
+
     @IBAction func fullScreen(_ sender: UIButton) {
         sender.collapseInReturnToNormal(1)
         if UIApplication.shared.isStatusBarHidden {
@@ -135,27 +143,6 @@ class FlagsViewController: PopoverVC {
             }
         }
     }
-    
-    func updateSubtitle(_ location: String, level: String, zone: String){
-        headerTitleSubtitleView.setTitleAndSubtitle("Flags", subtitle: location + " " + level + " " + zone)
-    }
-    
-    func changeFullScreeenImage(){
-        if UIApplication.shared.isStatusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
-        }
-    }
-    
-    func refreshLocalParametars() {
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
-//        pullDown.drawMenu(filterParametar)
-//        updateFlagsList()
-        flagsCollectionView.reloadData()
-    }
-
-
 }
 
 extension FlagsViewController: SWRevealViewControllerDelegate {
@@ -197,6 +184,9 @@ extension FlagsViewController: FilterPullDownDelegate{
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.flags)
         reloadFlagsList()
+        TimerForFilter.shared.counterFlags = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.flags)
+        TimerForFilter.shared.startTimer(type: Menu.flags)
+
     }
     
     func saveDefaultFilter(){

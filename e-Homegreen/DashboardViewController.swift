@@ -10,22 +10,8 @@ import UIKit
 import CoreLocation
 
 class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, CLLocationManagerDelegate, SWRevealViewControllerDelegate {
-    
-    
-    @IBOutlet weak var lblPlace: UILabel!
-    @IBOutlet weak var lblMinMaxTemp: UILabel!
-    @IBOutlet weak var lblTemp: UILabel!
-    @IBOutlet weak var lblWeather: UILabel!
-    @IBOutlet weak var imageWeather: UIImageView!
-    
     var locationManager = CLLocationManager()
-    
-    @IBOutlet weak var menuButton: UIBarButtonItem!
-    @IBOutlet weak var fullScreenButton: UIButton!
-    
     var sidebarMenuOpen : Bool!
-    @IBOutlet weak var backgroundImage: UIImageView!
-    
     var weatherDictionary:[String: String] = ["01d":"weather-clear",
                                               "02d":"weather-few",
                                               "03d":"weather-few",
@@ -44,9 +30,17 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
                                               "11n":"weather-tstorm",
                                               "13n":"weather-snow",
                                               "50n":"weather-mist"]
-    
     var calendar = FSCalendar()
     var clock : SPClockView!
+    
+    @IBOutlet weak var lblPlace: UILabel!
+    @IBOutlet weak var lblMinMaxTemp: UILabel!
+    @IBOutlet weak var lblTemp: UILabel!
+    @IBOutlet weak var lblWeather: UILabel!
+    @IBOutlet weak var imageWeather: UIImageView!
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var fullScreenButton: UIButton!
+    @IBOutlet weak var backgroundImage: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,9 +77,7 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         
         let panRecognizer1 = UIPanGestureRecognizer(target:self, action:#selector(DashboardViewController.detectPan1(_:)))
         calendar.addGestureRecognizer(panRecognizer1)
-        // Do any additional setup after loading the view.
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         
@@ -106,16 +98,9 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         }
         changeFullScreeenImage()
     }
-    
-    @IBAction func fullScreen(_ sender: UIButton) {
-        sender.collapseInReturnToNormal(1)
-        if UIApplication.shared.isStatusBarHidden {
-            UIApplication.shared.isStatusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
-        } else {
-            UIApplication.shared.isStatusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
     func changeFullScreeenImage(){
@@ -125,7 +110,6 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
             fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
         }
     }
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.last!
         let long = NSString(format: "%.15lf", location.coordinate.longitude)
@@ -133,12 +117,6 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         getWeatherData("http://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(long)&appid=bd82977b86bf27fb59a04b61b657fb6f")
         
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     func detectPan(_ recognizer:UIPanGestureRecognizer) {
         
         let translation  = recognizer.translation(in: self.view)
@@ -146,7 +124,6 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
                                               y: recognizer.view!.center.y + translation.y)
         recognizer.setTranslation(CGPoint(x: 0, y: 0), in: self.view!)
     }
-    
     func detectPan1(_ recognizer:UIPanGestureRecognizer) {
         
         let translation  = recognizer.translation(in: self.view)
@@ -154,7 +131,6 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
                                               y: recognizer.view!.center.y + translation.y)
         recognizer.setTranslation(CGPoint(x: 0, y: 0), in: self.view!)
     }
-    
     func getWeatherData(_ urlString:String){
         let url = URL(string: urlString)
         let task = URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) -> Void in
@@ -167,7 +143,6 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         }) 
         task.resume()
     }
-    
     func setLabel(_ weatherData: Data){
         let date = Date()
         let calendar = Calendar.current
@@ -221,7 +196,6 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         }
         
     }
-    
     func closeSideMenu(){
         
         if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
@@ -229,7 +203,6 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         }
         
     }
-    
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             calendar.isUserInteractionEnabled = true
@@ -241,7 +214,6 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
             sidebarMenuOpen = true
         }
     }
-    
     func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             calendar.isUserInteractionEnabled = true
@@ -255,6 +227,15 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
             sidebarMenuOpen = true
         }
     }
-
     
+    @IBAction func fullScreen(_ sender: UIButton) {
+        sender.collapseInReturnToNormal(1)
+        if UIApplication.shared.isStatusBarHidden {
+            UIApplication.shared.isStatusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
+        } else {
+            UIApplication.shared.isStatusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
+        }
+    }
 }

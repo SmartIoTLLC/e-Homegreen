@@ -11,27 +11,20 @@ import CoreData
 import AudioToolbox
 
 class SurveillenceViewController: PopoverVC {
-    
-    var data:Data?
-    var sidebarMenuOpen : Bool!
-    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
-    
-    fileprivate var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
-    var collectionViewCellSize = CGSize(width: 150, height: 180)
-    
     @IBOutlet weak var cameraCollectionView: UICollectionView!
     @IBOutlet weak var imageBack: UIImageView!
+    
+    fileprivate var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     var timer:Foundation.Timer = Foundation.Timer()
-    
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
-    
     var scrollView = FilterPullDown()
-    
     var surveillance:[Surveillance] = []
-    
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
+    var collectionViewCellSize = CGSize(width: 150, height: 180)
+    var data:Data?
+    var sidebarMenuOpen : Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,8 +48,8 @@ class SurveillenceViewController: PopoverVC {
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
         scrollView.setFilterItem(Menu.surveillance)
+        NotificationCenter.default.addObserver(self, selector: #selector(SurveillenceViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSurvailance), object: nil)
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         
@@ -79,12 +72,10 @@ class SurveillenceViewController: PopoverVC {
         fetchSurveillance()
         changeFullScreeenImage()
     }
-    
     override func viewDidAppear(_ animated: Bool) {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
     }
-    
     override func viewWillLayoutSubviews() {
         if scrollView.contentOffset.y > 0 && scrollView.contentOffset.y < scrollView.bounds.size.height {
             let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
@@ -103,9 +94,14 @@ class SurveillenceViewController: PopoverVC {
         cameraCollectionView.reloadData()
         
     }
-    
     override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        for cell in cameraCollectionView.visibleCells as! [SurveillenceCell] {
+            cell.timer?.invalidate()
+        }
+        removeObservers()
     }
     
     func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
@@ -114,23 +110,54 @@ class SurveillenceViewController: PopoverVC {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
-    
     func updateConstraints() {
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0.0))
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        for cell in cameraCollectionView.visibleCells as! [SurveillenceCell] {
-            cell.timer?.invalidate()
-        }
-        removeObservers()
-    }
-    
     func updateSubtitle(_ location: String, level: String, zone: String){
         headerTitleSubtitleView.setTitleAndSubtitle("Surveillance", subtitle: location + " " + level + " " + zone)
+    }
+    //change fullscreen button if it pressed in other navigation controller
+    func changeFullScreeenImage(){
+        if UIApplication.shared.isStatusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
+        } else {
+            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
+        }
+    }
+    func refreshLocalParametars() {
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
+//        pullDown.drawMenu(filterParametar)
+        fetchSurveillance()
+    }
+    func refreshSurveillanceList(){
+        fetchSurveillance()
+    }
+    
+    //get surv from database
+    func fetchSurveillance() {
+        surveillance = DatabaseSurveillanceController.shared.getSurveillace(filterParametar)
+        cameraCollectionView.reloadData()
+    }
+    func addObservers () {
+        NotificationCenter.default.addObserver(self, selector: #selector(SurveillenceViewController.refreshLocalParametars), name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
+    }
+    func removeObservers () {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
+    }
+    func cameraParametar(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
+            let location = gestureRecognizer.location(in: cameraCollectionView)
+            if let index = cameraCollectionView.indexPathForItem(at: location){
+                let cell = cameraCollectionView.cellForItem(at: index)
+                showCameraParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - cameraCollectionView.contentOffset.y), surveillance: surveillance[(index as NSIndexPath).row])
+            }
+        }
+    }
+    func setDefaultFilterFromTimer(){
+        scrollView.setDefaultFilterItem(Menu.surveillance)
     }
     
     //full screen button from navigation bar
@@ -148,51 +175,6 @@ class SurveillenceViewController: PopoverVC {
             }
         }
     }
-    
-    //change fullscreen button if it pressed in other navigation controller
-    func changeFullScreeenImage(){
-        if UIApplication.shared.isStatusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
-        }
-    }
-    
-    func refreshLocalParametars() {
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
-//        pullDown.drawMenu(filterParametar)
-        fetchSurveillance()
-    }
-    
-    func refreshSurveillanceList(){
-        fetchSurveillance()
-    }
-    
-    //get surv from database
-    func fetchSurveillance() {
-        surveillance = DatabaseSurveillanceController.shared.getSurveillace(filterParametar)
-        cameraCollectionView.reloadData()
-    }
-
-
-    func addObservers () {
-        NotificationCenter.default.addObserver(self, selector: #selector(SurveillenceViewController.refreshLocalParametars), name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
-    }
-
-    func removeObservers () {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
-    }
-    
-    func cameraParametar(_ gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
-            let location = gestureRecognizer.location(in: cameraCollectionView)
-            if let index = cameraCollectionView.indexPathForItem(at: location){
-                let cell = cameraCollectionView.cellForItem(at: index)
-                showCameraParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - cameraCollectionView.contentOffset.y), surveillance: surveillance[(index as NSIndexPath).row])
-            }
-        }
-    }
-
 }
 
 // Parametar from filter and relaod data
@@ -203,6 +185,8 @@ extension SurveillenceViewController: FilterPullDownDelegate{
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.surveillance)
         fetchSurveillance()
+        TimerForFilter.shared.counterSurvailance = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.surveillance)
+        TimerForFilter.shared.startTimer(type: Menu.surveillance)
     }
     
     func saveDefaultFilter(){

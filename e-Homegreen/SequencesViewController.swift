@@ -10,26 +10,19 @@ import UIKit
 import AudioToolbox
 
 class SequencesViewController: PopoverVC {
-
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var fullScreenButton: UIButton!
     @IBOutlet weak var sequenceCollectionView: UICollectionView!
     
     var scrollView = FilterPullDown()
     var senderButton:UIButton?
-    
     var sequences:[Sequence] = []
-    
     var sidebarMenuOpen : Bool!
-    
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
-    
-    @IBOutlet weak var menuButton: UIBarButtonItem!
-    @IBOutlet weak var fullScreenButton: UIButton!
-    
+    var collectionViewCellSize = CGSize(width: 150, height: 180)
+    var filterParametar:FilterItem!
     fileprivate var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     fileprivate let reuseIdentifier = "SequenceCell"
-    var collectionViewCellSize = CGSize(width: 150, height: 180)
-    
-    var filterParametar:FilterItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,8 +44,8 @@ class SequencesViewController: PopoverVC {
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
         scrollView.setFilterItem(Menu.sequences)
+        NotificationCenter.default.addObserver(self, selector: #selector(SequencesViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSequences), object: nil)
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         
@@ -75,12 +68,10 @@ class SequencesViewController: PopoverVC {
         updateSequencesList()
         changeFullScreeenImage()
     }
-    
     override func viewDidAppear(_ animated: Bool) {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
     }
-    
     override func viewWillLayoutSubviews() {
         if scrollView.contentOffset.y != 0 {
             let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
@@ -98,7 +89,6 @@ class SequencesViewController: PopoverVC {
         sequenceCollectionView.reloadData()
         
     }
-    
     override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
     }
@@ -109,12 +99,34 @@ class SequencesViewController: PopoverVC {
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0.0))
     }
-    
     func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             scrollView.setDefaultFilterItem(Menu.sequences)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
+    }
+    func changeFullScreeenImage(){
+        if UIApplication.shared.isStatusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
+        } else {
+            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
+        }
+    }
+    func updateSubtitle(_ location: String, level: String, zone: String){
+        headerTitleSubtitleView.setTitleAndSubtitle("Sequences", subtitle: location + " " + level + " " + zone)
+    }
+    func updateSequencesList(){
+        sequences = DatabaseSequencesController.shared.getSequences(filterParametar)
+        sequenceCollectionView.reloadData()
+    }
+    func refreshLocalParametars() {
+//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
+//        pullDown.drawMenu(filterParametar)
+//        updateSequencesList()
+        sequenceCollectionView.reloadData()
+    }
+    func setDefaultFilterFromTimer(){
+        scrollView.setDefaultFilterItem(Menu.sequences)
     }
     
     @IBAction func fullScreen(_ sender: UIButton) {
@@ -131,31 +143,6 @@ class SequencesViewController: PopoverVC {
             }
         }
     }
-    
-    func changeFullScreeenImage(){
-        if UIApplication.shared.isStatusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
-        }
-    }
-    
-    func updateSubtitle(_ location: String, level: String, zone: String){
-        headerTitleSubtitleView.setTitleAndSubtitle("Sequences", subtitle: location + " " + level + " " + zone)
-    }
-    
-    func updateSequencesList(){
-        sequences = DatabaseSequencesController.shared.getSequences(filterParametar)
-        sequenceCollectionView.reloadData()
-    }
-    
-    func refreshLocalParametars() {
-//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
-//        pullDown.drawMenu(filterParametar)
-//        updateSequencesList()
-        sequenceCollectionView.reloadData()
-    } 
-
 }
 
 // Parametar from filter and relaod data
@@ -165,6 +152,8 @@ extension SequencesViewController: FilterPullDownDelegate{
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.sequences)
         updateSequencesList()
+        TimerForFilter.shared.counterSequences = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.sequences)
+        TimerForFilter.shared.startTimer(type: Menu.sequences)
     }
     
     func saveDefaultFilter(){
