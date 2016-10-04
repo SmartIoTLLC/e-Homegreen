@@ -713,7 +713,6 @@ class IncomingHandler: NSObject {
         for device in devices {
             if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) && Int(device.channel) == Int(byteArray[7]) {
                 device.zoneId = NSNumber(value: Int(byteArray[9]))
-                device.parentZoneId = NSNumber(value: Int(byteArray[10]))
                 device.categoryId = NSNumber(value: Int(byteArray[8]))
                 // When we change category it will reset images
                 device.digitalInputMode = Int(byteArray[14]) as NSNumber?
