@@ -199,6 +199,8 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
                 
             }
             refreshFlagList()
+        }else{
+            self.view.makeToast(message: "Please check fields: name, id and address")
         }
         self.view.endEditing(true)
     }

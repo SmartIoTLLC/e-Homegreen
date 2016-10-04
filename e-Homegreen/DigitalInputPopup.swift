@@ -66,7 +66,7 @@ class DigitalInputPopup: PopoverVC {
         }
         
         zoneSelected = DatabaseZoneController.shared.getZoneById(Int(device.zoneId), location: device.gateway.location)
-        if let zoneSelected = zoneSelected {
+        if let zoneSelected = zoneSelected , zoneSelected.name != "Default"{
             btnZone.setTitle(zoneSelected.name, for: UIControlState())
         }else{
             btnZone.setTitle("All", for: UIControlState())
@@ -183,7 +183,11 @@ class DigitalInputPopup: PopoverVC {
     @IBAction func changeControlType(_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-        popoverList.append(PopOverItem(name: ControlType.IntelligentSwitch, id: ""))
+        if device.controlType == ControlType.Sensor{
+            popoverList.append(PopOverItem(name: ControlType.Sensor, id: ""))
+        }else if device.controlType == ControlType.IntelligentSwitch{
+            popoverList.append(PopOverItem(name: ControlType.IntelligentSwitch, id: ""))
+        }
         openPopover(sender, popOverList:popoverList)
     }
     @IBAction func btnLevel (_ sender: UIButton) {

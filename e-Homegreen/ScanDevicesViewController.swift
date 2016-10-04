@@ -480,8 +480,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                 // Values that are stored in "arrayOfNamesToBeSearched" are indexes in "devices" array of those devices that don't have name
                 // Example: devices: [device1, device2, device3], and device1 and device3 don't names. Then
                 // arrayOfNamesToBeSearched = [0, 2]
-                var from = 1
-                var to = 255
+                var from = 0
+                var to = 2000
                 if rangeFrom.text != nil && rangeFrom.text != "" {
                     from = Int(rangeFrom.text!)!-1
                 }

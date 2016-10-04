@@ -206,6 +206,8 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
             }
             refreshSequenceList()
             self.view.endEditing(true)
+        }else{
+            self.view.makeToast(message: "Please check fields: name, id and address")
         }
     }
     

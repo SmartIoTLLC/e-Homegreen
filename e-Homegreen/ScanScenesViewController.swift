@@ -204,6 +204,8 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
                 DatabaseScenesController.shared.createScene(sceneId, sceneName: sceneName, moduleAddress: address, gateway: gateway, levelId: levelId, zoneId: zoneId, categoryId: categoryId, isBroadcast: broadcastSwitch.isOn, isLocalcast: localcastSwitch.isOn, sceneImageOneDefault: defaultImageOne, sceneImageTwoDefault: defaultImageTwo, sceneImageOneCustom: customImageOne, sceneImageTwoCustom: customImageTwo, imageDataOne: imageDataOne, imageDataTwo: imageDataTwo)
 
             }
+        }else{
+            self.view.makeToast(message: "Please check fields: name, id and address")
         }
         refreshSceneList()
         self.view.endEditing(true)

@@ -218,6 +218,8 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
             }
             refreshEventList()
             self.view.endEditing(true)
+        }else{
+            self.view.makeToast(message: "Please check fields: name, id and address")
         }
     }
     

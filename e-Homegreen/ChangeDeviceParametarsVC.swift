@@ -70,8 +70,8 @@ class ChangeDeviceParametarsVC: PopoverVC {
         lblChannel.text = "\(device.channel)"
         
         level = DatabaseZoneController.shared.getZoneById(Int(device.parentZoneId), location: device.gateway.location)
-        if level != nil{
-            btnLevel.setTitle(level!.name, for: UIControlState())
+        if let level = level, level.name != "Default"{
+            btnLevel.setTitle(level.name, for: UIControlState())
         }else{
             btnLevel.setTitle("All", for: UIControlState())
         }
@@ -158,24 +158,19 @@ class ChangeDeviceParametarsVC: PopoverVC {
     
     @IBAction func btnImages(_ sender: AnyObject) {
     }
-//    @IBAction func changeDeviceInputMode(_ sender: UIButton) {
-//        button = sender
-//        var popoverList:[PopOverItem] = []
-//        popoverList.append(PopOverItem(name: DigitalInput.NormallyOpen.description(), id: "")) // TODO: Dodati Id za NO
-//        popoverList.append(PopOverItem(name: DigitalInput.NormallyClosed.description(), id: "")) // TODO: Dodati Id za NC
-//        openPopover(sender, popOverList:popoverList)
-//    }
+    
     @IBAction func changeControlType(_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         if device.controlType == ControlType.Sensor{
-
             popoverList.append(PopOverItem(name: ControlType.Sensor, id: ""))
         }else if device.controlType == ControlType.Dimmer{
             popoverList.append(PopOverItem(name: ControlType.Dimmer, id: "")) // TODO: Dodati Id za Dimmer
             popoverList.append(PopOverItem(name: ControlType.Relay, id: "")) // TODO: Dodati Id za Relay
         }else if device.controlType == ControlType.SaltoAccess{
             popoverList.append(PopOverItem(name: ControlType.SaltoAccess, id: ""))
+        }else if device.controlType == ControlType.IntelligentSwitch{
+            popoverList.append(PopOverItem(name: ControlType.IntelligentSwitch, id: ""))
         }
         openPopover(sender, popOverList:popoverList)
     }

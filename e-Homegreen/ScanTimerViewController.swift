@@ -222,6 +222,8 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             }
             refreshTimerList()
             self.view.endEditing(true)
+        }else{
+            self.view.makeToast(message: "Please check fields: name, id, type and address")
         }
     }
     @IBAction func scanTimers(_ sender: AnyObject) {

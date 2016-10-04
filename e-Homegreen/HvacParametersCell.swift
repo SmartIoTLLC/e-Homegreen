@@ -97,14 +97,14 @@ class HvacParametersCell: PopoverVC {
         lblChannel.text = "\(device.channel)"
         
         level = DatabaseZoneController.shared.getZoneById(Int(device.parentZoneId), location: device.gateway.location)
-        if let level = level {
+        if let level = level, level.name != "Default" {
             btnLevel.setTitle(level.name, for: UIControlState())
         }else{
             btnLevel.setTitle("All", for: UIControlState())
         }
         
         zoneSelected = DatabaseZoneController.shared.getZoneById(Int(device.zoneId), location: device.gateway.location)
-        if let zoneSelected = zoneSelected {
+        if let zoneSelected = zoneSelected, zoneSelected.name != "Defalut" {
             btnZone.setTitle(zoneSelected.name, for: UIControlState())
         }else{
             btnZone.setTitle("All", for: UIControlState())
@@ -230,8 +230,7 @@ class HvacParametersCell: PopoverVC {
     @IBAction func changeControlType(_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-        popoverList.append(PopOverItem(name: ControlType.Dimmer, id: ""))
-        popoverList.append(PopOverItem(name: ControlType.Relay, id: ""))
+        popoverList.append(PopOverItem(name: ControlType.Climate, id: ""))
         openPopover(sender, popOverList:popoverList)
     }
     @IBAction func btnLevel (_ sender: UIButton) {
