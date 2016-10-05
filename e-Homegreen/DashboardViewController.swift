@@ -11,7 +11,6 @@ import CoreLocation
 
 class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, CLLocationManagerDelegate, SWRevealViewControllerDelegate {
     var locationManager = CLLocationManager()
-    var sidebarMenuOpen : Bool!
     var weatherDictionary:[String: String] = ["01d":"weather-clear",
                                               "02d":"weather-few",
                                               "03d":"weather-few",
@@ -196,35 +195,23 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         }
         
     }
-    func closeSideMenu(){
-        
-        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggle(animated: true)
-        }
-        
-    }
+    
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             calendar.isUserInteractionEnabled = true
             clock.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
             calendar.isUserInteractionEnabled = false
             clock.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             calendar.isUserInteractionEnabled = true
             clock.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(DashboardViewController.closeSideMenu))
-            self.view.addGestureRecognizer(tap)
             calendar.isUserInteractionEnabled = false
             clock.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     

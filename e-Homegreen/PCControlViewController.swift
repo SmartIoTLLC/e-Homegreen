@@ -19,7 +19,6 @@ class PCControlViewController: PopoverVC {
     
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
-    var sidebarMenuOpen : Bool!
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     fileprivate var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     
@@ -198,31 +197,17 @@ extension PCControlViewController: SWRevealViewControllerDelegate{
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             pccontrolCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
             pccontrolCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     
     func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             pccontrolCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(PCControlViewController.closeSideMenu))
-            self.view.addGestureRecognizer(tap)
             pccontrolCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
-    }
-    
-    func closeSideMenu(){
-        
-        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggle(animated: true)
-        }
-        
     }
     
     func openNotificationSettings(_ gestureRecognizer: UILongPressGestureRecognizer){

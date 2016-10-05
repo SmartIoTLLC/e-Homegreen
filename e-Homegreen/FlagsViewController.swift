@@ -20,7 +20,6 @@ class FlagsViewController: PopoverVC {
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     var filterParametar:FilterItem!
     var flags:[Flag] = []
-    var sidebarMenuOpen : Bool!
     var scrollView = FilterPullDown()
     
     override func viewDidLoad() {
@@ -149,31 +148,17 @@ extension FlagsViewController: SWRevealViewControllerDelegate {
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             flagsCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
             flagsCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     
     func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             flagsCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(FlagsViewController.closeSideMenu))
-            self.view.addGestureRecognizer(tap)
             flagsCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
-    }
-    
-    func closeSideMenu(){
-        
-        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggle(animated: true)
-        }
-        
     }
 }
 

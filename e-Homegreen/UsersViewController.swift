@@ -12,7 +12,6 @@ import AudioToolbox
 class UsersViewController: PopoverVC {
     var timers:[Timer] = []
     var scrollView = FilterPullDown()
-    var sidebarMenuOpen : Bool!
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Users)
@@ -249,32 +248,19 @@ extension UsersViewController: SWRevealViewControllerDelegate{
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             usersCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
             usersCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     
     func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             usersCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(UsersViewController.closeSideMenu))
-            self.view.addGestureRecognizer(tap)
             usersCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     
-    func closeSideMenu(){
-        
-        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggle(animated: true)
-        }
-        
-    }
 }
 
 extension UsersViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {

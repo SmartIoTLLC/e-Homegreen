@@ -712,8 +712,19 @@ class IncomingHandler: NSObject {
         var counter = 0
         for device in devices {
             if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) && Int(device.channel) == Int(byteArray[7]) {
-                device.zoneId = NSNumber(value: Int(byteArray[9]))
+//                device.zoneId = NSNumber(value: Int(byteArray[9]))
                 device.categoryId = NSNumber(value: Int(byteArray[8]))
+//                device.parentZoneId = NSNumber(value: Int(byteArray[10]))
+                
+                // Parse zone and parent zone
+                if Int(byteArray[10]) == 0 {
+                    device.zoneId = 0
+                    device.parentZoneId = NSNumber(value: Int(byteArray[9]))
+                } else {
+                    device.zoneId = NSNumber(value: Int(byteArray[9]))
+                    device.parentZoneId = NSNumber(value: Int(byteArray[10]))
+                }
+                
                 // When we change category it will reset images
                 device.digitalInputMode = Int(byteArray[14]) as NSNumber?
                 if byteArray[11] >= 0x80 {
@@ -759,9 +770,18 @@ class IncomingHandler: NSObject {
                     devices[i].isEnabled = NSNumber(value: true as Bool)
                     devices[i].isVisible = NSNumber(value: true as Bool)
                     
-                    devices[i].zoneId = NSNumber(value: Int(byteArray[33]))
-                    devices[i].parentZoneId = NSNumber(value: Int(byteArray[34]))
+//                    devices[i].zoneId = NSNumber(value: Int(byteArray[33]))
+//                    devices[i].parentZoneId = NSNumber(value: Int(byteArray[34]))
                     devices[i].categoryId = NSNumber(value: Int(byteArray[32]))
+                    
+                    // Parse zone and parent zone
+                    if Int(byteArray[34]) == 0 {
+                        devices[i].zoneId = 0
+                        devices[i].parentZoneId = NSNumber(value: Int(byteArray[33]))
+                    } else {
+                        devices[i].zoneId = NSNumber(value: Int(byteArray[33]))
+                        devices[i].parentZoneId = NSNumber(value: Int(byteArray[34]))
+                    }
                     //                    devices[i].enabled = ""
                     //                    if byteArray[22] == 0x01 {
                     //                        devices[i].isEnabled = NSNumber(bool: true)

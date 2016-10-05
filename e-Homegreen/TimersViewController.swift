@@ -18,7 +18,6 @@ class TimersViewController: PopoverVC {
     fileprivate let reuseIdentifier = "TimersCell"
     var timers:[Timer] = []
     var scrollView = FilterPullDown()
-    var sidebarMenuOpen : Bool!
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     var filterParametar:FilterItem!
     var collectionViewCellSize = CGSize(width: 150, height: 180)
@@ -247,28 +246,16 @@ extension TimersViewController: SWRevealViewControllerDelegate{
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             timersCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
             timersCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     
     func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             timersCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(TimersViewController.closeSideMenu))
-            self.view.addGestureRecognizer(tap)
             timersCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
-        }
-    }
-    
-    func closeSideMenu(){
-        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggle(animated: true)
         }
     }
 }

@@ -24,7 +24,7 @@ class SurveillenceViewController: PopoverVC {
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     var data:Data?
-    var sidebarMenuOpen : Bool!
+//    var sidebarMenuOpen : Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -199,32 +199,20 @@ extension SurveillenceViewController: SWRevealViewControllerDelegate{
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             cameraCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
             cameraCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     
     func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             cameraCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(SurveillenceViewController.closeSideMenu))
-            self.view.addGestureRecognizer(tap)
             cameraCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     
-    func closeSideMenu(){
-        
-        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggle(animated: true)
-        }
-        
-    }
+    
 }
 
 extension SurveillenceViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{

@@ -15,7 +15,6 @@ class EventsViewController: PopoverVC{
     @IBOutlet weak var broadcastSwitch: UISwitch!
     
     var events:[Event] = []
-    var sidebarMenuOpen : Bool!
 
     var scrollView = FilterPullDown()
     
@@ -184,32 +183,19 @@ extension EventsViewController: SWRevealViewControllerDelegate{
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             eventCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
             eventCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     
     func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             eventCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(EventsViewController.closeSideMenu))
-            self.view.addGestureRecognizer(tap)
             eventCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     
-    func closeSideMenu(){
-        
-        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggle(animated: true)
-        }
-        
-    }
 }
 
 extension EventsViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {

@@ -19,7 +19,6 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     
     @IBOutlet weak var chatTableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
-    var sidebarMenuOpen : Bool!
     
     @IBOutlet weak var viewHeight: NSLayoutConstraint!
     
@@ -809,12 +808,10 @@ extension ChatViewController: SWRevealViewControllerDelegate{
         if(position == FrontViewPosition.left) {
             chatTextView.isUserInteractionEnabled = true
             chatTableView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
             self.view.endEditing(true)
             chatTextView.isUserInteractionEnabled = false
             chatTableView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     
@@ -822,24 +819,13 @@ extension ChatViewController: SWRevealViewControllerDelegate{
         if(position == FrontViewPosition.left) {
             chatTextView.isUserInteractionEnabled = true
             chatTableView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
             self.view.endEditing(true)
-            let tap = UITapGestureRecognizer(target: self, action: #selector(ChatViewController.closeSideMenu))
-            self.view.addGestureRecognizer(tap)
             chatTextView.isUserInteractionEnabled = false
             chatTableView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     
-    func closeSideMenu(){
-        
-        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggle(animated: true)
-        }
-        
-    }
 }
 
 extension ChatViewController: UITextViewDelegate{
@@ -911,13 +897,6 @@ extension ChatViewController: UITableViewDataSource {
         return chatList.count
     }
     
-    @objc(tableView:willSelectRowAtIndexPath:) func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if(sidebarMenuOpen == true){
-            return nil
-        } else {
-            return indexPath
-        }
-    }
 }
 
 class ChatAnswerCell: UITableViewCell {

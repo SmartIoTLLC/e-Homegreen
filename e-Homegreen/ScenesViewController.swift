@@ -22,7 +22,6 @@ class ScenesViewController: PopoverVC {
     var scrollView = FilterPullDown()
     
     var scenes:[Scene] = []
-    var sidebarMenuOpen : Bool!
     
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
@@ -185,28 +184,16 @@ extension ScenesViewController: SWRevealViewControllerDelegate{
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             scenesCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
             scenesCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     
     func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             scenesCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(ScenesViewController.closeSideMenu))
-            self.view.addGestureRecognizer(tap)
             scenesCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
-        }
-    }
-    
-    func closeSideMenu(){
-        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggle(animated: true)
         }
     }
 }

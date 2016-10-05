@@ -17,7 +17,6 @@ class SequencesViewController: PopoverVC {
     var scrollView = FilterPullDown()
     var senderButton:UIButton?
     var sequences:[Sequence] = []
-    var sidebarMenuOpen : Bool!
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     var filterParametar:FilterItem!
@@ -165,32 +164,19 @@ extension SequencesViewController: SWRevealViewControllerDelegate{
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             sequenceCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
             sequenceCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     
     func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             sequenceCollectionView.isUserInteractionEnabled = true
-            sidebarMenuOpen = false
         } else {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(SequencesViewController.closeSideMenu))
-            self.view.addGestureRecognizer(tap)
             sequenceCollectionView.isUserInteractionEnabled = false
-            sidebarMenuOpen = true
         }
     }
     
-    func closeSideMenu(){
-        
-        if (sidebarMenuOpen != nil && sidebarMenuOpen == true) {
-            self.revealViewController().revealToggle(animated: true)
-        }
-        
-    }
 }
 
 extension SequencesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
