@@ -335,9 +335,9 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
             UIApplication.shared.isIdleTimerDisabled = true
             
         } catch let error as InputError {
-            alertController("Error", message: error.description)
+            self.view.makeToast(message: error.description)
         } catch {
-            alertController("Error", message: "Something went wrong.")
+            self.view.makeToast(message: "Something went wrong.")
         }
     }
     func checkIfGatewayDidGetZones (_ timer:Foundation.Timer) {
@@ -423,24 +423,24 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         refreshZoneList()
     }
     
-    // MARK: Alert controller
-    var alertController:UIAlertController?
-    func alertController (_ title:String, message:String) {
-        alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-            // ...
-        }
-        alertController!.addAction(cancelAction)
-        
-        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
-            // ...
-        }
-        alertController!.addAction(OKAction)
-        
-        self.present(alertController!, animated: true) {
-            // ...
-        }
-    }
+//    // MARK: Alert controller
+//    var alertController:UIAlertController?
+//    func alertController (_ title:String, message:String) {
+//        alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+//            // ...
+//        }
+//        alertController!.addAction(cancelAction)
+//        
+//        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+//            // ...
+//        }
+//        alertController!.addAction(OKAction)
+//        
+//        self.present(alertController!, animated: true) {
+//            // ...
+//        }
+//    }
     
     // MARK:- Delete zones and other
     @IBAction func btnDeleteAll(_ sender: UIButton) {
@@ -509,6 +509,8 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         importZoneTableView.reloadData()
     }
     
+    
+    
     func chooseGateway (_ gestureRecognizer:UIGestureRecognizer) {
         if let tag = gestureRecognizer.view?.tag {
             choosedIndex = tag
@@ -530,6 +532,11 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         }
         return nil
     }
+    
+    @IBAction func addTag(_ sender: AnyObject) {
+        showTag()
+    }
+    
 }
 
 extension ImportZoneViewController: UITableViewDelegate {
@@ -563,7 +570,8 @@ extension ImportZoneViewController: UITableViewDataSource {
             cell.switchVisible.isOn = Bool(zones[(indexPath as NSIndexPath).row].isVisible)
             cell.switchVisible.tag = (indexPath as NSIndexPath).row
             cell.switchVisible.addTarget(self, action: #selector(ImportZoneViewController.isVisibleValueChanged(_:)), for: UIControlEvents.valueChanged)
-            cell.btnZonePicker.setTitle("Add iBeacon", for: UIControlState())
+            cell.btnZonePicker.setTitle("Add iBeacon", for:[])
+            cell.tagsButton.setTitle("Tags", for: [])
             cell.setItem(zones[(indexPath as NSIndexPath).row])
             if let iBeaconName = zones[(indexPath as NSIndexPath).row].iBeacon?.name {
                 cell.btnZonePicker.setTitle(iBeaconName, for: UIControlState())
@@ -606,6 +614,8 @@ class ImportZoneTableViewCell: UITableViewCell {
     @IBOutlet weak var lblNo: UILabel!
     @IBOutlet weak var switchVisible: UISwitch!
     @IBOutlet weak var btnZonePicker: CustomGradientButton!
+    @IBOutlet weak var tagsButton: CustomGradientButton!
+    
     
     @IBOutlet weak var controlTypeButton: CustomGradientButton!
     var zoneItem:Zone!
@@ -634,5 +644,7 @@ class ImportZoneTableViewCell: UITableViewCell {
             return
         }
     }
+    
+    
     
 }

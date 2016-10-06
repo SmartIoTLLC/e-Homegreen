@@ -93,6 +93,8 @@
 		225F59871D74427300156BCD /* BigSliderXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225F59851D74427300156BCD /* BigSliderXIB.swift */; };
 		225F59881D74427300156BCD /* BigSliderXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 225F59861D74427300156BCD /* BigSliderXIB.xib */; };
 		2260FBA11D2CF5EC00576513 /* CustomToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2260FBA01D2CF5EC00576513 /* CustomToolBar.swift */; };
+		227F26461DA5155E00F5A236 /* TagsXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227F26441DA5155E00F5A236 /* TagsXIB.swift */; };
+		227F26471DA5155E00F5A236 /* TagsXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 227F26451DA5155E00F5A236 /* TagsXIB.xib */; };
 		22954B051CC100EB0082BFCF /* DatabaseSecurityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22954B041CC100EB0082BFCF /* DatabaseSecurityController.swift */; };
 		22AF883B1D49E9E700048A33 /* ScanFilterPullDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AF883A1D49E9E700048A33 /* ScanFilterPullDown.swift */; };
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
@@ -451,6 +453,8 @@
 		225F59851D74427300156BCD /* BigSliderXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigSliderXIB.swift; sourceTree = "<group>"; };
 		225F59861D74427300156BCD /* BigSliderXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BigSliderXIB.xib; sourceTree = "<group>"; };
 		2260FBA01D2CF5EC00576513 /* CustomToolBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomToolBar.swift; sourceTree = "<group>"; };
+		227F26441DA5155E00F5A236 /* TagsXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsXIB.swift; sourceTree = "<group>"; };
+		227F26451DA5155E00F5A236 /* TagsXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagsXIB.xib; sourceTree = "<group>"; };
 		22954B041CC100EB0082BFCF /* DatabaseSecurityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseSecurityController.swift; sourceTree = "<group>"; };
 		22AF883A1D49E9E700048A33 /* ScanFilterPullDown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanFilterPullDown.swift; sourceTree = "<group>"; };
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
@@ -1000,6 +1004,42 @@
 			name = UIToolBar;
 			sourceTree = "<group>";
 		};
+		227F26401DA5140800F5A236 /* Edit Zone */ = {
+			isa = PBXGroup;
+			children = (
+				22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */,
+				22EEAD111C872BB500AD66F0 /* EditZoneViewController.xib */,
+			);
+			name = "Edit Zone";
+			sourceTree = "<group>";
+		};
+		227F26411DA5141800F5A236 /* Edit Category */ = {
+			isa = PBXGroup;
+			children = (
+				22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */,
+				22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */,
+			);
+			name = "Edit Category";
+			sourceTree = "<group>";
+		};
+		227F26421DA5142C00F5A236 /* Gateway Addres */ = {
+			isa = PBXGroup;
+			children = (
+				223687131CB4F13E005ACDE4 /* InsertGatewayAddressXIB.swift */,
+				223687141CB4F13E005ACDE4 /* InsertGatewayAddressXIB.xib */,
+			);
+			name = "Gateway Addres";
+			sourceTree = "<group>";
+		};
+		227F26431DA5153F00F5A236 /* Tags */ = {
+			isa = PBXGroup;
+			children = (
+				227F26441DA5155E00F5A236 /* TagsXIB.swift */,
+				227F26451DA5155E00F5A236 /* TagsXIB.xib */,
+			);
+			name = Tags;
+			sourceTree = "<group>";
+		};
 		22CD26771BD53685005BA67D /* DAKeyboardControl */ = {
 			isa = PBXGroup;
 			children = (
@@ -1079,15 +1119,13 @@
 		22E7B20C1CC4FC1900F813AC /* Scan zone and category */ = {
 			isa = PBXGroup;
 			children = (
+				227F26431DA5153F00F5A236 /* Tags */,
+				227F26421DA5142C00F5A236 /* Gateway Addres */,
+				227F26411DA5141800F5A236 /* Edit Category */,
+				227F26401DA5140800F5A236 /* Edit Zone */,
 				73F1F08E1BAD5BD7005C63AB /* ImportZoneViewController.swift */,
 				73F1F0901BAD5BF1005C63AB /* ImportCategoryViewController.swift */,
 				2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */,
-				223687131CB4F13E005ACDE4 /* InsertGatewayAddressXIB.swift */,
-				223687141CB4F13E005ACDE4 /* InsertGatewayAddressXIB.xib */,
-				22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */,
-				22EEAD0D1C8715E000AD66F0 /* EditCategoryViewController.xib */,
-				22EEAD101C872BB500AD66F0 /* EditZoneViewController.swift */,
-				22EEAD111C872BB500AD66F0 /* EditZoneViewController.xib */,
 				734E35771C8239990096E043 /* ScanFunction.swift */,
 				49C059751D913D7D0061A544 /* ScanZone.swift */,
 				49C059771D913DB90061A544 /* ScanCategory.swift */,
@@ -1934,6 +1972,7 @@
 				738DECB11BBBFC1100D6B834 /* Security.json in Resources */,
 				22495D271CAA7F510034FC94 /* Surveillance.storyboard in Resources */,
 				E70515A31BB3E147009FDA0D /* SurveillanceSettingsVC.xib in Resources */,
+				227F26471DA5155E00F5A236 /* TagsXIB.xib in Resources */,
 				E7F15B051B8F27840025082D /* SceneGalleryVC.xib in Resources */,
 				E7E1A8251B3804F1008D8713 /* AcousticModelSpanish.bundle in Resources */,
 				22495D311CAA83260034FC94 /* Popover.storyboard in Resources */,
@@ -2267,6 +2306,7 @@
 				22320C891C9ACE0900F15B36 /* UIColor + Extension.swift in Sources */,
 				4983C7E51D4B5F2D00C8E865 /* RelayParametersCell.swift in Sources */,
 				73DB84A31B301338000DB4EB /* SettingsViewController.swift in Sources */,
+				227F26461DA5155E00F5A236 /* TagsXIB.swift in Sources */,
 				223E25DF1CC7B37900BC3905 /* DatabaseLocationController.swift in Sources */,
 				4923279C1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.swift in Sources */,
 				736A5B271B5A678F008FD745 /* HashTable.swift in Sources */,

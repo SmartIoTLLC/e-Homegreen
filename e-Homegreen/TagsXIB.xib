@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Tahoma.ttf">
+            <string>Tahoma</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TagsXIB" customModule="e_Homegreen" customModuleProvider="target">
+            <connections>
+                <outlet property="backView" destination="zzB-P0-Njj" id="BEI-BP-GRg"/>
+                <outlet property="textField" destination="i2l-e2-T18" id="rLa-0E-LrH"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zzB-P0-Njj" userLabel="Back View" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6b9-Si-di2" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                            <state key="normal" title="ADD TO MACRO">
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vts-dk-aUz" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="wm2-aG-URJ"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                            <state key="normal" title="SET">
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5f3-Od-4G3">
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="HMF-nB-iwL"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="keD-bL-G8n" userLabel="Level" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                            <state key="normal">
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="i2l-e2-T18" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                        </textField>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="Vts-dk-aUz" firstAttribute="top" secondItem="keD-bL-G8n" secondAttribute="bottom" constant="8" id="16K-yH-I2N"/>
+                        <constraint firstItem="6b9-Si-di2" firstAttribute="width" secondItem="Vts-dk-aUz" secondAttribute="width" id="16m-8H-kWj"/>
+                        <constraint firstItem="keD-bL-G8n" firstAttribute="top" secondItem="i2l-e2-T18" secondAttribute="bottom" constant="8" id="5ki-wc-qes"/>
+                        <constraint firstItem="keD-bL-G8n" firstAttribute="trailing" secondItem="i2l-e2-T18" secondAttribute="trailing" id="8MP-4m-q1x"/>
+                        <constraint firstItem="6b9-Si-di2" firstAttribute="trailing" secondItem="keD-bL-G8n" secondAttribute="trailing" id="JMb-RR-cCe"/>
+                        <constraint firstItem="i2l-e2-T18" firstAttribute="leading" secondItem="5f3-Od-4G3" secondAttribute="trailing" constant="10" id="Kbz-o7-IXv"/>
+                        <constraint firstAttribute="width" constant="360" id="Qrt-oU-jI8"/>
+                        <constraint firstAttribute="bottom" secondItem="Vts-dk-aUz" secondAttribute="bottom" constant="8" id="Tls-Ay-Zrd"/>
+                        <constraint firstItem="6b9-Si-di2" firstAttribute="height" secondItem="Vts-dk-aUz" secondAttribute="height" id="VZI-BY-krJ"/>
+                        <constraint firstItem="6b9-Si-di2" firstAttribute="leading" secondItem="Vts-dk-aUz" secondAttribute="trailing" constant="5" id="Wtp-Xv-ryy"/>
+                        <constraint firstItem="i2l-e2-T18" firstAttribute="centerY" secondItem="5f3-Od-4G3" secondAttribute="centerY" id="ZZr-TI-MXb"/>
+                        <constraint firstAttribute="trailing" secondItem="i2l-e2-T18" secondAttribute="trailing" constant="8" id="cMX-sy-LuX"/>
+                        <constraint firstItem="keD-bL-G8n" firstAttribute="leading" secondItem="5f3-Od-4G3" secondAttribute="leading" id="ffG-Zj-wj6"/>
+                        <constraint firstItem="5f3-Od-4G3" firstAttribute="leading" secondItem="zzB-P0-Njj" secondAttribute="leading" constant="8" id="ft3-9U-k47"/>
+                        <constraint firstItem="6b9-Si-di2" firstAttribute="centerY" secondItem="Vts-dk-aUz" secondAttribute="centerY" id="jLz-AJ-hxQ"/>
+                        <constraint firstItem="Vts-dk-aUz" firstAttribute="leading" secondItem="keD-bL-G8n" secondAttribute="leading" id="ydf-Ko-mdF"/>
+                        <constraint firstItem="5f3-Od-4G3" firstAttribute="top" secondItem="zzB-P0-Njj" secondAttribute="top" constant="15" id="ze0-D4-9cI"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="Qrt-oU-jI8"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=compact-widthClass=compact">
+                        <mask key="constraints">
+                            <include reference="Qrt-oU-jI8"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=compact-widthClass=regular">
+                        <mask key="constraints">
+                            <include reference="Qrt-oU-jI8"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <mask key="constraints">
+                            <include reference="Qrt-oU-jI8"/>
+                        </mask>
+                    </variation>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="zzB-P0-Njj" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="9ud-hU-CNy"/>
+                <constraint firstItem="zzB-P0-Njj" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="YQ5-Mg-1Mi"/>
+                <constraint firstItem="zzB-P0-Njj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="mR6-Mo-jjR"/>
+                <constraint firstAttribute="trailing" secondItem="zzB-P0-Njj" secondAttribute="trailing" constant="10" id="pze-fE-Q7o"/>
+            </constraints>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="mR6-Mo-jjR"/>
+                    <exclude reference="pze-fE-Q7o"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=compact">
+                <mask key="constraints">
+                    <include reference="mR6-Mo-jjR"/>
+                    <include reference="pze-fE-Q7o"/>
+                </mask>
+            </variation>
+        </view>
+    </objects>
+</document>
