@@ -9,9 +9,9 @@
 import UIKit
 
 enum ChoosedTab:String {
-    case Devices = "Devices", Scenes = "Scenes", Events = "Events", Sequences = "Sequences", Timers = "Timers", Flags = "Flags", Cards = "Cards"
+    case Devices = "Devices", Scenes = "Scenes", Events = "Events", Sequences = "Sequences", Timers = "Timers", Flags = "Flags", Cards = "Cards", Macros = "Macros"
     
-    static let allItem:[ChoosedTab] = [Devices, Scenes, Events, Sequences, Timers, Flags, Cards]
+    static let allItem:[ChoosedTab] = [Devices, Scenes, Events, Sequences, Timers, Flags, Cards, Macros]
 }
 
 class ScanViewController: PopoverVC {
@@ -28,6 +28,7 @@ class ScanViewController: PopoverVC {
     var scanTimersViewController: ScanTimerViewController!
     var scanFlagsViewController: ScanFlagViewController!
     var scanCardsViewController: ScanCardsViewController!
+    var macrosViewController: MacroViewController!
     
     var scrollView = ScanFilterPullDown()
     
@@ -64,6 +65,7 @@ class ScanViewController: PopoverVC {
         scanTimersViewController = storyboard.instantiateViewController(withIdentifier: "ScanTimerViewController") as! ScanTimerViewController
         scanFlagsViewController = storyboard.instantiateViewController(withIdentifier: "ScanFlagViewController") as! ScanFlagViewController
         scanCardsViewController = storyboard.instantiateViewController(withIdentifier: "ScanCardsViewController") as! ScanCardsViewController
+        macrosViewController = storyboard.instantiateViewController(withIdentifier: "MacroViewController") as! MacroViewController
         
         toViewController = scanDeviceViewController
         
@@ -79,6 +81,8 @@ class ScanViewController: PopoverVC {
         scanFlagsViewController.gateway = gateway
         scanFlagsViewController.filterParametar = filterParametar
         scanCardsViewController.gateway = gateway
+        macrosViewController.gateway = gateway
+        macrosViewController.filterParametar = filterParametar
         
         self.addChildViewController(scanDeviceViewController)
         scanDeviceViewController.view.frame = CGRect(x: 0, y: 0, width: self.container.frame.size.width, height: self.container.frame.size.height)
@@ -129,6 +133,8 @@ class ScanViewController: PopoverVC {
                 toViewController = scanFlagsViewController
             case .Cards:
                 toViewController = scanCardsViewController
+            case .Macros:
+                toViewController = macrosViewController
             }
             
             let fromViewController = childViewControllers.last!

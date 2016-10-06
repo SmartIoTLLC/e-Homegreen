@@ -117,6 +117,10 @@
 		22FF1E621D86D86F00ECB86E /* Card+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FF1E601D86D86F00ECB86E /* Card+CoreDataProperties.swift */; };
 		22FF1E631D86D86F00ECB86E /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FF1E611D86D86F00ECB86E /* Card.swift */; };
 		22FF1E651D86D92000ECB86E /* DatabaseCardsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FF1E641D86D92000ECB86E /* DatabaseCardsController.swift */; };
+		22FF3E021DA66AE800657576 /* Macro+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FF3E001DA66AE800657576 /* Macro+CoreDataClass.swift */; };
+		22FF3E031DA66AE800657576 /* Macro+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FF3E011DA66AE800657576 /* Macro+CoreDataProperties.swift */; };
+		22FF3E051DA670C800657576 /* MacroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FF3E041DA670C800657576 /* MacroViewController.swift */; };
+		22FF3E071DA67A1900657576 /* DatabaseMacrosController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FF3E061DA67A1900657576 /* DatabaseMacrosController.swift */; };
 		490C352D1D6D848400C9B851 /* DeleteConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490C352B1D6D848400C9B851 /* DeleteConfirmation.swift */; };
 		490C352E1D6D848400C9B851 /* DeleteConfirmation.xib in Resources */ = {isa = PBXBuildFile; fileRef = 490C352C1D6D848400C9B851 /* DeleteConfirmation.xib */; };
 		490DC22D1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490DC22B1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift */; };
@@ -478,6 +482,10 @@
 		22FF1E601D86D86F00ECB86E /* Card+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Card+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		22FF1E611D86D86F00ECB86E /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		22FF1E641D86D92000ECB86E /* DatabaseCardsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseCardsController.swift; sourceTree = "<group>"; };
+		22FF3E001DA66AE800657576 /* Macro+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Macro+CoreDataClass.swift"; sourceTree = "<group>"; };
+		22FF3E011DA66AE800657576 /* Macro+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Macro+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		22FF3E041DA670C800657576 /* MacroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacroViewController.swift; sourceTree = "<group>"; };
+		22FF3E061DA67A1900657576 /* DatabaseMacrosController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseMacrosController.swift; sourceTree = "<group>"; };
 		490C352B1D6D848400C9B851 /* DeleteConfirmation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteConfirmation.swift; sourceTree = "<group>"; };
 		490C352C1D6D848400C9B851 /* DeleteConfirmation.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeleteConfirmation.xib; sourceTree = "<group>"; };
 		490DC22B1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityNeedDisarmInformation.swift; sourceTree = "<group>"; };
@@ -1399,6 +1407,8 @@
 		73E2390E1B97145D00CB38ED /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				22FF3E001DA66AE800657576 /* Macro+CoreDataClass.swift */,
+				22FF3E011DA66AE800657576 /* Macro+CoreDataProperties.swift */,
 				22FF1E601D86D86F00ECB86E /* Card+CoreDataProperties.swift */,
 				22FF1E611D86D86F00ECB86E /* Card.swift */,
 				4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */,
@@ -1521,6 +1531,7 @@
 				223BAD461D3E5395003E9365 /* FilterController.swift */,
 				223FB5901D64414600DC2627 /* DatabaseImageController.swift */,
 				22FF1E641D86D92000ECB86E /* DatabaseCardsController.swift */,
+				22FF3E061DA67A1900657576 /* DatabaseMacrosController.swift */,
 			);
 			name = "Database Controllers";
 			sourceTree = "<group>";
@@ -1826,6 +1837,7 @@
 				E79A89251BAD6D6000714C64 /* ScanTimerViewController.swift */,
 				E79309B71BC50E8D0009EFB1 /* ScanFlagViewController.swift */,
 				22FF1E5E1D86BF5700ECB86E /* ScanCardsViewController.swift */,
+				22FF3E041DA670C800657576 /* MacroViewController.swift */,
 				490C352B1D6D848400C9B851 /* DeleteConfirmation.swift */,
 				490C352C1D6D848400C9B851 /* DeleteConfirmation.xib */,
 			);
@@ -2115,6 +2127,7 @@
 				4D0D97221CAD4087001A1E89 /* HRToast+UIView.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Constants.swift in Sources */,
 				223DC0C61CE2089A00C5E2F6 /* CreateUserFromJSONController.swift in Sources */,
+				22FF3E071DA67A1900657576 /* DatabaseMacrosController.swift in Sources */,
 				E77E59471BB2C9070004D263 /* ImportFilesViewController.swift in Sources */,
 				73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */,
 				E7E08E041B4E4D9700153E9A /* ClimaSettingsViewController.swift in Sources */,
@@ -2182,6 +2195,7 @@
 				73F04ECB1C92CD06009696EF /* DataFrame.swift in Sources */,
 				4D16A1281D51CB8D00817477 /* HvacParametersCell.swift in Sources */,
 				E76B57691BBD1EE400A70F69 /* CustomGradientBackground.swift in Sources */,
+				22FF3E031DA66AE800657576 /* Macro+CoreDataProperties.swift in Sources */,
 				7372EB361BC410800097806D /* Scene.swift in Sources */,
 				73F04ECE1C92CDA9009696EF /* CoreDataController.swift in Sources */,
 				73F51A0C1C9490B9003EE702 /* NSObject+Extensions.swift in Sources */,
@@ -2235,6 +2249,7 @@
 				736265E31B4A483E0078C11D /* OutgoingHandler.swift in Sources */,
 				2240DCB01CBB931800F1F886 /* AdminController.swift in Sources */,
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,
+				22FF3E021DA66AE800657576 /* Macro+CoreDataClass.swift in Sources */,
 				E7F57B0D1BA847D8006B0D71 /* ScanSequencesesViewController.swift in Sources */,
 				2240EAC81D46084E0062AC2F /* FilterParametar+CoreDataProperties.swift in Sources */,
 				73FD2E5A1C08AB9F00B9F11A /* ImageHandler.swift in Sources */,
@@ -2328,6 +2343,7 @@
 				22402A851CBFC54C00CBB6E4 /* SecurityCollectionCell.swift in Sources */,
 				E73993181BCEA05100C74486 /* AnswersHandler.swift in Sources */,
 				22402A831CBFACF400CBB6E4 /* DatabaseDeviceController.swift in Sources */,
+				22FF3E051DA670C800657576 /* MacroViewController.swift in Sources */,
 				49FDD1E21D52043F00884E12 /* DigitalInputPopup.swift in Sources */,
 				222889B01CBBCF84004EBADD /* TimerCollectionViewCell.swift in Sources */,
 				731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */,

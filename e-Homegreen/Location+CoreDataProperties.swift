@@ -29,5 +29,6 @@ extension Location {
     @NSManaged var orderId: NSNumber?
     @NSManaged var timerId: String?
     @NSManaged var filterOnLocation: NSNumber?
+    @NSManaged var macros: NSSet?
     
 }
