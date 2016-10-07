@@ -106,6 +106,8 @@
 		22E1B2761DA78F790039B39C /* MacrosMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E1B2751DA78F790039B39C /* MacrosMenuViewController.swift */; };
 		22E1B2781DA78FA20039B39C /* MacrosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E1B2771DA78FA20039B39C /* MacrosCollectionViewCell.swift */; };
 		22E1B27B1DA791C20039B39C /* Macros.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22E1B2791DA791C20039B39C /* Macros.storyboard */; };
+		22E1B27F1DA7CF6E0039B39C /* AddMacroXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E1B27D1DA7CF6E0039B39C /* AddMacroXIB.swift */; };
+		22E1B2801DA7CF6E0039B39C /* AddMacroXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22E1B27E1DA7CF6E0039B39C /* AddMacroXIB.xib */; };
 		22E7B2101CC4FC9A00F813AC /* ResetPasswordXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E7B20E1CC4FC9A00F813AC /* ResetPasswordXIB.swift */; };
 		22E7B2111CC4FC9A00F813AC /* ResetPasswordXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22E7B20F1CC4FC9A00F813AC /* ResetPasswordXIB.xib */; };
 		22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */; };
@@ -474,6 +476,8 @@
 		22E1B2751DA78F790039B39C /* MacrosMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacrosMenuViewController.swift; sourceTree = "<group>"; };
 		22E1B2771DA78FA20039B39C /* MacrosCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacrosCollectionViewCell.swift; sourceTree = "<group>"; };
 		22E1B27A1DA791C20039B39C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "e-Homegreen/Base.lproj/Macros.storyboard"; sourceTree = "<group>"; };
+		22E1B27D1DA7CF6E0039B39C /* AddMacroXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddMacroXIB.swift; sourceTree = "<group>"; };
+		22E1B27E1DA7CF6E0039B39C /* AddMacroXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddMacroXIB.xib; sourceTree = "<group>"; };
 		22E7B20E1CC4FC9A00F813AC /* ResetPasswordXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordXIB.swift; sourceTree = "<group>"; };
 		22E7B20F1CC4FC9A00F813AC /* ResetPasswordXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResetPasswordXIB.xib; sourceTree = "<group>"; };
 		22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCategoryViewController.swift; sourceTree = "<group>"; };
@@ -1069,6 +1073,15 @@
 				22E1B2791DA791C20039B39C /* Macros.storyboard */,
 				22E1B2751DA78F790039B39C /* MacrosMenuViewController.swift */,
 				22E1B2771DA78FA20039B39C /* MacrosCollectionViewCell.swift */,
+			);
+			name = Macros;
+			sourceTree = "<group>";
+		};
+		22E1B27C1DA7CEAB0039B39C /* Macros */ = {
+			isa = PBXGroup;
+			children = (
+				22E1B27D1DA7CF6E0039B39C /* AddMacroXIB.swift */,
+				22E1B27E1DA7CF6E0039B39C /* AddMacroXIB.xib */,
 			);
 			name = Macros;
 			sourceTree = "<group>";
@@ -1844,6 +1857,7 @@
 		E7F57B071BA7FE32006B0D71 /* ScanItemsViewController */ = {
 			isa = PBXGroup;
 			children = (
+				22E1B27C1DA7CEAB0039B39C /* Macros */,
 				49C059621D9134650061A544 /* Cells */,
 				E79AEBA91B70A0EB00410E2D /* Device Parametars Screens */,
 				E75F41661B662ED1005080F1 /* ScanViewController.swift */,
@@ -2033,6 +2047,7 @@
 				223878A51C919A70001357E0 /* AddLocationXIB.xib in Resources */,
 				4983C7E61D4B5F2D00C8E865 /* RelayParametersCell.xib in Resources */,
 				E79AEBB91B70C43300410E2D /* RelayParametarVC.xib in Resources */,
+				22E1B2801DA7CF6E0039B39C /* AddMacroXIB.xib in Resources */,
 				73E231201BA6E2C4003E41EC /* SequenceParametarVC.xib in Resources */,
 				E7DC67BE1B457C0E00EA6543 /* weather-moon.png in Resources */,
 				E7DC67C71B457C0E00EA6543 /* weather-shower@2x.png in Resources */,
@@ -2177,6 +2192,7 @@
 				739D57161C809B30004CC50E /* DeviceImage+CoreDataProperties.swift in Sources */,
 				73EBE28E1C1043D70095F372 /* DeviceCollectionView+Extensions.swift in Sources */,
 				E7AAF76A1BBEA34000992A18 /* CameraParametarXIBViewController.swift in Sources */,
+				22E1B27F1DA7CF6E0039B39C /* AddMacroXIB.swift in Sources */,
 				73B42ACA1BCBBB0500D28621 /* LocalSearchParametar.swift in Sources */,
 				73F1ECA91C8978B2007CEEAA /* Location.swift in Sources */,
 				7372EB401BC410800097806D /* Gateway.swift in Sources */,
