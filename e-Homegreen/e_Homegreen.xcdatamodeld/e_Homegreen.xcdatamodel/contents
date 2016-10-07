@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="15G1004" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="15G1004" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Card" representedClassName=".Card" syncable="YES">
         <attribute name="address" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="cardId" attributeType="String" syncable="YES"/>
@@ -185,7 +185,14 @@
         <relationship name="zones" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Zone" inverseName="location" inverseEntity="Zone" syncable="YES"/>
     </entity>
     <entity name="Macro" representedClassName="Macro" syncable="YES">
+        <attribute name="entityLevelId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="macroCategoryId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="macroId" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="macroImageOneCustom" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="macroImageOneDefault" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="macroImageTwoCustom" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="macroImageTwoDefault" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="macroZoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <relationship name="location" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="macros" inverseEntity="Location" syncable="YES"/>
     </entity>
@@ -332,6 +339,7 @@
         <element name="IBeacon" positionX="-279" positionY="-1503" width="128" height="58"/>
         <element name="Image" positionX="-252" positionY="-2043" width="128" height="90"/>
         <element name="Location" positionX="-1181" positionY="-1504" width="128" height="285"/>
+        <element name="Macro" positionX="-954" positionY="-1935" width="128" height="195"/>
         <element name="MenuItem" positionX="-954" positionY="-1935" width="128" height="105"/>
         <element name="PCCommand" positionX="-470" positionY="-2104" width="128" height="105"/>
         <element name="Scene" positionX="-639" positionY="-1879" width="128" height="240"/>
@@ -342,6 +350,5 @@
         <element name="Timer" positionX="-621" positionY="-1827" width="128" height="300"/>
         <element name="User" positionX="-675" positionY="-1764" width="128" height="225"/>
         <element name="Zone" positionX="-459" positionY="-1510" width="128" height="180"/>
-        <element name="Macro" positionX="-954" positionY="-1935" width="128" height="90"/>
     </elements>
 </model>

@@ -15,8 +15,15 @@ extension Macro {
         return NSFetchRequest<Macro>(entityName: "Macro");
     }
 
-    @NSManaged public var name: String
-    @NSManaged public var macroId: NSNumber
+    @NSManaged var name: String
+    @NSManaged var macroId: NSNumber
     @NSManaged var location: Location
+    @NSManaged var macroImageOneCustom: String?
+    @NSManaged var macroImageOneDefault: String?
+    @NSManaged var macroImageTwoCustom: String?
+    @NSManaged var macroImageTwoDefault: String?
+    @NSManaged var entityLevelId: NSNumber?
+    @NSManaged var macroZoneId: NSNumber?
+    @NSManaged var macroCategoryId: NSNumber?
 
 }
