@@ -124,11 +124,12 @@
         if (indexPath as NSIndexPath).row != menu.count {
             if let item = Menu(rawValue: Int(menu[(indexPath as NSIndexPath).row].id)){
                 self.revealViewController().pushFrontViewController(item.controller, animated: true)
+                if let user = user{
+                    user.lastScreenId = menu[indexPath.row].id
+                }
             }
         }
-        if let user = user{
-            user.lastScreenId = menu[indexPath.row].id
-        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
