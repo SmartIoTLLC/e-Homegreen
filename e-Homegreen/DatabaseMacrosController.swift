@@ -14,6 +14,49 @@ class DatabaseMacrosController: NSObject {
     static let shared = DatabaseMacrosController()
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
+    func getMacrosByUser(_ filterParametar:FilterItem) -> [Macro] {
+        if let user = DatabaseUserController.shared.logedUserOrAdmin(){
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Macro.fetchRequest()
+            
+            let sortDescriptorOne = NSSortDescriptor(key: "name", ascending: true)
+            let sortDescriptorTwo = NSSortDescriptor(key: "macroId", ascending: true)
+            fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo]
+            
+            var predicateArray:[NSPredicate] = [NSPredicate(format: "location.user == %@", user)]
+            
+            if filterParametar.location != "All" {
+                predicateArray.append(NSPredicate(format: "location.name == %@", filterParametar.location))
+            }
+            if filterParametar.levelObjectId != "All" {
+                if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId){
+                    predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!))
+                }
+            }
+            if filterParametar.zoneObjectId != "All" {
+                if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
+                    predicateArray.append(NSPredicate(format: "macroZoneId == %@", zone.id!))
+                }
+            }
+            if filterParametar.categoryObjectId != "All" {
+                if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
+                    predicateArray.append(NSPredicate(format: "macroCategoryId == %@", category.id!))
+                }
+            }
+            
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+            
+            fetchRequest.predicate = compoundPredicate
+            do {
+                let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Macro]
+                return fetResults!
+            } catch  {
+                
+            }
+        }
+        return []
+        
+    }
+    
     func getMacrosByLocation(location: Location) -> [Macro] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Macro.fetchRequest()
         

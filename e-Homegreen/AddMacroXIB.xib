@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Tahoma.ttf">
+            <string>Tahoma</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddMacroXIB" customModule="e_Homegreen" customModuleProvider="target">
+            <connections>
+                <outlet property="backView" destination="rg6-qd-GeW" id="Jpj-3j-2Z7"/>
+                <outlet property="btnAdd" destination="i0y-WH-8FQ" id="tDd-de-hbx"/>
+                <outlet property="btnSet" destination="ZVc-6x-CgA" id="ZWC-aS-Nkz"/>
+                <outlet property="chooseOption" destination="yx4-st-sec" id="2Nj-0T-EGT"/>
+                <outlet property="nameTextField" destination="6Bz-EA-lh9" id="Vvd-4g-jch"/>
+                <outlet property="slider" destination="NcU-2A-bHe" id="d1c-U6-aYL"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rg6-qd-GeW" userLabel="Back View" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="f0T-XU-oJj">
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="L2B-7J-Ldm">
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xPn-6G-5Uo">
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="40" id="ypb-1o-vhp"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6Bz-EA-lh9" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
+                                        </textField>
+                                    </subviews>
+                                </stackView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yx4-st-sec" userLabel="Level" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="40" id="A4C-rQ-1YY"/>
+                                    </constraints>
+                                    <state key="normal">
+                                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                </button>
+                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="NcU-2A-bHe"/>
+                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="SJB-n3-80f">
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZVc-6x-CgA" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="40" id="VmI-A3-Yw4"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                            <state key="normal" title="CANCEL">
+                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </state>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i0y-WH-8FQ" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                            <state key="normal" title="SAVE">
+                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </state>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="i0y-WH-8FQ" firstAttribute="height" secondItem="ZVc-6x-CgA" secondAttribute="height" id="pX9-Kz-2Mq"/>
+                                    </constraints>
+                                </stackView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="NcU-2A-bHe" firstAttribute="leading" secondItem="f0T-XU-oJj" secondAttribute="leading" constant="8" id="7ce-IR-iJT"/>
+                                <constraint firstItem="yx4-st-sec" firstAttribute="leading" secondItem="f0T-XU-oJj" secondAttribute="leading" constant="8" id="d65-Pt-Hgp"/>
+                                <constraint firstAttribute="trailing" secondItem="yx4-st-sec" secondAttribute="trailing" constant="8" id="fVm-nE-9by"/>
+                                <constraint firstItem="L2B-7J-Ldm" firstAttribute="leading" secondItem="f0T-XU-oJj" secondAttribute="leading" constant="8" id="fcI-II-Rxz"/>
+                                <constraint firstAttribute="trailing" secondItem="SJB-n3-80f" secondAttribute="trailing" constant="8" id="maT-hk-ewO"/>
+                                <constraint firstAttribute="trailing" secondItem="NcU-2A-bHe" secondAttribute="trailing" constant="8" id="pii-r1-Bza"/>
+                                <constraint firstItem="SJB-n3-80f" firstAttribute="leading" secondItem="f0T-XU-oJj" secondAttribute="leading" constant="8" id="t9q-Zf-Sta"/>
+                                <constraint firstAttribute="trailing" secondItem="L2B-7J-Ldm" secondAttribute="trailing" constant="8" id="xkM-QD-89Q"/>
+                            </constraints>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="f0T-XU-oJj" secondAttribute="trailing" id="4pc-CA-EmK"/>
+                        <constraint firstItem="f0T-XU-oJj" firstAttribute="top" secondItem="rg6-qd-GeW" secondAttribute="top" constant="5" id="TwO-1T-NWo"/>
+                        <constraint firstAttribute="width" constant="350" id="g1U-rf-HNm"/>
+                        <constraint firstAttribute="bottom" secondItem="f0T-XU-oJj" secondAttribute="bottom" constant="8" id="kTO-tB-iuW"/>
+                        <constraint firstItem="f0T-XU-oJj" firstAttribute="leading" secondItem="rg6-qd-GeW" secondAttribute="leading" id="zwW-ib-prd"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="g1U-rf-HNm"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=compact-widthClass=compact">
+                        <mask key="constraints">
+                            <include reference="g1U-rf-HNm"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=compact-widthClass=regular">
+                        <mask key="constraints">
+                            <include reference="g1U-rf-HNm"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <mask key="constraints">
+                            <include reference="g1U-rf-HNm"/>
+                        </mask>
+                    </variation>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="rg6-qd-GeW" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="FZ9-Ns-G1U"/>
+                <constraint firstItem="rg6-qd-GeW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="NyD-bk-2WD"/>
+                <constraint firstItem="rg6-qd-GeW" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="WbQ-e5-q7Q"/>
+                <constraint firstAttribute="trailing" secondItem="rg6-qd-GeW" secondAttribute="trailing" constant="10" id="yj4-0m-zDr"/>
+            </constraints>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="NyD-bk-2WD"/>
+                    <exclude reference="WbQ-e5-q7Q"/>
+                    <exclude reference="yj4-0m-zDr"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=compact-widthClass=compact">
+                <mask key="constraints">
+                    <include reference="WbQ-e5-q7Q"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=compact-widthClass=regular">
+                <mask key="constraints">
+                    <include reference="WbQ-e5-q7Q"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=compact">
+                <mask key="constraints">
+                    <include reference="NyD-bk-2WD"/>
+                    <include reference="yj4-0m-zDr"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <include reference="WbQ-e5-q7Q"/>
+                </mask>
+            </variation>
+        </view>
+    </objects>
+</document>

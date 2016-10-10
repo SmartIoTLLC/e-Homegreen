@@ -103,6 +103,11 @@
 		22D7EBA21D78418F00853051 /* SecurityLocationXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22D7EBA01D78418F00853051 /* SecurityLocationXIB.xib */; };
 		22D867671CBE832400A6575A /* ZoneAndCategoryControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D867661CBE832400A6575A /* ZoneAndCategoryControl.swift */; };
 		22D867691CBE855900A6575A /* OutgoingHandlerForZoneAndCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D867681CBE855900A6575A /* OutgoingHandlerForZoneAndCategory.swift */; };
+		22E1B2761DA78F790039B39C /* MacrosMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E1B2751DA78F790039B39C /* MacrosMenuViewController.swift */; };
+		22E1B2781DA78FA20039B39C /* MacrosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E1B2771DA78FA20039B39C /* MacrosCollectionViewCell.swift */; };
+		22E1B27B1DA791C20039B39C /* Macros.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22E1B2791DA791C20039B39C /* Macros.storyboard */; };
+		22E1B27F1DA7CF6E0039B39C /* AddMacroXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E1B27D1DA7CF6E0039B39C /* AddMacroXIB.swift */; };
+		22E1B2801DA7CF6E0039B39C /* AddMacroXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22E1B27E1DA7CF6E0039B39C /* AddMacroXIB.xib */; };
 		22E7B2101CC4FC9A00F813AC /* ResetPasswordXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E7B20E1CC4FC9A00F813AC /* ResetPasswordXIB.swift */; };
 		22E7B2111CC4FC9A00F813AC /* ResetPasswordXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22E7B20F1CC4FC9A00F813AC /* ResetPasswordXIB.xib */; };
 		22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */; };
@@ -468,6 +473,11 @@
 		22D7EBA01D78418F00853051 /* SecurityLocationXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecurityLocationXIB.xib; sourceTree = "<group>"; };
 		22D867661CBE832400A6575A /* ZoneAndCategoryControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ZoneAndCategoryControl.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		22D867681CBE855900A6575A /* OutgoingHandlerForZoneAndCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = OutgoingHandlerForZoneAndCategory.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		22E1B2751DA78F790039B39C /* MacrosMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacrosMenuViewController.swift; sourceTree = "<group>"; };
+		22E1B2771DA78FA20039B39C /* MacrosCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacrosCollectionViewCell.swift; sourceTree = "<group>"; };
+		22E1B27A1DA791C20039B39C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "e-Homegreen/Base.lproj/Macros.storyboard"; sourceTree = "<group>"; };
+		22E1B27D1DA7CF6E0039B39C /* AddMacroXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddMacroXIB.swift; sourceTree = "<group>"; };
+		22E1B27E1DA7CF6E0039B39C /* AddMacroXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddMacroXIB.xib; sourceTree = "<group>"; };
 		22E7B20E1CC4FC9A00F813AC /* ResetPasswordXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordXIB.swift; sourceTree = "<group>"; };
 		22E7B20F1CC4FC9A00F813AC /* ResetPasswordXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResetPasswordXIB.xib; sourceTree = "<group>"; };
 		22EEAD0C1C8715E000AD66F0 /* EditCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCategoryViewController.swift; sourceTree = "<group>"; };
@@ -1060,6 +1070,18 @@
 		22E1B2721DA78EEF0039B39C /* Macros */ = {
 			isa = PBXGroup;
 			children = (
+				22E1B2791DA791C20039B39C /* Macros.storyboard */,
+				22E1B2751DA78F790039B39C /* MacrosMenuViewController.swift */,
+				22E1B2771DA78FA20039B39C /* MacrosCollectionViewCell.swift */,
+			);
+			name = Macros;
+			sourceTree = "<group>";
+		};
+		22E1B27C1DA7CEAB0039B39C /* Macros */ = {
+			isa = PBXGroup;
+			children = (
+				22E1B27D1DA7CF6E0039B39C /* AddMacroXIB.swift */,
+				22E1B27E1DA7CF6E0039B39C /* AddMacroXIB.xib */,
 			);
 			name = Macros;
 			sourceTree = "<group>";
@@ -1325,11 +1347,11 @@
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				22E1B2721DA78EEF0039B39C /* Macros */,
 				223690C51CAD00C00037B54A /* Login */,
 				2232922C1CABE48E0001422B /* PullDown */,
 				223292291CABD3280001422B /* Energy */,
 				223292281CABD1B60001422B /* Surveillance */,
+				22E1B2721DA78EEF0039B39C /* Macros */,
 				223292261CABD0130001422B /* Flags */,
 				223292251CABCE180001422B /* Timers */,
 				223292241CABCDFB0001422B /* Sequences */,
@@ -1835,6 +1857,7 @@
 		E7F57B071BA7FE32006B0D71 /* ScanItemsViewController */ = {
 			isa = PBXGroup;
 			children = (
+				22E1B27C1DA7CEAB0039B39C /* Macros */,
 				49C059621D9134650061A544 /* Cells */,
 				E79AEBA91B70A0EB00410E2D /* Device Parametars Screens */,
 				E75F41661B662ED1005080F1 /* ScanViewController.swift */,
@@ -1989,6 +2012,7 @@
 				E7DC67C81B457C0E00EA6543 /* weather-snow.png in Resources */,
 				4D16A1291D51CB8D00817477 /* HvacParametersCell.xib in Resources */,
 				22D7EBA21D78418F00853051 /* SecurityLocationXIB.xib in Resources */,
+				22E1B27B1DA791C20039B39C /* Macros.storyboard in Resources */,
 				738DECB11BBBFC1100D6B834 /* Security.json in Resources */,
 				22495D271CAA7F510034FC94 /* Surveillance.storyboard in Resources */,
 				E70515A31BB3E147009FDA0D /* SurveillanceSettingsVC.xib in Resources */,
@@ -2023,6 +2047,7 @@
 				223878A51C919A70001357E0 /* AddLocationXIB.xib in Resources */,
 				4983C7E61D4B5F2D00C8E865 /* RelayParametersCell.xib in Resources */,
 				E79AEBB91B70C43300410E2D /* RelayParametarVC.xib in Resources */,
+				22E1B2801DA7CF6E0039B39C /* AddMacroXIB.xib in Resources */,
 				73E231201BA6E2C4003E41EC /* SequenceParametarVC.xib in Resources */,
 				E7DC67BE1B457C0E00EA6543 /* weather-moon.png in Resources */,
 				E7DC67C71B457C0E00EA6543 /* weather-shower@2x.png in Resources */,
@@ -2167,6 +2192,7 @@
 				739D57161C809B30004CC50E /* DeviceImage+CoreDataProperties.swift in Sources */,
 				73EBE28E1C1043D70095F372 /* DeviceCollectionView+Extensions.swift in Sources */,
 				E7AAF76A1BBEA34000992A18 /* CameraParametarXIBViewController.swift in Sources */,
+				22E1B27F1DA7CF6E0039B39C /* AddMacroXIB.swift in Sources */,
 				73B42ACA1BCBBB0500D28621 /* LocalSearchParametar.swift in Sources */,
 				73F1ECA91C8978B2007CEEAA /* Location.swift in Sources */,
 				7372EB401BC410800097806D /* Gateway.swift in Sources */,
@@ -2213,6 +2239,7 @@
 				73E485231B60D531007A35AD /* InOutSocket.swift in Sources */,
 				222889B61CBBD60F004EBADD /* DatabaseFlagsController.swift in Sources */,
 				22E7B2101CC4FC9A00F813AC /* ResetPasswordXIB.swift in Sources */,
+				22E1B2781DA78FA20039B39C /* MacrosCollectionViewCell.swift in Sources */,
 				737CED2E1C04571E0055DA0E /* CustomGradientButtonWhite.swift in Sources */,
 				223FB5911D64414600DC2627 /* DatabaseImageController.swift in Sources */,
 				73F1ECA81C8978B2007CEEAA /* Location+CoreDataProperties.swift in Sources */,
@@ -2320,6 +2347,7 @@
 				2241E4701CC6389700BCD763 /* SurveillanceCell.swift in Sources */,
 				49C059661D91373C0061A544 /* ScanCell.swift in Sources */,
 				7372EB3F1BC410800097806D /* Gateway+CoreDataProperties.swift in Sources */,
+				22E1B2761DA78F790039B39C /* MacrosMenuViewController.swift in Sources */,
 				E7F5FC221BB985E600071982 /* MoveCameraHandler.swift in Sources */,
 				E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */,
 				E7F0A6061BBBF06000B6648F /* CustomGradientButton.swift in Sources */,
@@ -2442,6 +2470,15 @@
 				22495D2E1CAA81490034FC94 /* Base */,
 			);
 			name = PCControl.storyboard;
+			sourceTree = "<group>";
+		};
+		22E1B2791DA791C20039B39C /* Macros.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				22E1B27A1DA791C20039B39C /* Base */,
+			);
+			name = Macros.storyboard;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		73E206B21B2EEFFE0008B002 /* Main.storyboard */ = {

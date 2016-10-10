@@ -887,6 +887,13 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             }
         }
     }
+    
+    // long press on cell
+    func addMacro(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
+            showAddMacro()
+        }
+    }
 }
 
 //MARK:- Table view dlegates and data source
@@ -918,6 +925,11 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
             cell.isEnabledSwitch.tag = (indexPath as NSIndexPath).row
             cell.isEnabledSwitch.addTarget(self, action: #selector(ScanDevicesViewController.changeValueEnable(_:)), for: UIControlEvents.valueChanged)
             cell.isVisibleSwitch.addTarget(self, action: #selector(ScanDevicesViewController.changeValueVisible(_:)), for: UIControlEvents.valueChanged)
+            
+            let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ScanDevicesViewController.addMacro(_:)))
+            longPress.minimumPressDuration = 0.5
+            cell.addGestureRecognizer(longPress)
+            
             return cell
         }
         let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
@@ -928,7 +940,6 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
         DispatchQueue.main.async(execute: {
             self.showChangeDeviceParametar(device: self.devices[(indexPath as NSIndexPath).row], scanDevicesViewController: self)
         })
-        
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return devices.count

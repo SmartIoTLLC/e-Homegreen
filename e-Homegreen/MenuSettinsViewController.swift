@@ -9,13 +9,14 @@
 import UIKit
 
 enum Menu:Int{
-    case dashboard = 0, devices, scenes, events, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, settings, notSuperUserSettings
+    case dashboard = 0, devices, scenes, events, macros, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, settings, notSuperUserSettings
     var description:String{
         switch self{
             case .dashboard: return "Dashboard"
             case .devices: return "Devices"
             case .scenes: return "Scenes"
             case .events: return "Events"
+            case .macros: return "Macros"
             case .sequences: return "Sequences"
             case .timers: return "Timers"
             case .flags: return "Flags"
@@ -36,6 +37,7 @@ enum Menu:Int{
         case .devices: return MenuViewController.devicesVC
         case .scenes: return MenuViewController.scenesVC
         case .events: return MenuViewController.eventsVC
+        case .macros: return MenuViewController.macrosVC
         case .sequences: return MenuViewController.sequencesVC
         case .timers: return MenuViewController.timersVC
         case .flags: return MenuViewController.flagsVC
@@ -50,8 +52,8 @@ enum Menu:Int{
         }
     }
     
-    static let allMenuItem = [dashboard, devices, scenes, events, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, settings]
-    static let allMenuItemNotSuperUser = [dashboard, devices, scenes, events, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, notSuperUserSettings]
+    static let allMenuItem = [dashboard, devices, scenes, events, macros, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, settings]
+    static let allMenuItemNotSuperUser = [dashboard, devices, scenes, events, macros, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, notSuperUserSettings]
 }
 
 class MenuViewController{
@@ -59,6 +61,7 @@ class MenuViewController{
     static let devicesVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Devices") as! UINavigationController)
     static let scenesVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Scenes") as! UINavigationController)
     static let eventsVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Events") as! UINavigationController)
+    static let macrosVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Macros") as! UINavigationController)
     static let sequencesVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Sequences") as! UINavigationController)
     static let timersVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Timers") as! UINavigationController)
     static let flagsVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Flags") as! UINavigationController)
