@@ -11,5 +11,6 @@ import CoreData
 
 @objc(Macro)
 public class Macro: NSManagedObject {
-
+    
+    var isSelected:Bool = false
 }

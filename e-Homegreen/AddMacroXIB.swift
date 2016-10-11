@@ -23,10 +23,13 @@ class AddMacroXIB: PopoverVC {
     
     @IBOutlet weak var backView: CustomGradientBackground!
     
-    init(){
+    var device:Device!
+    
+    init(device: Device){
         super.init(nibName: "AddMacroXIB", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.custom
+        self.device = device
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -64,12 +67,13 @@ class AddMacroXIB: PopoverVC {
         
     }
     
-    @IBAction func saveAction(_ sender: AnyObject) {
+    @IBAction func addAction(_ sender: AnyObject) {
+        showAddMacroAction(device: device)
         
     }
     
-    @IBAction func cancelAction(_ sender: AnyObject) {
-        self.dismiss(animated: true, completion: nil)
+    @IBAction func setAction(_ sender: AnyObject) {
+        
     }
     
     func dismissViewController () {
@@ -158,8 +162,8 @@ extension AddMacroXIB : UIViewControllerTransitioningDelegate {
 }
 
 extension UIViewController {
-    func showAddMacro() {
-        let addMacro = AddMacroXIB()
+    func showAddMacro(device: Device) {
+        let addMacro = AddMacroXIB(device: device)
         self.present(addMacro, animated: true, completion: nil)
     }
 }

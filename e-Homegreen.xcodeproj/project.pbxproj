@@ -89,6 +89,8 @@
 		2252B4081CA58A4F005E84AA /* ImportSSIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */; };
 		225469001CBD142500473BC7 /* DatabaseUserTimerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225468FF1CBD142500473BC7 /* DatabaseUserTimerController.swift */; };
 		225469021CBD19DD00473BC7 /* UsersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225469011CBD19DD00473BC7 /* UsersCell.swift */; };
+		2256950A1DAB93B0008DFFCA /* AddMacroActionXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225695081DAB93B0008DFFCA /* AddMacroActionXIB.swift */; };
+		2256950B1DAB93B0008DFFCA /* AddMacroActionXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 225695091DAB93B0008DFFCA /* AddMacroActionXIB.xib */; };
 		225F59841D74402F00156BCD /* CommonXIBTransitionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225F59831D74402F00156BCD /* CommonXIBTransitionVC.swift */; };
 		225F59871D74427300156BCD /* BigSliderXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225F59851D74427300156BCD /* BigSliderXIB.swift */; };
 		225F59881D74427300156BCD /* BigSliderXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 225F59861D74427300156BCD /* BigSliderXIB.xib */; };
@@ -458,6 +460,8 @@
 		2252B4071CA58A4F005E84AA /* ImportSSIDViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportSSIDViewController.swift; sourceTree = "<group>"; };
 		225468FF1CBD142500473BC7 /* DatabaseUserTimerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseUserTimerController.swift; sourceTree = "<group>"; };
 		225469011CBD19DD00473BC7 /* UsersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCell.swift; sourceTree = "<group>"; };
+		225695081DAB93B0008DFFCA /* AddMacroActionXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddMacroActionXIB.swift; sourceTree = "<group>"; };
+		225695091DAB93B0008DFFCA /* AddMacroActionXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddMacroActionXIB.xib; sourceTree = "<group>"; };
 		225F59831D74402F00156BCD /* CommonXIBTransitionVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonXIBTransitionVC.swift; sourceTree = "<group>"; };
 		225F59851D74427300156BCD /* BigSliderXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigSliderXIB.swift; sourceTree = "<group>"; };
 		225F59861D74427300156BCD /* BigSliderXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BigSliderXIB.xib; sourceTree = "<group>"; };
@@ -1082,6 +1086,8 @@
 			children = (
 				22E1B27D1DA7CF6E0039B39C /* AddMacroXIB.swift */,
 				22E1B27E1DA7CF6E0039B39C /* AddMacroXIB.xib */,
+				225695081DAB93B0008DFFCA /* AddMacroActionXIB.swift */,
+				225695091DAB93B0008DFFCA /* AddMacroActionXIB.xib */,
 			);
 			name = Macros;
 			sourceTree = "<group>";
@@ -1981,6 +1987,7 @@
 				22495D1B1CAA797C0034FC94 /* Sequences.storyboard in Resources */,
 				E7AAF76B1BBEA34000992A18 /* CameraParametarXIBViewController.xib in Resources */,
 				73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */,
+				2256950B1DAB93B0008DFFCA /* AddMacroActionXIB.xib in Resources */,
 				73EF277C1C07583F003A3A0A /* SurveilenceUrlsVC.xib in Resources */,
 				E7E149BB1B3AAF7F005FD41D /* Tahoma.ttf in Resources */,
 				E7DC67CA1B457C0E00EA6543 /* weather-tstorm.png in Resources */,
@@ -2375,6 +2382,7 @@
 				223878991C916645001357E0 /* ListOfDevice_AppViewController.swift in Sources */,
 				49C059761D913D7D0061A544 /* ScanZone.swift in Sources */,
 				E79AEBB81B70C43300410E2D /* RelayParametarVC.swift in Sources */,
+				2256950A1DAB93B0008DFFCA /* AddMacroActionXIB.swift in Sources */,
 				49C0596C1D91386A0061A544 /* EventsCell.swift in Sources */,
 				22402A851CBFC54C00CBB6E4 /* SecurityCollectionCell.swift in Sources */,
 				E73993181BCEA05100C74486 /* AnswersHandler.swift in Sources */,

@@ -891,7 +891,9 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     // long press on cell
     func addMacro(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
-            showAddMacro()
+            if let tag = gestureRecognizer.view?.tag{
+                showAddMacro(device: devices[tag])
+            }
         }
     }
 }
@@ -928,6 +930,7 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
             
             let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ScanDevicesViewController.addMacro(_:)))
             longPress.minimumPressDuration = 0.5
+            cell.tag = indexPath.row
             cell.addGestureRecognizer(longPress)
             
             return cell
