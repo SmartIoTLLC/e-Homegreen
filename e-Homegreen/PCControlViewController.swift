@@ -153,10 +153,10 @@ class PCControlViewController: PopoverVC {
         let tag = s.tag
         let address = [Byte(Int(pcs[tag].gateway.addressOne)), Byte(Int(pcs[tag].gateway.addressTwo)), Byte(Int(pcs[tag].address))]
         if value == 0x00 {
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.setPCVolume(address, volume: pcs[tag].pcVolume, mute: 0x01), gateway: pcs[tag].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setPCVolume(address, volume: 0x00, mute: 0x01), gateway: pcs[tag].gateway)
         } else {
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.setPCVolume(address, volume: Byte(value)), gateway: pcs[tag].gateway)
-            pcs[tag].pcVolume = Byte(value)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setPCVolume(address, volume: Byte(value*100)), gateway: pcs[tag].gateway)
+            pcs[tag].currentValue = NSNumber(value: Int(value*100))
         }
     }
     
@@ -171,10 +171,10 @@ class PCControlViewController: PopoverVC {
         let address = [Byte(Int(pcs[tag].gateway.addressOne)), Byte(Int(pcs[tag].gateway.addressTwo)), Byte(Int(pcs[tag].address))]
         let value = Byte(Int(slider.value * 100))
         if value == 0x00 {
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.setPCVolume(address, volume: UInt8(pcs[tag].currentValue, mute: 0x01)), gateway: pcs[tag].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setPCVolume(address, volume: 0x00, mute: 0x01), gateway: pcs[tag].gateway)
         } else {
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.setPCVolume(address, volume: value), gateway: pcs[tag].gateway)
-            pcs[tag].pcVolume = value
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setPCVolume(address, volume: value*100), gateway: pcs[tag].gateway)
+            pcs[tag].currentValue = NSNumber(value: Int(value*100))
         }
     }
     @IBAction func fullScreen(_ sender: UIButton) {
