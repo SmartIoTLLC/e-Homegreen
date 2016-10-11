@@ -140,6 +140,9 @@ class IncomingHandler: NSObject {
                 if messageIsSaltoStatus() {
                     self.parseMessageSaltoStatus(self.byteArray)
                 }
+                if messageIsPCStatus(){
+                    self.parsePCStatus(self.byteArray)
+                }
             }
         }
     }
@@ -487,6 +490,31 @@ class IncomingHandler: NSObject {
         }
         
     }
+    func parseMessageNewDeviceParameter(_ byteArray:[Byte]) {
+        if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
+            self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
+            for device in devices {
+                if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) {
+                    var string:String = ""
+                    for j in 12..<(byteArray.count-2) {
+                        string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))!))" //  device name
+                    }
+                    if string != "" {
+                        device.name = string
+                    } else {
+                        device.name = "Unknown"
+                    }
+                    device.categoryId = NSNumber(value: Int(byteArray[8]))
+                    device.zoneId = NSNumber(value: Int(byteArray[9]))
+                    device.parentZoneId = NSNumber(value: Int(byteArray[10]))
+                    // When we change category it will reset images
+                    device.resetImages(appDel.managedObjectContext!)
+                }
+            }
+            CoreDataController.shahredInstance.saveChanges()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+        }
+    }
     func parseMessageSaltoParameters(_ byteArray: [Byte]){
         // MARK - Salto
         // This response message contains two bytes which carry information about which channel (device) is selected.
@@ -813,31 +841,7 @@ class IncomingHandler: NSObject {
         CoreDataController.shahredInstance.saveChanges()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }
-    func parseMessageNewDeviceParameter(_ byteArray:[Byte]) {
-        if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
-            self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-            for device in devices {
-                if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) {
-                    var string:String = ""
-                    for j in 12..<(byteArray.count-2) {
-                        string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))!))" //  device name
-                    }
-                    if string != "" {
-                        device.name = string
-                    } else {
-                        device.name = "Unknown"
-                    }
-                    device.categoryId = NSNumber(value: Int(byteArray[8]))
-                    device.zoneId = NSNumber(value: Int(byteArray[9]))
-                    device.parentZoneId = NSNumber(value: Int(byteArray[10]))
-                    // When we change category it will reset images
-                    device.resetImages(appDel.managedObjectContext!)
-                }
-            }
-            CoreDataController.shahredInstance.saveChanges()
-            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
-        }
-    }
+    
     //  informacije o stanjima na uredjajima
     func parseMessageChannelsState (_ byteArray:[Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
@@ -1122,6 +1126,21 @@ class IncomingHandler: NSObject {
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }
     
+    // PC Control
+    func parsePCStatus(_ byteArray: [Byte]){
+        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
+        for device in devices {
+            if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) {
+                device.currentValue = NSNumber(value: Int(byteArray[8]))
+//                let data = ["deviceDidReceiveSignalFromGateway":device]
+//                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
+                break
+            }
+        }
+        CoreDataController.shahredInstance.saveChanges()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshPC), object: self, userInfo: nil)
+    }
+    
     // Helpers
     func parseMessageAndPrint(_ byteArray: [UInt8]){
         let byteLength = byteArray.count
@@ -1372,6 +1391,13 @@ extension IncomingHandler {
     }
     func messageIsNewSequence() -> Bool {
         if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x0A {
+            return true
+        }
+        return false
+    }
+    
+    func messageIsPCStatus() -> Bool {
+        if self.byteArray[5] == 0xFA && self.byteArray[6] == 0x01 {
             return true
         }
         return false

@@ -191,10 +191,6 @@ class DevicesViewController: PopoverVC{
     func updateSubtitle(_ location: String, level: String, zone: String){
         headerTitleSubtitleView.setTitleAndSubtitle("Devices", subtitle: location + " " + level + " " + zone)
     }
-    func fetchDevicesInBackground(){
-        updateCells()
-    }
-
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Device)
     
     func updateDeviceList (_ user:User) {
@@ -761,7 +757,7 @@ class DevicesViewController: PopoverVC{
             if isScrolling {
                 shouldUpdate = true
             } else {
-                fetchDevicesInBackground()
+                self.updateCells()
             }
         }
     }
@@ -1176,7 +1172,7 @@ extension DevicesViewController: FilterPullDownDelegate{
         if let user = userLogged{
             updateDeviceList(user)
             deviceCollectionView.reloadData()
-            fetchDevicesInBackground()
+            updateCells()
         }
         TimerForFilter.shared.counterDevices = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.devices)
         TimerForFilter.shared.startTimer(type: Menu.devices)
