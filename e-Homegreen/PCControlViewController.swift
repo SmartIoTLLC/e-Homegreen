@@ -60,16 +60,10 @@ class PCControlViewController: PopoverVC {
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+            self.revealViewController().panGestureRecognizer().delegate = self
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             revealViewController().toggleAnimationDuration = 0.5
-            if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
-                revealViewController().rearViewRevealWidth = 200
-            }else{
-                revealViewController().rearViewRevealWidth = 200
-            }
-            
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            revealViewController().rearViewRevealWidth = 200
             
         }
         
@@ -155,6 +149,26 @@ class PCControlViewController: PopoverVC {
         scrollView.setDefaultFilterItem(Menu.pcControl)
     }
     
+    func changeSliderValueOnOneTap (_ gesture:UIGestureRecognizer) {
+        let s = gesture.view as! UISlider
+        if s.isHighlighted{
+            return // tap on thumb, let slider deal with it
+        }
+        let pt:CGPoint = gesture.location(in: s)
+        let percentage:CGFloat = pt.x / s.bounds.size.width
+        let delta:CGFloat = percentage * (CGFloat(s.maximumValue) - CGFloat(s.minimumValue))
+        let value:CGFloat = CGFloat(s.minimumValue) + delta;
+        s.setValue(Float(value), animated: true)
+        let tag = s.tag
+        let address = [Byte(Int(pcs[tag].gateway.addressOne)), Byte(Int(pcs[tag].gateway.addressTwo)), Byte(Int(pcs[tag].address))]
+        if value == 0x00 {
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setPCVolume(address, volume: pcs[tag].pcVolume, mute: 0x01), gateway: pcs[tag].gateway)
+        } else {
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setPCVolume(address, volume: Byte(value)), gateway: pcs[tag].gateway)
+            pcs[tag].pcVolume = Byte(value)
+        }
+    }
+    
     
     @IBAction func changeSliderValue(_ sender: AnyObject) {
         guard let slider = sender as? UISlider else {
@@ -213,7 +227,6 @@ extension PCControlViewController: SWRevealViewControllerDelegate{
     func openNotificationSettings(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             if let index = gestureRecognizer.view?.tag {
-                print("DUGO DRZANJE LABELE TAG: \(index)")
                 self.showPCNotifications(self.pcs[index])
             }
         }
@@ -228,6 +241,8 @@ extension PCControlViewController: UICollectionViewDataSource, UICollectionViewD
             
             let volume = Float(pcs[(indexPath as NSIndexPath).row].pcVolume)
             cell.pccontrolSlider.value = volume/100
+            
+            cell.pccontrolSlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PCControlViewController.changeSliderValueOnOneTap(_:))))
 
             let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(PCControlViewController.openNotificationSettings(_:)))
             longGesture.minimumPressDuration = 0.5
@@ -263,5 +278,15 @@ extension PCControlViewController: UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 5
+    }
+}
+
+extension PCControlViewController: UIGestureRecognizerDelegate{
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view! is UISlider{
+            return false
+        }
+        return true
     }
 }

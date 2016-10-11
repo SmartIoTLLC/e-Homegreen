@@ -49,6 +49,8 @@ class ScenesViewController: PopoverVC {
             
         }
         
+        scenesCollectionView.isUserInteractionEnabled = true
+        
         updateSceneList()
         changeFullScreeenImage()
 

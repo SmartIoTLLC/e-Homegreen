@@ -99,6 +99,8 @@ class SecurityViewController: PopoverVC{
             
         }
         
+        securityCollectionView.isUserInteractionEnabled = true
+        
         refreshSecurity()
         
         changeFullScreeenImage()

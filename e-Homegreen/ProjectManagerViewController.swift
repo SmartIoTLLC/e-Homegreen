@@ -32,6 +32,14 @@ class ProjectManagerViewController: UIViewController {
             revealViewController().rearViewRevealWidth = 200
         }
         
+        usersTableView.isUserInteractionEnabled = true
+        
+        if !AdminController.shared.isAdminLogged() {
+            addButton.isHidden = true
+        }else{
+            addButton.isHidden = false
+        }
+        
         reloadData()
         
         changeFullScreeenImage()
@@ -42,10 +50,6 @@ class ProjectManagerViewController: UIViewController {
 
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         UIView.hr_setToastThemeColor(color: UIColor.red)
-        
-        if !AdminController.shared.isAdminLogged() {
-            addButton.isHidden = true
-        }
         
         usersTableView.tableFooterView = UIView()
         
@@ -330,12 +334,12 @@ class UserCell: UITableViewCell{
 
         if !AdminController.shared.isAdminLogged() {
             if user.username != DatabaseUserController.shared.getLoggedUser()?.username{
-                chooseDatabaseButton.isEnabled = !(user.isLocked as! Bool)
-                editDatabaseButton.isEnabled = !(user.isLocked as! Bool)
+                chooseDatabaseButton.isEnabled = !(user.isLocked as Bool)
+                editDatabaseButton.isEnabled = !(user.isLocked as Bool)
             }
         }else{
-            chooseDatabaseButton.isEnabled = !(user.isLocked as! Bool)
-            editDatabaseButton.isEnabled = !(user.isLocked as! Bool)
+            chooseDatabaseButton.isEnabled = !(user.isLocked as Bool)
+            editDatabaseButton.isEnabled = !(user.isLocked as Bool)
         }
         
         

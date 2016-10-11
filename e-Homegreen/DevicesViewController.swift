@@ -103,16 +103,24 @@ class DevicesViewController: PopoverVC{
             
         }
         
+        deviceCollectionView.isUserInteractionEnabled = true
+        
         if AdminController.shared.isAdminLogged(){
             if let user = DatabaseUserController.shared.getOtherUser(){
                 userLogged = user
                 updateDeviceList(user)
+            }else{
+                devices = []
             }
+            deviceCollectionView.reloadData()
         }else{
             if let user = DatabaseUserController.shared.getLoggedUser(){
                 userLogged = user
                 updateDeviceList(user)
+            }else{
+                devices = []
             }
+            deviceCollectionView.reloadData()
         }
         
         changeFullScreeenImage()

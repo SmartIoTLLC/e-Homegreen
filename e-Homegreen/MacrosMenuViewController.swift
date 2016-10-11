@@ -60,6 +60,8 @@ class MacrosMenuViewController: PopoverVC {
             
         }
         
+        macrosCollectionView.isUserInteractionEnabled = true
+        
         reloadMacrosList()
         changeFullScreeenImage()
         

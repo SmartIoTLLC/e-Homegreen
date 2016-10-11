@@ -59,6 +59,8 @@ class SequencesViewController: PopoverVC {
                 revealViewController().rearViewRevealWidth = 200
             }
             
+            sequenceCollectionView.isUserInteractionEnabled = true
+            
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             

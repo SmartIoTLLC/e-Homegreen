@@ -24,7 +24,6 @@ class SurveillenceViewController: PopoverVC {
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     var data:Data?
-//    var sidebarMenuOpen : Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,6 +67,8 @@ class SurveillenceViewController: PopoverVC {
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
+        
+        cameraCollectionView.isUserInteractionEnabled = true
         
         fetchSurveillance()
         changeFullScreeenImage()

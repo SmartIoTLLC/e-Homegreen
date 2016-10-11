@@ -33,6 +33,7 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
     var minRefresh:Int = 0
     var settingArray:[SettingsItem]!
     var isMore = false
+    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var settingsTableView: UITableView!
     @IBOutlet weak var tableBottomConstraint: NSLayoutConstraint!
@@ -76,14 +77,9 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
                 menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
                 self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
                 revealViewController().toggleAnimationDuration = 0.5
-                if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
-                    revealViewController().rearViewRevealWidth = 200
-                }else{
-                    revealViewController().rearViewRevealWidth = 200
-                }
                 
-                self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-                view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+                revealViewController().rearViewRevealWidth = 200
+                
                 
             }
         }
@@ -168,9 +164,9 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
     }
     func lockProfile(_ sender:UISwitch){
         if let user = user{
-            user.isLocked = sender.isOn as NSNumber?
+            user.isLocked = sender.isOn as NSNumber
         }else if let user = DatabaseUserController.shared.getLoggedUser(){
-            user.isLocked = sender.isOn as NSNumber?
+            user.isLocked = sender.isOn as NSNumber
         }
         CoreDataController.shahredInstance.saveChanges()
         
@@ -312,22 +308,14 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource{
             
             cell.nameLabel.text = settingArray[(indexPath as NSIndexPath).section].description
             if let user = user{
-                if let locked = user.isLocked as? Bool{
-                    cell.openLastScreen.isOn = locked
-                }else{
-                    cell.openLastScreen.isOn = false
-                }
+                cell.openLastScreen.isOn = user.isLocked as Bool
             }else if let user = DatabaseUserController.shared.getLoggedUser(){
-                if let locked = user.isLocked as? Bool{
-                    cell.openLastScreen.isOn = locked
-                }else{
-                    cell.openLastScreen.isOn = false
-                }
+                cell.openLastScreen.isOn = user.isLocked as Bool
             }else{
                 cell.openLastScreen.isOn = false
             }
             
-            cell.openLastScreen.tag = (indexPath as NSIndexPath).section
+            cell.openLastScreen.tag = indexPath.section
             cell.backgroundColor = UIColor.clear
             cell.openLastScreen.addTarget(self, action: #selector(SettingsViewController.lockProfile(_:)), for: UIControlEvents.valueChanged)
             

@@ -40,6 +40,9 @@ class TimersViewController: PopoverVC {
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             
         }
+        
+        timersCollectionView.isUserInteractionEnabled = true
+        
         refreshTimerList()
         refreshTimersStatus()
         changeFullScreeenImage()
