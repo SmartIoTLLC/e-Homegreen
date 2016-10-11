@@ -63,14 +63,9 @@ class EnergyViewController: PopoverVC  {
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             revealViewController().toggleAnimationDuration = 0.5
-            if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
-                revealViewController().rearViewRevealWidth = 200
-            }else{
-                revealViewController().rearViewRevealWidth = 200
-            }
             
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            revealViewController().rearViewRevealWidth = 200
+            
          
         }
         

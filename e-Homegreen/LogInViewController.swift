@@ -84,7 +84,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
                     
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let sideMenu = storyboard.instantiateViewController(withIdentifier: "SideMenu") as! SWRevealViewController
-                    var controller:UINavigationController = Menu.settings.controller
+                    var controller:UINavigationController = user.isSuperUser.boolValue ? Menu.settings.controller : Menu.notSuperUserSettings.controller
                     if user.openLastScreen.boolValue == true{
                         if let id = user.lastScreenId as? Int, let menu = Menu(rawValue: id) {
                             controller = menu.controller

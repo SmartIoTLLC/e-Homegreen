@@ -63,9 +63,7 @@ class AddUserXIB: CommonXIBTransitionVC {
             passwordTextView.isEnabled = false
             confirmPasswordtextView.isEnabled = false
             
-            if let issuperuser = user.isSuperUser as? Bool{
-                superUserSwitch.isOn = issuperuser
-            }
+            superUserSwitch.isOn = user.isSuperUser as Bool
             
             if let id = user.customImageId{
                 if let image = DatabaseImageController.shared.getImageById(id){
@@ -124,7 +122,7 @@ class AddUserXIB: CommonXIBTransitionVC {
             }
             user.username = username
             user.isLocked = false
-            user.isSuperUser = superUserSwitch.isOn as NSNumber?
+            user.isSuperUser = superUserSwitch.isOn as NSNumber
             
             user.lastScreenId = 13
             
@@ -164,7 +162,7 @@ class AddUserXIB: CommonXIBTransitionVC {
                 user.username = username
                 user.password = password
                 user.isLocked = false
-                user.isSuperUser = superUserSwitch.isOn as NSNumber?
+                user.isSuperUser = superUserSwitch.isOn as NSNumber
                 user.openLastScreen = false
                 if let customImage = customImage{
                     user.customImageId = customImage
