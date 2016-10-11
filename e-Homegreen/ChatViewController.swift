@@ -19,37 +19,26 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     
     @IBOutlet weak var chatTableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
-    
     @IBOutlet weak var viewHeight: NSLayoutConstraint!
-    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
-    
     @IBOutlet weak var chatTextView: UITextView!
-    
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var controlValleryVoice: UIButton!
     
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
-    
-    var scrollView = FilterPullDown()
-    
-    var chatList:[ChatItem] = []
-    
-    var rowHeight:[CGFloat] = []
-    
-    var layout:String = "Portrait"
-    
-    var isValeryVoiceOn:Bool = true
-    
     let reuseIdentifierCommand  = "chatCommandCell"
     let reuseIdentifierAnswer  = "chatAnswerCell"
-    
-    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Chat)
-    
-    @IBOutlet weak var controlValleryVoice: UIButton!    
-    
     let synth = AVSpeechSynthesizer()
     
+    var scrollView = FilterPullDown()
+    var chatList:[ChatItem] = []
+    var rowHeight:[CGFloat] = []
+    var layout:String = "Portrait"
+    var isValeryVoiceOn:Bool = true
+    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Chat)
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -64,17 +53,11 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         
         scrollView.filterDelegate = self
         view.addSubview(scrollView)
-        updateConstraints()
         scrollView.setItem(self.view)
-        
-        calculateHeight()
         
         self.navigationItem.titleView = headerTitleSubtitleView
         headerTitleSubtitleView.setTitleAndSubtitle("Chat", subtitle: "All All All")
         
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
-
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
         adjustScrollInsetsPullDownViewAndBackgroudImage()
         
@@ -84,38 +67,28 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         
         scrollView.setFilterItem(Menu.chat)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerChat), object: nil)
+        updateConstraints()
+        calculateHeight()
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
-        
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             revealViewController().toggleAnimationDuration = 0.5
-            if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
-                revealViewController().rearViewRevealWidth = 200
-            }else{
-                revealViewController().rearViewRevealWidth = 200
-            }
-            
+            revealViewController().rearViewRevealWidth = 200
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            
         }
-        
         changeFullScreeenImage()
     }
-    
     override func viewDidAppear(_ animated: Bool) {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
         refreshLocalParametars()
         addObservers()
     }
-    
     override func viewWillLayoutSubviews() {
         if scrollView.contentOffset.y != 0 {
             let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
@@ -129,13 +102,40 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         }
         
     }
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        removeObservers()
+        stopTextToSpeech()
+    }
     override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
     }
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+        adjustScrollInsetsPullDownViewAndBackgroudImage()
+    }
     
-    func updateSubtitle(_ location: String, level: String, zone: String){
-        headerTitleSubtitleView.setTitleAndSubtitle("Chat", subtitle: location + " " + level + " " + zone)
+    func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.refreshLocalParametars), name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerChat), object: nil)
+    }
+    func removeObservers() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
+    }
+    
+    
+    
+    
+    func refreshChatListWithAnswer (_ text: String, isValeryVoiceOn:Bool) {
+        self.chatList.append(ChatItem(text: text, type: .opponent))
+        self.calculateHeight()
+        self.chatTableView.reloadData()
+        if isValeryVoiceOn {
+            self.textToSpeech(text)
+        }
+        if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
+            self.chatTableView.setContentOffset(CGPoint(x: 0, y: self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: true)
+        }
     }
     
     func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
@@ -145,88 +145,20 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         }
     }
     
-    func updateConstraints() {
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0.0))
-    }
     
-    @IBAction func fullScreen(_ sender: UIButton) {
-        sender.collapseInReturnToNormal(1)
-        if UIApplication.shared.isStatusBarHidden {
-            UIApplication.shared.isStatusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
-        } else {
-            UIApplication.shared.isStatusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-            if scrollView.contentOffset.y != 0 {
-                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
-                scrollView.setContentOffset(bottomOffset, animated: false)
-            }
-        }
-    }
     
-    func changeFullScreeenImage(){
-        if UIApplication.shared.isStatusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
-        }
-    }
     
-    func refreshLocalParametars() {
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
-        chatTableView.reloadData()
-    }
     
-    func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.refreshLocalParametars), name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
-    }
     
-    func removeObservers() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
-    }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        removeObservers()
-        stopTextToSpeech()
-    }
-    
-    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
-        adjustScrollInsetsPullDownViewAndBackgroudImage()
-    }
-    
-    func adjustScrollInsetsPullDownViewAndBackgroudImage() {
-
-        if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
-            layout = "Landscape"
-        }else{
-            layout = "Portrait"
-        }
-        chatTableView.reloadData()
-    }
-    
-    @IBAction func controlValleryVOice(_ sender: AnyObject) {
-        stopTextToSpeech()
-        if isValeryVoiceOn {
-            controlValleryVoice.setImage(UIImage(named: "mute"), for: UIControlState())
-            isValeryVoiceOn = false
-        } else {
-            controlValleryVoice.setImage(UIImage(named: "unmute"), for: UIControlState())
-            isValeryVoiceOn = true
-        }
-    }
     
     func textToSpeech(_ text:String) {
         let utterance = AVSpeechUtterance(string: text)
         synth.speak(utterance)
     }
-    
     func stopTextToSpeech() {
         synth.stopSpeaking(at: .word)
     }
-    
     func searchForTermInString (_ text:String, searchTerm:String) {
         let string:NSString = text.lowercased() as NSString
         let searchTerm = searchTerm.lowercased()
@@ -239,30 +171,6 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
             print("exists")
             print(range.location)
             print(range.location+range.length-1)
-        }
-    }
-    
-    @IBAction func sendBtnAction(_ sender: AnyObject) {
-        if  chatTextView.text != ""{
-            stopTextToSpeech()
-            chatList.append(ChatItem(text: chatTextView.text!, type: .mine))
-            calculateHeight()
-            chatTableView.reloadData()
-            findCommand((chatTextView.text?.lowercased())!)
-            chatTextView.text = ""
-            chatTextView.resignFirstResponder()
-        }
-    }
-    
-    func refreshChatListWithAnswer (_ text: String, isValeryVoiceOn:Bool) {
-        self.chatList.append(ChatItem(text: text, type: .opponent))
-        self.calculateHeight()
-        self.chatTableView.reloadData()
-        if isValeryVoiceOn {
-            self.textToSpeech(text)
-        }
-        if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
-            self.chatTableView.setContentOffset(CGPoint(x: 0, y: self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: true)
         }
     }
     
@@ -286,6 +194,8 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
             setCommand(command, object:event)
         }
     }
+    
+    
     
     func setCommand(_ command:ChatCommand, object:AnyObject) {
         //   Set scene
@@ -329,7 +239,6 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
             }
         }
     }
-    
     func commandWasSent(_ command:ChatCommand, deviceType:String) -> String {
         var array = ["Command was sent...", "Your wish is my command.", "As you wish.", "I'll do it.", "It is done.", "Whatever you want.", "Consider it done."]
         switch command {
@@ -367,7 +276,6 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         }
         return "\u{1f601}"
     }
-    
     func sendCommand(_ command:ChatCommand, forDevice device:Device, withDimming dimValue:Int) {
         if command == .TurnOnDevice {
             let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
@@ -413,7 +321,6 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
             }
         }
     }
-    
     func findCommand(_ message:String) {
         let helper = ChatHandler()
         let command = helper.getCommand(message) // treba
@@ -710,7 +617,6 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         }
         return "I'm not sure I understand."
     }
-    
     func answerOnILoveYou() -> String {
         let array = ["\u{1f60d}", "I love you too \u{1f60d}", "\u{1f618}", "I love myself too \u{2764}", "\u{2764}"]
         let randomIndex = Int(arc4random_uniform(UInt32(array.count)))
@@ -720,7 +626,6 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
             return ""
         }
     }
-    
     func answerOnHowAreYou() -> String {
         let array = ["I'm fine, thank you for asking.", "You are so kind.", "I am happy.", "I have a doubt... I don't know if I am just fine or super fine.", "You are more important!", "I am asking you!", "\u{1f600}", "\u{1f601}", "\u{1f603}", "\u{1f609}", "\u{1f600}", "\u{1f601}", "\u{1f603}", "\u{1f609}"]
         let randomIndex = Int(arc4random_uniform(UInt32(array.count)))
@@ -729,7 +634,6 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         }
         return "\u{1f601}"
     }
-    
     func nothingFound() -> String {
         let array = ["Couldn't find something to control...", "Nothing found...", "Please be more specific.", "I don't undersrtand."]
         let randomIndex = Int(arc4random_uniform(UInt32(array.count)))
@@ -739,14 +643,6 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         return "\u{1f601}"
     }
 
-    func calculateHeight(){
-        rowHeight = []
-        for item in chatList{
-            let chatBubbleDataMine = ChatBubbleData(text: item.text, image: nil, date: Date(), type: item.type)
-            let chatBubbleMine = ChatBubble(data: chatBubbleDataMine, startY: 5, orientation: layout)
-            rowHeight.append(chatBubbleMine.frame.maxY)
-        }
-    }
     
     func keyboardWillShow(_ notification: Notification) {
         var info = (notification as NSNotification).userInfo!
@@ -763,7 +659,6 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         }
         
     }
-    
     func keyboardWillHide(_ notification: Notification) {
         var info = (notification as NSNotification).userInfo!
         let duration:TimeInterval = (info[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
@@ -780,10 +675,85 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
             self.chatTableView.setContentOffset(CGPoint(x: 0, y: self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: false)
         }
     }
-    
     func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.chat)
     }
+    
+    
+    @IBAction func sendBtnAction(_ sender: AnyObject) {
+        if  chatTextView.text != ""{
+            stopTextToSpeech()
+            chatList.append(ChatItem(text: chatTextView.text!, type: .mine))
+            calculateHeight()
+            chatTableView.reloadData()
+            findCommand((chatTextView.text?.lowercased())!)
+            chatTextView.text = ""
+            chatTextView.resignFirstResponder()
+        }
+    }
+    @IBAction func controlValleryVOice(_ sender: AnyObject) {
+        stopTextToSpeech()
+        if isValeryVoiceOn {
+            controlValleryVoice.setImage(UIImage(named: "mute"), for: UIControlState())
+            isValeryVoiceOn = false
+        } else {
+            controlValleryVoice.setImage(UIImage(named: "unmute"), for: UIControlState())
+            isValeryVoiceOn = true
+        }
+    }
+    @IBAction func fullScreen(_ sender: UIButton) {
+        sender.collapseInReturnToNormal(1)
+        if UIApplication.shared.isStatusBarHidden {
+            UIApplication.shared.isStatusBarHidden = false
+            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
+        } else {
+            UIApplication.shared.isStatusBarHidden = true
+            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
+            if scrollView.contentOffset.y != 0 {
+                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+                scrollView.setContentOffset(bottomOffset, animated: false)
+            }
+        }
+    }
+    
+    
+    // Helpers
+    func updateConstraints() {
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0))
+        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0.0))
+    }
+    func calculateHeight(){
+        rowHeight = []
+        for item in chatList{
+            let chatBubbleDataMine = ChatBubbleData(text: item.text, image: nil, date: Date(), type: item.type)
+            let chatBubbleMine = ChatBubble(data: chatBubbleDataMine, startY: 5, orientation: layout)
+            rowHeight.append(chatBubbleMine.frame.maxY)
+        }
+    }
+    func adjustScrollInsetsPullDownViewAndBackgroudImage() {
+        if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
+            layout = "Landscape"
+        }else{
+            layout = "Portrait"
+        }
+        chatTableView.reloadData()
+    }
+    func changeFullScreeenImage(){
+        if UIApplication.shared.isStatusBarHidden {
+            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
+        } else {
+            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
+        }
+    }
+    func refreshLocalParametars() {
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
+        chatTableView.reloadData()
+    }
+    func updateSubtitle(_ location: String, level: String, zone: String){
+        headerTitleSubtitleView.setTitleAndSubtitle("Chat", subtitle: location + " " + level + " " + zone)
+    }   
 }
 
 // Parametar from filter and relaod data
@@ -797,7 +767,6 @@ extension ChatViewController: FilterPullDownDelegate{
         TimerForFilter.shared.counterChat = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.chat)
         TimerForFilter.shared.startTimer(type: Menu.chat)
     }
-    
     func saveDefaultFilter(){
         self.view.makeToast(message: "Default filter parametar saved!")
     }
@@ -814,7 +783,6 @@ extension ChatViewController: SWRevealViewControllerDelegate{
             chatTableView.isUserInteractionEnabled = false
         }
     }
-    
     func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
         if(position == FrontViewPosition.left) {
             chatTextView.isUserInteractionEnabled = true
