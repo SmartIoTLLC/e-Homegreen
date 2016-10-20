@@ -14,4 +14,5 @@ class TimersCell: UITableViewCell{
     @IBOutlet weak var imageOne: UIImageView!
     @IBOutlet weak var imageTwo: UIImageView!
     @IBOutlet weak var address: UILabel!
+    @IBOutlet weak var timerTypeLabel: UILabel!
 }
