@@ -929,7 +929,7 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
             cell.isVisibleSwitch.addTarget(self, action: #selector(ScanDevicesViewController.changeValueVisible(_:)), for: UIControlEvents.valueChanged)
             
             let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ScanDevicesViewController.addMacro(_:)))
-            longPress.minimumPressDuration = 0.5
+            longPress.minimumPressDuration = 1
             cell.tag = indexPath.row
             cell.addGestureRecognizer(longPress)
             
