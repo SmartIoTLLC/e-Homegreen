@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="15G1004" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="16A323" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Card" representedClassName=".Card" syncable="YES">
         <attribute name="address" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="cardId" attributeType="String" syncable="YES"/>
@@ -87,6 +87,7 @@
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="device" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Device" inverseName="deviceImages" inverseEntity="Device" syncable="YES"/>
     </entity>
+    <entity name="Entity" syncable="YES"/>
     <entity name="Event" representedClassName="e_Homegreen.Event" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="entityLevelId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
@@ -327,6 +328,8 @@
         <relationship name="iBeacon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IBeacon" inverseName="iBeaconZone" inverseEntity="IBeacon" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="zones" inverseEntity="Location" syncable="YES"/>
     </entity>
+    <fetchRequest name="FetchRequest" entity="User"/>
+    <fetchRequest name="new" entity="User"/>
     <elements>
         <element name="Card" positionX="-981" positionY="-1962" width="128" height="165"/>
         <element name="Category" positionX="-461" positionY="-1591" width="128" height="150"/>
@@ -350,5 +353,6 @@
         <element name="Timer" positionX="-621" positionY="-1827" width="128" height="300"/>
         <element name="User" positionX="-675" positionY="-1764" width="128" height="225"/>
         <element name="Zone" positionX="-459" positionY="-1510" width="128" height="180"/>
+        <element name="Entity" positionX="-900" positionY="-1827" width="128" height="43"/>
     </elements>
 </model>

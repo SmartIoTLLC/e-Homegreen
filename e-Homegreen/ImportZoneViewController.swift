@@ -345,17 +345,17 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
             return
         }
         timesRepeatedCounter += 1
-        if timesRepeatedCounter < 4 {  // sve dok ne pokusa tri puta, treba da pokusava
+        if timesRepeatedCounter < 4 {  // try three times
             scanZones?.sendCommandForFinding(id:Byte(zoneId))
             setProgressBarParametarsForScanningZones(id: zoneId)
             zoneScanTimer!.invalidate()
             zoneScanTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ImportZoneViewController.checkIfGatewayDidGetZones(_:)), userInfo: zoneId, repeats: false)
             timesRepeatedCounter += 1
         }else{
-            if (zoneId+1) > scanZones?.to { // Ako je poslednji
+            if (zoneId+1) > scanZones?.to { // If it is the last one
                 dismissScaningControls()
             } else {
-                //ima jos
+                //there is more
                 zoneId += 1
                 scanZones?.sendCommandForFinding(id:Byte(zoneId))
                 setProgressBarParametarsForScanningZones(id: zoneId)
