@@ -37,15 +37,15 @@ class IncomingHandler: NSObject {
             self.byteArray = byteArrayToHandle
             if messageIsValid() {
                 if messageIsNewDeviceSalto(){
-                    self.parseMessageNewDevicSalto(self.byteArray)
+                    self.parseMessageNewDevicSalto(self.byteArray)  //ok
                 }
                 else{
                     if messageIsNewDevice() {
-                        self.parseMessageNewDevice(self.byteArray)
+                        self.parseMessageNewDevice(self.byteArray)   // ok
                     }
                 }
                 if messageIsNewDeviceParameters() {
-                    self.parseMessageNewDeviceParameter(self.byteArray)
+                    self.parseMessageNewDeviceParameter(self.byteArray)   //nije nam jasno sta radi funkcija, zasto module name i sve ostalo i da li to treba?
                 }
             
                 //  ACKNOWLEDGEMENT ABOUT CHANNEL PARAMETAR (Get Channel Parametar) IMENA
@@ -415,17 +415,14 @@ class IncomingHandler: NSObject {
     func parseMessageNewDevice (_ byteArray:[Byte]) {
         print(Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDevice))
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDevice) {
-            var deviceExists = false
+            
             if let channel = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.channel,
                 let controlType = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name {
                 
-                let MAC:[Byte] = Array(byteArray[9...14])
-                if devices != [] {
-                    for device in devices {
-                        if Int(device.address) == Int(byteArray[4]) {deviceExists = true}
-                    }
-                } else {deviceExists = false}
-                if !deviceExists {
+                if IncomingHandlerController.shared.fetchDevice(by: self.gateways[0], address: Int(byteArray[4])) == nil{
+                    
+                    let MAC:[Byte] = Array(byteArray[9...14])
+                    
                     for i in 1...channel{
                         var isClimate = false
                         if controlType == ControlType.Climate {
@@ -452,27 +449,26 @@ class IncomingHandler: NSObject {
                             
                             let _ = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
                         }
-                        
-                        CoreDataController.shahredInstance.saveChanges()
-//                        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshScanningDevice), object: self, userInfo: nil)
                     }
-                    let data = ["deviceAddresInGateway":Int(byteArray[4])]
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDevice), object: self, userInfo: data)
+                    
                 }
             }
+            
+            let data = ["deviceAddresInGateway":Int(byteArray[4])]
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDevice), object: self, userInfo: data)
+            
         }
     }
+    
     func parseMessageNewDevicSalto (_ byteArray:[Byte]) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDevice) {
-            var deviceExists = false
+            
             if let controlType = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name {
-                let MAC:[Byte] = Array(byteArray[9...14])
-                if devices != [] {
-                    for device in devices {
-                        if Int(device.address) == Int(byteArray[4]) {deviceExists = true}
-                    }
-                } else {deviceExists = false}
-                if !deviceExists {
+                
+                if IncomingHandlerController.shared.fetchDevice(by: self.gateways[0], address: Int(byteArray[4])) == nil{
+                    
+                    let MAC:[Byte] = Array(byteArray[9...14])
+                    
                     for i in 1...4{
                         let deviceInformation = DeviceInformation(address: Int(byteArray[4]), channel: i, numberOfDevices: 4, type: controlType, gateway: gateways[0], mac: Data(bytes: UnsafePointer<UInt8>(MAC), count: MAC.count), isClimate:false)
                         
@@ -481,17 +477,24 @@ class IncomingHandler: NSObject {
                         }
                         
                         CoreDataController.shahredInstance.saveChanges()
-//                        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshScanningDevice), object: self, userInfo: nil)
                     }
-                    let data = ["deviceAddresInGateway":Int(byteArray[4])]
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDevice), object: self, userInfo: data)
+                    
                 }
+                
             }
+            
+            let data = ["deviceAddresInGateway":Int(byteArray[4])]
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDevice), object: self, userInfo: data)
+            
+            
         }
         
     }
     func parseMessageNewDeviceParameter(_ byteArray:[Byte]) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
+            
+            
+            
             self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
             for device in devices {
                 if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) {

@@ -635,7 +635,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
         if devices[index].type == ControlType.IntelligentSwitch {
             let address = [UInt8(Int(devices[index].gateway.addressOne)), UInt8(Int(devices[index].gateway.addressTwo)), UInt8(Int(devices[index].address))]
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.getModuleName(address), gateway: devices[index].gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getChannelName(address, channel: UInt8(Int(devices[index].channel))), gateway: devices[index].gateway)
         }
     }
     

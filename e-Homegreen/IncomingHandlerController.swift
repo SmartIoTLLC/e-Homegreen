@@ -14,7 +14,7 @@ class IncomingHandlerController: NSObject {
     static let shared = IncomingHandlerController()
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    func fetchDeviceByGateway(_ gateway: Gateway, address: Int) -> [Device]? {
+    func fetchDevice(by gateway: Gateway, address: Int) -> Device? {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
         
         var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway == %@", gateway)]
@@ -26,7 +26,7 @@ class IncomingHandlerController: NSObject {
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Device]
             if fetResults.count > 0 {
-                return fetResults
+                return fetResults[0]
             }
         } catch {
             
