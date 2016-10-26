@@ -33,7 +33,7 @@ class IncomingHandler: NSObject {
         }
         //  Checks if there are any gateways
         if gateways.count > 0 {
-            self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
+//            self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
             self.byteArray = byteArrayToHandle
             if messageIsValid() {
                 if messageIsNewDeviceSalto(){
@@ -96,40 +96,40 @@ class IncomingHandler: NSObject {
                     self.parseMessageFlagStatus(self.byteArray)
                 }
                 if messageIsNewZone() {
-                    self.parseMessageNewZone(self.byteArray)
+                    self.parseMessageNewZone(self.byteArray)        //ok
                 }
                 if messageIsNewCategory() {
-                    self.parseMessageNewCategory(self.byteArray)
+                    self.parseMessageNewCategory(self.byteArray)   //ok
                 }
                 if messageIsEventStatus() {
-                    self.parseMessageRefreshEvent(self.byteArray)
+                    self.parseMessageRefreshEvent(self.byteArray)    // treba proveriti
                 }
                 if messageIsTimerStatusData() {
-                    self.parseTimerStatus(dataFrame)
+                    self.parseTimerStatus(dataFrame)    // trazi sve timere u bazi, trebalo bi po gateway-u, adresi i id
                 }
                 if messageIsTimerName() {
-                    self.parseMessageTimerName(self.byteArray)
+                    self.parseMessageTimerName(self.byteArray)    //ok
                 }
                 if messageIsTimerParameters() {
-                    self.parseMessageTimerParameters(self.byteArray)
+                    self.parseMessageTimerParameters(self.byteArray)   //ok
                 }
                 if messageIsNewScene(){
-                    self.parseMessageNewScene(self.byteArray)
+                    self.parseMessageNewScene(self.byteArray)   //ok
                 }
                 if messageIsNewSequence() {
-                    self.parseMessageNewSequence(self.byteArray)
+                    self.parseMessageNewSequence(self.byteArray)   //ok
                 }
                 if messageIsNewEvent() {
-                    self.parseMessageNewEvent(self.byteArray)
+                    self.parseMessageNewEvent(self.byteArray)     //ok
                 }
                 if messageIsNewFlag() {
-                    self.parseMessageFlagName(self.byteArray)
+                    self.parseMessageFlagName(self.byteArray)     //ok
                 }
                 if messageIsNewFlagParameter() {
-                    self.parseMessageFlagParameters(self.byteArray)
+                    self.parseMessageFlagParameters(self.byteArray)    //ok
                 }
                 if messageIsNewCardName() {
-                    self.parseMessageCardName(self.byteArray)
+                    self.parseMessageCardName(self.byteArray)  //ok
                 }
                 if messageIsNewCardParameter() {
                     self.parseMessageCardParameters(self.byteArray)
@@ -629,13 +629,14 @@ class IncomingHandler: NSObject {
         NotificationCenter.default.post(name: Notification.Name(rawValue: "ReportEvent"), object: self, userInfo: data)
     }
     func parseMessageChannelWarnings (_ byteArray:[Byte]) {
-        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
+        self.devices = IncomingHandlerController.shared.fetchDevicesByGatewayAndAddress(self.gateways[0], address: Int(byteArray[4]))
+//        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
         for device in devices {
-            if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) {
+//            if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) {
                 //                var number = Int(byteArray[6+5*Int(device.channel)])
                 print("\(6+6*Int(device.channel)) - \(Int(device.channel)) - \(Int(byteArray[6+5+6*(Int(device.channel)-1)]))")
                 device.warningState = Int(byteArray[6+5+6*(Int(device.channel)-1)])
-            }
+//            }
         }
         CoreDataController.shahredInstance.saveChanges()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
@@ -952,7 +953,9 @@ class IncomingHandler: NSObject {
     }
     //  informacije o parametrima kanala
     func parseMessageFlagStatus (_ byteArray:[Byte]){
+        
         let flags = DatabaseFlagsController.shared.getAllFlags()
+
         for i in 1...32 {
             print(flags.count)
             for item in flags {
@@ -1034,9 +1037,11 @@ class IncomingHandler: NSObject {
                 for j in 11..<(11+Int(byteArray[10])){
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))!))" //  device name
                 }
-                let id = byteArray[8]
-                let level = byteArray[byteArray.count - 2 - 1]
+                let id = Int(byteArray[8])
+                let level = Int(byteArray[byteArray.count - 2 - 1])
+                
                 var description = ""
+                
                 if byteArray[11+Int(byteArray[10])+2] != 0x00 {
                     let number = 11+Int(byteArray[10])+2
                     for j in number..<(number+Int(byteArray[number-1])){
@@ -1044,30 +1049,21 @@ class IncomingHandler: NSObject {
                     }
                 }
                 
-                var doesIdExist = false
-                let zones = DatabaseHandler.sharedInstance.fetchZonesWithLocationId(gateways[0].location)
-                
-                for zone in zones {
-                    if zone.id == NSNumber(value: Int(id) as Int) {
-                        doesIdExist = true
-                        (zone.name, zone.level, zone.zoneDescription) = (name, NSNumber(value: Int(level) as Int), description)
-                        CoreDataController.shahredInstance.saveChanges()
-                        break
-                    }
-                }
-                
-                if doesIdExist {
-                } else {
+                if let zone = DatabaseHandler.sharedInstance.fetchZonesWithLocationAndId(gateways[0].location, id: id){
+                    (zone.name, zone.level, zone.zoneDescription) = (name, NSNumber(value: level), description)
+                    CoreDataController.shahredInstance.saveChanges()
+                }else{
                     let zone = Zone(context: appDel.managedObjectContext!)
                     (zone.id, zone.name, zone.level, zone.zoneDescription, zone.location, zone.orderId, zone.allowOption, zone.isVisible) = (NSNumber(value: Int(id) as Int), name, NSNumber(value: Int(level) as Int), description, gateways[0].location, NSNumber(value: Int(id) as Int), 1, true)
                     CoreDataController.shahredInstance.saveChanges()
                 }
                 
-                let data = ["zoneId":Int(id)]
+                let data = ["zoneId": id]
                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveZoneFromGateway), object: self, userInfo: data)
             }
         }
     }
+    
     func parseMessageNewCategory(_ byteArray:[Byte]) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningForCategories) {
             var name:String = ""
@@ -1077,7 +1073,7 @@ class IncomingHandler: NSObject {
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))!))" //  device name
                 }
             }
-            let id = byteArray[8]
+            let id = Int(byteArray[8])
             var description = ""
             
             if 11+Int(byteArray[10])+2 < byteArray.count {  //
@@ -1088,25 +1084,17 @@ class IncomingHandler: NSObject {
                     }
                 }
             }
-            var doesIdExist = false
-            let categories = DatabaseHandler.sharedInstance.fetchCategoriesWithLocationId(self.gateways[0].location)
             
-            for category in categories {
-                if category.id == NSNumber(value: Int(id) as Int) {
-                    doesIdExist = true
-                    (category.name, category.categoryDescription) = (name, description)
-                    CoreDataController.shahredInstance.saveChanges()
-                    break
-                }
-            }
-            if !doesIdExist {
+            if let category = DatabaseHandler.sharedInstance.fetchCategoriesWithLocationId(self.gateways[0].location, id: id){
+                (category.name, category.categoryDescription) = (name, description)
+                CoreDataController.shahredInstance.saveChanges()
+            }else{
                 let category = NSEntityDescription.insertNewObject(forEntityName: "Category", into: appDel.managedObjectContext!) as! Category
                 (category.id, category.name, category.categoryDescription, category.location, category.orderId, category.allowOption, category.isVisible) = (NSNumber(value: Int(id) as Int), name, description, gateways[0].location, NSNumber(value: Int(id) as Int), 3, true)
                 CoreDataController.shahredInstance.saveChanges()
             }
             
-            
-            let data = ["categoryId":Int(id)]
+            let data = ["categoryId":id]
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveCategoryFromGateway), object: self, userInfo: data)
         }
     }

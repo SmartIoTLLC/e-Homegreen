@@ -111,16 +111,16 @@ class DevicesViewController: PopoverVC{
                 updateDeviceList(user)
             }else{
                 devices = []
+                deviceCollectionView.reloadData()
             }
-            deviceCollectionView.reloadData()
         }else{
             if let user = DatabaseUserController.shared.getLoggedUser(){
                 userLogged = user
                 updateDeviceList(user)
             }else{
                 devices = []
+                deviceCollectionView.reloadData()
             }
-            deviceCollectionView.reloadData()
         }
         
         changeFullScreeenImage()
@@ -191,9 +191,9 @@ class DevicesViewController: PopoverVC{
         }
     }
     func refreshLocalParametars () {
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
+//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
 //        updateDeviceList()
-        deviceCollectionView.reloadData()
+//        deviceCollectionView.reloadData()
     }
 
     func updateSubtitle(_ location: String, level: String, zone: String){
@@ -202,7 +202,7 @@ class DevicesViewController: PopoverVC{
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Device)
     
     func updateDeviceList (_ user:User) {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
+        let fetchRequest: NSFetchRequest<Device> = Device.fetchRequest()
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
         let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
@@ -233,11 +233,27 @@ class DevicesViewController: PopoverVC{
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         
+        // Initialize Asynchronous Fetch Request
+        let asynchronousFetchRequest = NSAsynchronousFetchRequest(fetchRequest: fetchRequest) { (asynchronousFetchResult) in
+            DispatchQueue.main.async {
+                self.processAsynchronousFetchResult(asynchronousFetchResult: asynchronousFetchResult)
+            }
+        }
+        
         do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Device]
-            devices = fetResults!.map({$0})
             
-            // filter Curtain devices that are, actually, one device
+            _ = try appDel.managedObjectContext!.execute(asynchronousFetchRequest)
+            
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error!.userInfo)")
+        }
+    }
+    
+    func processAsynchronousFetchResult(asynchronousFetchResult: NSAsynchronousFetchResult<Device>) {
+        if let result = asynchronousFetchResult.finalResult {
+            // Update Items
+            devices = result
             
             // All curtains
             let curtainDevices = devices.filter({$0.controlType == ControlType.Curtain})
@@ -262,9 +278,9 @@ class DevicesViewController: PopoverVC{
             for device in devices {
                 device.cellTitle = returnNameForDeviceAccordingToFilter(device)
             }
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
+            
+            // Reload Table View
+            deviceCollectionView.reloadData()
         }
     }
 
@@ -1179,8 +1195,8 @@ extension DevicesViewController: FilterPullDownDelegate{
         
         if let user = userLogged{
             updateDeviceList(user)
-            deviceCollectionView.reloadData()
-            updateCells()
+//            deviceCollectionView.reloadData()
+//            updateCells()
         }
         TimerForFilter.shared.counterDevices = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.devices)
         TimerForFilter.shared.startTimer(type: Menu.devices)

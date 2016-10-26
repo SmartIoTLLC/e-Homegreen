@@ -100,6 +100,7 @@
 		22954B051CC100EB0082BFCF /* DatabaseSecurityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22954B041CC100EB0082BFCF /* DatabaseSecurityController.swift */; };
 		22AF883B1D49E9E700048A33 /* ScanFilterPullDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AF883A1D49E9E700048A33 /* ScanFilterPullDown.swift */; };
 		22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CD26791BD53685005BA67D /* DAKeyboardControl.m */; };
+		22D05FBF1DBE048900644FD8 /* IncomingHandlerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D05FBE1DBE048900644FD8 /* IncomingHandlerController.swift */; };
 		22D7EB9E1D780FB600853051 /* SecurityLocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D7EB9D1D780FB600853051 /* SecurityLocationCell.swift */; };
 		22D7EBA11D78418F00853051 /* SecurityLocationXIB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D7EB9F1D78418F00853051 /* SecurityLocationXIB.swift */; };
 		22D7EBA21D78418F00853051 /* SecurityLocationXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22D7EBA01D78418F00853051 /* SecurityLocationXIB.xib */; };
@@ -472,6 +473,7 @@
 		22AF883A1D49E9E700048A33 /* ScanFilterPullDown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanFilterPullDown.swift; sourceTree = "<group>"; };
 		22CD26781BD53685005BA67D /* DAKeyboardControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControl.h; sourceTree = "<group>"; };
 		22CD26791BD53685005BA67D /* DAKeyboardControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControl.m; sourceTree = "<group>"; };
+		22D05FBE1DBE048900644FD8 /* IncomingHandlerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncomingHandlerController.swift; sourceTree = "<group>"; };
 		22D7EB9D1D780FB600853051 /* SecurityLocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityLocationCell.swift; sourceTree = "<group>"; };
 		22D7EB9F1D78418F00853051 /* SecurityLocationXIB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityLocationXIB.swift; sourceTree = "<group>"; };
 		22D7EBA01D78418F00853051 /* SecurityLocationXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecurityLocationXIB.xib; sourceTree = "<group>"; };
@@ -1568,6 +1570,7 @@
 				223FB5901D64414600DC2627 /* DatabaseImageController.swift */,
 				22FF1E641D86D92000ECB86E /* DatabaseCardsController.swift */,
 				22FF3E061DA67A1900657576 /* DatabaseMacrosController.swift */,
+				22D05FBE1DBE048900644FD8 /* IncomingHandlerController.swift */,
 			);
 			name = "Database Controllers";
 			sourceTree = "<group>";
@@ -2244,6 +2247,7 @@
 				2249A32D1C903F1E0019C6FB /* PCControlViewController.swift in Sources */,
 				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,
 				73E485231B60D531007A35AD /* InOutSocket.swift in Sources */,
+				22D05FBF1DBE048900644FD8 /* IncomingHandlerController.swift in Sources */,
 				222889B61CBBD60F004EBADD /* DatabaseFlagsController.swift in Sources */,
 				22E7B2101CC4FC9A00F813AC /* ResetPasswordXIB.swift in Sources */,
 				22E1B2781DA78FA20039B39C /* MacrosCollectionViewCell.swift in Sources */,

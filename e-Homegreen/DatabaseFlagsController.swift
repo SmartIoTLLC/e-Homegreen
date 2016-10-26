@@ -70,6 +70,31 @@ class DatabaseFlagsController: NSObject {
         return []
     }
     
+    // fetch for incoming handler
+    func getFlag(byGateway: Gateway, address: Int, id: Int) -> Flag? {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Flag.fetchRequest()
+        
+        var predicateArray:[NSPredicate] = []
+        predicateArray.append(NSPredicate(format: "gateway == %@", byGateway))
+        predicateArray.append(NSPredicate(format: "address == %@", NSNumber(value: address)))
+        predicateArray.append(NSPredicate(format: "flagId == %@", NSNumber(value: id)))
+        
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
+        
+        do {
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Flag]
+            if fetResults!.count > 0 {
+                return fetResults![0]
+            }
+            
+        } catch _ as NSError {
+            abort()
+        }
+        
+        return nil
+    }
+    
     func updateFlagList(_ gateway:Gateway, filterParametar:FilterItem) -> [Flag] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Flag.fetchRequest()
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)

@@ -42,6 +42,8 @@ class Device: NSManagedObject {
     var bateryStatus: Int = 0
     var saltoMode: Int = -1
     
+    var cacheImage:UIImage?
+    
     lazy var moduleAddress:[Byte] = {
         return [Byte(Int(self.gateway.addressOne)), Byte(Int(self.gateway.addressTwo)), Byte(Int(self.address))]
     }()
@@ -186,19 +188,14 @@ class Device: NSManagedObject {
     // MARK: Return image for specific state
     func returnImage(_ newDeviceValue:Double) -> UIImage {
         // Convert device images to array
-        guard let devImages = self.deviceImages?.allObjects as? [DeviceImage] else {
+        guard let preSort = self.deviceImages?.allObjects.sorted(by: { (result1, result2) -> Bool in
+            return (result1 as! DeviceImage).state?.intValue < (result2 as! DeviceImage).state?.intValue
+        }) as? [DeviceImage] else {
             return UIImage(named: "")!
         }
-//        guard let devImages = Array(checkDeviceImages) as? [DeviceImage] else {
-//            return UIImage(named: "")!
-//        }
-        let sumOfDeviceImages = devImages.count
+        
+        let sumOfDeviceImages = preSort.count
         let dblSection:Double = 100/Double(sumOfDeviceImages)
-        // sort by state: 1 2 3 4 5 6
-        let preSort = devImages.sorted { ( result1, result2) -> Bool in
-            if result1.state?.intValue < result2.state?.intValue {return true}
-            return false
-        }
         let mapedResult = preSort.enumerated().map { ( index, deviceImage) -> Result in
             let defaultImageNamed = deviceImage.defaultImage!
             let stateValue = (Double(index) + 1) * dblSection
@@ -216,19 +213,16 @@ class Device: NSManagedObject {
         }
         // Compares state value (example: 20, 40, 60, 80, 100 for 5 images) with device value (which is in percent 0-100)
         let filteredMapedresult = mapedResult.filter { ( result) -> Bool in
-            if result.stateValue >= (newDeviceValue/255*100) {return true} //
-            return false
+            return result.stateValue >= (newDeviceValue/255*100)
         }
-//        let sortedFilteredMapedResult = filteredMapedresult.sorted { ( result1, result2) -> Bool in
-//            if result1.stateValue < result2.stateValue {return true}
-//            return false
-//        }
         if filteredMapedresult.count > 0{
             let result = filteredMapedresult[0]
             if let image = result.imageData {
+                self.cacheImage = image
                 return image
             }
             if let image = result.defaultImage {
+                self.cacheImage = image
                 return image
             }
         }

@@ -218,31 +218,45 @@ class DatabaseHandler: NSObject {
         return []
     }
     
-    func fetchZonesWithLocationId(_ locationId: Location) -> [Zone] {
+    func fetchZonesWithLocationAndId(_ location: Location, id: Int) -> Zone? {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
-        let predicate = NSPredicate(format: "location == %@", locationId)
-        fetchRequest.predicate = predicate
+        
+        var predicateArray = [NSPredicate(format: "location == %@", location)]
+        predicateArray.append(NSPredicate(format: "id == %@", NSNumber(value: id)))
+        
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
+        
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Zone]
-            return fetResults!
+            if fetResults!.count > 0{
+                return fetResults?[0]
+            }
         } catch let error1 as NSError {
             print("Unresolved error \(error1), \(error1.userInfo)")
-            abort()
+            
         }
-        return []
+        return nil
     }
-    func fetchCategoriesWithLocationId(_ locationId: Location) -> [Category] {
+    func fetchCategoriesWithLocationId(_ location: Location, id: Int) -> Category? {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Category.fetchRequest()
-        let predicate = NSPredicate(format: "location == %@", locationId)
-        fetchRequest.predicate = predicate
+        
+        var predicateArray = [NSPredicate(format: "location == %@", location)]
+        predicateArray.append(NSPredicate(format: "id == %@", NSNumber(value: id)))
+        
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
+        
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Category]
-            return fetResults!
+            if fetResults!.count > 0{
+                return fetResults?[0]
+            }
         } catch let error1 as NSError {
             print("Unresolved error \(error1), \(error1.userInfo)")
-            abort()
+            
         }
-        return []
+        return nil
     }
     
     func fetchTimers() -> [Timer]{
