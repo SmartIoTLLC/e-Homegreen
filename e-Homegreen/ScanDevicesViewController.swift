@@ -543,7 +543,13 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             }
             // 2.
             let deviceTemp = self.devices.filter({ (d) -> Bool in
-                return (Int(d.address) == deviceAddress && Int(d.channel) == deviceChannel)
+                // if device is salto then we don't check channe, only address
+                if deviceIsSalto == 1{
+                    return (Int(d.address) == deviceAddress && Int(d.deviceIdForScanningScreen) == deviceChannel)
+                }else{
+                    return (Int(d.address) == deviceAddress && Int(d.channel) == deviceChannel)
+                }
+                
             })
             if deviceTemp.count > 0{
                 guard let deviceIndexInDevices = self.devices.index(of: deviceTemp.first!) else{
