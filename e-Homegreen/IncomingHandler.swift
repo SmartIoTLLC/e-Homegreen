@@ -454,7 +454,7 @@ class IncomingHandler: NSObject {
                         }
                         
                         CoreDataController.shahredInstance.saveChanges()
-                        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+//                        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshScanningDevice), object: self, userInfo: nil)
                     }
                     let data = ["deviceAddresInGateway":Int(byteArray[4])]
                     NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDevice), object: self, userInfo: data)
@@ -481,7 +481,7 @@ class IncomingHandler: NSObject {
                         }
                         
                         CoreDataController.shahredInstance.saveChanges()
-                        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+//                        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshScanningDevice), object: self, userInfo: nil)
                     }
                     let data = ["deviceAddresInGateway":Int(byteArray[4])]
                     NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDevice), object: self, userInfo: data)
@@ -512,7 +512,7 @@ class IncomingHandler: NSObject {
                 }
             }
             CoreDataController.shahredInstance.saveChanges()
-            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+//            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshScanningDevice), object: self, userInfo: nil)
         }
     }
     func parseMessageSaltoParameters(_ byteArray: [Byte]){
@@ -719,7 +719,7 @@ class IncomingHandler: NSObject {
                 }
             }
             CoreDataController.shahredInstance.saveChanges()
-            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+//            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
         }
     }
     func parseMessageInterfaceEnableStatus (_ byteArray: [Byte]) {
@@ -765,14 +765,14 @@ class IncomingHandler: NSObject {
                 }
                 device.resetImages(appDel.managedObjectContext!)
                 let data = ["sensorIndexForFoundParametar":counter]
-                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshInterface), object: self, userInfo: nil)
+//                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshInterface), object: self, userInfo: nil)
                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindSensorParametar), object: self, userInfo: data)
                 
             }
             counter = counter + 1
         }
         CoreDataController.shahredInstance.saveChanges()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+//        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }
     func parseMessageACParametar (_ byteArray:[Byte]) {
         print(Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName))

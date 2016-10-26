@@ -502,6 +502,7 @@ struct NotificationKey {
     static let DidReceiveCardParameterFromGateway = "kPLCDidFoundCardParameter"
     
     static let RefreshDevice = "kRefreshDeviceListNotification"
+    static let RefreshScanningDevice = "kRefreshScanningDeviceListNotification"
     static let RefreshTimer = "kRefreshTimerListNotification"
     static let RefreshFlag = "kRefreshFlagListNotification"
     static let RefreshInterface = "refreshInterfaceParametar"
