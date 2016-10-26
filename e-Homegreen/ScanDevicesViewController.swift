@@ -525,45 +525,67 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
             }
-            guard let deviceIndex = info["deviceIndexForFoundName"] else{
+            // 1. Data that is received through notification is: device address and device channel
+            // 2. We need to search self.devices and find that device, and get it's index
+            // 3. then, we find that index in "indexOfDeviceIndexInArrayOfNamesToBeSearched".
+            //NOTE: indexOfDeviceIndexInArrayOfNamesToBeSearched is the array of all devices that user defined to be scanned. (device indexes in self.devices)
+            
+            //1. 
+            guard let deviceAddress = info["deviceAddress"] else{
+                return
+            }
+            guard let deviceChannel = info["deviceChannel"] else{
                 return
             }
             var deviceIsSalto = 0
             if let deviceIsSaltoTemp = info["saltoAccess"]{
                 deviceIsSalto = deviceIsSaltoTemp
             }
-            guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: deviceIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            // 2.
+            let deviceTemp = self.devices.filter({ (d) -> Bool in
+                return (Int(d.address) == deviceAddress && Int(d.channel) == deviceChannel)
+            })
+            if deviceTemp.count > 0{
+                guard let deviceIndexInDevices = self.devices.index(of: deviceTemp.first!) else{
+                    return
+                }
+                // 3.
+                guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: deviceIndexInDevices) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                    return
+                }
+                
+                devices[deviceIndexInDevices].resetImages(appDel.managedObjectContext!) // Needs to be here in order for images to be loaded correctly. After the names are loaded then we know which pictures to load for which device.
+                if deviceIsSalto == 1{
+                    if indexOfDeviceIndexInArrayOfNamesToBeSearched+4 < arrayOfNamesToBeSearched.count{ // if next exists
+                        indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfNamesToBeSearched+4
+                        let nextDeviceIndexToBeSearched = arrayOfNamesToBeSearched[indexOfNamesToBeSearched]
+                        
+                        timesRepeatedCounter = 0
+                        deviceNameTimer?.invalidate()
+                        deviceNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanDevicesViewController.checkIfDeviceDidGetName(_:)), userInfo: nextDeviceIndexToBeSearched, repeats: false)
+                        NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextDeviceIndexToBeSearched)")
+                        sendCommandForFindingName(index: nextDeviceIndexToBeSearched)
+                    }else{
+                        dismissScaningControls()
+                    }
+                }else{
+                    if indexOfDeviceIndexInArrayOfNamesToBeSearched+1 < arrayOfNamesToBeSearched.count{ // if next exists
+                        indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfNamesToBeSearched+1
+                        let nextDeviceIndexToBeSearched = arrayOfNamesToBeSearched[indexOfDeviceIndexInArrayOfNamesToBeSearched+1]
+                        
+                        timesRepeatedCounter = 0
+                        deviceNameTimer?.invalidate()
+                        deviceNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanDevicesViewController.checkIfDeviceDidGetName(_:)), userInfo: nextDeviceIndexToBeSearched, repeats: false)
+                        NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextDeviceIndexToBeSearched)")
+                        sendCommandForFindingName(index: nextDeviceIndexToBeSearched)
+                    }else{
+                        dismissScaningControls()
+                    }
+                }
+            }else{
                 return
             }
             
-            devices[deviceIndex].resetImages(appDel.managedObjectContext!) // Needs to be here in order for images to be loaded correctly. After the names are loaded then we know which pictures to load for which device.
-            if deviceIsSalto == 1{
-                if indexOfDeviceIndexInArrayOfNamesToBeSearched+4 < arrayOfNamesToBeSearched.count{ // if next exists
-                    indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfNamesToBeSearched+4
-                    let nextDeviceIndexToBeSearched = arrayOfNamesToBeSearched[indexOfNamesToBeSearched]
-                    
-                    timesRepeatedCounter = 0
-                    deviceNameTimer?.invalidate()
-                    deviceNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanDevicesViewController.checkIfDeviceDidGetName(_:)), userInfo: nextDeviceIndexToBeSearched, repeats: false)
-                    NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextDeviceIndexToBeSearched)")
-                    sendCommandForFindingName(index: nextDeviceIndexToBeSearched)
-                }else{
-                    dismissScaningControls()
-                }
-            }else{
-                if indexOfDeviceIndexInArrayOfNamesToBeSearched+1 < arrayOfNamesToBeSearched.count{ // if next exists
-                    indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfNamesToBeSearched+1
-                    let nextDeviceIndexToBeSearched = arrayOfNamesToBeSearched[indexOfDeviceIndexInArrayOfNamesToBeSearched+1]
-                    
-                    timesRepeatedCounter = 0
-                    deviceNameTimer?.invalidate()
-                    deviceNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanDevicesViewController.checkIfDeviceDidGetName(_:)), userInfo: nextDeviceIndexToBeSearched, repeats: false)
-                    NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextDeviceIndexToBeSearched)")
-                    sendCommandForFindingName(index: nextDeviceIndexToBeSearched)
-                }else{
-                    dismissScaningControls()
-                }
-            }
             
         }
     }
