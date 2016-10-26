@@ -14,11 +14,11 @@ class IncomingHandlerController: NSObject {
     static let shared = IncomingHandlerController()
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    func fetchDevice(by gateway: Gateway, address: Int) -> Device? {
+    func deviceExist(on gateway: Gateway, byAddress: Int) -> Bool {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
         
         var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway == %@", gateway)]
-        predicateArray.append(NSPredicate(format: "address == %@", NSNumber(value: address)))
+        predicateArray.append(NSPredicate(format: "address == %@", NSNumber(value: byAddress)))
         
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         
@@ -26,15 +26,15 @@ class IncomingHandlerController: NSObject {
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Device]
             if fetResults.count > 0 {
-                return fetResults[0]
+                return true
             }
         } catch {
             
         }
-        return nil
+        return false
     }
     
-    func fetchDeviceByGatewayAndChannelAndAddress(_ gateway: Gateway, address: Int, channel: Int) -> Device? {
+    func fetchDeviceBy(gateway: Gateway, address: Int, channel: Int) -> Device? {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
         
         var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway == %@", gateway)]
@@ -55,7 +55,7 @@ class IncomingHandlerController: NSObject {
         return nil
     }
     
-    func fetchDevicesByGatewayAndAddress(_ gateway: Gateway, address: Int) -> [Device] {
+    func fetchDevices(by gateway: Gateway, address: Int) -> [Device]? {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
         
         var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway == %@", gateway)]
@@ -66,13 +66,13 @@ class IncomingHandlerController: NSObject {
         fetchRequest.predicate = compoundPredicate
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Device]
-            
-            return fetResults
-            
+            if fetResults.count > 0{
+                return fetResults
+            }            
         } catch {
             
         }
-        return []
+        return nil
     }
     
     
