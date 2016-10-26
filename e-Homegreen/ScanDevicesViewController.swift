@@ -106,7 +106,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     
     func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(ScanDevicesViewController.refreshDeviceList), name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ScanDevicesViewController.refreshDeviceList), name: NSNotification.Name(rawValue: NotificationKey.RefreshScanningDevice), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ScanDevicesViewController.nameReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidFindDeviceName), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ScanDevicesViewController.deviceReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidFindDevice), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ScanDevicesViewController.sensorParametarReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidFindSensorParametar), object: nil)
@@ -116,7 +116,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningDevice)
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningSensorParametars)
         
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshScanningDevice), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidFindDeviceName), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidFindDevice), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidFindSensorParametar), object: nil)
@@ -841,6 +841,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         } else {
             findParametarsForSensor()
         }
+        
+        refreshDeviceList()
     }
     
     func returnSearchParametars (_ from:String, to:String, isScaningNamesAndParametars:Bool) throws -> SearchParametars {
@@ -929,7 +931,7 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
             cell.isVisibleSwitch.addTarget(self, action: #selector(ScanDevicesViewController.changeValueVisible(_:)), for: UIControlEvents.valueChanged)
             
             let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ScanDevicesViewController.addMacro(_:)))
-            longPress.minimumPressDuration = 1
+            longPress.minimumPressDuration = 2
             cell.tag = indexPath.row
             cell.addGestureRecognizer(longPress)
             
