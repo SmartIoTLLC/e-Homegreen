@@ -50,50 +50,50 @@ class IncomingHandler: NSObject {
             
                 //  ACKNOWLEDGEMENT ABOUT CHANNEL PARAMETAR (Get Channel Parametar) IMENA
                 if messageIsChannelParameter() {
-                    self.parseMessageChannelParameter(self.byteArray)
+                    self.parseMessageChannelParameter(self.byteArray)   //ok
                 }
                 if messageIsChannelState() {
-                    self.parseMessageChannelsState(self.byteArray)
+                    self.parseMessageChannelsState(self.byteArray)      //treba napraviti asinhrono da radi
                 }
                 
                 //  ACKNOWLEDGMENT ABOUT CHANNEL WARNINGS (Get Channel On Last Current Change Warning)
                 if messageIsChannelWarning() {
-                    self.parseMessageChannelWarnings(self.byteArray)
+                    self.parseMessageChannelWarnings(self.byteArray)    //asinhrono da radi
                 }
                 if messageIsCurtainState() {
-                    self.parseMessageCurtainState(self.byteArray)
+                    self.parseMessageCurtainState(self.byteArray)       //asinhrono da radi
                 }
                 
                 //  ACKNOWLEDGMENT ABOUT RUNNING TIME (Get Channel On Time Count)
                 if messageIsRunningTime() {
-                    self.parseMessageDimmerGetRunningTime(self.byteArray)
+                    self.parseMessageDimmerGetRunningTime(self.byteArray)       //asinhrono da radi
                 }
                 if messageIsAcParameter() {
-                    self.parseMessageACParametar(self.byteArray)
+                    self.parseMessageACParametar(self.byteArray)    //ok
                 }
                 if messageIsAcControlStatus() {
-                    self.parseMessageACstatus(self.byteArray)
+                    self.parseMessageACstatus(self.byteArray)       //asinhrono da radi
                 }
                 if messageIsInterfaceParameter() {
-                    self.parseMessageInterfaceParametar(self.byteArray)
+                    self.parseMessageInterfaceParametar(self.byteArray)     //uradjeno ali treba proveriti
                 }
                 if messageIsInterfaceStatus(){ // OVO NE MOZE OVAKO DA BUDE
-                    self.parseMessageInterfaceStatus(self.byteArray)
+                    self.parseMessageInterfaceStatus(self.byteArray)        //asinhrono da bude
                 }
                 if messageIsSecurityFeedbackHandler() {
-                    self.parseMessageSecurityFeedbackHandler(self.byteArray)
+                    self.parseMessageSecurityFeedbackHandler(self.byteArray)        //treba proveriti, nesto tu ne valja
                 }
                 if messageIsInterfaceEnableStatus() {
-                    self.parseMessageInterfaceEnableStatus(self.byteArray)
+                    self.parseMessageInterfaceEnableStatus(self.byteArray)          //asinhrono
                 }
                 if messageIsInterfaceName() {
-                    self.parseMessageInterfaceName(self.byteArray)
+                    self.parseMessageInterfaceName(self.byteArray)      //ok samo proveriti za enable i visible polja
                 }
                 if messageIsTimerStatus() {
-                    self.parseMessageTimerStatus(self.byteArray)
+                    self.parseMessageTimerStatus(self.byteArray)        //ok
                 }
                 if messageIsFlagStatus() {
-                    self.parseMessageFlagStatus(self.byteArray)
+                    self.parseMessageFlagStatus(self.byteArray)     //isto kao i za timer samo zasto do 32
                 }
                 if messageIsNewZone() {
                     self.parseMessageNewZone(self.byteArray)        //ok
@@ -105,7 +105,7 @@ class IncomingHandler: NSObject {
                     self.parseMessageRefreshEvent(self.byteArray)    // treba proveriti
                 }
                 if messageIsTimerStatusData() {
-                    self.parseTimerStatus(dataFrame)    // trazi sve timere u bazi, trebalo bi po gateway-u, adresi i id
+                    self.parseTimerStatus(dataFrame)    // ok
                 }
                 if messageIsTimerName() {
                     self.parseMessageTimerName(self.byteArray)    //ok
@@ -132,16 +132,16 @@ class IncomingHandler: NSObject {
                     self.parseMessageCardName(self.byteArray)  //ok
                 }
                 if messageIsNewCardParameter() {
-                    self.parseMessageCardParameters(self.byteArray)
+                    self.parseMessageCardParameters(self.byteArray) //ok
                 }
                 if messageIsNewDeviceSaltoParameter() {
-                    self.parseMessageSaltoParameters(self.byteArray)
+                    self.parseMessageSaltoParameters(self.byteArray) //ok
                 }
                 if messageIsSaltoStatus() {
-                    self.parseMessageSaltoStatus(self.byteArray)
+                    self.parseMessageSaltoStatus(self.byteArray) //proveriti da li vraca notifikaciju, da li treba
                 }
                 if messageIsPCStatus(){
-                    self.parsePCStatus(self.byteArray)
+                    self.parsePCStatus(self.byteArray)  //asinhrono, ne mora ali bi bilo dobro da se tako odradi
                 }
             }
         }
@@ -195,23 +195,21 @@ class IncomingHandler: NSObject {
     }
     func parseTimerStatus(_ dataFrame:DataFrame) {
         
-        let sortDescriptor = NSSortDescriptor(key: "timerName", ascending: true)
-        let timers = DatabaseTimersController.shared.getAllTimersSortedBy(sortDescriptor)
+        let address = Int(byteArray[4])
+        let timers = DatabaseTimersController.shared.getTimersBy(gateway: self.gateways[0], address: address)
         
-        // For loop in data frame INFO block
-        for i in 1...16 {
-            for item in timers {
-                if  Int(item.gateway.addressOne) == Int(dataFrame.ADR1) && Int(item.gateway.addressTwo) == Int(dataFrame.ADR2) && Int(item.address) == Int(dataFrame.ADR3) && Int(item.timerId) == Int(i) {
-                    let position = (i - 1)*4
-                    let fourBytes = [dataFrame.INFO[1+position], dataFrame.INFO[2+position], dataFrame.INFO[3+position], dataFrame.INFO[4+position]]
-                    item.count = NSNumber(value: UInt.convertFourBytesToUInt(fourBytes) as UInt)
-                    item.timerCount = UInt.convertFourBytesToUInt(fourBytes)
-                    
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshTimer), object: self, userInfo: nil)
-                }
+        for timer in timers{
+            let id = Int(timer.timerId)
+            let position = (id - 1)*4
+            if id < 17 {
+                let fourBytes = [dataFrame.INFO[1+position], dataFrame.INFO[2+position], dataFrame.INFO[3+position], dataFrame.INFO[4+position]]
+                timer.count = NSNumber(value: UInt.convertFourBytesToUInt(fourBytes) as UInt)
+                timer.timerCount = UInt.convertFourBytesToUInt(fourBytes)
+                
+                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshTimer), object: self, userInfo: nil)
             }
+            
         }
-        CoreDataController.shahredInstance.saveChanges()
     }
     
     // MARK - Scenes
@@ -580,60 +578,6 @@ class IncomingHandler: NSObject {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDeviceName), object: self, userInfo: data)
 
             }
-            
-            
-//            self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-//            // Get two bytes that carry info
-//            var first8Devices = byteArray[8]
-//            var second8Devices = byteArray[7]
-//            
-//            // Get which channels should be set
-//            var arrayOfActiveChannels: [Int] = []
-//            for i in 1...8 {
-//                if first8Devices & 0x1 == 1{
-//                    arrayOfActiveChannels.append(i)
-//                }
-//                first8Devices = first8Devices >> 1
-//            }
-//            for i in 1...8 {
-//                if second8Devices & 0x1 == 1{
-//                    arrayOfActiveChannels.append(i + 8)
-//                }
-//                second8Devices = second8Devices >> 1
-//            }
-//            
-//            if arrayOfActiveChannels.count > 4 { // something is wrong if we could select more than 4
-//                return
-//            }
-//            var devicesForSalto: [Device] = []
-//            // Get needed devices and be sure that everything is in good order
-//            for i in 0..<devices.count{
-//                if  Int(devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(devices[i].address) == Int(byteArray[4]){
-//                    devicesForSalto.append(devices[i])
-//                }
-//            }
-//            devicesForSalto = devicesForSalto.sorted(by: { (dev1, dev2) -> Bool in
-//                return (dev1.name < dev2.name)
-//            })
-//            
-//            // Set new parameters for device
-//            for device in devicesForSalto {
-//                if arrayOfActiveChannels.count > 0{
-//                    device.isEnabled = NSNumber(value: true as Bool)
-//                    device.isVisible = NSNumber(value: true as Bool)
-//                    device.controlType = ControlType.SaltoAccess
-//                    device.channel = NSNumber(value: arrayOfActiveChannels.first!)
-//                    arrayOfActiveChannels.removeFirst()
-//                }else{
-//                    device.isEnabled = NSNumber(value: false as Bool)
-//                    device.isVisible = NSNumber(value: false as Bool)
-//                    device.controlType = ControlType.SaltoAccess
-//                    device.channel = 0
-//                }
-//            }
-//            let data = ["deviceIndexForFoundName":Int(byteArray[4]), "saltoAccess": 1]
-//            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDeviceName), object: self, userInfo: data)
-//            CoreDataController.shahredInstance.saveChanges()
         }
     }
     func parseMessageSaltoStatus(_ byteArray: [Byte]){
@@ -755,7 +699,7 @@ class IncomingHandler: NSObject {
 
     //  informacije o imenima uredjaja na MULTISENSORU
     func parseMessageInterfaceName (_ byteArray:[Byte]) {
-        print(Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName))
+    
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
             
             let address = Int(byteArray[4])
@@ -772,31 +716,12 @@ class IncomingHandler: NSObject {
                     device.name = "Unknown"
                 }
                 
+                print("device:" + string)
+                
                 let data = ["deviceAddress": address, "deviceChannel": channel]
                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDeviceName), object: self, userInfo: data)
             }
-            
-            
-//            self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-//            var string:String = ""
-//            for j in 9..<byteArray.count-2{
-//                string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))!))" //  device name
-//            }
-//            for i in  0..<devices.count{
-//                if Int(devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(devices[i].address) == Int(byteArray[4]) && Int(devices[i].channel) == Int(byteArray[7]) {
-//                    //                var channel = Int(devices[i].channel)
-//                    if string != "" {
-//                        devices[i].name = string
-//                    } else {
-//                        devices[i].name = "Unknown"
-//                    }
-//                    let data = ["deviceIndexForFoundName":i]
-//                    NSLog("dosao je u ovaj incoming handler sa deviceom: \(i)")
-//                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDeviceName), object: self, userInfo: data)
-//                }
-//            }
-//            CoreDataController.shahredInstance.saveChanges()
-//            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+
         }
     }
     func parseMessageInterfaceEnableStatus (_ byteArray: [Byte]) {
@@ -813,14 +738,17 @@ class IncomingHandler: NSObject {
         CoreDataController.shahredInstance.saveChanges()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }
+    
     func parseMessageInterfaceParametar (_ byteArray:[Byte]) {
-        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        var counter = 0
-        for device in devices {
-            if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) && Int(device.channel) == Int(byteArray[7]) {
-//                device.zoneId = NSNumber(value: Int(byteArray[9]))
+        
+        let address = Int(byteArray[4])
+        let channel = Int(byteArray[7])
+        
+        if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningSensorParametars) {
+            
+            if let device = IncomingHandlerController.shared.fetchDeviceBy(gateway: self.gateways[0], address: address, channel: channel){
+                
                 device.categoryId = NSNumber(value: Int(byteArray[8]))
-//                device.parentZoneId = NSNumber(value: Int(byteArray[10]))
                 
                 // Parse zone and parent zone
                 if Int(byteArray[10]) == 0 {
@@ -840,17 +768,58 @@ class IncomingHandler: NSObject {
                     device.isEnabled = NSNumber(value: false as Bool)
                     device.isVisible = NSNumber(value: false as Bool)
                 }
+                
                 device.resetImages(appDel.managedObjectContext!)
-                let data = ["sensorIndexForFoundParametar":counter]
-//                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshInterface), object: self, userInfo: nil)
+                
+                let data = ["deviceAddress": address, "deviceChannel": channel]
                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindSensorParametar), object: self, userInfo: data)
                 
+                CoreDataController.shahredInstance.saveChanges()
+                
             }
-            counter = counter + 1
+            
         }
-        CoreDataController.shahredInstance.saveChanges()
+        
+        
+//        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
+//        var counter = 0
+//        for device in devices {
+//            if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) && Int(device.channel) == Int(byteArray[7]) {
+////                device.zoneId = NSNumber(value: Int(byteArray[9]))
+//                device.categoryId = NSNumber(value: Int(byteArray[8]))
+////                device.parentZoneId = NSNumber(value: Int(byteArray[10]))
+//                
+//                // Parse zone and parent zone
+//                if Int(byteArray[10]) == 0 {
+//                    device.zoneId = 0
+//                    device.parentZoneId = NSNumber(value: Int(byteArray[9]))
+//                } else {
+//                    device.zoneId = NSNumber(value: Int(byteArray[9]))
+//                    device.parentZoneId = NSNumber(value: Int(byteArray[10]))
+//                }
+//                
+//                // When we change category it will reset images
+//                device.digitalInputMode = Int(byteArray[14]) as NSNumber?
+//                if byteArray[11] >= 0x80 {
+//                    device.isEnabled = NSNumber(value: true as Bool)
+//                    device.isVisible = NSNumber(value: true as Bool)
+//                } else {
+//                    device.isEnabled = NSNumber(value: false as Bool)
+//                    device.isVisible = NSNumber(value: false as Bool)
+//                }
+//                device.resetImages(appDel.managedObjectContext!)
+//                let data = ["sensorIndexForFoundParametar":counter]
+//                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshInterface), object: self, userInfo: nil)
+//                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindSensorParametar), object: self, userInfo: data)
+                
+//            }
+//            counter = counter + 1
+//        }
+//        CoreDataController.shahredInstance.saveChanges()
 //        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }
+    
+    //parameters for climate
     func parseMessageACParametar (_ byteArray:[Byte]) {
         print(Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName))
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
@@ -889,56 +858,7 @@ class IncomingHandler: NSObject {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDeviceName), object: self, userInfo: data)
                 
             }
-            
-            
-//            self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-//            var string:String = ""
-//            for i in 9..<byteArray.count-2{
-//                string = string + "\(Character(UnicodeScalar(Int(byteArray[i]))!))" //  device name
-//                print(string)
-//            }
-//            for i in 0..<devices.count {
-//                if Int(devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(devices[i].address) == Int(byteArray[4]) && Int(devices[i].channel) == Int(byteArray[7]) {
-//                    var string:String = ""
-//                    for j in 42..<byteArray.count-2{
-//                        string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))!))" //  device name
-//                    }
-//                    if string != "" {
-//                        devices[i].name = string
-//                    } else {
-//                        devices[i].name = "Unknown"
-//                    }
-//                    
-//                    // PLC doesn't send info about this, so we put TRUE as default
-//                    devices[i].isEnabled = NSNumber(value: true as Bool)
-//                    devices[i].isVisible = NSNumber(value: true as Bool)
-//                    
-////                    devices[i].zoneId = NSNumber(value: Int(byteArray[33]))
-////                    devices[i].parentZoneId = NSNumber(value: Int(byteArray[34]))
-//                    devices[i].categoryId = NSNumber(value: Int(byteArray[32]))
-//                    
-//                    // Parse zone and parent zone
-//                    if Int(byteArray[34]) == 0 {
-//                        devices[i].zoneId = 0
-//                        devices[i].parentZoneId = NSNumber(value: Int(byteArray[33]))
-//                    } else {
-//                        devices[i].zoneId = NSNumber(value: Int(byteArray[33]))
-//                        devices[i].parentZoneId = NSNumber(value: Int(byteArray[34]))
-//                    }
-//                    //                    devices[i].enabled = ""
-//                    //                    if byteArray[22] == 0x01 {
-//                    //                        devices[i].isEnabled = NSNumber(bool: true)
-//                    //                    } else {
-//                    //                        devices[i].isEnabled = NSNumber(bool: false)
-//                    //                    }
-//                    let data = ["deviceIndexForFoundName":i]
-//                    NSLog("dosao je u ovaj incoming handler sa deviceom: \(i)")
-//                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDeviceName), object: self, userInfo: data)
-//                    
-//                }
-//            }
-//            CoreDataController.shahredInstance.saveChanges()
-//            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+
         }
     }
     
@@ -1041,68 +961,10 @@ class IncomingHandler: NSObject {
                 device.curtainControlMode = NSNumber(value: Int(byteArray[35]))      // Will be used later (17.07.2016)
                 
                 let data = ["deviceAddress": address, "deviceChannel": channel]
-//                NSLog("dosao je u ovaj incoming handler sa deviceom: \(i)")
+                
                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDeviceName), object: self, userInfo: data)
             }
-            
-            
-//            self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-//            for i in 0..<devices.count{
-//                if  Int(devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(devices[i].address) == Int(byteArray[4]) && Int(devices[i].channel) == Int(byteArray[7]) {
-//                    // Parse device name
-//                    var string:String = ""
-//                    for j in (8+47)..<(byteArray.count-2){
-//                        string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))!))" //  device name
-//                    }
-//                    if string != "" {
-//                        devices[i].name = string
-//                    } else {
-//                        devices[i].name = "Unknown"
-//                    }
-//                    
-//                    devices[i].overrideControl1 = NSNumber(value: Int(byteArray[23]))
-//                    devices[i].overrideControl2 = NSNumber(value: Int(byteArray[24]))
-//                    devices[i].overrideControl3 = NSNumber(value: Int(byteArray[25]))
-//                    
-//                    // Parse zone and parent zone
-//                    if Int(byteArray[10]) == 0 {
-//                        devices[i].zoneId = 0
-//                        devices[i].parentZoneId = NSNumber(value: Int(byteArray[9]))
-//                    } else {
-//                        devices[i].zoneId = NSNumber(value: Int(byteArray[9]))
-//                        devices[i].parentZoneId = NSNumber(value: Int(byteArray[10]))
-//                    }
-//                    
-//                    // Parse Category
-//                    devices[i].categoryId = NSNumber(value: Int(byteArray[8]))
-//                    devices[i].resetImages(appDel.managedObjectContext!)
-//                    
-//                    // Enabled/Visible
-//                    if byteArray[22] == 0x01 {
-//                        devices[i].isEnabled = NSNumber(value: true as Bool)
-//                        devices[i].isVisible = NSNumber(value: true as Bool)
-//                    } else {
-//                        devices[i].isEnabled = NSNumber(value: false as Bool)
-//                        devices[i].isVisible = NSNumber(value: false as Bool)
-//                    }
-//                    
-//                    if byteArray[28] == 0x01 {
-//                        devices[i].isDimmerModeAllowed = NSNumber(value: true as Bool)
-//                        devices[i].controlType = ControlType.Dimmer
-//                    }
-//                    if byteArray[33] == 0x01 {
-//                        devices[i].isCurtainModeAllowed = NSNumber(value: true as Bool)
-//                        devices[i].controlType = ControlType.Curtain
-//                    }
-//                    devices[i].curtainGroupID = NSNumber(value: Int(byteArray[34]))          // CurtainGroupID defines the curtain device. Ic curtain group is the same on 2 channels then that is the same Curtain
-//                    devices[i].curtainControlMode = NSNumber(value: Int(byteArray[35]))      // Will be used later (17.07.2016)
-//                    let data = ["deviceIndexForFoundName":i]
-//                    NSLog("dosao je u ovaj incoming handler sa deviceom: \(i)")
-//                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDeviceName), object: self, userInfo: data)
-//                }
-//            }
-//            CoreDataController.shahredInstance.saveChanges()
-//            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+
         }
     }
     
@@ -1112,15 +974,13 @@ class IncomingHandler: NSObject {
         //  0xF0 Elapsed = 240
         //  0xEE Suspend = 238
         //  informacije o parametrima kanala
-        let sortDescriptor = NSSortDescriptor(key: "timerName", ascending: true)
-        let timers = DatabaseTimersController.shared.getAllTimersSortedBy(sortDescriptor)
-        for i in 1...16 {
-            for item in timers {
-                if  Int(item.gateway.addressOne) == Int(byteArray[2]) && Int(item.gateway.addressTwo) == Int(byteArray[3]) && Int(item.address) == Int(byteArray[4]) && Int(item.timerId) == Int(i) {
-                    item.timerState = NSNumber(value: Int(byteArray[7+i]) as Int)
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshTimer), object: self, userInfo: nil)
-                }
-            }
+        let address = Int(byteArray[4])
+        let timers = DatabaseTimersController.shared.getTimersBy(gateway: self.gateways[0], address: address)  //getTimersBy(gateway: self.gateways[0], address: address)
+        
+        for timer in timers{
+            let id = Int(timer.timerId)
+            timer.timerState = NSNumber(value: Int(byteArray[7+id]))
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshTimer), object: self, userInfo: nil)
         }
         CoreDataController.shahredInstance.saveChanges()
     }

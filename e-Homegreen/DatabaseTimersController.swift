@@ -29,6 +29,26 @@ class DatabaseTimersController: NSObject {
         return []
     }
     
+    func getTimersBy(gateway: Gateway, address: Int) -> [Timer] {
+        if let _ = DatabaseUserController.shared.logedUserOrAdmin(){
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Timer.fetchRequest()
+            
+            var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway == %@", gateway)]
+            predicateArray.append(NSPredicate(format: "address == %@", NSNumber(value: address)))
+            
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+            fetchRequest.predicate = compoundPredicate
+            
+            do {
+                let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Timer]
+                return fetResults!
+            } catch _ as NSError {
+                abort()
+            }
+        }
+        return []
+    }
+    
     func getTimers(_ filterParametar:FilterItem) -> [Timer] {
         if let user = DatabaseUserController.shared.logedUserOrAdmin(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Timer.fetchRequest()
