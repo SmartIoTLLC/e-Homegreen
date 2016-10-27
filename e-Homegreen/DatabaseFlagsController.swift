@@ -54,6 +54,7 @@ class DatabaseFlagsController: NSObject {
         }
         return []
     }
+    
     func getAllFlags() -> [Flag] {
         if let _ = DatabaseUserController.shared.logedUserOrAdmin(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Flag.fetchRequest()
@@ -65,6 +66,25 @@ class DatabaseFlagsController: NSObject {
                 return fetResults!
             } catch _ as NSError {
                 abort()
+            }
+        }
+        return []
+    }
+    
+    func getFlagsBy(gateway: Gateway, address: Int) -> [Flag] {
+        if let _ = DatabaseUserController.shared.logedUserOrAdmin(){
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Timer.fetchRequest()
+            
+            var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway == %@", gateway)]
+            predicateArray.append(NSPredicate(format: "address == %@", NSNumber(value: address)))
+            
+            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+            fetchRequest.predicate = compoundPredicate
+            
+            do {
+                let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Flag]
+                return fetResults!
+            } catch _ as NSError {
             }
         }
         return []
