@@ -365,23 +365,42 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
             guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
             }
-            guard let timerIndex = info["eventId"] else{
+            // 1. Data that is received through notification is: eventAddress and eventId
+            // 2. We need to search events and find that event, and get it's index
+            // 3. then, we find that index in "indexOfEventIndexInArrayOfNamesToBeSearched".
+            //NOTE: indexOfEventIndexInArrayOfNamesToBeSearched is the array of all events that user defined to be scanned. (event indexes in events)
+            //1.
+            guard let eventAddress  = info["eventAddress"] else{
                 return
             }
-            guard let indexOfEventIndexInArrayOfNamesToBeSearched = arrayOfEventsToBeSearched.index(of: timerIndex) else{
+            guard let eventId  = info["eventId"] else{
                 return
             }
+            let eventTemp = self.events.filter({ (e) -> Bool in
+                return (Int(e.address) == eventAddress && Int(e.eventId) == eventId)
+            })
             
-            if indexOfEventIndexInArrayOfNamesToBeSearched+1 < arrayOfEventsToBeSearched.count{ // if next exists
-                indexOfEventsToBeSearched = indexOfEventIndexInArrayOfNamesToBeSearched+1
-                let nextEventIndexToBeSearched = arrayOfEventsToBeSearched[indexOfEventsToBeSearched]
+            if eventTemp.count > 0 {
+                //2.
+                guard let eventIndex = self.events.index(of: eventTemp.first!) else{
+                    return
+                }
+                //3.
+                guard let indexOfEventIndexInArrayOfNamesToBeSearched = arrayOfEventsToBeSearched.index(of: eventIndex) else{
+                    return
+                }
                 
-                timesRepeatedCounter = 0
-                eventsTimer?.invalidate()
-                eventsTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanEventsViewController.checkIfEventDidGetName(_:)), userInfo: nextEventIndexToBeSearched, repeats: false)
-                sendCommandWithEventAddress(nextEventIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
-            }else{
-                dismissScaningControls()
+                if indexOfEventIndexInArrayOfNamesToBeSearched+1 < arrayOfEventsToBeSearched.count{ // if next exists
+                    indexOfEventsToBeSearched = indexOfEventIndexInArrayOfNamesToBeSearched+1
+                    let nextEventIndexToBeSearched = arrayOfEventsToBeSearched[indexOfEventsToBeSearched]
+                    
+                    timesRepeatedCounter = 0
+                    eventsTimer?.invalidate()
+                    eventsTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanEventsViewController.checkIfEventDidGetName(_:)), userInfo: nextEventIndexToBeSearched, repeats: false)
+                    sendCommandWithEventAddress(nextEventIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                }else{
+                    dismissScaningControls()
+                }
             }
         }
     }

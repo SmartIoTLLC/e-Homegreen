@@ -403,24 +403,38 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
             }
-            guard let timerIndex = info["timerId"] else{
+            guard let timerAddress  = info["timerAddress"] else{
                 return
             }
-            guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            guard let timerId  = info["timerId"] else{
                 return
             }
-        
-            if indexOfDeviceIndexInArrayOfNamesToBeSearched+1 < arrayOfNamesToBeSearched.count{ // if next exists
-                indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfNamesToBeSearched+1
-                let nextTimerIndexToBeSearched = arrayOfNamesToBeSearched[indexOfDeviceIndexInArrayOfNamesToBeSearched+1]
+            let timerTemp = self.timers.filter({ (t) -> Bool in
+                return (Int(t.address) == timerAddress && Int(t.timerId) == timerId)
+            })
+            
+            if timerTemp.count > 0 {
+                //2.
+                guard let timerIndex = self.timers.index(of: timerTemp.first!) else{
+                    return
+                }
+                //3.
+                guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                    return
+                }
                 
-                timesRepeatedCounterNames = 0
-                timerNameTimer?.invalidate()
-                timerNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
-                NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextTimerIndexToBeSearched)")
-                sendCommandForFindingNameWithTimerAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
-            }else{
-                dismissScaningControls()
+                if indexOfDeviceIndexInArrayOfNamesToBeSearched+1 < arrayOfNamesToBeSearched.count{ // if next exists
+                    indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfNamesToBeSearched+1
+                    let nextTimerIndexToBeSearched = arrayOfNamesToBeSearched[indexOfDeviceIndexInArrayOfNamesToBeSearched+1]
+                    
+                    timesRepeatedCounterNames = 0
+                    timerNameTimer?.invalidate()
+                    timerNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                    NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextTimerIndexToBeSearched)")
+                    sendCommandForFindingNameWithTimerAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                }else{
+                    dismissScaningControls()
+                }
             }
         }
     }
@@ -543,26 +557,41 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
             }
-            guard let timerIndex = info["timerId"] else{
+            guard let timerAddress  = info["timerAddress"] else{
                 return
             }
-            guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            guard let timerId  = info["timerId"] else{
                 return
+            }
+            let timerTemp = self.timers.filter({ (t) -> Bool in
+                return (Int(t.address) == timerAddress && Int(t.timerId) == timerId)
+            })
+            
+            if timerTemp.count > 0 {
+                //2.
+                guard let timerIndex = self.timers.index(of: timerTemp.first!) else{
+                    return
+                }
+                //3.
+                guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: timerIndex) else{ // Array "indexOfDeviceIndexInArrayOfParametersToBeSearched" contains indexes of timers that don't have name
+                    return
+                }
+                
+                if indexOfDeviceIndexInArrayOfParametersToBeSearched+1 < arrayOfParametersToBeSearched.count{ // if next exists
+                    indexOfParametersToBeSearched = indexOfDeviceIndexInArrayOfParametersToBeSearched+1
+                    let nextTimerIndexToBeSearched = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
+                    timesRepeatedCounterParameters = 0
+                    timerParameterTimer?.invalidate()
+                    timerParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                    NSLog("func parameterReceivedFromPLC index:\(index) :deviceIndex\(nextTimerIndexToBeSearched)")
+                    sendCommandForFindingParameterWithTimerAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                    print("Command sent for parameter from timerParameterReceivedFromPLC: next parameter")
+                }else{
+                    shouldFindTimerParameters = false
+                    dismissScaningControls()
+                }
             }
             
-            if indexOfDeviceIndexInArrayOfParametersToBeSearched+1 < arrayOfParametersToBeSearched.count{ // if next exists
-                indexOfParametersToBeSearched = indexOfDeviceIndexInArrayOfParametersToBeSearched+1
-                let nextTimerIndexToBeSearched = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
-                timesRepeatedCounterParameters = 0
-                timerParameterTimer?.invalidate()
-                timerParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
-                NSLog("func parameterReceivedFromPLC index:\(index) :deviceIndex\(nextTimerIndexToBeSearched)")
-                sendCommandForFindingParameterWithTimerAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
-                print("Command sent for parameter from timerParameterReceivedFromPLC: next parameter")
-            }else{
-                shouldFindTimerParameters = false
-                dismissScaningControls()
-            }
         }
     }
     // Sends byteArray to PLC
