@@ -93,7 +93,7 @@ class IncomingHandler: NSObject {
                     self.parseMessageTimerStatus(self.byteArray)        //ok
                 }
                 if messageIsFlagStatus() {
-                    self.parseMessageFlagStatus(self.byteArray)     //isto kao i za timer samo zasto do 32
+                    self.parseMessageFlagStatus(self.byteArray)     //ok
                 }
                 if messageIsNewZone() {
                     self.parseMessageNewZone(self.byteArray)        //ok
@@ -150,15 +150,15 @@ class IncomingHandler: NSObject {
     // MARK - Timers
     func parseMessageTimerName(_ byteArray: [Byte]) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningTimerNames) {
-            var timerId = Int(byteArray[7])
+            let timerId = Int(byteArray[7])
+            let moduleAddress = Int(byteArray[4])
             // Miminum is 12b
             if Int(byteArray[8]) != 0 {
                 var name:String = ""
                 for j in 9 ..< 9+Int(byteArray[8]) {
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))!))" //  timer name
                 }
-                timerId = Int(byteArray[7])
-                let moduleAddress = Int(byteArray[4])
+                
                 
                 if gateways.count > 0 {
                     DatabaseTimersController.shared.addTimer(timerId, timerName: name, moduleAddress: moduleAddress, gateway: gateways.first!, type: nil, levelId: nil, selectedZoneId: nil, categoryId: nil)
@@ -166,22 +166,21 @@ class IncomingHandler: NSObject {
                     return
                 }
             }
-            let data = ["timerId":timerId]
+            let data = ["timerId":timerId, "timerAddress": moduleAddress]
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveTimerFromGateway), object: self, userInfo: data)
         }
     }
     func parseMessageTimerParameters(_ byteArray: [Byte]) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningTimerParameters) {
-            var timerId = Int(byteArray[7])
+            let timerId = Int(byteArray[7])
+            let moduleAddress = Int(byteArray[4])
             // Miminum is 14b
             if byteArray.count > 14 {
-                timerId = Int(byteArray[7])
+                
                 let timerCategoryId = byteArray[8]
                 let timerZoneId = byteArray[9]
                 let timerLevelId = byteArray[10]
                 let timerType = byteArray[12]
-                
-                let moduleAddress = Int(byteArray[4])
                 
                 if gateways.count > 0 {
                     DatabaseTimersController.shared.addTimer(timerId, timerName: nil, moduleAddress: moduleAddress, gateway: gateways.first!, type: Int(timerType), levelId: Int(timerLevelId), selectedZoneId: Int(timerZoneId), categoryId: Int(timerCategoryId))
@@ -189,7 +188,7 @@ class IncomingHandler: NSObject {
                     return
                 }
             }
-            let data = ["timerId":timerId]
+            let data = ["timerId":timerId, "timerAddress": moduleAddress]
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveTimerParameterFromGateway), object: self, userInfo: data)
         }
     }
@@ -310,15 +309,14 @@ class IncomingHandler: NSObject {
     // MARK - Flags
     func parseMessageFlagName(_ byteArray: [Byte]) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningFlagNames) {
-            var flagId = Int(byteArray[7]) - 100
+            let flagId = Int(byteArray[7]) - 100
+            let moduleAddress = Int(byteArray[4])
             // Miminum is 12b
             if Int(byteArray[8]) != 0 {
                 var name:String = ""
                 for j in 9 ..< 9+Int(byteArray[8]) {
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))!))" //  timer name
                 }
-                flagId = Int(byteArray[7]) - 100
-                let moduleAddress = Int(byteArray[4])
                 
                 if gateways.count > 0 {
                     DatabaseFlagsController.shared.createFlag(flagId, flagName: name, moduleAddress: moduleAddress, gateway: gateways.first!, levelId: nil, selectedZoneId: nil, categoryId: nil)
@@ -326,13 +324,14 @@ class IncomingHandler: NSObject {
                     return
                 }
             }
-            let data = ["flagId":flagId]
+            let data = ["flagId":flagId, "flagAddress": moduleAddress]
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveFlagFromGateway), object: self, userInfo: data)
         }
     }
     func parseMessageFlagParameters(_ byteArray: [Byte]) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningFlagParameters) {
             var flagId = Int(byteArray[7]) - 100
+            let moduleAddress = Int(byteArray[4])
             // Miminum is 14b
             if byteArray.count > 14 {
                 flagId = Int(byteArray[7]) - 100
@@ -340,7 +339,6 @@ class IncomingHandler: NSObject {
                 let flagZoneId = Int(byteArray[9])
                 let flagLevelId = Int(byteArray[10])
                 
-                let moduleAddress = Int(byteArray[4])
                 
                 if gateways.count > 0 {
                     DatabaseFlagsController.shared.createFlag(flagId, flagName: nil, moduleAddress: moduleAddress, gateway: gateways.first!, levelId: flagLevelId, selectedZoneId: flagZoneId, categoryId: flagCategoryId)
@@ -348,7 +346,7 @@ class IncomingHandler: NSObject {
                     return
                 }
             }
-            let data = ["flagId":flagId]
+            let data = ["flagId":flagId, "flagAddress": moduleAddress]
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveFlagParameterFromGateway), object: self, userInfo: data)
         }
     }
