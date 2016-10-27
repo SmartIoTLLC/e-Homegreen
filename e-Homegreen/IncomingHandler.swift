@@ -485,8 +485,6 @@ class IncomingHandler: NSObject {
     func parseMessageNewDeviceParameter(_ byteArray:[Byte]) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
             
-            
-            
             self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
             for device in devices {
                 if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) {
@@ -619,71 +617,133 @@ class IncomingHandler: NSObject {
     }
     
     func parseMessageChannelWarnings (_ byteArray:[Byte]) {
+        
+        let address = Int(byteArray[4])
+        
+        if let dev = IncomingHandlerController.shared.fetchDevices(by: self.gateways[0], address: address){
+            for device in dev{
+                device.warningState = Int(byteArray[6+5+6*(Int(device.channel)-1)])
+            }
+            CoreDataController.shahredInstance.saveChanges()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+        }
+        
 //        self.devices = IncomingHandlerController.shared.fetchDevicesByGatewayAndAddress(self.gateways[0], address: Int(byteArray[4]))
-        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        for device in devices {
+//        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
+//        for device in devices {
 //            if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) {
                 //                var number = Int(byteArray[6+5*Int(device.channel)])
-                print("\(6+6*Int(device.channel)) - \(Int(device.channel)) - \(Int(byteArray[6+5+6*(Int(device.channel)-1)]))")
-                device.warningState = Int(byteArray[6+5+6*(Int(device.channel)-1)])
+//                print("\(6+6*Int(device.channel)) - \(Int(device.channel)) - \(Int(byteArray[6+5+6*(Int(device.channel)-1)]))")
+//                device.warningState = Int(byteArray[6+5+6*(Int(device.channel)-1)])
 //            }
-        }
-        CoreDataController.shahredInstance.saveChanges()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+//        }
+//        CoreDataController.shahredInstance.saveChanges()
+//        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }
     
     func parseMessageACstatus (_ byteArray:[Byte]) {
-        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        for i in 0..<devices.count{
-            if Int(devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(devices[i].address) == Int(byteArray[4]) {
-                let channel = Int(devices[i].channel)
-                devices[i].currentValue = NSNumber(value: Int(byteArray[8+13*(channel-1)]))
+        
+        let address = Int(byteArray[4])
+        
+        if let dev = IncomingHandlerController.shared.fetchDevices(by: self.gateways[0], address: address){
+            for device in dev{
+                let channel = Int(device.channel)
+                device.currentValue = NSNumber(value: Int(byteArray[8+13*(channel-1)]))
                 if let mode = DeviceInfo.setMode[Int(byteArray[9+13*(channel-1)])], let modeState = DeviceInfo.modeState[Int(byteArray[10+13*(channel-1)])], let speed = DeviceInfo.setSpeed[Int(byteArray[11+13*(channel-1)])], let speedState = DeviceInfo.speedState[Int(byteArray[12+13*(channel-1)])] {
-                    devices[i].mode = mode
-                    devices[i].modeState = modeState
-                    devices[i].speed = speed
-                    devices[i].speedState = speedState
+                    device.mode = mode
+                    device.modeState = modeState
+                    device.speed = speed
+                    device.speedState = speedState
                 } else {
-                    devices[i].mode = "Auto"
-                    devices[i].modeState = "Off"
-                    devices[i].speed = "Auto"
-                    devices[i].speedState = "Off"
+                    device.mode = "Auto"
+                    device.modeState = "Off"
+                    device.speed = "Auto"
+                    device.speedState = "Off"
                 }
-                devices[i].coolTemperature = NSNumber(value: Int(byteArray[13+13*(channel-1)]))
-                devices[i].heatTemperature = NSNumber(value: Int(byteArray[14+13*(channel-1)]))
-                devices[i].roomTemperature = NSNumber(value: Int(byteArray[15+13*(channel-1)]))
-                devices[i].humidity = NSNumber(value: Int(byteArray[16+13*(channel-1)]))
-                devices[i].filterWarning = byteArray[17+13*(channel-1)] == 0x00 ? false : true
-                devices[i].allowEnergySaving = byteArray[18+13*(channel-1)] == 0x00 ? NSNumber(value: false as Bool) : NSNumber(value: true as Bool)
-                devices[i].current = NSNumber(value: (Int(byteArray[19+13*(channel-1)]) + Int(byteArray[20+13*(channel-1)])))
-                let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
+                device.coolTemperature = NSNumber(value: Int(byteArray[13+13*(channel-1)]))
+                device.heatTemperature = NSNumber(value: Int(byteArray[14+13*(channel-1)]))
+                device.roomTemperature = NSNumber(value: Int(byteArray[15+13*(channel-1)]))
+                device.humidity = NSNumber(value: Int(byteArray[16+13*(channel-1)]))
+                device.filterWarning = byteArray[17+13*(channel-1)] == 0x00 ? false : true
+                device.allowEnergySaving = byteArray[18+13*(channel-1)] == 0x00 ? NSNumber(value: false as Bool) : NSNumber(value: true as Bool)
+                device.current = NSNumber(value: (Int(byteArray[19+13*(channel-1)]) + Int(byteArray[20+13*(channel-1)])))
+                let data = ["deviceDidReceiveSignalFromGateway":device]
                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
             }
+            CoreDataController.shahredInstance.saveChanges()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshClimate), object: self, userInfo: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
         }
-        CoreDataController.shahredInstance.saveChanges()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshClimate), object: self, userInfo: nil)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+        
+//        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
+//        for i in 0..<devices.count{
+//            if Int(devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(devices[i].address) == Int(byteArray[4]) {
+//                let channel = Int(devices[i].channel)
+//                devices[i].currentValue = NSNumber(value: Int(byteArray[8+13*(channel-1)]))
+//                if let mode = DeviceInfo.setMode[Int(byteArray[9+13*(channel-1)])], let modeState = DeviceInfo.modeState[Int(byteArray[10+13*(channel-1)])], let speed = DeviceInfo.setSpeed[Int(byteArray[11+13*(channel-1)])], let speedState = DeviceInfo.speedState[Int(byteArray[12+13*(channel-1)])] {
+//                    devices[i].mode = mode
+//                    devices[i].modeState = modeState
+//                    devices[i].speed = speed
+//                    devices[i].speedState = speedState
+//                } else {
+//                    devices[i].mode = "Auto"
+//                    devices[i].modeState = "Off"
+//                    devices[i].speed = "Auto"
+//                    devices[i].speedState = "Off"
+//                }
+//                devices[i].coolTemperature = NSNumber(value: Int(byteArray[13+13*(channel-1)]))
+//                devices[i].heatTemperature = NSNumber(value: Int(byteArray[14+13*(channel-1)]))
+//                devices[i].roomTemperature = NSNumber(value: Int(byteArray[15+13*(channel-1)]))
+//                devices[i].humidity = NSNumber(value: Int(byteArray[16+13*(channel-1)]))
+//                devices[i].filterWarning = byteArray[17+13*(channel-1)] == 0x00 ? false : true
+//                devices[i].allowEnergySaving = byteArray[18+13*(channel-1)] == 0x00 ? NSNumber(value: false as Bool) : NSNumber(value: true as Bool)
+//                devices[i].current = NSNumber(value: (Int(byteArray[19+13*(channel-1)]) + Int(byteArray[20+13*(channel-1)])))
+//                let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
+//                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
+//            }
+//        }
+//        CoreDataController.shahredInstance.saveChanges()
+//        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshClimate), object: self, userInfo: nil)
+//        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }
     
     func parseMessageDimmerGetRunningTime (_ byteArray:[Byte]) {
-        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        for i in  0..<devices.count{
-            if Int(devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(devices[i].address) == Int(byteArray[4]) {
+        
+        let address = Int(byteArray[4])
+        
+        if let dev = IncomingHandlerController.shared.fetchDevices(by: self.gateways[0], address: address){
+            for device in dev{
                 if byteArray[7] != 0xFF && byteArray[7] != 0xF0 {
-                    devices[i].runningTime = returnRunningTime([byteArray[8], byteArray[9], byteArray[10], byteArray[11]])
+                    device.runningTime = returnRunningTime([byteArray[8], byteArray[9], byteArray[10], byteArray[11]])
                 } else if byteArray[7] == 0xF0 {
                     
                 } else {
-                    let channelNumber = Int(devices[i].channel)
-                    print(Int(devices[i].channel))
-                    devices[i].runningTime = returnRunningTime([byteArray[8+4*(channelNumber-1)], byteArray[9+4*(channelNumber-1)], byteArray[10+4*(channelNumber-1)], byteArray[11+4*(channelNumber-1)]])
-                    print(devices[i].controlType )
-                    print(devices[i].runningTime)
+                    let channelNumber = Int(device.channel)
+                    device.runningTime = returnRunningTime([byteArray[8+4*(channelNumber-1)], byteArray[9+4*(channelNumber-1)], byteArray[10+4*(channelNumber-1)], byteArray[11+4*(channelNumber-1)]])
                 }
             }
+            CoreDataController.shahredInstance.saveChanges()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
         }
-        CoreDataController.shahredInstance.saveChanges()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+        
+//        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
+//        for i in  0..<devices.count{
+//            if Int(devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(devices[i].address) == Int(byteArray[4]) {
+//                if byteArray[7] != 0xFF && byteArray[7] != 0xF0 {
+//                    devices[i].runningTime = returnRunningTime([byteArray[8], byteArray[9], byteArray[10], byteArray[11]])
+//                } else if byteArray[7] == 0xF0 {
+//                    
+//                } else {
+//                    let channelNumber = Int(devices[i].channel)
+//                    print(Int(devices[i].channel))
+//                    devices[i].runningTime = returnRunningTime([byteArray[8+4*(channelNumber-1)], byteArray[9+4*(channelNumber-1)], byteArray[10+4*(channelNumber-1)], byteArray[11+4*(channelNumber-1)]])
+//                    print(devices[i].controlType )
+//                    print(devices[i].runningTime)
+//                }
+//            }
+//        }
+//        CoreDataController.shahredInstance.saveChanges()
+//        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }
 
     //  informacije o imenima uredjaja na MULTISENSORU
@@ -714,9 +774,11 @@ class IncomingHandler: NSObject {
         }
     }
     func parseMessageInterfaceEnableStatus (_ byteArray: [Byte]) {
-        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        for device in devices {
-            if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) && Int(device.channel) == Int(byteArray[7]) {
+        
+        let address = Int(byteArray[4])
+        
+        if let dev = IncomingHandlerController.shared.fetchDevices(by: self.gateways[0], address: address){
+            for device in dev{
                 if byteArray[8] >= 0x80 {
                     device.isEnabled = NSNumber(value: true as Bool)
                 } else {
@@ -726,6 +788,19 @@ class IncomingHandler: NSObject {
         }
         CoreDataController.shahredInstance.saveChanges()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+        
+//        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
+//        for device in devices {
+//            if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) && Int(device.channel) == Int(byteArray[7]) {
+//                if byteArray[8] >= 0x80 {
+//                    device.isEnabled = NSNumber(value: true as Bool)
+//                } else {
+//                    device.isEnabled = NSNumber(value: false as Bool)
+//                }
+//            }
+//        }
+//        CoreDataController.shahredInstance.saveChanges()
+//        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }
     
     func parseMessageInterfaceParametar (_ byteArray:[Byte]) {
@@ -773,7 +848,7 @@ class IncomingHandler: NSObject {
     
     //parameters for climate
     func parseMessageACParametar (_ byteArray:[Byte]) {
-        print(Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName))
+        
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
             
             let address = Int(byteArray[4])
@@ -816,15 +891,25 @@ class IncomingHandler: NSObject {
     
     //  informacije o parametrima (statusu) urdjaja na MULTISENSORU - MISLIM DA JE OVO U REDU
     func parseMessageInterfaceStatus (_ byteArray:[Byte]) {
-        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        for i in 0..<self.devices.count{
-            if Int(self.devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(self.devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(self.devices[i].address) == Int(byteArray[4]) {
-                let channel = Int(self.devices[i].channel)
-                self.devices[i].currentValue = NSNumber(value: Int(byteArray[7+channel]))
-                print(Int(byteArray[7+channel]))
+        
+        let address = Int(byteArray[4])
+        
+        if let dev = IncomingHandlerController.shared.fetchDevices(by: self.gateways[0], address: address){
+            for device in dev{
+                let channel = Int(device.channel)
+                device.currentValue = NSNumber(value: Int(byteArray[7+channel]))
             }
-            
         }
+        
+//        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
+//        for i in 0..<self.devices.count{
+//            if Int(self.devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(self.devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(self.devices[i].address) == Int(byteArray[4]) {
+//                let channel = Int(self.devices[i].channel)
+//                self.devices[i].currentValue = NSNumber(value: Int(byteArray[7+channel]))
+//                print(Int(byteArray[7+channel]))
+//            }
+//            
+//        }
         CoreDataController.shahredInstance.saveChanges()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }
@@ -832,8 +917,8 @@ class IncomingHandler: NSObject {
     //  informacije o stanjima na uredjajima
     func parseMessageChannelsState (_ byteArray:[Byte]) {
         
-//        let address = Int(byteArray[4])
-//        
+        let address = Int(byteArray[4])
+//
 //        IncomingHandlerController.shared.fetchDevices(by: self.gateways[0], address: address) { (devices) in
 //            if let devices = devices{
 //                for device in devices{
@@ -860,30 +945,54 @@ class IncomingHandler: NSObject {
 //            }
 //        }
         
-        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        for i in 0..<devices.count{
-            if Int(devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(devices[i].address) == Int(byteArray[4]) {
-                let channelNumber = Int(devices[i].channel)
+        if let dev = IncomingHandlerController.shared.fetchDevices(by: self.gateways[0], address: address){
+            for device in dev{
+                let channelNumber = Int(device.channel)
                 
                 // Problem: If device is dimmer, then value that is received is in range from 0-100. In rest of the cases value is 0x00 of 0xFF (0 or 255)
                 // That is why we must check whether device value is >100. If value is greater than 100 that means that it is not dimmer and the only value greater than 100 can be 255
                 if Int(byteArray[8+5*(channelNumber-1)]) > 100 {
-                    devices[i].currentValue = NSNumber(value: Int(byteArray[8+5*(channelNumber-1)])) // device is NOT dimmer and the value should be saved as received
+                    device.currentValue = NSNumber(value: Int(byteArray[8+5*(channelNumber-1)])) // device is NOT dimmer and the value should be saved as received
                 }else{
-                    devices[i].currentValue = NSNumber(value:  Int(byteArray[8+5*(channelNumber-1)])*255/100) // two cases: the device is dimmer and has some value. the device is not dimmer but the value is 0
+                    device.currentValue = NSNumber(value:  Int(byteArray[8+5*(channelNumber-1)])*255/100) // two cases: the device is dimmer and has some value. the device is not dimmer but the value is 0
                 }
                 // check if number of channel is lower than bytearray
                 if 12+5*(channelNumber-1) < byteArray.count{
-                    devices[i].current = NSNumber(value: Int(UInt16(byteArray[9+5*(channelNumber-1)])*256 + UInt16(byteArray[10+5*(channelNumber-1)]))) // current
-                    devices[i].voltage = NSNumber(value: Int(byteArray[11+5*(channelNumber-1)])) // voltage
-                    devices[i].temperature = NSNumber(value: Int(byteArray[12+5*(channelNumber-1)])) // temperature
-                    let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
+                    device.current = NSNumber(value: Int(UInt16(byteArray[9+5*(channelNumber-1)])*256 + UInt16(byteArray[10+5*(channelNumber-1)]))) // current
+                    device.voltage = NSNumber(value: Int(byteArray[11+5*(channelNumber-1)])) // voltage
+                    device.temperature = NSNumber(value: Int(byteArray[12+5*(channelNumber-1)])) // temperature
+                    let data = ["deviceDidReceiveSignalFromGateway":device]
                     NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
                 }
+                CoreDataController.shahredInstance.saveChanges()
+                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
             }
         }
-        CoreDataController.shahredInstance.saveChanges()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+        
+//        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
+//        for i in 0..<devices.count{
+//            if Int(devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(devices[i].address) == Int(byteArray[4]) {
+//                let channelNumber = Int(devices[i].channel)
+//                
+//                // Problem: If device is dimmer, then value that is received is in range from 0-100. In rest of the cases value is 0x00 of 0xFF (0 or 255)
+//                // That is why we must check whether device value is >100. If value is greater than 100 that means that it is not dimmer and the only value greater than 100 can be 255
+//                if Int(byteArray[8+5*(channelNumber-1)]) > 100 {
+//                    devices[i].currentValue = NSNumber(value: Int(byteArray[8+5*(channelNumber-1)])) // device is NOT dimmer and the value should be saved as received
+//                }else{
+//                    devices[i].currentValue = NSNumber(value:  Int(byteArray[8+5*(channelNumber-1)])*255/100) // two cases: the device is dimmer and has some value. the device is not dimmer but the value is 0
+//                }
+//                // check if number of channel is lower than bytearray
+//                if 12+5*(channelNumber-1) < byteArray.count{
+//                    devices[i].current = NSNumber(value: Int(UInt16(byteArray[9+5*(channelNumber-1)])*256 + UInt16(byteArray[10+5*(channelNumber-1)]))) // current
+//                    devices[i].voltage = NSNumber(value: Int(byteArray[11+5*(channelNumber-1)])) // voltage
+//                    devices[i].temperature = NSNumber(value: Int(byteArray[12+5*(channelNumber-1)])) // temperature
+//                    let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
+//                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
+//                }
+//            }
+//        }
+//        CoreDataController.shahredInstance.saveChanges()
+//        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }
     //  informacije o parametrima kanala
     func parseMessageChannelParameter(_ byteArray:[Byte]){
