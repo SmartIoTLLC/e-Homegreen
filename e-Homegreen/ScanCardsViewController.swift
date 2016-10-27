@@ -172,28 +172,38 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
     func cardNameReceivedFromPLC (_ notification:Notification) {
+        reloadCards()
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningCardNames) {
             guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
             }
-            guard let timerIndex = info["cardId"] else{
+            guard let cardAddress  = info["cardAddress"] else{
                 return
             }
-            guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            guard let cardId  = info["cardId"] else{
                 return
             }
+            let cardTemp = self.cards.filter({ (c) -> Bool in
+                return (Int(c.address) == cardAddress && Int(c.cardId) == cardId)
+            })
             
-            if indexOfDeviceIndexInArrayOfNamesToBeSearched+1 < arrayOfNamesToBeSearched.count{ // if next exists
-                indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfNamesToBeSearched+1
-                let nextTimerIndexToBeSearched = arrayOfNamesToBeSearched[indexOfDeviceIndexInArrayOfNamesToBeSearched+1]
+            if cardTemp.count > 0 {
+                guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: Int(cardTemp.first!.cardId)) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                    return
+                }
                 
-                timesRepeatedCounterNames = 0
-                cardNameTimer?.invalidate()
-                cardNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetName(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
-                NSLog("func cardNameReceivedFromPLC index:\(index) :deviceIndex\(nextTimerIndexToBeSearched)")
-                sendCommandForFindingNameWithCardAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
-            }else{
-                dismissScaningControls()
+                if indexOfDeviceIndexInArrayOfNamesToBeSearched+1 < arrayOfNamesToBeSearched.count{ // if next exists
+                    indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfNamesToBeSearched+1
+                    let nextTimerIndexToBeSearched = arrayOfNamesToBeSearched[indexOfDeviceIndexInArrayOfNamesToBeSearched+1]
+                    
+                    timesRepeatedCounterNames = 0
+                    cardNameTimer?.invalidate()
+                    cardNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetName(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                    NSLog("func cardNameReceivedFromPLC index:\(index) :deviceIndex\(nextTimerIndexToBeSearched)")
+                    sendCommandForFindingNameWithCardAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                }else{
+                    dismissScaningControls()
+                }
             }
         }
     }
@@ -316,25 +326,34 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
             guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
             }
-            guard let cardIndex = info["cardId"] else{
+            guard let cardAddress  = info["cardAddress"] else{
                 return
             }
-            guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: cardIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            guard let cardId  = info["cardId"] else{
                 return
             }
+            let cardTemp = self.cards.filter({ (c) -> Bool in
+                return (Int(c.address) == cardAddress && Int(c.cardId) == cardId)
+            })
             
-            if indexOfDeviceIndexInArrayOfParametersToBeSearched+1 < arrayOfParametersToBeSearched.count{ // if next exists
-                indexOfParametersToBeSearched = indexOfDeviceIndexInArrayOfParametersToBeSearched+1
-                let nextTimerIndexToBeSearched = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
-                timesRepeatedCounterParameters = 0
-                cardParameterTimer?.invalidate()
-                cardParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
-                NSLog("func parameterReceivedFromPLC index:\(index) :deviceIndex\(nextTimerIndexToBeSearched)")
-                sendCommandForFindingParameterWithCardAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
-                print("Command sent for parameter from timerParameterReceivedFromPLC: next parameter")
-            }else{
-                shouldFindCardParameters = false
-                dismissScaningControls()
+            if cardTemp.count > 0 {
+                guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: Int(cardTemp.first!.cardId)) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                    return
+                }
+                
+                if indexOfDeviceIndexInArrayOfParametersToBeSearched+1 < arrayOfParametersToBeSearched.count{ // if next exists
+                    indexOfParametersToBeSearched = indexOfDeviceIndexInArrayOfParametersToBeSearched+1
+                    let nextTimerIndexToBeSearched = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
+                    timesRepeatedCounterParameters = 0
+                    cardParameterTimer?.invalidate()
+                    cardParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetParametar(_:)), userInfo: nextTimerIndexToBeSearched, repeats: false)
+                    NSLog("func parameterReceivedFromPLC index:\(index) :deviceIndex\(nextTimerIndexToBeSearched)")
+                    sendCommandForFindingParameterWithCardAddress(nextTimerIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                    print("Command sent for parameter from timerParameterReceivedFromPLC: next parameter")
+                }else{
+                    shouldFindCardParameters = false
+                    dismissScaningControls()
+                }
             }
         }
     }
@@ -439,6 +458,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
     func timerNameReceivedFromPLC (_ notification:Notification) {
+        
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningTimerNames) {
             guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return

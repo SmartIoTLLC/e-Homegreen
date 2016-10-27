@@ -399,6 +399,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
     func nameReceivedFromPLC (_ notification:Notification) {
+        refreshTimerList()
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningTimerNames) {
             guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
@@ -414,12 +415,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             })
             
             if timerTemp.count > 0 {
-                //2.
-                guard let timerIndex = self.timers.index(of: timerTemp.first!) else{
-                    return
-                }
-                //3.
-                guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: Int(timerTemp.first!.timerId)) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                     return
                 }
                 
@@ -568,12 +564,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             })
             
             if timerTemp.count > 0 {
-                //2.
-                guard let timerIndex = self.timers.index(of: timerTemp.first!) else{
-                    return
-                }
-                //3.
-                guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: timerIndex) else{ // Array "indexOfDeviceIndexInArrayOfParametersToBeSearched" contains indexes of timers that don't have name
+                guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: Int(timerTemp.first!.timerId)) else{ // Array "indexOfDeviceIndexInArrayOfParametersToBeSearched" contains indexes of timers that don't have name
                     return
                 }
                 

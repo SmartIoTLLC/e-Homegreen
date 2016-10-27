@@ -361,15 +361,11 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next sequence ID to search for. If there is not, dismiss progres bar and end the search.
     func nameReceivedFromPLC (_ notification:Notification) {
+        refreshEventList()
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningEventsNameAndParameters) {
             guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
             }
-            // 1. Data that is received through notification is: eventAddress and eventId
-            // 2. We need to search events and find that event, and get it's index
-            // 3. then, we find that index in "indexOfEventIndexInArrayOfNamesToBeSearched".
-            //NOTE: indexOfEventIndexInArrayOfNamesToBeSearched is the array of all events that user defined to be scanned. (event indexes in events)
-            //1.
             guard let eventAddress  = info["eventAddress"] else{
                 return
             }
@@ -381,12 +377,7 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
             })
             
             if eventTemp.count > 0 {
-                //2.
-                guard let eventIndex = self.events.index(of: eventTemp.first!) else{
-                    return
-                }
-                //3.
-                guard let indexOfEventIndexInArrayOfNamesToBeSearched = arrayOfEventsToBeSearched.index(of: eventIndex) else{
+                guard let indexOfEventIndexInArrayOfNamesToBeSearched = arrayOfEventsToBeSearched.index(of: Int(eventTemp.first!.eventId)) else{
                     return
                 }
                 
