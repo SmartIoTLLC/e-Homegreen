@@ -372,11 +372,6 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
             })
             
             if flagTemp.count > 0 {
-                //2.
-                guard let flagIndex = self.flags.index(of: flagTemp.first!) else{
-                    return
-                }
-                //3.
                 guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: Int(flagTemp.first!.flagId)) else{ // Array "indexOfDeviceIndexInArrayOfNamesToBeSearched" contains indexes of devices that don't have name
                     return
                 }
@@ -525,11 +520,6 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
             })
             
             if flagTemp.count > 0 {
-                //2.
-                guard let flagIndex = self.flags.index(of: flagTemp.first!) else{
-                    return
-                }
-                //3.
                 guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: Int(flagTemp.first!.flagId)) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                     return
                 }

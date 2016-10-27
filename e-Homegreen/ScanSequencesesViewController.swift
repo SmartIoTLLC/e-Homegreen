@@ -350,15 +350,12 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next sequence ID to search for. If there is not, dismiss progres bar and end the search.
     func nameReceivedFromPLC (_ notification:Notification) {
+        refreshSequenceList()
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningSequencesNameAndParameters) {
             guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
             }
-            // 1. Data that is received through notification is: sequenceAddress and sequenceId
-            // 2. We need to search sequences and find that sequence, and get it's index
-            // 3. then, we find that index in "indexOfSequenceIndexInArrayOfNamesToBeSearched".
-            //NOTE: indexOfSequenceIndexInArrayOfNamesToBeSearched is the array of all sequences that user defined to be scanned. (sequence indexes in sequences)
-            //1.
+
             guard let sequenceAddress  = info["sequenceAddress"] else{
                 return
             }
@@ -370,12 +367,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
             })
             
             if sequenceTemp.count > 0 {
-                //2.
-                guard let sequenceIndex = self.sequences.index(of: sequenceTemp.first!) else{
-                    return
-                }
-                //3.
-                guard let indexOfSequenceIndexInArrayOfNamesToBeSearched = arrayOfSequencesToBeSearched.index(of: sequenceIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                guard let indexOfSequenceIndexInArrayOfNamesToBeSearched = arrayOfSequencesToBeSearched.index(of: Int(sequenceTemp.first!.sequenceId)) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                     return
                 }
                 if indexOfSequenceIndexInArrayOfNamesToBeSearched+1 < arrayOfSequencesToBeSearched.count{ // if next exists

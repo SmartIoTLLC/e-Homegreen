@@ -350,6 +350,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next scene ID to search for. If there is not, dismiss progres bar and end the search.
     func nameReceivedFromPLC (_ notification:Notification) {
+        refreshSceneList()
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningSceneNameAndParameters) {
             guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
@@ -370,12 +371,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
             })
             
             if sceneTemp.count > 0 {
-                //2.
-                guard let sceneIndex = self.scenes.index(of: sceneTemp.first!) else{
-                    return
-                }
-                //3.
-                guard let indexOfSceneIndexInArrayOfNamesToBeSearched = arrayOfScenesToBeSearched.index(of: sceneIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                guard let indexOfSceneIndexInArrayOfNamesToBeSearched = arrayOfScenesToBeSearched.index(of: Int(sceneTemp.first!.sceneId)) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                     return
                 }
                 if indexOfSceneIndexInArrayOfNamesToBeSearched+1 < arrayOfScenesToBeSearched.count{ // if next exists
