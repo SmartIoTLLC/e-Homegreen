@@ -75,7 +75,7 @@ class IncomingHandler: NSObject {
                     self.parseMessageACstatus(self.byteArray)       //asinhrono da radi
                 }
                 if messageIsInterfaceParameter() {
-                    self.parseMessageInterfaceParametar(self.byteArray)     //uradjeno ali treba proveriti
+                    self.parseMessageInterfaceParametar(self.byteArray)     //ok
                 }
                 if messageIsInterfaceStatus(){ // OVO NE MOZE OVAKO DA BUDE
                     self.parseMessageInterfaceStatus(self.byteArray)        //asinhrono da bude
@@ -355,6 +355,7 @@ class IncomingHandler: NSObject {
     func parseMessageCardName(_ byteArray: [Byte]) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningCardNames) {
             let id = Int(byteArray[8])
+            let moduleAddress = Int(byteArray[4])
             // Miminum is 12b
             if id != 0 {
                 var name:String = ""
@@ -362,7 +363,6 @@ class IncomingHandler: NSObject {
                     for j in 10 ..< 10+Int(byteArray[9]) {
                         name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))!))" //  timer name
                     }
-                    let moduleAddress = Int(byteArray[4])
                     
                     if gateways.count > 0 {
                         DatabaseCardsController.shared.createCard(id, cardId: nil, cardName: name, moduleAddress: moduleAddress, gateway: gateways.first!)
@@ -371,17 +371,16 @@ class IncomingHandler: NSObject {
                     }
                 }
             }
-            let data = ["cardId":id]
+            let data = ["cardId":id, "cardAddress": moduleAddress]
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveCardFromGateway), object: self, userInfo: data)
         }
     }
     func parseMessageCardParameters(_ byteArray: [Byte]) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningCardParameters) {
             let id = Int(byteArray[8])
+            let moduleAddress = Int(byteArray[4])
             // Miminum is 14b
             if id != 0 {
-                
-                let moduleAddress = Int(byteArray[4])
                 
                 var isEnabled:Bool = true
                 if byteArray[9] == 0x00{
@@ -399,7 +398,7 @@ class IncomingHandler: NSObject {
                     return
                 }
             }
-            let data = ["cardId":id]
+            let data = ["cardId":id, "cardAddress": moduleAddress]
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveCardParameterFromGateway), object: self, userInfo: data)
         }
     }
@@ -770,43 +769,6 @@ class IncomingHandler: NSObject {
             
         }
         
-        
-//        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-//        var counter = 0
-//        for device in devices {
-//            if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) && Int(device.channel) == Int(byteArray[7]) {
-////                device.zoneId = NSNumber(value: Int(byteArray[9]))
-//                device.categoryId = NSNumber(value: Int(byteArray[8]))
-////                device.parentZoneId = NSNumber(value: Int(byteArray[10]))
-//                
-//                // Parse zone and parent zone
-//                if Int(byteArray[10]) == 0 {
-//                    device.zoneId = 0
-//                    device.parentZoneId = NSNumber(value: Int(byteArray[9]))
-//                } else {
-//                    device.zoneId = NSNumber(value: Int(byteArray[9]))
-//                    device.parentZoneId = NSNumber(value: Int(byteArray[10]))
-//                }
-//                
-//                // When we change category it will reset images
-//                device.digitalInputMode = Int(byteArray[14]) as NSNumber?
-//                if byteArray[11] >= 0x80 {
-//                    device.isEnabled = NSNumber(value: true as Bool)
-//                    device.isVisible = NSNumber(value: true as Bool)
-//                } else {
-//                    device.isEnabled = NSNumber(value: false as Bool)
-//                    device.isVisible = NSNumber(value: false as Bool)
-//                }
-//                device.resetImages(appDel.managedObjectContext!)
-//                let data = ["sensorIndexForFoundParametar":counter]
-//                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshInterface), object: self, userInfo: nil)
-//                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindSensorParametar), object: self, userInfo: data)
-                
-//            }
-//            counter = counter + 1
-//        }
-//        CoreDataController.shahredInstance.saveChanges()
-//        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }
     
     //parameters for climate
@@ -869,6 +831,35 @@ class IncomingHandler: NSObject {
     
     //  informacije o stanjima na uredjajima
     func parseMessageChannelsState (_ byteArray:[Byte]) {
+        
+//        let address = Int(byteArray[4])
+//        
+//        IncomingHandlerController.shared.fetchDevices(by: self.gateways[0], address: address) { (devices) in
+//            if let devices = devices{
+//                for device in devices{
+//                    let channelNumber = Int(device.channel)
+//                    
+//                    // Problem: If device is dimmer, then value that is received is in range from 0-100. In rest of the cases value is 0x00 of 0xFF (0 or 255)
+//                    // That is why we must check whether device value is >100. If value is greater than 100 that means that it is not dimmer and the only value greater than 100 can be 255
+//                    if Int(byteArray[8+5*(channelNumber-1)]) > 100 {
+//                        devices[i].currentValue = NSNumber(value: Int(byteArray[8+5*(channelNumber-1)])) // device is NOT dimmer and the value should be saved as received
+//                    }else{
+//                        devices[i].currentValue = NSNumber(value:  Int(byteArray[8+5*(channelNumber-1)])*255/100) // two cases: the device is dimmer and has some value. the device is not dimmer but the value is 0
+//                    }
+//                    // check if number of channel is lower than bytearray
+//                    if 12+5*(channelNumber-1) < byteArray.count{
+//                        devices[i].current = NSNumber(value: Int(UInt16(byteArray[9+5*(channelNumber-1)])*256 + UInt16(byteArray[10+5*(channelNumber-1)]))) // current
+//                        devices[i].voltage = NSNumber(value: Int(byteArray[11+5*(channelNumber-1)])) // voltage
+//                        devices[i].temperature = NSNumber(value: Int(byteArray[12+5*(channelNumber-1)])) // temperature
+//                        let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
+//                        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
+//                    }
+//                }
+//                CoreDataController.shahredInstance.saveChanges()
+//                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+//            }
+//        }
+        
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
         for i in 0..<devices.count{
             if Int(devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(devices[i].address) == Int(byteArray[4]) {
