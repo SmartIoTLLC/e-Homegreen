@@ -138,10 +138,10 @@ class IncomingHandler: NSObject {
                     self.parseMessageSaltoParameters(self.byteArray) //ok
                 }
                 if messageIsSaltoStatus() {
-                    self.parseMessageSaltoStatus(self.byteArray) //proveriti da li vraca notifikaciju, da li treba
+                    self.parseMessageSaltoStatus(self.byteArray) //ok
                 }
                 if messageIsPCStatus(){
-                    self.parsePCStatus(self.byteArray)  //asinhrono, ne mora ali bi bilo dobro da se tako odradi
+                    self.parsePCStatus(self.byteArray)  //ok
                 }
             }
         }
@@ -215,10 +215,10 @@ class IncomingHandler: NSObject {
     // MARK - Scenes
     func parseMessageNewScene(_ byteArray: [Byte]) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningSceneNameAndParameters) {
-            var sceneId = Int(byteArray[7])
+            let sceneId = Int(byteArray[7])
+            let moduleAddress = Int(byteArray[4])
             // Miminum is 80b
             if byteArray.count > 80 {
-                sceneId = Int(byteArray[7])
                 let sceneZoneId = Int(byteArray[74])
                 let sceneLevelId = Int(byteArray[75])
                 let sceneCategoryId = Int(byteArray[76])
@@ -228,15 +228,13 @@ class IncomingHandler: NSObject {
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))!))" //  scene name
                 }
                 
-                let moduleAddress = Int(byteArray[4])
-                
                 if gateways.count > 0 {
                     DatabaseScenesController.shared.createScene(sceneId, sceneName: name, moduleAddress: moduleAddress, gateway: gateways.first!, levelId: sceneLevelId, zoneId: sceneZoneId, categoryId: sceneCategoryId)
                 }else{
                     return
                 }
             }
-            let data = ["sceneId":sceneId]
+            let data = ["sceneId": sceneId, "sceneAddress": moduleAddress]
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveSceneFromGateway), object: self, userInfo: data)
         }
     }
@@ -244,7 +242,8 @@ class IncomingHandler: NSObject {
     // MARK - Sequences
     func parseMessageNewSequence(_ byteArray: [Byte]) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningSequencesNameAndParameters) {
-            var sequenceId = Int(byteArray[7])
+            let sequenceId = Int(byteArray[7])
+            let moduleAddress = Int(byteArray[4])
             // Miminum is 82b
             if byteArray.count > 82 {
                 
@@ -254,7 +253,6 @@ class IncomingHandler: NSObject {
                     $0.pointee
                 }
                 
-                sequenceId = Int(byteArray[7])
                 let sequenceZoneId = Int(byteArray[76])
                 let sequenceLevelId = Int(byteArray[77])
                 let sequenceCategoryId = Int(byteArray[78])
@@ -263,8 +261,7 @@ class IncomingHandler: NSObject {
                 for j in 80 ..< 80+Int(byteArray[79]) {
                     name = name + "\(Character(UnicodeScalar(Int(byteArray[j]))!))" //  sequences name
                 }
-                
-                let moduleAddress = Int(byteArray[4])
+            
                 
                 if gateways.count > 0 {
                     DatabaseSequencesController.shared.createSequence(Int(id), sequenceName: name, moduleAddress: moduleAddress, gateway: gateways.first!, levelId: sequenceLevelId, zoneId: sequenceZoneId, categoryId: sequenceCategoryId)
@@ -274,7 +271,7 @@ class IncomingHandler: NSObject {
                 
                 
             }
-            let data = ["sequenceId":sequenceId]
+            let data = ["sequenceId":sequenceId, "sequenceAddress": moduleAddress]
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveSequenceFromGateway), object: self, userInfo: data)
         }
     }
@@ -282,10 +279,10 @@ class IncomingHandler: NSObject {
     // MARK - Event
     func parseMessageNewEvent(_ byteArray: [Byte]) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningEventsNameAndParameters) {
-            var eventId = Int(byteArray[7])
+            let eventId = Int(byteArray[7])
+            let moduleAddress = Int(byteArray[4])
             // Miminum is 14b
             if byteArray.count > 14 {
-                eventId = Int(byteArray[7])
                 let eventZoneId = Int(byteArray[10])
                 let eventLevelId = Int(byteArray[11])
                 let eventCategoryId = Int(byteArray[9])
@@ -296,7 +293,7 @@ class IncomingHandler: NSObject {
                 }
                 
                 if name.trimmingCharacters(in: CharacterSet(charactersIn: "")) != "" {
-                    let moduleAddress = Int(byteArray[4])
+                    
                     
                     if gateways.count > 0 {
                         DatabaseEventsController.shared.createEvent(eventId, eventName: name, moduleAddress: moduleAddress, gateway: gateways.first!, levelId: eventLevelId, zoneId: eventZoneId, categoryId: eventCategoryId)
@@ -305,7 +302,7 @@ class IncomingHandler: NSObject {
                     }
                 }
             }
-            let data = ["eventId":eventId]
+            let data = ["eventId":eventId, "eventAddress": moduleAddress]
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveEventFromGateway), object: self, userInfo: data)
         }
     }
@@ -581,7 +578,8 @@ class IncomingHandler: NSObject {
         }
     }
     func parseMessageSaltoStatus(_ byteArray: [Byte]){
-        let channel = byteArray[7]
+        let address = Int(byteArray[4])
+        let channel = Int(byteArray[7])
         let allInformationByte = byteArray[9]
         var bateryStatusByte = (0x03 & allInformationByte)
         let onOffIndicatorTemp = (0x80 & allInformationByte)
@@ -589,17 +587,8 @@ class IncomingHandler: NSObject {
         let modeTemp = (0x70 & allInformationByte)
         let mode:Int = Int(modeTemp >> 4)
         
-        var devicesForSalto: [Device] = []
-        // Get needed devices and be sure that everything is in good order
-        for i in 0..<devices.count{
-            if  Int(devices[i].gateway.addressOne) == Int(byteArray[2]) &&
-                Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) &&
-                Int(devices[i].address) == Int(byteArray[4]) &&
-                Int(devices[i].channel.intValue) == Int(channel) {
-                devicesForSalto.append(self.devices[i])
-            }
-        }
-        if let device = devicesForSalto.first {
+        
+        if let device = IncomingHandlerController.shared.fetchDeviceBy(gateway: self.gateways[0], address: address, channel: channel){
             // Cuurent state - On-Off
             // 1 - Open
             // 2 - Closed
@@ -618,17 +607,20 @@ class IncomingHandler: NSObject {
             default:
                 device.saltoMode = 0
             }
-        
+            
             // Batery 3 - High, 2 - Normal, 1 - Low, 0 - Very low
             device.bateryStatus = Int(bateryStatusByte)
             
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
         }
+        
     }
     
     func parseMessageRefreshEvent(_ byteArray:[Byte]){
         let data = ["id":Int(byteArray[7]), "value":Int(byteArray[8])]
         NotificationCenter.default.post(name: Notification.Name(rawValue: "ReportEvent"), object: self, userInfo: data)
     }
+    
     func parseMessageChannelWarnings (_ byteArray:[Byte]) {
 //        self.devices = IncomingHandlerController.shared.fetchDevicesByGatewayAndAddress(self.gateways[0], address: Int(byteArray[4]))
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
@@ -968,6 +960,7 @@ class IncomingHandler: NSObject {
         }
     }
     
+    //  informacije o parametrima kanala, dobijemo sve parametre u jednom byte array-u , max 16
     func parseMessageTimerStatus (_ byteArray:[Byte]){
         //  0x00 Waiting = 0
         //  0x01 Started = 1
@@ -975,35 +968,40 @@ class IncomingHandler: NSObject {
         //  0xEE Suspend = 238
         //  informacije o parametrima kanala
         let address = Int(byteArray[4])
-        let timers = DatabaseTimersController.shared.getTimersBy(gateway: self.gateways[0], address: address)  //getTimersBy(gateway: self.gateways[0], address: address)
+        let timers = DatabaseTimersController.shared.getTimersBy(gateway: self.gateways[0], address: address)
         
         for timer in timers{
             let id = Int(timer.timerId)
-            timer.timerState = NSNumber(value: Int(byteArray[7+id]))
-            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshTimer), object: self, userInfo: nil)
+            if id < 17 {
+                timer.timerState = NSNumber(value: Int(byteArray[7+id]))
+                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshTimer), object: self, userInfo: nil)
+            }
         }
         CoreDataController.shahredInstance.saveChanges()
     }
-    //  informacije o parametrima kanala
+    
+    //  informacije o parametrima kanala, dobijemo sve parametre u jednom byte array-u , max 32
     func parseMessageFlagStatus (_ byteArray:[Byte]){
         
-        let flags = DatabaseFlagsController.shared.getAllFlags()
-
-        for i in 1...32 {
-            print(flags.count)
-            for item in flags {
-                if  Int(item.gateway.addressOne) == Int(byteArray[2]) && Int(item.gateway.addressTwo) == Int(byteArray[3]) && Int(item.address) == Int(byteArray[4]) && Int(item.flagId) == Int(i) {
-                    print("alo \(NSNumber(value: Int(byteArray[7+i]) as Int))")
-                    if Int(byteArray[7+i]) == 1 {
-                        item.setState = NSNumber(value: false as Bool)
-                    } else if Int(byteArray[7+i]) == 0 {
-                        item.setState = NSNumber(value: true as Bool)
-                    }
-                    
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshFlag), object: self, userInfo: nil)
+        let address = Int(byteArray[4])
+        
+        let flags = DatabaseFlagsController.shared.getFlagsBy(gateway: self.gateways[0], address: address)
+        
+        for flag in flags{
+            let id = Int(flag.flagId)
+            
+            if id < 33{
+                if Int(byteArray[7+id]) == 1 {
+                    flag.setState = NSNumber(value: false as Bool)
+                } else if Int(byteArray[7+id]) == 0 {
+                    flag.setState = NSNumber(value: true as Bool)
                 }
+                
+                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshFlag), object: self, userInfo: nil)
+
             }
         }
+        
         CoreDataController.shahredInstance.saveChanges()
     }
     func parseMessageSecurityFeedbackHandler(_ byteArray:[Byte]) {
@@ -1149,17 +1147,18 @@ class IncomingHandler: NSObject {
     
     // PC Control
     func parsePCStatus(_ byteArray: [Byte]){
-        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        for device in devices {
-            if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) {
-                device.currentValue = NSNumber(value: Int(byteArray[8]))
-//                let data = ["deviceDidReceiveSignalFromGateway":device]
-//                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
-                break
+        
+        let address = Int(byteArray[4])
+        
+        if let dev = IncomingHandlerController.shared.fetchDevices(by: self.gateways[0], address: address){
+            if dev.count > 0{
+                dev[0].currentValue = NSNumber(value: Int(byteArray[8]))
+                
+                CoreDataController.shahredInstance.saveChanges()
+                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshPC), object: self, userInfo: nil)
             }
         }
-        CoreDataController.shahredInstance.saveChanges()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshPC), object: self, userInfo: nil)
+        
     }
     
     // Helpers
