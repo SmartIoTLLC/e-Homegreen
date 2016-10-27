@@ -188,7 +188,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
             })
             
             if cardTemp.count > 0 {
-                guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: Int(cardTemp.first!.cardId)) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: Int(cardTemp.first!.id)) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                     return
                 }
                 
@@ -337,7 +337,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
             })
             
             if cardTemp.count > 0 {
-                guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: Int(cardTemp.first!.cardId)) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: Int(cardTemp.first!.id)) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
                     return
                 }
                 
