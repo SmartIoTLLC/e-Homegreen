@@ -799,9 +799,30 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         let parameter = Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningSensorParametars)
         if parameter {
             if let info = (notification as NSNotification).userInfo! as? [String:Int] {
-                if let deviceIndex = info["sensorIndexForFoundParametar"] {
-                    if let indexOfDeviceIndexInArrayOfSensorAdresses = arrayOfSensorAdresses.index(of: deviceIndex){ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
-                        if indexOfDeviceIndexInArrayOfSensorAdresses+1 < arrayOfSensorAdresses.count{ // if next exists
+                // 1. Data that is received through notification is: deviceAddress and deviceChannel
+                // 2. We need to search self.devices and find that device, and get it's index
+                // 3. then, we find that index in "indexOfDeviceIndexInArrayOfSensorAdresses".
+                //NOTE: indexOfDeviceIndexInArrayOfNamesToBeSearched is the array of all devices that user defined to be scanned. (device indexes in self.devices)
+                
+                //1.
+                guard let deviceAddress = info["deviceAddress"] else{
+                    return
+                }
+                guard let deviceChannel = info["deviceChannel"] else{
+                    return
+                }
+                //2.
+                let deviceTemp = self.devices.filter({ (d) -> Bool in
+                    return (Int(d.address) == deviceAddress && Int(d.channel) == deviceChannel)
+                })
+                
+                if deviceTemp.count > 0{
+                    guard let deviceIndex = self.devices.index(of: deviceTemp.first!) else{ // ID od device-a, tj. index u nizu self.devices
+                        return
+                    }
+                    //3.
+                    if let indexOfDeviceIndexInArrayOfSensorAdresses = arrayOfSensorAdresses.index(of: deviceIndex){    // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                        if indexOfDeviceIndexInArrayOfSensorAdresses+1 < arrayOfSensorAdresses.count{                   // if next exists
                             indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfSensorAdresses+1
                             let nextDeviceIndexToBeSearched = arrayOfSensorAdresses[indexOfNamesToBeSearched]
                             
