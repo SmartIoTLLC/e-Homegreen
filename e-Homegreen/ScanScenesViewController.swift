@@ -354,24 +354,42 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
             guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
             }
-            guard let sceneIndex = info["sceneId"] else{
+            // 1. Data that is received through notification is: sceneAddress and sceneId
+            // 2. We need to search scenes and find that scene, and get it's index
+            // 3. then, we find that index in "indexOfSceneIndexInArrayOfNamesToBeSearched".
+            //NOTE: indexOfSceneIndexInArrayOfNamesToBeSearched is the array of all scenes that user defined to be scanned. (scene indexes in self.scenes)
+            //1.
+            guard let sceneAddress  = info["sceneAddress"] else{
                 return
             }
-            guard let indexOfSceneIndexInArrayOfNamesToBeSearched = arrayOfScenesToBeSearched.index(of: sceneIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            guard let sceneId  = info["sceneId"] else{
                 return
             }
+            let sceneTemp = self.scenes.filter({ (s) -> Bool in
+                return (Int(s.address) == sceneAddress && Int(s.sceneId) == sceneId)
+            })
             
-            if indexOfSceneIndexInArrayOfNamesToBeSearched+1 < arrayOfScenesToBeSearched.count{ // if next exists
-                indexOfScenesToBeSearched = indexOfSceneIndexInArrayOfNamesToBeSearched+1
-                let nextSceneIndexToBeSearched = arrayOfScenesToBeSearched[indexOfScenesToBeSearched]
-                
-                timesRepeatedCounter = 0
-                scenesTimer?.invalidate()
-                scenesTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanScenesViewController.checkIfSceneDidGetName(_:)), userInfo: nextSceneIndexToBeSearched, repeats: false)
-                NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextSceneIndexToBeSearched)")
-                sendCommandWithSceneAddress(nextSceneIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
-            }else{
-                dismissScaningControls()
+            if sceneTemp.count > 0 {
+                //2.
+                guard let sceneIndex = self.scenes.index(of: sceneTemp.first!) else{
+                    return
+                }
+                //3.
+                guard let indexOfSceneIndexInArrayOfNamesToBeSearched = arrayOfScenesToBeSearched.index(of: sceneIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                    return
+                }
+                if indexOfSceneIndexInArrayOfNamesToBeSearched+1 < arrayOfScenesToBeSearched.count{ // if next exists
+                    indexOfScenesToBeSearched = indexOfSceneIndexInArrayOfNamesToBeSearched+1
+                    let nextSceneIndexToBeSearched = arrayOfScenesToBeSearched[indexOfScenesToBeSearched]
+                    
+                    timesRepeatedCounter = 0
+                    scenesTimer?.invalidate()
+                    scenesTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanScenesViewController.checkIfSceneDidGetName(_:)), userInfo: nextSceneIndexToBeSearched, repeats: false)
+                    NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextSceneIndexToBeSearched)")
+                    sendCommandWithSceneAddress(nextSceneIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                }else{
+                    dismissScaningControls()
+                }
             }
         }
     }
