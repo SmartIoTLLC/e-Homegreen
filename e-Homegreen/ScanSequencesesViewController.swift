@@ -354,24 +354,42 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
             guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
                 return
             }
-            guard let timerIndex = info["sequenceId"] else{
+            // 1. Data that is received through notification is: sequenceAddress and sequenceId
+            // 2. We need to search sequences and find that sequence, and get it's index
+            // 3. then, we find that index in "indexOfSequenceIndexInArrayOfNamesToBeSearched".
+            //NOTE: indexOfSequenceIndexInArrayOfNamesToBeSearched is the array of all sequences that user defined to be scanned. (sequence indexes in sequences)
+            //1.
+            guard let sequenceAddress  = info["sequenceAddress"] else{
                 return
             }
-            guard let indexOfSequenceIndexInArrayOfNamesToBeSearched = arrayOfSequencesToBeSearched.index(of: timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            guard let sequenceId  = info["sequenceId"] else{
                 return
             }
+            let sequenceTemp = self.sequences.filter({ (s) -> Bool in
+                return (Int(s.address) == sequenceAddress && Int(s.sequenceId) == sequenceId)
+            })
             
-            if indexOfSequenceIndexInArrayOfNamesToBeSearched+1 < arrayOfSequencesToBeSearched.count{ // if next exists
-                indexOfSequencesToBeSearched = indexOfSequenceIndexInArrayOfNamesToBeSearched+1
-                let nextSequenceIndexToBeSearched = arrayOfSequencesToBeSearched[indexOfSequencesToBeSearched]
-                
-                timesRepeatedCounter = 0
-                sequencesTimer?.invalidate()
-                sequencesTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanSequencesesViewController.checkIfSequenceDidGetName(_:)), userInfo: nextSequenceIndexToBeSearched, repeats: false)
-                NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextSequenceIndexToBeSearched)")
-                sendCommandWithSequenceAddress(nextSequenceIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
-            }else{
-                dismissScaningControls()
+            if sequenceTemp.count > 0 {
+                //2.
+                guard let sequenceIndex = self.sequences.index(of: sequenceTemp.first!) else{
+                    return
+                }
+                //3.
+                guard let indexOfSequenceIndexInArrayOfNamesToBeSearched = arrayOfSequencesToBeSearched.index(of: sequenceIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+                    return
+                }
+                if indexOfSequenceIndexInArrayOfNamesToBeSearched+1 < arrayOfSequencesToBeSearched.count{ // if next exists
+                    indexOfSequencesToBeSearched = indexOfSequenceIndexInArrayOfNamesToBeSearched+1
+                    let nextSequenceIndexToBeSearched = arrayOfSequencesToBeSearched[indexOfSequencesToBeSearched]
+                    
+                    timesRepeatedCounter = 0
+                    sequencesTimer?.invalidate()
+                    sequencesTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanSequencesesViewController.checkIfSequenceDidGetName(_:)), userInfo: nextSequenceIndexToBeSearched, repeats: false)
+                    NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextSequenceIndexToBeSearched)")
+                    sendCommandWithSequenceAddress(nextSequenceIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+                }else{
+                    dismissScaningControls()
+                }
             }
         }
     }
