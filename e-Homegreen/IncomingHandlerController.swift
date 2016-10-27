@@ -75,5 +75,36 @@ class IncomingHandlerController: NSObject {
         return nil
     }
     
+    func fetchDevices(by gateway: Gateway, address: Int, completion: @escaping (_ result: [Device]?) -> ()){
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
+        
+        var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway == %@", gateway)]
+        predicateArray.append(NSPredicate(format: "address == %@", NSNumber(value: address)))
+        
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
+        
+        let asynchronousFetchRequest = NSAsynchronousFetchRequest(fetchRequest: fetchRequest) { (asynchronousFetchResult) in
+            if let devices = asynchronousFetchResult.finalResult as? [Device]{
+                completion(devices)
+            }else{
+                completion(nil)
+            }
+//            DispatchQueue.main.async {
+//                self.processAsynchronousFetchResult(asynchronousFetchResult: asynchronousFetchResult)
+//            }
+        }
+        
+        do {
+            
+            _ = try appDel.managedObjectContext!.execute(asynchronousFetchRequest)
+        } catch {
+            
+        }
+        
+    }
+    
+    
+    
     
 }
