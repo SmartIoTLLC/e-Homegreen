@@ -180,31 +180,32 @@ class PCControlNotificationsXIB: PopoverVC {
     }
     
     @IBAction func switchChanged(_ sender: AnyObject) {
-        
-        switch sender.tag {
-        case SwitchTag.notificationSwitch.rawValue:
-            notificationSwitch.setOn(true, animated: true)
-            ttsSwitch.setOn(false, animated: true)
-            notificationTtsSwitch.setOn(false, animated: true)
-            notificationType = .notification
-            
-        case SwitchTag.ttsSwitch.rawValue:
-            ttsSwitch.setOn(true, animated: true)
-            notificationSwitch.setOn(false, animated: true)
-            notificationTtsSwitch.setOn(false, animated: true)
-            notificationType = .tts
-            
-        case SwitchTag.notificationTtsSwitch.rawValue:
-            notificationTtsSwitch.setOn(true, animated: true)
-            notificationSwitch.setOn(false, animated: true)
-            ttsSwitch.setOn(false, animated: true)
-            notificationType = .notificationAndTTS
-            
-        default:
-            notificationSwitch.setOn(true, animated: true)
-            ttsSwitch.setOn(false, animated: true)
-            notificationTtsSwitch.setOn(false, animated: true)
-            notificationType = .notification
+        if let tag = sender.tag{
+            switch tag {
+            case SwitchTag.notificationSwitch.rawValue:
+                notificationSwitch.setOn(true, animated: true)
+                ttsSwitch.setOn(false, animated: true)
+                notificationTtsSwitch.setOn(false, animated: true)
+                notificationType = .notification
+                
+            case SwitchTag.ttsSwitch.rawValue:
+                ttsSwitch.setOn(true, animated: true)
+                notificationSwitch.setOn(false, animated: true)
+                notificationTtsSwitch.setOn(false, animated: true)
+                notificationType = .tts
+                
+            case SwitchTag.notificationTtsSwitch.rawValue:
+                notificationTtsSwitch.setOn(true, animated: true)
+                notificationSwitch.setOn(false, animated: true)
+                ttsSwitch.setOn(false, animated: true)
+                notificationType = .notificationAndTTS
+                
+            default:
+                notificationSwitch.setOn(true, animated: true)
+                ttsSwitch.setOn(false, animated: true)
+                notificationTtsSwitch.setOn(false, animated: true)
+                notificationType = .notification
+            }
         }
     }
     

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -25,8 +28,11 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="836"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="xY1-6k-Eai"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="xY1-6k-Eai">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="836"/>
+                            </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="HnO-ii-vqM">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="836"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="vUG-jU-M6E">
                                     <size key="itemSize" width="150" height="180"/>
@@ -43,11 +49,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view hidden="YES" alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZQ7-wf-oxt">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="laW-Do-HeS" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FIy-oF-Uap" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="0.0" y="8" width="150" height="18.5"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -69,9 +78,11 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <slider opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="vxv-hU-1Az">
+                                                            <rect key="frame" x="18" y="145" width="114" height="31"/>
                                                             <color key="tintColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </slider>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="lightBulb" translatesAutoresizingMaskIntoConstraints="NO" id="Rhd-hg-84t">
+                                                            <rect key="frame" x="20" y="35" width="110" height="110"/>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="Rhd-hg-84t" secondAttribute="height" multiplier="1:1" id="A0X-4P-SSS"/>
@@ -100,18 +111,22 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="grV-6d-2I7" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Running Time:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HUi-L2-WjJ">
+                                                            <rect key="frame" x="0.0" y="10" width="150" height="14"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="12"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bCr-k1-qhc">
+                                                            <rect key="frame" x="0.0" y="29" width="150" height="12"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RZF-t4-VEB" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                                            <rect key="frame" x="29" y="142" width="92" height="30"/>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="92" id="JZx-W2-ZVX"/>
@@ -128,21 +143,25 @@
                                                             </connections>
                                                         </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Power Usage:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="piB-KF-xZJ">
+                                                            <rect key="frame" x="0.0" y="58" width="150" height="14"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="12"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 W" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ook-c1-qOe">
+                                                            <rect key="frame" x="0.0" y="105" width="150" height="12"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 A" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a1c-Tc-TAi">
+                                                            <rect key="frame" x="0.0" y="75" width="150" height="12"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 V" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n0h-vn-Nww">
+                                                            <rect key="frame" x="0.0" y="90" width="150" height="12"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -213,11 +232,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view hidden="YES" alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tSY-CN-WCT">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K02-Ib-2gO" userLabel="Back View" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tbk-5J-of7" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="0.0" y="8" width="150" height="18.5"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -238,6 +260,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="curtain0" translatesAutoresizingMaskIntoConstraints="NO" id="6yc-Lk-PX4">
+                                                            <rect key="frame" x="20" y="35" width="110" height="110"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="6yc-Lk-PX4" secondAttribute="height" multiplier="1:1" id="aXd-C8-bcU"/>
                                                             </constraints>
@@ -248,6 +271,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="48R-sb-ZFa">
+                                                            <rect key="frame" x="8" y="147" width="63" height="28"/>
                                                             <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="28" id="38i-df-9Fb"/>
@@ -258,6 +282,7 @@
                                                             </state>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yrc-ew-iUX">
+                                                            <rect key="frame" x="79" y="147" width="63" height="28"/>
                                                             <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="28" id="rr4-za-FyT"/>
@@ -288,43 +313,52 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="66l-f6-pas" userLabel="Info View" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UnD-pt-sba">
+                                                            <rect key="frame" x="5" y="5" width="140" height="18"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5mA-oP-XGV" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="5" y="26" width="140" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sb0-hh-zNW">
+                                                            <rect key="frame" x="5" y="46" width="140" height="18"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G2D-x3-mY8" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="5" y="67" width="140" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zone:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="osO-iV-9gl">
+                                                            <rect key="frame" x="5" y="87" width="140" height="18"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lky-FP-bHt">
+                                                            <rect key="frame" x="5" y="128" width="140" height="18"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zone..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n1g-iW-8Hy" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="5" y="108" width="140" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L4t-1h-uek" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="5" y="149" width="140" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -400,11 +434,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view hidden="YES" alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P9X-co-KvL">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sm4-Wf-EEJ" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="applianceoff" translatesAutoresizingMaskIntoConstraints="NO" id="YOI-EX-BDa">
+                                                            <rect key="frame" x="20" y="35" width="110" height="110"/>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="YOI-EX-BDa" secondAttribute="height" multiplier="1:1" id="KOw-Bh-o3k"/>
@@ -416,6 +453,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hLr-XN-Tei" customClass="CustomGradientButtonWhite" customModule="e_Homegreen" customModuleProvider="target">
+                                                            <rect key="frame" x="45" y="142" width="60" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="60" id="OAa-HY-7pA"/>
                                                                 <constraint firstAttribute="height" constant="30" id="dyd-En-67O"/>
@@ -425,6 +463,7 @@
                                                             </state>
                                                         </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VVv-XD-Fgf" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="0.0" y="8" width="150" height="18.5"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -459,18 +498,22 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qxg-KS-no6" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Running Time:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R3v-F3-ary">
+                                                            <rect key="frame" x="0.0" y="10" width="150" height="14.5"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="12"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lFU-Uv-msJ">
+                                                            <rect key="frame" x="0.0" y="29.5" width="150" height="12.5"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2k3-5P-yBW" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                                            <rect key="frame" x="29" y="142" width="92" height="30"/>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="1Zg-mv-yQf"/>
@@ -484,21 +527,25 @@
                                                             </state>
                                                         </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="1 A" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mUN-le-BGR">
+                                                            <rect key="frame" x="0.0" y="74.5" width="150" height="12.5"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="0 W" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JmK-PB-xht">
+                                                            <rect key="frame" x="0.0" y="109.5" width="150" height="12.5"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Power Usage:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JcP-AL-lSj">
+                                                            <rect key="frame" x="0.0" y="59" width="150" height="14.5"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="12"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="0 V" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5sr-Da-cWP">
+                                                            <rect key="frame" x="0.0" y="92" width="150" height="12.5"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -572,11 +619,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view hidden="YES" alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U7O-Dq-akj">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RN0-vn-pbv" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="253" verticalCompressionResistancePriority="751" text="Manager AC" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BPb-W0-bit" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="8" y="11.5" width="101" height="18.5"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -597,38 +647,47 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cool" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yO3-V8-WHX">
+                                                            <rect key="frame" x="109" y="81.5" width="33" height="21"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Low" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XLD-Dw-cKD">
+                                                            <rect key="frame" x="111.5" y="136.5" width="30.5" height="21"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="fanhigh" translatesAutoresizingMaskIntoConstraints="NO" id="PAf-lS-77v"/>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="fanhigh" translatesAutoresizingMaskIntoConstraints="NO" id="PAf-lS-77v">
+                                                            <rect key="frame" x="8" y="124" width="46" height="46"/>
+                                                        </imageView>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="cool" translatesAutoresizingMaskIntoConstraints="NO" id="AQJ-VB-Ob5">
+                                                            <rect key="frame" x="8" y="69" width="46" height="46"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="AQJ-VB-Ob5" secondAttribute="height" multiplier="1:1" id="a5I-fV-DhN"/>
                                                             </constraints>
                                                         </imageView>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" image="poweroff" translatesAutoresizingMaskIntoConstraints="NO" id="uIH-R0-Pyj">
+                                                            <rect key="frame" x="117" y="8" width="25" height="25"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="uIH-R0-Pyj" secondAttribute="height" multiplier="1:1" id="D5Z-hh-Lc7"/>
                                                                 <constraint firstAttribute="width" constant="25" id="euM-8x-fGq"/>
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="00 C" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Imj-ck-McA">
+                                                            <rect key="frame" x="8" y="38" width="34.5" height="21"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00 C" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zzr-9M-VnP">
+                                                            <rect key="frame" x="107.5" y="38" width="34.5" height="21"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="green leaf" translatesAutoresizingMaskIntoConstraints="NO" id="xrY-Sr-c82">
+                                                            <rect key="frame" x="82.5" y="36" width="17" height="25"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="17" id="8qC-4M-UKe"/>
                                                                 <constraint firstAttribute="height" constant="25" id="RbY-xy-F9o"/>
@@ -665,23 +724,28 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LFJ-1u-t61" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Power Usage:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V59-8A-gUP">
+                                                            <rect key="frame" x="0.0" y="10" width="150" height="16"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="13"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="1 A" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1XY-aa-Yy5">
+                                                            <rect key="frame" x="0.0" y="34" width="150" height="12.5"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KzF-3P-N0p">
+                                                            <rect key="frame" x="0.0" y="51.5" width="150" height="12.5"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wtr-aW-2g3" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                                            <rect key="frame" x="29" y="147" width="92" height="25"/>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="92" id="TkN-bV-Y1i"/>
@@ -693,11 +757,13 @@
                                                             </state>
                                                         </button>
                                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O83-eC-02u">
+                                                            <rect key="frame" x="96" y="84" width="51" height="31"/>
                                                             <connections>
                                                                 <action selector="switchAllowEnergySaving:" destination="JHH-bn-lg2" eventType="valueChanged" id="aYe-5b-fut"/>
                                                             </connections>
                                                         </switch>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Allow energy saving:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="oA1-Ba-ewT">
+                                                            <rect key="frame" x="8" y="82.5" width="59" height="34"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="34" id="Z2l-X8-0ia"/>
                                                                 <constraint firstAttribute="width" constant="59" id="uf0-7X-G8y"/>
@@ -772,8 +838,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yNB-pF-SH4" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="87N-IF-MNZ">
+                                                            <rect key="frame" x="8" y="0.0" width="134" height="180"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -808,11 +876,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view hidden="YES" alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J1V-id-ZxM">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h2k-G5-aeU" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="state" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7lq-k6-rob" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="0.0" y="154.5" width="150" height="20.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -832,6 +903,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unknown" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SbN-yE-qXC" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="0.0" y="8" width="150" height="18.5"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -852,6 +924,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="Qsw-H8-6Us">
+                                                            <rect key="frame" x="20" y="35" width="110" height="110"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="Qsw-H8-6Us" secondAttribute="height" multiplier="1:1" id="Q3Z-qz-sUU"/>
                                                             </constraints>
@@ -874,53 +947,64 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dxX-CA-Y99" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="tg0-Gf-im8">
+                                                            <rect key="frame" x="8" y="21.5" width="20" height="17"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ZVL-4a-opT" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="109" y="21.5" width="33" height="17"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="749" text="Name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="AVZ-UW-QHw">
+                                                            <rect key="frame" x="8" y="51.5" width="41" height="17"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="FOu-qx-20H" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="54" y="51.5" width="88" height="17"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="751" text="Category:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="zd4-lg-ZSD">
+                                                            <rect key="frame" x="8" y="81.5" width="60.5" height="17"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Q9k-3C-SYL">
+                                                            <rect key="frame" x="8" y="111.5" width="37" height="17"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SlD-Mo-QZ4" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="109" y="111.5" width="33" height="17"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zone:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="dmq-zN-Etu">
+                                                            <rect key="frame" x="8" y="141.5" width="35.5" height="17"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xIg-IG-nM9" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="109" y="141.5" width="33" height="17"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="LM6-NS-sQf" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="73.5" y="81.5" width="68.5" height="17"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -994,11 +1078,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view hidden="YES" alpha="0.40000000596046448" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C04-jG-ahK">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mGO-Qj-bKE" userLabel="Back View" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o7c-4k-Fy6" userLabel="Salto Name" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="0.0" y="8" width="150" height="18.5"/>
                                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -1019,6 +1106,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="curtain0" translatesAutoresizingMaskIntoConstraints="NO" id="V6p-jP-QMp" userLabel="Salto Image">
+                                                            <rect key="frame" x="20" y="35" width="110" height="110"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="V6p-jP-QMp" secondAttribute="height" multiplier="1:1" id="9hs-gF-nYH"/>
                                                             </constraints>
@@ -1029,6 +1117,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Vg-Kf-HBE">
+                                                            <rect key="frame" x="8" y="147" width="63" height="28"/>
                                                             <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="28" id="FBE-76-Hxd"/>
@@ -1039,6 +1128,7 @@
                                                             </state>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W7b-ds-t4U">
+                                                            <rect key="frame" x="79" y="147" width="63" height="28"/>
                                                             <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="28" id="Zui-gc-Ra2"/>
@@ -1069,43 +1159,52 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Om8-al-8wN" userLabel="Info View" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9MI-1Q-qhd">
+                                                            <rect key="frame" x="5" y="5" width="140" height="18"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YA9-ik-aep" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="5" y="26" width="140" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MoL-gh-OG1">
+                                                            <rect key="frame" x="5" y="46" width="140" height="18"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fhs-X3-Tup" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="5" y="67" width="140" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zone:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Gf-Dx-1HO">
+                                                            <rect key="frame" x="5" y="87" width="140" height="18"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wEh-q2-jNh">
+                                                            <rect key="frame" x="5" y="128" width="140" height="18"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zone..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="egF-Sr-Dmb" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="5" y="108" width="140" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dPt-0F-JyS" customClass="MarqueeLabel">
+                                                            <rect key="frame" x="5" y="149" width="140" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -1177,13 +1276,14 @@
                                 <connections>
                                     <outlet property="dataSource" destination="Uhp-dG-rvO" id="YCI-34-dWM"/>
                                     <outlet property="delegate" destination="Uhp-dG-rvO" id="CbT-I2-utr"/>
-                                    <outlet property="prefetchDataSource" destination="Uhp-dG-rvO" id="f1s-gc-99X"/>
                                 </connections>
                             </collectionView>
                             <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="neL-6V-LuI" userLabel="indicatorGreen">
+                                <rect key="frame" x="274" y="7" width="8" height="8"/>
                                 <color key="backgroundColor" red="0.094117647058823528" green="0.792156862745098" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GGM-7n-U7N" userLabel="indicatorRed">
+                                <rect key="frame" x="293" y="7" width="8" height="8"/>
                                 <color key="backgroundColor" red="1" green="0.0018889119528316956" blue="0.03221689662338667" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="8" id="Vb1-tF-ZPm"/>
@@ -1191,16 +1291,20 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H0t-8Z-WMG">
+                                <rect key="frame" x="0.0" y="796.5" width="320" height="193.5"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pullup" translatesAutoresizingMaskIntoConstraints="NO" id="xol-uY-x7r">
+                                        <rect key="frame" x="100" y="0.0" width="120" height="37"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="120" id="LxD-3j-R3r"/>
                                             <constraint firstAttribute="height" constant="37" id="wwP-5F-11A"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QEO-B8-hGL" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="37" width="320" height="153.5"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jUi-ah-jIy" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                                <rect key="frame" x="165" y="105.5" width="143" height="40"/>
                                                 <state key="normal" title="ON">
                                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
@@ -1209,11 +1313,13 @@
                                                 </connections>
                                             </button>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="3Em-BI-Ix1">
+                                                <rect key="frame" x="10" y="67.5" width="300" height="31"/>
                                                 <connections>
                                                     <action selector="zoneCategoryControlSlider:" destination="Uhp-dG-rvO" eventType="valueChanged" id="dcP-1c-GA6"/>
                                                 </connections>
                                             </slider>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Select Zone To Control" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DeE-69-Kcm">
+                                                <rect key="frame" x="12" y="41" width="149" height="18.5"/>
                                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1234,6 +1340,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="3An-Xt-4si">
+                                                <rect key="frame" x="12" y="5" width="296" height="29"/>
                                                 <segments>
                                                     <segment title="Zone"/>
                                                     <segment title="Category"/>
@@ -1244,6 +1351,7 @@
                                                 </connections>
                                             </segmentedControl>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CY0-LN-aYO" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                                <rect key="frame" x="12" y="105.5" width="143" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="nNY-G2-08U"/>
                                                 </constraints>
@@ -1364,7 +1472,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f12-kK-PUm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="594" y="-655"/>
+            <point key="canvasLocation" x="679" y="-976"/>
         </scene>
     </scenes>
     <resources>
