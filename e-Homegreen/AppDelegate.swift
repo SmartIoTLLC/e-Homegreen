@@ -160,14 +160,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if let location = managedObjectContext?.object(with: id) as? Location {
                     if let id = location.timerId{
                         if let timer = DatabaseTimersController.shared.getTimerByid(id){
-                            DatabaseTimersController.shared.startTImerOnLocation(timer)
+                            var address:[UInt8] = []
+                            if timer.isBroadcast.boolValue {
+                                address = [0xFF, 0xFF, 0xFF]
+                            } else if timer.isLocalcast.boolValue {
+                                address = [UInt8(Int(timer.gateway.addressOne)), UInt8(Int(timer.gateway.addressTwo)), 0xFF]
+                            } else {
+                                address = [UInt8(Int(timer.gateway.addressOne)), UInt8(Int(timer.gateway.addressTwo)), UInt8(Int(timer.address))]
+                            }
+                            SendingHandler.sendCommand(byteArray: OutgoingHandler.getCancelTimerStatus(address, id: UInt8(Int(timer.timerId)), command: 0x01), gateway: timer.gateway)
                         }
                     }
                     return location.name
                 }
             }
         }
-        
         return nil
     }
     

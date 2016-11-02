@@ -211,18 +211,6 @@ class DatabaseTimersController: NSObject {
         }
         return []
     }
-    
-    func startTImerOnLocation(_ timer:Timer){
-        var address:[UInt8] = []
-        if timer.isBroadcast.boolValue {
-            address = [0xFF, 0xFF, 0xFF]
-        } else if timer.isLocalcast.boolValue {
-            address = [UInt8(Int(timer.gateway.addressOne)), UInt8(Int(timer.gateway.addressTwo)), 0xFF]
-        } else {
-            address = [UInt8(Int(timer.gateway.addressOne)), UInt8(Int(timer.gateway.addressTwo)), UInt8(Int(timer.address))]
-        }
-        SendingHandler.sendCommand(byteArray: OutgoingHandler.getCancelTimerStatus(address, id: UInt8(Int(timer.timerId)), command: 0x01), gateway: timer.gateway)
-    }
 
     func addTimer(_ timerId: Int, timerName: String?, moduleAddress: Int, gateway: Gateway, type: Int?, levelId: Int?, selectedZoneId: Int?, categoryId: Int?, isBroadcast:Bool = true, isLocalcast:Bool = true, sceneImageOneDefault:String? = "15 Timer - CLock - 00", sceneImageTwoDefault:String? = "15 Timer - CLock - 01", sceneImageOneCustom:String? = nil, sceneImageTwoCustom:String? = nil, imageDataOne:Data? = nil, imageDataTwo:Data? = nil){
         var itExists = false
