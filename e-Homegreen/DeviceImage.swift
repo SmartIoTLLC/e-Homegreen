@@ -13,6 +13,4 @@ import CoreData
 class DeviceImage: NSManagedObject {
     var stateValue:Int = 0
     
-// Insert code here to add functionality to your managed object subclass
-
 }

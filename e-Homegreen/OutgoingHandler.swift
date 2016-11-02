@@ -1443,7 +1443,8 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    //TODO:- Nije odradjeno budjenje iz lana
+    
+    //TODO:
     static func wakeOnLan (_ address:[Byte], mac:[Byte], password:[Byte]) -> [Byte]{
         guard mac.count == 6 || password.count == 6 || address.count == 3 else {
             return [0x00]

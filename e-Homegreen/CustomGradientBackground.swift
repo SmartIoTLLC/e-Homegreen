@@ -51,11 +51,6 @@ class CustomGradientBackground: UIView {
         if isHeader == false{
             path.stroke()
         }
-//        gl = CAGradientLayer()
-//        gl.colors = [ colorOne, colorTwo]
-//        gl.locations = [ 0.0, 1.0]
-//        gl.frame = frame
-//        self.layer.insertSublayer(gl, atIndex: 0)
     }
     func updateBackgroundColor(){
         gl.colors = [ colorOne, colorTwo]

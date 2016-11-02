@@ -98,41 +98,6 @@ class DatabaseTimersController: NSObject {
         return []
     }
     
-    func updateTimerList(_ gateway:Gateway, filterParametar:FilterItem) -> [Timer] {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Timer.fetchRequest()
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "timerId", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "timerName", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
-        
-        var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "gateway == %@", gateway))
-        
-        if filterParametar.levelObjectId != "All" {
-            if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId){
-                predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!))
-            }
-        }
-        if filterParametar.zoneObjectId != "All" {
-            if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
-                predicateArray.append(NSPredicate(format: "timeZoneId == %@", zone.id!))
-            }
-        }
-        if filterParametar.categoryObjectId != "All" {
-            if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
-                predicateArray.append(NSPredicate(format: "timerCategoryId == %@", category.id!))
-            }
-        }
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
-        fetchRequest.predicate = compoundPredicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Timer]
-            return fetResults!
-        } catch{
-        }
-        return []
-    }
-    
     func getTimerByid(_ id:String) -> Timer?{
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Timer.fetchRequest()
         let predicateArray:[NSPredicate] = [NSPredicate(format: "id == %@", id)]
@@ -146,7 +111,6 @@ class DatabaseTimersController: NSObject {
         } catch _ as NSError {
             abort()
         }
-        
         return nil
     }
     
@@ -193,6 +157,59 @@ class DatabaseTimersController: NSObject {
             }
         }
         return nil
+    }
+    
+    func fetchTimerWithId(_ timerId: Int, gateway: Gateway, moduleAddress:Int) -> [Timer]{
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Timer.fetchRequest()
+        let predicateLocation = NSPredicate(format: "timerId == %@", NSNumber(value: timerId as Int))
+        let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
+        let predicateAddress = NSPredicate(format: "address == %@", NSNumber(value: moduleAddress as Int))
+        let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway, predicateAddress])
+        
+        fetchRequest.predicate = combinedPredicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Timer]
+            return fetResults!
+        } catch let error1 as NSError {
+            print("Unresolved error \(error1), \(error1.userInfo)")
+            abort()
+        }
+        return []
+    }
+    
+    func updateTimerList(_ gateway:Gateway, filterParametar:FilterItem) -> [Timer] {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Timer.fetchRequest()
+        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo = NSSortDescriptor(key: "timerId", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "timerName", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
+        
+        var predicateArray:[NSPredicate] = []
+        predicateArray.append(NSPredicate(format: "gateway == %@", gateway))
+        
+        if filterParametar.levelObjectId != "All" {
+            if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId){
+                predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!))
+            }
+        }
+        if filterParametar.zoneObjectId != "All" {
+            if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
+                predicateArray.append(NSPredicate(format: "timeZoneId == %@", zone.id!))
+            }
+        }
+        if filterParametar.categoryObjectId != "All" {
+            if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
+                predicateArray.append(NSPredicate(format: "timerCategoryId == %@", category.id!))
+            }
+        }
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Timer]
+            return fetResults!
+        } catch{
+        }
+        return []
     }
     
     func startTImerOnLocation(_ timer:Timer){
@@ -318,23 +335,6 @@ class DatabaseTimersController: NSObject {
         }
     }
     
-    func fetchTimerWithId(_ timerId: Int, gateway: Gateway, moduleAddress:Int) -> [Timer]{
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Timer.fetchRequest()
-        let predicateLocation = NSPredicate(format: "timerId == %@", NSNumber(value: timerId as Int))
-        let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
-        let predicateAddress = NSPredicate(format: "address == %@", NSNumber(value: moduleAddress as Int))
-        let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway, predicateAddress])
-        
-        fetchRequest.predicate = combinedPredicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Timer]
-            return fetResults!
-        } catch let error1 as NSError {
-            print("Unresolved error \(error1), \(error1.userInfo)")
-            abort()
-        }
-        return []
-    }
     
     func deleteAllTimers(_ gateway:Gateway){
         let timers = gateway.timers.allObjects as! [Timer]

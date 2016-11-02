@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 
+
 class FilterController: NSObject {
     
     static let shared = FilterController()

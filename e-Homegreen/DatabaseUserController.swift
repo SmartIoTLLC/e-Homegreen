@@ -10,62 +10,11 @@ import UIKit
 import CoreData
 
 class DatabaseUserController: NSObject {
-    
     static let shared = DatabaseUserController()
-    
     let prefs = Foundation.UserDefaults.standard
-    
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    func getLoggedUser() -> User?{
-        if let stringUrl = prefs.value(forKey: Login.User) as? String{
-            if let url = URL(string: stringUrl){
-                if let id = appDel.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) {
-                    if let user = appDel.managedObjectContext?.object(with: id) as? User {
-                        return user
-                    }
-                }
-            }
-            
-        }
-        return nil
-    }
-    
-    func getOtherUser() -> User?{
-        if let stringUrl = AdminController.shared.getOtherUser(){
-            if let url = URL(string: stringUrl){
-                if let id = appDel.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) {
-                    if let user = appDel.managedObjectContext?.object(with: id) as? User {
-                        return user
-                    }
-                }
-            }
-            
-        }
-        return nil
-    }
-    func setUser(_ url:String?) -> Bool{
-        prefs.setValue(url, forKey: Login.User)
-        if let _ = prefs.value(forKey: Login.User){
-            return true
-        }
-        return false
-        
-    }
-    
-    func getUserForDropDownMenu() -> [User] {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = User.fetchRequest()
-        
-        do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [User]
-            return fetResults!
-            
-        } catch  {
-            
-        }
-        return []
-    }
-    
+    // Getters
     func getUser(_ username:String, password:String) -> User? {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = User.fetchRequest()
         let predicateOne = NSPredicate(format: "username == %@", username)
@@ -88,19 +37,32 @@ class DatabaseUserController: NSObject {
         }
         return nil
     }
-    
-    func isLogged() -> Bool{
-        return prefs.bool(forKey: Login.IsLoged)
+    func getLoggedUser() -> User?{
+        if let stringUrl = prefs.value(forKey: Login.User) as? String{
+            if let url = URL(string: stringUrl){
+                if let id = appDel.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) {
+                    if let user = appDel.managedObjectContext?.object(with: id) as? User {
+                        return user
+                    }
+                }
+            }
+            
+        }
+        return nil
     }
-    
-    func loginUser(){
-        prefs.setValue(true, forKey: Login.IsLoged)
+    func getOtherUser() -> User?{
+        if let stringUrl = AdminController.shared.getOtherUser(){
+            if let url = URL(string: stringUrl){
+                if let id = appDel.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) {
+                    if let user = appDel.managedObjectContext?.object(with: id) as? User {
+                        return user
+                    }
+                }
+            }
+            
+        }
+        return nil
     }
-
-    func logoutUser(){    
-        prefs.setValue(false, forKey: Login.IsLoged)
-    }
-    
     func getAllUsers() -> [User]{
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = User.fetchRequest()
         let sortDescriptorOne = NSSortDescriptor(key: "username", ascending: true)
@@ -113,12 +75,18 @@ class DatabaseUserController: NSObject {
         }
         return []
     }
-    
-    func removeUser(user: User){
-        appDel.managedObjectContext?.delete(user)
-        CoreDataController.shahredInstance.saveChanges()
+    func getUserForDropDownMenu() -> [User] {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = User.fetchRequest()
+        
+        do {
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [User]
+            return fetResults!
+            
+        } catch  {
+            
+        }
+        return []
     }
-    
     func logedUserOrAdmin() -> User?{
         if AdminController.shared.isAdminLogged(){
             if let user = DatabaseUserController.shared.getOtherUser(){
@@ -131,5 +99,31 @@ class DatabaseUserController: NSObject {
         }
         return nil
     }
-
+    
+    // Setters
+    func setUser(_ url:String?) -> Bool{
+        prefs.setValue(url, forKey: Login.User)
+        if let _ = prefs.value(forKey: Login.User){
+            return true
+        }
+        return false
+        
+    }
+    
+    // Business logic
+    func loginUser(){
+        prefs.setValue(true, forKey: Login.IsLoged)
+    }
+    func logoutUser(){
+        prefs.setValue(false, forKey: Login.IsLoged)
+    }
+    func removeUser(user: User){
+        appDel.managedObjectContext?.delete(user)
+        CoreDataController.shahredInstance.saveChanges()
+    }
+    
+    // Helpers
+    func isLogged() -> Bool{
+        return prefs.bool(forKey: Login.IsLoged)
+    }
 }

@@ -11,6 +11,5 @@ import CoreData
 
 class IBeacon: NSManagedObject {
     var accuracy:Double = 10000
-// Insert code here to add functionality to your managed object subclass
 
 }

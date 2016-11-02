@@ -31,7 +31,6 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
         } catch let error1 as NSError {
             error = error1
             print("1 \(error)")
-            print("U pitanju je \(ip) \(port)")
         }
         
         do {
@@ -39,7 +38,6 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
         } catch let error1 as NSError {
             error = error1
             print("4 \(error)")
-            print("U pitanju je \(ip) \(port)")
         }
     }
     

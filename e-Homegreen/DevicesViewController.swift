@@ -1000,6 +1000,12 @@ class DevicesViewController: PopoverVC{
     func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.devices)
     }
+    func allowEnergySavingSwitch(_ sender:AnyObject){
+        let address = [UInt8(Int(devices[sender.tag].gateway.addressOne)),UInt8(Int(devices[sender.tag].gateway.addressTwo)),UInt8(Int(devices[sender.tag].address))]
+        let status:Byte = sender.isOn! ? 0x01 : 0x00
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.setACEnergySaving(address, channel: Byte(Int(devices[sender.tag].channel)), status: status), gateway: devices[sender.tag].gateway)
+    }
+    
     
     @IBAction func zoneCategoryControlSlider(_ sender: UISlider) {
         let sliderValue = Int(sender.value)

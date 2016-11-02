@@ -66,24 +66,6 @@ class DatabaseGatewayController: NSObject {
         return nil
     }
     
-//    func getNextAvailableId() -> Int{
-//        let fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "Gateway")
-//        let sortDescriptorTwo = NSSortDescriptor(key: "gatewayId", ascending: true)
-//        fetchRequest.sortDescriptors = [sortDescriptorTwo]
-//        do {
-//            let fetchResults = try appDel.managedObjectContext!.executeFetchRequest(fetchRequest) as? [Gateway]
-//            if let last = fetchResults?.last{
-//                if let id = last.gatewayId as? Int {
-//                    return id + 1
-//                }
-//            }
-//            
-//        } catch _ as NSError {
-//            abort()
-//        }
-//        return 1
-//    }
-    
     func getGatewayByObjectID(_ objectID:NSManagedObjectID) -> Gateway?{
         if let gateway = appDel.managedObjectContext?.object(with: objectID) as? Gateway {
             return gateway

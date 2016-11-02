@@ -42,9 +42,7 @@ class CreateUserFromJSONController: NSObject {
                 try FileManager.default.removeItem(atPath: jsonFilePath.path)
             } catch {
             }
-        }
-        
-        
+        } 
     }
     
     func createUserFromJSON(_ filePath:String){

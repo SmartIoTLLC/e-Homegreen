@@ -11,7 +11,6 @@ import CoreData
 
 class DatabaseHandler: NSObject {
     var appDel:AppDelegate! = UIApplication.shared.delegate as! AppDelegate
-    
     static let sharedInstance = DatabaseHandler()
     
     func returnCategoryWithId(_ id:Int, location:Location) -> String {
@@ -85,9 +84,6 @@ class DatabaseHandler: NSObject {
                 let fetResults = try (UIApplication.shared.delegate as! AppDelegate).managedObjectContext!.fetch(fetchRequest) as? [Zone]
                 if fetResults!.count != 0 {
                     return fetResults?.first
-                    //                    if fetResults![0].name! != "All"{
-                    //                        return "\(fetResults![0].name!)"
-                    //                    }
                 } else {
                     return nil
                 }
@@ -179,7 +175,6 @@ class DatabaseHandler: NSObject {
         }
         return ""
     }
-    
     func returnZoneIdWithName (_ name:String) -> Int {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
         let predicate = NSPredicate(format: "name == %@", name)
@@ -217,7 +212,6 @@ class DatabaseHandler: NSObject {
         }
         return []
     }
-    
     func fetchZonesWithLocationAndId(_ location: Location, id: Int) -> Zone? {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
         

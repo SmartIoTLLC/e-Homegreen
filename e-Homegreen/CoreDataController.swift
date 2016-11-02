@@ -95,9 +95,7 @@ class CoreDataController: NSObject {
     }
     func fetchSortedPCRequest (_ gatewayName:String, parentZone:Int, zone:Int, category:Int) -> NSFetchRequest<NSFetchRequestResult> {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
-//        let predicate = NSPredicate(format: "gateway.name == %@", gatewayName)
         let predicateOne = NSPredicate(format: "type == %@", ControlType.PC)
-//        let predicateArray = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, predicateOne])
         let predicateArray = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateOne])
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
         let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)

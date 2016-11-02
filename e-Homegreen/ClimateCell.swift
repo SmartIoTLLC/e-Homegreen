@@ -20,14 +20,12 @@ class ClimateCell: UICollectionViewCell {
     @IBOutlet weak var climateSpeed: UILabel!
     @IBOutlet weak var fanSpeedImage: UIImageView!
     @IBOutlet weak var energySavingImage: UIImageView!
+    @IBOutlet weak var awitchAllowEnergySaving: UISwitch!
     var device:Device?
+    
     @IBAction func switchAllowEnergySaving(_ sender: AnyObject) {
         guard let switchAES = sender as? UISwitch else {return}
         device?.allowEnergySaving = NSNumber(value: switchAES.isOn as Bool)
-        let address = [UInt8(Int(device!.gateway.addressOne)),UInt8(Int(device!.gateway.addressTwo)),UInt8(Int(device!.address))]
-        let status:Byte = switchAES.isOn ? 0x01 : 0x00
-        SendingHandler.sendCommand(byteArray: OutgoingHandler.setACEnergySaving(address, channel: Byte(Int(device!.channel)), status: status), gateway: device!.gateway)
-        
     }
     func refreshDevice(_ device:Device) {
         self.device = device

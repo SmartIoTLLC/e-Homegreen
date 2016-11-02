@@ -16,7 +16,6 @@ struct Admin{
 class AdminController: NSObject {
     
     static let shared = AdminController()
-    
     let prefs = Foundation.UserDefaults.standard
     
     func setAdmin(_ username:String, password:String) -> Bool{
@@ -24,6 +23,13 @@ class AdminController: NSObject {
         prefs.setValue(password, forKey: AdminConstants.Password)
         
         if  let _ = prefs.string(forKey: AdminConstants.Username), let _ = prefs.string(forKey: AdminConstants.Password){
+            return true
+        }
+        return false
+    }
+    func setOtherUser(_ url:String?) -> Bool{
+        prefs.setValue(url, forKey: AdminConstants.OtherUserDatabase)
+        if let _ = prefs.value(forKey: AdminConstants.OtherUserDatabase) as? String{
             return true
         }
         return false
@@ -37,11 +43,16 @@ class AdminController: NSObject {
         }
         return nil
     }
+    func getOtherUser() -> String?{
+        if let str = prefs.value(forKey: AdminConstants.OtherUserDatabase) as? String{
+            return str
+        }
+        return nil
+    }
     
     func loginAdmin(){
         prefs.setValue(true, forKey: AdminConstants.IsLogged)
     }
-    
     func logoutAdmin(){
         prefs.setValue(false, forKey: AdminConstants.IsLogged)
         prefs.setValue(nil, forKey: AdminConstants.OtherUserDatabase)
@@ -53,18 +64,7 @@ class AdminController: NSObject {
         }
         return false
     }
-    func getOtherUser() -> String?{
-        if let str = prefs.value(forKey: AdminConstants.OtherUserDatabase) as? String{
-            return str
-        }
-        return nil
-    }
-    func setOtherUser(_ url:String?) -> Bool{
-        prefs.setValue(url, forKey: AdminConstants.OtherUserDatabase)
-        if let _ = prefs.value(forKey: AdminConstants.OtherUserDatabase) as? String{
-            return true
-        }
-        return false
-    }
+    
+    
     
 }

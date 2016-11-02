@@ -57,7 +57,6 @@ class DatabaseEventsController: NSObject {
         return []
     }
     
-    
     func updateEventList(_ gateway:Gateway, filterParametar:FilterItem) -> [Event] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Event.fetchRequest()
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)

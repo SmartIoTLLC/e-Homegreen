@@ -86,6 +86,4 @@ extension Device {
     @NSManaged var notificationPosition: NSNumber?
     @NSManaged var notificationDelay: NSNumber?
     @NSManaged var notificationDisplayTime: NSNumber?
-    
-    
 }

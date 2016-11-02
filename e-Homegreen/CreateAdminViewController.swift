@@ -20,7 +20,6 @@ class CreateAdminViewController: UIViewController, UITextFieldDelegate {
         userNameTextField.delegate = self
         passwordTextField.delegate = self
         confirmPasswordTextField.delegate = self
-        // Do any additional setup after loading the view.
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

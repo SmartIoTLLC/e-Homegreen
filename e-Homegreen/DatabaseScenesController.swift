@@ -58,7 +58,23 @@ class DatabaseScenesController: NSObject {
         return []
         
     }
-    
+    func fetchSceneWithIdAndAddress(_ sceneId: Int, gateway: Gateway, moduleAddress:Int) -> [Scene]{
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Scene.fetchRequest()
+        let predicateLocation = NSPredicate(format: "sceneId == %@", NSNumber(value: sceneId as Int))
+        let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
+        let predicateAddress = NSPredicate(format: "address == %@", NSNumber(value: moduleAddress as Int))
+        let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway, predicateAddress])
+        
+        fetchRequest.predicate = combinedPredicate
+        do {
+            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Scene]
+            return fetResults!
+        } catch let error1 as NSError {
+            print("Unresolved error \(error1), \(error1.userInfo)")
+            abort()
+        }
+        return []
+    }
     func updateSceneList(_ gateway:Gateway, filterParametar:FilterItem) -> [Scene]{
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Scene.fetchRequest()
         let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
@@ -93,6 +109,7 @@ class DatabaseScenesController: NSObject {
         }
         return []
     }
+    
     
     func createScene(_ sceneId: Int, sceneName: String, moduleAddress: Int, gateway: Gateway, levelId: Int?, zoneId: Int?, categoryId: Int?, isBroadcast:Bool = true, isLocalcast:Bool = true, sceneImageOneDefault:String? = "Scene - All On - 00", sceneImageTwoDefault:String? = "Scene - All On - 01", sceneImageOneCustom:String? = nil, sceneImageTwoCustom:String? = nil, imageDataOne:Data? = nil, imageDataTwo:Data? = nil){
         var itExists = false
@@ -190,23 +207,6 @@ class DatabaseScenesController: NSObject {
         }
     }
     
-    func fetchSceneWithIdAndAddress(_ sceneId: Int, gateway: Gateway, moduleAddress:Int) -> [Scene]{
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Scene.fetchRequest()
-        let predicateLocation = NSPredicate(format: "sceneId == %@", NSNumber(value: sceneId as Int))
-        let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
-        let predicateAddress = NSPredicate(format: "address == %@", NSNumber(value: moduleAddress as Int))
-        let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway, predicateAddress])
-        
-        fetchRequest.predicate = combinedPredicate
-        do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Scene]
-            return fetResults!
-        } catch let error1 as NSError {
-            print("Unresolved error \(error1), \(error1.userInfo)")
-            abort()
-        }
-        return []
-    }
     
     func deleteAllScenes(_ gateway:Gateway){
         let scenes = gateway.scenes.allObjects as! [Scene]
@@ -216,11 +216,8 @@ class DatabaseScenesController: NSObject {
         
         CoreDataController.shahredInstance.saveChanges()
     }
-    
     func deleteScene(_ scene:Scene){
         self.appDel.managedObjectContext!.delete(scene)
         CoreDataController.shahredInstance.saveChanges()
     }
-
-    
 }

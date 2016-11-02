@@ -163,6 +163,9 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.backView.isHidden = false
             }
             
+            cell.btnRefresh.tag = indexPath.row
+            cell.btnRefresh.addTarget(self, action: #selector(DevicesViewController.refreshDevice(_:)), for:  UIControlEvents.touchUpInside)
+            
             if devices[indexPath.row].warningState == 0 {
                 cell.backView.colorTwo = Colors.MediumGray                
             } else if devices[indexPath.row].warningState == 1 {
@@ -231,11 +234,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                 cell.openButton.addGestureRecognizer(curtainOpenTap)
                 cell.closeButton.addGestureRecognizer(curtainCloseTap)
                 cell.curtainImage.addGestureRecognizer(curtainStopTap)
-                
-//                let curtainNameTap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.handleTap(_:)))
-//                curtainNameTap.numberOfTapsRequired = 2
                 cell.curtainName.tag = (indexPath as NSIndexPath).row
-//                cell.curtainName.addGestureRecognizer(curtainNameTap)
                 
                 let curtainNameLongPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DevicesViewController.cellParametarLongPress(_:)))
                 curtainNameLongPress.minimumPressDuration = 0.5
@@ -394,6 +393,9 @@ extension DevicesViewController: UICollectionViewDataSource {
             
             cell.climateMode.text = devices[indexPath.row].mode
             cell.climateSpeed.text = devices[indexPath.row].speed
+            
+            cell.awitchAllowEnergySaving.tag = indexPath.row
+            cell.awitchAllowEnergySaving.addTarget(self, action: #selector(DevicesViewController.allowEnergySavingSwitch(_:)), for:  UIControlEvents.valueChanged)
             
             var fanSpeed = 0.0
             let speedState = devices[indexPath.row].speedState

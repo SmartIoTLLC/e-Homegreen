@@ -11,7 +11,6 @@ import UIKit
 @IBDesignable
 class CustomButton: UIButton {
     
-    
     @IBInspectable var fillColor: UIColor = UIColor.orange
     
     override func draw(_ rect: CGRect) {

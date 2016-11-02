@@ -9,23 +9,21 @@
 import Foundation
 import CoreData
 
+/// Class communicates with PLC, sending messages. As specified by stakeholder, every sending message should be repeated maximally three times if there is no answer. Methods in this code enable that.
 class RepeatSendingHandler: NSObject {
     
     var byteArray: [UInt8]!
     var gateway: Gateway!
     var repeatCounter:Int = 1
     var delay:Double = 0
-    
     var device:Device!
     var deviceOldValue:Int!
-    
     var appDel:AppDelegate!
     var error:NSError? = nil
-    
     var didGetResponse:Bool = false
     var didGetResponseTimer:Foundation.Timer!
-    
     var timerForSaltoAccessRefresh: Foundation.Timer!
+    var isFirstTime:Bool = true
     
     //
     // ================== Sending command for changing value of device ====================
@@ -48,7 +46,6 @@ class RepeatSendingHandler: NSObject {
         
         NotificationCenter.default.addObserver(self, selector: #selector(RepeatSendingHandler.didGetResponseNotification(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: nil)
     }
-    
     init(byteArray:[UInt8], gateway: Gateway) {
         super.init()
         appDel = UIApplication.shared.delegate as! AppDelegate
@@ -73,7 +70,7 @@ class RepeatSendingHandler: NSObject {
             }
         }
     }
-    var isFirstTime:Bool = true
+    
     func sendCommand () {
         if !didGetResponse {
             if repeatCounter <= 4 {
@@ -163,21 +160,18 @@ class RepeatSendingHandler: NSObject {
         }
     }
 
-    
     func refreshSaltoAccessAfter8Sec(){
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessState([byteArray[2], byteArray[3], byteArray[4]], lockId: device.channel.intValue), gateway: device.gateway)
         timerForSaltoAccessRefresh.invalidate()
         timerForSaltoAccessRefresh = nil
         timerForSaltoAccessRefresh = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(RepeatSendingHandler.refreshSaltoAccessAfter1Sec), userInfo: nil, repeats: false)
     }
-    
     func refreshSaltoAccessAfter1Sec(){
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessState([byteArray[2], byteArray[3], byteArray[4]], lockId: device.channel.intValue), gateway: device.gateway)
         timerForSaltoAccessRefresh.invalidate()
         timerForSaltoAccessRefresh = nil
         timerForSaltoAccessRefresh = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(RepeatSendingHandler.refreshSaltoAccessOneMoreTimeAfter1Sec), userInfo: nil, repeats: false)
     }
-    
     func refreshSaltoAccessOneMoreTimeAfter1Sec(){
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessState([byteArray[2], byteArray[3], byteArray[4]], lockId: device.channel.intValue), gateway: device.gateway)
         timerForSaltoAccessRefresh.invalidate()

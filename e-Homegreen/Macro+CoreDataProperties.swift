@@ -10,7 +10,6 @@ import Foundation
 import CoreData
 
 extension Macro {
-
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Macro> {
         return NSFetchRequest<Macro>(entityName: "Macro");
     }

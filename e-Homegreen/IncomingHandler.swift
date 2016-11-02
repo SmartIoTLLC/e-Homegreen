@@ -21,7 +21,7 @@ class IncomingHandler: NSObject {
     
     init (byteArrayToHandle: [Byte], host:String, port:UInt16) {
         super.init()
-        CLSLogv("Log awesomeness %@", getVaList(["\(byteArrayToHandle)"]))
+        CLSLogv("Log %@", getVaList(["\(byteArrayToHandle)"]))
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.Gateway.DidReceiveData), object: self, userInfo: nil)
         appDel = UIApplication.shared.delegate as! AppDelegate
         self.host = host
@@ -33,24 +33,22 @@ class IncomingHandler: NSObject {
         }
         //  Checks if there are any gateways
         if gateways.count > 0 {
-//            self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
             self.byteArray = byteArrayToHandle
             if messageIsValid() {
                 if messageIsNewDeviceSalto(){
-                    self.parseMessageNewDevicSalto(self.byteArray)  //ok
+                    self.parseMessageNewDevicSalto(self.byteArray)
                 }
                 else{
                     if messageIsNewDevice() {
-                        self.parseMessageNewDevice(self.byteArray)   // ok
-                    }
+                        self.parseMessageNewDevice(self.byteArray)                       }
                 }
                 if messageIsNewDeviceParameters() {
-                    self.parseMessageNewDeviceParameter(self.byteArray)   //nije nam jasno sta radi funkcija, zasto module name i sve ostalo i da li to treba?
+                    self.parseMessageNewDeviceParameter(self.byteArray) // Don't know what function does. Why modul name, and everything else? Does it need to be like that?
                 }
             
                 //  ACKNOWLEDGEMENT ABOUT CHANNEL PARAMETAR (Get Channel Parametar) IMENA
                 if messageIsChannelParameter() {
-                    self.parseMessageChannelParameter(self.byteArray)   //ok
+                    self.parseMessageChannelParameter(self.byteArray)
                 }
                 if messageIsChannelState() {
                     self.parseMessageChannelsState(self.byteArray)      //ok, moze asinhrono
@@ -484,7 +482,6 @@ class IncomingHandler: NSObject {
     }
     func parseMessageNewDeviceParameter(_ byteArray:[Byte]) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
-            
             self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
             for device in devices {
                 if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) {
@@ -775,7 +772,7 @@ class IncomingHandler: NSObject {
         
     }
     
-    //parameters for climate
+    //  parameters for climate
     func parseMessageACParametar (_ byteArray:[Byte]) {
         
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
@@ -818,7 +815,7 @@ class IncomingHandler: NSObject {
         }
     }
     
-    //  informacije o parametrima (statusu) urdjaja na MULTISENSORU - MISLIM DA JE OVO U REDU
+    //  information about parameters (Status) of devices on Multisensor
     func parseMessageInterfaceStatus (_ byteArray:[Byte]) {
         
         let address = Int(byteArray[4])
@@ -833,18 +830,17 @@ class IncomingHandler: NSObject {
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }
     
-    //  informacije o stanjima na uredjajima
+    //  information about devices' state
     func parseMessageChannelsState (_ byteArray:[Byte]) {
         
         let address = Int(byteArray[4])
 
-        
         if let dev = IncomingHandlerController.shared.fetchDevices(by: self.gateways[0], address: address){
             for device in dev{
                 let channelNumber = Int(device.channel)
                 
                 // Problem: If device is dimmer, then value that is received is in range from 0-100. In rest of the cases value is 0x00 of 0xFF (0 or 255)
-                // That is why we must check whether device value is >100. If value is greater than 100 that means that it is not dimmer and the only value greater than 100 can be 255
+                // That is why we must check whether device value is > 100. If value is greater than 100 that means that it is not dimmer and the only value greater than 100 can be 255
                 if Int(byteArray[8+5*(channelNumber-1)]) > 100 {
                     device.currentValue = NSNumber(value: Int(byteArray[8+5*(channelNumber-1)])) // device is NOT dimmer and the value should be saved as received
                 }else{
@@ -864,7 +860,7 @@ class IncomingHandler: NSObject {
         }
         
     }
-    //  informacije o parametrima kanala
+    //  Info about channel parameters
     func parseMessageChannelParameter(_ byteArray:[Byte]){
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
             
@@ -928,7 +924,7 @@ class IncomingHandler: NSObject {
         }
     }
     
-    //  informacije o parametrima kanala, dobijemo sve parametre u jednom byte array-u , max 16
+    //  Information about channel parameters. We get all parameters in one byte array, max 32
     func parseMessageTimerStatus (_ byteArray:[Byte]){
         //  0x00 Waiting = 0
         //  0x01 Started = 1
@@ -948,7 +944,7 @@ class IncomingHandler: NSObject {
         CoreDataController.shahredInstance.saveChanges()
     }
     
-    //  informacije o parametrima kanala, dobijemo sve parametre u jednom byte array-u , max 32
+    //  Information about channel parameters. We get all parameters in one byte array, max 32
     func parseMessageFlagStatus (_ byteArray:[Byte]){
         
         let address = Int(byteArray[4])
@@ -976,8 +972,6 @@ class IncomingHandler: NSObject {
         let sortDescriptor = NSSortDescriptor(key: "securityName", ascending: true)
         let securities = DatabaseSecurityController.shared.getAllSecuritiesSortedBy(sortDescriptor)
         
-        
-        //FIXME: Pucalo je security zato sto nema u svim gatewayovima security
         if securities.count != 0 {
             let address = [Byte(Int(securities[0].addressOne)), Byte(Int(securities[0].addressTwo)), Byte(Int(securities[0].addressThree))]
             if byteArray[2] == address[0] && byteArray[3] == address[1] && byteArray[4] == address[2] {
@@ -1027,7 +1021,7 @@ class IncomingHandler: NSObject {
         }
     }
     
-    // MARK: - Get zones and categories
+    //  Get zones and categories
     func parseMessageNewZone(_ byteArray:[Byte]) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningForZones) {
             // Miminum is 12, but that is also doubtful...
@@ -1063,6 +1057,7 @@ class IncomingHandler: NSObject {
         }
     }
     
+    //  Category
     func parseMessageNewCategory(_ byteArray:[Byte]) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningForCategories) {
             var name:String = ""
@@ -1183,6 +1178,7 @@ extension IncomingHandler {
         return false
     }
     
+    //  Device
     func messageIsNewDevice() -> Bool {
         if self.byteArray[5] == 0xF1 && self.byteArray[6] == 0x01{
             return true
@@ -1214,6 +1210,7 @@ extension IncomingHandler {
         return false
     }
     
+    //  Channel
     func messageIsChannelParameter() -> Bool {
         if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x01 {
             return true
@@ -1227,6 +1224,7 @@ extension IncomingHandler {
         return false
     }
     
+    //  Curtain
     func messageIsCurtainState() -> Bool {
         if self.byteArray[5] == 0xF3 && self.byteArray[6] == 0x06 && self.byteArray[7] == 0xF0 {
             return true
@@ -1246,6 +1244,7 @@ extension IncomingHandler {
         return false
     }
     
+    //  Climate
     func messageIsAcParameter() -> Bool {
         if self.byteArray[5] == 0xF4 && self.byteArray[6] == 0x01 {
             return true
@@ -1258,6 +1257,8 @@ extension IncomingHandler {
         }
         return false
     }
+    
+    //
     func messageIsInterfaceParameter() -> Bool {
         if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x02 {
             return true
@@ -1289,6 +1290,7 @@ extension IncomingHandler {
         return false
     }
     
+    //  Timers
     func messageIsTimerStatus() -> Bool {
         if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x17 && self.byteArray[7] == 0xFF {
             return true
@@ -1314,6 +1316,7 @@ extension IncomingHandler {
         return false
     }
     
+    //  Flags
     func messageIsFlagStatus() -> Bool {
         if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x06 && self.byteArray[7] == 0xFF {
             return true
@@ -1333,6 +1336,7 @@ extension IncomingHandler {
         return false
     }
     
+    //  Events
     func messageIsEventStatus() -> Bool {
         if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x12 {
             return true
@@ -1346,6 +1350,7 @@ extension IncomingHandler {
         return false
     }
     
+    //  Cards
     func messageIsNewCardName() -> Bool {
         if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x57 {
             return true
@@ -1359,6 +1364,7 @@ extension IncomingHandler {
         return false
     }
     
+    //  Zones
     func messageIsNewZone() -> Bool {
         if self.byteArray[5] == 0xF2 && self.byteArray[6] == 0x11 && self.byteArray[7] == 0x00 {
             return true
@@ -1384,6 +1390,7 @@ extension IncomingHandler {
         return false
     }
     
+    //  PC
     func messageIsPCStatus() -> Bool {
         if self.byteArray[5] == 0xFA && self.byteArray[6] == 0x01 {
             return true

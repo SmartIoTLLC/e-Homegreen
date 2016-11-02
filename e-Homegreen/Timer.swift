@@ -13,6 +13,4 @@ class Timer: NSManagedObject {
     
     var timerCount:UInt = 0
 
-// Insert code here to add functionality to your managed object subclass
-
 }
