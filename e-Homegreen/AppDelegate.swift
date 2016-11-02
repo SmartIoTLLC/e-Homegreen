@@ -117,21 +117,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.makeKeyAndVisible()
         }
         
-        
-        
-//        broadcastTimeAndDate()
-//        refreshAllConnections()
         establishAllConnections()
-//        Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(AppDelegate.setFilterBySSIDOrByiBeacon), userInfo: nil, repeats: false)
         locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
-        
-//        configureStateForTheFirstTime()
-        
-//        application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil))
-//        UIApplication.shared.cancelAllLocalNotifications()
-        
-//        setFilterBySSIDOrByiBeaconAgain()
         
         return true
     }
@@ -147,10 +135,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         } else {
             // Otherwise present a local notification
-//            let notification = UILocalNotification()
-//            notification.alertBody = notefromRegionIdentifier(region.identifier)
-//            notification.soundName = "Default";
-//            UIApplication.shared.presentLocalNotificationNow(notification)
+            let notification = UILocalNotification()
+            notification.alertBody = notefromRegionIdentifier(region.identifier)
+            notification.soundName = "Default";
+            UIApplication.shared.presentLocalNotificationNow(notification)
         }
     }
     
@@ -177,79 +165,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return nil
     }
-    
-//    func setFilterBySSIDOrByiBeaconAgain () {
-//        fetchIBeacons()
-//        loadItems()
-//        Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(AppDelegate.setFilterBySSIDOrByiBeacon), userInfo: nil, repeats: false)
-//    }
-    
-//    func setFilterBySSIDOrByiBeacon () {
-//        checkIfThereIsLocationWithExistingSSID()
-//        var beacon:IBeacon?
-//        for item in iBeacons {
-//            if beacon == nil {
-//                beacon = item
-//            }
-//            if beacon?.accuracy > item.accuracy {
-//                beacon = item
-//            }
-//        }
-//        if beacon != nil && beacon!.accuracy != 10000 {
-//            let zoneWithBeacon = returnZoneWithIBeacon(beacon!)
-//            // Check if zone exists with that iBeacon
-//            if let zone = zoneWithBeacon {
-//                print("OVO JE BIO NAJBLIZI IBEACON: \(beacon!.name) SA ACCURACY: \(beacon!.accuracy) ZA OVAJ GATEWAY: \(beacon?.iBeaconZone?.location!.name) A POKAZUJE OVAj GATEWAY: \(zone.location!.name)")
-//                if let zoneLocation = zone.location, let zoneName = zone.name, let lvlId = zone.level {
-//                    // Check if zone has level (which is another zone)
-//                    let levelId = Int(lvlId)
-//                    if levelId == 0 {
-//                        for item in  FilterEnumeration.allFilters {
-//                            Filter.sharedInstance.saveFilter(item: FilterItem(location:zoneLocation.name!, levelId:Int(zone.id!), zoneId:0, categoryId:0, levelName:zoneName, zoneName:"All", categoryName:"All"), forTab: item)
-//                        }
-//                        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshFilter), object: self, userInfo: nil)
-//                        return
-//                    } else {
-//                        if let level = fetchZone(Int(levelId)) {
-//                            for item in  FilterEnumeration.allFilters {
-//                                Filter.sharedInstance.saveFilter(item: FilterItem(location:zoneLocation.name!, levelId:Int(level.id!), zoneId:Int(zone.id!), categoryId:0, levelName:level.name!, zoneName:zoneName, categoryName:"All"), forTab: item)
-//                            }
-//                            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshFilter), object: self, userInfo: nil)
-//                            // Exit method
-//                            return
-//                        }
-//                    }
-//                }
-//            }
-//            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshFilter), object: self, userInfo: nil)
-//            for item in iBeacons {
-//                item.accuracy = 10000
-//            }
-//            beacon = nil
-//            stopiBeacons()
-//        }
-//    }
-//    func checkIfThereIsLocationWithExistingSSID() {
-//        if let ssid = UIDevice.current.SSID {
-//            let ssidsDB:[SSID] = fetchSSIDs()
-//            for ssidDB in ssidsDB {
-//                if ssid == ssidDB.name {
-//                    if let location = ssidDB.location, let locationName = location.name {
-//                        for item in  FilterEnumeration.allFilters {
-//                            let filter = Filter.sharedInstance.returnFilter(forTab: item)
-//                            if filter.location != locationName {
-//                                Filter.sharedInstance.saveFilter(item: FilterItem(location:locationName, levelId:0, zoneId:0, categoryId:0, levelName:"All", zoneName:"All", categoryName:"All"), forTab: item)
-//                            }
-//                        }
-//                        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshFilter), object: self, userInfo: nil)
-//                    }
-//                    break
-//                }
-//            }
-//        } else {
-//            print("Nije nasao ssid.")
-//        }
-//    }
+
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
