@@ -26,9 +26,6 @@ class SurveillenceCell:UICollectionViewCell{
     func update(){
         print(camera.name)
         let _ = SurveillanceHandler(surv: camera)
-        
-//        SurveillanceHandler.shared.getCameraImage(camera) { (success) in
-        
             if let data = self.camera.imageData {
                 self.setImageForSurveillance(UIImage(data: data as Data))
             }else{
@@ -43,8 +40,6 @@ class SurveillenceCell:UICollectionViewCell{
             } else {
                 self.lblTime.text = " "
             }
-
-//        }
     }
     
     func getName(_ surv:Surveillance, filterParametar:FilterItem) -> String{
@@ -70,6 +65,4 @@ class SurveillenceCell:UICollectionViewCell{
     override func prepareForReuse() {
         timer?.invalidate()
     }
-
-    
 }

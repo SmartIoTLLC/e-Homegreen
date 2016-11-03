@@ -9,16 +9,7 @@
 import UIKit
 
 class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDelegate {
-    
-    var point:CGPoint?
-    var oldPoint:CGPoint?
-    
-    var isPresenting: Bool = true
-    
-    var surv:Surveillance!
-    var appDel:AppDelegate!
-    var error:NSError? = nil
-    
+
     @IBOutlet weak var backView: CustomGradientBackground!
     
     @IBOutlet weak var panStepSlider: UISlider!
@@ -30,6 +21,16 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
     @IBOutlet weak var tiltStepLabel: UILabel!
     @IBOutlet weak var autoPanStepLabel: UILabel!
     @IBOutlet weak var dwellTimeLabel: UILabel!
+    
+    var point:CGPoint?
+    var oldPoint:CGPoint?
+    
+    var isPresenting: Bool = true
+    
+    var surv:Surveillance!
+    var appDel:AppDelegate!
+    var error:NSError? = nil
+    
     
     init(point:CGPoint, surv:Surveillance){
         super.init(nibName: "CameraParametarXIBViewController", bundle: nil)
@@ -43,6 +44,7 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
         fatalError("init(coder:) has not been implemented")
     }
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -68,8 +70,6 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
         tiltStepLabel.text = "\(tiltStepSlider.value)"
         autoPanStepLabel.text = "\(autoPanStepSlider.value)"
         dwellTimeLabel.text = "\(dwellTimeSlider.value)"
-
-        // Do any additional setup after loading the view.
     }
     
     func changePanStep(_ slider: UISlider){
@@ -92,17 +92,6 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
         dwellTimeLabel.text = "\(round(slider.value))"
     }
     
-    @IBAction func btnSave(_ sender: AnyObject) {
-        
-        surv!.panStep = panStepSlider.value as NSNumber?
-        surv!.tiltStep = tiltStepSlider.value as NSNumber?
-        surv!.autSpanStep = autoPanStepSlider.value as NSNumber?
-        surv!.dwellTime = dwellTimeSlider.value as NSNumber?
-        CoreDataController.shahredInstance.saveChanges()
-        
-        self.dismiss(animated: true, completion: nil)
-    }
-    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if touch.view!.isDescendant(of: backView){
             return false
@@ -114,12 +103,23 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
         self.dismiss(animated: true, completion: nil)
     }
     
+    
+    @IBAction func btnSave(_ sender: AnyObject) {
+        
+        surv!.panStep = panStepSlider.value as NSNumber?
+        surv!.tiltStep = tiltStepSlider.value as NSNumber?
+        surv!.autSpanStep = autoPanStepSlider.value as NSNumber?
+        surv!.dwellTime = dwellTimeSlider.value as NSNumber?
+        CoreDataController.shahredInstance.saveChanges()
+        
+        self.dismiss(animated: true, completion: nil)
+    }
 }
 
 extension CameraParametarXIBViewController : UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.5 //Add your own duration here
+        return 0.5
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -148,7 +148,6 @@ extension CameraParametarXIBViewController : UIViewControllerAnimatedTransitioni
             })
         }else{
             let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
-            //            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
             UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {

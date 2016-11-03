@@ -45,7 +45,7 @@ class RepeatSendingHandler: NSObject {
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(RepeatSendingHandler.didGetResponseNotification(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: nil)
-    }
+}
     init(byteArray:[UInt8], gateway: Gateway) {
         super.init()
         appDel = UIApplication.shared.delegate as! AppDelegate

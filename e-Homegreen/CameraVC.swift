@@ -12,8 +12,6 @@ class CameraVC: UIViewController {
     
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var image: UIImageView!
-    
-    
     @IBOutlet weak var leftButton: LeftCustomButtom!
     @IBOutlet weak var rightButton: CustomButton!
     @IBOutlet weak var topButton: TopButton!
@@ -21,10 +19,11 @@ class CameraVC: UIViewController {
     @IBOutlet weak var btnAutoPan: CustomGradientButtonWhite!
     @IBOutlet weak var btnhome: CustomGradientButtonWhite!
     @IBOutlet weak var btnPresetSequence: CustomGradientButtonWhite!
+    @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     
     var isAutoPanStop = false
     var isPresetSequenceStop = false
-    
+
     var surv:Surveillance!
     var point:CGPoint?
     var oldPoint:CGPoint?
@@ -34,8 +33,6 @@ class CameraVC: UIViewController {
     var isPresenting: Bool = true
     
     var timer:Foundation.Timer = Foundation.Timer()
-    
-    @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     
     
     init(point:CGPoint, surv:Surveillance){
@@ -50,6 +47,7 @@ class CameraVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -57,8 +55,6 @@ class CameraVC: UIViewController {
         UIDevice.current.setValue(value, forKey: "orientation")
         
         timer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(CameraVC.update), userInfo: nil, repeats: true)
-
-        // Do any additional setup after loading the view.
     }
     
     override var shouldAutorotate : Bool {
@@ -73,23 +69,29 @@ class CameraVC: UIViewController {
         }
     }
     
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.landscapeLeft
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    
+    func update(){
+        if surv.imageData != nil{
+            self.image.image = UIImage(data: surv.imageData! as Data)
+        }else{
+            self.image.image = UIImage(named: "loading")
+        }
+    }
+    
+    
     @IBAction func exitButton(_ sender: AnyObject) {
         timer.invalidate()
         self.dismiss(animated: true, completion: nil)
     }
-    
-    
-//    @IBAction func btnAutoSpan(sender: AnyObject) {
-//        moveCam.autoSpan(surv)
-//    }
-//    
-//    @IBAction func btnStop(sender: AnyObject) {
-//        moveCam.stop(surv)
-//    }
-//    
-//    @IBAction func btnPresetSequence(sender: AnyObject) {
-//        moveCam.presetSequence(surv)
-//    }
     
     @IBAction func btnAutoPan(_ sender: AnyObject) {
         var title = ""
@@ -110,23 +112,6 @@ class CameraVC: UIViewController {
         isPresetSequenceStop = !isPresetSequenceStop
         btnPresetSequence.setTitle(title, for: UIControlState())
         moveCam.presetSequence(surv, isStopNecessary: isPresetSequenceStop)
-    }
-    
-    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.landscapeLeft
-    }
-    
-    func update(){
-        if surv.imageData != nil{
-            self.image.image = UIImage(data: surv.imageData! as Data)
-        }else{
-            self.image.image = UIImage(named: "loading")
-        }
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     @IBAction func leftButtomAction(_ sender: AnyObject) {
@@ -150,7 +135,7 @@ class CameraVC: UIViewController {
 extension CameraVC : UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.5 //Add your own duration here
+        return 0.5
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {

@@ -17,16 +17,9 @@ class MoveCameraHandler: NSObject, URLSessionDelegate, URLSessionTaskDelegate, U
         let loginData: Data = loginString.data(using: String.Encoding.utf8.rawValue)!
         let base64LoginString = loginData.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
         var url:URL
-//        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
-//            var urlExtension = ""
-//            if surv.urlHome == "" {urlExtension = "/cgi-bin/longcctvhome.cgi?action=gohome"} else {urlExtension = surv.urlHome!}
-//            url = NSURL(string: "http://\(surv.localIp!):\(surv.localPort!)\(urlExtension)")!
-//            
-//        }else{
             var urlExtension = ""
             if surv.urlHome == "" {urlExtension = "/cgi-bin/longcctvhome.cgi?action=gohome"} else {urlExtension = surv.urlHome!}
             url = URL(string: "http://\(surv.ip!):\(surv.port!)\(urlExtension)")!
-//        }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
@@ -50,11 +43,7 @@ class MoveCameraHandler: NSObject, URLSessionDelegate, URLSessionTaskDelegate, U
         
         var url:URL
         var urlMain = ""
-//        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
-//            urlMain = "http://\(surv.localIp!):\(surv.localPort!)"
-//        }else{
             urlMain = "http://\(surv.ip!):\(surv.port!)"
-//        }
         var urlExtension = "/cgi-bin/longcctvmove.cgi?action=move&direction=\(position)&panstep=\(surv.panStep!)&tiltstep=\(surv.tiltStep!)"
         if position == "right" {
             if surv.urlMoveRight != "" {urlExtension = surv.urlMoveRight!}
@@ -94,12 +83,7 @@ class MoveCameraHandler: NSObject, URLSessionDelegate, URLSessionTaskDelegate, U
         let base64LoginString = loginData.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
         var url:URL
         var urlMain = ""
-//        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
-//            urlMain = "http://\(surv.localIp!):\(surv.localPort!)"
-//            
-//        }else{
             urlMain = "http://\(surv.ip!):\(surv.port!)"
-//        }
         var urlExtension = ""
         if isStopNecessary {
             if surv.urlAutoPanStop == "" {urlExtension = "/cgi-bin/longcctvapn.cgi?action=stop"} else {urlExtension = surv.urlAutoPanStop!}
@@ -125,60 +109,6 @@ class MoveCameraHandler: NSObject, URLSessionDelegate, URLSessionTaskDelegate, U
         }) 
         task.resume()
     }
-//    func stop(surv: Surveilence){
-//        let username = surv.username
-//        let password = surv.password
-//        
-//        let loginString = NSString(format: "%@:%@", username!, password!)
-//        let loginData: NSData = loginString.dataUsingEncoding(NSUTF8StringEncoding)!
-//        let base64LoginString = loginData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
-//        var url:NSURL
-//        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
-//            url = NSURL(string: "http://\(surv.localIp!):\(surv.localPort!)/cgi-bin/longcctvseq.cgi?action=stop")!
-//            
-//        }else{
-//            url = NSURL(string: "http://\(surv.ip!):\(surv.port!)/cgi-bin/longcctvseq.cgi?action=stop")!
-//        }
-//        let request = NSMutableURLRequest(URL: url)
-//        request.HTTPMethod = "GET"
-//        request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-//        
-//        let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-//        let session = NSURLSession(configuration: configuration, delegate: self, delegateQueue: NSOperationQueue())
-//        
-//        let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
-//            
-//            if error == nil{
-//                
-//            }else{
-//                
-//            }
-//            
-//        }
-//        task.resume()
-//        
-//        var url1:NSURL
-//        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
-//            url1 = NSURL(string: "http://\(surv.localIp!):\(surv.localPort!)/cgi-bin/longcctvapn.cgi?action=stop")!
-//        }else{
-//            url1 = NSURL(string: "http://\(surv.ip!):\(surv.port!)/cgi-bin/longcctvapn.cgi?action=stop")!
-//        }
-//        let request1 = NSMutableURLRequest(URL: url1)
-//        request1.HTTPMethod = "GET"
-//        request1.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-//        
-//        let task1 = session.dataTaskWithRequest(request1) { (data, response, error) -> Void in
-//            
-//            if error == nil{
-//                
-//            }else{
-//                
-//            }
-//            
-//        }
-//        task1.resume()
-//    }
-    
     func presetSequence(_ surv: Surveillance, isStopNecessary:Bool){
         let username = surv.username
         let password = surv.password
@@ -189,14 +119,8 @@ class MoveCameraHandler: NSObject, URLSessionDelegate, URLSessionTaskDelegate, U
         
         var url:URL
         var urlMain = ""
-//        if surv.ssid != nil && surv.ssid == UIDevice.currentDevice().SSID{
-//            urlMain = "http://\(surv.localIp!):\(surv.localPort!)"
-//            url = NSURL(string: "/cgi-bin/longcctvseq.cgi?action=go")!
-//            
-//        }else{
             urlMain = "http://\(surv.ip!):\(surv.port!)"
             url = URL(string: "/cgi-bin/longcctvseq.cgi?action=go")!
-//        }
         var urlExtension = ""
         if isStopNecessary {
             if surv.urlPresetSequenceStop == "" {urlExtension = "/cgi-bin/longcctvseq.cgi?action=stop"} else {urlExtension = surv.urlPresetSequenceStop!}
@@ -218,11 +142,6 @@ class MoveCameraHandler: NSObject, URLSessionDelegate, URLSessionTaskDelegate, U
                 
             }
         }
-         
         task.resume()
     }
-
-    
-    
-    
 }

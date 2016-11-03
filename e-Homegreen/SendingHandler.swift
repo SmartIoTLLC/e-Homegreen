@@ -66,7 +66,6 @@ class SendingHandler {
         //  Send via local ip
         let io = InOutSocket(port: port)
         io.sendByte(appDel.returnIpAddress(ip), arrayByte:byteArray)
-//        io.socket.close()
     }
 
 }

@@ -14,7 +14,6 @@ class PullDownViewCell: UITableViewCell {
     
 }
 
-
 class PullDownViewTwoRowsCell: UITableViewCell {
     
     @IBOutlet weak var tableItemName: UILabel!

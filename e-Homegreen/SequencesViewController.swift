@@ -121,9 +121,6 @@ class SequencesViewController: PopoverVC {
         sequenceCollectionView.reloadData()
     }
     func refreshLocalParametars() {
-//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Sequences)
-//        pullDown.drawMenu(filterParametar)
-//        updateSequencesList()
         sequenceCollectionView.reloadData()
     }
     func setDefaultFilterFromTimer(){

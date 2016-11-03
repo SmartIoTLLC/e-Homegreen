@@ -95,11 +95,10 @@ class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
 extension TimerParametarVC : UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.5 //Add your own duration here
+        return 0.5
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        //Add presentation and dismiss animation transition here.
         if isPresenting == true{
             isPresenting = false
             let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
@@ -124,11 +123,8 @@ extension TimerParametarVC : UIViewControllerAnimatedTransitioning {
             })
         }else{
             let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
-            //            let containerView = transitionContext.containerView()
-            
-            // Animate the presented view off the bottom of the view
+
             UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
-                
                 presentedControllerView.center = self.point!
                 presentedControllerView.alpha = 0
                 presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
@@ -160,7 +156,6 @@ extension TimerParametarVC : UIViewControllerTransitioningDelegate {
 extension UIViewController {
     func showTimerParametar(_ point:CGPoint, timer:Timer) {
         let st = TimerParametarVC(point: point)
-        //        ad.indexPathRow = indexPathRow
         st.timer = timer
         self.present(st, animated: true, completion: nil)
     }

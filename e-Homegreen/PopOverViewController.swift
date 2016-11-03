@@ -16,15 +16,6 @@ protocol PopOverIndexDelegate
     func nameAndId(_ name : String, id:String)
 }
 
-//class SecurityFeedback {
-//    var name:String
-//    var gateway:Gateway
-//    init(name: String, gateway:Gateway) {
-//        self.name = name
-//        self.gateway = gateway
-//    }
-//}
-
 struct PopOverItem {
     var name:String
     var id:String
@@ -33,7 +24,6 @@ struct PopOverItem {
 class PopOverViewController: UIViewController  {
     
     @IBOutlet weak var table: UITableView!
-    
     var delegate : PopOverIndexDelegate?
     var popOverList:[PopOverItem] = []
     var cellWithTwoTextRows : Bool = false

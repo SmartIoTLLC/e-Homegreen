@@ -10,7 +10,6 @@ import Foundation
 class DataImporter {
     class func createZonesFromFile (_ fileName:String) -> [ZoneJSON]? {
         var data:Data!
-//        let paths: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         let filePath = "" //paths.appendingPathComponent(fileName)
         let checkValidation = FileManager.default
         if checkValidation.fileExists(atPath: filePath) {
@@ -47,7 +46,6 @@ class DataImporter {
     class func createZonesFromFileFromNSBundle () -> [ZoneJSON]? {
         var data:Data!
         if let filePath = Bundle.main.path(forResource: "Zones List", ofType: "json") {
-            //        let filePath = paths.stringByAppendingPathComponent(fileName)
             let checkValidation = FileManager.default
             if checkValidation.fileExists(atPath: filePath) {
                 print("Postoji.")
@@ -82,7 +80,6 @@ class DataImporter {
     }
     class func createCategoriesFromFile (_ fileName:String) -> [CategoryJSON]? {
         var data:Data!
-//        let paths: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         let filePath = "" // paths.appendingPathComponent(fileName)
         let checkValidation = FileManager.default
         if checkValidation.fileExists(atPath: filePath) {
@@ -113,7 +110,6 @@ class DataImporter {
             } catch let error1 as NSError {
                 jsonError = error1
                 print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
-//                abort()
             }
             return nil
             
@@ -126,7 +122,6 @@ class DataImporter {
     class func createCategoriesFromFileFromNSBundle () -> [CategoryJSON]? {
         var data:Data!
         if let filePath = Bundle.main.path(forResource: "Categories List", ofType: "json") {
-            //        let filePath = paths.stringByAppendingPathComponent(fileName)
             let checkValidation = FileManager.default
             if checkValidation.fileExists(atPath: filePath) {
                 print("Postoji.")
@@ -156,7 +151,6 @@ class DataImporter {
                 } catch let error1 as NSError {
                     jsonError = error1
                     print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
-//                    abort()
                 }
                 return nil
                 
@@ -169,8 +163,6 @@ class DataImporter {
     }
     class func createSecuritiesFromFile (_ filePath:String) -> [SecurityJSON]? {
         var data:Data!
-        //        let paths: AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
-        //        let filePath = paths.stringByAppendingPathComponent(fileName)
         let checkValidation = FileManager.default
         if checkValidation.fileExists(atPath: filePath) {
             print("Postoji.")
@@ -193,11 +185,8 @@ class DataImporter {
             } catch let error1 as NSError {
                 jsonError = error1
                 print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
-//                abort()
             }
             return nil
-            
-            
         } else {
             print("Ne postoji.fileName")
         }
@@ -249,32 +238,9 @@ extension CategoryJSON {
         guard let idInt = Int(id) else {
             throw InputError.idIncorrect
         }
-//        if var id  = dictionary["ID"] as? String, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String {
-//            if id == "" {id = "0"}
-//            if let idInt = Int(id) {
-//                self.id = idInt
-//                self.name = name
-//                self.description = description
-//                return
-//            }
-//        }
         return CategoryJSON(id: idInt, name: name, description: description)
     }
 }
-//extension CategoryJSON {
-//    init?(dictionary:JSONDictionary) throws {
-//        if var id  = dictionary["ID"] as? String, let name = dictionary["Name"] as? String, let description = dictionary["Description"] as? String {
-//            if id == "" {id = "0"}
-//            if let idInt = Int(id) {
-//                self.id = idInt
-//                self.name = name
-//                self.description = description
-//                return
-//            }
-//        }
-//        return nil
-//    }
-//}
 
 struct SecurityJSON {
     let name:String

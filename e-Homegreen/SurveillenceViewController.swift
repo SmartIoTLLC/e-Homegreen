@@ -130,7 +130,6 @@ class SurveillenceViewController: PopoverVC {
     }
     func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
-//        pullDown.drawMenu(filterParametar)
         fetchSurveillance()
     }
     func refreshSurveillanceList(){

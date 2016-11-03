@@ -65,8 +65,6 @@ class EnergyViewController: PopoverVC  {
             revealViewController().toggleAnimationDuration = 0.5
             
             revealViewController().rearViewRevealWidth = 200
-            
-         
         }
         
         changeFullScreeenImage()
@@ -156,26 +154,22 @@ class EnergyViewController: PopoverVC  {
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool))
         let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool))
         var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo]
-        //        fetchRequest.predicate = predicate
         if filterParametar.location != "All" {
             let locationPredicate = NSPredicate(format: "gateway.name == %@", filterParametar.location)
             predicateArray.append(locationPredicate)
         }
         if filterParametar.levelId != 0 && filterParametar.levelId != 255{
             let levelPredicate = NSPredicate(format: "parentZoneId == %@", NSNumber(value: filterParametar.levelId as Int))
-//            let levelPredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", levelSearchName)
             let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [levelPredicate])
             predicateArray.append(copmpoundPredicate)
         }
         if filterParametar.zoneId != 0 && filterParametar.zoneId != 255{
             let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(value: filterParametar.zoneId as Int))
-//            let zonePredicateTwo = NSPredicate(format: "ANY gateway.zones.name == %@", zoneSearchName)
             let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicate])
             predicateArray.append(copmpoundPredicate)
         }
         if filterParametar.categoryId != 0 && filterParametar.categoryId != 255{
             let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(value: filterParametar.categoryId as Int))
-//            let categoryPredicateTwo = NSPredicate(format: "ANY gateway.categories.name == %@", categorySearchName)
             let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate])
             predicateArray.append(copmpoundPredicate)
         }
@@ -191,7 +185,6 @@ class EnergyViewController: PopoverVC  {
             abort()
         }
         for item in devices {
-//            cell.labelPowrUsege.text = "\(Float(devices[indexPath.row].current) * Float(devices[indexPath.row].voltage) * 0.01)" + " W"
             sumAmp += Float(item.current)
             sumPow += Float(item.current) * Float(item.voltage) * 0.01
         }
@@ -202,6 +195,7 @@ class EnergyViewController: PopoverVC  {
     func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.energy)
     }
+    
     
     @IBAction func fullScreen(_ sender: UIButton) {
         sender.collapseInReturnToNormal(1)
@@ -221,6 +215,7 @@ class EnergyViewController: PopoverVC  {
 
 // Parametar from filter and relaod data
 extension EnergyViewController: FilterPullDownDelegate{
+
     func filterParametars(_ filterItem: FilterItem){
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Energy)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
@@ -236,8 +231,9 @@ extension EnergyViewController: FilterPullDownDelegate{
     func saveDefaultFilter(){
         self.view.makeToast(message: "Default filter parametar saved!")
     }
+
 }
 
 extension EnergyViewController : SWRevealViewControllerDelegate{
-    
+
 }

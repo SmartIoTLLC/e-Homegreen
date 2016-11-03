@@ -50,7 +50,6 @@ class SceneParametarVC: UIViewController, UIGestureRecognizerDelegate {
         isLocalcast.addTarget(self, action: #selector(SceneParametarVC.changeValue(_:)), for: UIControlEvents.valueChanged)
         appDel = UIApplication.shared.delegate as! AppDelegate
         
-        // Do any additional setup after loading the view.
     }
     
     @IBAction func btnSave(_ sender: AnyObject) {

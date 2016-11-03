@@ -12,12 +12,10 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
     
     @IBOutlet weak var userNameTextField: LogInTextField!
     @IBOutlet weak var passwordTextField: LogInTextField!
-    
     @IBOutlet weak var tableView: UITableView!
-    
     var appDel:AppDelegate!
-    
     var users:[String] = []
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +51,14 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
         }
         return true
     }
-    
+
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        passwordTextField.resignFirstResponder()
+        tableView.isHidden = false
+        return false
+    }
+
+
     @IBAction func logInAction(_ sender: AnyObject) {
         guard let username = userNameTextField.text , username != "", let password = passwordTextField.text , password != "" else{
             self.view.makeToast(message: "All fields must be filled")
@@ -71,7 +76,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
                 sideMenu.setFront(settings, animated: true)
                 self.present(sideMenu, animated: true, completion: nil)
             }else{
-                self.view.makeToast(message: "Something wrong, try again!")
+                self.view.makeToast(message: "Admin is not logged in!")
                 return
             }
             
@@ -79,9 +84,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
             if let user = DatabaseUserController.shared.getUser(username, password: password){
                 DatabaseUserController.shared.loginUser()
                 if DatabaseUserController.shared.setUser(user.objectID.uriRepresentation().absoluteString){
-                    
                     DatabaseLocationController.shared.startMonitoringAllLocationByUser(user)
-                    
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let sideMenu = storyboard.instantiateViewController(withIdentifier: "SideMenu") as! SWRevealViewController
                     var controller:UINavigationController = user.isSuperUser.boolValue ? Menu.settings.controller : Menu.notSuperUserSettings.controller
@@ -90,7 +93,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
                             controller = menu.controller
                         }
                     }
-                    
                     sideMenu.setFront(controller, animated: true)
                     self.present(sideMenu, animated: true, completion: nil)
                 }else{
@@ -102,16 +104,10 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
         }
         
     }
-    
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        passwordTextField.resignFirstResponder()
-        tableView.isHidden = false
-        return false
-    }
-
 }
 
 extension LogInViewController: UITableViewDelegate, UITableViewDataSource{
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return users.count
     }
@@ -129,4 +125,5 @@ extension LogInViewController: UITableViewDelegate, UITableViewDataSource{
         tableView.isHidden = true
         passwordTextField.becomeFirstResponder()
     }
+
 }

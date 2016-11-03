@@ -37,9 +37,6 @@ class TellMeAJokeHandler: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
                 completion("Something went wrong!!!")
             }
         }
-         
         task.resume()
     }
-    
-    
 }

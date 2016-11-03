@@ -482,27 +482,25 @@ class IncomingHandler: NSObject {
     }
     func parseMessageNewDeviceParameter(_ byteArray:[Byte]) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
-            self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-            for device in devices {
-                if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) {
-                    var string:String = ""
-                    for j in 12..<(byteArray.count-2) {
-                        string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))!))" //  device name
-                    }
-                    if string != "" {
-                        device.name = string
-                    } else {
-                        device.name = "Unknown"
-                    }
-                    device.categoryId = NSNumber(value: Int(byteArray[8]))
-                    device.zoneId = NSNumber(value: Int(byteArray[9]))
-                    device.parentZoneId = NSNumber(value: Int(byteArray[10]))
-                    // When we change category it will reset images
-                    device.resetImages(appDel.managedObjectContext!)
+            let address = Int(byteArray[4])
+            let channel = Int(byteArray[7])
+            if let device = IncomingHandlerController.shared.fetchDeviceBy(gateway: self.gateways[0], address: address, channel: channel){
+                var string:String = ""
+                for j in 12..<(byteArray.count-2) {
+                    string = string + "\(Character(UnicodeScalar(Int(byteArray[j]))!))" //  device name
                 }
+                if string != "" {
+                    device.name = string
+                } else {
+                    device.name = "Unknown"
+                }
+                device.categoryId = NSNumber(value: Int(byteArray[8]))
+                device.zoneId = NSNumber(value: Int(byteArray[9]))
+                device.parentZoneId = NSNumber(value: Int(byteArray[10]))
+                // When we change category it will reset images
+                device.resetImages(appDel.managedObjectContext!)
             }
             CoreDataController.shahredInstance.saveChanges()
-//            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshScanningDevice), object: self, userInfo: nil)
         }
     }
     func parseMessageSaltoParameters(_ byteArray: [Byte]){
@@ -565,7 +563,7 @@ class IncomingHandler: NSObject {
                 }
                 let data = ["deviceAddress": address, "deviceChannel": 1, "saltoAccess": 1]   // becouse is salto we don't have channel, we set default value "1"
                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDeviceName), object: self, userInfo: data)
-
+                
             }
         }
     }
@@ -660,7 +658,7 @@ class IncomingHandler: NSObject {
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshClimate), object: self, userInfo: nil)
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
         }
-
+        
     }
     
     func parseMessageDimmerGetRunningTime (_ byteArray:[Byte]) {
@@ -1095,14 +1093,13 @@ class IncomingHandler: NSObject {
     
     // Curtains
     func parseMessageCurtainState(_ byteArray:[Byte]) {
-        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        for device in devices {
-            if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) {
-                device.currentValue = NSNumber(value: Int(byteArray[8]))
-                let data = ["deviceDidReceiveSignalFromGateway":device]
-                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
-                break
-            }
+        let address = Int(byteArray[4])
+        let channel = Int(byteArray[7])
+        if let device = IncomingHandlerController.shared.fetchDeviceBy(gateway: self.gateways[0], address: address, channel: channel){
+            
+            device.currentValue = NSNumber(value: Int(byteArray[8]))
+            let data = ["deviceDidReceiveSignalFromGateway":device]
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
         }
         CoreDataController.shahredInstance.saveChanges()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)

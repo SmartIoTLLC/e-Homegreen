@@ -50,6 +50,7 @@ class SurveilenceUrlsVC: CommonXIBTransitionVC {
         fatalError("init(coder:) has not been implemented")
     }
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -106,28 +107,8 @@ class SurveilenceUrlsVC: CommonXIBTransitionVC {
         return true
     }
     
+    
     func dismissViewController () {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func btnCancel(_ sender: AnyObject) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func btnSave(_ sender: AnyObject) {
-        if txtGetImage.text != "" {surv!.urlGetImage! = txtGetImage.text!}
-        if txtMoveRight.text != "" {surv!.urlMoveRight! = txtMoveRight.text!}
-        if txtMoveLeft.text != "" {surv!.urlMoveLeft! = txtMoveLeft.text!}
-        if txtMoveUp.text != "" {surv!.urlMoveUp! = txtMoveUp.text!}
-        if txtMoveDown.text != "" {surv!.urlMoveDown! = txtMoveDown.text!}
-        if txtAutoPan.text != "" {surv!.urlAutoPan! = txtAutoPan.text!}
-        if txtStopAutoPan.text != "" {surv!.urlAutoPanStop! = txtStopAutoPan.text!}
-        if txtPresetSequence.text != "" {surv!.urlPresetSequence! = txtPresetSequence.text!}
-        if txtStopPresetSequence.text != "" {surv!.urlPresetSequenceStop! = txtStopPresetSequence.text!}
-        if txtHome.text != "" {surv!.urlHome! = txtHome.text!}
-        CoreDataController.shahredInstance.saveChanges()
-        
-        resignFirstResponder()
         self.dismiss(animated: true, completion: nil)
     }
 
@@ -213,10 +194,29 @@ class SurveilenceUrlsVC: CommonXIBTransitionVC {
     }
 
 
+    @IBAction func btnCancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func btnSave(_ sender: AnyObject) {
+        if txtGetImage.text != "" {surv!.urlGetImage! = txtGetImage.text!}
+        if txtMoveRight.text != "" {surv!.urlMoveRight! = txtMoveRight.text!}
+        if txtMoveLeft.text != "" {surv!.urlMoveLeft! = txtMoveLeft.text!}
+        if txtMoveUp.text != "" {surv!.urlMoveUp! = txtMoveUp.text!}
+        if txtMoveDown.text != "" {surv!.urlMoveDown! = txtMoveDown.text!}
+        if txtAutoPan.text != "" {surv!.urlAutoPan! = txtAutoPan.text!}
+        if txtStopAutoPan.text != "" {surv!.urlAutoPanStop! = txtStopAutoPan.text!}
+        if txtPresetSequence.text != "" {surv!.urlPresetSequence! = txtPresetSequence.text!}
+        if txtStopPresetSequence.text != "" {surv!.urlPresetSequenceStop! = txtStopPresetSequence.text!}
+        if txtHome.text != "" {surv!.urlHome! = txtHome.text!}
+        CoreDataController.shahredInstance.saveChanges()
+        
+        resignFirstResponder()
+        self.dismiss(animated: true, completion: nil)
+    }
 }
 
 extension SurveilenceUrlsVC : UITextFieldDelegate {
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if txtGetImage.isFirstResponder{
             txtMoveLeft.becomeFirstResponder()

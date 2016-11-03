@@ -13,8 +13,8 @@ class CreateAdminViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var userNameTextField: LogInTextField!
     @IBOutlet weak var passwordTextField: LogInTextField!
     @IBOutlet weak var confirmPasswordTextField: LogInTextField!
-
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         userNameTextField.delegate = self
@@ -26,7 +26,8 @@ class CreateAdminViewController: UIViewController, UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
-
+    
+    
     @IBAction func createAdmin(_ sender: AnyObject) {
         guard let username = userNameTextField.text , username != "", let password = passwordTextField.text , password != "", let confirmPass = confirmPasswordTextField.text , confirmPass != "" else{
             self.view.makeToast(message: "All fields must be filled")
@@ -38,10 +39,10 @@ class CreateAdminViewController: UIViewController, UITextFieldDelegate {
         }
         
         if AdminController.shared.setAdmin(username, password: password) == false{
-            self.view.makeToast(message: "Something wrong, try again!")
+            self.view.makeToast(message: "Username or password is bad!")
             return
         }
-
+        
         AdminController.shared.loginAdmin()
         
         if AdminController.shared.isAdminLogged(){
@@ -51,10 +52,8 @@ class CreateAdminViewController: UIViewController, UITextFieldDelegate {
             sideMenu.setFront(settings, animated: true)
             self.present(sideMenu, animated: true, completion: nil)
         }else{
-            self.view.makeToast(message: "Something wrong, try again!")
+            self.view.makeToast(message: "Admin is not logged in!")
             return
         }
-        
     }
-
 }

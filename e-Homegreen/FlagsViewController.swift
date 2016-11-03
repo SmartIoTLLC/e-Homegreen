@@ -122,8 +122,6 @@ class FlagsViewController: PopoverVC {
     }
     func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
-//        pullDown.drawMenu(filterParametar)
-//        updateFlagsList()
         flagsCollectionView.reloadData()
     }
     func setDefaultFilterFromTimer(){

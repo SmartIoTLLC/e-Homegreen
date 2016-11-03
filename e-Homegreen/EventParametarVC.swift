@@ -94,12 +94,6 @@ class EventParametarVC: UIViewController, UIGestureRecognizerDelegate {
         }
         return true
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 }
 
 extension EventParametarVC : UIViewControllerAnimatedTransitioning {
@@ -134,7 +128,6 @@ extension EventParametarVC : UIViewControllerAnimatedTransitioning {
             })
         }else{
             let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
-//            let containerView = transitionContext.containerView()
             
             // Animate the presented view off the bottom of the view
             UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
@@ -170,7 +163,6 @@ extension EventParametarVC : UIViewControllerTransitioningDelegate {
 extension UIViewController {
     func showEventParametar(_ point:CGPoint, event:Event) {
         let ep = EventParametarVC(point: point)
-//        ad.indexPathRow = indexPathRow
         ep.event = event
         self.present(ep, animated: true, completion: nil)
     }

@@ -365,7 +365,6 @@ extension TimersViewController: UICollectionViewDataSource {
                 cell.timerButtonLeft.isHidden = true
                 cell.timerButtonRight.isHidden = true
                 cell.timerButton.setTitle("Cancel", for: UIControlState())
-//                cell.timerButton.setTitle("Start", forState: UIControlState.Normal)
                 cell.timerButton.addTarget(self, action: #selector(TimersViewController.pressedCancel(_:)), for: UIControlEvents.touchUpInside)
                 cell.timerButton.isEnabled = false
             } else {
