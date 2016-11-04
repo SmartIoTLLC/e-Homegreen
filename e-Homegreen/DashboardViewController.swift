@@ -170,10 +170,7 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
                     if let icon = weatherDict["icon"] as? String{
                         imageWeather.image = UIImage(named: weatherDictionary[icon]!)
                     }
-                    
                 }
-                
-                
             }
             
             if let main = json["main"] as? NSDictionary{
@@ -191,7 +188,7 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
             }
             
         } catch _ {
-            // Error
+            
         }
         
     }

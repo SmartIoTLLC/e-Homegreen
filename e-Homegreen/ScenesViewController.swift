@@ -153,9 +153,6 @@ class ScenesViewController: PopoverVC {
     }
     
     func refreshLocalParametars() {
-//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Scenes)
-//        pullDown.drawMenu(filterParametar)
-//        updateSceneList()
         scenesCollectionView.reloadData()
     }
 
@@ -270,8 +267,7 @@ extension ScenesViewController: UICollectionViewDataSource {
                     cell.changeImageForOneSecond()
                 }
             }
-        }
-        
+        } 
     }
     func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer){
         let tag = gestureRecognizer.view!.tag
