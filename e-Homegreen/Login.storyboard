@@ -1,14 +1,18 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="Tahoma.ttf">
+        <array key="Tahoma.ttf">
             <string>Tahoma</string>
-            <string>Tahoma</string>
-        </mutableArray>
+        </array>
     </customFonts>
     <scenes>
         <!--Log In View Controller-->
@@ -20,18 +24,18 @@
                         <viewControllerLayoutGuide type="bottom" id="a2X-rO-hVj"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="PCI-cv-QHk">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcome logo" translatesAutoresizingMaskIntoConstraints="NO" id="Gcx-ue-jbd">
-                                <rect key="frame" x="20" y="28" width="131" height="75"/>
+                                <rect key="frame" x="16" y="28" width="220" height="75"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="75" id="AOZ-oK-89y"/>
-                                    <constraint firstAttribute="width" constant="131" id="vGo-l7-lAw"/>
+                                    <constraint firstAttribute="width" constant="220" id="vGo-l7-lAw"/>
                                 </constraints>
                             </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="USERNAME" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="J66-Bx-0ML" customClass="LogInTextField" customModule="e_Homegreen" customModuleProvider="target">
-                                <rect key="frame" x="10" y="190" width="300" height="35"/>
+                                <rect key="frame" x="37.5" y="190" width="300" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="65G-6B-ivT"/>
                                     <constraint firstAttribute="height" constant="35" id="XM7-H6-g9G"/>
@@ -40,23 +44,23 @@
                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="PASSWORD" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Ulk-Zs-xlJ" customClass="LogInTextField" customModule="e_Homegreen" customModuleProvider="target">
-                                <rect key="frame" x="10" y="230" width="300" height="35"/>
+                                <rect key="frame" x="37.5" y="230" width="300" height="35"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FL2-MR-bn9" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                <rect key="frame" x="10" y="280" width="300" height="35"/>
+                                <rect key="frame" x="37.5" y="280" width="300" height="35"/>
                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                 <state key="normal" title="LOG IN">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="logInAction:" destination="kfV-JL-2ii" eventType="touchUpInside" id="g6d-5m-Gt1"/>
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="MkH-VF-8N0">
-                                <rect key="frame" x="10" y="190" width="300" height="150"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="37.5" y="190" width="300" height="150"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="150" id="0Yo-UL-Lru"/>
                                 </constraints>
@@ -66,7 +70,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Gcx-ue-jbd" firstAttribute="top" secondItem="wT7-F1-L0e" secondAttribute="bottom" constant="8" id="1xv-Co-eCb"/>
                             <constraint firstItem="FL2-MR-bn9" firstAttribute="height" secondItem="Ulk-Zs-xlJ" secondAttribute="height" id="4dZ-D2-6eL"/>
@@ -77,7 +81,7 @@
                             <constraint firstItem="Ulk-Zs-xlJ" firstAttribute="top" secondItem="J66-Bx-0ML" secondAttribute="bottom" constant="5" id="MsB-bB-MmD"/>
                             <constraint firstItem="MkH-VF-8N0" firstAttribute="trailing" secondItem="J66-Bx-0ML" secondAttribute="trailing" id="T52-xC-sty"/>
                             <constraint firstItem="FL2-MR-bn9" firstAttribute="width" secondItem="Ulk-Zs-xlJ" secondAttribute="width" id="VKO-dT-NLr"/>
-                            <constraint firstItem="Gcx-ue-jbd" firstAttribute="leading" secondItem="PCI-cv-QHk" secondAttribute="leading" constant="20" id="Wyj-FX-Dxt"/>
+                            <constraint firstItem="Gcx-ue-jbd" firstAttribute="leading" secondItem="PCI-cv-QHk" secondAttribute="leadingMargin" id="Wyj-FX-Dxt"/>
                             <constraint firstItem="FL2-MR-bn9" firstAttribute="top" secondItem="Ulk-Zs-xlJ" secondAttribute="bottom" constant="15" id="an2-Eg-qJg"/>
                             <constraint firstItem="Ulk-Zs-xlJ" firstAttribute="centerX" secondItem="J66-Bx-0ML" secondAttribute="centerX" id="bOE-CL-KOp"/>
                             <constraint firstItem="MkH-VF-8N0" firstAttribute="leading" secondItem="J66-Bx-0ML" secondAttribute="leading" id="edm-ix-DRe"/>
@@ -93,7 +97,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4bz-85-WRc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-966" y="-437"/>
+            <point key="canvasLocation" x="-966.5" y="-437.5"/>
         </scene>
         <!--Create Admin View Controller-->
         <scene sceneID="uHU-hb-XNZ">
@@ -104,18 +108,18 @@
                         <viewControllerLayoutGuide type="bottom" id="1bz-xZ-gIp"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="9uP-jM-y1W">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcome logo" translatesAutoresizingMaskIntoConstraints="NO" id="6eq-AS-2ug">
-                                <rect key="frame" x="36" y="28" width="131" height="75"/>
+                                <rect key="frame" x="16" y="28" width="220" height="75"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="75" id="bJE-zy-F9d"/>
-                                    <constraint firstAttribute="width" constant="131" id="mPw-EZ-U4j"/>
+                                    <constraint firstAttribute="width" constant="220" id="mPw-EZ-U4j"/>
                                 </constraints>
                             </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Admin" borderStyle="line" placeholder="USERNAME" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="RPn-1q-9Qd" customClass="LogInTextField" customModule="e_Homegreen" customModuleProvider="target">
-                                <rect key="frame" x="10" y="190" width="300" height="35"/>
+                                <rect key="frame" x="37.5" y="190" width="300" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="NJF-FM-aO7"/>
                                     <constraint firstAttribute="height" constant="35" id="ZVv-rT-u6O"/>
@@ -124,15 +128,15 @@
                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="admin" borderStyle="line" placeholder="PASSWORD" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rA4-Zo-Asa" customClass="LogInTextField" customModule="e_Homegreen" customModuleProvider="target">
-                                <rect key="frame" x="10" y="230" width="300" height="35"/>
+                                <rect key="frame" x="37.5" y="230" width="300" height="35"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ePA-D7-3sA" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                <rect key="frame" x="10" y="315" width="300" height="35"/>
+                                <rect key="frame" x="37.5" y="315" width="300" height="35"/>
                                 <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                 <state key="normal" title="CREATE ADMIN">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="createAdmin:" destination="094-vP-cb8" eventType="touchUpInside" id="b3r-eT-TuB"/>
@@ -140,19 +144,28 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="admin" borderStyle="line" placeholder="CONFIRM PASSWORD" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="AIf-HA-Fuf" customClass="LogInTextField" customModule="e_Homegreen" customModuleProvider="target">
-                                <rect key="frame" x="10" y="270" width="300" height="35"/>
+                                <rect key="frame" x="37.5" y="270" width="300" height="35"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
                             </textField>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="poweredBy" translatesAutoresizingMaskIntoConstraints="NO" id="SOf-RJ-1Ui">
+                                <rect key="frame" x="164" y="592" width="191" height="75"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="191" id="3Uk-yX-KnG"/>
+                                    <constraint firstAttribute="height" constant="75" id="Pbe-XS-Ksj"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="AIf-HA-Fuf" firstAttribute="top" secondItem="rA4-Zo-Asa" secondAttribute="bottom" constant="5" id="2CD-jO-0v2"/>
                             <constraint firstItem="rA4-Zo-Asa" firstAttribute="height" secondItem="RPn-1q-9Qd" secondAttribute="height" id="84I-LZ-NhL"/>
+                            <constraint firstAttribute="trailing" secondItem="SOf-RJ-1Ui" secondAttribute="trailing" constant="20" id="LFP-Lk-GMc"/>
                             <constraint firstItem="ePA-D7-3sA" firstAttribute="width" secondItem="rA4-Zo-Asa" secondAttribute="width" id="XWj-Ov-B6Y"/>
                             <constraint firstItem="ePA-D7-3sA" firstAttribute="centerX" secondItem="rA4-Zo-Asa" secondAttribute="centerX" id="Xdz-5j-slq"/>
                             <constraint firstItem="RPn-1q-9Qd" firstAttribute="top" secondItem="6eq-AS-2ug" secondAttribute="bottom" constant="87" id="a2E-Fm-JlC"/>
-                            <constraint firstItem="6eq-AS-2ug" firstAttribute="leading" secondItem="9uP-jM-y1W" secondAttribute="leadingMargin" constant="20" id="dBe-5E-VYO"/>
+                            <constraint firstItem="6eq-AS-2ug" firstAttribute="leading" secondItem="9uP-jM-y1W" secondAttribute="leadingMargin" id="dBe-5E-VYO"/>
+                            <constraint firstItem="1bz-xZ-gIp" firstAttribute="top" secondItem="SOf-RJ-1Ui" secondAttribute="bottom" id="esL-Lp-jgb"/>
                             <constraint firstItem="ePA-D7-3sA" firstAttribute="top" secondItem="AIf-HA-Fuf" secondAttribute="bottom" constant="10" id="f8W-4Q-2Ty"/>
                             <constraint firstItem="AIf-HA-Fuf" firstAttribute="height" secondItem="rA4-Zo-Asa" secondAttribute="height" id="iSZ-xA-vWH"/>
                             <constraint firstItem="AIf-HA-Fuf" firstAttribute="centerX" secondItem="rA4-Zo-Asa" secondAttribute="centerX" id="ltX-Sw-HxL"/>
@@ -173,10 +186,16 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ysc-WV-FWP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-591" y="-437"/>
+            <point key="canvasLocation" x="-546" y="-438"/>
         </scene>
     </scenes>
     <resources>
-        <image name="welcome logo" width="500" height="300"/>
+        <image name="poweredBy" width="296" height="65"/>
+        <image name="welcome logo" width="373" height="65"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
+    </simulatedMetricsContainer>
 </document>
