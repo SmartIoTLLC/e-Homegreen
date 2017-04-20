@@ -2546,7 +2546,7 @@
 				INFOPLIST_FILE = "e-Homegreen/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.e-homeautomation.eHomegreen";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.e-homeautomation.eHomegreen-old";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -2572,7 +2572,7 @@
 				INFOPLIST_FILE = "e-Homegreen/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.e-homeautomation.eHomegreen";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.e-homeautomation.eHomegreen-old";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
