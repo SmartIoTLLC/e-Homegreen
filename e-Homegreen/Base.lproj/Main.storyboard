@@ -1,7 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="w6J-AF-9Ay">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="w6J-AF-9Ay">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -46,12 +50,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d8d-eR-V4h">
+                                <rect key="frame" x="0.0" y="64" width="375" height="1"/>
                                 <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="24X-Xh-4Mz"/>
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="VwH-0j-wOZ">
+                                <rect key="frame" x="0.0" y="65" width="200" height="602"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="NIM-6X-AKZ"/>
@@ -59,7 +65,7 @@
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Uls-rA-eCm" customClass="LXReorderableCollectionViewFlowLayout">
                                     <size key="itemSize" width="90" height="90"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="50" height="50"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
@@ -71,6 +77,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iZb-Lg-wFF">
+                                                    <rect key="frame" x="8" y="66" width="74" height="14.5"/>
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
@@ -80,6 +87,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZiK-lj-IHi">
+                                                    <rect key="frame" x="20" y="11" width="50" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="DtN-Qz-ZPP"/>
                                                         <constraint firstAttribute="height" constant="50" id="Q8t-3F-MAi"/>
@@ -108,6 +116,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="User" translatesAutoresizingMaskIntoConstraints="NO" id="eIi-rG-nwg">
+                                                    <rect key="frame" x="8" y="8" width="44" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="eIi-rG-nwg" secondAttribute="height" multiplier="1:1" id="Ujt-3f-F1v"/>
                                                     </constraints>
@@ -119,6 +128,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="user" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="03e-HB-FVI">
+                                                    <rect key="frame" x="60" y="8" width="64" height="18.5"/>
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
@@ -128,6 +138,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ct-6g-Pug">
+                                                    <rect key="frame" x="60" y="52" width="64" height="0.0"/>
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
@@ -137,6 +148,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hI3-4I-vLu">
+                                                    <rect key="frame" x="132" y="10" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="6UL-GZ-2vr"/>
                                                         <constraint firstAttribute="width" secondItem="hI3-4I-vLu" secondAttribute="height" multiplier="1:1" id="jdh-tU-wLi"/>
@@ -171,12 +183,35 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="footer" id="vgb-4e-AhD" customClass="MenuFooterView" customModule="e_Homegreen" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="160" width="200" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="main_manu_bottom" translatesAutoresizingMaskIntoConstraints="NO" id="gao-X5-m69">
+                                            <rect key="frame" x="52" y="0.0" width="140" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="GWl-St-SNK"/>
+                                                <constraint firstAttribute="width" constant="140" id="Psc-LE-nrU"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="gao-X5-m69" secondAttribute="trailing" id="2KW-Wr-8pq"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="gao-X5-m69" secondAttribute="bottom" constant="-8" id="f7h-Qb-tYq"/>
+                                        <constraint firstItem="gao-X5-m69" firstAttribute="leading" secondItem="vgb-4e-AhD" secondAttribute="leadingMargin" constant="44" id="h6J-jz-3kq"/>
+                                        <constraint firstItem="gao-X5-m69" firstAttribute="top" secondItem="vgb-4e-AhD" secondAttribute="topMargin" constant="-8" id="nu2-K1-j6z"/>
+                                    </constraints>
+                                    <connections>
+                                        <outlet property="footerImageView" destination="gao-X5-m69" id="Pld-n2-2PX"/>
+                                    </connections>
+                                </collectionReusableView>
                                 <connections>
                                     <outlet property="dataSource" destination="tid-St-yaC" id="mNK-BY-sej"/>
                                     <outlet property="delegate" destination="tid-St-yaC" id="f5f-e1-erA"/>
                                 </connections>
                             </collectionView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="e home logo" translatesAutoresizingMaskIntoConstraints="NO" id="dBy-un-k0R">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="main_menu_top" translatesAutoresizingMaskIntoConstraints="NO" id="dBy-un-k0R">
+                                <rect key="frame" x="8" y="20" width="184" height="42"/>
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="42" id="8vh-UT-Z3y"/>
@@ -217,14 +252,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Afh-dM-bhn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="298" y="-429"/>
+            <point key="canvasLocation" x="230" y="-438"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8NX-jr-csK">
             <objects>
                 <navigationController storyboardIdentifier="Devices" automaticallyAdjustsScrollViewInsets="NO" id="uQN-u9-JqS" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="eY7-mQ-8aK">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="eY7-mQ-8aK">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -235,7 +270,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uMv-MF-vzc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="322" y="-1072"/>
+            <point key="canvasLocation" x="298" y="-1326"/>
         </scene>
         <!--DevicesViewController-->
         <scene sceneID="3DB-rp-4n5">
@@ -252,7 +287,7 @@
             <objects>
                 <navigationController storyboardIdentifier="Dashboard" automaticallyAdjustsScrollViewInsets="NO" id="X3e-9w-vdD" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Q7l-Va-JtE">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Q7l-Va-JtE">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -280,7 +315,7 @@
             <objects>
                 <navigationController storyboardIdentifier="Scenes" automaticallyAdjustsScrollViewInsets="NO" id="rVI-Hx-Fff" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="i2X-F2-YLC">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="i2X-F2-YLC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -308,7 +343,7 @@
             <objects>
                 <navigationController storyboardIdentifier="Events" automaticallyAdjustsScrollViewInsets="NO" id="I4z-DB-RVa" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bnc-Ly-r3t">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="bnc-Ly-r3t">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -336,7 +371,7 @@
             <objects>
                 <navigationController storyboardIdentifier="Sequences" automaticallyAdjustsScrollViewInsets="NO" id="axL-Uc-con" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZJV-cu-CdQ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="ZJV-cu-CdQ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -364,7 +399,7 @@
             <objects>
                 <navigationController storyboardIdentifier="Timers" automaticallyAdjustsScrollViewInsets="NO" id="trK-6X-QtI" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="zCk-wj-PQb">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="zCk-wj-PQb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -392,7 +427,7 @@
             <objects>
                 <navigationController storyboardIdentifier="Flags" automaticallyAdjustsScrollViewInsets="NO" id="5JO-dm-jxU" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="LSe-T0-3ub">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="LSe-T0-3ub">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -420,7 +455,7 @@
             <objects>
                 <navigationController storyboardIdentifier="Chat" automaticallyAdjustsScrollViewInsets="NO" id="vXG-P4-91j" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="FDZ-rk-3zJ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="FDZ-rk-3zJ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -448,7 +483,7 @@
             <objects>
                 <navigationController storyboardIdentifier="Security" automaticallyAdjustsScrollViewInsets="NO" id="nb9-pI-hwz" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="jH0-fH-B6W">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="jH0-fH-B6W">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -504,7 +539,7 @@
             <objects>
                 <navigationController storyboardIdentifier="PC Control" automaticallyAdjustsScrollViewInsets="NO" id="XP4-k4-Hso" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Pym-4l-hdb">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Pym-4l-hdb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -522,7 +557,7 @@
             <objects>
                 <navigationController storyboardIdentifier="Users" automaticallyAdjustsScrollViewInsets="NO" id="WLV-we-2q9" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="k6t-6O-Aaw">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="k6t-6O-Aaw">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -540,7 +575,7 @@
             <objects>
                 <navigationController storyboardIdentifier="Energy" automaticallyAdjustsScrollViewInsets="NO" id="cdg-zv-fZN" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="V0U-6N-jpL">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="V0U-6N-jpL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -588,7 +623,7 @@
             <objects>
                 <navigationController storyboardIdentifier="Settings" automaticallyAdjustsScrollViewInsets="NO" id="7Co-u0-uxP" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="07Z-3N-xDV">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="07Z-3N-xDV">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -606,7 +641,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NotSuperUserSettings" automaticallyAdjustsScrollViewInsets="NO" id="YGL-uY-aAH" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bsR-rC-d1i">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="bsR-rC-d1i">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -643,7 +678,8 @@
     <resources>
         <image name="User" width="393" height="390"/>
         <image name="btn_log_out" width="105" height="105"/>
-        <image name="e home logo" width="516" height="125"/>
+        <image name="main_manu_bottom" width="4002" height="1081"/>
+        <image name="main_menu_top" width="3955" height="1081"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

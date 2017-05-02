@@ -150,6 +150,11 @@
             return CGSize(width: 184, height: 70)
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        let footerSize = CGSize(width: menuCollectionView.frame.width, height: 50)
+        return footerSize
+    }
    }
    
    extension SidePanelViewController: UICollectionViewDataSource {
@@ -174,6 +179,22 @@
             return cell
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        switch kind {
+        case UICollectionElementKindSectionFooter:
+            let footerView = menuCollectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "footer", for: indexPath) as! MenuFooterView
+            footerView.configureFooter()
+            return footerView
+            
+        default:
+            let footerView = menuCollectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "footer", for: indexPath) as! MenuFooterView
+            footerView.configureFooter()
+            return footerView
+        }
+    }
+    
    }
    
    class MenuItemCell: UICollectionViewCell {
@@ -271,7 +292,16 @@
         }
         
     }
+
+   }
+
+   class MenuFooterView: UICollectionReusableView {
     
+    @IBOutlet weak var footerImageView: UIImageView!
+    
+    func configureFooter() {
+        footerImageView.image = #imageLiteral(resourceName: "main_manu_bottom")
+        footerImageView.contentMode = .scaleAspectFit
+    }
     
    }
-      
