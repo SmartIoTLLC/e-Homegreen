@@ -1260,6 +1260,30 @@ extension OutgoingHandler {
 
 //MARK:- PC Control
 extension OutgoingHandler {
+    
+    static func getPCState(_ address: [Byte]) -> [Byte] {
+        
+        var messageInfo: [Byte] = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
+        var message: [Byte] = [Byte](repeating: 0, count: messageInfo.count+9)
+        
+        message[0] = 0xAA
+        message[1] = Byte(messageInfo.count % 256)
+        message[2] = address[0]
+        message[3] = address[1]
+        message[4] = address[2]
+        message[5] = 0x0A
+        message[6] = 0x08
+        
+        var i = 0
+        for byte in messageInfo {
+            message[7+i] = byte
+            i = i + 1
+        }
+        message[message.count-2] = self.getChkByte(byteArray: message)
+        message[message.count-1] = 0x10
+        return message
+    }
+    
     static func setPCVolume(_ address:[Byte], volume:Byte, mute:Byte=0x00) -> [Byte]{
         let messageInfo:[Byte] = [volume, mute]
         var message:[Byte] = [Byte](repeating: 0, count: messageInfo.count+9)

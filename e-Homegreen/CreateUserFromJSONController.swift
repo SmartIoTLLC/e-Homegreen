@@ -62,10 +62,10 @@ class CreateUserFromJSONController: NSObject {
                             user.password = password
                         }
                         if let isLocked = json["is_locked"] as? Bool{
-                            user.isLocked = isLocked as NSNumber?
+                            user.isLocked = isLocked as NSNumber
                         }
                         if let isSuperUser = json["is_super_user"] as? Bool{
-                            user.isSuperUser = isSuperUser as NSNumber?
+                            user.isSuperUser = isSuperUser as NSNumber
                         }
                         if let openLastScreen = json["open_last_screen"] as? Bool{
                             user.openLastScreen = openLastScreen as NSNumber!

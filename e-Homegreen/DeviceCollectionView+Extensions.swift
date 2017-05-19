@@ -507,7 +507,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             return cell
         }
-        else if devices[indexPath.row].controlType == ControlType.Sensor || devices[indexPath.row].controlType == ControlType.IntelligentSwitch || devices[indexPath.row].controlType == ControlType.Gateway || devices[indexPath.row].controlType == ControlType.DigitalInput || devices[indexPath.row].controlType == ControlType.SaltoAccess{
+        else if devices[indexPath.row].controlType == ControlType.Sensor || devices[indexPath.row].controlType == ControlType.IntelligentSwitch || devices[indexPath.row].controlType == ControlType.Gateway || devices[indexPath.row].controlType == ControlType.DigitalInput {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "multiSensorCell", for: indexPath) as! MultiSensorCell
             
             cell.populateCellWithData(devices[indexPath.row], tag: indexPath.row)

@@ -776,7 +776,7 @@ extension ScanTimerViewController: UITableViewDataSource, UITableViewDelegate {
             cell.labelID.text = "\(timers[(indexPath as NSIndexPath).row].timerId)"
             cell.labelName.text = timers[(indexPath as NSIndexPath).row].timerName
             cell.address.text = "\(returnThreeCharactersForByte(Int(timers[(indexPath as NSIndexPath).row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(timers[(indexPath as NSIndexPath).row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(timers[(indexPath as NSIndexPath).row].address)))"
-            
+                        
             if let id = timers[(indexPath as NSIndexPath).row].timerImageOneCustom{
                 if let image = DatabaseImageController.shared.getImageById(id){
                     if let data =  image.imageData {

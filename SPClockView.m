@@ -42,10 +42,10 @@
     _time = [NSDate date];
     static NSCalendar *gregorian;
     
-    if (!gregorian) gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    if (!gregorian) gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     [gregorian setTimeZone:_timeZone]; // Japan
     NSDateComponents *weekdayComponents =
-    [gregorian components:(NSDayCalendarUnit | NSWeekdayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:_time];
+    [gregorian components:(NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond) fromDate:_time];
     
     self.hours = [weekdayComponents hour];
     self.minutes = [weekdayComponents minute];
@@ -59,7 +59,7 @@
 {
     _timeZone = timeZone;
     CADisplayLink *animationTimer = [CADisplayLink displayLinkWithTarget:self selector:@selector(timerFired:)];
-	animationTimer.frameInterval = 8.0;
+	animationTimer.preferredFramesPerSecond = 8.0;
 	[animationTimer addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 }
 
@@ -227,10 +227,10 @@
     _time = [NSDate date];
     static NSCalendar *gregorian;
     
-    if (!gregorian) gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    if (!gregorian) gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     [gregorian setTimeZone:_timeZone]; // Japan
     NSDateComponents *weekdayComponents =
-    [gregorian components:(NSDayCalendarUnit | NSWeekdayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:_time];
+    [gregorian components:(NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond) fromDate:_time];
     
     self.hours = [weekdayComponents hour];
     BOOL isDay = (self.hours > 6 && self.hours < 18);
@@ -247,7 +247,7 @@
 {
     _timeZone = timeZone;
     CADisplayLink *animationTimer = [CADisplayLink displayLinkWithTarget:self selector:@selector(timerFired:)];
-	animationTimer.frameInterval = 8.0;
+	animationTimer.preferredFramesPerSecond = 8.0;
 	[animationTimer addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 }
 

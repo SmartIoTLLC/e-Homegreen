@@ -103,16 +103,24 @@ class DevicesViewController: PopoverVC{
             
         }
         
+        deviceCollectionView.isUserInteractionEnabled = true
+        
         if AdminController.shared.isAdminLogged(){
             if let user = DatabaseUserController.shared.getOtherUser(){
                 userLogged = user
                 updateDeviceList(user)
+            } else {
+                devices = []
             }
+            deviceCollectionView.reloadData()
         }else{
             if let user = DatabaseUserController.shared.getLoggedUser(){
                 userLogged = user
                 updateDeviceList(user)
+            } else {
+                devices = []
             }
+            deviceCollectionView.reloadData()
         }
         
         changeFullScreeenImage()
@@ -191,9 +199,6 @@ class DevicesViewController: PopoverVC{
     func updateSubtitle(_ location: String, level: String, zone: String){
         headerTitleSubtitleView.setTitleAndSubtitle("Devices", subtitle: location + " " + level + " " + zone)
     }
-    func fetchDevicesInBackground(){
-        updateCells()
-    }
 
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Device)
     
@@ -260,7 +265,7 @@ class DevicesViewController: PopoverVC{
             }
         } catch let error1 as NSError {
             error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
+            print("Unresolved error \(String(describing: error)), \(error!.userInfo)")
         }
     }
 
@@ -761,7 +766,7 @@ class DevicesViewController: PopoverVC{
             if isScrolling {
                 shouldUpdate = true
             } else {
-                fetchDevicesInBackground()
+                self.updateCells()
             }
         }
     }
@@ -1176,7 +1181,7 @@ extension DevicesViewController: FilterPullDownDelegate{
         if let user = userLogged{
             updateDeviceList(user)
             deviceCollectionView.reloadData()
-            fetchDevicesInBackground()
+            updateCells()
         }
         TimerForFilter.shared.counterDevices = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.devices)
         TimerForFilter.shared.startTimer(type: Menu.devices)

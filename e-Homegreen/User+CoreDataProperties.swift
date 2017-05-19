@@ -14,8 +14,8 @@ import CoreData
 
 extension User {
 
-    @NSManaged var isLocked: NSNumber?
-    @NSManaged var isSuperUser: NSNumber?
+    @NSManaged var isLocked: NSNumber
+    @NSManaged var isSuperUser: NSNumber
     @NSManaged var lastScreenId: NSNumber?
     @NSManaged var openLastScreen: NSNumber!
     @NSManaged var password: String?

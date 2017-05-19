@@ -484,7 +484,6 @@ enum FilterEnumeration:String {
 }
 //MARK: Notification constants
 struct NotificationKey {
-    static let RefreshDevice = "kRefreshDeviceListNotification"
     static let DidFindDevice = "kPLCDidFindDevice"
     static let DidFindDeviceName = "kPLCdidFindNameForDevice"
     static let DidFindSensorParametar = "kPLCDidFindSensorParametar"
@@ -502,6 +501,7 @@ struct NotificationKey {
     static let DidReceiveCardFromGateway = "kPLCDidFoundCard"
     static let DidReceiveCardParameterFromGateway = "kPLCDidFoundCardParameter"
     
+    static let RefreshDevice = "kRefreshDeviceListNotification"
     static let RefreshTimer = "kRefreshTimerListNotification"
     static let RefreshFlag = "kRefreshFlagListNotification"
     static let RefreshInterface = "refreshInterfaceParametar"
@@ -511,6 +511,7 @@ struct NotificationKey {
     static let RefreshEvent = "refreshEventListNotification"
     static let RefreshScene = "refreshSceneListNotification"
     static let RefreshSurveillance = "refreshSurveillanceListNotification"
+    static let RefreshPC = "refreshPCListNotification"
     
     static let IndicatorLamp = "indicatorGreen"
     

@@ -64,6 +64,8 @@ class SequencesViewController: PopoverVC {
             
         }
         
+        sequenceCollectionView.isUserInteractionEnabled = true
+        
         updateSequencesList()
         changeFullScreeenImage()
     }

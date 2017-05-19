@@ -51,7 +51,7 @@ class SecurityViewController: PopoverVC{
     @IBAction func refresh(_ sender: AnyObject) {
         let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
         rotateAnimation.fromValue = 1
-        rotateAnimation.toValue = CGFloat(M_PI)
+        rotateAnimation.toValue = CGFloat(Double.pi)
         refreshBtn.layer.add(rotateAnimation, forKey: nil)
         refreshSecurityAlarmStateAndSecurityMode()
     }
@@ -98,6 +98,8 @@ class SecurityViewController: PopoverVC{
             revealViewController().rearViewRevealWidth = 200
             
         }
+        
+        securityCollectionView.isUserInteractionEnabled = true
         
         refreshSecurity()
         

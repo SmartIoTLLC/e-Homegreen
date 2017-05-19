@@ -63,6 +63,8 @@ class FlagsViewController: PopoverVC {
             
         }
         
+        flagsCollectionView.isUserInteractionEnabled = true
+        
         reloadFlagsList()
         changeFullScreeenImage()
         
