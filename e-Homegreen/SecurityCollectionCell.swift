@@ -113,7 +113,11 @@ class SecurityCollectionCell: UICollectionViewCell {
         }
         if (securityCellName.contains(notificationControlMode)) {
             if timer == nil {
+                if securityCellName == "Panic" {
+//                timer = Foundation.Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(SecurityCollectionCell.toggleBtnImage(_:)), userInfo: (notification as NSNotification).userInfo, repeats: true)
+                } else {
                 timer = Foundation.Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(SecurityCollectionCell.toggleBtnImage(_:)), userInfo: (notification as NSNotification).userInfo, repeats: true)
+                }
             }
         }else{
             if let _ = self.timer{
@@ -172,12 +176,23 @@ class SecurityCollectionCell: UICollectionViewCell {
                     }else{
                         self.securityImageView.image = UIImage(named: "inactivevacation")
                     }
-                default:
+                case SecurityControlMode.Panic:
                     if self.securityImageView.image == UIImage(named: "inactivepanic"){
                         self.securityImageView.image = UIImage(named: "panic")
+                        print("Postavljen PANIC image")
                     }else{
-                        self.securityImageView.image = UIImage(named: "inactivepanic")
+                        self.securityImageView.image = UIImage(named: "panic")
+                        print("Sklonjen PANIC image")
                     }
+                default:
+                    break
+//                    if self.securityImageView.image == UIImage(named: "inactivepanic"){
+//                        self.securityImageView.image = UIImage(named: "panic")
+//                        print("Postavljen PANIC image")
+//                    }else{
+//                        self.securityImageView.image = UIImage(named: "inactivepanic")
+//                        print("Sklonjen PANIC image")
+//                    }
                 }
             }
         }

@@ -22,6 +22,8 @@ class SecurityViewController: PopoverVC{
     var securities:[Security] = []
     var location:[Location] = []
     
+    var defaults = Foundation.UserDefaults.standard
+    
     var scrollView = FilterPullDown()
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     var filterParametar:FilterItem!
@@ -198,6 +200,7 @@ class SecurityViewController: PopoverVC{
 //            }) { (finished) in
 //                self.securityCollectionView.setNeedsDisplay()
 //        }
+        reorganizeSecurityArray()
         self.securityCollectionView.reloadData()
     }
     
@@ -339,11 +342,30 @@ class SecurityViewController: PopoverVC{
                 showSecurityPad(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
             }
         case "Panic":
-            let location = gestureRecognizer.location(in: securityCollectionView)
-            if let index = securityCollectionView.indexPathForItem(at: location){
-                let cell = securityCollectionView.cellForItem(at: index)
-                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].securityDescription!, security: securities[tag])
+            let security = securities[tag]
+            let address = [security.addressOne.uint8Value, security.addressTwo.uint8Value, security.addressThree.uint8Value]
+            if let gateway = CoreDataController.shahredInstance.fetchGatewayWithId(security.gatewayId!) {
+                let notificationName = NotificationKey.Security.ControlModeStartBlinking
+                
+                if defaults.bool(forKey: UserDefaults.Security.IsPanic) {
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.setPanic(address, panic: 0x01), gateway: gateway)
+                    defaults.set(false, forKey: UserDefaults.Security.IsPanic)
+                    defaults.synchronize()
+                    print("Panic turned on")
+                } else {
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.setPanic(address, panic: 0x00), gateway: gateway)
+                    defaults.set(true, forKey: UserDefaults.Security.IsPanic)
+                    defaults.synchronize()
+                    print("Panic turned off")
+                }
+                NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: notificationName), object: self, userInfo: ["controlMode": SecurityControlMode.Panic]))
             }
+            
+//            let location = gestureRecognizer.location(in: securityCollectionView)
+//            if let index = securityCollectionView.indexPathForItem(at: location){
+//                let cell = securityCollectionView.cellForItem(at: index)
+//                showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text:securities[tag].securityDescription!, security: securities[tag])
+//            }
         default: break
         }
     }
