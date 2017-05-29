@@ -95,10 +95,10 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
                     SendingHandler.sendCommand(byteArray: OutgoingHandler.changeSecurityMode(address, mode: 0x03), gateway: gateway)
                     NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: notificationName) , object: self, userInfo: ["controlMode": SecurityControlMode.Day]))
                     break
-                case "Vacation":
-                    SendingHandler.sendCommand(byteArray: OutgoingHandler.changeSecurityMode(address, mode: 0x04), gateway: gateway)
-                    NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: notificationName) , object: self, userInfo: ["controlMode": SecurityControlMode.Vacation]))
-                    break
+//                case "Vacation":
+//                    SendingHandler.sendCommand(byteArray: OutgoingHandler.changeSecurityMode(address, mode: 0x04), gateway: gateway)
+//                    NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: notificationName) , object: self, userInfo: ["controlMode": SecurityControlMode.Vacation]))
+//                    break
                 case "Panic":
                     if defaults.bool(forKey: UserDefaults.Security.IsPanic) {
                         SendingHandler.sendCommand(byteArray: OutgoingHandler.setPanic(address, panic: 0x01), gateway: gateway)

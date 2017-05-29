@@ -33,8 +33,8 @@ class SecurityCollectionCell: UICollectionViewCell {
             self.securityImageView.image = UIImage(named: "inactivenight")
         case "Day":
             self.securityImageView.image = UIImage(named: "inactiveday")
-        case "Vacation":
-            self.securityImageView.image = UIImage(named: "inactivevacation")
+//        case "Vacation":
+//            self.securityImageView.image = UIImage(named: "inactivevacation")
         case "Disarm":
             self.securityImageView.image = UIImage(named: "inactivedisarm")
         case "Panic":
@@ -52,8 +52,8 @@ class SecurityCollectionCell: UICollectionViewCell {
                     self.securityImageView.image = UIImage(named: "night")
                 case "Day":
                     self.securityImageView.image = UIImage(named: "day")
-                case "Vacation":
-                    self.securityImageView.image = UIImage(named: "vacation")
+//                case "Vacation":
+//                    self.securityImageView.image = UIImage(named: "vacation")
                 case "Disarm":
                     self.securityImageView.image = UIImage(named: "disarm")
                 default: break
@@ -170,12 +170,12 @@ class SecurityCollectionCell: UICollectionViewCell {
                     }else{
                         self.securityImageView.image = UIImage(named: "inactivenight")
                     }
-                case SecurityControlMode.Vacation:
-                    if self.securityImageView.image == UIImage(named: "inactivevacation"){
-                        self.securityImageView.image = UIImage(named: "vacation")
-                    }else{
-                        self.securityImageView.image = UIImage(named: "inactivevacation")
-                    }
+//                case SecurityControlMode.Vacation:
+//                    if self.securityImageView.image == UIImage(named: "inactivevacation"){
+//                        self.securityImageView.image = UIImage(named: "vacation")
+//                    }else{
+//                        self.securityImageView.image = UIImage(named: "inactivevacation")
+//                    }
                 case SecurityControlMode.Panic:
                     if self.securityImageView.image == UIImage(named: "inactivepanic"){
                         self.securityImageView.image = UIImage(named: "panic")

@@ -259,28 +259,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         TimerForFilter.shared.stopTimer(type: Menu.events)
 
         Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterSequences, forKey: "timerSequencesValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.sequences)
+//        TimerForFilter.shared.stopTimer(type: Menu.sequences)
 
         Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterTimers, forKey: "timerTimersValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.timers)
+//        TimerForFilter.shared.stopTimer(type: Menu.timers)
         
         Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterSecurity, forKey: "timerSecurityValueWhenExitedApp")
         TimerForFilter.shared.stopTimer(type: Menu.security)
         
         Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterSurvailance, forKey: "timerSurvailanceValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.surveillance)
+//        TimerForFilter.shared.stopTimer(type: Menu.surveillance)
         
         Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterFlags, forKey: "timerFlagsValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.flags)
+//        TimerForFilter.shared.stopTimer(type: Menu.flags)
         
         Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterUsers, forKey: "timerUsersValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.users)
+//        TimerForFilter.shared.stopTimer(type: Menu.users)
         
         Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterPCControl, forKey: "timerPCControlValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.pcControl)
+//        TimerForFilter.shared.stopTimer(type: Menu.pcControl)
         
         Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterEnergy, forKey: "timerEnergyValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.energy)
+//        TimerForFilter.shared.stopTimer(type: Menu.energy)
     }
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
@@ -332,7 +332,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let seconds = Int(counterValue)
                 TimerForFilter.shared.counterSequences = timerOldValue - Int(seconds)
                 if TimerForFilter.shared.counterSequences > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.sequences)
+//                    TimerForFilter.shared.startTimer(type: Menu.sequences)
                 }else{
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSequences), object: nil)
                 }
@@ -344,7 +344,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let seconds = Int(counterValue)
                 TimerForFilter.shared.counterTimers = timerOldValue - Int(seconds)
                 if TimerForFilter.shared.counterTimers > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.timers)
+//                    TimerForFilter.shared.startTimer(type: Menu.timers)
                 }else{
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerTimers), object: nil)
                 }
@@ -368,7 +368,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let seconds = Int(counterValue)
                 TimerForFilter.shared.counterSurvailance = timerOldValue - Int(seconds)
                 if TimerForFilter.shared.counterSurvailance > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.surveillance)
+//                    TimerForFilter.shared.startTimer(type: Menu.surveillance)
                 }else{
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSurvailance), object: nil)
                 }
@@ -380,7 +380,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let seconds = Int(counterValue)
                 TimerForFilter.shared.counterFlags = timerOldValue - Int(seconds)
                 if TimerForFilter.shared.counterFlags > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.flags)
+//                    TimerForFilter.shared.startTimer(type: Menu.flags)
                 }else{
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerFlags), object: nil)
                 }
@@ -392,7 +392,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let seconds = Int(counterValue)
                 TimerForFilter.shared.counterUsers = timerOldValue - Int(seconds)
                 if TimerForFilter.shared.counterUsers > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.users)
+//                    TimerForFilter.shared.startTimer(type: Menu.users)
                 }else{
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerUsers), object: nil)
                 }
@@ -404,7 +404,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let seconds = Int(counterValue)
                 TimerForFilter.shared.counterPCControl = timerOldValue - Int(seconds)
                 if TimerForFilter.shared.counterPCControl > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.pcControl)
+//                    TimerForFilter.shared.startTimer(type: Menu.pcControl)
                 }else{
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerPCControl), object: nil)
                 }
@@ -416,7 +416,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let seconds = Int(counterValue)
                 TimerForFilter.shared.counterChat = timerOldValue - Int(seconds)
                 if TimerForFilter.shared.counterChat > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.chat)
+//                    TimerForFilter.shared.startTimer(type: Menu.chat)
                 }else{
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerChat), object: nil)
                 }
@@ -429,7 +429,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let seconds = Int(counterValue)
                 TimerForFilter.shared.counterEnergy = timerOldValue - Int(seconds)
                 if TimerForFilter.shared.counterEnergy > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.energy)
+//                    TimerForFilter.shared.startTimer(type: Menu.energy)
                 }else{
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEnergy), object: nil)
                 }

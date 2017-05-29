@@ -49,7 +49,7 @@ class PCControlViewController: PopoverVC {
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
-        scrollView.setFilterItem(Menu.pcControl)
+//        scrollView.setFilterItem(Menu.pcControl)
         
         NotificationCenter.default.addObserver(self, selector: #selector(PCControlViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerPCControl), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(PCControlViewController.updatePCList), name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
@@ -113,12 +113,12 @@ class PCControlViewController: PopoverVC {
     }
     
     func setDefaultFilterFromTimer() {
-        scrollView.setDefaultFilterItem(Menu.pcControl)
+//        scrollView.setDefaultFilterItem(Menu.pcControl)
     }
     
     func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
-            scrollView.setDefaultFilterItem(Menu.pcControl)
+//            scrollView.setDefaultFilterItem(Menu.pcControl)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
@@ -220,10 +220,10 @@ extension PCControlViewController: FilterPullDownDelegate{
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .PCControl)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .PCControl)
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.pcControl)
+//        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.pcControl)
         updatePCList()
-        TimerForFilter.shared.counterPCControl = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.pcControl)
-        TimerForFilter.shared.startTimer(type: Menu.pcControl)
+//        TimerForFilter.shared.counterPCControl = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.pcControl)
+//        TimerForFilter.shared.startTimer(type: Menu.pcControl)
     }
     
     func saveDefaultFilter(){

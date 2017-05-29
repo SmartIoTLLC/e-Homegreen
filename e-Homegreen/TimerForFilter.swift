@@ -55,42 +55,42 @@ class TimerForFilter {
             defaultTimerScenes?.invalidate()
             defaultTimerScenes = nil
             counterScenes = timerValue
-        case Menu.sequences:
-            defaultTimerSequences?.invalidate()
-            defaultTimerSequences = nil
-            counterSequences = timerValue
-        case Menu.timers:
-            defaultTimerTimers?.invalidate()
-            defaultTimerTimers = nil
-            counterTimers = timerValue
+//        case Menu.sequences:
+//            defaultTimerSequences?.invalidate()
+//            defaultTimerSequences = nil
+//            counterSequences = timerValue
+//        case Menu.timers:
+//            defaultTimerTimers?.invalidate()
+//            defaultTimerTimers = nil
+//            counterTimers = timerValue
         case Menu.security:
             defaultTimerSecurity?.invalidate()
             defaultTimerSecurity = nil
             counterSecurity = timerValue
-        case Menu.surveillance:
-            defaultTimerSurvailance?.invalidate()
-            defaultTimerSurvailance = nil
-            counterSurvailance = timerValue
-        case Menu.flags:
-            defaultTimerFlags?.invalidate()
-            defaultTimerFlags = nil
-            counterFlags = timerValue
-        case Menu.users:
-            defaultTimerUsers?.invalidate()
-            defaultTimerUsers = nil
-            counterUsers = timerValue
-        case Menu.chat:
-            defaultTimerChat?.invalidate()
-            defaultTimerChat = nil
-            counterChat = timerValue
-        case Menu.energy:
-            defaultTimerEnergy?.invalidate()
-            defaultTimerEnergy = nil
-            counterEnergy = timerValue
-        case Menu.pcControl:
-            defaultTimerPCControl?.invalidate()
-            defaultTimerPCControl = nil
-            counterPCControl = timerValue
+//        case Menu.surveillance:
+//            defaultTimerSurvailance?.invalidate()
+//            defaultTimerSurvailance = nil
+//            counterSurvailance = timerValue
+//        case Menu.flags:
+//            defaultTimerFlags?.invalidate()
+//            defaultTimerFlags = nil
+//            counterFlags = timerValue
+//        case Menu.users:
+//            defaultTimerUsers?.invalidate()
+//            defaultTimerUsers = nil
+//            counterUsers = timerValue
+//        case Menu.chat:
+//            defaultTimerChat?.invalidate()
+//            defaultTimerChat = nil
+//            counterChat = timerValue
+//        case Menu.energy:
+//            defaultTimerEnergy?.invalidate()
+//            defaultTimerEnergy = nil
+//            counterEnergy = timerValue
+//        case Menu.pcControl:
+//            defaultTimerPCControl?.invalidate()
+//            defaultTimerPCControl = nil
+//            counterPCControl = timerValue
         default:
             defaultTimerDevices?.invalidate()
             defaultTimerDevices = nil
@@ -109,33 +109,33 @@ class TimerForFilter {
         case Menu.scenes:
             defaultTimerScenes?.invalidate()
             defaultTimerScenes = nil
-        case Menu.sequences:
-            defaultTimerSequences?.invalidate()
-            defaultTimerSequences = nil
-        case Menu.timers:
-            defaultTimerTimers?.invalidate()
-            defaultTimerTimers = nil
+//        case Menu.sequences:
+//            defaultTimerSequences?.invalidate()
+//            defaultTimerSequences = nil
+//        case Menu.timers:
+//            defaultTimerTimers?.invalidate()
+//            defaultTimerTimers = nil
         case Menu.security:
             defaultTimerSecurity?.invalidate()
             defaultTimerSecurity = nil
-        case Menu.surveillance:
-            defaultTimerSurvailance?.invalidate()
-            defaultTimerSurvailance = nil
-        case Menu.flags:
-            defaultTimerFlags?.invalidate()
-            defaultTimerFlags = nil
-        case Menu.users:
-            defaultTimerUsers?.invalidate()
-            defaultTimerUsers = nil
-        case Menu.chat:
-            defaultTimerChat?.invalidate()
-            defaultTimerChat = nil
-        case Menu.energy:
-            defaultTimerEnergy?.invalidate()
-            defaultTimerEnergy = nil
-        case Menu.pcControl:
-            defaultTimerPCControl?.invalidate()
-            defaultTimerPCControl = nil
+//        case Menu.surveillance:
+//            defaultTimerSurvailance?.invalidate()
+//            defaultTimerSurvailance = nil
+//        case Menu.flags:
+//            defaultTimerFlags?.invalidate()
+//            defaultTimerFlags = nil
+//        case Menu.users:
+//            defaultTimerUsers?.invalidate()
+//            defaultTimerUsers = nil
+//        case Menu.chat:
+//            defaultTimerChat?.invalidate()
+//            defaultTimerChat = nil
+//        case Menu.energy:
+//            defaultTimerEnergy?.invalidate()
+//            defaultTimerEnergy = nil
+//        case Menu.pcControl:
+//            defaultTimerPCControl?.invalidate()
+//            defaultTimerPCControl = nil
         default:
             defaultTimerDevices?.invalidate()
             defaultTimerDevices = nil
@@ -162,60 +162,60 @@ class TimerForFilter {
             if counterScenes > 0 {
                 defaultTimerScenes = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerScenes), userInfo: nil, repeats: true)
             }
-        case Menu.sequences:
-            defaultTimerSequences?.invalidate()
-            defaultTimerSequences = nil
-            if counterSequences > 0 {
-                defaultTimerSequences = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerSequences), userInfo: nil, repeats: true)
-            }
-        case Menu.timers:
-            defaultTimerTimers?.invalidate()
-            defaultTimerTimers = nil
-            if counterTimers > 0 {
-                defaultTimerTimers = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerTimers), userInfo: nil, repeats: true)
-            }
+//        case Menu.sequences:
+//            defaultTimerSequences?.invalidate()
+//            defaultTimerSequences = nil
+//            if counterSequences > 0 {
+//                defaultTimerSequences = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerSequences), userInfo: nil, repeats: true)
+//            }
+//        case Menu.timers:
+//            defaultTimerTimers?.invalidate()
+//            defaultTimerTimers = nil
+//            if counterTimers > 0 {
+//                defaultTimerTimers = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerTimers), userInfo: nil, repeats: true)
+//            }
         case Menu.security:
             defaultTimerSecurity?.invalidate()
             defaultTimerSecurity = nil
             if counterSecurity > 0 {
                 defaultTimerSecurity = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerSecurity), userInfo: nil, repeats: true)
             }
-        case Menu.surveillance:
-            defaultTimerSurvailance?.invalidate()
-            defaultTimerSurvailance = nil
-            if counterSurvailance > 0 {
-                defaultTimerSurvailance = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerSurvailance), userInfo: nil, repeats: true)
-            }
-        case Menu.flags:
-            defaultTimerFlags?.invalidate()
-            defaultTimerFlags = nil
-            if counterFlags > 0 {
-                defaultTimerFlags = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerFlags), userInfo: nil, repeats: true)
-            }
-        case Menu.users:
-            defaultTimerUsers?.invalidate()
-            defaultTimerUsers = nil
-            if counterUsers > 0 {
-                defaultTimerUsers = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerUsers), userInfo: nil, repeats: true)
-            }
-        case Menu.chat:
-            defaultTimerChat?.invalidate()
-            defaultTimerChat = nil
-            if counterChat > 0 {
-                defaultTimerChat = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerChat), userInfo: nil, repeats: true)
-            }
-        case Menu.energy:
-            defaultTimerEnergy?.invalidate()
-            defaultTimerEnergy = nil
-            if counterEnergy > 0 {
-                defaultTimerEnergy = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerEnergy), userInfo: nil, repeats: true)
-            }
-        case Menu.pcControl:
-            defaultTimerPCControl?.invalidate()
-            defaultTimerPCControl = nil
-            if counterPCControl > 0 {
-                defaultTimerPCControl = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerPCControl), userInfo: nil, repeats: true)
-            }
+//        case Menu.surveillance:
+//            defaultTimerSurvailance?.invalidate()
+//            defaultTimerSurvailance = nil
+//            if counterSurvailance > 0 {
+//                defaultTimerSurvailance = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerSurvailance), userInfo: nil, repeats: true)
+//            }
+//        case Menu.flags:
+//            defaultTimerFlags?.invalidate()
+//            defaultTimerFlags = nil
+//            if counterFlags > 0 {
+//                defaultTimerFlags = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerFlags), userInfo: nil, repeats: true)
+//            }
+//        case Menu.users:
+//            defaultTimerUsers?.invalidate()
+//            defaultTimerUsers = nil
+//            if counterUsers > 0 {
+//                defaultTimerUsers = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerUsers), userInfo: nil, repeats: true)
+//            }
+//        case Menu.chat:
+//            defaultTimerChat?.invalidate()
+//            defaultTimerChat = nil
+//            if counterChat > 0 {
+//                defaultTimerChat = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerChat), userInfo: nil, repeats: true)
+//            }
+//        case Menu.energy:
+//            defaultTimerEnergy?.invalidate()
+//            defaultTimerEnergy = nil
+//            if counterEnergy > 0 {
+//                defaultTimerEnergy = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerEnergy), userInfo: nil, repeats: true)
+//            }
+//        case Menu.pcControl:
+//            defaultTimerPCControl?.invalidate()
+//            defaultTimerPCControl = nil
+//            if counterPCControl > 0 {
+//                defaultTimerPCControl = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerPCControl), userInfo: nil, repeats: true)
+//            }
         default:
             defaultTimerDevices?.invalidate()
             defaultTimerDevices = nil
@@ -255,7 +255,7 @@ class TimerForFilter {
         if self.counterSequences > 0 {
             self.counterSequences -= 1
         }else{
-            self.resetTimer(timerValue: 0, type: Menu.sequences)
+//            self.resetTimer(timerValue: 0, type: Menu.sequences)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSequences), object: nil)
         }
     }
@@ -263,7 +263,7 @@ class TimerForFilter {
         if self.counterTimers > 0 {
             self.counterTimers -= 1
         }else{
-            self.resetTimer(timerValue: 0, type: Menu.timers)
+//            self.resetTimer(timerValue: 0, type: Menu.timers)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerTimers), object: nil)
         }
     }
@@ -279,7 +279,7 @@ class TimerForFilter {
         if self.counterSurvailance > 0 {
             self.counterSurvailance -= 1
         }else{
-            self.resetTimer(timerValue: 0, type: Menu.surveillance)
+//            self.resetTimer(timerValue: 0, type: Menu.surveillance)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSurvailance), object: nil)
         }
     }
@@ -287,7 +287,7 @@ class TimerForFilter {
         if self.counterFlags > 0 {
             self.counterFlags -= 1
         }else{
-            self.resetTimer(timerValue: 0, type: Menu.flags)
+//            self.resetTimer(timerValue: 0, type: Menu.flags)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerFlags), object: nil)
         }
     }
@@ -295,7 +295,7 @@ class TimerForFilter {
         if self.counterUsers > 0 {
             self.counterUsers -= 1
         }else{
-            self.resetTimer(timerValue: 0, type: Menu.users)
+//            self.resetTimer(timerValue: 0, type: Menu.users)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerUsers), object: nil)
         }
     }
@@ -303,7 +303,7 @@ class TimerForFilter {
         if self.counterPCControl > 0 {
             self.counterPCControl -= 1
         }else{
-            self.resetTimer(timerValue: 0, type: Menu.pcControl)
+//            self.resetTimer(timerValue: 0, type: Menu.pcControl)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerPCControl), object: nil)
         }
     }
@@ -311,7 +311,7 @@ class TimerForFilter {
         if self.counterChat > 0 {
             self.counterChat -= 1
         }else{
-            self.resetTimer(timerValue: 0, type: Menu.chat)
+//            self.resetTimer(timerValue: 0, type: Menu.chat)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerChat), object: nil)
         }
     }
@@ -319,7 +319,7 @@ class TimerForFilter {
         if self.counterEnergy > 0 {
             self.counterEnergy -= 1
         }else{
-            self.resetTimer(timerValue: 0, type: Menu.energy)
+//            self.resetTimer(timerValue: 0, type: Menu.energy)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEnergy), object: nil)
         }
     }

@@ -42,7 +42,7 @@ class SequencesViewController: PopoverVC {
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
-        scrollView.setFilterItem(Menu.sequences)
+//        scrollView.setFilterItem(Menu.sequences)
         NotificationCenter.default.addObserver(self, selector: #selector(SequencesViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSequences), object: nil)
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -102,7 +102,7 @@ class SequencesViewController: PopoverVC {
     }
     func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
-            scrollView.setDefaultFilterItem(Menu.sequences)
+//            scrollView.setDefaultFilterItem(Menu.sequences)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
@@ -127,7 +127,7 @@ class SequencesViewController: PopoverVC {
         sequenceCollectionView.reloadData()
     }
     func setDefaultFilterFromTimer(){
-        scrollView.setDefaultFilterItem(Menu.sequences)
+//        scrollView.setDefaultFilterItem(Menu.sequences)
     }
     
     @IBAction func fullScreen(_ sender: UIButton) {
@@ -151,10 +151,10 @@ extension SequencesViewController: FilterPullDownDelegate{
     func filterParametars(_ filterItem: FilterItem){
         filterParametar = filterItem
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.sequences)
+//        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.sequences)
         updateSequencesList()
-        TimerForFilter.shared.counterSequences = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.sequences)
-        TimerForFilter.shared.startTimer(type: Menu.sequences)
+//        TimerForFilter.shared.counterSequences = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.sequences)
+//        TimerForFilter.shared.startTimer(type: Menu.sequences)
     }
     
     func saveDefaultFilter(){

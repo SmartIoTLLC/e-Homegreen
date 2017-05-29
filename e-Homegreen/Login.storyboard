@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -27,7 +27,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash_center" translatesAutoresizingMaskIntoConstraints="NO" id="Gcx-ue-jbd">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e_home_logo_utt" translatesAutoresizingMaskIntoConstraints="NO" id="Gcx-ue-jbd">
                                 <rect key="frame" x="20" y="28" width="131" height="75"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="75" id="AOZ-oK-89y"/>
@@ -111,7 +111,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash_center" translatesAutoresizingMaskIntoConstraints="NO" id="6eq-AS-2ug">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e_home_logo_utt" translatesAutoresizingMaskIntoConstraints="NO" id="6eq-AS-2ug">
                                 <rect key="frame" x="36" y="28" width="131" height="75"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="75" id="bJE-zy-F9d"/>
@@ -190,8 +190,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="e_home_logo_utt" width="1032" height="250"/>
         <image name="splash_bottom" width="4002" height="1081"/>
-        <image name="splash_center" width="3955" height="1081"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

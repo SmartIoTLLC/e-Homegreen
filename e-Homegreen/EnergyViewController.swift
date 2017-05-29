@@ -1,4 +1,4 @@
-//
+
 //  EnergyViewController.swift
 //  e-Homegreen
 //
@@ -51,7 +51,7 @@ class EnergyViewController: PopoverVC  {
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
-        scrollView.setFilterItem(Menu.energy)
+//        scrollView.setFilterItem(Menu.energy)
         NotificationCenter.default.addObserver(self, selector: #selector(EnergyViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEnergy), object: nil)
     }
     
@@ -111,7 +111,7 @@ class EnergyViewController: PopoverVC  {
     
     func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){        
         if gestureRecognizer.state == UIGestureRecognizerState.began {
-            scrollView.setDefaultFilterItem(Menu.energy)
+//            scrollView.setDefaultFilterItem(Menu.energy)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
@@ -199,7 +199,7 @@ class EnergyViewController: PopoverVC  {
     }
     
     func setDefaultFilterFromTimer(){
-        scrollView.setDefaultFilterItem(Menu.energy)
+//        scrollView.setDefaultFilterItem(Menu.energy)
     }
     
     @IBAction func fullScreen(_ sender: UIButton) {
@@ -225,11 +225,11 @@ extension EnergyViewController: FilterPullDownDelegate{
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
         
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.energy)
+//        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.energy)
         refreshLocalParametars()
         
-        TimerForFilter.shared.counterEnergy = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.energy)
-        TimerForFilter.shared.startTimer(type: Menu.energy)
+//        TimerForFilter.shared.counterEnergy = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.energy)
+//        TimerForFilter.shared.startTimer(type: Menu.energy)
     }
     
     func saveDefaultFilter(){

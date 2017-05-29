@@ -180,14 +180,15 @@ class SecurityViewController: PopoverVC{
             if security.securityName == "Day" {
                 tempSecurities[2] = security
             }
-            if security.securityName == "Vacation" {
+            if security.securityName == "Disarm" {
                 tempSecurities[3] = security
             }
-            if security.securityName == "Disarm" {
+            if security.securityName == "Panic" {
                 tempSecurities[4] = security
             }
-            if security.securityName == "Panic" {
+            if security.securityName == "Vacation" {
                 tempSecurities[5] = security
+                tempSecurities.remove(at: 5)
             }
         }
         securities = tempSecurities
@@ -248,12 +249,12 @@ class SecurityViewController: PopoverVC{
                     let cell = securityCollectionView.cellForItem(at: index)
                     showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
                 }
-            case "Vacation":
-                let location = gestureRecognizer.location(in: securityCollectionView)
-                if let index = securityCollectionView.indexPathForItem(at: location){
-                    let cell = securityCollectionView.cellForItem(at: index)
-                    showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
-                }
+//            case "Vacation":
+//                let location = gestureRecognizer.location(in: securityCollectionView)
+//                if let index = securityCollectionView.indexPathForItem(at: location){
+//                    let cell = securityCollectionView.cellForItem(at: index)
+//                    showSecurityParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
+//                }
             case "Disarm":
                 let location = gestureRecognizer.location(in: securityCollectionView)
                 if let index = securityCollectionView.indexPathForItem(at: location){
@@ -320,20 +321,20 @@ class SecurityViewController: PopoverVC{
                     }
                 }
             }
-        case "Vacation":
-            let location = gestureRecognizer.location(in: securityCollectionView)
-            if let index = securityCollectionView.indexPathForItem(at: location){
-                let cell = securityCollectionView.cellForItem(at: index)
-                let defaults = Foundation.UserDefaults.standard
-                if let securityMode = defaults.value(forKey: UserDefaults.Security.SecurityMode) as? String {
-                    if securityMode != SecurityControlMode.Disarm{
-                        showSecurityInformation(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y))
-                    }else{
-                        showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text: securities[tag].securityDescription!, security: securities[tag])
-
-                    }
-                }
-            }
+//        case "Vacation":
+//            let location = gestureRecognizer.location(in: securityCollectionView)
+//            if let index = securityCollectionView.indexPathForItem(at: location){
+//                let cell = securityCollectionView.cellForItem(at: index)
+//                let defaults = Foundation.UserDefaults.standard
+//                if let securityMode = defaults.value(forKey: UserDefaults.Security.SecurityMode) as? String {
+//                    if securityMode != SecurityControlMode.Disarm{
+//                        showSecurityInformation(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y))
+//                    }else{
+//                        showSecurityCommand(CGPoint(x: cell!.center.x, y: cell!.center.y - securityCollectionView.contentOffset.y), text: securities[tag].securityDescription!, security: securities[tag])
+//
+//                    }
+//                }
+//            }
         case "Disarm":
             let location = gestureRecognizer.location(in: securityCollectionView)
             if let index = securityCollectionView.indexPathForItem(at: location){

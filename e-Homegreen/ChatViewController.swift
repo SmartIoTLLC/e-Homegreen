@@ -82,7 +82,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
-        scrollView.setFilterItem(Menu.chat)
+//        scrollView.setFilterItem(Menu.chat)
         
         NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerChat), object: nil)
     }
@@ -141,7 +141,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-            scrollView.setDefaultFilterItem(Menu.chat)
+//            scrollView.setDefaultFilterItem(Menu.chat)
         }
     }
     
@@ -782,7 +782,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     }
     
     func setDefaultFilterFromTimer(){
-        scrollView.setDefaultFilterItem(Menu.chat)
+//        scrollView.setDefaultFilterItem(Menu.chat)
     }
 }
 
@@ -792,10 +792,10 @@ extension ChatViewController: FilterPullDownDelegate{
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Chat)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.chat)
+//        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.chat)
         chatTableView.reloadData()
-        TimerForFilter.shared.counterChat = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.chat)
-        TimerForFilter.shared.startTimer(type: Menu.chat)
+//        TimerForFilter.shared.counterChat = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.chat)
+//        TimerForFilter.shared.startTimer(type: Menu.chat)
     }
     
     func saveDefaultFilter(){

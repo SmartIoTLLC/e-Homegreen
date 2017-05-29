@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="w6J-AF-9Ay">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="w6J-AF-9Ay">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -50,14 +50,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d8d-eR-V4h">
-                                <rect key="frame" x="0.0" y="64" width="375" height="1"/>
+                                <rect key="frame" x="0.0" y="82.5" width="375" height="1"/>
                                 <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="24X-Xh-4Mz"/>
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="VwH-0j-wOZ">
-                                <rect key="frame" x="0.0" y="65" width="200" height="602"/>
+                                <rect key="frame" x="0.0" y="83.5" width="200" height="583.5"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="NIM-6X-AKZ"/>
@@ -210,8 +210,8 @@
                                     <outlet property="delegate" destination="tid-St-yaC" id="f5f-e1-erA"/>
                                 </connections>
                             </collectionView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="main_menu_top" translatesAutoresizingMaskIntoConstraints="NO" id="dBy-un-k0R">
-                                <rect key="frame" x="8" y="20" width="184" height="42"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="e_home_logo_utt" translatesAutoresizingMaskIntoConstraints="NO" id="dBy-un-k0R">
+                                <rect key="frame" x="8" y="38.5" width="184" height="42"/>
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="42" id="8vh-UT-Z3y"/>
@@ -223,7 +223,7 @@
                         <constraints>
                             <constraint firstItem="d8d-eR-V4h" firstAttribute="top" secondItem="dBy-un-k0R" secondAttribute="bottom" constant="2" id="K5m-oI-D8U"/>
                             <constraint firstItem="VwH-0j-wOZ" firstAttribute="top" secondItem="d8d-eR-V4h" secondAttribute="bottom" id="OAW-gv-MG7"/>
-                            <constraint firstItem="dBy-un-k0R" firstAttribute="top" secondItem="d8V-WK-jAD" secondAttribute="bottom" id="SUR-nk-OkR"/>
+                            <constraint firstItem="dBy-un-k0R" firstAttribute="top" secondItem="d8V-WK-jAD" secondAttribute="bottom" constant="18.5" id="SUR-nk-OkR"/>
                             <constraint firstItem="d8d-eR-V4h" firstAttribute="leading" secondItem="O6L-S2-kpn" secondAttribute="leading" id="WbM-KT-x0k"/>
                             <constraint firstItem="5SW-tk-Re0" firstAttribute="top" secondItem="VwH-0j-wOZ" secondAttribute="bottom" id="YIu-nN-rWI"/>
                             <constraint firstItem="dBy-un-k0R" firstAttribute="leading" secondItem="O6L-S2-kpn" secondAttribute="leading" constant="8" id="ghN-gu-ZlV"/>
@@ -678,8 +678,8 @@
     <resources>
         <image name="User" width="393" height="390"/>
         <image name="btn_log_out" width="105" height="105"/>
+        <image name="e_home_logo_utt" width="1032" height="250"/>
         <image name="main_manu_bottom" width="4002" height="1081"/>
-        <image name="main_menu_top" width="3955" height="1081"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

@@ -45,7 +45,7 @@ class UsersViewController: PopoverVC {
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
-        scrollView.setFilterItem(Menu.users)
+//        scrollView.setFilterItem(Menu.users)
         
         NotificationCenter.default.addObserver(self, selector: #selector(UsersViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerUsers), object: nil)
     }
@@ -102,7 +102,7 @@ class UsersViewController: PopoverVC {
     
     func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
-            scrollView.setDefaultFilterItem(Menu.users)
+//            scrollView.setDefaultFilterItem(Menu.users)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
@@ -200,7 +200,7 @@ class UsersViewController: PopoverVC {
         }
     }
     func setDefaultFilterFromTimer(){
-        scrollView.setDefaultFilterItem(Menu.users)
+//        scrollView.setDefaultFilterItem(Menu.users)
     }
     
     @IBAction func refreshTimers(_ sender: UIButton) {
@@ -229,10 +229,10 @@ extension UsersViewController: FilterPullDownDelegate{
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Users)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Users)
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.users)
+//        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.users)
         refreshTimerList()
-        TimerForFilter.shared.counterUsers = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.users)
-        TimerForFilter.shared.startTimer(type: Menu.users)
+//        TimerForFilter.shared.counterUsers = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.users)
+//        TimerForFilter.shared.startTimer(type: Menu.users)
     }
     
     func saveDefaultFilter(){

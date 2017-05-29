@@ -9,22 +9,23 @@
 import UIKit
 
 enum Menu:Int{
-    case dashboard = 0, devices, scenes, events, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, settings, notSuperUserSettings
+//    case dashboard = 0, devices, scenes, events, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, settings, notSuperUserSettings
+    case dashboard = 0, devices, scenes, events, security, settings, notSuperUserSettings
     var description:String{
         switch self{
             case .dashboard: return "Dashboard"
             case .devices: return "Devices"
             case .scenes: return "Scenes"
             case .events: return "Events"
-            case .sequences: return "Sequences"
-            case .timers: return "Timers"
-            case .flags: return "Flags"
-            case .chat: return "Chat"
+//            case .sequences: return "Sequences"
+//            case .timers: return "Timers"
+//            case .flags: return "Flags"
+//            case .chat: return "Chat"
             case .security: return "Security"
-            case .surveillance: return "Surveillance"
-            case .energy: return "Energy"
-            case .users: return "Users"
-            case .pcControl: return "PC Control"
+//            case .surveillance: return "Surveillance"
+//            case .energy: return "Energy"
+//            case .users: return "Users"
+//            case .pcControl: return "PC Control"
             case .settings: return "Settings"
             case .notSuperUserSettings: return "Settings"
         }
@@ -36,22 +37,24 @@ enum Menu:Int{
         case .devices: return MenuViewController.devicesVC
         case .scenes: return MenuViewController.scenesVC
         case .events: return MenuViewController.eventsVC
-        case .sequences: return MenuViewController.sequencesVC
-        case .timers: return MenuViewController.timersVC
-        case .flags: return MenuViewController.flagsVC
-        case .chat: return MenuViewController.chatVC
+//        case .sequences: return MenuViewController.sequencesVC
+//        case .timers: return MenuViewController.timersVC
+//        case .flags: return MenuViewController.flagsVC
+//        case .chat: return MenuViewController.chatVC
         case .security: return MenuViewController.securityVC
-        case .surveillance: return MenuViewController.surveillanceVC
-        case .energy: return MenuViewController.energyVC
-        case .users: return MenuViewController.usersVC
-        case .pcControl: return MenuViewController.pccontrolVC
+//        case .surveillance: return MenuViewController.surveillanceVC
+//        case .energy: return MenuViewController.energyVC
+//        case .users: return MenuViewController.usersVC
+//        case .pcControl: return MenuViewController.pccontrolVC
         case .settings: return MenuViewController.settingsVC
         case .notSuperUserSettings: return MenuViewController.notSuperUserVC
         }
     }
+    static let allMenuItem = [dashboard, devices, scenes, events, security, settings]
+    static let allMenuItemNotSuperUser = [dashboard, devices, scenes, events, security, settings, notSuperUserSettings]
     
-    static let allMenuItem = [dashboard, devices, scenes, events, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, settings]
-    static let allMenuItemNotSuperUser = [dashboard, devices, scenes, events, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, notSuperUserSettings]
+//    static let allMenuItem = [dashboard, devices, scenes, events, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, settings]
+//    static let allMenuItemNotSuperUser = [dashboard, devices, scenes, events, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, notSuperUserSettings]
 }
 
 class MenuViewController{

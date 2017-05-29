@@ -46,7 +46,7 @@ class SurveillenceViewController: PopoverVC {
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
-        scrollView.setFilterItem(Menu.surveillance)
+//        scrollView.setFilterItem(Menu.surveillance)
         NotificationCenter.default.addObserver(self, selector: #selector(SurveillenceViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSurvailance), object: nil)
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -107,7 +107,7 @@ class SurveillenceViewController: PopoverVC {
     
     func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
-            scrollView.setDefaultFilterItem(Menu.surveillance)
+//            scrollView.setDefaultFilterItem(Menu.surveillance)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
@@ -158,7 +158,7 @@ class SurveillenceViewController: PopoverVC {
         }
     }
     func setDefaultFilterFromTimer(){
-        scrollView.setDefaultFilterItem(Menu.surveillance)
+//        scrollView.setDefaultFilterItem(Menu.surveillance)
     }
     
     //full screen button from navigation bar
@@ -184,10 +184,10 @@ extension SurveillenceViewController: FilterPullDownDelegate{
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Surveillance)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.surveillance)
+//        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.surveillance)
         fetchSurveillance()
-        TimerForFilter.shared.counterSurvailance = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.surveillance)
-        TimerForFilter.shared.startTimer(type: Menu.surveillance)
+//        TimerForFilter.shared.counterSurvailance = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.surveillance)
+//        TimerForFilter.shared.startTimer(type: Menu.surveillance)
     }
     
     func saveDefaultFilter(){

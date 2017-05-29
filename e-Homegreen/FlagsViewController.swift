@@ -41,7 +41,7 @@ class FlagsViewController: PopoverVC {
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
-        scrollView.setFilterItem(Menu.flags)
+//        scrollView.setFilterItem(Menu.flags)
         NotificationCenter.default.addObserver(self, selector: #selector(FlagsViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerFlags), object: nil)
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -96,7 +96,7 @@ class FlagsViewController: PopoverVC {
     
     func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
-            scrollView.setDefaultFilterItem(Menu.flags)
+//            scrollView.setDefaultFilterItem(Menu.flags)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
@@ -127,7 +127,7 @@ class FlagsViewController: PopoverVC {
         flagsCollectionView.reloadData()
     }
     func setDefaultFilterFromTimer(){
-        scrollView.setDefaultFilterItem(Menu.flags)
+//        scrollView.setDefaultFilterItem(Menu.flags)
     }
 
     @IBAction func fullScreen(_ sender: UIButton) {
@@ -169,10 +169,10 @@ extension FlagsViewController: FilterPullDownDelegate{
     func filterParametars(_ filterItem: FilterItem){
         filterParametar = filterItem
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.flags)
+//        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.flags)
         reloadFlagsList()
-        TimerForFilter.shared.counterFlags = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.flags)
-        TimerForFilter.shared.startTimer(type: Menu.flags)
+//        TimerForFilter.shared.counterFlags = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.flags)
+//        TimerForFilter.shared.startTimer(type: Menu.flags)
 
     }
     
