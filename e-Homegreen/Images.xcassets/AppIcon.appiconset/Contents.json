@@ -15,19 +15,19 @@
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "iPhone Spotlight iOS 5,6 Settings iOS 5-10.png",
+      "filename" : "iPhone Spotlight - iOS 5,6 Settings iOS 5-10.png",
       "scale" : "1x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "iPhone Spotlight iOS 5,6 Settings iOS 5-10@2x.png",
+      "filename" : "iPhone Spotlight - iOS 5,6 Settings iOS 5-10@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "iPhone Spotlight iOS 5,6 Settings iOS 5-10@3x.png",
+      "filename" : "iPhone Spotlight - iOS 5,6 Settings iOS 5-10@3x.png",
       "scale" : "3x"
     },
     {
@@ -141,7 +141,7 @@
     {
       "size" : "83.5x83.5",
       "idiom" : "ipad",
-      "filename" : "iPad Pro App iOS 9-10.png",
+      "filename" : "iPad Pro App iOS 9-10@2x.png",
       "scale" : "2x"
     },
     {
@@ -177,7 +177,7 @@
     {
       "size" : "40x40",
       "idiom" : "watch",
-      "filename" : "Apple Watch Home Screen.png",
+      "filename" : "iPhone Spotlight iOS 7-10@2x-1.png",
       "scale" : "2x",
       "role" : "appLauncher",
       "subtype" : "38mm"
@@ -185,7 +185,7 @@
     {
       "size" : "44x44",
       "idiom" : "watch",
-      "filename" : "Apple Watch Long Look.png",
+      "filename" : "Apple Watch Long Look@2x.png",
       "scale" : "2x",
       "role" : "longLook",
       "subtype" : "42mm"
