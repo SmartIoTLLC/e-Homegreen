@@ -253,10 +253,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 
         Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterScenes, forKey: "timerScenesValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.scenes)
+//        TimerForFilter.shared.stopTimer(type: Menu.scenes)
 
         Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterEvents, forKey: "timerEventsValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.events)
+//        TimerForFilter.shared.stopTimer(type: Menu.events)
 
         Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterSequences, forKey: "timerSequencesValueWhenExitedApp")
 //        TimerForFilter.shared.stopTimer(type: Menu.sequences)
@@ -308,7 +308,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let seconds = Int(counterValue)
                 TimerForFilter.shared.counterScenes = timerOldValue - Int(seconds)
                 if TimerForFilter.shared.counterScenes > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.scenes)
+//                    TimerForFilter.shared.startTimer(type: Menu.scenes)
                 }else{
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerScenes), object: nil)
                 }
@@ -320,7 +320,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let seconds = Int(counterValue)
                 TimerForFilter.shared.counterEvents = timerOldValue - Int(seconds)
                 if TimerForFilter.shared.counterEvents > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.events)
+//                    TimerForFilter.shared.startTimer(type: Menu.events)
                 }else{
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEvents), object: nil)
                 }

@@ -9,9 +9,11 @@
 import UIKit
 
 enum ChoosedTab:String {
-    case Devices = "Devices", Scenes = "Scenes", Events = "Events", Sequences = "Sequences", Timers = "Timers", Flags = "Flags", Cards = "Cards"
+//    case Devices = "Devices", Scenes = "Scenes", Events = "Events", Sequences = "Sequences", Timers = "Timers", Flags = "Flags", Cards = "Cards"
+    case Devices = "Devices"
     
-    static let allItem:[ChoosedTab] = [Devices, Scenes, Events, Sequences, Timers, Flags, Cards]
+    static let allItem:[ChoosedTab] = [Devices]
+//    static let allItem:[ChoosedTab] = [Devices, Scenes, Events, Sequences, Timers, Flags, Cards]
 }
 
 class ScanViewController: PopoverVC {
@@ -117,18 +119,18 @@ class ScanViewController: PopoverVC {
             switch to {
             case .Devices:
                 toViewController = scanDeviceViewController
-            case .Scenes:
-                toViewController = scanSceneViewController
-            case .Events:
-                toViewController = scanEventsViewController
-            case .Sequences:
-                toViewController = scanSequencesViewController
-            case .Timers:
-                toViewController = scanTimersViewController
-            case .Flags:
-                toViewController = scanFlagsViewController
-            case .Cards:
-                toViewController = scanCardsViewController
+//            case .Scenes:
+//                toViewController = scanSceneViewController
+//            case .Events:
+//                toViewController = scanEventsViewController
+//            case .Sequences:
+//                toViewController = scanSequencesViewController
+//            case .Timers:
+//                toViewController = scanTimersViewController
+//            case .Flags:
+//                toViewController = scanFlagsViewController
+//            case .Cards:
+//                toViewController = scanCardsViewController
             }
             
             let fromViewController = childViewControllers.last!

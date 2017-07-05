@@ -10,13 +10,14 @@ import UIKit
 
 enum Menu:Int{
 //    case dashboard = 0, devices, scenes, events, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, settings, notSuperUserSettings
-    case dashboard = 0, devices, scenes, events, security, settings, notSuperUserSettings
+//    case dashboard = 0, devices, scenes, events, security, settings, notSuperUserSettings
+    case dashboard = 0, devices, security, settings, notSuperUserSettings
     var description:String{
         switch self{
             case .dashboard: return "Dashboard"
             case .devices: return "Devices"
-            case .scenes: return "Scenes"
-            case .events: return "Events"
+//            case .scenes: return "Scenes"
+//            case .events: return "Events"
 //            case .sequences: return "Sequences"
 //            case .timers: return "Timers"
 //            case .flags: return "Flags"
@@ -35,8 +36,8 @@ enum Menu:Int{
         switch self{
         case .dashboard: return MenuViewController.dushboardVC
         case .devices: return MenuViewController.devicesVC
-        case .scenes: return MenuViewController.scenesVC
-        case .events: return MenuViewController.eventsVC
+//        case .scenes: return MenuViewController.scenesVC
+//        case .events: return MenuViewController.eventsVC
 //        case .sequences: return MenuViewController.sequencesVC
 //        case .timers: return MenuViewController.timersVC
 //        case .flags: return MenuViewController.flagsVC
@@ -50,8 +51,11 @@ enum Menu:Int{
         case .notSuperUserSettings: return MenuViewController.notSuperUserVC
         }
     }
-    static let allMenuItem = [dashboard, devices, scenes, events, security, settings]
-    static let allMenuItemNotSuperUser = [dashboard, devices, scenes, events, security, settings, notSuperUserSettings]
+    
+    static let allMenuItem = [dashboard, devices, security, settings]
+    static let allMenuItemNotSuperUser = [dashboard, devices, security, settings, notSuperUserSettings]
+//    static let allMenuItem = [dashboard, devices, scenes, events, security, settings]
+//    static let allMenuItemNotSuperUser = [dashboard, devices, scenes, events, security, settings, notSuperUserSettings]
     
 //    static let allMenuItem = [dashboard, devices, scenes, events, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, settings]
 //    static let allMenuItemNotSuperUser = [dashboard, devices, scenes, events, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, notSuperUserSettings]

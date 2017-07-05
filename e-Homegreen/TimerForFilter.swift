@@ -47,14 +47,14 @@ class TimerForFilter {
             defaultTimerDevices?.invalidate()
             defaultTimerDevices = nil
             counterDevices = timerValue
-        case Menu.events:
-            defaultTimerEvents?.invalidate()
-            defaultTimerEvents = nil
-            counterEvents = timerValue
-        case Menu.scenes:
-            defaultTimerScenes?.invalidate()
-            defaultTimerScenes = nil
-            counterScenes = timerValue
+//        case Menu.events:
+//            defaultTimerEvents?.invalidate()
+//            defaultTimerEvents = nil
+//            counterEvents = timerValue
+//        case Menu.scenes:
+//            defaultTimerScenes?.invalidate()
+//            defaultTimerScenes = nil
+//            counterScenes = timerValue
 //        case Menu.sequences:
 //            defaultTimerSequences?.invalidate()
 //            defaultTimerSequences = nil
@@ -103,12 +103,12 @@ class TimerForFilter {
         case Menu.devices:
             defaultTimerDevices?.invalidate()
             defaultTimerDevices = nil
-        case Menu.events:
-            defaultTimerEvents?.invalidate()
-            defaultTimerEvents = nil
-        case Menu.scenes:
-            defaultTimerScenes?.invalidate()
-            defaultTimerScenes = nil
+//        case Menu.events:
+//            defaultTimerEvents?.invalidate()
+//            defaultTimerEvents = nil
+//        case Menu.scenes:
+//            defaultTimerScenes?.invalidate()
+//            defaultTimerScenes = nil
 //        case Menu.sequences:
 //            defaultTimerSequences?.invalidate()
 //            defaultTimerSequences = nil
@@ -150,19 +150,19 @@ class TimerForFilter {
             if counterDevices > 0 {
                 defaultTimerDevices = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerDevices), userInfo: nil, repeats: true)
             }
-        case Menu.events:
-            defaultTimerEvents?.invalidate()
-            defaultTimerEvents = nil
-            if counterEvents > 0 {
-                defaultTimerEvents = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerEvents), userInfo: nil, repeats: true)
-            }
-        case Menu.scenes:
-            defaultTimerScenes?.invalidate()
-            defaultTimerScenes = nil
-            if counterScenes > 0 {
-                defaultTimerScenes = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerScenes), userInfo: nil, repeats: true)
-            }
-//        case Menu.sequences:
+//        case Menu.events:
+//            defaultTimerEvents?.invalidate()
+//            defaultTimerEvents = nil
+//            if counterEvents > 0 {
+//                defaultTimerEvents = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerEvents), userInfo: nil, repeats: true)
+//            }
+//        case Menu.scenes:
+//            defaultTimerScenes?.invalidate()
+//            defaultTimerScenes = nil
+//            if counterScenes > 0 {
+//                defaultTimerScenes = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerScenes), userInfo: nil, repeats: true)
+//            }
+////        case Menu.sequences:
 //            defaultTimerSequences?.invalidate()
 //            defaultTimerSequences = nil
 //            if counterSequences > 0 {
@@ -239,7 +239,7 @@ class TimerForFilter {
         if self.counterEvents > 0 {
             self.counterEvents -= 1
         }else{
-            self.resetTimer(timerValue: 0, type: Menu.events)
+//            self.resetTimer(timerValue: 0, type: Menu.events)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEvents), object: nil)
         }
     }
@@ -247,7 +247,7 @@ class TimerForFilter {
         if self.counterScenes > 0 {
             self.counterScenes -= 1
         }else{
-            self.resetTimer(timerValue: 0, type: Menu.scenes)
+//            self.resetTimer(timerValue: 0, type: Menu.scenes)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerScenes), object: nil)
         }
     }

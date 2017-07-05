@@ -75,7 +75,7 @@ class ScenesViewController: PopoverVC {
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
-        scrollView.setFilterItem(Menu.scenes)
+//        scrollView.setFilterItem(Menu.scenes)
         NotificationCenter.default.addObserver(self, selector: #selector(ScenesViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerScenes), object: nil)
     }
     
@@ -108,7 +108,7 @@ class ScenesViewController: PopoverVC {
     
     func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
-            scrollView.setDefaultFilterItem(Menu.scenes)
+//            scrollView.setDefaultFilterItem(Menu.scenes)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
@@ -161,7 +161,7 @@ class ScenesViewController: PopoverVC {
 
     // Helper functions
     func setDefaultFilterFromTimer(){
-        scrollView.setDefaultFilterItem(Menu.scenes)
+//        scrollView.setDefaultFilterItem(Menu.scenes)
     }
 }
 
@@ -170,10 +170,10 @@ extension ScenesViewController: FilterPullDownDelegate{
     func filterParametars(_ filterItem: FilterItem){
         filterParametar = filterItem
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.scenes)
+//        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.scenes)
         updateSceneList()
-        TimerForFilter.shared.counterScenes = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.scenes)
-        TimerForFilter.shared.startTimer(type: Menu.scenes)
+//        TimerForFilter.shared.counterScenes = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.scenes)
+//        TimerForFilter.shared.startTimer(type: Menu.scenes)
     }
     
     func saveDefaultFilter(){

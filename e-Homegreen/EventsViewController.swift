@@ -48,7 +48,7 @@ class EventsViewController: PopoverVC{
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
-        scrollView.setFilterItem(Menu.events)
+//        scrollView.setFilterItem(Menu.events)
         NotificationCenter.default.addObserver(self, selector: #selector(EventsViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEvents), object: nil)
     }
     
@@ -107,7 +107,7 @@ class EventsViewController: PopoverVC{
     
     func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
-            scrollView.setDefaultFilterItem(Menu.events)
+//            scrollView.setDefaultFilterItem(Menu.events)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
@@ -152,7 +152,7 @@ class EventsViewController: PopoverVC{
     
     // Helper functions
     func setDefaultFilterFromTimer(){
-        scrollView.setDefaultFilterItem(Menu.events)
+//        scrollView.setDefaultFilterItem(Menu.events)
     }
 
 }
@@ -162,11 +162,11 @@ extension EventsViewController: FilterPullDownDelegate{
     func filterParametars(_ filterItem: FilterItem){
         filterParametar = filterItem
         updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.events)
+//        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.events)
         updateEventsList()
         
-        TimerForFilter.shared.counterEvents = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.events)
-        TimerForFilter.shared.startTimer(type: Menu.events)
+//        TimerForFilter.shared.counterEvents = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.events)
+//        TimerForFilter.shared.startTimer(type: Menu.events)
     }
     
     func saveDefaultFilter(){
