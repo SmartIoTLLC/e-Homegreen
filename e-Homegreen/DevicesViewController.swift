@@ -370,7 +370,7 @@ class DevicesViewController: PopoverVC{
                 devices[tag].currentValue = 0
                 skipLevel = 0
             } else {
-                setDeviceValue = 100
+                setDeviceValue = 255
                 skipLevel = UInt8(Int(self.devices[tag].skipState))
             }
             devices[tag].currentValue = NSNumber(value: Int(setDeviceValue))
