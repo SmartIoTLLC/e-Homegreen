@@ -211,7 +211,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         }
         else if devices[indexPath.row].controlType == ControlType.Curtain {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "curtainCell", for: indexPath) as! CurtainCollectionCell
-            
+                        
             cell.curtainName.text = devices[indexPath.row].cellTitle
             cell.curtainImage.tag = indexPath.row
             cell.openButton.tag = indexPath.row

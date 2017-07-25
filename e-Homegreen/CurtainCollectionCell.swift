@@ -60,24 +60,35 @@ class CurtainCollectionCell: UICollectionViewCell {
 // Other. Helper
     
     func setImageForDevice(_ device: Device){
+        
+
         // Find the device that is the pair of this device for reley control
         // First or second channel will always be presented (not 3 and 4), so we are looking for 3 and 4 channels
         let devices = CoreDataController.shahredInstance.fetchDevicesByGatewayAndAddress(device.gateway, address: device.address)
         var devicePair: Device? = nil
         for deviceTemp in devices{
             if deviceTemp.address == device.address {
-                if ((device.channel.intValue == 1 && deviceTemp.channel.intValue == 3) ||
-                    (device.channel.intValue == 3 && deviceTemp.channel.intValue == 1) ||
-                    (device.channel.intValue == 2 && deviceTemp.channel.intValue == 4) ||
-                    (device.channel.intValue == 4 && deviceTemp.channel.intValue == 2)) &&
-                deviceTemp.isCurtainModeAllowed.boolValue == true &&
-                device.isCurtainModeAllowed.boolValue == true{
-                    
-                    devicePair = deviceTemp
+                if deviceTemp.curtainGroupID == device.curtainGroupID {
+                    if deviceTemp.channel.intValue != device.channel.intValue {
+                        devicePair = deviceTemp
+                    }
                 }
+                
+//                if
+//                    ((device.channel.intValue == 1 && deviceTemp.channel.intValue == 3) ||
+//                    (device.channel.intValue == 3 && deviceTemp.channel.intValue == 1) ||
+//                    (device.channel.intValue == 2 && deviceTemp.channel.intValue == 4) ||
+//                    (device.channel.intValue == 4 && deviceTemp.channel.intValue == 2)) &&
+//                deviceTemp.isCurtainModeAllowed.boolValue == true &&
+//                device.isCurtainModeAllowed.boolValue == true{
+//                    
+//                    devicePair = deviceTemp
+//                }
             }
         }
+        
         if devicePair == nil { // three state module
+            
             guard let devImages = Array(device.deviceImages!) as? [DeviceImage] else {
                 print("error")
                 return
