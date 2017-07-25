@@ -391,15 +391,20 @@ class DevicesViewController: PopoverVC{
         var devicePair: Device? = nil
         for deviceTemp in allDevices{
             if deviceTemp.address == devices[tag].address {
-                if ((devices[tag].channel.intValue == 1 && deviceTemp.channel.intValue == 3) ||
-                    (devices[tag].channel.intValue == 3 && deviceTemp.channel.intValue == 1) ||
-                    (devices[tag].channel.intValue == 2 && deviceTemp.channel.intValue == 4) ||
-                    (devices[tag].channel.intValue == 4 && deviceTemp.channel.intValue == 2)) &&
-                    deviceTemp.isCurtainModeAllowed.boolValue &&
-                    devices[tag].isCurtainModeAllowed.boolValue{
-                    
-                    devicePair = deviceTemp
+                if deviceTemp.curtainGroupID == devices[tag].curtainGroupID {
+                    if deviceTemp.channel.intValue != devices[tag].channel.intValue {
+                        devicePair = deviceTemp
+                    }
                 }
+//                if ((devices[tag].channel.intValue == 1 && deviceTemp.channel.intValue == 3) ||
+//                    (devices[tag].channel.intValue == 3 && deviceTemp.channel.intValue == 1) ||
+//                    (devices[tag].channel.intValue == 2 && deviceTemp.channel.intValue == 4) ||
+//                    (devices[tag].channel.intValue == 4 && deviceTemp.channel.intValue == 2)) &&
+//                    deviceTemp.isCurtainModeAllowed.boolValue &&
+//                    devices[tag].isCurtainModeAllowed.boolValue{
+//                    
+//                    devicePair = deviceTemp
+//                }
             }
         }
         
@@ -439,15 +444,21 @@ class DevicesViewController: PopoverVC{
         var devicePair: Device? = nil
         for deviceTemp in allDevices{
             if deviceTemp.address == devices[tag].address {
-                if ((devices[tag].channel.intValue == 1 && deviceTemp.channel.intValue == 3) ||
-                    (devices[tag].channel.intValue == 3 && deviceTemp.channel.intValue == 1) ||
-                    (devices[tag].channel.intValue == 2 && deviceTemp.channel.intValue == 4) ||
-                    (devices[tag].channel.intValue == 4 && deviceTemp.channel.intValue == 2)) &&
-                    deviceTemp.isCurtainModeAllowed.boolValue &&
-                    devices[tag].isCurtainModeAllowed.boolValue{
-                    
-                    devicePair = deviceTemp
+                if deviceTemp.curtainGroupID == devices[tag].curtainGroupID {
+                    if deviceTemp.channel.intValue != devices[tag].channel.intValue {
+                        devicePair = deviceTemp
+                    }
                 }
+                
+//                if ((devices[tag].channel.intValue == 1 && deviceTemp.channel.intValue == 3) ||
+//                    (devices[tag].channel.intValue == 3 && deviceTemp.channel.intValue == 1) ||
+//                    (devices[tag].channel.intValue == 2 && deviceTemp.channel.intValue == 4) ||
+//                    (devices[tag].channel.intValue == 4 && deviceTemp.channel.intValue == 2)) &&
+//                    deviceTemp.isCurtainModeAllowed.boolValue &&
+//                    devices[tag].isCurtainModeAllowed.boolValue{
+//                    
+//                    devicePair = deviceTemp
+//                }
             }
         }
         
@@ -494,15 +505,21 @@ class DevicesViewController: PopoverVC{
         var devicePair: Device? = nil
         for deviceTemp in allDevices{
             if deviceTemp.address == devices[tag].address {
-                if ((devices[tag].channel.intValue == 1 && deviceTemp.channel.intValue == 3) ||
-                    (devices[tag].channel.intValue == 3 && deviceTemp.channel.intValue == 1) ||
-                    (devices[tag].channel.intValue == 2 && deviceTemp.channel.intValue == 4) ||
-                    (devices[tag].channel.intValue == 4 && deviceTemp.channel.intValue == 2)) &&
-                    deviceTemp.isCurtainModeAllowed.boolValue &&
-                    devices[tag].isCurtainModeAllowed.boolValue{
-                    
-                    devicePair = deviceTemp
+                if deviceTemp.curtainGroupID == devices[tag].curtainGroupID {
+                    if deviceTemp.channel.intValue != devices[tag].channel.intValue {
+                        devicePair = deviceTemp
+                    }
                 }
+                
+//                if ((devices[tag].channel.intValue == 1 && deviceTemp.channel.intValue == 3) ||
+//                    (devices[tag].channel.intValue == 3 && deviceTemp.channel.intValue == 1) ||
+//                    (devices[tag].channel.intValue == 2 && deviceTemp.channel.intValue == 4) ||
+//                    (devices[tag].channel.intValue == 4 && deviceTemp.channel.intValue == 2)) &&
+//                    deviceTemp.isCurtainModeAllowed.boolValue &&
+//                    devices[tag].isCurtainModeAllowed.boolValue{
+//                    
+//                    devicePair = deviceTemp
+//                }
             }
         }
         

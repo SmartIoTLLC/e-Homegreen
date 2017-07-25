@@ -66,15 +66,21 @@ class CurtainCollectionCell: UICollectionViewCell {
         var devicePair: Device? = nil
         for deviceTemp in devices{
             if deviceTemp.address == device.address {
-                if ((device.channel.intValue == 1 && deviceTemp.channel.intValue == 3) ||
-                    (device.channel.intValue == 3 && deviceTemp.channel.intValue == 1) ||
-                    (device.channel.intValue == 2 && deviceTemp.channel.intValue == 4) ||
-                    (device.channel.intValue == 4 && deviceTemp.channel.intValue == 2)) &&
-                deviceTemp.isCurtainModeAllowed.boolValue == true &&
-                device.isCurtainModeAllowed.boolValue == true{
-                    
-                    devicePair = deviceTemp
+                if deviceTemp.curtainGroupID == device.curtainGroupID {
+                    if deviceTemp.channel.intValue != device.channel.intValue {
+                        devicePair = deviceTemp
+                    }
                 }
+                
+//                if ((device.channel.intValue == 1 && deviceTemp.channel.intValue == 3) ||
+//                    (device.channel.intValue == 3 && deviceTemp.channel.intValue == 1) ||
+//                    (device.channel.intValue == 2 && deviceTemp.channel.intValue == 4) ||
+//                    (device.channel.intValue == 4 && deviceTemp.channel.intValue == 2)) &&
+//                deviceTemp.isCurtainModeAllowed.boolValue == true &&
+//                device.isCurtainModeAllowed.boolValue == true{
+//                    
+//                    devicePair = deviceTemp
+//                }
             }
         }
         if devicePair == nil { // three state module
