@@ -116,6 +116,7 @@ class BroadcastPreference {
     }
     class func setBroadcastIp(_ ip:String) {
         Foundation.UserDefaults.standard.setValue(ip, forKey: "kBroadcastIp")
+        Foundation.UserDefaults.standard.synchronize()
     }
     
     class func getBroadcastPort() -> Int {
@@ -124,6 +125,7 @@ class BroadcastPreference {
     }
     class func setBroadcastPort(_ port:Int) {
         Foundation.UserDefaults.standard.setValue(port, forKey: "kBroadcastPort")
+        Foundation.UserDefaults.standard.synchronize()
     }
     
     class func getIsBroadcastOnStartUp() -> Bool {
@@ -132,6 +134,7 @@ class BroadcastPreference {
     }
     class func setIsBroadcastOnStartUp(_ port:Bool) {
         Foundation.UserDefaults.standard.set(port, forKey: "kIsBroadcastOnStartUp")
+        Foundation.UserDefaults.standard.synchronize()
     }
     
     class func getIsBroadcastOnEvery() -> Bool {
@@ -145,6 +148,7 @@ class BroadcastPreference {
 //            (UIApplication.shared.delegate as! AppDelegate).stopTimer()
         }
         Foundation.UserDefaults.standard.set(isUpdateRequired, forKey: "kIsBroadcastOnEvery")
+        Foundation.UserDefaults.standard.synchronize()
     }
     
     class func getBroadcastHour() -> Int {
@@ -153,6 +157,7 @@ class BroadcastPreference {
     }
     class func setBroadcastHour(_ port:Int) {
         Foundation.UserDefaults.standard.setValue(port, forKey: "kBroadcastHour")
+        Foundation.UserDefaults.standard.synchronize()
     }
     
     class func getBroadcastMin() -> Int {
@@ -161,6 +166,7 @@ class BroadcastPreference {
     }
     class func setBroadcastMin(_ port:Int) {
         Foundation.UserDefaults.standard.setValue(port, forKey: "kBroadcastMin")
+        Foundation.UserDefaults.standard.synchronize()
     }
     
     class func getBroadcastUpdateDate() -> Date? {
@@ -171,6 +177,7 @@ class BroadcastPreference {
     }
     class func setBroadcastUpdateDate() {
         Foundation.UserDefaults.standard.set(Date(), forKey: "kBroadcastUpdateDate")
+        Foundation.UserDefaults.standard.synchronize()
     }
 }
 // Ovo se vise ne koristi, ali svakako proveri

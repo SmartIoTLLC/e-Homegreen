@@ -318,6 +318,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
                 flagNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanFlagViewController.checkIfFlagDidGetName(_:)), userInfo: firstFlagIndexThatDontHaveName, repeats: false)
                 NSLog("func findNames \(firstFlagIndexThatDontHaveName)")
                 Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningFlagNames)
+                Foundation.UserDefaults.standard.synchronize()
                 sendCommandForFindingNameWithFlagAddress(firstFlagIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
     }
@@ -455,6 +456,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
                 flagParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanFlagViewController.checkIfFlagDidGetParametar(_:)), userInfo: parameterIndex, repeats: false)
                 NSLog("func findNames \(parameterIndex)")
                 Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningFlagParameters)
+                Foundation.UserDefaults.standard.synchronize()
                 sendCommandForFindingParameterWithFlagAddress(parameterIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
                 print("Command sent for parameter from FindParameter")
             }
@@ -554,6 +556,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
         flagParameterTimer?.invalidate()
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningFlagNames)
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningFlagParameters)
+        Foundation.UserDefaults.standard.synchronize()
         progressBarScreenFlagNames!.dissmissProgressBar()
         
         arrayOfNamesToBeSearched = [Int]()
@@ -576,6 +579,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     func removeObservers(){
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningFlagNames)
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningFlagParameters)
+        Foundation.UserDefaults.standard.synchronize()
         
         // Notification that tells us that timer is received and stored
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidReceiveFlagFromGateway), object: nil)

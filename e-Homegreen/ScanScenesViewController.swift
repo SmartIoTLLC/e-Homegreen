@@ -312,6 +312,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
                 scenesTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanScenesViewController.checkIfSceneDidGetName(_:)), userInfo: firstSceneIndexThatDontHaveName, repeats: false)
                 NSLog("func findNames \(firstSceneIndexThatDontHaveName)")
                 Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningSceneNameAndParameters)
+                Foundation.UserDefaults.standard.synchronize()
                 sendCommandWithSceneAddress(firstSceneIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
     }
@@ -399,6 +400,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
         timesRepeatedCounter = 0
         scenesTimer?.invalidate()
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningSceneNameAndParameters)
+        Foundation.UserDefaults.standard.synchronize()
         progressBarScreenScenes!.dissmissProgressBar()
         
         arrayOfScenesToBeSearched = [Int]()

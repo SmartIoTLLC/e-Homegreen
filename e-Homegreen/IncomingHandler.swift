@@ -674,6 +674,9 @@ class IncomingHandler: NSObject {
         CoreDataController.shahredInstance.saveChanges()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshClimate), object: self, userInfo: nil)
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+        
+        //
+//        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: nil, userInfo: nil)
     }
     
     func parseMessageDimmerGetRunningTime (_ byteArray:[Byte]) {
@@ -1020,6 +1023,9 @@ class IncomingHandler: NSObject {
                     default: break
                     }
                 }
+                
+                defaults.synchronize()
+
                 print("EHGSecuritySeczurityMode - \(defaults.value(forKey: UserDefaults.Security.SecurityMode)) *** EHGSecurityAlarmState - \(defaults.value(forKey: UserDefaults.Security.AlarmState)) *** EHGSecurityPanic - \(defaults.bool(forKey: UserDefaults.Security.IsPanic))")
                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.Security.ControlModeStopBlinking), object: self, userInfo: nil)
                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshSecurity), object: self, userInfo: nil)

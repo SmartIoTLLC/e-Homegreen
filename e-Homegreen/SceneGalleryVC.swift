@@ -269,10 +269,12 @@ class SceneGalleryVC: CommonXIBTransitionVC {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         defaults.setValue(scrollView.contentOffset.y, forKey: UserDefaults.GalleryContentOffset)
+        defaults.synchronize()
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         defaults.setValue(scrollView.contentOffset.y, forKey: UserDefaults.GalleryContentOffset)
+        defaults.synchronize()
     }
     
     func updateWithImage (_ image:UIImage) {

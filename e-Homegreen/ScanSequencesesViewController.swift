@@ -312,6 +312,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
                 sequencesTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanSequencesesViewController.checkIfSequenceDidGetName(_:)), userInfo: firstSequenceIndexThatDontHaveName, repeats: false)
                 NSLog("func findNames \(firstSequenceIndexThatDontHaveName)")
                 Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningSequencesNameAndParameters)
+                Foundation.UserDefaults.standard.synchronize()
                 sendCommandWithSequenceAddress(firstSequenceIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
     }
@@ -398,6 +399,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
         timesRepeatedCounter = 0
         sequencesTimer?.invalidate()
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningSequencesNameAndParameters)
+        Foundation.UserDefaults.standard.synchronize()
         progressBarScreenSequences!.dissmissProgressBar()
         
         arrayOfSequencesToBeSearched = [Int]()

@@ -195,6 +195,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     func removeObservers(){
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningTimerNames)
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningTimerParameters)
+        Foundation.UserDefaults.standard.synchronize()
         // Notification that tells us that timer is received and stored
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidReceiveTimerFromGateway), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidReceiveTimerParameterFromGateway), object: nil)
@@ -361,6 +362,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
                 timerNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: firstTimerIndexThatDontHaveName, repeats: false)
                 NSLog("func findNames \(firstTimerIndexThatDontHaveName)")
                 Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningTimerNames)
+                Foundation.UserDefaults.standard.synchronize()
                 sendCommandForFindingNameWithTimerAddress(firstTimerIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
     }
@@ -487,6 +489,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             }
             
             Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningTimerParameters)
+        Foundation.UserDefaults.standard.synchronize()
             
             UIApplication.shared.isIdleTimerDisabled = true
             if arrayOfParametersToBeSearched.count != 0{
@@ -599,6 +602,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         timerParameterTimer?.invalidate()
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningTimerNames)
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningTimerParameters)
+        Foundation.UserDefaults.standard.synchronize()
         progressBarScreenTimerNames!.dissmissProgressBar()
 
         arrayOfNamesToBeSearched = [Int]()

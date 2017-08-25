@@ -278,6 +278,8 @@ class DevicesViewController: PopoverVC{
         if devices[tag].currentValue == 0xFF {
             SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: UInt8(Int(devices[tag].channel)), status: 0x00), gateway: devices[tag].gateway)
         }
+        
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
     }
     func cellParametarLongPress(_ gestureRecognizer: UILongPressGestureRecognizer){
         let tag = gestureRecognizer.view!.tag
@@ -393,7 +395,11 @@ class DevicesViewController: PopoverVC{
             if deviceTemp.address == devices[tag].address {
                 if deviceTemp.curtainGroupID == devices[tag].curtainGroupID {
                     if deviceTemp.channel.intValue != devices[tag].channel.intValue {
-                        devicePair = deviceTemp
+                        
+                        if deviceTemp.isCurtainModeAllowed.boolValue == true  && devices[tag].isCurtainModeAllowed.boolValue == true {
+                            devicePair = deviceTemp
+                        }
+                        
                     }
                 }
 //                if ((devices[tag].channel.intValue == 1 && deviceTemp.channel.intValue == 3) ||
@@ -446,7 +452,11 @@ class DevicesViewController: PopoverVC{
             if deviceTemp.address == devices[tag].address {
                 if deviceTemp.curtainGroupID == devices[tag].curtainGroupID {
                     if deviceTemp.channel.intValue != devices[tag].channel.intValue {
-                        devicePair = deviceTemp
+                        
+                        if deviceTemp.isCurtainModeAllowed.boolValue == true && devices[tag].isCurtainModeAllowed.boolValue == true {
+                            devicePair = deviceTemp
+                        }
+                        
                     }
                 }
                 
@@ -507,7 +517,10 @@ class DevicesViewController: PopoverVC{
             if deviceTemp.address == devices[tag].address {
                 if deviceTemp.curtainGroupID == devices[tag].curtainGroupID {
                     if deviceTemp.channel.intValue != devices[tag].channel.intValue {
-                        devicePair = deviceTemp
+                        
+                        if deviceTemp.isCurtainModeAllowed.boolValue == true && devices[tag].isCurtainModeAllowed.boolValue == true {
+                            devicePair = deviceTemp
+                        }
                     }
                 }
                 

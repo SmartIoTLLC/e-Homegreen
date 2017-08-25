@@ -155,6 +155,7 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     }
     func removeObservers(){
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningEventsNameAndParameters)
+        Foundation.UserDefaults.standard.synchronize()
         // Notification that tells us that timer is received and stored
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidReceiveEventFromGateway), object: nil)
     }
@@ -323,6 +324,7 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
                 eventsTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanEventsViewController.checkIfEventDidGetName(_:)), userInfo: firstEventIndexThatDontHaveName, repeats: false)
                 NSLog("func findNames \(firstEventIndexThatDontHaveName)")
                 Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningEventsNameAndParameters)
+                Foundation.UserDefaults.standard.synchronize()
                 sendCommandWithEventAddress(firstEventIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
     }
@@ -408,6 +410,7 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         timesRepeatedCounter = 0
         eventsTimer?.invalidate()
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningEventsNameAndParameters)
+        Foundation.UserDefaults.standard.synchronize()
         progressBarScreenEvents!.dissmissProgressBar()
         
         arrayOfEventsToBeSearched = [Int]()

@@ -58,16 +58,20 @@ class SecurityCollectionCell: UICollectionViewCell {
                     self.securityImageView.image = UIImage(named: "disarm")
                 default: break
                 }
+                setNeedsDisplay()
             }
         }
         if securityName == "Panic" {
             if defaults.bool(forKey: UserDefaults.Security.IsPanic) {
                 //                cell.setImageForSecuirity(UIImage(named: "panic")!)
                 self.securityImageView.image = UIImage(named: "panic")
+                //setNeedsDisplay()
             } else {
                 //                cell.setImageForSecuirity(UIImage(named: "inactivepanic")!)
                 self.securityImageView.image = UIImage(named: "inactivepanic")
+                //setNeedsDisplay()
             }
+            setNeedsDisplay()
         }
     }
     
@@ -104,7 +108,7 @@ class SecurityCollectionCell: UICollectionViewCell {
     }
     
     func startBlinking(_ notification: Notification){
-        print("Celija: \(self.securityTitle.text)")
+        print("Celija: \(String(describing:self.securityTitle.text))")
         guard let notificationControlMode = (notification as NSNotification).userInfo?["controlMode"] as? String else{
             return
         }
@@ -119,6 +123,7 @@ class SecurityCollectionCell: UICollectionViewCell {
                 timer = Foundation.Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(SecurityCollectionCell.toggleBtnImage(_:)), userInfo: (notification as NSNotification).userInfo, repeats: true)
                 }
             }
+            
         }else{
             if let _ = self.timer{
                 timer!.invalidate()
@@ -143,7 +148,7 @@ class SecurityCollectionCell: UICollectionViewCell {
     }
     // Function used to toggle immages on-off until App receives new state
     func toggleBtnImage(_ timer: Foundation.Timer){
-        if let info = timer.userInfo as? [String:AnyObject] {
+        if let info = timer.userInfo as? [String: AnyObject] {
             if let i = info["controlMode"] as? String{
                 switch i {
                 case SecurityControlMode.Away:

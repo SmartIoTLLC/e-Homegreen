@@ -216,6 +216,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     }
     func removeObservers() {
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningForCategories)
+        Foundation.UserDefaults.standard.synchronize()
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "categoryReceivedFromGateway:"), object: nil)
     }
     
@@ -269,6 +270,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
             pbSZ = ProgressBarVC(title: "Scanning Categories", percentage: sp.initialPercentage, howMuchOf: "1 / \(sp.count)")
             pbSZ?.delegate = self
             Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningForCategories)
+            Foundation.UserDefaults.standard.synchronize()
             scanZones?.sendCommandForFinding(id:Byte(sp.from))
             zoneScanTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ImportCategoryViewController.checkIfGatewayDidGetCategory(_:)), userInfo: sp.from, repeats: false)
             timesRepeatedCounter = 1
@@ -331,6 +333,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         timesRepeatedCounter = 0
         zoneScanTimer?.invalidate()
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningForZones)
+        Foundation.UserDefaults.standard.synchronize()
         pbSZ?.dissmissProgressBar()
         UIApplication.shared.isIdleTimerDisabled = false
         refreshCategoryList()

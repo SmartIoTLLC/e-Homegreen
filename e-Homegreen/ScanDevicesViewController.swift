@@ -116,6 +116,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningDevice)
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningSensorParametars)
         
+        Foundation.UserDefaults.standard.synchronize()
+        
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidFindDeviceName), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidFindDevice), object: nil)
@@ -245,6 +247,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(searchForDeviceWithId!)]
             self.setProgressBarParametarsForSearchingDevices(address)   // Needs to be done because progres bar is an the beginning 100%, for some reason..
             Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningDevice)
+            Foundation.UserDefaults.standard.synchronize()
             SendingHandler.sendCommand(byteArray: OutgoingHandler.searchForDevices(address), gateway: gateway)
         }else{
             self.view.makeToast(message: "No devices to search")
@@ -257,6 +260,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             do {
                 let sp = try returnSearchParametars(rangeFrom.text!, to: rangeTo.text!, isScaningNamesAndParametars: false)
                 Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningDevice)
+                Foundation.UserDefaults.standard.synchronize()
                 UIApplication.shared.isIdleTimerDisabled = true
                 
                 // Add to array all IDs from range that are not found already
@@ -421,7 +425,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         
         if devices.count != 0 {
             Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningDeviceName)
-            
+            Foundation.UserDefaults.standard.synchronize()
             // Go through all devices and store all devices which are in defined range and which don't have name parameter
             // Values that are stored in "arrayOfNamesToBeSearched" are indexes in "devices" array of those devices that don't have name
             // Example: devices: [device1, device2, device3], and device1 and device3 don't names. Then
@@ -475,6 +479,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             indexOfNamesToBeSearched = 0
             if devices.count != 0 {
                 Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningDeviceName)
+                Foundation.UserDefaults.standard.synchronize()
                 
                 // Go through all devices and store only those which are in defined range and which don't have name parameter
                 // Values that are stored in "arrayOfNamesToBeSearched" are indexes in "devices" array of those devices that don't have name
@@ -707,6 +712,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         UIApplication.shared.isIdleTimerDisabled = true
         if arrayOfSensorAdresses.count != 0{
             Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningSensorParametars)
+            Foundation.UserDefaults.standard.synchronize()
             let index = 0
             let deviceIndex = arrayOfSensorAdresses[index]
             timesRepeatedCounter = 0
@@ -828,12 +834,14 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
 
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningDeviceName)
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningSensorParametars)
+        Foundation.UserDefaults.standard.synchronize()
         pbFN?.dissmissProgressBar()
         
         //   For finding devices
         searchForDeviceWithId = 0
         searchDeviceTimer?.invalidate()
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningDevice)
+        Foundation.UserDefaults.standard.synchronize()
         pbFD?.dissmissProgressBar()
         if !findSensorParametar {
             UIApplication.shared.isIdleTimerDisabled = false

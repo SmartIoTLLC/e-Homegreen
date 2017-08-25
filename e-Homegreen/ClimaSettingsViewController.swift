@@ -197,7 +197,16 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
             Foundation.Timer.scheduledTimer(timeInterval: 0.6, target: self, selector: #selector(ClimaSettingsViewController.setACSpeed), userInfo: nil, repeats: false)
             Foundation.Timer.scheduledTimer(timeInterval: 0.9, target: self, selector: #selector(ClimaSettingsViewController.setACmode), userInfo: nil, repeats: false)
         }
+        
+       //
+        Foundation.Timer.scheduledTimer(timeInterval: 1.2, target: self, selector: #selector(refresh), userInfo: nil, repeats: false)
+        
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    //
+    func refresh() {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }
     
     func setACSetPoint () {

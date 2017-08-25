@@ -288,7 +288,12 @@ class HvacParametersCell: PopoverVC {
             
             device.resetImages(appDel.managedObjectContext!)
             CoreDataController.shahredInstance.saveChanges()
-            //            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+            
+            // Why was the next line commented out?
+            
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
+            
+            
             self.delegate?.saveClicked()
             self.dismiss(animated: true, completion: nil)
         }

@@ -133,6 +133,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
                 cardNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetName(_:)), userInfo: firstTimerIndexThatDontHaveName, repeats: false)
                 NSLog("func findNames \(firstTimerIndexThatDontHaveName)")
                 Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningCardNames)
+                Foundation.UserDefaults.standard.synchronize()
                 sendCommandForFindingNameWithCardAddress(firstTimerIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
             }
         
@@ -272,6 +273,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
                 cardParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanCardsViewController.checkIfCardDidGetParametar(_:)), userInfo: parameterIndex, repeats: false)
                 NSLog("func findNames \(parameterIndex)")
                 Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningCardParameters)
+                Foundation.UserDefaults.standard.synchronize()
                 sendCommandForFindingParameterWithCardAddress(parameterIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
                 print("Command sent for parameter from FindParameter")
             }
@@ -395,6 +397,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
                 timerNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanTimerViewController.checkIfTimerDidGetName(_:)), userInfo: firstTimerIndexThatDontHaveName, repeats: false)
                 NSLog("func findNames \(firstTimerIndexThatDontHaveName)")
                 Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningTimerNames)
+                Foundation.UserDefaults.standard.synchronize()
                 sendCommandForFindingNameWithTimerAddress(firstTimerIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: timerAddress)
             }
     }
@@ -489,6 +492,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
             }
             
             Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningTimerParameters)
+        Foundation.UserDefaults.standard.synchronize()
             
             UIApplication.shared.isIdleTimerDisabled = true
             if arrayOfParametersToBeSearched.count != 0{
@@ -594,6 +598,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningCardParameters)
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningTimerNames)
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningTimerParameters)
+        Foundation.UserDefaults.standard.synchronize()
         progressBarScreenTimerNames!.dissmissProgressBar()
         
         arrayOfNamesToBeSearched = [Int]()
@@ -630,6 +635,8 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningCardParameters)
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningTimerNames)
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningTimerParameters)
+        
+        Foundation.UserDefaults.standard.synchronize()
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidFindDeviceName), object: nil)

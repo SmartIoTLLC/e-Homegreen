@@ -25,6 +25,8 @@ class LocalSearchParametar {
             userDefault.setValue(parametar[5], forKey: "\(tab)ZoneSearchName")
             userDefault.setValue(parametar[6], forKey: "\(tab)CategorySearchName")
         }
+        
+        userDefault.synchronize()
     }
 //    class func setLocalParametar(tab:String, parametars:String...) {
 //        let userDefault:NSUserDefaults = NSUserDefaults.standardUserDefaults()

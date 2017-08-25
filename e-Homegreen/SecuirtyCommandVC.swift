@@ -103,12 +103,11 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
                     if defaults.bool(forKey: UserDefaults.Security.IsPanic) {
                         SendingHandler.sendCommand(byteArray: OutgoingHandler.setPanic(address, panic: 0x01), gateway: gateway)
                         defaults.set(false, forKey: UserDefaults.Security.IsPanic)
-                        defaults.synchronize()
                     } else {
                         SendingHandler.sendCommand(byteArray: OutgoingHandler.setPanic(address, panic: 0x00), gateway: gateway)
                         defaults.set(true, forKey: UserDefaults.Security.IsPanic)
-                        defaults.synchronize()
                     }
+                    defaults.synchronize()
                     NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: notificationName) , object: self, userInfo: ["controlMode": SecurityControlMode.Panic]))
                 default: break
                 }
