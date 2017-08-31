@@ -164,11 +164,15 @@ class DevicesViewController: PopoverVC{
         NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.refreshDeviceList), name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.refreshVisibleDevicesInScrollView), name: NSNotification.Name(rawValue: NotificationKey.DidRefreshDeviceInfo), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.refreshLocalParametars), name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.refreshVisibleDevicesInScrollView), name: NSNotification.Name(rawValue: NotificationKey.RefreshClimate), object: nil)
     }
     func removeObservers() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidRefreshDeviceInfo), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshClimate), object: nil)
     }
     
     func updateConstraints() {

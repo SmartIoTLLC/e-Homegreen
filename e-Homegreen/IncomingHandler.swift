@@ -997,7 +997,8 @@ class IncomingHandler: NSObject {
                     case 0x03:
                         defaults.setValue(SecurityControlMode.Day, forKey: UserDefaults.Security.SecurityMode)
                     case 0x04:
-                        defaults.setValue(SecurityControlMode.Vacation, forKey: UserDefaults.Security.SecurityMode)
+                        print("Vacation mode is unsupported in UTT")
+                        //defaults.setValue(SecurityControlMode.Vacation, forKey: UserDefaults.Security.SecurityMode)
                     default: break
                     }
                 }

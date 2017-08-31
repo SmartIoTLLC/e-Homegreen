@@ -82,7 +82,7 @@ struct SecurityControlMode {
     static let Away = "Away"
     static let Day = "Day"
     static let Night = "Night"
-    static let Vacation = "Vacation"
+//    static let Vacation = "Vacation"
     static let Disarm = "Disarm"
     static let Panic = "Panic"
 }
