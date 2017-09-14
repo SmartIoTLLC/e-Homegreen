@@ -80,6 +80,11 @@ extension DevicesViewController: UICollectionViewDataSource {
             updateDeviceStatus (indexPathRow: (indexPath as NSIndexPath).row)
         }        
     }
+    
+    func refreshCollectionView() {
+        deviceCollectionView.reloadData()
+    }
+    
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             if let collectionView = scrollView as? UICollectionView {

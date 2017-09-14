@@ -70,7 +70,9 @@ class CurtainCollectionCell: UICollectionViewCell {
             if deviceTemp.address == device.address {
                 if deviceTemp.curtainGroupID == device.curtainGroupID {
                     if deviceTemp.channel.intValue != device.channel.intValue {
-                        devicePair = deviceTemp
+                        if deviceTemp.isCurtainModeAllowed.boolValue == true && device.isCurtainModeAllowed.boolValue == true {
+                            devicePair = deviceTemp
+                        }                        
                     }
                 }
                 

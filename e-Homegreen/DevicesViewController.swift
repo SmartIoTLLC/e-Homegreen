@@ -164,11 +164,15 @@ class DevicesViewController: PopoverVC{
         NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.refreshDeviceList), name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.refreshVisibleDevicesInScrollView), name: NSNotification.Name(rawValue: NotificationKey.DidRefreshDeviceInfo), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.refreshLocalParametars), name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshCollectionView), name: NSNotification.Name(rawValue: NotificationKey.RefreshClimate), object: nil)
     }
     func removeObservers() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidRefreshDeviceInfo), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshClimate), object: nil)
     }
     
     func updateConstraints() {
@@ -396,7 +400,9 @@ class DevicesViewController: PopoverVC{
                 
                 if deviceTemp.curtainGroupID == devices[tag].curtainGroupID {
                     if deviceTemp.channel.intValue != devices[tag].channel.intValue {
-                        devicePair = deviceTemp
+                        if deviceTemp.isCurtainModeAllowed.boolValue == true && devices[tag].isCurtainModeAllowed.boolValue == true {
+                            devicePair = deviceTemp
+                        }
                     }
                     
 //                    if ((devices[tag].channel.intValue == 1 && deviceTemp.channel.intValue == 3) ||
@@ -451,7 +457,9 @@ class DevicesViewController: PopoverVC{
             if deviceTemp.address == devices[tag].address {
                 if deviceTemp.curtainGroupID == devices[tag].curtainGroupID {
                     if deviceTemp.channel.intValue != devices[tag].channel.intValue {
-                        devicePair = deviceTemp
+                        if deviceTemp.isCurtainModeAllowed.boolValue == true && devices[tag].isCurtainModeAllowed.boolValue == true {
+                            devicePair = deviceTemp
+                        }
                     }
                     
                     
@@ -513,7 +521,9 @@ class DevicesViewController: PopoverVC{
             if deviceTemp.address == devices[tag].address {
                 if deviceTemp.curtainGroupID == devices[tag].curtainGroupID {
                     if deviceTemp.channel.intValue != devices[tag].channel.intValue {
-                        devicePair = deviceTemp
+                        if deviceTemp.isCurtainModeAllowed.boolValue == true && devices[tag].isCurtainModeAllowed.boolValue == true {
+                            devicePair = deviceTemp
+                        }
                     }
                     
                     
