@@ -165,7 +165,7 @@ class DevicesViewController: PopoverVC{
         NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.refreshVisibleDevicesInScrollView), name: NSNotification.Name(rawValue: NotificationKey.DidRefreshDeviceInfo), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.refreshLocalParametars), name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.refreshVisibleDevicesInScrollView), name: NSNotification.Name(rawValue: NotificationKey.RefreshClimate), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.refreshCollectionView), name: NSNotification.Name(rawValue: NotificationKey.RefreshClimate), object: nil)
     }
     func removeObservers() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
@@ -283,7 +283,7 @@ class DevicesViewController: PopoverVC{
             SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: UInt8(Int(devices[tag].channel)), status: 0x00), gateway: devices[tag].gateway)
         }
         
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.RefreshClimate), object: nil)
     }
     func cellParametarLongPress(_ gestureRecognizer: UILongPressGestureRecognizer){
         let tag = gestureRecognizer.view!.tag
