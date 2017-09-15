@@ -1,0 +1,389 @@
+[
+ {
+   "stationName": "Abu Dhabi Classic FM 91.6",
+   "area": "Abu Dhabi",
+   "city": "United Arab Emirates",
+   "genre": "Classical/Jazz",
+   "url": "http://playerservices.streamtheworld.com/api/livestream-redirect/ADCFM.mp3",
+   "isWorking": true,
+   "description": ""
+ },
+ {
+   "stationName": "Abu Dhabi Radio",
+   "area": "Abu Dhabi",
+   "city": "United Arab Emirates",
+   "genre": "World Asia",
+   "url": "http://208.80.52.96/ABU_DHABI.mp3",
+   "isWorking": false,
+   "description": "Forbidden"
+ },
+ {
+   "stationName": "Al Arabiya 99 FM",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "World Middle East",
+   "url": "http://19393.live.streamtheworld.com/AL_ARABIYA_SC",
+   "isWorking": true,
+   "description": ""
+ },
+ {
+   "stationName": "Al Khaleejiya 100.9 FM",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "World Middle East",
+   "url": "http://5253.live.streamtheworld.com:80/AL_KHALEEJIA_SC",
+   "isWorking": false,
+   "description": "Server not found"
+ },
+ {
+   "stationName": "Al Rabea FM United Arab Emirates 107.8",
+   "area": "Ajman",
+   "city": "United Arab Emirates",
+   "genre": "World Middle East",
+   "url": "http://4103.live.streamtheworld.com:80/AL_RABEAFM_SC",
+   "isWorking": false,
+   "description": "Server not found"
+ },
+ {
+   "stationName": "Ananaz Radio",
+   "area": "Internet Only",
+   "city": "United Arab Emirates",
+   "genre": "Pop",
+   "url": "http://s3.voscast.com:8086/",
+   "isWorking": true,
+   "description": "Click listen button"
+ },
+ {
+   "stationName": "Auto Radio UAE",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "Pop",
+   "url": "http://playerservices.streamtheworld.com/api/livestream-redirect/AUTORADIOAAC_SC",
+   "isWorking": true,
+   "description": ""
+ },
+ {
+   "stationName": "Channel 4FM 104.8",
+   "area": "Ajman",
+   "city": "United Arab Emirates",
+   "genre": "Top 40",
+   "url": "http://4083.live.streamtheworld.com:3690/CHANNEL4FM_SC",
+   "isWorking": false,
+   "description": "Server not found"
+ },
+ {
+   "stationName": "City 101.6 FM",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "World India",
+   "url": "http://5303.live.streamtheworld.com:80/ARNCITY_SC",
+   "isWorking": false,
+   "description": "Server not found"
+ },
+ {
+   "stationName": "Dance 97.8 FM",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "Dance",
+   "url": "http://playerservices.streamtheworld.com/api/livestream-redirect/DANCE_FMAAC_SC",
+   "isWorking": true,
+   "description": ""
+ },
+ {
+   "stationName": "Dubai Eye 103.8",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "News Talk/Sports",
+   "url": "http://5303.live.streamtheworld.com:443/DUBAI_EYE_SC",
+   "isWorking": false,
+   "description": "Server not found"
+ },
+ {
+   "stationName": "Dubai FM 93",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "World Middle East",
+   "url": "http://4063.live.streamtheworld.com:443/DUBAIFMAAC_SC",
+   "isWorking": false,
+   "description": "Server not found"
+ },
+ {
+   "stationName": "ELO Forever Classic Hits",
+   "area": "Internet Only",
+   "city": "United Arab Emirates",
+   "genre": "Pop",
+   "url": "http://14123.live.streamtheworld.com/SAM08AAC144_SC",
+   "isWorking": false,
+   "description": "Forbidden"
+ },
+ {
+   "stationName": "Emarat FM 95.8",
+   "area": "Abu Dhabi",
+   "city": "United Arab Emirates",
+   "genre": "World Middle East",
+   "url": "http://208.80.52.96/EMARAT_FM.mp3",
+   "isWorking": false,
+   "description": "Forbidden"
+ },
+ {
+   "stationName": "Europa Plus Dubai 96.3 FM",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "Top 40",
+   "url": "http://ep128server.streamr.ru:8030/ep128",
+   "isWorking": true,
+   "description": ""
+ },
+ {
+   "stationName": "Ganam Radio",
+   "area": "Internet Only",
+   "city": "United Arab Emirates",
+   "genre": "World India",
+   "url": "http://viadj.viastreaming.net:7104",
+   "isWorking": true,
+   "description": "Click listen button"
+ },
+ {
+   "stationName": "Gold 101.3 FM",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "World India",
+   "url": "http://playerservices.streamtheworld.com/api/livestream-redirect/GOLDFM_SC",
+   "isWorking": true,
+   "description": ""
+ },
+ {
+   "stationName": "Hit 96.7 FM",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "World India",
+   "url": "http://19113.live.streamtheworld.com/HIT_SC",
+   "isWorking": true,
+   "description": ""
+ },
+ {
+   "stationName": "Hit Classics",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "World India",
+   "url": "http://playerservices.streamtheworld.com/api/livestream-redirect/HIT_CLASSICS_SC",
+   "isWorking": true,
+   "description": ""
+ },
+ {
+   "stationName": "HUM 106.2 FM",
+   "area": "Sharjah",
+   "city": "United Arab Emirates",
+   "genre": "World India",
+   "url": "http://icy1.abacast.com/humfm-humfmmp3-64",
+   "isWorking": false,
+   "description": "Cant be found"
+ },
+ {
+   "stationName": "i-Radio Dubai",
+   "area": "Internet Only",
+   "city": "United Arab Emirates",
+   "genre": "Variety",
+   "url": "http://38.107.243.188:7549/",
+   "isWorking": true,
+   "description": "Click listen button"
+ },
+ {
+   "stationName": "Kol Noujoum FM",
+   "area": "Internet Only",
+   "city": "United Arab Emirates",
+   "genre": "World Middle East/Pop",
+   "url": "http://198.178.123.20:8196",
+   "isWorking": true,
+   "description": "Click listen button"
+ },
+ {
+   "stationName": "Nadam Radio",
+   "area": "Internet Only",
+   "city": "United Arab Emirates",
+   "genre": "World India",
+   "url": "http://5.63.145.172:7070",
+   "isWorking": true,
+   "description": "Click listen button"
+ },
+ {
+   "stationName": "Noor Dubai FM 93.9",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "Talk/World Middle East",
+   "url": "(Can't download)",
+   "isWorking": false,
+   "description": "Cant download or click link"
+ },
+ {
+   "stationName": "Online FM",
+   "area": "Internet Only",
+   "city": "United Arab Emirates",
+   "genre": "Pop",
+   "url": "http://94.23.252.14:8124/",
+   "isWorking": false,
+   "description": "Unable to connect"
+ },
+ {
+   "stationName": "Quran Kareem FM 88.2",
+   "area": "Abu Dhabi",
+   "city": "United Arab Emirates",
+   "genre": "Religious",
+   "url": "http://playerservices.streamtheworld.com/api/livestream-redirect/QURAN_KAREEM_SC",
+   "isWorking": true,
+   "description": ""
+ },
+ {
+   "stationName": "Radio 4 89.1 FM",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "World India/Pop/Top 40",
+   "url": "http://5293.live.streamtheworld.com:80/RADIO4FM_SC",
+   "isWorking": false,
+   "description": "Server not found"
+ },
+ {
+   "stationName": "Radio Asia 1269 AM",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "World India/Variety",
+   "url": "http://50.7.71.27:9699/index.html?sid=1",
+   "isWorking": true,
+   "description": "Click listen button"
+ },
+ {
+   "stationName": "Radio Dubai 92",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "Top 40",
+   "url": "http://5263.live.streamtheworld.com:443/DUBAI_92_SC",
+   "isWorking": false,
+   "description": "Server not found"
+ },
+ {
+   "stationName": "Radio Fujairah 92.6 FM",
+   "area": "Fujairah",
+   "city": "United Arab Emirates",
+   "genre": "World Middle East",
+   "url": "http://fujmedia.dyndns.org:4427/live",
+   "isWorking": false,
+   "description": "Server not found"
+ },
+ {
+   "stationName": "Radio Gilli 106.5 FM",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "World India",
+   "url": "http://s2.voscast.com:10616/",
+   "isWorking": true,
+   "description": "Click listen button"
+ },
+ {
+   "stationName": "Radio Me 100.3 FM",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "World India",
+   "url": "http://5303.live.streamtheworld.com:443/RADIOMEAAC_SC",
+   "isWorking": false,
+   "description": "Server not found"
+ },
+ {
+   "stationName": "Radio Sawa Gulf",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "World Middle East/News/Pop",
+   "url": "http://mbn-channel-01.akacast.akamaistream.net/7/29/233450/v1/ibb.akacast.akamaistream.net/mbn_channel_01",
+   "isWorking": true,
+   "description": ""
+ },
+ {
+   "stationName": "Radio Shoma 93.4 FM",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "Pop",
+   "url": "http://5303.live.streamtheworld.com:80/RADIO_SHOMA_SC",
+   "isWorking": false,
+   "description": "Server not found"
+ },
+ {
+   "stationName": "Radio Spice 105.4 FM",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "World India",
+   "url": "http://ice5.securenetsystems.net/1054",
+   "isWorking": true,
+   "description": ""
+ },
+ {
+   "stationName": "Sary FM",
+   "area": "Internet Only",
+   "city": "United Arab Emirates",
+   "genre": "World Middle East",
+   "url": "http://68.168.103.13:8224",
+   "isWorking": false,
+   "description": "Unable to connect"
+ },
+ {
+   "stationName": "Sharjah Radio",
+   "area": "Sharjah",
+   "city": "United Arab Emirates",
+   "genre": "Religious",
+   "url": "http://209.15.226.17:9008/stream",
+   "isWorking": true,
+   "description": ""
+ },
+ {
+   "stationName": "Sunni Online Radio",
+   "area": "Internet Only",
+   "city": "United Arab Emirates",
+   "genre": "Religious",
+   "url": "http://198.178.123.20:7812",
+   "isWorking": true,
+   "description": "Click listen button"
+ },
+ {
+   "stationName": "Suno 102.4 FM",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "World India",
+   "url": "http://192.240.97.69:8941/",
+   "isWorking": false,
+   "description": "Unable to connect"
+ },
+ {
+   "stationName": "TAG 91.1 FM",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "World Asia",
+   "url": "http://19513.live.streamtheworld.com/TAG911AE_SC",
+   "isWorking": true,
+   "description": ""
+ },
+ {
+   "stationName": "PTamil 89.4 FM",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "World India",
+   "url": "http://31.14.40.149:8000/",
+   "isWorking": true,
+   "description": "Click listen button"
+ },
+ {
+   "stationName": "ULLasam FM",
+   "area": "Internet Only",
+   "city": "United Arab Emirates",
+   "genre": "World India",
+   "url": "http://192.99.8.192:2792/ullasamfm",
+   "isWorking": true,
+   "description": ""
+ },
+ {
+   "stationName": "Virgin Radio Dubai 104.4 FM",
+   "area": "Dubai",
+   "city": "United Arab Emirates",
+   "genre": "Pop",
+   "url": "http://playerservices.streamtheworld.com/api/livestream-redirect/VIRGINRADIO_DUBAI_SC",
+   "isWorking": true,
+   "description": ""
+ }
+]

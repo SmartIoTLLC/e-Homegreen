@@ -154,6 +154,13 @@
 		4D16A1291D51CB8D00817477 /* HvacParametersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4D16A1271D51CB8D00817477 /* HvacParametersCell.xib */; };
 		4D411C9B1D5C982F000A3598 /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */; };
 		4D411C9C1D5C982F000A3598 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D411C9A1D5C982F000A3598 /* Device.swift */; };
+		4E1AAB131F6C01D1006C59AA /* Radio.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E1AAB121F6C01D1006C59AA /* Radio.storyboard */; };
+		4EDCE6811F6A8D740073736B /* radio_station.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EDCE6801F6A8D740073736B /* radio_station.json */; };
+		4EDCE6871F6A9BEA0073736B /* RadioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */; };
+		4EDCE68A1F6A9C090073736B /* StationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6881F6A9C090073736B /* StationCell.swift */; };
+		4EDCE68B1F6A9C090073736B /* StationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EDCE6891F6A9C090073736B /* StationCell.xib */; };
+		4EDCE6961F6AA76F0073736B /* Radio+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */; };
+		4EDCE6971F6AA76F0073736B /* Radio+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */; };
 		731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */; };
 		731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */; };
 		73331C181CA029DF009BA1DE /* FilterStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73331C171CA029DF009BA1DE /* FilterStruct.swift */; };
@@ -515,6 +522,13 @@
 		4D16A1271D51CB8D00817477 /* HvacParametersCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HvacParametersCell.xib; sourceTree = "<group>"; };
 		4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4D411C9A1D5C982F000A3598 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		4E1AAB121F6C01D1006C59AA /* Radio.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Radio.storyboard; sourceTree = "<group>"; };
+		4EDCE6801F6A8D740073736B /* radio_station.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = radio_station.json; sourceTree = "<group>"; };
+		4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioViewController.swift; sourceTree = "<group>"; };
+		4EDCE6881F6A9C090073736B /* StationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationCell.swift; sourceTree = "<group>"; };
+		4EDCE6891F6A9C090073736B /* StationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StationCell.xib; sourceTree = "<group>"; };
+		4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Radio+CoreDataClass.swift"; sourceTree = "<group>"; };
+		4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Radio+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		60177B146AC24AC775D3907A /* Pods-e-Homegreen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-e-Homegreen.debug.xcconfig"; path = "Pods/Target Support Files/Pods-e-Homegreen/Pods-e-Homegreen.debug.xcconfig"; sourceTree = "<group>"; };
 		731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "AppDelegate+BroadcastTimeAndDate.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Location.swift"; sourceTree = "<group>"; };
@@ -1237,6 +1251,18 @@
 			name = "PC Control Notifications";
 			sourceTree = "<group>";
 		};
+		4EDCE6821F6A90E10073736B /* Radio */ = {
+			isa = PBXGroup;
+			children = (
+				4EDCE6801F6A8D740073736B /* radio_station.json */,
+				4E1AAB121F6C01D1006C59AA /* Radio.storyboard */,
+				4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */,
+				4EDCE6881F6A9C090073736B /* StationCell.swift */,
+				4EDCE6891F6A9C090073736B /* StationCell.xib */,
+			);
+			name = Radio;
+			sourceTree = "<group>";
+		};
 		736265DD1B4A47FE0078C11D /* Business Logic */ = {
 			isa = PBXGroup;
 			children = (
@@ -1318,6 +1344,7 @@
 				223292251CABCE180001422B /* Timers */,
 				223292241CABCDFB0001422B /* Sequences */,
 				223292231CABCC350001422B /* Events */,
+				4EDCE6821F6A90E10073736B /* Radio */,
 				223292221CABCC1F0001422B /* Scenes */,
 				223292211CABCB180001422B /* Dashboard */,
 				223362951CA2E604006C80C4 /* Users */,
@@ -1399,6 +1426,8 @@
 		73E2390E1B97145D00CB38ED /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */,
+				4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */,
 				22FF1E601D86D86F00ECB86E /* Card+CoreDataProperties.swift */,
 				22FF1E611D86D86F00ECB86E /* Card.swift */,
 				4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */,
@@ -1946,10 +1975,12 @@
 				E7DC67C21B457C0E00EA6543 /* weather-rain.png in Resources */,
 				22EEAD131C872BB500AD66F0 /* EditZoneViewController.xib in Resources */,
 				E7C9CE011BC2B2AD007D8FE8 /* SecParamatarVC.xib in Resources */,
+				4EDCE6811F6A8D740073736B /* radio_station.json in Resources */,
 				E7DC67C41B457C0E00EA6543 /* weather-scattered.png in Resources */,
 				E7DC67BA1B457C0E00EA6543 /* weather-few.png in Resources */,
 				E73993131BCE753400C74486 /* VoiceControllerTableViewCell.xib in Resources */,
 				73DA61FB1BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.xib in Resources */,
+				4E1AAB131F6C01D1006C59AA /* Radio.storyboard in Resources */,
 				73E206B41B2EEFFE0008B002 /* Main.storyboard in Resources */,
 				734DBFC01BEF7950002FE77E /* ChangeDeviceParametarsVC.xib in Resources */,
 				E7DC67CB1B457C0E00EA6543 /* weather-tstorm@2x.png in Resources */,
@@ -2014,6 +2045,7 @@
 				223687161CB4F13E005ACDE4 /* InsertGatewayAddressXIB.xib in Resources */,
 				73E82D0E1BECA97D00C1C621 /* Zones List.json in Resources */,
 				225F59881D74427300156BCD /* BigSliderXIB.xib in Resources */,
+				4EDCE68B1F6A9C090073736B /* StationCell.xib in Resources */,
 				22495D251CAA7C3E0034FC94 /* Security.storyboard in Resources */,
 				E7DC67B91B457C0E00EA6543 /* weather-few-night@2x.png in Resources */,
 				22495D2F1CAA81490034FC94 /* PCControl.storyboard in Resources */,
@@ -2138,6 +2170,7 @@
 				73ED6AFD1BA0249800E6CE06 /* RepeatSendingHandler.swift in Sources */,
 				739D57171C809B30004CC50E /* DeviceImage.swift in Sources */,
 				2249A3321C90693C0019C6FB /* PCControlInterfaceXIB.swift in Sources */,
+				4EDCE68A1F6A9C090073736B /* StationCell.swift in Sources */,
 				738DEC9C1BBBC2F000D6B834 /* SecurityPadVC.swift in Sources */,
 				225F59871D74427300156BCD /* BigSliderXIB.swift in Sources */,
 				22FF1E651D86D92000ECB86E /* DatabaseCardsController.swift in Sources */,
@@ -2246,6 +2279,7 @@
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
 				E79FD4EE1BCE43D600CA17DB /* Util.swift in Sources */,
 				E7F5FC1E1BB9744200071982 /* LeftCustomButtom.swift in Sources */,
+				4EDCE6971F6AA76F0073736B /* Radio+CoreDataProperties.swift in Sources */,
 				73E2C9F91B5E25570048C072 /* ViewControllerUtils.swift in Sources */,
 				73F1ECAB1C8978B2007CEEAA /* SSID.swift in Sources */,
 				73E2311B1BA6E2C4003E41EC /* EventParametarVC.swift in Sources */,
@@ -2293,6 +2327,7 @@
 				22EEAD121C872BB500AD66F0 /* EditZoneViewController.swift in Sources */,
 				22D867691CBE855900A6575A /* OutgoingHandlerForZoneAndCategory.swift in Sources */,
 				E7F5FC1D1BB9744200071982 /* CustomButton.swift in Sources */,
+				4EDCE6961F6AA76F0073736B /* Radio+CoreDataClass.swift in Sources */,
 				4D0BB34C1D5C91020047688F /* PCCommand.swift in Sources */,
 				2241E4701CC6389700BCD763 /* SurveillanceCell.swift in Sources */,
 				49C059661D91373C0061A544 /* ScanCell.swift in Sources */,
@@ -2312,6 +2347,7 @@
 				736A5B271B5A678F008FD745 /* HashTable.swift in Sources */,
 				736F17DC1B3AE894003A6A02 /* SurveillenceViewController.swift in Sources */,
 				E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */,
+				4EDCE6871F6A9BEA0073736B /* RadioViewController.swift in Sources */,
 				736F17D81B3AE870003A6A02 /* FlagsViewController.swift in Sources */,
 				73E2311D1BA6E2C4003E41EC /* SceneParametarVC.swift in Sources */,
 				22495D331CAA868E0034FC94 /* UIGradient + Extension.swift in Sources */,
