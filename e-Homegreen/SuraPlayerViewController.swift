@@ -128,11 +128,6 @@ class SuraPlayerViewController: UIViewController, UITableViewDataSource, UITable
         playButton.layer.cornerRadius = 3
         playButton.imageView?.contentMode = .scaleAspectFit
         playButton.addTarget(self, action: #selector(playSura), for: .touchUpInside)
-        
-        radioBar.addSubview(suraTitle)
-        radioBar.addSubview(pauseButton)
-        radioBar.addSubview(stopButton)
-        radioBar.addSubview(playButton)
     }
     
     func pauseSura() {

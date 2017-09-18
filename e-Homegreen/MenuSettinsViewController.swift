@@ -9,7 +9,7 @@
 import UIKit
 
 enum Menu:Int{
-    case dashboard = 0, devices, scenes, events, radio, quran, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, settings, notSuperUserSettings
+    case dashboard = 0, devices, scenes, events, radio, quran, sequences, timers, security, surveillance, flags, users, pcControl, phone, chat, energy, settings, notSuperUserSettings
     var description:String{
         switch self{
             case .dashboard: return "Dashboard"
@@ -27,6 +27,7 @@ enum Menu:Int{
             case .energy: return "Energy"
             case .users: return "Users"
             case .pcControl: return "PC Control"
+            case .phone: return "Phone"
             case .settings: return "Settings"
             case .notSuperUserSettings: return "Settings"
         }
@@ -49,13 +50,14 @@ enum Menu:Int{
         case .energy: return MenuViewController.energyVC
         case .users: return MenuViewController.usersVC
         case .pcControl: return MenuViewController.pccontrolVC
+        case .phone: return MenuViewController.phoneVC
         case .settings: return MenuViewController.settingsVC
         case .notSuperUserSettings: return MenuViewController.notSuperUserVC
         }
     }
     
-    static let allMenuItem = [dashboard, devices, scenes, events, radio, quran, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, settings]
-    static let allMenuItemNotSuperUser = [dashboard, devices, scenes, events, radio, quran, sequences, timers, security, surveillance, flags, users, pcControl, chat, energy, notSuperUserSettings]
+    static let allMenuItem = [dashboard, devices, scenes, events, radio, quran, sequences, timers, security, surveillance, flags, users, pcControl, phone, chat, energy, settings]
+    static let allMenuItemNotSuperUser = [dashboard, devices, scenes, events, radio, quran, sequences, timers, security, surveillance, flags, users, pcControl, phone, chat, energy, notSuperUserSettings]
 }
 
 class MenuViewController{
@@ -74,8 +76,10 @@ class MenuViewController{
     static let energyVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Energy") as! UINavigationController)
     static let usersVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Users") as! UINavigationController)
     static let pccontrolVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "PC Control") as! UINavigationController)
+        static let phoneVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Phone") as! UINavigationController)
     static let settingsVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Settings") as! UINavigationController)
     static let notSuperUserVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "NotSuperUserSettings") as! UINavigationController)
+
 }
 
 class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate  {

@@ -250,6 +250,7 @@
                         <segue destination="YGL-uY-aAH" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="uh7-l5-Jsv"/>
                         <segue destination="QeN-UB-pja" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="Lei-uY-ekv"/>
                         <segue destination="s2W-a8-3m6" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="4A2-aI-i9x"/>
+                        <segue destination="7Cm-s4-vRg" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="2fg-Di-wDQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Afh-dM-bhn" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -709,7 +710,7 @@
             <objects>
                 <navigationController storyboardIdentifier="Quran" automaticallyAdjustsScrollViewInsets="NO" id="s2W-a8-3m6" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Cjy-cQ-eZm">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Cjy-cQ-eZm">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -720,7 +721,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kgd-l6-uR3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="230" y="469"/>
+            <point key="canvasLocation" x="876" y="583"/>
         </scene>
         <!--Quran-->
         <scene sceneID="qtV-aY-hQz">
@@ -730,7 +731,35 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iPm-Kc-BAt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="230" y="1322"/>
+            <point key="canvasLocation" x="876" y="1221"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Qun-Ck-kiM">
+            <objects>
+                <navigationController storyboardIdentifier="Phone" automaticallyAdjustsScrollViewInsets="NO" id="7Cm-s4-vRg" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="U7h-Mb-Cqc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="cja-Ru-xys" kind="relationship" relationship="rootViewController" id="oN0-ul-UrP"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zXG-kk-xdL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="230" y="583"/>
+        </scene>
+        <!--Phone-->
+        <scene sceneID="p1u-R9-mkE">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Phone" id="cja-Ru-xys" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="TxC-O7-x5B"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eDl-7N-nSO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="229" y="1221"/>
         </scene>
     </scenes>
     <resources>

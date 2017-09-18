@@ -148,11 +148,6 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
         playButton.layer.cornerRadius = 3
         playButton.imageView?.contentMode = .scaleAspectFit
         playButton.addTarget(self, action: #selector(playRadio), for: .touchUpInside)
-        
-        radioBar.addSubview(radioTitle)
-        radioBar.addSubview(pauseButton)
-        radioBar.addSubview(stopButton)
-        radioBar.addSubview(playButton)
     }
 
     func fetchRadioStations() {

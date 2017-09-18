@@ -168,6 +168,8 @@
 		4EDCE68B1F6A9C090073736B /* StationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EDCE6891F6A9C090073736B /* StationCell.xib */; };
 		4EDCE6961F6AA76F0073736B /* Radio+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */; };
 		4EDCE6971F6AA76F0073736B /* Radio+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */; };
+		4EF908251F7015DC00897A3C /* Phone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4EF908241F7015DC00897A3C /* Phone.storyboard */; };
+		4EF908271F70161000897A3C /* PhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF908261F70161000897A3C /* PhoneViewController.swift */; };
 		4EFAE0251F6C0BB400C85074 /* Reciter+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFAE0231F6C0BB400C85074 /* Reciter+CoreDataClass.swift */; };
 		4EFAE0261F6C0BB400C85074 /* Reciter+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFAE0241F6C0BB400C85074 /* Reciter+CoreDataProperties.swift */; };
 		4EFAE0281F6C0CCA00C85074 /* Quran.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4EFAE0271F6C0CCA00C85074 /* Quran.storyboard */; };
@@ -549,6 +551,8 @@
 		4EDCE6891F6A9C090073736B /* StationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StationCell.xib; sourceTree = "<group>"; };
 		4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Radio+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Radio+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4EF908241F7015DC00897A3C /* Phone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Phone.storyboard; sourceTree = "<group>"; };
+		4EF908261F70161000897A3C /* PhoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneViewController.swift; sourceTree = "<group>"; };
 		4EFAE0231F6C0BB400C85074 /* Reciter+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reciter+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4EFAE0241F6C0BB400C85074 /* Reciter+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reciter+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4EFAE0271F6C0CCA00C85074 /* Quran.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Quran.storyboard; path = ../Quran.storyboard; sourceTree = "<group>"; };
@@ -1305,6 +1309,15 @@
 			name = Radio;
 			sourceTree = "<group>";
 		};
+		4EF908231F70142500897A3C /* Phone */ = {
+			isa = PBXGroup;
+			children = (
+				4EF908241F7015DC00897A3C /* Phone.storyboard */,
+				4EF908261F70161000897A3C /* PhoneViewController.swift */,
+			);
+			name = Phone;
+			sourceTree = "<group>";
+		};
 		736265DD1B4A47FE0078C11D /* Business Logic */ = {
 			isa = PBXGroup;
 			children = (
@@ -1393,6 +1406,7 @@
 				223362951CA2E604006C80C4 /* Users */,
 				2233628E1CA2E4D2006C80C4 /* Settings */,
 				2249A3271C90349C0019C6FB /* PC Controll */,
+				4EF908231F70142500897A3C /* Phone */,
 				E73993151BCE9DC400C74486 /* Chat */,
 				73DEA2201B32CE9F007836B4 /* Side Menu */,
 				E7E08E011B4E4D5400153E9A /* Devices */,
@@ -2032,6 +2046,7 @@
 				73E206B41B2EEFFE0008B002 /* Main.storyboard in Resources */,
 				734DBFC01BEF7950002FE77E /* ChangeDeviceParametarsVC.xib in Resources */,
 				E7DC67CB1B457C0E00EA6543 /* weather-tstorm@2x.png in Resources */,
+				4EF908251F7015DC00897A3C /* Phone.storyboard in Resources */,
 				73E2311E1BA6E2C4003E41EC /* SceneParametarVC.xib in Resources */,
 				223362921CA2E4EC006C80C4 /* AddUserXIB.xib in Resources */,
 				73E82D0D1BECA97D00C1C621 /* Categories List.json in Resources */,
@@ -2295,6 +2310,7 @@
 				2240EACB1D4609720062AC2F /* DatabaseFilterController.swift in Sources */,
 				73E6CDB91BC56454003A5F55 /* FlagParametarVC.swift in Sources */,
 				22FF1E5F1D86BF5700ECB86E /* ScanCardsViewController.swift in Sources */,
+				4EF908271F70161000897A3C /* PhoneViewController.swift in Sources */,
 				7372EB3D1BC410800097806D /* Event+CoreDataProperties.swift in Sources */,
 				73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */,
 				2233628D1CA2E477006C80C4 /* EditTextField.swift in Sources */,
