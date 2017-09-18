@@ -204,6 +204,16 @@
         <attribute name="stationName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Reciter" representedClassName=".Reciter" syncable="YES">
+        <attribute name="count" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="letter" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rewaya" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="server" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="suras" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="recitersSuras" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sura" inverseName="reciter" inverseEntity="Sura" syncable="YES"/>
+    </entity>
     <entity name="Scene" representedClassName="e_Homegreen.Scene" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="entityLevelId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
@@ -247,6 +257,11 @@
     <entity name="SSID" representedClassName=".SSID" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="ssids" inverseEntity="Location" syncable="YES"/>
+    </entity>
+    <entity name="Sura" representedClassName=".Sura" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="reciter" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Reciter" inverseName="recitersSuras" inverseEntity="Reciter" syncable="YES"/>
     </entity>
     <entity name="Surveillance" representedClassName="e_Homegreen.Surveillance" syncable="YES">
         <attribute name="autSpanStep" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
@@ -337,6 +352,8 @@
         <element name="Location" positionX="-1244" positionY="-1143" width="128" height="270"/>
         <element name="MenuItem" positionX="-1217" positionY="-2025" width="128" height="105"/>
         <element name="PCCommand" positionX="-684" positionY="-2250" width="128" height="105"/>
+        <element name="Radio" positionX="-1179" positionY="-1861" width="128" height="148"/>
+        <element name="Reciter" positionX="-1575" positionY="-2241" width="128" height="165"/>
         <element name="Scene" positionX="-468" positionY="-1899" width="128" height="240"/>
         <element name="Security" positionX="-1503" positionY="-1311" width="128" height="150"/>
         <element name="Sequence" positionX="-1190" positionY="-1602" width="128" height="255"/>
@@ -345,6 +362,6 @@
         <element name="Timer" positionX="-1712" positionY="-1638" width="128" height="300"/>
         <element name="User" positionX="-1422" positionY="-2322" width="128" height="225"/>
         <element name="Zone" positionX="-1080" positionY="-882" width="128" height="180"/>
-        <element name="Radio" positionX="-1179" positionY="-1861" width="128" height="148"/>
+        <element name="Sura" positionX="-1845" positionY="-2178" width="128" height="88"/>
     </elements>
 </model>

@@ -155,12 +155,25 @@
 		4D411C9B1D5C982F000A3598 /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */; };
 		4D411C9C1D5C982F000A3598 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D411C9A1D5C982F000A3598 /* Device.swift */; };
 		4E1AAB131F6C01D1006C59AA /* Radio.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E1AAB121F6C01D1006C59AA /* Radio.storyboard */; };
+		4E1AAB191F6C0A29006C59AA /* QuranViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1AAB181F6C0A29006C59AA /* QuranViewController.swift */; };
+		4E1AAB1C1F6C0A8C006C59AA /* ReciterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1AAB1A1F6C0A8C006C59AA /* ReciterCell.swift */; };
+		4E1AAB1D1F6C0A8C006C59AA /* ReciterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E1AAB1B1F6C0A8C006C59AA /* ReciterCell.xib */; };
+		4E7945511F6FC64F006C3ACA /* Sura+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E79454F1F6FC64F006C3ACA /* Sura+CoreDataClass.swift */; };
+		4E7945521F6FC64F006C3ACA /* Sura+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7945501F6FC64F006C3ACA /* Sura+CoreDataProperties.swift */; };
+		4E7945551F6FCE31006C3ACA /* SuraCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7945531F6FCE31006C3ACA /* SuraCell.swift */; };
+		4E7945561F6FCE31006C3ACA /* SuraCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E7945541F6FCE31006C3ACA /* SuraCell.xib */; };
 		4EDCE6811F6A8D740073736B /* radio_station.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EDCE6801F6A8D740073736B /* radio_station.json */; };
 		4EDCE6871F6A9BEA0073736B /* RadioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */; };
 		4EDCE68A1F6A9C090073736B /* StationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6881F6A9C090073736B /* StationCell.swift */; };
 		4EDCE68B1F6A9C090073736B /* StationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EDCE6891F6A9C090073736B /* StationCell.xib */; };
 		4EDCE6961F6AA76F0073736B /* Radio+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */; };
 		4EDCE6971F6AA76F0073736B /* Radio+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */; };
+		4EFAE0251F6C0BB400C85074 /* Reciter+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFAE0231F6C0BB400C85074 /* Reciter+CoreDataClass.swift */; };
+		4EFAE0261F6C0BB400C85074 /* Reciter+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFAE0241F6C0BB400C85074 /* Reciter+CoreDataProperties.swift */; };
+		4EFAE0281F6C0CCA00C85074 /* Quran.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4EFAE0271F6C0CCA00C85074 /* Quran.storyboard */; };
+		4EFAE02A1F6C0F5600C85074 /* sura_english.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EFAE0291F6C0F5600C85074 /* sura_english.json */; };
+		4EFAE02C1F6C183000C85074 /* reciters.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EFAE02B1F6C183000C85074 /* reciters.json */; };
+		4EFAE02E1F6C27B700C85074 /* SuraPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFAE02D1F6C27B700C85074 /* SuraPlayerViewController.swift */; };
 		731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */; };
 		731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */; };
 		73331C181CA029DF009BA1DE /* FilterStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73331C171CA029DF009BA1DE /* FilterStruct.swift */; };
@@ -523,12 +536,25 @@
 		4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4D411C9A1D5C982F000A3598 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		4E1AAB121F6C01D1006C59AA /* Radio.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Radio.storyboard; sourceTree = "<group>"; };
+		4E1AAB181F6C0A29006C59AA /* QuranViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuranViewController.swift; sourceTree = "<group>"; };
+		4E1AAB1A1F6C0A8C006C59AA /* ReciterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReciterCell.swift; sourceTree = "<group>"; };
+		4E1AAB1B1F6C0A8C006C59AA /* ReciterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReciterCell.xib; sourceTree = "<group>"; };
+		4E79454F1F6FC64F006C3ACA /* Sura+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sura+CoreDataClass.swift"; sourceTree = "<group>"; };
+		4E7945501F6FC64F006C3ACA /* Sura+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sura+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4E7945531F6FCE31006C3ACA /* SuraCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuraCell.swift; sourceTree = "<group>"; };
+		4E7945541F6FCE31006C3ACA /* SuraCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SuraCell.xib; sourceTree = "<group>"; };
 		4EDCE6801F6A8D740073736B /* radio_station.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = radio_station.json; sourceTree = "<group>"; };
 		4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioViewController.swift; sourceTree = "<group>"; };
 		4EDCE6881F6A9C090073736B /* StationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationCell.swift; sourceTree = "<group>"; };
 		4EDCE6891F6A9C090073736B /* StationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StationCell.xib; sourceTree = "<group>"; };
 		4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Radio+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Radio+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4EFAE0231F6C0BB400C85074 /* Reciter+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reciter+CoreDataClass.swift"; sourceTree = "<group>"; };
+		4EFAE0241F6C0BB400C85074 /* Reciter+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reciter+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4EFAE0271F6C0CCA00C85074 /* Quran.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Quran.storyboard; path = ../Quran.storyboard; sourceTree = "<group>"; };
+		4EFAE0291F6C0F5600C85074 /* sura_english.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sura_english.json; sourceTree = "<group>"; };
+		4EFAE02B1F6C183000C85074 /* reciters.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = reciters.json; sourceTree = "<group>"; };
+		4EFAE02D1F6C27B700C85074 /* SuraPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuraPlayerViewController.swift; sourceTree = "<group>"; };
 		60177B146AC24AC775D3907A /* Pods-e-Homegreen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-e-Homegreen.debug.xcconfig"; path = "Pods/Target Support Files/Pods-e-Homegreen/Pods-e-Homegreen.debug.xcconfig"; sourceTree = "<group>"; };
 		731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "AppDelegate+BroadcastTimeAndDate.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Location.swift"; sourceTree = "<group>"; };
@@ -1251,6 +1277,22 @@
 			name = "PC Control Notifications";
 			sourceTree = "<group>";
 		};
+		4E1AAB171F6C09FC006C59AA /* Quran */ = {
+			isa = PBXGroup;
+			children = (
+				4EFAE0271F6C0CCA00C85074 /* Quran.storyboard */,
+				4EFAE02B1F6C183000C85074 /* reciters.json */,
+				4EFAE0291F6C0F5600C85074 /* sura_english.json */,
+				4E1AAB1A1F6C0A8C006C59AA /* ReciterCell.swift */,
+				4E1AAB1B1F6C0A8C006C59AA /* ReciterCell.xib */,
+				4E1AAB181F6C0A29006C59AA /* QuranViewController.swift */,
+				4EFAE02D1F6C27B700C85074 /* SuraPlayerViewController.swift */,
+				4E7945531F6FCE31006C3ACA /* SuraCell.swift */,
+				4E7945541F6FCE31006C3ACA /* SuraCell.xib */,
+			);
+			name = Quran;
+			sourceTree = "<group>";
+		};
 		4EDCE6821F6A90E10073736B /* Radio */ = {
 			isa = PBXGroup;
 			children = (
@@ -1345,6 +1387,7 @@
 				223292241CABCDFB0001422B /* Sequences */,
 				223292231CABCC350001422B /* Events */,
 				4EDCE6821F6A90E10073736B /* Radio */,
+				4E1AAB171F6C09FC006C59AA /* Quran */,
 				223292221CABCC1F0001422B /* Scenes */,
 				223292211CABCB180001422B /* Dashboard */,
 				223362951CA2E604006C80C4 /* Users */,
@@ -1426,6 +1469,10 @@
 		73E2390E1B97145D00CB38ED /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4E79454F1F6FC64F006C3ACA /* Sura+CoreDataClass.swift */,
+				4E7945501F6FC64F006C3ACA /* Sura+CoreDataProperties.swift */,
+				4EFAE0231F6C0BB400C85074 /* Reciter+CoreDataClass.swift */,
+				4EFAE0241F6C0BB400C85074 /* Reciter+CoreDataProperties.swift */,
 				4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */,
 				4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */,
 				22FF1E601D86D86F00ECB86E /* Card+CoreDataProperties.swift */,
@@ -1958,6 +2005,7 @@
 				2249A3331C90693C0019C6FB /* PCControlInterfaceXIB.xib in Resources */,
 				E7DC67C91B457C0E00EA6543 /* weather-snow@2x.png in Resources */,
 				73ED6B011BA068B900E6CE06 /* ProgressBarVC.xib in Resources */,
+				4EFAE0281F6C0CCA00C85074 /* Quran.storyboard in Resources */,
 				E7DC67C11B457C0E00EA6543 /* weather-rain-night@2x.png in Resources */,
 				E7DC67C51B457C0E00EA6543 /* weather-scattered@2x.png in Resources */,
 				E7DC67B51B457C0E00EA6543 /* weather-broken@2x.png in Resources */,
@@ -2004,8 +2052,10 @@
 				22495D271CAA7F510034FC94 /* Surveillance.storyboard in Resources */,
 				E70515A31BB3E147009FDA0D /* SurveillanceSettingsVC.xib in Resources */,
 				227F26471DA5155E00F5A236 /* TagsXIB.xib in Resources */,
+				4E1AAB1D1F6C0A8C006C59AA /* ReciterCell.xib in Resources */,
 				E7F15B051B8F27840025082D /* SceneGalleryVC.xib in Resources */,
 				E7E1A8251B3804F1008D8713 /* AcousticModelSpanish.bundle in Resources */,
+				4EFAE02A1F6C0F5600C85074 /* sura_english.json in Resources */,
 				22495D311CAA83260034FC94 /* Popover.storyboard in Resources */,
 				73F4D6B71C805DEF00FE0514 /* DeviceImagesPickerVC.xib in Resources */,
 				223878A11C917A96001357E0 /* AddVideo_AppXIB.xib in Resources */,
@@ -2031,6 +2081,7 @@
 				22495D2C1CAA80F20034FC94 /* Users.storyboard in Resources */,
 				4923279D1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.xib in Resources */,
 				E7DC67B71B457C0E00EA6543 /* weather-clear@2x.png in Resources */,
+				4EFAE02C1F6C183000C85074 /* reciters.json in Resources */,
 				223878A51C919A70001357E0 /* AddLocationXIB.xib in Resources */,
 				4983C7E61D4B5F2D00C8E865 /* RelayParametersCell.xib in Resources */,
 				E79AEBB91B70C43300410E2D /* RelayParametarVC.xib in Resources */,
@@ -2047,6 +2098,7 @@
 				225F59881D74427300156BCD /* BigSliderXIB.xib in Resources */,
 				4EDCE68B1F6A9C090073736B /* StationCell.xib in Resources */,
 				22495D251CAA7C3E0034FC94 /* Security.storyboard in Resources */,
+				4E7945561F6FCE31006C3ACA /* SuraCell.xib in Resources */,
 				E7DC67B91B457C0E00EA6543 /* weather-few-night@2x.png in Resources */,
 				22495D2F1CAA81490034FC94 /* PCControl.storyboard in Resources */,
 				E7F15B091B8F4B240025082D /* GalleryCollectionViewCell.xib in Resources */,
@@ -2138,6 +2190,8 @@
 				495726B11D4F4842004F2A3D /* ApplianceCollectionCell.swift in Sources */,
 				22AF883B1D49E9E700048A33 /* ScanFilterPullDown.swift in Sources */,
 				2241E4721CC63FA200BCD763 /* DatabaseSurveillanceController.swift in Sources */,
+				4E7945511F6FC64F006C3ACA /* Sura+CoreDataClass.swift in Sources */,
+				4E7945521F6FC64F006C3ACA /* Sura+CoreDataProperties.swift in Sources */,
 				223878A01C917A96001357E0 /* AddVideo_AppXIB.swift in Sources */,
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
 				22D867671CBE832400A6575A /* ZoneAndCategoryControl.swift in Sources */,
@@ -2154,6 +2208,7 @@
 				E79A89261BAD6D6000714C64 /* ScanTimerViewController.swift in Sources */,
 				E75B4FC41B42FC0B00E48454 /* FSCalendarCell.m in Sources */,
 				736F17DA1B3AE87E003A6A02 /* ChatViewController.swift in Sources */,
+				4E1AAB191F6C0A29006C59AA /* QuranViewController.swift in Sources */,
 				738BFD061B9EF79F005D183F /* DataImporter.swift in Sources */,
 				22FF1E631D86D86F00ECB86E /* Card.swift in Sources */,
 				22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */,
@@ -2200,6 +2255,7 @@
 				7372EB421BC410800097806D /* Sequence.swift in Sources */,
 				49DFFE351D9BDE2400551D28 /* TimerForFilter.swift in Sources */,
 				223362971CA2E624006C80C4 /* UsersViewController.swift in Sources */,
+				4EFAE0251F6C0BB400C85074 /* Reciter+CoreDataClass.swift in Sources */,
 				22FD29911CBBC9D100BCE823 /* SequencesCollectionViewCell.swift in Sources */,
 				734E35781C8239990096E043 /* ScanFunction.swift in Sources */,
 				223362911CA2E4EC006C80C4 /* AddUserXIB.swift in Sources */,
@@ -2210,10 +2266,12 @@
 				223E25DD1CC77DBB00BC3905 /* Surveillance.swift in Sources */,
 				E7AA260C1BCD01F500D5C3F0 /* IBeaconSettingsVC.swift in Sources */,
 				7372EB351BC410800097806D /* Scene+CoreDataProperties.swift in Sources */,
+				4EFAE02E1F6C27B700C85074 /* SuraPlayerViewController.swift in Sources */,
 				2241E46E1CC628F300BCD763 /* DatabaseCategoryController.swift in Sources */,
 				E7F57B0B1BA80413006B0D71 /* ScanDevicesViewController.swift in Sources */,
 				73F04ECB1C92CD06009696EF /* DataFrame.swift in Sources */,
 				4D16A1281D51CB8D00817477 /* HvacParametersCell.swift in Sources */,
+				4EFAE0261F6C0BB400C85074 /* Reciter+CoreDataProperties.swift in Sources */,
 				E76B57691BBD1EE400A70F69 /* CustomGradientBackground.swift in Sources */,
 				7372EB361BC410800097806D /* Scene.swift in Sources */,
 				73F04ECE1C92CDA9009696EF /* CoreDataController.swift in Sources */,
@@ -2269,6 +2327,7 @@
 				2240DCB01CBB931800F1F886 /* AdminController.swift in Sources */,
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,
 				E7F57B0D1BA847D8006B0D71 /* ScanSequencesesViewController.swift in Sources */,
+				4E1AAB1C1F6C0A8C006C59AA /* ReciterCell.swift in Sources */,
 				2240EAC81D46084E0062AC2F /* FilterParametar+CoreDataProperties.swift in Sources */,
 				73FD2E5A1C08AB9F00B9F11A /* ImageHandler.swift in Sources */,
 				222889B41CBBD5E0004EBADD /* FlagCollectionViewCell.swift in Sources */,
@@ -2277,6 +2336,7 @@
 				495D63721D9A49B300D9DC26 /* SaltoAccessCell.swift in Sources */,
 				E7F57B091BA7FE5D006B0D71 /* ScanScenesViewController.swift in Sources */,
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
+				4E7945551F6FCE31006C3ACA /* SuraCell.swift in Sources */,
 				E79FD4EE1BCE43D600CA17DB /* Util.swift in Sources */,
 				E7F5FC1E1BB9744200071982 /* LeftCustomButtom.swift in Sources */,
 				4EDCE6971F6AA76F0073736B /* Radio+CoreDataProperties.swift in Sources */,

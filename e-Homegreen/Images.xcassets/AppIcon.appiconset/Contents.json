@@ -3,31 +3,31 @@
     {
       "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "iPhone Notification iOS 7-10@2x.png",
+      "filename" : "iPhone Notificaiton iOS 7-10@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "iPhone Notification iOS 7-10@3x.png",
+      "filename" : "iPhone Notificaiton iOS 7-10@3x.png",
       "scale" : "3x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "iPhone Spotlight iOS 5,6 Settings iOS 5-10.png",
+      "filename" : "iPhone Spotlight - iOS 5,6 Settings - iOS 5-10.png",
       "scale" : "1x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "iPhone Spotlight iOS 5,6 Settings iOS 5-10@2x.png",
+      "filename" : "iPhone Spotlight - iOS 5,6 Settings - iOS 5-10@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "iPhone Spotlight iOS 5,6 Settings iOS 5-10@3x.png",
+      "filename" : "iPhone Spotlight - iOS 5,6 Settings - iOS 5-10@3x.png",
       "scale" : "3x"
     },
     {
@@ -105,13 +105,13 @@
     {
       "size" : "50x50",
       "idiom" : "ipad",
-      "filename" : "iPad Spotlight iOS 5,6.png",
+      "filename" : "iPad Spotlight 5,6.png",
       "scale" : "1x"
     },
     {
       "size" : "50x50",
       "idiom" : "ipad",
-      "filename" : "iPad Spotlight iOS 5,6@2x.png",
+      "filename" : "iPad Spotlight 5,6@2x.png",
       "scale" : "2x"
     },
     {
@@ -141,7 +141,7 @@
     {
       "size" : "83.5x83.5",
       "idiom" : "ipad",
-      "filename" : "iPad Pro App iOS 9-10.png",
+      "filename" : "iPad Pro App iOS 9-10@2x.png",
       "scale" : "2x"
     },
     {
@@ -193,7 +193,7 @@
     {
       "size" : "86x86",
       "idiom" : "watch",
-      "filename" : "Apple Watch Short Look 1.png",
+      "filename" : "Apple Watch Short Look.png",
       "scale" : "2x",
       "role" : "quickLook",
       "subtype" : "38mm"

@@ -19,9 +19,6 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
     var currentStation: Radio!
     var radioIsPlaying: Bool = false
     
-    var barWidth: CGFloat!
-    var barHeight: CGFloat!
-    
     var player: AVPlayer?
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
@@ -75,6 +72,13 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        radioIsPlaying = false
+        player?.pause()
+    }
+    
     func updateViews() {
         tableView.backgroundColor = .clear
         tableView.separatorInset = UIEdgeInsets.zero
@@ -117,16 +121,12 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        radioIsPlaying = false
         currentStation = radioStations[indexPath.row]
         playRadio()
     }
     
     func setupRadioPlayerView() {
-        barWidth = UIScreen.main.bounds.width
-        barHeight = radioBar.frame.height
-        let buttonHeight = CGFloat(32.5)
-        let buttonWidth = CGFloat(41.5)
-        
         radioBar.backgroundColor = UIColor(cgColor: Colors.DarkGray)
         radioTitle.textColor = UIColor.white
         radioTitle.font = UIFont(name: "Tahoma", size: 17)
