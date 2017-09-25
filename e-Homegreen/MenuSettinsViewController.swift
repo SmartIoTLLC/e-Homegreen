@@ -76,7 +76,7 @@ class MenuViewController{
     static let energyVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Energy") as! UINavigationController)
     static let usersVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Users") as! UINavigationController)
     static let pccontrolVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "PC Control") as! UINavigationController)
-        static let phoneVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Phone") as! UINavigationController)
+    static let phoneVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Phone") as! UINavigationController)
     static let settingsVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Settings") as! UINavigationController)
     static let notSuperUserVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "NotSuperUserSettings") as! UINavigationController)
 

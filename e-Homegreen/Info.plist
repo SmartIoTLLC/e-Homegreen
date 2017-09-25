@@ -99,5 +99,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Allow speech recognition to be able to call someone by uttering their name.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Your speech will be detected after tapping the &quot;Make a call&quot; button</string>
+	<key>NSContactsUsageDescription</key>
+	<string>We need access to your contacts so you can call them.</string>
 </dict>
 </plist>
