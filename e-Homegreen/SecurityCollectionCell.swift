@@ -133,18 +133,21 @@ class SecurityCollectionCell: UICollectionViewCell {
     }
     // Indicates cell to stop blinking (new state has occured)
     func stopBlinking(){
-        let defaults = Foundation.UserDefaults.standard
-        guard let currentControlMode = defaults.value(forKey: UserDefaults.Security.SecurityMode) as? String else{
-            return
-        }
+//        let defaults = Foundation.UserDefaults.standard
+//        guard let currentControlMode = defaults.value(forKey: UserDefaults.Security.SecurityMode) as? String else{
+//            return
+//        }
+//        
+//        if currentControlMode != SecurityControlMode.Disarm {
+//            guard let timer = self.timer else{
+//                return
+//            }
+//            
+//            timer.invalidate()
+//        }
         
-        if currentControlMode != SecurityControlMode.Disarm {
-            guard let timer = self.timer else{
-                return
-            }
-            
-            timer.invalidate()
-        }
+        guard let timer = self.timer else { return }
+        timer.invalidate()
     }
     // Function used to toggle immages on-off until App receives new state
     func toggleBtnImage(_ timer: Foundation.Timer){

@@ -59,7 +59,7 @@ class ClimateCell: UICollectionViewCell {
                 fanSpeed = 0.0
             }
             let animationImages:[UIImage] = [UIImage(named: "h1")!, UIImage(named: "h2")!, UIImage(named: "h3")!, UIImage(named: "h4")!, UIImage(named: "h5")!, UIImage(named: "h6")!, UIImage(named: "h7")!, UIImage(named: "h8")!]
-            temperatureSetPoint.font = UIFont(name: "Tahoma", size: 16)
+            temperatureSetPoint.font = UIFont(name: "Tahoma", size: 17)
             let modeState = device.modeState
             switch modeState {
             case "Cool":

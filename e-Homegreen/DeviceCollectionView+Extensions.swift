@@ -22,6 +22,8 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
         if devices[(indexPath as NSIndexPath).row].isEnabled.boolValue {
             if devices[(indexPath as NSIndexPath).row].controlType == ControlType.Climate {
                 showClimaSettings((indexPath as NSIndexPath).row, devices: devices)
+                // Dumb solution for the climate mode icon issue, but it'll work until we find the correct fix
+                self.deviceCollectionView.reloadData()
             }
         }
         
@@ -74,6 +76,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         
         CoreDataController.shahredInstance.saveChanges()
     }
+    
     func refreshVisibleDevicesInScrollView () {
         let indexPaths = deviceCollectionView.indexPathsForVisibleItems
         for indexPath in indexPaths {
@@ -447,6 +450,9 @@ extension DevicesViewController: UICollectionViewDataSource {
                         cell.modeImage.image = UIImage(named: "fanauto")
                         cell.modeImage.stopAnimating()
                     } else {
+                        //
+                        cell.modeImage.image = animationImages.first
+                        //
                         cell.modeImage.animationImages = animationImages
                         cell.modeImage.animationDuration = TimeInterval(fanSpeed)
                         cell.modeImage.animationRepeatCount = 0
