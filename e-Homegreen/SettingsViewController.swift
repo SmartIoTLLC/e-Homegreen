@@ -131,6 +131,7 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
         }
         
     }
+    
     func btnDecHourPressed(_ sender:UIButton){
         if sender.tag == 1{
             if hourRefresh > 0 {

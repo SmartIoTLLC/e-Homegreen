@@ -659,10 +659,10 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="fanhigh" translatesAutoresizingMaskIntoConstraints="NO" id="PAf-lS-77v">
-                                                            <rect key="frame" x="8" y="124" width="46.5" height="46"/>
+                                                            <rect key="frame" x="8" y="124.5" width="47" height="45.5"/>
                                                         </imageView>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="cool" translatesAutoresizingMaskIntoConstraints="NO" id="AQJ-VB-Ob5">
-                                                            <rect key="frame" x="8" y="69" width="46.5" height="46"/>
+                                                            <rect key="frame" x="8" y="69" width="47" height="46.5"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="AQJ-VB-Ob5" secondAttribute="height" multiplier="1:1" id="a5I-fV-DhN"/>
                                                             </constraints>

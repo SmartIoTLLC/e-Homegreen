@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="HH8-Fp-anl">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,7 +25,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="IYF-NV-YrJ">
-                                <rect key="frame" x="0.0" y="64" width="375" height="475"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="483"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mGY-sN-VPp">
@@ -83,7 +87,7 @@
                             <constraint firstItem="IYF-NV-YrJ" firstAttribute="centerX" secondItem="BaO-8h-iGH" secondAttribute="centerX" id="cfB-jO-qw0"/>
                             <constraint firstItem="0dY-24-VRy" firstAttribute="top" secondItem="9S8-Tk-4Ym" secondAttribute="bottom" id="dhj-Bd-rWR"/>
                             <constraint firstItem="IYF-NV-YrJ" firstAttribute="width" secondItem="BaO-8h-iGH" secondAttribute="width" id="fwI-20-vhi"/>
-                            <constraint firstItem="mGY-sN-VPp" firstAttribute="top" secondItem="IYF-NV-YrJ" secondAttribute="bottom" constant="8" id="iTg-oB-LVp"/>
+                            <constraint firstItem="mGY-sN-VPp" firstAttribute="top" secondItem="IYF-NV-YrJ" secondAttribute="bottom" id="iTg-oB-LVp"/>
                             <constraint firstItem="Sgq-IC-sqg" firstAttribute="top" secondItem="mGY-sN-VPp" secondAttribute="bottom" id="xJJ-1h-Xhk"/>
                         </constraints>
                     </view>

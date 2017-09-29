@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="5XY-HS-MU6">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -78,7 +82,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cSQ-BY-7nu">
-                                <rect key="frame" x="0.0" y="64" width="375" height="475"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="483"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WqC-TS-jQp">
@@ -140,7 +144,7 @@
                             <constraint firstItem="SXW-qj-AaS" firstAttribute="centerX" secondItem="PIO-Rs-DjU" secondAttribute="centerX" id="E1z-tq-dvu"/>
                             <constraint firstItem="WqC-TS-jQp" firstAttribute="centerX" secondItem="PIO-Rs-DjU" secondAttribute="centerX" id="Jy0-2M-Soe"/>
                             <constraint firstItem="puT-y8-l0P" firstAttribute="top" secondItem="SXW-qj-AaS" secondAttribute="bottom" id="Mbj-qT-8vd"/>
-                            <constraint firstItem="WqC-TS-jQp" firstAttribute="top" secondItem="cSQ-BY-7nu" secondAttribute="bottom" constant="8" id="U49-yj-I4Q"/>
+                            <constraint firstItem="WqC-TS-jQp" firstAttribute="top" secondItem="cSQ-BY-7nu" secondAttribute="bottom" id="U49-yj-I4Q"/>
                             <constraint firstItem="cSQ-BY-7nu" firstAttribute="centerX" secondItem="PIO-Rs-DjU" secondAttribute="centerX" id="eiq-WO-Uv0"/>
                             <constraint firstItem="puT-y8-l0P" firstAttribute="top" secondItem="WqC-TS-jQp" secondAttribute="bottom" id="mBs-VO-QnG"/>
                             <constraint firstItem="SXW-qj-AaS" firstAttribute="top" secondItem="XmG-rg-P3G" secondAttribute="bottom" id="ukZ-FA-6RH"/>

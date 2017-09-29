@@ -95,7 +95,7 @@ struct AlarmState {
 
 struct Messages {
     struct Security{
-        static let NeedToDisarmFirst = "Attention! You need to disarm the security system before you can select the curent security mode."
+        static let NeedToDisarmFirst = "Attention! You need to disarm the security system before you can select the current security mode."
     }
     
 }
@@ -469,6 +469,7 @@ enum FilterEnumeration:String {
     case Device = "Device" //prepravio
     case Scenes = "Scenes" //prepravio
     case Events = "Events" //prepravio
+    case Remote = "Remote"
     case Sequences = "Sequences" //prepravio
     case Timers = "Timers" //prepravio
     case Flags = "Flags" //prepravio
@@ -479,7 +480,7 @@ enum FilterEnumeration:String {
     case PCControl = "PCControl"
     case Users = "Users"
     case Database = "Database"
-    static let allFilters = [Device, Scenes, Events, Sequences, Timers, Flags, Chat, Security, Surveillance, Energy, PCControl, Users, Database]
+    static let allFilters = [Device, Scenes, Events, Remote, Sequences, Timers, Flags, Chat, Security, Surveillance, Energy, PCControl, Users, Database]
 
 }
 //MARK: Notification constants
@@ -544,6 +545,7 @@ struct NotificationKey {
         static let timerDashboard = "TimerDashboardEndedNotification"
         static let timerDevices = "TimerDevicesEndedNotification"
         static let timerEvents = "TimerEventsEndedNotification"
+        static let timerRemotes = "TimerRemoteEndedNotification"
         static let timerScenes = "TimerScenesEndedNotification"
         static let timerSequences = "TimerSequencesEndedNotification"
         static let timerTimers = "TimerTimersEndedNotification"
@@ -586,6 +588,7 @@ struct Colors {
     static let DarkGrayColor = UIColor.darkGray.cgColor
     static let DirtyBlueColor = UIColor(red: 91/255, green: 182/255, blue: 229/225, alpha: 1.0).cgColor    //   #5bb7e5
     static let DirtyRedColor = UIColor(red: 251/255, green: 87/255, blue: 87/255, alpha: 1.0).cgColor    //   #fb5757
+    static let AndroidGrayColor = UIColor(red: 67/255, green: 65/255, blue: 68/255, alpha: 1.0)
 }
 // 0-255
 struct DeviceValue {

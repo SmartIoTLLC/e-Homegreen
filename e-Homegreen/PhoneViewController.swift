@@ -23,7 +23,11 @@ class PhoneViewController: UIViewController {
     let usersContactStorage = CNContactStore()
     var contactsList = [CNContact]()
     
-    var microphoneView: UIView!
+    @IBOutlet weak var background: UIImageView!
+    
+    @IBOutlet weak var microphoneView: UIView!
+    @IBOutlet weak var micLabel: UILabel!
+    @IBOutlet weak var micImage: UIImageView!
     
     var speechRecognitionTimeout: Foundation.Timer?
     var speechTimeoutInterval: TimeInterval = 2 {
@@ -33,28 +37,27 @@ class PhoneViewController: UIViewController {
     }
     
     func setupMicrophoneView() {
-        microphoneView = UIView()
-        microphoneView.frame.origin = CGPoint(x: UIScreen.main.bounds.width / 2 - 60, y: UIScreen.main.bounds.height / 2 - 200)
-        microphoneView.frame.size = CGSize(width: 200, height: 200)
         microphoneView.layer.cornerRadius = 5
-        microphoneView.backgroundColor = UIColor(cgColor: Colors.DarkGray)
-        
-        let micLogo = UIImageView()
-        micLogo.frame = CGRect(x: 0, y: 30, width: microphoneView.frame.width, height: 170)
-        micLogo.frame.size = CGSize(width: 110, height: 110)
-        micLogo.image = #imageLiteral(resourceName: "18 Media - Microphone - 00")
-        micLogo.contentMode = .scaleAspectFit
-        
-        let label = UILabel()
-        label.frame = CGRect(x: 6, y: 0, width: microphoneView.frame.width - 12, height: 30)
-        label.text = "Speak a contact's name"
-        label.textColor = .white
-        label.font = UIFont(name: "Tahoma", size: 15)
-        label.backgroundColor = .clear
-        label.adjustsFontSizeToFitWidth = true
-        label.textAlignment = .center
-        microphoneView.addSubview(micLogo)
-        microphoneView.addSubview(label)
+        microphoneView.backgroundColor = Colors.AndroidGrayColor.withAlphaComponent(0.8)
+        microphoneView.isHidden = true
+
+        micImage.image = #imageLiteral(resourceName: "18 Media - Microphone - 00")
+        micImage.contentMode = .scaleAspectFit
+
+        micLabel.text = "Speak a contact's name"
+        micLabel.textColor = .white
+        micLabel.font = UIFont(name: "Tahoma", size: 15)
+        micLabel.backgroundColor = .clear
+        micLabel.adjustsFontSizeToFitWidth = true
+        micLabel.textAlignment = .center
+    }
+    
+    func toggleMic(off: Bool) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.microphoneView.isHidden = off
+            })
+        }
     }
     
     func restartSpeechTimeout() {
@@ -90,7 +93,9 @@ class PhoneViewController: UIViewController {
     
     @IBOutlet weak var makeCallButton: CustomGradientButton!
     @IBAction func makeCallButton(_ sender: CustomGradientButton) {
-        recordAndRecognizeSpeech()
+//        toggleMic(off: false)
+        fetchContacts(recognizedContact: "John")
+//        recordAndRecognizeSpeech()
     }
     
     
@@ -137,6 +142,7 @@ class PhoneViewController: UIViewController {
         
         guard let node = audioEngine.inputNode else {
             hideToastActivityOnMainThread()
+            self.toggleMic(off: false)
             self.makeToastOnMainThread(message: "Audio engine failed.")
             return
         }
@@ -148,22 +154,24 @@ class PhoneViewController: UIViewController {
         
         audioEngine.prepare()
         
-        hideToastActivityOnMainThread()
         do {
             try audioEngine.start()
         } catch let error as NSError {
             hideToastActivityOnMainThread()
+            self.toggleMic(off: false)
             makeToastOnMainThread(message: "Audio engine failed.")
             return print(error)
         }
         
         guard let myRecognizer = SFSpeechRecognizer() else {
             hideToastActivityOnMainThread()
+            toggleMic(off: true)
             makeToastOnMainThread(message: "Speech recognition failed.")
             return }
         
         if !myRecognizer.isAvailable {
             hideToastActivityOnMainThread()
+            toggleMic(off: true)
             makeToastOnMainThread(message: "Speech recognition failed.")
             return
         }
@@ -188,11 +196,13 @@ class PhoneViewController: UIViewController {
                 self.stopRecording()
                 let recognizedContact = result?.bestTranscription.formattedString
                 self.hideToastActivityOnMainThread()
+                self.toggleMic(off: true)
                 self.fetchContacts(recognizedContact: recognizedContact!)
             } else {
                 if error == nil {
                     self.restartSpeechTimeout()
                 } else {
+                    self.toggleMic(off: true)
                     self.makeToastOnMainThread(message: "Something went wrong. Please try again.")
                 }
             }

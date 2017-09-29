@@ -170,7 +170,6 @@
             
             cell.configureForMenu(menu[(indexPath as NSIndexPath).row])
             
-            
             cell.layer.cornerRadius = 5
             return cell
         }else{

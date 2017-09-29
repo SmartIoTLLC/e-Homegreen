@@ -9,13 +9,14 @@
 import UIKit
 
 enum Menu:Int{
-    case dashboard = 0, devices, scenes, events, radio, quran, sequences, timers, security, surveillance, flags, users, pcControl, phone, chat, energy, settings, notSuperUserSettings
+    case dashboard = 0, devices, scenes, events, remote, radio, quran, sequences, timers, security, surveillance, flags, users, pcControl, phone, chat, energy, settings, notSuperUserSettings
     var description:String{
         switch self{
             case .dashboard: return "Dashboard"
             case .devices: return "Devices"
             case .scenes: return "Scenes"
             case .events: return "Events"
+            case .remote: return "Remote"
             case .radio: return "Radio"
             case .quran: return "Quran"
             case .sequences: return "Sequences"
@@ -39,6 +40,7 @@ enum Menu:Int{
         case .devices: return MenuViewController.devicesVC
         case .scenes: return MenuViewController.scenesVC
         case .events: return MenuViewController.eventsVC
+        case .remote: return MenuViewController.remoteVC
         case .radio: return MenuViewController.radioVC
         case .quran: return MenuViewController.quranVC
         case .sequences: return MenuViewController.sequencesVC
@@ -56,8 +58,8 @@ enum Menu:Int{
         }
     }
     
-    static let allMenuItem = [dashboard, devices, scenes, events, radio, quran, sequences, timers, security, surveillance, flags, users, pcControl, phone, chat, energy, settings]
-    static let allMenuItemNotSuperUser = [dashboard, devices, scenes, events, radio, quran, sequences, timers, security, surveillance, flags, users, pcControl, phone, chat, energy, notSuperUserSettings]
+    static let allMenuItem = [dashboard, devices, scenes, events, remote, radio, quran, sequences, timers, security, surveillance, flags, users, pcControl, phone, chat, energy, settings]
+    static let allMenuItemNotSuperUser = [dashboard, devices, scenes, events, remote, radio, quran, sequences, timers, security, surveillance, flags, users, pcControl, phone, chat, energy, notSuperUserSettings]
 }
 
 class MenuViewController{
@@ -65,6 +67,7 @@ class MenuViewController{
     static let devicesVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Devices") as! UINavigationController)
     static let scenesVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Scenes") as! UINavigationController)
     static let eventsVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Events") as! UINavigationController)
+    static let remoteVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Remote") as! UINavigationController)
     static let radioVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Radio") as! UINavigationController)
     static let quranVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Quran") as! UINavigationController)
     static let sequencesVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Sequences") as! UINavigationController)
@@ -79,7 +82,6 @@ class MenuViewController{
     static let phoneVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Phone") as! UINavigationController)
     static let settingsVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Settings") as! UINavigationController)
     static let notSuperUserVC = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "NotSuperUserSettings") as! UINavigationController)
-
 }
 
 class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate  {

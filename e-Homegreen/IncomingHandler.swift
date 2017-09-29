@@ -672,8 +672,9 @@ class IncomingHandler: NSObject {
             }
         }
         CoreDataController.shahredInstance.saveChanges()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshClimate), object: self, userInfo: nil)
+
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshClimate), object: self, userInfo: nil)
     }
     
     func parseMessageDimmerGetRunningTime (_ byteArray:[Byte]) {

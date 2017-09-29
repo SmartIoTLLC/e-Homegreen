@@ -164,16 +164,25 @@
 		4E1AAB191F6C0A29006C59AA /* QuranViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1AAB181F6C0A29006C59AA /* QuranViewController.swift */; };
 		4E1AAB1C1F6C0A8C006C59AA /* ReciterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1AAB1A1F6C0A8C006C59AA /* ReciterCell.swift */; };
 		4E1AAB1D1F6C0A8C006C59AA /* ReciterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E1AAB1B1F6C0A8C006C59AA /* ReciterCell.xib */; };
+		4E218F491F7B92960068CA72 /* Remote.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E218F481F7B92960068CA72 /* Remote.storyboard */; };
+		4E218F4B1F7B92FC0068CA72 /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E218F4A1F7B92FC0068CA72 /* RemoteViewController.swift */; };
+		4E5BE4011F7D42E700497335 /* EditRemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5BE3FF1F7D42E700497335 /* EditRemoteViewController.swift */; };
+		4E5BE4021F7D42E700497335 /* EditRemoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E5BE4001F7D42E700497335 /* EditRemoteViewController.xib */; };
 		4E7945511F6FC64F006C3ACA /* Sura+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E79454F1F6FC64F006C3ACA /* Sura+CoreDataClass.swift */; };
 		4E7945521F6FC64F006C3ACA /* Sura+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7945501F6FC64F006C3ACA /* Sura+CoreDataProperties.swift */; };
 		4E7945551F6FCE31006C3ACA /* SuraCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7945531F6FCE31006C3ACA /* SuraCell.swift */; };
 		4E7945561F6FCE31006C3ACA /* SuraCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E7945541F6FCE31006C3ACA /* SuraCell.xib */; };
+		4EC2E1421F7E439700DA494B /* RemoteDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */; };
 		4EDCE6811F6A8D740073736B /* radio_station.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EDCE6801F6A8D740073736B /* radio_station.json */; };
 		4EDCE6871F6A9BEA0073736B /* RadioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */; };
 		4EDCE68A1F6A9C090073736B /* StationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6881F6A9C090073736B /* StationCell.swift */; };
 		4EDCE68B1F6A9C090073736B /* StationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EDCE6891F6A9C090073736B /* StationCell.xib */; };
 		4EDCE6961F6AA76F0073736B /* Radio+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */; };
 		4EDCE6971F6AA76F0073736B /* Radio+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */; };
+		4EF41B951F7BA7DA007FBF64 /* RemoteDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF41B941F7BA7DA007FBF64 /* RemoteDummy.swift */; };
+		4EF41B971F7BAD88007FBF64 /* RemoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF41B961F7BAD88007FBF64 /* RemoteCell.swift */; };
+		4EF41B9C1F7BE813007FBF64 /* AddRemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF41B9A1F7BE813007FBF64 /* AddRemoteViewController.swift */; };
+		4EF41B9D1F7BE813007FBF64 /* AddRemoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EF41B9B1F7BE813007FBF64 /* AddRemoteViewController.xib */; };
 		4EF908271F70161000897A3C /* PhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF908261F70161000897A3C /* PhoneViewController.swift */; };
 		4EFAE0251F6C0BB400C85074 /* Reciter+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFAE0231F6C0BB400C85074 /* Reciter+CoreDataClass.swift */; };
 		4EFAE0261F6C0BB400C85074 /* Reciter+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFAE0241F6C0BB400C85074 /* Reciter+CoreDataProperties.swift */; };
@@ -551,16 +560,25 @@
 		4E1AAB181F6C0A29006C59AA /* QuranViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuranViewController.swift; sourceTree = "<group>"; };
 		4E1AAB1A1F6C0A8C006C59AA /* ReciterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReciterCell.swift; sourceTree = "<group>"; };
 		4E1AAB1B1F6C0A8C006C59AA /* ReciterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReciterCell.xib; sourceTree = "<group>"; };
+		4E218F481F7B92960068CA72 /* Remote.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Remote.storyboard; path = ../Remote.storyboard; sourceTree = "<group>"; };
+		4E218F4A1F7B92FC0068CA72 /* RemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteViewController.swift; sourceTree = "<group>"; };
+		4E5BE3FF1F7D42E700497335 /* EditRemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditRemoteViewController.swift; sourceTree = "<group>"; };
+		4E5BE4001F7D42E700497335 /* EditRemoteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditRemoteViewController.xib; sourceTree = "<group>"; };
 		4E79454F1F6FC64F006C3ACA /* Sura+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sura+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4E7945501F6FC64F006C3ACA /* Sura+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sura+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4E7945531F6FCE31006C3ACA /* SuraCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuraCell.swift; sourceTree = "<group>"; };
 		4E7945541F6FCE31006C3ACA /* SuraCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SuraCell.xib; sourceTree = "<group>"; };
+		4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDetailsViewController.swift; sourceTree = "<group>"; };
 		4EDCE6801F6A8D740073736B /* radio_station.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = radio_station.json; sourceTree = "<group>"; };
 		4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioViewController.swift; sourceTree = "<group>"; };
 		4EDCE6881F6A9C090073736B /* StationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationCell.swift; sourceTree = "<group>"; };
 		4EDCE6891F6A9C090073736B /* StationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StationCell.xib; sourceTree = "<group>"; };
 		4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Radio+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Radio+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4EF41B941F7BA7DA007FBF64 /* RemoteDummy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDummy.swift; sourceTree = "<group>"; };
+		4EF41B961F7BAD88007FBF64 /* RemoteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCell.swift; sourceTree = "<group>"; };
+		4EF41B9A1F7BE813007FBF64 /* AddRemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRemoteViewController.swift; sourceTree = "<group>"; };
+		4EF41B9B1F7BE813007FBF64 /* AddRemoteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddRemoteViewController.xib; sourceTree = "<group>"; };
 		4EF908261F70161000897A3C /* PhoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneViewController.swift; sourceTree = "<group>"; };
 		4EFAE0231F6C0BB400C85074 /* Reciter+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reciter+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4EFAE0241F6C0BB400C85074 /* Reciter+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reciter+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -1305,6 +1323,22 @@
 			name = Quran;
 			sourceTree = "<group>";
 		};
+		4E218F441F7B91E60068CA72 /* Remote */ = {
+			isa = PBXGroup;
+			children = (
+				4E218F481F7B92960068CA72 /* Remote.storyboard */,
+				4E218F4A1F7B92FC0068CA72 /* RemoteViewController.swift */,
+				4EF41B941F7BA7DA007FBF64 /* RemoteDummy.swift */,
+				4EF41B961F7BAD88007FBF64 /* RemoteCell.swift */,
+				4EF41B9A1F7BE813007FBF64 /* AddRemoteViewController.swift */,
+				4EF41B9B1F7BE813007FBF64 /* AddRemoteViewController.xib */,
+				4E5BE3FF1F7D42E700497335 /* EditRemoteViewController.swift */,
+				4E5BE4001F7D42E700497335 /* EditRemoteViewController.xib */,
+				4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */,
+			);
+			name = Remote;
+			sourceTree = "<group>";
+		};
 		4EDCE6821F6A90E10073736B /* Radio */ = {
 			isa = PBXGroup;
 			children = (
@@ -1411,6 +1445,7 @@
 				223292251CABCE180001422B /* Timers */,
 				223292241CABCDFB0001422B /* Sequences */,
 				223292231CABCC350001422B /* Events */,
+				4E218F441F7B91E60068CA72 /* Remote */,
 				4EDCE6821F6A90E10073736B /* Radio */,
 				4E1AAB171F6C09FC006C59AA /* Quran */,
 				223292221CABCC1F0001422B /* Scenes */,
@@ -2052,6 +2087,7 @@
 				E7DC67C41B457C0E00EA6543 /* weather-scattered.png in Resources */,
 				E7DC67BA1B457C0E00EA6543 /* weather-few.png in Resources */,
 				E73993131BCE753400C74486 /* VoiceControllerTableViewCell.xib in Resources */,
+				4E218F491F7B92960068CA72 /* Remote.storyboard in Resources */,
 				73DA61FB1BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.xib in Resources */,
 				73E206B41B2EEFFE0008B002 /* Main.storyboard in Resources */,
 				734DBFC01BEF7950002FE77E /* ChangeDeviceParametarsVC.xib in Resources */,
@@ -2124,10 +2160,12 @@
 				E7E08E051B4E4D9700153E9A /* ClimaSettingsViewController.xib in Resources */,
 				223687161CB4F13E005ACDE4 /* InsertGatewayAddressXIB.xib in Resources */,
 				73E82D0E1BECA97D00C1C621 /* Zones List.json in Resources */,
+				4EF41B9D1F7BE813007FBF64 /* AddRemoteViewController.xib in Resources */,
 				225F59881D74427300156BCD /* BigSliderXIB.xib in Resources */,
 				4EDCE68B1F6A9C090073736B /* StationCell.xib in Resources */,
 				22495D251CAA7C3E0034FC94 /* Security.storyboard in Resources */,
 				4E7945561F6FCE31006C3ACA /* SuraCell.xib in Resources */,
+				4E5BE4021F7D42E700497335 /* EditRemoteViewController.xib in Resources */,
 				E7DC67B91B457C0E00EA6543 /* weather-few-night@2x.png in Resources */,
 				22495D2F1CAA81490034FC94 /* PCControl.storyboard in Resources */,
 				E7F15B091B8F4B240025082D /* GalleryCollectionViewCell.xib in Resources */,
@@ -2229,7 +2267,9 @@
 				22359C6A1CAE98290054434B /* LocationCell.swift in Sources */,
 				4D0D97221CAD4087001A1E89 /* HRToast+UIView.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Constants.swift in Sources */,
+				4E5BE4011F7D42E700497335 /* EditRemoteViewController.swift in Sources */,
 				223DC0C61CE2089A00C5E2F6 /* CreateUserFromJSONController.swift in Sources */,
+				4EF41B9C1F7BE813007FBF64 /* AddRemoteViewController.swift in Sources */,
 				E77E59471BB2C9070004D263 /* ImportFilesViewController.swift in Sources */,
 				4E1771881F753CEE0002C6D6 /* ContactsListViewController.swift in Sources */,
 				73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */,
@@ -2290,6 +2330,7 @@
 				734E35781C8239990096E043 /* ScanFunction.swift in Sources */,
 				223362911CA2E4EC006C80C4 /* AddUserXIB.swift in Sources */,
 				E79FD4EC1BCE43B600CA17DB /* ChatBubble.swift in Sources */,
+				4EC2E1421F7E439700DA494B /* RemoteDetailsViewController.swift in Sources */,
 				225F59841D74402F00156BCD /* CommonXIBTransitionVC.swift in Sources */,
 				E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */,
 				73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */,
@@ -2344,6 +2385,7 @@
 				223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */,
 				22495D0E1CAA63EA0034FC94 /* SWRevealViewController.m in Sources */,
 				736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */,
+				4EF41B971F7BAD88007FBF64 /* RemoteCell.swift in Sources */,
 				73E758F11B4EBE0300ECE061 /* LocationsViewController.swift in Sources */,
 				2236871A1CB51834005ACDE4 /* Category.swift in Sources */,
 				73DA61FA1BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.swift in Sources */,
@@ -2421,6 +2463,7 @@
 				E7F5FC1D1BB9744200071982 /* CustomButton.swift in Sources */,
 				4EDCE6961F6AA76F0073736B /* Radio+CoreDataClass.swift in Sources */,
 				4D0BB34C1D5C91020047688F /* PCCommand.swift in Sources */,
+				4E218F4B1F7B92FC0068CA72 /* RemoteViewController.swift in Sources */,
 				2241E4701CC6389700BCD763 /* SurveillanceCell.swift in Sources */,
 				49C059661D91373C0061A544 /* ScanCell.swift in Sources */,
 				7372EB3F1BC410800097806D /* Gateway+CoreDataProperties.swift in Sources */,
@@ -2441,6 +2484,7 @@
 				E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */,
 				4EDCE6871F6A9BEA0073736B /* RadioViewController.swift in Sources */,
 				736F17D81B3AE870003A6A02 /* FlagsViewController.swift in Sources */,
+				4EF41B951F7BA7DA007FBF64 /* RemoteDummy.swift in Sources */,
 				73E2311D1BA6E2C4003E41EC /* SceneParametarVC.swift in Sources */,
 				22495D331CAA868E0034FC94 /* UIGradient + Extension.swift in Sources */,
 				2260FBA11D2CF5EC00576513 /* CustomToolBar.swift in Sources */,

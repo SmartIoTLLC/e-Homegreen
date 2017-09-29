@@ -36,4 +36,16 @@ extension UIView {
         scaleAnimation.duration = 1
         layer.add(scaleAnimation, forKey: "bouncingEffectOnTouch")
     }
+    
+    func setGradientBackground() {
+        let colorOne = Colors.MediumGray
+        let colorTwo = Colors.DarkGray
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [colorOne, colorTwo]
+        gradientLayer.locations = [0.0, 1.0]
+        gradientLayer.frame = bounds
+        
+        layer.addSublayer(gradientLayer)
+    }
 }

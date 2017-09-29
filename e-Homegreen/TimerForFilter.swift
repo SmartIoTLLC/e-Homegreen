@@ -18,6 +18,8 @@ class TimerForFilter {
     var counterDevices: Int = 0                // Starting value of timer
     var defaultTimerEvents: Foundation.Timer?
     var counterEvents: Int = 0
+    var defaultTimerRemote: Foundation.Timer?
+    var counterRemote: Int = 0
     var defaultTimerScenes: Foundation.Timer?
     var counterScenes: Int = 0
     var defaultTimerSequences: Foundation.Timer?
@@ -51,6 +53,10 @@ class TimerForFilter {
             defaultTimerEvents?.invalidate()
             defaultTimerEvents = nil
             counterEvents = timerValue
+        case Menu.remote:
+            defaultTimerRemote?.invalidate()
+            defaultTimerRemote = nil
+            counterRemote = timerValue
         case Menu.scenes:
             defaultTimerScenes?.invalidate()
             defaultTimerScenes = nil
@@ -106,6 +112,9 @@ class TimerForFilter {
         case Menu.events:
             defaultTimerEvents?.invalidate()
             defaultTimerEvents = nil
+        case Menu.remote:
+            defaultTimerRemote?.invalidate()
+            defaultTimerRemote = nil
         case Menu.scenes:
             defaultTimerScenes?.invalidate()
             defaultTimerScenes = nil
@@ -155,6 +164,12 @@ class TimerForFilter {
             defaultTimerEvents = nil
             if counterEvents > 0 {
                 defaultTimerEvents = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerEvents), userInfo: nil, repeats: true)
+            }
+        case Menu.remote:
+            defaultTimerRemote?.invalidate()
+            defaultTimerRemote = nil
+            if counterRemote > 0 {
+                defaultTimerRemote = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerForFilter.shared.updateTimerRemote), userInfo: nil, repeats: true)
             }
         case Menu.scenes:
             defaultTimerScenes?.invalidate()
@@ -241,6 +256,14 @@ class TimerForFilter {
         }else{
             self.resetTimer(timerValue: 0, type: Menu.events)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEvents), object: nil)
+        }
+    }
+    @objc func updateTimerRemote() {
+        if self.counterRemote > 0 {
+            self.counterRemote -= 1
+        } else {
+            self.resetTimer(timerValue: 0, type: Menu.remote)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerRemotes), object: nil)
         }
     }
     @objc func updateTimerScenes(){

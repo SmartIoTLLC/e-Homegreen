@@ -85,7 +85,7 @@ class ContactsListViewController: CommonXIBTransitionVC, UITableViewDataSource, 
         updateTableViewConstraints()
 
         tableView.separatorInset = UIEdgeInsets.zero
-        tableView.backgroundColor = UIColor(cgColor: Colors.DarkGray)
+        tableView.backgroundColor = Colors.AndroidGrayColor
         tableView.separatorColor = .clear
         tableView.layer.cornerRadius = 3
         tableView.tableHeaderView = header
