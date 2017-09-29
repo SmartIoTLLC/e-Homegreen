@@ -193,12 +193,80 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
     @IBAction func btnSet(_ sender: AnyObject) {
         print(hvacCommand)
         if hvacCommand != hvacCommandBefore {
-            Foundation.Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(ClimaSettingsViewController.setACSetPoint), userInfo: nil, repeats: false)
-            Foundation.Timer.scheduledTimer(timeInterval: 0.6, target: self, selector: #selector(ClimaSettingsViewController.setACSpeed), userInfo: nil, repeats: false)
-            Foundation.Timer.scheduledTimer(timeInterval: 0.9, target: self, selector: #selector(ClimaSettingsViewController.setACmode), userInfo: nil, repeats: false)
+            if hvacCommand.coolTemperature != hvacCommandBefore.coolTemperature || hvacCommand.heatTemperature != hvacCommandBefore.heatTemperature {
+                Foundation.Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(ClimaSettingsViewController.setACSetPoint), userInfo: nil, repeats: false)
+            }
+            
+            if hvacCommand.fan != hvacCommandBefore.fan {
+                Foundation.Timer.scheduledTimer(timeInterval: 0.6, target: self, selector: #selector(ClimaSettingsViewController.setACSpeed), userInfo: nil, repeats: false)
+            }
+            
+            if hvacCommand.mode != hvacCommandBefore.mode {
+                Foundation.Timer.scheduledTimer(timeInterval: 0.9, target: self, selector: #selector(ClimaSettingsViewController.setACmode), userInfo: nil, repeats: false)
+            }
+            
+            Foundation.Timer.scheduledTimer(timeInterval: 1.2, target: self, selector: #selector(forceClimateChange), userInfo: nil, repeats: false)
         }
         
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    func forceClimateChange() {
+        device.heatTemperature = NSNumber(value: hvacCommand.heatTemperature)
+        device.coolTemperature = NSNumber(value: hvacCommand.coolTemperature)
+        
+        var deviceMode = ""
+        var deviceModeState = ""
+        switch hvacCommand.mode {
+        case .auto:
+            deviceMode = "Auto"
+            deviceModeState = "Off"
+        case .fan:
+            deviceMode = "Fan"
+            deviceModeState = "Fan"
+        case .cool:
+            deviceMode = "Cool"
+            deviceModeState = "Cool"
+        case .heat:
+            deviceMode = "Heat"
+            deviceModeState = "Heat"
+        case .noMode:
+            deviceMode = "Off"
+        }
+        device.mode = deviceMode
+        device.modeState = deviceModeState
+        
+        var deviceSpeed = ""
+        var deviceSpeedState = ""
+        switch hvacCommand.fan {
+        case .auto:
+            deviceSpeed = "Auto"
+            deviceSpeedState = "Off"
+        case .low:
+            deviceSpeed = "Low"
+            deviceSpeedState = "Low"
+        case .med:
+            deviceSpeed = "Med"
+            deviceSpeedState = "Med"
+        case .high:
+            deviceSpeed = "High"
+            deviceSpeedState = "High"
+        case .noFan:
+            deviceSpeed = "Off"
+        }
+        device.speed = deviceSpeed
+        device.speedState = deviceSpeedState
+        CoreDataController.shahredInstance.saveChanges()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshClimate), object: nil)
+    }
+    
+    func forceFetchACStatus() {
+        let address = [UInt8(Int(device.gateway.addressOne)),UInt8(Int(device.gateway.addressTwo)),UInt8(Int(device.address))]
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getACStatus(address), gateway: self.device.gateway)
+        }
     }
     
     func setACSetPoint () {

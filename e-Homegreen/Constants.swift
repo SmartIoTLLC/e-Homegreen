@@ -513,6 +513,8 @@ struct NotificationKey {
     static let RefreshSurveillance = "refreshSurveillanceListNotification"
     static let RefreshPC = "refreshPCListNotification"
     
+    static let GetACStatus = "getACStatusNotification"
+    
     static let IndicatorLamp = "indicatorGreen"
     
     struct Surveillance {
