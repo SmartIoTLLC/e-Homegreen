@@ -166,6 +166,8 @@
 		4E1AAB1D1F6C0A8C006C59AA /* ReciterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E1AAB1B1F6C0A8C006C59AA /* ReciterCell.xib */; };
 		4E218F491F7B92960068CA72 /* Remote.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E218F481F7B92960068CA72 /* Remote.storyboard */; };
 		4E218F4B1F7B92FC0068CA72 /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E218F4A1F7B92FC0068CA72 /* RemoteViewController.swift */; };
+		4E3CFD7C1F823C2F00E22C92 /* ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3CFD7A1F823C2F00E22C92 /* ButtonCell.swift */; };
+		4E3CFD7D1F823C2F00E22C92 /* ButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E3CFD7B1F823C2F00E22C92 /* ButtonCell.xib */; };
 		4E5BE4011F7D42E700497335 /* EditRemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5BE3FF1F7D42E700497335 /* EditRemoteViewController.swift */; };
 		4E5BE4021F7D42E700497335 /* EditRemoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E5BE4001F7D42E700497335 /* EditRemoteViewController.xib */; };
 		4E7945511F6FC64F006C3ACA /* Sura+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E79454F1F6FC64F006C3ACA /* Sura+CoreDataClass.swift */; };
@@ -562,6 +564,8 @@
 		4E1AAB1B1F6C0A8C006C59AA /* ReciterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReciterCell.xib; sourceTree = "<group>"; };
 		4E218F481F7B92960068CA72 /* Remote.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Remote.storyboard; path = ../Remote.storyboard; sourceTree = "<group>"; };
 		4E218F4A1F7B92FC0068CA72 /* RemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteViewController.swift; sourceTree = "<group>"; };
+		4E3CFD7A1F823C2F00E22C92 /* ButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCell.swift; sourceTree = "<group>"; };
+		4E3CFD7B1F823C2F00E22C92 /* ButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonCell.xib; sourceTree = "<group>"; };
 		4E5BE3FF1F7D42E700497335 /* EditRemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditRemoteViewController.swift; sourceTree = "<group>"; };
 		4E5BE4001F7D42E700497335 /* EditRemoteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditRemoteViewController.xib; sourceTree = "<group>"; };
 		4E79454F1F6FC64F006C3ACA /* Sura+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sura+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -1326,17 +1330,35 @@
 		4E218F441F7B91E60068CA72 /* Remote */ = {
 			isa = PBXGroup;
 			children = (
+				4E3CFD781F823BBF00E22C92 /* Remote collection */,
+				4E3CFD791F823BEF00E22C92 /* Remote controller */,
 				4E218F481F7B92960068CA72 /* Remote.storyboard */,
-				4E218F4A1F7B92FC0068CA72 /* RemoteViewController.swift */,
 				4EF41B941F7BA7DA007FBF64 /* RemoteDummy.swift */,
+			);
+			name = Remote;
+			sourceTree = "<group>";
+		};
+		4E3CFD781F823BBF00E22C92 /* Remote collection */ = {
+			isa = PBXGroup;
+			children = (
+				4E218F4A1F7B92FC0068CA72 /* RemoteViewController.swift */,
 				4EF41B961F7BAD88007FBF64 /* RemoteCell.swift */,
 				4EF41B9A1F7BE813007FBF64 /* AddRemoteViewController.swift */,
 				4EF41B9B1F7BE813007FBF64 /* AddRemoteViewController.xib */,
 				4E5BE3FF1F7D42E700497335 /* EditRemoteViewController.swift */,
 				4E5BE4001F7D42E700497335 /* EditRemoteViewController.xib */,
-				4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */,
 			);
-			name = Remote;
+			name = "Remote collection";
+			sourceTree = "<group>";
+		};
+		4E3CFD791F823BEF00E22C92 /* Remote controller */ = {
+			isa = PBXGroup;
+			children = (
+				4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */,
+				4E3CFD7A1F823C2F00E22C92 /* ButtonCell.swift */,
+				4E3CFD7B1F823C2F00E22C92 /* ButtonCell.xib */,
+			);
+			name = "Remote controller";
 			sourceTree = "<group>";
 		};
 		4EDCE6821F6A90E10073736B /* Radio */ = {
@@ -2123,6 +2145,7 @@
 				22495D311CAA83260034FC94 /* Popover.storyboard in Resources */,
 				73F4D6B71C805DEF00FE0514 /* DeviceImagesPickerVC.xib in Resources */,
 				223878A11C917A96001357E0 /* AddVideo_AppXIB.xib in Resources */,
+				4E3CFD7D1F823C2F00E22C92 /* ButtonCell.xib in Resources */,
 				E77E59481BB2C9070004D263 /* ImportFilesViewController.xib in Resources */,
 				73E2311C1BA6E2C4003E41EC /* EventParametarVC.xib in Resources */,
 				E7DC67BB1B457C0E00EA6543 /* weather-few@2x.png in Resources */,
@@ -2490,6 +2513,7 @@
 				2260FBA11D2CF5EC00576513 /* CustomToolBar.swift in Sources */,
 				2252B4081CA58A4F005E84AA /* ImportSSIDViewController.swift in Sources */,
 				73F51A091C9475C6003EE702 /* wol.c in Sources */,
+				4E3CFD7C1F823C2F00E22C92 /* ButtonCell.swift in Sources */,
 				22506E8F1CB7DF25004EB47A /* DatabaseScenesController.swift in Sources */,
 				736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */,
 				7372EB331BC410800097806D /* Timer+CoreDataProperties.swift in Sources */,

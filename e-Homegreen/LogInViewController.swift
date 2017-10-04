@@ -33,9 +33,16 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
         if let admin = AdminController.shared.getAdmin(){
             users.append(admin.username)
         }
-        for user in DatabaseUserController.shared.getUserForDropDownMenu(){
-            users.append(user.username!)
+        if let usersDB = DatabaseUserController.shared.getUserForDropDownMenu() {
+            for user in usersDB {
+                if user.username != nil {
+                    users.append(user.username!)
+                }
+            }
         }
+//        for user in DatabaseUserController.shared.getUserForDropDownMenu(){
+//            users.append(user.username!)
+//        }
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(LogInViewController.dismissKeyboard))
         tap.delegate = self

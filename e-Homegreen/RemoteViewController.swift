@@ -52,7 +52,14 @@ class RemoteViewController: PopoverVC {
         super.viewDidLoad()
         
         let remote = RemoteDummy(buggerOff: "Dummy")
-        remotes.append(remote)
+        remote.columns = 3
+        remote.rows = 5
+        remote.buttonSize = CGSize(width: 50, height: 50)
+        remote.buttonColor = .red
+        remote.buttonShape = "Circle"
+        remote.buttonMargins = UIEdgeInsets(top: 25, left: 16, bottom: 20, right: 16)
+        remotes.append(remote)        
+
         remoteCollectionView.reloadData()
         
         UIView.hr_setToastThemeColor(color: .red)

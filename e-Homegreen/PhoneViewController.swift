@@ -93,9 +93,9 @@ class PhoneViewController: UIViewController {
     
     @IBOutlet weak var makeCallButton: CustomGradientButton!
     @IBAction func makeCallButton(_ sender: CustomGradientButton) {
-//        toggleMic(off: false)
-        fetchContacts(recognizedContact: "John")
-//        recordAndRecognizeSpeech()
+        toggleMic(off: false)
+//        fetchContacts(recognizedContact: "John")
+        recordAndRecognizeSpeech()
     }
     
     
@@ -126,7 +126,6 @@ class PhoneViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        speechRecognizer?.delegate = self
         requestSpeechAuthorization()
         updateViews()
     }
@@ -189,7 +188,6 @@ class PhoneViewController: UIViewController {
                 node.removeTap(onBus: 0)
                 self.recognitionTask = nil
                 self.hideToastActivityOnMainThread()
-                print("Error in recognition task")
             }
             
             if isFinal {
@@ -214,6 +212,7 @@ class PhoneViewController: UIViewController {
         SFSpeechRecognizer.requestAuthorization { (authStatus) in
             switch authStatus {
             case .authorized:
+                //staviti na main thread
                 self.makeCallButton.isEnabled = true
                 self.requestContactsAuthorization()
             case .denied:
@@ -311,13 +310,6 @@ class PhoneViewController: UIViewController {
         }
     }
 
-}
-
-extension PhoneViewController: SFSpeechRecognizerDelegate, SFSpeechRecognitionTaskDelegate {
-    func speechRecognitionTask(_ task: SFSpeechRecognitionTask, didHypothesizeTranscription transcription: SFTranscription) {
-        
-    }
-    
 }
 
 extension String {

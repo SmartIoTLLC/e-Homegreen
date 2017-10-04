@@ -18,14 +18,15 @@ public class RemoteDummy: NSObject {
     var buggerOff: String?
     var name: String?
     var location: Location?
-    var address: String?
-    var channel: String?
-    var buttonSize: CGSize?
-    var margin: [CGFloat]?
-    var buttonColor: UIColor?
-    var buttonShape: ButtonShape?
-    var columns: Int?
-    var rows: Int?
+    var address: String!
+    var channel: String!
+    var buttonSize: CGSize!
+    var margin: [CGFloat]!
+    var buttonColor: UIColor!
+    var buttonShape: String!
+    var columns: Int!
+    var rows: Int!
+    var buttonMargins: UIEdgeInsets!
 
     init(buggerOff: String) {
         self.buggerOff = buggerOff

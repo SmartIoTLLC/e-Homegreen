@@ -32,6 +32,10 @@ class NavigationTitleView: UIView {
         commonInit()
     }
     
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: CGFloat.greatestFiniteMagnitude, height: 44)
+    }
+    
     func commonInit(){
         self.translatesAutoresizingMaskIntoConstraints = true        
         self.backgroundColor = UIColor.clear

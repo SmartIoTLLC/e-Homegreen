@@ -53,12 +53,12 @@ class DatabaseUserController: NSObject {
         
     }
     
-    func getUserForDropDownMenu() -> [User] {
+    func getUserForDropDownMenu() -> [User]? {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = User.fetchRequest()
         
         do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [User]
-            return fetResults!
+            let fetResults = try appDel.managedObjectContext?.fetch(fetchRequest) as? [User]
+            return fetResults
             
         } catch  {
             
@@ -101,13 +101,13 @@ class DatabaseUserController: NSObject {
         prefs.setValue(false, forKey: Login.IsLoged)
     }
     
-    func getAllUsers() -> [User]{
+    func getAllUsers() -> [User]? {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = User.fetchRequest()
         let sortDescriptorOne = NSSortDescriptor(key: "username", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne]
         do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [User]
-            return fetResults!
+            let fetResults = try appDel.managedObjectContext?.fetch(fetchRequest) as? [User]
+            return fetResults
         } catch  {
             
         }

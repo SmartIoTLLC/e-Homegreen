@@ -12,7 +12,7 @@ class AddRemoteViewController: CommonXIBTransitionVC {
     
     @IBOutlet weak var scrollView: UIScrollView!
     
-    var newRemote: RemoteDummy?
+    var newRemote: RemoteDummy!
     
     @IBOutlet weak var nameTF: EditTextField!
     @IBOutlet weak var columnsTF: EditTextField!
@@ -42,6 +42,85 @@ class AddRemoteViewController: CommonXIBTransitionVC {
         self.dismiss(animated: true, completion: nil)
     }
     @IBAction func saveButton(_ sender: CustomGradientButton) {
+        guard let name = nameTF.text, name.count != 0 else {
+            self.view.makeToast(message: "Must name the remote controller.")
+            return
+        }
+        guard let columns = columnsTF.text, columns.count != 0, columns != "0" else {
+            self.view.makeToast(message: "Number of columns can't be 0.")
+            return
+        }
+        guard let rows = rowsTF.text,  rows.count != 0, rows != "0" else {
+            self.view.makeToast(message: "Number of columns can't be 0")
+            return
+        }
+        guard let addressOne = addressOneTF.text, addressOne.count != 0 else {
+            self.view.makeToast(message: "Invalid address.")
+            return
+        }
+        guard let addressTwo = addressTwoTF.text, addressTwo.count != 0 else {
+            self.view.makeToast(message: "Invalid address.")
+            return
+        }
+        guard let addressThree = addressThreeTF.text, addressThree.count != 0 else {
+            self.view.makeToast(message: "Invalid address.")
+            return
+        }
+        guard let channel = channelTF.text, channel.count != 0 else {
+            self.view.makeToast(message: "Invalid channel.")
+            return
+        }
+        guard let height = heightTF.text, height.count != 0, Int(height)! > 9 else {
+            self.view.makeToast(message: "Invalid height.")
+            return
+        }
+        guard let width = widthTF.text, width.count != 0, Int(width)! > 9 else {
+            self.view.makeToast(message: "Invalid width.")
+            return
+        }
+        
+        var top: Int!
+        var bottom: Int!
+        if let topString = topTF.text, let topInt = Int(topString) {
+            top = topInt
+        } else { top = 0 }
+        
+        if let bottomString = bottomTF.text, let bottomInt = Int(bottomString) {
+            bottom = bottomInt
+        } else { bottom = 0 }
+        
+        var color: UIColor!
+        var shape: String!
+        if colorButton.titleLabel?.text == "Gray" {
+            color = .gray
+        } else { color = .red }
+        
+        if shapeButton.titleLabel?.text == "Rectangle" {
+            shape = "Rectangle"
+        } else { shape = "Circle" }
+        
+        if shape == "Circle" {
+            if Int(width) != Int(height) {
+                self.view.makeToast(message: "Circle must have same width and height")
+                return
+            }
+        }
+        
+        newRemote = RemoteDummy(buggerOff: "Buggerica")
+        newRemote.name = "Dummy remote"
+        newRemote.columns = Int(columns)
+        newRemote.rows = Int(rows)
+        newRemote.address = addressOne + addressTwo + addressThree
+        newRemote.channel = channel
+        newRemote.buttonSize = CGSize(width: CGFloat(Int(width)!), height: CGFloat(Int(height)!))
+        newRemote.buttonShape = shape
+        newRemote.buttonMargins = UIEdgeInsets(top: CGFloat(top), left: 16, bottom: CGFloat(bottom), right: 16)
+        newRemote.buttonColor = color
+        // ako je circle -> height i width se moraju poklapati
+        
+        /* ograniciti ako je broj kolumni veci od availableCollectionWidth / columns
+         -32pt
+        */
         
     }
     
