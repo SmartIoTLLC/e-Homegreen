@@ -49,6 +49,9 @@ class DevicesViewController: PopoverVC{
     @IBOutlet weak var zoneAndCategorySlider: UISlider!
     
     override func viewDidLoad() {
+        if #available(iOS 11, *) {
+            headerTitleSubtitleView.layoutIfNeeded()
+        }
         super.viewDidLoad()
         
         UIView.hr_setToastThemeColor(color: UIColor.red)

@@ -438,7 +438,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         } catch let error1 as NSError {
             error = error1
             print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
+        //    abort()
         }
     }
     

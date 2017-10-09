@@ -86,6 +86,7 @@ class CurtainCollectionCell: UICollectionViewCell {
 //                }
             }
         }
+        print("Changed curtain image; device value: ", device.currentValue.intValue)
         if devicePair == nil { // three state module
             guard let devImages = Array(device.deviceImages!) as? [DeviceImage] else {
                 print("error")

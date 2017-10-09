@@ -122,7 +122,7 @@ class RelayParametarVC: CommonXIBTransitionVC {
             }
         } catch _ as NSError {
             print("Unresolved error")
-            abort()
+         //   abort()
         }
         return ""
     }

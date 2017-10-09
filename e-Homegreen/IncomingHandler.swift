@@ -848,29 +848,33 @@ class IncomingHandler: NSObject {
     //  informacije o stanjima na uredjajima
     func parseMessageChannelsState (_ byteArray:[Byte]) {
         self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
-        for i in 0..<devices.count{
-            if Int(devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(devices[i].address) == Int(byteArray[4]) {
-                let channelNumber = Int(devices[i].channel)
-                
-                // Problem: If device is dimmer, then value that is received is in range from 0-100. In rest of the cases value is 0x00 of 0xFF (0 or 255)
-                // That is why we must check whether device value is >100. If value is greater than 100 that means that it is not dimmer and the only value greater than 100 can be 255
-                if Int(byteArray[8+5*(channelNumber-1)]) > 100 {
-                    devices[i].currentValue = NSNumber(value: Int(byteArray[8+5*(channelNumber-1)])) // device is NOT dimmer and the value should be saved as received
-                }else{
-                    devices[i].currentValue = NSNumber(value:  Int(byteArray[8+5*(channelNumber-1)])*255/100) // two cases: the device is dimmer and has some value. the device is not dimmer but the value is 0
-                }
-                // check if number of channel is lower than bytearray
-                if 12+5*(channelNumber-1) < byteArray.count{
-                    devices[i].current = NSNumber(value: Int(UInt16(byteArray[9+5*(channelNumber-1)])*256 + UInt16(byteArray[10+5*(channelNumber-1)]))) // current
-                    devices[i].voltage = NSNumber(value: Int(byteArray[11+5*(channelNumber-1)])) // voltage
-                    devices[i].temperature = NSNumber(value: Int(byteArray[12+5*(channelNumber-1)])) // temperature
-                    let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
+        if devices.count != 0 {
+            for i in 0..<devices.count{
+                if Int(devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(devices[i].address) == Int(byteArray[4]) {
+                    let channelNumber = Int(devices[i].channel)
+                    
+                    // Problem: If device is dimmer, then value that is received is in range from 0-100. In rest of the cases value is 0x00 of 0xFF (0 or 255)
+                    // That is why we must check whether device value is >100. If value is greater than 100 that means that it is not dimmer and the only value greater than 100 can be 255
+                    if Int(byteArray[8+5*(channelNumber-1)]) > 100 {
+                        devices[i].currentValue = NSNumber(value: Int(byteArray[8+5*(channelNumber-1)])) // device is NOT dimmer and the value should be saved as received
+                    }else{
+                        devices[i].currentValue = NSNumber(value:  Int(byteArray[8+5*(channelNumber-1)])*255/100) // two cases: the device is dimmer and has some value. the device is not dimmer but the value is 0
+                    }
+
+                    // check if number of channel is lower than bytearray
+                    if 12+5*(channelNumber-1) < byteArray.count{
+                        devices[i].current = NSNumber(value: Int(UInt16(byteArray[9+5*(channelNumber-1)])*256 + UInt16(byteArray[10+5*(channelNumber-1)]))) // current
+                        devices[i].voltage = NSNumber(value: Int(byteArray[11+5*(channelNumber-1)])) // voltage
+                        devices[i].temperature = NSNumber(value: Int(byteArray[12+5*(channelNumber-1)])) // temperature
+                        let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
+                    }
                 }
             }
+            CoreDataController.shahredInstance.saveChanges()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
         }
-        CoreDataController.shahredInstance.saveChanges()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+        
     }
     //  informacije o parametrima kanala
     func parseMessageChannelParameter(_ byteArray:[Byte]){

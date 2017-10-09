@@ -299,7 +299,9 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource{
             cell.txtM.delegate = self
             cell.backgroundColor = UIColor.clear
             cell.layer.cornerRadius = 5
+            
             return cell
+            
         }
         else if settingArray[(indexPath as NSIndexPath).section] == SettingsItem.lockProfile {
             
@@ -358,6 +360,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource{
         }
         return 44
     }
+
 }
 
 extension SettingsViewController: UITextFieldDelegate{
@@ -367,6 +370,7 @@ extension SettingsViewController: UITextFieldDelegate{
         }
         return true
     }
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if let cell = textField.superview?.superview as? BroadcastTimeAndDateTVC {
             settingsTableView.scrollToRow(at: settingsTableView.indexPath(for: cell)!, at: UITableViewScrollPosition.middle, animated: true)

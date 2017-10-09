@@ -154,7 +154,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         } catch let error1 as NSError {
             error = error1
             print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
+      //      abort()
         }
     }
     @IBAction func btnDeleteTextFields(_ sender: AnyObject) {

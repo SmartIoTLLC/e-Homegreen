@@ -40,7 +40,7 @@ class DatabaseHandler: NSObject {
                 }
             } catch _ as NSError {
                 print("Unresolved error")
-                abort()
+                //abort()
             }
             return ""
         }
@@ -93,7 +93,7 @@ class DatabaseHandler: NSObject {
                 }
             } catch _ as NSError {
                 print("Unresolved error")
-                abort()
+                //abort()
             }
             return nil
         }
@@ -114,7 +114,7 @@ class DatabaseHandler: NSObject {
             }
         } catch _ as NSError {
             print("Unresolved error")
-            abort()
+            //abort()
         }
         return ""
     }
@@ -133,7 +133,7 @@ class DatabaseHandler: NSObject {
             }
         } catch _ as NSError {
             print("Unresolved error")
-            abort()
+            //abort()
         }
         return nil
     }
@@ -154,7 +154,7 @@ class DatabaseHandler: NSObject {
             }
         } catch _ as NSError {
             print("Unresolved error")
-            abort()
+            //abort()
         }
         return ""
     }
@@ -175,7 +175,7 @@ class DatabaseHandler: NSObject {
             }
         } catch _ as NSError {
             print("Unresolved error")
-            abort()
+            //abort()
         }
         return ""
     }
@@ -193,7 +193,7 @@ class DatabaseHandler: NSObject {
             }
         } catch _ as NSError {
             print("Unresolved error")
-            abort()
+            //abort()
         }
         return -1
     }
@@ -213,7 +213,7 @@ class DatabaseHandler: NSObject {
             return fetResults!
         } catch let error1 as NSError {
             print("Unresolved error \(error1), \(error1.userInfo)")
-            abort()
+            //abort()
         }
         return []
     }
@@ -227,7 +227,7 @@ class DatabaseHandler: NSObject {
             return fetResults!
         } catch let error1 as NSError {
             print("Unresolved error \(error1), \(error1.userInfo)")
-            abort()
+            //abort()
         }
         return []
     }
@@ -240,7 +240,7 @@ class DatabaseHandler: NSObject {
             return fetResults!
         } catch let error1 as NSError {
             print("Unresolved error \(error1), \(error1.userInfo)")
-            abort()
+           // abort()
         }
         return []
     }
@@ -252,7 +252,7 @@ class DatabaseHandler: NSObject {
             return fetResults!
         } catch let error1 as NSError {
             print("Unresolved error \(error1), \(error1.userInfo)")
-            abort()
+           // abort()
         }
         return []
     }

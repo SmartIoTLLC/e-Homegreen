@@ -61,6 +61,11 @@ class SecurityViewController: PopoverVC{
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if #available(iOS 11, *) {
+            
+            headerTitleSubtitleView.layoutIfNeeded()
+        }
+        
         UIView.hr_setToastThemeColor(color: UIColor.red)
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)

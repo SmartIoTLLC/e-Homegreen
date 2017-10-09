@@ -13,24 +13,29 @@ import SpriteKit
 extension AppDelegate {
     
     func startTimer() {
-        if BroadcastPreference.getIsBroadcastOnEvery() {
-            let queue = DispatchQueue(label: "com.domain.app.broadcast.time.and.date.timer", attributes: [])
-            timer = DispatchSource.makeTimerSource(flags: DispatchSource.TimerFlags(rawValue: UInt(0)), queue: queue) /*Migrator FIXME: Use DispatchSourceTimer to avoid the cast*/ as! DispatchSource
-            let minutes = BroadcastPreference.getBroadcastMin()
-            let hourMinutes = BroadcastPreference.getBroadcastHour()*60
-            let sumMinutes = minutes + hourMinutes
-            let seconds:UInt64 = UInt64(((sumMinutes*60)-10))
-            NSLog("\(seconds)")
-//            timer.setTimer(start: DispatchTime.now(), interval: seconds * NSEC_PER_SEC, leeway: 1 * NSEC_PER_SEC) // every 60 seconds, with leeway of 1 second
-            timer.setEventHandler {
-                // do whatever you want here
-                self.broadcastTimeAndDateEveryNowAndThen()
+            if BroadcastPreference.getIsBroadcastOnEvery() {
+                if self.broadcastTimeAndDateTimer == nil {
+                    //     let queue = DispatchQueue(label: "com.domain.app.broadcast.time.and.date.timer", attributes: [])
+                    //timer = DispatchSource.makeTimerSource(flags: DispatchSource.TimerFlags(rawValue: UInt(0)), queue: queue) /*Migrator FIXME: Use DispatchSourceTimer to avoid the cast*/ as! DispatchSource
+                    
+                    let minutes = BroadcastPreference.getBroadcastMin()
+                    let hourMinutes = BroadcastPreference.getBroadcastHour()*60
+                    let sumMinutes = minutes + hourMinutes
+                    let seconds:UInt64 = UInt64(((sumMinutes*60)-10))
+                    print("seconds: ", seconds)
+                    self.broadcastTimeAndDateTimer = Foundation.Timer.scheduledTimer(timeInterval: Double(seconds), target: self, selector: #selector(self.sendDataToBroadcastTimeAndDate), userInfo: nil, repeats: true)
+                    //self.broadcastTimeAndDateTimer = Foundation.Timer(timeInterval: Double(seconds), target: self, selector: #selector(self.sendDataToBroadcastTimeAndDate), userInfo: nil, repeats: true)
+                    print("pokrenuo timer")
+                    //            timer.setTimer(start: DispatchTime.now(), interval: seconds * NSEC_PER_SEC, leeway: 1 * NSEC_PER_SEC) // every 60 seconds, with leeway of 1 second
+                    //            timer.setEventHandler {
+                    //                // do whatever you want here
+                    //                self.broadcastTimeAndDateEveryNowAndThen()
+                    //            }
+                    //            timer.resume()
+                    
+                    //return
+                }
             }
-            timer.resume()
-
-            return
-        }
-
     }
     
     func refreshAllConnections() {
@@ -51,10 +56,14 @@ extension AppDelegate {
     }
     
     func stopTimer() {
-        if timer != nil {
-            timer.cancel()
-            timer = nil
-        }
+//        if timer != nil {
+//            timer.cancel()
+//            timer = nil
+//        }
+            if self.broadcastTimeAndDateTimer != nil {
+                self.broadcastTimeAndDateTimer?.invalidate()
+                self.broadcastTimeAndDateTimer = nil
+            }
     }
     func stopRefreshTimer() {
         if refreshTimer != nil {
@@ -73,17 +82,20 @@ extension AppDelegate {
     
     func broadcastTimeAndDateOnStartUp() {
         sendDataToBroadcastTimeAndDate()
+        print("startup vreme")
     }
     
     func broadcastTimeAndDateEveryNowAndThen() {
-        if let date = BroadcastPreference.getBroadcastUpdateDate() as Date! {
-            let minutes = BroadcastPreference.getBroadcastMin()
-            let hourMinutes = BroadcastPreference.getBroadcastHour()*60
-            let sumMinutes = minutes + hourMinutes
-            if Date().timeIntervalSince(date.addingTimeInterval(TimeInterval(NSNumber(value: sumMinutes as Int)))) >= Double(sumMinutes)  {
-                sendDataToBroadcastTimeAndDate()
-            }
-        }
+//        if let date = BroadcastPreference.getBroadcastUpdateDate() as Date! {
+//            let minutes = BroadcastPreference.getBroadcastMin()
+//            let hourMinutes = BroadcastPreference.getBroadcastHour()*60
+//            let sumMinutes = minutes + hourMinutes
+//            sendDataToBroadcastTimeAndDate()
+//
+////            if Date().timeIntervalSince(date.addingTimeInterval(TimeInterval(NSNumber(value: sumMinutes as Int)))) >= Double(sumMinutes)  {
+////                sendDataToBroadcastTimeAndDate()
+////            }
+//        }
     }
     
     func sendDataToBroadcastTimeAndDate() {
@@ -102,6 +114,7 @@ extension AppDelegate {
         
         SendingHandler.sendCommand(byteArray: OutgoingHandler.setInternalClockRTC([0xFF,0xFF,0xFF], year: Byte(year), month: Byte(month!), day: Byte(day!), hour: Byte(hour!), minute: Byte(minute!), second: Byte(second!), dayOfWeak: Byte(weekday)), ip: BroadcastPreference.getBroadcastIp(), port: UInt16 (BroadcastPreference.getBroadcastPort()))
         BroadcastPreference.setBroadcastUpdateDate()
+        print("Poslato vreme")
         
     }
 }
@@ -143,9 +156,9 @@ class BroadcastPreference {
     }
     class func setIsBroadcastOnEvery(_ isUpdateRequired:Bool) {
         if isUpdateRequired {
-//            (UIApplication.shared.delegate as! AppDelegate).startTimer()
+            (UIApplication.shared.delegate as! AppDelegate).startTimer()
         } else {
-//            (UIApplication.shared.delegate as! AppDelegate).stopTimer()
+            (UIApplication.shared.delegate as! AppDelegate).stopTimer()
         }
         Foundation.UserDefaults.standard.set(isUpdateRequired, forKey: "kIsBroadcastOnEvery")
         Foundation.UserDefaults.standard.synchronize()

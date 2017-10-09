@@ -34,7 +34,7 @@ class CoreDataController: NSObject {
             }
         } catch let error1 as NSError {
             print("Unresolved error \(error1), \(error1.userInfo)")
-            abort()
+            //abort()
         }
         return gateways
     }
@@ -50,7 +50,7 @@ class CoreDataController: NSObject {
             }
         } catch let error1 as NSError {
             print("Unresolved error \(error1), \(error1.userInfo)")
-            abort()
+            //abort()
         }
         return nil
     }
@@ -68,7 +68,7 @@ class CoreDataController: NSObject {
             return fetResults
         } catch let error as NSError {
             print("Unresolved error \(error), \(error.userInfo)")
-            abort()
+          //  abort()
         }
         return []
     }
@@ -89,7 +89,7 @@ class CoreDataController: NSObject {
             return fetResults
         } catch let error as NSError {
             print("Unresolved error \(error), \(error.userInfo)")
-            abort()
+          //  abort()
         }
         return []
     }
@@ -114,7 +114,7 @@ class CoreDataController: NSObject {
             return fetResults
         } catch let error as NSError {
             print("Unresolved error \(error), \(error.userInfo)")
-            abort()
+           // abort()
         }
         return []
     }
@@ -124,7 +124,7 @@ class CoreDataController: NSObject {
         } catch let error1 as NSError {
             let error = error1
             print("Unresolved error \(error), \(error.userInfo)")
-            abort()
+           // abort()
         }
     }
 }

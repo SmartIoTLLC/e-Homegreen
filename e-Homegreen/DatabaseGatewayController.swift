@@ -26,7 +26,7 @@ class DatabaseGatewayController: NSObject {
                 let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Gateway]
                 return fetResults!
             } catch _ as NSError {
-                abort()
+             //   abort()
             }
         }
         return []
@@ -40,10 +40,10 @@ class DatabaseGatewayController: NSObject {
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Gateway]
+            let fetResults = try appDel.managedObjectContext?.fetch(fetchRequest) as? [Gateway]
             return fetResults!
         } catch _ as NSError {
-            abort()
+         //   abort()
         }
         
         return []
@@ -60,7 +60,7 @@ class DatabaseGatewayController: NSObject {
                 return fetResults?.first
             }
         } catch _ as NSError {
-            abort()
+           // abort()
         }
         
         return nil

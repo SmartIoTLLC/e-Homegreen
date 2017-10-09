@@ -31,6 +31,10 @@ class NavigationTitleView: UIView {
         super.init(coder: aDecoder)
         commonInit()
     }
+        
+    override var intrinsicContentSize: CGSize {
+        return UILayoutFittingExpandedSize
+    }
     
     func commonInit(){
         self.translatesAutoresizingMaskIntoConstraints = true        

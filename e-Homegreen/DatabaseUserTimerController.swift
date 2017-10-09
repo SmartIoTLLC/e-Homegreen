@@ -46,7 +46,7 @@ class DatabaseUserTimerController: NSObject {
                 let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Timer]
                 return fetResults!
             } catch _ as NSError {
-                abort()
+                //abort()
             }
         }
         return []

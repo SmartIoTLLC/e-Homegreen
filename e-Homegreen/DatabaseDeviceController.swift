@@ -44,11 +44,11 @@ class DatabaseDeviceController: NSObject {
             fetchRequest.predicate = compoundPredicate
 
             do {
-                let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Device]
+                let fetResults = try appDel.managedObjectContext?.fetch(fetchRequest) as? [Device]
                 return fetResults!
             } catch let error as NSError {
                 print("Unresolved error \(error), \(error.userInfo)")
-                abort()
+                //abort()
             }
         }
         return []

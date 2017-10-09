@@ -44,6 +44,9 @@ class ScanViewController: PopoverVC {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if #available(iOS 11, *) {
+            headerTitleSubtitleView.layoutIfNeeded()
+        }        
         
         scrollView.scanFilterDelegate = self
         view.addSubview(scrollView)

@@ -39,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let locationManager = CLLocationManager()
     var timer: DispatchSource!
     var refreshTimer: DispatchSource!
+    var broadcastTimeAndDateTimer: Foundation.Timer?
     
 //    func refreshDevicesToYesterday () {
 //        var error:NSError?
@@ -64,6 +65,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+    
+    func setupBroadcastValues() {
+        Foundation.UserDefaults.standard.register(defaults: ["kBroadcastHour" : 3])
+        Foundation.UserDefaults.standard.register(defaults: ["kBroadcastMin" : 0])
+        Foundation.UserDefaults.standard.register(defaults: ["kBroadcastPort" : 5000])
+        Foundation.UserDefaults.standard.register(defaults: ["kBroadcastIp" : "255.255.255.255"])
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
         // slider setup
@@ -122,6 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        broadcastTimeAndDate()
 //        refreshAllConnections()
         establishAllConnections()
+        setupBroadcastValues()
 //        Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(AppDelegate.setFilterBySSIDOrByiBeacon), userInfo: nil, repeats: false)
         locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
@@ -436,6 +446,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         }
+    
     }
     
 //    var iBeacons:[IBeacon] = []
@@ -497,7 +508,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch let error1 as NSError {
             error = error1
             print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
+         //   abort()
         }
         for item in self.gateways {
             item.remoteIpInUse = self.returnIpAddress(item.remoteIp)
@@ -600,6 +611,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         establishAllConnections()
+        
+        // Run Broadcast Date&Time timers if they are set
+        if BroadcastPreference.getIsBroadcastOnStartUp() {
+            self.sendDataToBroadcastTimeAndDate()
+        }
+        if BroadcastPreference.getIsBroadcastOnEvery() {
+            self.startTimer()
+        }
+        
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -649,7 +669,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Replace this with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog("Unresolved error \(error), \(error!.userInfo)")
-            abort()
+         //   abort()
         } catch {
             fatalError()
         }
@@ -680,7 +700,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     // Replace this implementation with code to handle the error appropriately.
                     // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                     NSLog("Unresolved error \(error), \(error!.userInfo)")
-                    abort()
+                  //  abort()
                 }
             }
         }
