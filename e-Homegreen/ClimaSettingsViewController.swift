@@ -205,7 +205,7 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
                 Foundation.Timer.scheduledTimer(timeInterval: 0.9, target: self, selector: #selector(ClimaSettingsViewController.setACmode), userInfo: nil, repeats: false)
             }
             
-            Foundation.Timer.scheduledTimer(timeInterval: 1.2, target: self, selector: #selector(forceClimateChange), userInfo: nil, repeats: false)
+            //Foundation.Timer.scheduledTimer(timeInterval: 1.2, target: self, selector: #selector(forceClimateChange), userInfo: nil, repeats: false)
         }
         
         self.dismiss(animated: true, completion: nil)

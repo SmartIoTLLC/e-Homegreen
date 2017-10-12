@@ -23,7 +23,9 @@ enum TypeOfLocationDevice:Int{
         case .Ehomeblue: return "e-Homeblue"
         }
     }
-    static let allValues = [Ehomegreen, Surveillance, Ehomeblue]
+    static let allValues = [Ehomegreen
+        //, Surveillance, Ehomeblue
+    ]
 }
 
 struct CollapsableViewModel {

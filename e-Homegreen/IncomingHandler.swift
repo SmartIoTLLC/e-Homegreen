@@ -74,6 +74,9 @@ class IncomingHandler: NSObject {
                 if messageIsAcControlStatus() {
                     self.parseMessageACstatus(self.byteArray)
                 }
+                if messageIsSingleACControlStatus() {
+                    self.parseMessageSingleACStatus(self.byteArray)
+                }
                 if messageIsInterfaceParameter() {
                     self.parseMessageInterfaceParametar(self.byteArray)
                 }
@@ -675,6 +678,41 @@ class IncomingHandler: NSObject {
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshClimate), object: self, userInfo: nil)
 
+    }
+    
+    func parseMessageSingleACStatus(_ byteArray: [Byte]) {
+        self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
+        for i in 0..<devices.count {
+            if Int(devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(devices[i].address) == Int(byteArray[4]) {
+                if Int(devices[i].channel) == Int(byteArray[7]) {
+                    devices[i].currentValue = NSNumber(value: Int(byteArray[8]))
+                    
+                    if let mode = DeviceInfo.setMode[Int(byteArray[9])], let modeState = DeviceInfo.modeState[Int(byteArray[10])], let speed = DeviceInfo.setSpeed[Int(byteArray[11])], let speedState = DeviceInfo.speedState[Int(byteArray[12])] {
+                        devices[i].mode = mode
+                        devices[i].modeState = modeState
+                        devices[i].speed = speed
+                        devices[i].speedState = speedState
+                    } else {
+                        devices[i].mode = "Auto"
+                        devices[i].modeState = "Off"
+                        devices[i].speed = "Auto"
+                        devices[i].speedState = "Off"
+                    }
+                    devices[i].coolTemperature = NSNumber(value: Int(byteArray[13]))
+                    devices[i].heatTemperature = NSNumber(value: Int(byteArray[14]))
+                    devices[i].roomTemperature = NSNumber(value: Int(byteArray[15]))
+                    devices[i].humidity = NSNumber(value: Int(byteArray[16]))
+                    devices[i].filterWarning = byteArray[17] == 0x00 ? false : true
+                    devices[i].allowEnergySaving = byteArray[18] == 0x00 ? NSNumber(value: false as Bool) : NSNumber(value: true as Bool)
+                    devices[i].current = NSNumber(value: (Int(byteArray[19]) + Int(byteArray[20])))
+                    let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
+                }
+            }
+            CoreDataController.shahredInstance.saveChanges()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshClimate), object: self, userInfo: nil)
+        }
     }
     
     func parseMessageDimmerGetRunningTime (_ byteArray:[Byte]) {
@@ -1281,6 +1319,14 @@ extension IncomingHandler {
         }
         return false
     }
+    // AC single feedback after setting mode
+    func messageIsSingleACControlStatus() -> Bool {
+        if self.byteArray[5] == 0xF4 && self.byteArray[6] == 0x03 && self.byteArray[7] != 0xFF {
+            return true
+        }
+        return false
+    }
+    //
     func messageIsInterfaceParameter() -> Bool {
         if self.byteArray[5] == 0xF5 && self.byteArray[6] == 0x02 {
             return true

@@ -23,9 +23,7 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
             if devices[(indexPath as NSIndexPath).row].controlType == ControlType.Climate {
                 showClimaSettings((indexPath as NSIndexPath).row, devices: devices)
                 // Dumb solution for the climate mode icon issue, but it'll work until we find the correct fix
-                
-                let ip = IndexPath(row: indexPath.row, section: 0)
-                self.deviceCollectionView.reloadItems(at: [ip])
+                self.deviceCollectionView.reloadItems(at: [indexPath])
             }
         }
         
