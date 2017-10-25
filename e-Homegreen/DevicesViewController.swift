@@ -13,7 +13,7 @@ import Crashlytics
 import AudioToolbox
 
 
-class DevicesViewController: PopoverVC{
+class DevicesViewController: PopoverVC {
     
     var sectionInsets = UIEdgeInsets(top: 25, left: 0, bottom: 20, right: 0)
     let reuseIdentifier = "deviceCell"
@@ -367,7 +367,8 @@ class DevicesViewController: PopoverVC{
             devices[tag].currentValue = NSNumber(value: Int(setDeviceValue)*255/100)
             print("Device current value: \(deviceCurrentValue)%")
                 DispatchQueue.main.async(execute: {
-                _ = RepeatSendingHandler(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setDeviceValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: skipLevel), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                    RunnableList.sharedInstance.checkForSameDevice(device: self.devices[tag].objectID, newCommand: NSNumber(value: setDeviceValue), oldValue: NSNumber(value: deviceCurrentValue))
+                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setDeviceValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: skipLevel), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue, command: NSNumber(value: setDeviceValue))
                 })
         }
         // Appliance?
@@ -386,7 +387,8 @@ class DevicesViewController: PopoverVC{
             }
             devices[tag].currentValue = NSNumber(value: Int(setDeviceValue))
             DispatchQueue.main.async(execute: {
-                _ = RepeatSendingHandler(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setDeviceValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: skipLevel), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                RunnableList.sharedInstance.checkForSameDevice(device: self.devices[tag].objectID, newCommand: NSNumber(value: setDeviceValue), oldValue: NSNumber(value: deviceCurrentValue))
+                _ = RepeatSendingHandler(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setDeviceValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: skipLevel), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue, command: NSNumber(value: setDeviceValue))
             })
         }
         updateCells()
@@ -408,18 +410,8 @@ class DevicesViewController: PopoverVC{
                         if deviceTemp.isCurtainModeAllowed.boolValue == true  && devices[tag].isCurtainModeAllowed.boolValue == true {
                             devicePair = deviceTemp
                         }
-                        
                     }
                 }
-//                if ((devices[tag].channel.intValue == 1 && deviceTemp.channel.intValue == 3) ||
-//                    (devices[tag].channel.intValue == 3 && deviceTemp.channel.intValue == 1) ||
-//                    (devices[tag].channel.intValue == 2 && deviceTemp.channel.intValue == 4) ||
-//                    (devices[tag].channel.intValue == 4 && deviceTemp.channel.intValue == 2)) &&
-//                    deviceTemp.isCurtainModeAllowed.boolValue &&
-//                    devices[tag].isCurtainModeAllowed.boolValue{
-//                    
-//                    devicePair = deviceTemp
-//                }
             }
         }
         
@@ -431,7 +423,8 @@ class DevicesViewController: PopoverVC{
                 let deviceGroupId = devices[tag].curtainGroupID.intValue
                 CoreDataController.shahredInstance.saveChanges()
                 DispatchQueue.main.async(execute: {
-                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                    RunnableList.sharedInstance.checkForSameDevice(device: self.devices[tag].objectID, newCommand: NSNumber(value: setDeviceValue), oldValue: NSNumber(value: deviceCurrentValue))
+                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue, command: NSNumber(value: setDeviceValue))
                 })
             }
         }else{
@@ -443,12 +436,14 @@ class DevicesViewController: PopoverVC{
                 let deviceGroupId = devices[tag].curtainGroupID.intValue
                 CoreDataController.shahredInstance.saveChanges()
                 DispatchQueue.main.async(execute: {
-                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                    RunnableList.sharedInstance.checkForSameDevice(device: self.devices[tag].objectID, newCommand: NSNumber(value: setDeviceValue), oldValue: NSNumber(value: deviceCurrentValue))
+                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue, command: NSNumber(value: setDeviceValue))
                 })
             }
         }
         updateCells()
     }
+    
     func closeCurtain(_ gestureRecognizer:UITapGestureRecognizer){
         let tag = gestureRecognizer.view!.tag
         let address = [UInt8(Int(devices[tag].gateway.addressOne)),UInt8(Int(devices[tag].gateway.addressTwo)),UInt8(Int(devices[tag].address))]
@@ -468,16 +463,6 @@ class DevicesViewController: PopoverVC{
                         
                     }
                 }
-                
-//                if ((devices[tag].channel.intValue == 1 && deviceTemp.channel.intValue == 3) ||
-//                    (devices[tag].channel.intValue == 3 && deviceTemp.channel.intValue == 1) ||
-//                    (devices[tag].channel.intValue == 2 && deviceTemp.channel.intValue == 4) ||
-//                    (devices[tag].channel.intValue == 4 && deviceTemp.channel.intValue == 2)) &&
-//                    deviceTemp.isCurtainModeAllowed.boolValue &&
-//                    devices[tag].isCurtainModeAllowed.boolValue{
-//                    
-//                    devicePair = deviceTemp
-//                }
             }
         }
         
@@ -488,13 +473,14 @@ class DevicesViewController: PopoverVC{
                 devices[tag].currentValue = 0x00
                 let deviceGroupId = devices[tag].curtainGroupID.intValue
                 CoreDataController.shahredInstance.saveChanges()
-                updateCells()
+              //  updateCells()
                 DispatchQueue.main.async(execute: {
-                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue) // vratiti na deviceCurrentValue ovo poslednje
+                    RunnableList.sharedInstance.checkForSameDevice(device: self.devices[tag].objectID, newCommand: NSNumber(value: setDeviceValue), oldValue: NSNumber(value: deviceCurrentValue))
+                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue, command: NSNumber(value: setDeviceValue)) // vratiti na deviceCurrentValue ovo poslednje
                 })
             }
         }else{
-            guard let _ = devicePair else{
+            guard let _ = devicePair else {
                 print("Error, no pair device found for curtain relay control")
                 return
             }
@@ -506,9 +492,11 @@ class DevicesViewController: PopoverVC{
                 devicePair?.currentValue = 0
                 let deviceGroupId = devices[tag].curtainGroupID.intValue
                 CoreDataController.shahredInstance.saveChanges()
-                updateCells()
+       //         updateCells()
                 DispatchQueue.main.async(execute: {
-                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue) // vratiti na deviceCurrentValue ovo poslednje
+                    RunnableList.sharedInstance.checkForSameDevice(device: self.devices[tag].objectID, newCommand: NSNumber(value: setDeviceValue), oldValue: NSNumber(value: deviceCurrentValue))
+                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue, command: NSNumber(value: setDeviceValue))
+                    // vratiti na deviceCurrentValue ovo poslednje
                 })
             }
         }
@@ -532,16 +520,6 @@ class DevicesViewController: PopoverVC{
                         }
                     }
                 }
-                
-//                if ((devices[tag].channel.intValue == 1 && deviceTemp.channel.intValue == 3) ||
-//                    (devices[tag].channel.intValue == 3 && deviceTemp.channel.intValue == 1) ||
-//                    (devices[tag].channel.intValue == 2 && deviceTemp.channel.intValue == 4) ||
-//                    (devices[tag].channel.intValue == 4 && deviceTemp.channel.intValue == 2)) &&
-//                    deviceTemp.isCurtainModeAllowed.boolValue &&
-//                    devices[tag].isCurtainModeAllowed.boolValue{
-//                    
-//                    devicePair = deviceTemp
-//                }
             }
         }
         
@@ -552,9 +530,11 @@ class DevicesViewController: PopoverVC{
                 devices[tag].currentValue = 0xEF
                 let deviceGroupId = devices[tag].curtainGroupID.intValue
                 CoreDataController.shahredInstance.saveChanges()
-                updateCells()
+               // updateCells()
                 DispatchQueue.main.async(execute: {
-                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                    RunnableList.sharedInstance.checkForSameDevice(device: self.devices[tag].objectID, newCommand: NSNumber(value: setDeviceValue), oldValue: NSNumber(value: deviceCurrentValue))
+                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue, command: NSNumber(value: setDeviceValue))
+                    
                 })
             }
         }else{
@@ -565,9 +545,10 @@ class DevicesViewController: PopoverVC{
                 devicePair?.currentValue = 0x00
                 let deviceGroupId = devices[tag].curtainGroupID.intValue
                 CoreDataController.shahredInstance.saveChanges()
-                updateCells()
+               // updateCells()
                 DispatchQueue.main.async(execute: {
-                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+                    RunnableList.sharedInstance.checkForSameDevice(device: self.devices[tag].objectID, newCommand: NSNumber(value: setDeviceValue), oldValue: NSNumber(value: deviceCurrentValue))
+                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue, command: NSNumber(value: setDeviceValue))
                 })
             }
         }
@@ -582,7 +563,8 @@ class DevicesViewController: PopoverVC{
         devices[tag].currentValue = 0
         CoreDataController.shahredInstance.saveChanges()
         DispatchQueue.main.async(execute: {
-            _ = RepeatSendingHandler(byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: self.devices[tag].channel.intValue, mode: 3), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+            RunnableList.sharedInstance.checkForSameDevice(device: self.devices[tag].objectID, newCommand: NSNumber(value: setDeviceValue), oldValue: NSNumber(value: deviceCurrentValue))
+            _ = RepeatSendingHandler(byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: self.devices[tag].channel.intValue, mode: 3), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue, command: NSNumber(value: setDeviceValue))
         })
         updateCells()
     }
@@ -594,7 +576,8 @@ class DevicesViewController: PopoverVC{
         devices[tag].currentValue = 1
         CoreDataController.shahredInstance.saveChanges()
         DispatchQueue.main.async(execute: {
-            _ = RepeatSendingHandler(byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: self.devices[tag].channel.intValue, mode: 2), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+            RunnableList.sharedInstance.checkForSameDevice(device: self.devices[tag].objectID, newCommand: NSNumber(value: setDeviceValue), oldValue: NSNumber(value: deviceCurrentValue))
+            _ = RepeatSendingHandler(byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: self.devices[tag].channel.intValue, mode: 2), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue, command: NSNumber(value: setDeviceValue))
         })
         updateCells()
     }
@@ -607,7 +590,8 @@ class DevicesViewController: PopoverVC{
         devices[tag].currentValue = 0
         CoreDataController.shahredInstance.saveChanges()
         DispatchQueue.main.async(execute: {
-            _ = RepeatSendingHandler(byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: self.devices[tag].channel.intValue, mode: 1), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue)
+            RunnableList.sharedInstance.checkForSameDevice(device: self.devices[tag].objectID, newCommand: NSNumber(value: setDeviceValue), oldValue: NSNumber(value: deviceCurrentValue))
+            _ = RepeatSendingHandler(byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: self.devices[tag].channel.intValue, mode: 1), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: deviceCurrentValue, command: NSNumber(value: setDeviceValue))
         })
         updateCells()
     }
@@ -739,7 +723,8 @@ class DevicesViewController: PopoverVC{
             
             DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: {
                 DispatchQueue.main.async(execute: {
-                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
+                    RunnableList.sharedInstance.checkForSameDevice(device: self.devices[tag].objectID, newCommand: NSNumber(value: setValue), oldValue: NSNumber(value: withOldValue))
+                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: setValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue, command: NSNumber(value: setValue))
                 })
             })
         }
@@ -748,7 +733,8 @@ class DevicesViewController: PopoverVC{
             let deviceGroupId = devices[tag].curtainGroupID.intValue
             DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: {
                 DispatchQueue.main.async(execute: {
-                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: UInt8(Int(self.devices[tag].currentValue)), groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue)
+                    RunnableList.sharedInstance.checkForSameDevice(device: self.devices[tag].objectID, newCommand: self.devices[tag].currentValue, oldValue: NSNumber(value: withOldValue))
+                    _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: UInt8(Int(self.devices[tag].currentValue)), groupId:  UInt8(deviceGroupId)), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: withOldValue, command: self.devices[tag].currentValue)
                 })
             })
         }
@@ -770,13 +756,15 @@ class DevicesViewController: PopoverVC{
         
         if devices[tag].controlType == ControlType.Dimmer {
             DispatchQueue.main.async(execute: {
-                _ = RepeatSendingHandler(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(v4), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
+                RunnableList.sharedInstance.checkForSameDevice(device: self.devices[tag].objectID, newCommand: NSNumber(value: v4), oldValue: NSNumber(value: self.changeSliderValueOldValue))
+                _ = RepeatSendingHandler(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(self.devices[tag].channel)), value: UInt8(v4), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: UInt8(Int(self.devices[tag].skipState))), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue, command: NSNumber(value: v4))
             })
         }
         //  Curtain
         if devices[tag].controlType == ControlType.Curtain {
             DispatchQueue.main.async(execute: {
-                _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: UInt8(Int(self.devices[tag].currentValue)), groupId:  0x00), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue)
+                RunnableList.sharedInstance.checkForSameDevice(device: self.devices[tag].objectID, newCommand: self.devices[tag].currentValue, oldValue: NSNumber(value: self.changeSliderValueOldValue))
+                _ = RepeatSendingHandler(byteArray: OutgoingHandler.setCurtainStatus(address, value: UInt8(Int(self.devices[tag].currentValue)), groupId:  0x00), gateway: self.devices[tag].gateway, device: self.devices[tag], oldValue: self.changeSliderValueOldValue, command: self.devices[tag].currentValue)
             })
         }
         changeSliderValueOldValue = 0
@@ -1256,7 +1244,8 @@ extension DevicesViewController: BigSliderDelegate{
             let deviceCurrentValue = Int(devices[index].currentValue)
             devices[index].currentValue = NSNumber(value: Int(setDeviceValue)*255/100)
             DispatchQueue.main.async(execute: {
-                _ = RepeatSendingHandler(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(self.devices[index].channel)), value: setDeviceValue, delay: Int(self.devices[index].delay), runningTime: Int(self.devices[index].runtime), skipLevel: skipLevel), gateway: self.devices[index].gateway, device: self.devices[index], oldValue: deviceCurrentValue)
+                RunnableList.sharedInstance.checkForSameDevice(device: self.devices[index].objectID, newCommand: NSNumber(value: setDeviceValue), oldValue: NSNumber(value: deviceCurrentValue))
+                _ = RepeatSendingHandler(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: UInt8(Int(self.devices[index].channel)), value: setDeviceValue, delay: Int(self.devices[index].delay), runningTime: Int(self.devices[index].runtime), skipLevel: skipLevel), gateway: self.devices[index].gateway, device: self.devices[index], oldValue: deviceCurrentValue, command: NSNumber(value: setDeviceValue))
             })
         }
     }

@@ -41,7 +41,7 @@ class Device: NSManagedObject {
     var pcVolume:Byte = 0
     var bateryStatus: Int = 0
     var saltoMode: Int = -1
-    
+        
     lazy var moduleAddress:[Byte] = {
         return [Byte(Int(self.gateway.addressOne)), Byte(Int(self.gateway.addressTwo)), Byte(Int(self.address))]
     }()

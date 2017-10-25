@@ -775,12 +775,10 @@ class FilterPullDown: UIScrollView {
     func updateIndicator(_ notification:Notification){
         if let info = (notification as NSNotification).userInfo as? [String:String]{
             
-            redIndicator.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0)
-            greenIndicator.backgroundColor = UIColor(red: 24/255, green: 202/255, blue: 0/255, alpha: 1.0)
-            
             if let lamp = info["lamp"]{
                 if lamp == "red" {
-                    
+                    redIndicator.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0)
+
                     self.redIndicator.alpha = 1
                     UIView.animate(withDuration: 0.5, animations: {
                         self.redIndicator.alpha = 0
@@ -790,7 +788,8 @@ class FilterPullDown: UIScrollView {
 
                     })
                 }else if lamp == "green" {
-                    
+                    greenIndicator.backgroundColor = UIColor(red: 24/255, green: 202/255, blue: 0/255, alpha: 1.0)
+
                     self.greenIndicator.alpha = 1
                     UIView.animate(withDuration: 0.5, animations: {
                         self.greenIndicator.alpha = 0
@@ -798,12 +797,8 @@ class FilterPullDown: UIScrollView {
                             self.redIndicator.backgroundColor = UIColor.clear
                             self.greenIndicator.backgroundColor = UIColor.clear
                     })
-                }else{
-                    print("INDICATOR ERROR")
                 }
             }
-            
-            
         }
     }
     

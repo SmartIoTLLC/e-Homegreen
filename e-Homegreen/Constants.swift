@@ -517,6 +517,8 @@ struct NotificationKey {
     
     static let IndicatorLamp = "indicatorGreen"
     
+    static let SameDeviceDifferentCommand = "sameDeviceDifferentCommand"
+    
     struct Surveillance {
         static let Refresh = "refreshSurveillanceListNotification"
         static let Run = "runTimer"

@@ -30,7 +30,7 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
             try socket.bind(toPort: port)
         } catch let error1 as NSError {
             error = error1
-            print("1 \(error)")
+            print("Error: ", error1)
             print("U pitanju je \(ip) \(port)")
         }
         
@@ -38,9 +38,17 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
             try socket.beginReceiving()
         } catch let error1 as NSError {
             error = error1
-            print("4 \(error)")
+            print("Error: ", error)
             print("U pitanju je \(ip) \(port)")
         }
+        
+        // Enable broadcast on 255.255.255.255
+        do {
+            try socket.enableBroadcast(true)
+        } catch let error as NSError {
+            print("Error :", error, error.userInfo)
+        }
+ 
     }
     
     func udpSocket(_ sock: GCDAsyncUdpSocket, didReceive data: Data, fromAddress address: Data, withFilterContext filterContext: Any?) {
@@ -60,6 +68,7 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
 
     func udpSocketDidClose(_ sock: GCDAsyncUdpSocket, withError error: Error) {
     }
+    
     func setupConnection1(){
         socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: DispatchQueue.main)
         do {
@@ -88,7 +97,7 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     }
     func sendByte(_ ip:String, arrayByte: [UInt8]) {
         let data = Data(bytes: UnsafePointer<UInt8>(arrayByte), count: arrayByte.count)
-        socket.send(data, toHost: ip, port: port, withTimeout: -1, tag: 1)
+        socket.send(data, toHost: ip, port: self.port, withTimeout: -1, tag: 1)
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.IndicatorLamp), object: self, userInfo: ["lamp":"green"])
     }
     
@@ -101,7 +110,6 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     }
     
     func udpSocket(_ sock: GCDAsyncUdpSocket, didSendDataWithTag tag: Int) {
-        print("didSendDataWithTag")
     }
     
     func udpSocket(_ sock: GCDAsyncUdpSocket, didNotSendDataWithTag tag: Int, dueToError error: Error) {

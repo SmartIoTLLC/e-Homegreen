@@ -31,11 +31,13 @@ class IncomingHandler: NSObject {
         guard let dataFrame = DataFrame(byteArray: byteArrayToHandle) else {
             return
         }
+        
         //  Checks if there are any gateways
         if gateways.count > 0 {
             self.devices = CoreDataController.shahredInstance.fetchDevicesForGateway(self.gateways[0])
             self.byteArray = byteArrayToHandle
             if messageIsValid() {
+                
                 if messageIsNewDeviceSalto(){
                     self.parseMessageNewDevicSalto(self.byteArray)
                 }

@@ -11,7 +11,7 @@ import SystemConfiguration.CaptiveNetwork
 
 class SendingHandler {
     static func sendCommand(byteArray:[UInt8], gateway:Gateway) {
-        print("Command sent: \(byteArray) na: \(gateway)")
+       // print("Command sent: \(byteArray) na: \(gateway)")
         let appDel:AppDelegate = UIApplication.shared.delegate as! AppDelegate
         if appDel.inOutSockets.count > 0 {
             
@@ -51,6 +51,7 @@ class SendingHandler {
                 }
             }
         }
+
     }
     
     static func sendCommand(byteArray:[UInt8], ip:String, port:UInt16) {
