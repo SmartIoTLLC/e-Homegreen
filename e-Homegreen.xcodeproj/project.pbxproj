@@ -155,6 +155,9 @@
 		4D411C9B1D5C982F000A3598 /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */; };
 		4D411C9C1D5C982F000A3598 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D411C9A1D5C982F000A3598 /* Device.swift */; };
 		4E04DB7B1F750DAC00DC1E58 /* Phone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E04DB7A1F750DAC00DC1E58 /* Phone.storyboard */; };
+		4E0D9EEA1FA31D240066C5CC /* DatabaseRemoteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0D9EE91FA31D240066C5CC /* DatabaseRemoteController.swift */; };
+		4E0D9EED1FA327420066C5CC /* Remote+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0D9EEB1FA327420066C5CC /* Remote+CoreDataClass.swift */; };
+		4E0D9EEE1FA327420066C5CC /* Remote+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0D9EEC1FA327420066C5CC /* Remote+CoreDataProperties.swift */; };
 		4E17717E1F7510920002C6D6 /* Quran.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E17717C1F7510920002C6D6 /* Quran.storyboard */; };
 		4E1771811F7510E10002C6D6 /* Radio.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E17717F1F7510E10002C6D6 /* Radio.storyboard */; };
 		4E1771841F7536880002C6D6 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1771821F7536880002C6D6 /* ContactCell.swift */; };
@@ -174,6 +177,7 @@
 		4E7945521F6FC64F006C3ACA /* Sura+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7945501F6FC64F006C3ACA /* Sura+CoreDataProperties.swift */; };
 		4E7945551F6FCE31006C3ACA /* SuraCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7945531F6FCE31006C3ACA /* SuraCell.swift */; };
 		4E7945561F6FCE31006C3ACA /* SuraCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E7945541F6FCE31006C3ACA /* SuraCell.xib */; };
+		4EA9A7C31FA1D00500C8D6B8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */; };
 		4EC2E1421F7E439700DA494B /* RemoteDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */; };
 		4EDCE6811F6A8D740073736B /* radio_station.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EDCE6801F6A8D740073736B /* radio_station.json */; };
 		4EDCE6871F6A9BEA0073736B /* RadioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */; };
@@ -181,6 +185,7 @@
 		4EDCE68B1F6A9C090073736B /* StationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EDCE6891F6A9C090073736B /* StationCell.xib */; };
 		4EDCE6961F6AA76F0073736B /* Radio+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */; };
 		4EDCE6971F6AA76F0073736B /* Radio+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */; };
+		4EEEA4891FA0AB5600AC4AD6 /* RunnableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEEA4881FA0AB5600AC4AD6 /* RunnableList.swift */; };
 		4EF41B951F7BA7DA007FBF64 /* RemoteDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF41B941F7BA7DA007FBF64 /* RemoteDummy.swift */; };
 		4EF41B971F7BAD88007FBF64 /* RemoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF41B961F7BAD88007FBF64 /* RemoteCell.swift */; };
 		4EF41B9C1F7BE813007FBF64 /* AddRemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF41B9A1F7BE813007FBF64 /* AddRemoteViewController.swift */; };
@@ -553,6 +558,9 @@
 		4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4D411C9A1D5C982F000A3598 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		4E04DB7A1F750DAC00DC1E58 /* Phone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Phone.storyboard; sourceTree = "<group>"; };
+		4E0D9EE91FA31D240066C5CC /* DatabaseRemoteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseRemoteController.swift; sourceTree = "<group>"; };
+		4E0D9EEB1FA327420066C5CC /* Remote+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Remote+CoreDataClass.swift"; sourceTree = "<group>"; };
+		4E0D9EEC1FA327420066C5CC /* Remote+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Remote+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4E17717D1F7510920002C6D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "e-Homegreen/Base.lproj/Quran.storyboard"; sourceTree = "<group>"; };
 		4E1771801F7510E10002C6D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "e-Homegreen/Base.lproj/Radio.storyboard"; sourceTree = "<group>"; };
 		4E1771821F7536880002C6D6 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
@@ -572,6 +580,7 @@
 		4E7945501F6FC64F006C3ACA /* Sura+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sura+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4E7945531F6FCE31006C3ACA /* SuraCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuraCell.swift; sourceTree = "<group>"; };
 		4E7945541F6FCE31006C3ACA /* SuraCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SuraCell.xib; sourceTree = "<group>"; };
+		4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDetailsViewController.swift; sourceTree = "<group>"; };
 		4EDCE6801F6A8D740073736B /* radio_station.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = radio_station.json; sourceTree = "<group>"; };
 		4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioViewController.swift; sourceTree = "<group>"; };
@@ -579,6 +588,7 @@
 		4EDCE6891F6A9C090073736B /* StationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StationCell.xib; sourceTree = "<group>"; };
 		4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Radio+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Radio+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4EEEA4881FA0AB5600AC4AD6 /* RunnableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnableList.swift; sourceTree = "<group>"; };
 		4EF41B941F7BA7DA007FBF64 /* RemoteDummy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDummy.swift; sourceTree = "<group>"; };
 		4EF41B961F7BAD88007FBF64 /* RemoteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCell.swift; sourceTree = "<group>"; };
 		4EF41B9A1F7BE813007FBF64 /* AddRemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRemoteViewController.swift; sourceTree = "<group>"; };
@@ -1401,6 +1411,7 @@
 				E73993171BCEA05100C74486 /* AnswersHandler.swift */,
 				E70A6ED21BCFE86900EBB53D /* TellMeAJokeHandler.swift */,
 				22D867661CBE832400A6575A /* ZoneAndCategoryControl.swift */,
+				4EEEA4881FA0AB5600AC4AD6 /* RunnableList.swift */,
 			);
 			name = "Business Logic";
 			sourceTree = "<group>";
@@ -1552,56 +1563,58 @@
 		73E2390E1B97145D00CB38ED /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				4E79454F1F6FC64F006C3ACA /* Sura+CoreDataClass.swift */,
-				4E7945501F6FC64F006C3ACA /* Sura+CoreDataProperties.swift */,
-				4EFAE0231F6C0BB400C85074 /* Reciter+CoreDataClass.swift */,
-				4EFAE0241F6C0BB400C85074 /* Reciter+CoreDataProperties.swift */,
+				22FF1E611D86D86F00ECB86E /* Card.swift */,
+				22FF1E601D86D86F00ECB86E /* Card+CoreDataProperties.swift */,
+				223687181CB51834005ACDE4 /* Category.swift */,
+				223687171CB51834005ACDE4 /* Category+CoreDataProperties.swift */,
+				4D411C9A1D5C982F000A3598 /* Device.swift */,
+				4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */,
+				739D57151C809B30004CC50E /* DeviceImage.swift */,
+				739D57141C809B30004CC50E /* DeviceImage+CoreDataProperties.swift */,
+				73E28EDD1B6657A80016CD77 /* e_Homegreen.xcdatamodeld */,
+				7372EB2E1BC410800097806D /* Event.swift */,
+				7372EB2D1BC410800097806D /* Event+CoreDataProperties.swift */,
+				2240EAC71D46084E0062AC2F /* FilterParametar.swift */,
+				2240EAC61D46084E0062AC2F /* FilterParametar+CoreDataProperties.swift */,
+				7372EB281BC410800097806D /* Flag.swift */,
+				7372EB271BC410800097806D /* Flag+CoreDataProperties.swift */,
+				7372EB301BC410800097806D /* Gateway.swift */,
+				7372EB2F1BC410800097806D /* Gateway+CoreDataProperties.swift */,
+				E7AA260F1BCD116800D5C3F0 /* IBeacon.swift */,
+				E7AA260E1BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift */,
+				223FB5931D645AB500DC2627 /* Image.swift */,
+				223FB5921D645AB500DC2627 /* Image+CoreDataProperties.swift */,
+				73F1ECA51C8978B2007CEEAA /* Location.swift */,
+				73F1ECA41C8978B2007CEEAA /* Location+CoreDataProperties.swift */,
+				220176381CD0FED400A1470A /* MenuItem.swift */,
+				220176371CD0FED400A1470A /* MenuItem+CoreDataProperties.swift */,
+				73CE03D21C69E9C5005E108F /* NSManagedObject+Extension.swift */,
+				4D0BB3481D5C91020047688F /* PCCommand.swift */,
+				4D0BB3471D5C91020047688F /* PCCommand+CoreDataProperties.swift */,
 				4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */,
 				4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */,
-				22FF1E601D86D86F00ECB86E /* Card+CoreDataProperties.swift */,
-				22FF1E611D86D86F00ECB86E /* Card.swift */,
-				4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */,
-				4D411C9A1D5C982F000A3598 /* Device.swift */,
-				73E28EDD1B6657A80016CD77 /* e_Homegreen.xcdatamodeld */,
-				4D0BB3471D5C91020047688F /* PCCommand+CoreDataProperties.swift */,
-				4D0BB3481D5C91020047688F /* PCCommand.swift */,
-				73CE03D21C69E9C5005E108F /* NSManagedObject+Extension.swift */,
-				220176371CD0FED400A1470A /* MenuItem+CoreDataProperties.swift */,
-				220176381CD0FED400A1470A /* MenuItem.swift */,
-				223687171CB51834005ACDE4 /* Category+CoreDataProperties.swift */,
-				223687181CB51834005ACDE4 /* Category.swift */,
-				738DECAA1BBBEA6300D6B834 /* Security+CoreDataProperties.swift */,
-				738DECAB1BBBEA6300D6B834 /* Security.swift */,
-				7372EB231BC410800097806D /* Timer+CoreDataProperties.swift */,
-				7372EB241BC410800097806D /* Timer.swift */,
-				7372EB251BC410800097806D /* Scene+CoreDataProperties.swift */,
+				4EFAE0231F6C0BB400C85074 /* Reciter+CoreDataClass.swift */,
+				4EFAE0241F6C0BB400C85074 /* Reciter+CoreDataProperties.swift */,
+				4E0D9EEB1FA327420066C5CC /* Remote+CoreDataClass.swift */,
+				4E0D9EEC1FA327420066C5CC /* Remote+CoreDataProperties.swift */,
 				7372EB261BC410800097806D /* Scene.swift */,
-				7372EB271BC410800097806D /* Flag+CoreDataProperties.swift */,
-				7372EB281BC410800097806D /* Flag.swift */,
-				2238870F1CB3F6A3003864B8 /* Zone+CoreDataProperties.swift */,
-				223887101CB3F6A3003864B8 /* Zone.swift */,
-				7372EB2D1BC410800097806D /* Event+CoreDataProperties.swift */,
-				7372EB2E1BC410800097806D /* Event.swift */,
-				7372EB2F1BC410800097806D /* Gateway+CoreDataProperties.swift */,
-				7372EB301BC410800097806D /* Gateway.swift */,
-				7372EB311BC410800097806D /* Sequence+CoreDataProperties.swift */,
+				7372EB251BC410800097806D /* Scene+CoreDataProperties.swift */,
+				738DECAB1BBBEA6300D6B834 /* Security.swift */,
+				738DECAA1BBBEA6300D6B834 /* Security+CoreDataProperties.swift */,
 				7372EB321BC410800097806D /* Sequence.swift */,
-				E7AA260E1BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift */,
-				E7AA260F1BCD116800D5C3F0 /* IBeacon.swift */,
-				223E25DA1CC77DBB00BC3905 /* Surveillance+CoreDataProperties.swift */,
-				223E25DB1CC77DBB00BC3905 /* Surveillance.swift */,
-				739D57141C809B30004CC50E /* DeviceImage+CoreDataProperties.swift */,
-				739D57151C809B30004CC50E /* DeviceImage.swift */,
-				223FB5921D645AB500DC2627 /* Image+CoreDataProperties.swift */,
-				223FB5931D645AB500DC2627 /* Image.swift */,
-				22409DD91D6AFD2600C33F6D /* User+CoreDataProperties.swift */,
-				22409DDA1D6AFD2600C33F6D /* User.swift */,
-				73F1ECA41C8978B2007CEEAA /* Location+CoreDataProperties.swift */,
-				73F1ECA51C8978B2007CEEAA /* Location.swift */,
-				73F1ECA61C8978B2007CEEAA /* SSID+CoreDataProperties.swift */,
+				7372EB311BC410800097806D /* Sequence+CoreDataProperties.swift */,
 				73F1ECA71C8978B2007CEEAA /* SSID.swift */,
-				2240EAC61D46084E0062AC2F /* FilterParametar+CoreDataProperties.swift */,
-				2240EAC71D46084E0062AC2F /* FilterParametar.swift */,
+				73F1ECA61C8978B2007CEEAA /* SSID+CoreDataProperties.swift */,
+				4E79454F1F6FC64F006C3ACA /* Sura+CoreDataClass.swift */,
+				4E7945501F6FC64F006C3ACA /* Sura+CoreDataProperties.swift */,
+				223E25DB1CC77DBB00BC3905 /* Surveillance.swift */,
+				223E25DA1CC77DBB00BC3905 /* Surveillance+CoreDataProperties.swift */,
+				7372EB241BC410800097806D /* Timer.swift */,
+				7372EB231BC410800097806D /* Timer+CoreDataProperties.swift */,
+				22409DDA1D6AFD2600C33F6D /* User.swift */,
+				22409DD91D6AFD2600C33F6D /* User+CoreDataProperties.swift */,
+				223887101CB3F6A3003864B8 /* Zone.swift */,
+				2238870F1CB3F6A3003864B8 /* Zone+CoreDataProperties.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1650,6 +1663,7 @@
 				73331C171CA029DF009BA1DE /* FilterStruct.swift */,
 				22495D321CAA868E0034FC94 /* UIGradient + Extension.swift */,
 				4D0D97211CAD4087001A1E89 /* HRToast+UIView.swift */,
+				4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */,
 			);
 			name = "Extensions and Helpers";
 			sourceTree = "<group>";
@@ -1680,6 +1694,7 @@
 				223BAD461D3E5395003E9365 /* FilterController.swift */,
 				223FB5901D64414600DC2627 /* DatabaseImageController.swift */,
 				22FF1E641D86D92000ECB86E /* DatabaseCardsController.swift */,
+				4E0D9EE91FA31D240066C5CC /* DatabaseRemoteController.swift */,
 			);
 			name = "Database Controllers";
 			sourceTree = "<group>";
@@ -2294,6 +2309,7 @@
 				223DC0C61CE2089A00C5E2F6 /* CreateUserFromJSONController.swift in Sources */,
 				4EF41B9C1F7BE813007FBF64 /* AddRemoteViewController.swift in Sources */,
 				E77E59471BB2C9070004D263 /* ImportFilesViewController.swift in Sources */,
+				4E0D9EEE1FA327420066C5CC /* Remote+CoreDataProperties.swift in Sources */,
 				4E1771881F753CEE0002C6D6 /* ContactsListViewController.swift in Sources */,
 				73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */,
 				E7E08E041B4E4D9700153E9A /* ClimaSettingsViewController.swift in Sources */,
@@ -2357,6 +2373,7 @@
 				225F59841D74402F00156BCD /* CommonXIBTransitionVC.swift in Sources */,
 				E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */,
 				73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */,
+				4EA9A7C31FA1D00500C8D6B8 /* Extensions.swift in Sources */,
 				223E25DD1CC77DBB00BC3905 /* Surveillance.swift in Sources */,
 				E7AA260C1BCD01F500D5C3F0 /* IBeaconSettingsVC.swift in Sources */,
 				7372EB351BC410800097806D /* Scene+CoreDataProperties.swift in Sources */,
@@ -2464,6 +2481,7 @@
 				73D592E81C1EC08500E206ED /* ChatInfo.swift in Sources */,
 				223690C71CAD022A0037B54A /* LogInViewController.swift in Sources */,
 				4E1771841F7536880002C6D6 /* ContactCell.swift in Sources */,
+				4EEEA4891FA0AB5600AC4AD6 /* RunnableList.swift in Sources */,
 				73E2311F1BA6E2C4003E41EC /* SequenceParametarVC.swift in Sources */,
 				4D0BB34B1D5C91020047688F /* PCCommand+CoreDataProperties.swift in Sources */,
 				4D411C9B1D5C982F000A3598 /* Device+CoreDataProperties.swift in Sources */,
@@ -2505,6 +2523,7 @@
 				736A5B271B5A678F008FD745 /* HashTable.swift in Sources */,
 				736F17DC1B3AE894003A6A02 /* SurveillenceViewController.swift in Sources */,
 				E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */,
+				4E0D9EED1FA327420066C5CC /* Remote+CoreDataClass.swift in Sources */,
 				4EDCE6871F6A9BEA0073736B /* RadioViewController.swift in Sources */,
 				736F17D81B3AE870003A6A02 /* FlagsViewController.swift in Sources */,
 				4EF41B951F7BA7DA007FBF64 /* RemoteDummy.swift in Sources */,
@@ -2530,6 +2549,7 @@
 				22453A9F1D391E33009DCB07 /* FilterPullDown.swift in Sources */,
 				2201763C1CD1016200A1470A /* DatabaseMenuController.swift in Sources */,
 				738DECAD1BBBEA6300D6B834 /* Security.swift in Sources */,
+				4E0D9EEA1FA31D240066C5CC /* DatabaseRemoteController.swift in Sources */,
 				2241E46C1CC612B400BCD763 /* DatabaseZoneController.swift in Sources */,
 				22FF1E621D86D86F00ECB86E /* Card+CoreDataProperties.swift in Sources */,
 				49C059701D91393F0061A544 /* TimerCell.swift in Sources */,

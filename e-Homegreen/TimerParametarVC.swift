@@ -29,6 +29,7 @@ class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
         modalPresentationStyle = UIModalPresentationStyle.custom
         self.point = point
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -36,57 +37,44 @@ class TimerParametarVC: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(TimerParametarVC.dismissViewController))
+        appDel = UIApplication.shared.delegate as! AppDelegate
+        setupViews()
+    }
+    
+    func setupViews() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         isBroadcast.tag = 100
         isBroadcast.isOn = timer!.isBroadcast.boolValue
-        isBroadcast.addTarget(self, action: #selector(TimerParametarVC.changeValue(_:)), for: UIControlEvents.valueChanged)
+        isBroadcast.addTarget(self, action: #selector(changeValue(_:)), for: UIControlEvents.valueChanged)
         isLocalcast.tag = 200
         isLocalcast.isOn = timer!.isLocalcast.boolValue
-        isLocalcast.addTarget(self, action: #selector(TimerParametarVC.changeValue(_:)), for: UIControlEvents.valueChanged)
-        appDel = UIApplication.shared.delegate as! AppDelegate
-        
-        // Do any additional setup after loading the view.
+        isLocalcast.addTarget(self, action: #selector(changeValue(_:)), for: UIControlEvents.valueChanged)
     }
     
     func changeValue (_ sender:UISwitch){
         if sender.tag == 100 {
-            if sender.isOn == true {
-                isLocalcast.isOn = false
-            } else {
-                isLocalcast.isOn = false
-            }
+            if sender.isOn == true { isLocalcast.isOn = false } else { isLocalcast.isOn = false }
         } else if sender.tag == 200 {
-            if sender.isOn == true {
-                isBroadcast.isOn = false
-            } else {
-                isBroadcast.isOn = false
-            }
+            if sender.isOn == true { isBroadcast.isOn = false } else { isBroadcast.isOn = false }
         }
     }
+    
     func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
+    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: backView){
-            return false
-        }
+        if touch.view!.isDescendant(of: backView) { return false }
         return true
     }
     
     @IBAction func btnSave(_ sender: AnyObject) {
-        if isBroadcast.isOn {
-            timer?.isBroadcast = true
-        } else {
-            timer?.isBroadcast = false
-        }
-        if isLocalcast.isOn {
-            timer?.isLocalcast = true
-        } else {
-            timer?.isLocalcast = false
-        }
-        CoreDataController.shahredInstance.saveChanges()
+        if isBroadcast.isOn { timer?.isBroadcast = true } else { timer?.isBroadcast = false }
+        if isLocalcast.isOn { timer?.isLocalcast = true } else { timer?.isLocalcast = false }
+        
+        CoreDataController.sharedInstance.saveChanges()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshTimer), object: self, userInfo: nil)
         self.dismiss(animated: true, completion: nil)
     }
@@ -100,7 +88,7 @@ extension TimerParametarVC : UIViewControllerAnimatedTransitioning {
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         //Add presentation and dismiss animation transition here.
-        if isPresenting == true{
+        if isPresenting == true {
             isPresenting = false
             let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
             let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
@@ -122,10 +110,9 @@ extension TimerParametarVC : UIViewControllerAnimatedTransitioning {
                 }, completion: {(completed: Bool) -> Void in
                     transitionContext.completeTransition(completed)
             })
-        }else{
+        } else {
             let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
-            //            let containerView = transitionContext.containerView()
-            
+
             // Animate the presented view off the bottom of the view
             UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
                 
@@ -148,19 +135,13 @@ extension TimerParametarVC : UIViewControllerTransitioningDelegate {
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+        if dismissed == self { return self } else { return nil }
     }
     
 }
 extension UIViewController {
     func showTimerParametar(_ point:CGPoint, timer:Timer) {
         let st = TimerParametarVC(point: point)
-        //        ad.indexPathRow = indexPathRow
         st.timer = timer
         self.present(st, animated: true, completion: nil)
     }

@@ -39,11 +39,18 @@ class ProgressBarVC: UIViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     @IBAction func btnExit(_ sender: AnyObject) {
         delegate?.progressBarDidPressedExit()
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupViews()
+    }
+    
+    func setupViews() {
         progressBarView.layer.borderWidth = 1
         progressBarView.layer.borderColor = UIColor.lightGray.cgColor
         progressBarView.layer.cornerRadius = 5
@@ -51,17 +58,11 @@ class ProgressBarVC: UIViewController {
         lblTitle.text = progressBarTitle
         lblPercentage.text = String.localizedStringWithFormat("%.01f", percentage) + " %"
         lblHowMuchOf.text = howMuchOf
-
-        // Do any additional setup after loading the view.
     }
     
     func dissmissProgressBar () {
         self.dismiss(animated: true, completion: nil)
     }
-    func presentProgressBar () {
-//        self.view.window?.rootViewController?.presentViewController(ad, animated: true, completion: nil)
-    }
-
 
 }
 
@@ -114,12 +115,7 @@ extension ProgressBarVC : UIViewControllerTransitioningDelegate {
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+        if dismissed == self { return self } else { return nil }
     }
     
 }

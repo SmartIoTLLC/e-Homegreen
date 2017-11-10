@@ -34,9 +34,7 @@ class SecurityLocationXIB: CommonXIBTransitionVC {
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: backView){
-            return false
-        }
+        if touch.view!.isDescendant(of: backView) { return false }
         return true
     }
 
@@ -47,10 +45,8 @@ class SecurityLocationXIB: CommonXIBTransitionVC {
 
 extension SecurityLocationXIB: UITextViewDelegate{
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if text == "\n" {
-            textView.resignFirstResponder()
-            return false
-        }
+        
+        if text == "\n" { textView.resignFirstResponder(); return false }
         return true
     }
 }

@@ -14,24 +14,15 @@ enum NotificationPosition : Int, CustomStringConvertible {
     var description : String {
         get {
             switch(self) {
-            case .topLeft:
-                return "Top Left"
-            case .topCenter:
-                return "Top Center"
-            case .topRight:
-                return "Top Right"
-            case .centerLeft:
-                return "Center Left"
-            case .center:
-                return "Center"
-            case .centerRight:
-                return "CenterRight"
-            case .bottomLeft:
-                return "Bottom Left"
-            case .bottomCenter:
-                return "Bottom Center"
-            case .bottomRight:
-                return "Bottom Right"
+            case .topLeft: return "Top Left"
+            case .topCenter: return "Top Center"
+            case .topRight: return "Top Right"
+            case .centerLeft: return "Center Left"
+            case .center: return "Center"
+            case .centerRight: return "CenterRight"
+            case .bottomLeft: return "Bottom Left"
+            case .bottomCenter: return "Bottom Center"
+            case .bottomRight: return "Bottom Right"
             }
         }
     }
@@ -39,18 +30,14 @@ enum NotificationPosition : Int, CustomStringConvertible {
     static let allValues = [topLeft, topCenter, topRight, centerLeft, center, centerRight, bottomLeft, bottomCenter, bottomRight]
     
     static var count : Int {
-        get {
-            return NotificationPosition.bottomRight.rawValue
-        }
+        get { return NotificationPosition.bottomRight.rawValue }
     }
 }
 
 enum NotificationType : Int {
     case notification = 0, tts, notificationAndTTS
     static var count : Int {
-        get {
-            return NotificationType.notificationAndTTS.rawValue + 1
-        }
+        get { return NotificationType.notificationAndTTS.rawValue + 1 }
     }
 }
 
@@ -95,7 +82,6 @@ class PCControlNotificationsXIB: PopoverVC {
         super.init(nibName: "PCControlNotificationsXIB", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.custom
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -105,16 +91,17 @@ class PCControlNotificationsXIB: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        for item in NotificationPosition.allValues {
-            notificationPositionList.append(PopOverItem(name: item.description, id: String(item.rawValue)))
-        }
+        setupViews()
         
-        if let tempPos = pc.notificationPosition {
-            notificationPositionLabel.text = NotificationPosition(rawValue: Int(tempPos.int32Value))!.description
-        }else{
-            notificationPositionLabel.text = NotificationPosition(rawValue: 1)!.description
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    func setupViews() {
+        for item in NotificationPosition.allValues { notificationPositionList.append(PopOverItem(name: item.description, id: String(item.rawValue))) }
         
+        if let tempPos = pc.notificationPosition { notificationPositionLabel.text = NotificationPosition(rawValue: Int(tempPos.int32Value))!.description
+        } else { notificationPositionLabel.text = NotificationPosition(rawValue: 1)!.description }
         
         notificationSwitch.tag = SwitchTag.notificationSwitch.rawValue
         ttsSwitch.tag = SwitchTag.ttsSwitch.rawValue
@@ -123,35 +110,23 @@ class PCControlNotificationsXIB: PopoverVC {
         if let tempType = pc.notificationType {
             
             switch Int(tempType.int32Value) {
-            case SwitchTag.notificationSwitch.rawValue:
-                switchChanged(notificationSwitch)
-            case SwitchTag.ttsSwitch.rawValue:
-                switchChanged(ttsSwitch)
-            case SwitchTag.notificationTtsSwitch.rawValue:
-                switchChanged(notificationTtsSwitch)
-            default:
-                switchChanged(notificationSwitch)
+            case SwitchTag.notificationSwitch.rawValue: switchChanged(notificationSwitch)
+            case SwitchTag.ttsSwitch.rawValue: switchChanged(ttsSwitch)
+            case SwitchTag.notificationTtsSwitch.rawValue: switchChanged(notificationTtsSwitch)
+            default: switchChanged(notificationSwitch)
             }
         }
         
-        if let delay = pc.notificationDelay {
-            delayTextField.text = String(describing: delay)
-        }
+        if let delay = pc.notificationDelay { delayTextField.text = String(describing: delay) }
         delayTextField.keyboardType = .numberPad
         delayTextField.inputAccessoryView = CustomToolBar()
-
-        delayTextField.attributedPlaceholder = NSAttributedString(string:"0",
-                                                                    attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+        delayTextField.attributedPlaceholder = NSAttributedString(string:"0", attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
         delayTextField.delegate = self
         
-        if let display = pc.notificationDisplayTime {
-            displayTimeTextField.text = String(describing: display)
-        }
+        if let display = pc.notificationDisplayTime { displayTimeTextField.text = String(describing: display) }
         displayTimeTextField.keyboardType = .numberPad
         displayTimeTextField.inputAccessoryView = CustomToolBar()
-
-        displayTimeTextField.attributedPlaceholder = NSAttributedString(string:"0",
-                                                                  attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+        displayTimeTextField.attributedPlaceholder = NSAttributedString(string:"0", attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
         displayTimeTextField.delegate = self
         titleLabel.text = pc.name
         
@@ -160,9 +135,6 @@ class PCControlNotificationsXIB: PopoverVC {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(PCControlNotificationsXIB.dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(PCControlNotificationsXIB.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(PCControlNotificationsXIB.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     override func nameAndId(_ name: String, id: String) {
@@ -170,9 +142,7 @@ class PCControlNotificationsXIB: PopoverVC {
         
         let pos = Int(id)
         
-        if let position = pos {
-            notificationPosition = NotificationPosition(rawValue: position)!
-        }
+        if let position = pos { notificationPosition = NotificationPosition(rawValue: position)! }
     }
     
     func dismissViewController () {
@@ -222,49 +192,26 @@ class PCControlNotificationsXIB: PopoverVC {
         //TODO: Save notification settings, notificationPosition and notificationType already set, get delay and display time, here
         
         if let delay = delayTextField.text {
-            if let delayTime = Int(delay) {
-                pc.notificationDelay = delayTime as NSNumber?
-            }
+            if let delayTime = Int(delay) { pc.notificationDelay = delayTime as NSNumber? }
         }
         if let display = displayTimeTextField.text {
-            if let displayTime = Int(display) {
-                pc.notificationDisplayTime = displayTime as NSNumber?
-            }
+            if let displayTime = Int(display) { pc.notificationDisplayTime = displayTime as NSNumber? }
         }
         
         pc.notificationType = notificationType.rawValue as NSNumber?
         pc.notificationPosition = notificationPosition.rawValue as NSNumber?
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
         
         self.dismiss(animated: true, completion: nil)
     }
     
     func keyboardWillShow(_ notification: Notification) {
-        var info = (notification as NSNotification).userInfo!
+        let info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
-        if delayTextField.isFirstResponder{
-            if backView.frame.origin.y + delayTextField.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.delayTextField.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
+        moveTextfield(textfield: delayTextField, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: displayTimeTextField, keyboardFrame: keyboardFrame, backView: backView)
         
-        if displayTimeTextField.isFirstResponder{
-            if backView.frame.origin.y + displayTimeTextField.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.displayTimeTextField.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-        
-    }
-    
-    func keyboardWillHide(_ notification: Notification) {
-        self.centerY.constant = 0
         UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
@@ -279,12 +226,7 @@ extension PCControlNotificationsXIB : UITextFieldDelegate {
 
 extension PCControlNotificationsXIB : UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if let touchView = touch.view{
-            if touchView.isDescendant(of: backView){
-                self.view.endEditing(true)
-                return false
-            }
-        }
+        if let touchView = touch.view { if touchView.isDescendant(of: backView) { dismissEditing(); return false } }
         return true
     }
 }
@@ -341,12 +283,7 @@ extension PCControlNotificationsXIB : UIViewControllerTransitioningDelegate {
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+        if dismissed == self { return self } else { return nil }
     }
     
 }

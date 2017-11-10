@@ -16,4 +16,28 @@ class SequencesCell: UITableViewCell{
     @IBOutlet weak var imageTwo: UIImageView!
     @IBOutlet weak var address: UILabel!
     
+    func setCell(sequence: Sequence) {
+        backgroundColor = .clear
+        labelID.text = "\(sequence.sequenceId)"
+        labelName.text = "\(sequence.sequenceName)"
+        address.text = "\(returnThreeCharactersForByte(Int(sequence.gateway.addressOne))):\(returnThreeCharactersForByte(Int(sequence.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(sequence.address)))"
+        
+        if let id = sequence.sequenceImageOneCustom {
+            if let image = DatabaseImageController.shared.getImageById(id) {
+                
+                if let data =  image.imageData { imageOne.image = UIImage(data: data)
+                } else { if let defaultImage = sequence.sequenceImageOneDefault { imageOne.image = UIImage(named: defaultImage) } }
+                
+            } else { if let defaultImage = sequence.sequenceImageOneDefault{ imageOne.image = UIImage(named: defaultImage) } }
+        } else { if let defaultImage = sequence.sequenceImageOneDefault { imageOne.image = UIImage(named: defaultImage) } }
+        
+        if let id = sequence.sequenceImageTwoCustom {
+            if let image = DatabaseImageController.shared.getImageById(id) {
+                
+                if let data =  image.imageData { imageOne.image = UIImage(data: data)
+                } else { if let defaultImage = sequence.sequenceImageTwoDefault { imageTwo.image = UIImage(named: defaultImage) } }
+                
+            } else { if let defaultImage = sequence.sequenceImageTwoDefault{ imageTwo.image = UIImage(named: defaultImage) } }
+        } else { if let defaultImage = sequence.sequenceImageTwoDefault { imageTwo.image = UIImage(named: defaultImage) } }
+    }
 }

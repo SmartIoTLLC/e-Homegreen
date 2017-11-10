@@ -18,6 +18,7 @@ enum ChatScope {
     case didNotFindZone
     case useFilter
 }
+
 enum ChatCommand:String {
     case Failed = "Failed"
     case TurnOnDevice = "Turning on the device" // done

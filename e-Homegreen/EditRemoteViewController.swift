@@ -11,6 +11,9 @@ import UIKit
 class EditRemoteViewController: CommonXIBTransitionVC {
     
     var remote: RemoteDummy?
+    var realRemote: Remote!
+    var location: Location!
+    var zoneId: Zone!
     
     @IBOutlet weak var dismissView: UIView!
 
@@ -22,11 +25,14 @@ class EditRemoteViewController: CommonXIBTransitionVC {
         dismissVC()
     }
     @IBAction func deleteButton(_ sender: Any) {
+        DatabaseRemoteController.sharedInstance.deleteRemote(realRemote)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshRemotes), object: nil)
     }
     
     @IBAction func copyButton(_ sender: Any) {
+        cloneRemote(remote: realRemote)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshRemotes), object: nil)
     }
-    
     
     @IBOutlet weak var backView: UIView!
     
@@ -53,6 +59,10 @@ class EditRemoteViewController: CommonXIBTransitionVC {
     
     func dismissVC() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    func cloneRemote(remote: Remote) {
+        DatabaseRemoteController.sharedInstance.createRemote(name: remote.name!, columns: remote.columns!, rows: remote.rows!, location: location, level: 0, zone: zoneId, addressOne: remote.addressOne!, addressTwo: remote.addressTwo!, addressThree: remote.addressThree!, channel: remote.channel!, buttonHeight: remote.buttonHeight!, buttonWidth: remote.buttonWidth!, marginTop: remote.marginTop!, marginBottom: remote.marginBottom!, buttonColor: remote.buttonColor!, buttonShape: remote.buttonShape!)
     }
     
 

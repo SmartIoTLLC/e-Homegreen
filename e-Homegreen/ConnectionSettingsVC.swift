@@ -44,7 +44,7 @@ class ConnectionSettingsVC: CommonXIBTransitionVC {
     var appDel:AppDelegate!
     var error:NSError? = nil
     
-    init(gateway:Gateway?, location:Location?, gatewayType:TypeOfLocationDevice){
+    init(gateway:Gateway?, location:Location?, gatewayType:TypeOfLocationDevice) {
         super.init(nibName: "ConnectionSettingsVC", bundle: nil)
         
         self.location = location
@@ -59,6 +59,15 @@ class ConnectionSettingsVC: CommonXIBTransitionVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        appDel = UIApplication.shared.delegate as! AppDelegate
+        
+        setupViews()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    func setupViews() {
         port.inputAccessoryView = CustomToolBar()
         localPort.inputAccessoryView = CustomToolBar()
         txtAutoReconnectDelay.inputAccessoryView = CustomToolBar()
@@ -76,11 +85,8 @@ class ConnectionSettingsVC: CommonXIBTransitionVC {
         txtDescription.delegate = self
         txtAutoReconnectDelay.delegate = self
         
-        appDel = UIApplication.shared.delegate as! AppDelegate
-
-
         // Default gateway address
-        if let gateway = gateway{
+        if let gateway = gateway {
             ipHost.text = gateway.remoteIp
             port.text = "\(gateway.remotePort)"
             localIP.text = gateway.localIp
@@ -90,7 +96,7 @@ class ConnectionSettingsVC: CommonXIBTransitionVC {
             addressThird.text = returnThreeCharactersForByte(Int(gateway.addressThree))
             txtDescription.text = gateway.gatewayDescription
             txtAutoReconnectDelay.text = "\(gateway.autoReconnectDelay!)"
-        }else{
+        } else {
             addressFirst.text = returnThreeCharactersForByte(1)
             addressSecond.text = returnThreeCharactersForByte(0)
             addressThird.text = returnThreeCharactersForByte(0)
@@ -101,19 +107,10 @@ class ConnectionSettingsVC: CommonXIBTransitionVC {
             port.text = "5101"
             txtAutoReconnectDelay.text = "3"
         }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(ConnectionSettingsVC.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ConnectionSettingsVC.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
-        
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if let touchView = touch.view{
-            if touchView.isDescendant(of: backView){
-                self.view.endEditing(true)
-                return false
-            }
-        }
+        if let touchView = touch.view { if touchView.isDescendant(of: backView) { dismissEditing(); return false } }
         return true
     }
     
@@ -129,25 +126,25 @@ class ConnectionSettingsVC: CommonXIBTransitionVC {
             return
         }
         
-        guard let aFirst = Int(adrFirst) , aFirst <= 255, let aSecond = Int(adrSecond) , aSecond <= 255, let aThird = Int(adrThird) , aThird <= 255 else{
+        guard let aFirst = Int(adrFirst) , aFirst <= 255, let aSecond = Int(adrSecond) , aSecond <= 255, let aThird = Int(adrThird) , aThird <= 255 else {
             UIView.hr_setToastThemeColor(color: UIColor.red)
             self.view.makeToast(message: "Gateway address must be a number and in range from 0 to 255")
             return
         }
         
-        guard let portNumber = Int(port), let localPortNUmber = Int(localport)  else{
+        guard let portNumber = Int(port), let localPortNUmber = Int(localport) else {
             UIView.hr_setToastThemeColor(color: UIColor.red)
             self.view.makeToast(message: "Port must be number")
             return
         }
         
-        guard let hb = Int(heartbeat) else{
+        guard let hb = Int(heartbeat) else {
             UIView.hr_setToastThemeColor(color: UIColor.red)
             self.view.makeToast(message: "Heartbeat must be a number")
             return
         }
 
-        if let gateway = gateway{
+        if let gateway = gateway {
             gateway.remoteIp = ip
             gateway.remotePort = NSNumber(value: portNumber)
             gateway.localIp = localip
@@ -158,11 +155,11 @@ class ConnectionSettingsVC: CommonXIBTransitionVC {
             gateway.gatewayDescription = gatewayName
             gateway.autoReconnectDelay = hb as NSNumber?
             
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             self.dismiss(animated: true, completion: nil)
             delegate?.addEditGatewayFinished()
-        }else{
-            if let location = location{
+        } else {
+            if let location = location {
                 let gateway = Gateway(context: appDel.managedObjectContext!)
 
                 gateway.remoteIp = ip
@@ -178,7 +175,7 @@ class ConnectionSettingsVC: CommonXIBTransitionVC {
                 gateway.gatewayId = UUID().uuidString
                 gateway.autoReconnectDelay = NSNumber(value: hb as Int)
                 gateway.gatewayType = NSNumber(value: gatewayType.rawValue)
-                CoreDataController.shahredInstance.saveChanges()
+                CoreDataController.sharedInstance.saveChanges()
                 self.dismiss(animated: true, completion: nil)
                 delegate?.addEditGatewayFinished()
             }
@@ -188,57 +185,16 @@ class ConnectionSettingsVC: CommonXIBTransitionVC {
     }
     
     func keyboardWillShow(_ notification: Notification) {
-        var info = (notification as NSNotification).userInfo!
+        let info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
-        if txtDescription.isFirstResponder{
-            if backView.frame.origin.y + txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.txtDescription.frame.origin.y + 65 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if ipHost.isFirstResponder{
-            if backView.frame.origin.y + ipHost.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.ipHost.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if port.isFirstResponder{
-            if backView.frame.origin.y + port.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.port.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if localIP.isFirstResponder{
-            if backView.frame.origin.y + localIP.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.localIP.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if localPort.isFirstResponder{
-            if backView.frame.origin.y + localPort.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.localPort.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if txtAutoReconnectDelay.isFirstResponder{
-            if backView.frame.origin.y + txtAutoReconnectDelay.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarY.constant = -(5 + (self.backView.frame.origin.y + self.txtAutoReconnectDelay.frame.origin.y + 30 - self.scrollViewConnection.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
+        moveTextfield(textfield: txtDescription, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: ipHost, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: port, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: localIP, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: localPort, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: txtAutoReconnectDelay, keyboardFrame: keyboardFrame, backView: backView)        
         
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-    }
-    
-    func keyboardWillHide(_ notification: Notification) {
-        self.centarY.constant = 0
         UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
 
@@ -246,8 +202,8 @@ class ConnectionSettingsVC: CommonXIBTransitionVC {
 
 extension ConnectionSettingsVC: UITextFieldDelegate{
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool{
-        if textField == addressFirst || textField == addressSecond || textField == addressThird{
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == addressFirst || textField == addressSecond || textField == addressThird {
             let maxLength = 3
             let currentString: NSString = textField.text! as NSString
             let newString: NSString =

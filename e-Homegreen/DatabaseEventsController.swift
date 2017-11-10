@@ -25,24 +25,16 @@ class DatabaseEventsController: NSObject {
             var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool))]
             predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
             
-            if filterParametar.location != "All" {
-                predicateArray.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location))
-            }
+            if filterParametar.location != "All" { predicateArray.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location)) }
             
             if filterParametar.levelObjectId != "All" {
-                if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId){
-                    predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!))
-                }
+                if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId) { predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!)) }
             }
             if filterParametar.zoneObjectId != "All" {
-                if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
-                    predicateArray.append(NSPredicate(format: "eventZoneId == %@", zone.id!))
-                }
+                if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId) { predicateArray.append(NSPredicate(format: "eventZoneId == %@", zone.id!)) }
             }
             if filterParametar.categoryObjectId != "All" {
-                if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
-                    predicateArray.append(NSPredicate(format: "eventCategoryId == %@", category.id!))
-                }
+                if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId) { predicateArray.append(NSPredicate(format: "eventCategoryId == %@", category.id!)) }
             }
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
@@ -50,10 +42,9 @@ class DatabaseEventsController: NSObject {
             do {
                 let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Event]
                 return fetResults!
-            } catch _ as NSError {
-                abort()
-            }
+            } catch {}
         }
+        
         return []
     }
     
@@ -69,19 +60,13 @@ class DatabaseEventsController: NSObject {
         predicateArray.append(NSPredicate(format: "gateway == %@", gateway))
         
         if filterParametar.levelObjectId != "All" {
-            if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId){
-                predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!))
-            }
+            if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId) { predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!)) }
         }
         if filterParametar.zoneObjectId != "All" {
-            if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
-                predicateArray.append(NSPredicate(format: "eventZoneId == %@", zone.id!))
-            }
+            if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId) { predicateArray.append(NSPredicate(format: "eventZoneId == %@", zone.id!)) }
         }
         if filterParametar.categoryObjectId != "All" {
-            if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
-                predicateArray.append(NSPredicate(format: "eventCategoryId == %@", category.id!))
-            }
+            if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId) { predicateArray.append(NSPredicate(format: "eventCategoryId == %@", category.id!)) }
         }
         
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
@@ -89,8 +74,8 @@ class DatabaseEventsController: NSObject {
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Event]
             return fetResults!
-        } catch{
-        }
+        } catch {}
+        
         return []
     }
     
@@ -102,6 +87,7 @@ class DatabaseEventsController: NSObject {
             existingEvent = eventsArray.first
             itExists = true
         }
+        
         if !itExists {
             let event = NSEntityDescription.insertNewObject(forEntityName: "Event", into: appDel.managedObjectContext!) as! Event
             event.eventId = NSNumber(value: eventId)
@@ -116,7 +102,7 @@ class DatabaseEventsController: NSObject {
                     event.eventImageOneDefault = nil
                     gateway.location.user!.addImagesObject(image)
                 }
-            }else{
+            } else {
                 event.eventImageOneDefault = sceneImageOneDefault
                 event.eventImageOneCustom = sceneImageOneCustom
             }
@@ -130,7 +116,7 @@ class DatabaseEventsController: NSObject {
                     gateway.location.user!.addImagesObject(image)
                     
                 }
-            }else{
+            } else {
                 event.eventImageTwoDefault = sceneImageTwoDefault
                 event.eventImageTwoCustom = sceneImageTwoCustom
             }
@@ -145,7 +131,7 @@ class DatabaseEventsController: NSObject {
             event.report = report as NSNumber
             
             event.gateway = gateway
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             
         } else {
             
@@ -163,7 +149,7 @@ class DatabaseEventsController: NSObject {
                     existingEvent!.eventImageOneDefault = nil
                     gateway.location.user!.addImagesObject(image)
                 }
-            }else{
+            } else {
                 existingEvent!.eventImageOneDefault = sceneImageOneDefault
                 existingEvent!.eventImageOneCustom = sceneImageOneCustom
             }
@@ -177,7 +163,7 @@ class DatabaseEventsController: NSObject {
                     gateway.location.user!.addImagesObject(image)
                     
                 }
-            }else{
+            } else {
                 existingEvent!.eventImageTwoDefault = sceneImageTwoDefault
                 existingEvent!.eventImageTwoCustom = sceneImageTwoCustom
             }
@@ -187,7 +173,7 @@ class DatabaseEventsController: NSObject {
             
             existingEvent!.report = report as NSNumber
             
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
         }
     }
     
@@ -197,29 +183,25 @@ class DatabaseEventsController: NSObject {
         let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
         let predicateAddress = NSPredicate(format: "address == %@", NSNumber(value: moduleAddress as Int))
         let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway, predicateAddress])
-        
         fetchRequest.predicate = combinedPredicate
+        
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Event]
             return fetResults!
-        } catch let error1 as NSError {
-            print("Unresolved error \(error1), \(error1.userInfo)")
-            abort()
-        }
+        } catch let error1 as NSError { print("Unresolved error \(error1), \(error1.userInfo)") }
+        
         return []
     }
     
     func deleteAllEvents(_ gateway:Gateway){
         let events = gateway.events.allObjects as! [Event]
-        for event in events {
-            self.appDel.managedObjectContext!.delete(event)
-        }
+        for event in events { self.appDel.managedObjectContext!.delete(event) }
         
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
     func deleteEvent(_ event:Event){
         self.appDel.managedObjectContext!.delete(event)
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
 }

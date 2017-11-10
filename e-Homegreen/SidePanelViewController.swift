@@ -28,7 +28,6 @@
         
         //get user if exist
         user = DatabaseUserController.shared.getLoggedUser()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,20 +35,16 @@
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        if let user = user{
+        if let user = user {
             DatabaseMenuController.shared.changeOrder(menu, user: user)
         }
     }
     
     func reloadMenu(){
         //check if admin, user or super user and create menu
-        if let user = user{
-            menu = DatabaseMenuController.shared.getVisibleMenuItemByUser(user)
-        }else{
-            menu = DatabaseMenuController.shared.createMenuForAdmin()
-        }
+        if let user = user { menu = DatabaseMenuController.shared.getVisibleMenuItemByUser(user)
+        } else { menu = DatabaseMenuController.shared.createMenuForAdmin() }
         menuCollectionView.reloadData()
-        
     }
     
     
@@ -64,22 +59,16 @@
     }
     
     func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
-        if AdminController.shared.isAdminLogged(){
-            return false
-        }
-        if (indexPath as NSIndexPath).item == menu.count || (indexPath as NSIndexPath).item == menu.count - 1 {
-            return false
-        }
+        
+        if AdminController.shared.isAdminLogged() { return false }
+        if indexPath.item == menu.count || indexPath.item == menu.count - 1 { return false }
         return true
     }
     
     func collectionView(_ collectionView: UICollectionView!, itemAt fromIndexPath: IndexPath!, canMoveTo toIndexPath: IndexPath!) -> Bool {
-        if AdminController.shared.isAdminLogged(){
-            return false
-        }
-        if toIndexPath.item == menu.count || toIndexPath.item == menu.count - 1 {
-            return false
-        }
+        
+        if AdminController.shared.isAdminLogged() { return false }
+        if toIndexPath.item == menu.count || toIndexPath.item == menu.count - 1 { return false }
         return true
     }
     
@@ -111,8 +100,6 @@
         optionMenu.addAction(logoutAction)
         optionMenu.addAction(cancelAction)
         self.present(optionMenu, animated: true, completion: nil)
-        
-        
     }
     
     
@@ -121,14 +108,12 @@
    extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if (indexPath as NSIndexPath).row != menu.count {
-            if let item = Menu(rawValue: Int(menu[(indexPath as NSIndexPath).row].id)){
+        if indexPath.row != menu.count {
+            if let item = Menu(rawValue: Int(menu[indexPath.row].id)) {
                 self.revealViewController().pushFrontViewController(item.controller, animated: true)
             }
         }
-        if let user = user{
-            user.lastScreenId = menu[indexPath.row].id
-        }
+        if let user = user { user.lastScreenId = menu[indexPath.row].id }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -144,35 +129,37 @@
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if (indexPath as NSIndexPath).row < menu.count{
-            return CGSize(width: 88, height: 88)
-        }else{
-            return CGSize(width: 184, height: 70)
-        }
+        if indexPath.row < menu.count { return CGSize(width: 88, height: 88) } else { return CGSize(width: 184, height: 70) }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         let footerSize = CGSize(width: menuCollectionView.frame.width, height: 50)
         return footerSize
     }
+    
    }
    
    extension SidePanelViewController: UICollectionViewDataSource {
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return menu.count + 1
     }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if (indexPath as NSIndexPath).row < menu.count{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MenuItemCell", for: indexPath) as! MenuItemCell
+        if indexPath.row < menu.count {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MenuItemCell", for: indexPath) as? MenuItemCell {
+                
+                cell.configureForMenu(menu[indexPath.row])
+                
+                return cell
+            }
             
-            cell.configureForMenu(menu[(indexPath as NSIndexPath).row])
-            
-            cell.layer.cornerRadius = 5
-            return cell
-        }else{
+            return UICollectionViewCell()
+        } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LogOutCell", for: indexPath) as! LogOutCell
             cell.setItem(user)
             return cell
@@ -205,6 +192,8 @@
     var colorTwo = UIColor(red: 28/255, green: 28/255, blue: 26/255, alpha: 1).cgColor
     
     func configureForMenu (_ menuItem:MenuItem) {
+        layer.cornerRadius = 5
+        
         if let item = Menu(rawValue: Int(menuItem.id)){
             menuItemImageView.image = UIImage(named: item.description)
             menuItemName.text = item.description
@@ -247,47 +236,38 @@
     @IBOutlet weak var userLabel: UILabel!
     @IBOutlet weak var dataBaseLabel: UILabel!
     @IBOutlet weak var logOutButton: UIButton!
+    let userImage0 = UIImage(named: "User")
     
-    func setItem(_ user:User?){
-        if let user = user{
+    func setItem(_ user:User?) {
+        layer.cornerRadius = 5
+        
+        if let user = user {
             
-            if let id = user.customImageId{
-                if let image = DatabaseImageController.shared.getImageById(id){
-                    if let data =  image.imageData {
-                        userImage.image = UIImage(data: data)
-                    }else{
-                        if let defaultImage = user.defaultImage{
-                            userImage.image = UIImage(named: defaultImage)
-                        }else{
-                            userImage.image = UIImage(named: "User")
-                        }
-                    }
-                }else{
-                    if let defaultImage = user.defaultImage{
-                        userImage.image = UIImage(named: defaultImage)
-                    }else{
-                        userImage.image = UIImage(named: "User")
-                    }
-                }
-            }else{
-                if let defaultImage = user.defaultImage{
-                    userImage.image = UIImage(named: defaultImage)
-                }else{
-                    userImage.image = UIImage(named: "User")
-                }
-            }
+            if let id = user.customImageId {
+                if let image = DatabaseImageController.shared.getImageById(id) {
+                    
+                    if let data =  image.imageData { userImage.image = UIImage(data: data)
+                    } else {
+                        if let defaultImage = user.defaultImage{ userImage.image = UIImage(named: defaultImage)
+                        } else { userImage.image = userImage0 } }
+                    
+                } else {
+                    if let defaultImage = user.defaultImage { userImage.image = UIImage(named: defaultImage)
+                    } else { userImage.image = userImage0 } }
+                
+            } else {
+                if let defaultImage = user.defaultImage { userImage.image = UIImage(named: defaultImage)
+                } else { userImage.image = userImage0 } }
+            
             userLabel.text = user.username
-        }else{
+            
+        } else {
+            
             userLabel.text = (AdminController.shared.getAdmin())?.username
-            if let user = DatabaseUserController.shared.getOtherUser(){
-                if let username = user.username{
-                    dataBaseLabel.text = username + "'s database"
-                }else{
-                    dataBaseLabel.text = "null"
-                }
-            }else{
-                dataBaseLabel.text = "null"
-            }
+            if let user = DatabaseUserController.shared.getOtherUser() {
+                if let username = user.username { dataBaseLabel.text = username + "'s database"
+                } else {  dataBaseLabel.text = "null" }
+            } else { dataBaseLabel.text = "null" }
         }
         
     }

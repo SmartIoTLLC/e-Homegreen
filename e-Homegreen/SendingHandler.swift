@@ -11,7 +11,7 @@ import SystemConfiguration.CaptiveNetwork
 
 class SendingHandler {
     static func sendCommand(byteArray:[UInt8], gateway:Gateway) {
-        print("Command sent: \(byteArray) na: \(gateway)")
+        //print("Command sent: \(byteArray) na: \(gateway)")
         let appDel:AppDelegate = UIApplication.shared.delegate as! AppDelegate
         if appDel.inOutSockets.count > 0 {
             
@@ -23,38 +23,21 @@ class SendingHandler {
                         return item.name == ssid ? true : false
                     })
                 }
+                
                 // According to result in finding if ssid exists move on
                 if doesSSIDExist {
-                    //  Send via local ip
-                    for inOutSocket in appDel.inOutSockets {
-                        if inOutSocket.port == UInt16(Int(gateway.localPort)) {
-                            inOutSocket.sendByte(gateway.localIp, arrayByte:byteArray)
-                            return
-                        }
-                    }
+                    sendCommand(gateway: gateway, byteArray: byteArray, isLocal: true) // Send via local ip
                 } else {
-                    //  Send via remote ip
-                    for inOutSocket in appDel.inOutSockets {
-                        if inOutSocket.port == UInt16(Int(gateway.remotePort)) {
-                            inOutSocket.sendByte(gateway.remoteIpInUse, arrayByte:byteArray)
-                            return
-                        }
-                    }
+                    sendCommand(gateway: gateway, byteArray: byteArray, isLocal: false) // Send via remote ip
                 }
             } else {
-                //  Send vie remote ip
-                for inOutSocket in appDel.inOutSockets {
-                    if inOutSocket.port == UInt16(Int(gateway.remotePort)) {
-                        inOutSocket.sendByte(gateway.remoteIpInUse, arrayByte:byteArray)
-                        return
-                    }
-                }
+                sendCommand(gateway: gateway, byteArray: byteArray, isLocal: false) // Send via remote ip
             }
         }
     }
     
     static func sendCommand(byteArray:[UInt8], ip:String, port:UInt16) {
-        print("Command sent: \(byteArray)")
+        //print("Command sent: \(byteArray)")
         let appDel:AppDelegate = UIApplication.shared.delegate as! AppDelegate
        
         for inOutSocket in appDel.inOutSockets {
@@ -67,6 +50,16 @@ class SendingHandler {
         let io = InOutSocket(port: port)
         io.sendByte(appDel.returnIpAddress(ip), arrayByte:byteArray)
 //        io.socket.close()
+    }
+    
+    static func sendCommand(gateway: Gateway, byteArray: [Byte], isLocal: Bool) {
+        var port: UInt16 = 0
+        var ipInUse = ""
+        if isLocal { port = UInt16(Int(gateway.localPort)); ipInUse = gateway.localIp } else { port = UInt16(Int(gateway.remotePort)); ipInUse = gateway.remoteIpInUse }
+        
+        for inOutSocket in (UIApplication.shared.delegate as! AppDelegate).inOutSockets {
+            if inOutSocket.port == port { inOutSocket.sendByte(ipInUse, arrayByte: byteArray); return }
+        }
     }
 
 }

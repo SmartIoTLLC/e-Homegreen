@@ -72,6 +72,12 @@ class HvacParametersCell: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        appDel = UIApplication.shared.delegate as! AppDelegate
+
+        setupViews()
+    }
+    
+    func setupViews() {
         switchHumidity.tag = SwitchTag.humidity.rawValue
         switchTemperature.tag = SwitchTag.temperature.rawValue
         switchCool.tag = SwitchTag.cool.rawValue
@@ -82,8 +88,6 @@ class HvacParametersCell: PopoverVC {
         switchHigh.tag = SwitchTag.high.rawValue
         switchMed.tag = SwitchTag.med.rawValue
         switchAutoSpeed.tag = SwitchTag.autoSpeed.rawValue
-        
-        appDel = UIApplication.shared.delegate as! AppDelegate
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(HvacParametersCell.handleTap(_:)))
         tapGesture.delegate = self
@@ -97,99 +101,45 @@ class HvacParametersCell: PopoverVC {
         lblChannel.text = "\(device.channel)"
         
         level = DatabaseZoneController.shared.getZoneById(Int(device.parentZoneId), location: device.gateway.location)
-        if let level = level, level.name != "Default" {
-            btnLevel.setTitle(level.name, for: UIControlState())
-        }else{
-            btnLevel.setTitle("All", for: UIControlState())
-        }
+        if let level = level, level.name != "Default" { btnLevel.setTitle(level.name, for: UIControlState()) } else { btnLevel.setTitle("All", for: UIControlState()) }
         
         zoneSelected = DatabaseZoneController.shared.getZoneById(Int(device.zoneId), location: device.gateway.location)
-        if let zoneSelected = zoneSelected, zoneSelected.name != "Defalut" {
-            btnZone.setTitle(zoneSelected.name, for: UIControlState())
-        }else{
-            btnZone.setTitle("All", for: UIControlState())
-        }
+        if let zoneSelected = zoneSelected, zoneSelected.name != "Defalut" { btnZone.setTitle(zoneSelected.name, for: UIControlState()) } else { btnZone.setTitle("All", for: UIControlState()) }
         
         let category = DatabaseCategoryController.shared.getCategoryById(Int(device.categoryId), location: device.gateway.location)
-        if category != nil{
-            btnCategory.setTitle(category?.name, for: UIControlState())
-        }else{
-            btnCategory.setTitle("All", for: UIControlState())
-        }
+        if category != nil { btnCategory.setTitle(category?.name, for: UIControlState()) } else { btnCategory.setTitle("All", for: UIControlState()) }
         
         btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", for: UIControlState())
         
         txtFieldName.delegate = self
         
-        if device.humidityVisible == true {
-            switchHumidity.setOn(true, animated: false)
-        }else{
-            switchHumidity.setOn(false, animated: false)
-        }
+        if device.humidityVisible == true { switchHumidity.setOn(true, animated: false) } else { switchHumidity.setOn(false, animated: false) }
+        if device.temperatureVisible == true { switchTemperature.setOn(true, animated: false) } else { switchTemperature.setOn(false, animated: false) }
+        if device.coolModeVisible == true { switchCool.setOn(true, animated: false) } else { switchCool.setOn(false, animated: false) }
+        if device.heatModeVisible == true { switchHeat.setOn(true, animated: false) } else { switchHeat.setOn(false, animated: false) }
+        if device.fanModeVisible == true { switchFan.setOn(true, animated: false) } else { switchFan.setOn(false, animated: false) }
+        if device.autoModeVisible == true { switchAutoMode.setOn(true, animated: false) } else { switchAutoMode.setOn(false, animated: false) }
+        if device.lowSpeedVisible == true { switchLow.setOn(true, animated: false) } else { switchLow.setOn(false, animated: false) }
+        if device.medSpeedVisible == true { switchMed.setOn(true, animated: false) } else { switchMed.setOn(false, animated: false) }
+        if device.highSpeedVisible == true { switchHigh.setOn(true, animated: false) } else { switchHigh.setOn(false, animated: false) }
+        if device.autoSpeedVisible == true { switchAutoSpeed.setOn(true, animated: false) } else { switchAutoSpeed.setOn(false, animated: false) }
         
-        if device.temperatureVisible == true {
-            switchTemperature.setOn(true, animated: false)
-        }else{
-            switchTemperature.setOn(false, animated: false)
-        }
-        
-        if device.coolModeVisible == true {
-            switchCool.setOn(true, animated: false)
-        }else{
-            switchCool.setOn(false, animated: false)
-        }
-        
-        if device.heatModeVisible == true {
-            switchHeat.setOn(true, animated: false)
-        }else{
-            switchHeat.setOn(false, animated: false)
-        }
-        if device.fanModeVisible == true {
-            switchFan.setOn(true, animated: false)
-        }else{
-            switchFan.setOn(false, animated: false)
-        }
-        if device.autoModeVisible == true {
-            switchAutoMode.setOn(true, animated: false)
-        }else{
-            switchAutoMode.setOn(false, animated: false)
-        }
-        if device.lowSpeedVisible == true {
-            switchLow.setOn(true, animated: false)
-        }else{
-            switchLow.setOn(false, animated: false)
-        }
-        if device.medSpeedVisible == true {
-            switchMed.setOn(true, animated: false)
-        }else{
-            switchMed.setOn(false, animated: false)
-        }
-        if device.highSpeedVisible == true {
-            switchHigh.setOn(true, animated: false)
-        }else{
-            switchHigh.setOn(false, animated: false)
-        }
-        if device.autoSpeedVisible == true {
-            switchAutoSpeed.setOn(true, animated: false)
-        }else{
-            switchAutoSpeed.setOn(false, animated: false)
-        }
-
         btnLevel.tag = 1
         btnZone.tag = 2
         btnCategory.tag = 3
         btnControlType.tag = 4
     }
+    
     override func nameAndId(_ name: String, id: String) {
         
-        switch button.tag{
+        switch button.tag {
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
             if let level = level{
                 editedDevice?.levelId = (level.id?.intValue)!
                 btnZone.setTitle("All", for: UIControlState())
                 zoneSelected = nil
-            }else{
+            } else {
                 editedDevice?.levelId = 255
                 btnZone.setTitle("All", for: UIControlState())
                 zoneSelected = nil
@@ -199,7 +149,7 @@ class HvacParametersCell: PopoverVC {
             zoneSelected = FilterController.shared.getZoneByObjectId(id)
             if let zoneSelected = zoneSelected {
                 editedDevice?.zoneId = (zoneSelected.id?.intValue)!
-            }else{
+            } else {
                 editedDevice?.zoneId = (zoneSelected?.id?.intValue)!
                 editedDevice?.zoneId = 255
             }
@@ -208,7 +158,7 @@ class HvacParametersCell: PopoverVC {
             category = FilterController.shared.getCategoryByObjectId(id)
             if let category = category{
                 editedDevice?.categoryId = (category.id?.intValue)!
-            }else{
+            } else {
                 editedDevice?.categoryId = 255
             }
             break
@@ -233,40 +183,36 @@ class HvacParametersCell: PopoverVC {
         popoverList.append(PopOverItem(name: ControlType.Climate, id: ""))
         openPopover(sender, popOverList:popoverList)
     }
+    
     @IBAction func btnLevel (_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(device.gateway.location)
-        for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
-        }
+        for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
         popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
+    
     @IBAction func btnZone (_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         if let level = level{
             let list:[Zone] = DatabaseZoneController.shared.getZoneByLevel(device.gateway.location, parentZone: level)
-            for item in list {
-                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
-            }
+            for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
         }
-        
         popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
+    
     @IBAction func btnCategory (_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(device.gateway.location)
-        for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
-        }
-        
+        for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
         popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
+    
     @IBAction func btnSave(_ sender: AnyObject) {
         if txtFieldName.text != "" {
             device.name = txtFieldName.text!
@@ -287,8 +233,7 @@ class HvacParametersCell: PopoverVC {
             device.autoSpeedVisible = switchAutoSpeed.isOn as NSNumber?
             
             device.resetImages(appDel.managedObjectContext!)
-            CoreDataController.shahredInstance.saveChanges()
-            //            NSNotificationCenter.defaultCenter().postNotificationName(NotificationKey.RefreshDevice, object: self, userInfo: nil)
+            CoreDataController.sharedInstance.saveChanges()
             self.delegate?.saveClicked()
             self.dismiss(animated: true, completion: nil)
         }
@@ -309,12 +254,7 @@ extension HvacParametersCell : UITextFieldDelegate{
 
 extension HvacParametersCell : UIGestureRecognizerDelegate{
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if let touchView = touch.view{
-            if touchView.isDescendant(of: backView){
-                self.view.endEditing(true)
-                return false
-            }
-        }
+        if let touchView = touch.view { if touchView.isDescendant(of: backView) { dismissEditing(); return false } }
         return true
     }
 }
@@ -366,12 +306,8 @@ extension HvacParametersCell : UIViewControllerTransitioningDelegate {
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
     }
+    
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+        if dismissed == self { return self } else { return nil }
     }
 }

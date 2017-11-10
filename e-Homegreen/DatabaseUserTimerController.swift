@@ -28,26 +28,18 @@ class DatabaseUserTimerController: NSObject {
             predicateArray.append(NSPredicate(format: "type == %@", NSNumber(value: TimerType.stopwatch.rawValue as Int)))
             predicateArray.append(NSPredicate(format: "timerCategoryId == %@", NSNumber(value: 20 as Int)))
             
-            if filterParametar.location != "All" {
-                predicateArray.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location))
-            }
-            if filterParametar.levelName != "All" {
-                predicateArray.append(NSPredicate(format: "entityLevel == %@", filterParametar.levelName))
-            }
-            if filterParametar.zoneName != "All" {
-                predicateArray.append(NSPredicate(format: "timeZone == %@", filterParametar.zoneName))
-            }
-            if filterParametar.categoryName != "All" {
-                predicateArray.append(NSPredicate(format: "timerCategory == %@", filterParametar.categoryName))
-            }
+            if filterParametar.location != "All" { predicateArray.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location)) }
+            if filterParametar.levelName != "All" { predicateArray.append(NSPredicate(format: "entityLevel == %@", filterParametar.levelName)) }
+            if filterParametar.zoneName != "All" { predicateArray.append(NSPredicate(format: "timeZone == %@", filterParametar.zoneName)) }
+            if filterParametar.categoryName != "All" { predicateArray.append(NSPredicate(format: "timerCategory == %@", filterParametar.categoryName)) }
+            
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
+            
             do {
                 let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Timer]
                 return fetResults!
-            } catch _ as NSError {
-                abort()
-            }
+            } catch {}
         }
         return []
     }

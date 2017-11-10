@@ -22,7 +22,7 @@ class RemoteCell: UICollectionViewCell {
     
     func setCell(remote: RemoteDummy) {
         remoteNameLabel.textColor = .white
-        remoteNameLabel.font = UIFont(name: "Tahoma", size: 14)
+        remoteNameLabel.font = UIFont.tahoma(size: 14)
         remoteNameLabel.textAlignment = .center
         
         remoteImageView.image = #imageLiteral(resourceName: "Remote")

@@ -228,7 +228,7 @@ extension UIView {
             activityIndicatorView.frame.origin.y -= 10
             let activityMessageLabel = UILabel(frame: CGRect(x: activityView.bounds.origin.x, y: (activityIndicatorView.frame.origin.y + activityIndicatorView.frame.size.height + 10), width: activityView.bounds.size.width, height: 20))
             activityMessageLabel.textColor = UIView.hr_toastFontColor()
-            activityMessageLabel.font = (msg.characters.count<=10) ? UIFont(name:UIView.hr_toastFontName(), size: 16) : UIFont(name:UIView.hr_toastFontName(), size: 13)
+            activityMessageLabel.font = (msg.count<=10) ? UIFont(name:UIView.hr_toastFontName(), size: 16) : UIFont(name:UIView.hr_toastFontName(), size: 13)
             activityMessageLabel.textAlignment = .center
             activityMessageLabel.text = msg
             activityView.addSubview(activityMessageLabel)

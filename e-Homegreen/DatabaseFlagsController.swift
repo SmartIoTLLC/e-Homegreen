@@ -24,36 +24,28 @@ class DatabaseFlagsController: NSObject {
             var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool))]
             predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
             
-            if filterParametar.location != "All" {
-                predicateArray.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location))
-            }
+            if filterParametar.location != "All" { predicateArray.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location)) }
             
             if filterParametar.levelObjectId != "All" {
-                if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId){
-                    predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!))
-                }
+                if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId) { predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!)) }
             }
             if filterParametar.zoneObjectId != "All" {
-                if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
-                    predicateArray.append(NSPredicate(format: "flagZoneId == %@", zone.id!))
-                }
+                if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId) { predicateArray.append(NSPredicate(format: "flagZoneId == %@", zone.id!)) }
             }
             if filterParametar.categoryObjectId != "All" {
-                if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
-                    predicateArray.append(NSPredicate(format: "flagCategoryId == %@", category.id!))
-                }
+                if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId) { predicateArray.append(NSPredicate(format: "flagCategoryId == %@", category.id!)) }
             }
+            
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
             do {
                 let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Flag]
                 return fetResults!
-            } catch _ as NSError {
-                abort()
-            }
+            } catch {}
         }
         return []
     }
+    
     func getAllFlags() -> [Flag] {
         if let _ = DatabaseUserController.shared.logedUserOrAdmin(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Flag.fetchRequest()
@@ -63,9 +55,7 @@ class DatabaseFlagsController: NSObject {
             do {
                 let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Flag]
                 return fetResults!
-            } catch _ as NSError {
-                abort()
-            }
+            } catch {}
         }
         return []
     }
@@ -81,27 +71,22 @@ class DatabaseFlagsController: NSObject {
         predicateArray.append(NSPredicate(format: "gateway == %@", gateway))
         
         if filterParametar.levelObjectId != "All" {
-            if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId){
-                predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!))
-            }
+            if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId) { predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!)) }
         }
         if filterParametar.zoneObjectId != "All" {
-            if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
-                predicateArray.append(NSPredicate(format: "flagZoneId == %@", zone.id!))
-            }
+            if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId) { predicateArray.append(NSPredicate(format: "flagZoneId == %@", zone.id!)) }
         }
         if filterParametar.categoryObjectId != "All" {
-            if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
-                predicateArray.append(NSPredicate(format: "flagCategoryId == %@", category.id!))
-            }
+            if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId) { predicateArray.append(NSPredicate(format: "flagCategoryId == %@", category.id!)) }
         }
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
+        
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Flag]
             return fetResults!
-        } catch{
-        }
+        } catch {}
+        
         return []
     }
     
@@ -118,7 +103,7 @@ class DatabaseFlagsController: NSObject {
             flag.flagId = NSNumber(value: flagId)
             if let flagName = flagName {
                 flag.flagName = flagName
-            }else{
+            } else {
                 flag.flagName = ""
             }
             flag.address = NSNumber(value: moduleAddress)
@@ -131,7 +116,7 @@ class DatabaseFlagsController: NSObject {
                     flag.flagImageOneDefault = nil
                     gateway.location.user!.addImagesObject(image)
                 }
-            }else{
+            } else {
                 flag.flagImageOneDefault = sceneImageOneDefault
                 flag.flagImageOneCustom = sceneImageOneCustom
             }
@@ -145,7 +130,7 @@ class DatabaseFlagsController: NSObject {
                     gateway.location.user!.addImagesObject(image)
                     
                 }
-            }else{
+            } else {
                 flag.flagImageTwoDefault = sceneImageTwoDefault
                 flag.flagImageTwoCustom = sceneImageTwoCustom
             }
@@ -158,7 +143,7 @@ class DatabaseFlagsController: NSObject {
             flag.isLocalcast = isLocalcast as NSNumber
             
             flag.gateway = gateway
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             
         } else {
             
@@ -174,7 +159,7 @@ class DatabaseFlagsController: NSObject {
                     existingFlag!.flagImageOneDefault = nil
                     gateway.location.user!.addImagesObject(image)
                 }
-            }else{
+            } else {
                 existingFlag!.flagImageOneDefault = sceneImageOneDefault
                 existingFlag!.flagImageOneCustom = sceneImageOneCustom
             }
@@ -188,7 +173,7 @@ class DatabaseFlagsController: NSObject {
                     gateway.location.user!.addImagesObject(image)
                     
                 }
-            }else{
+            } else {
                 existingFlag!.flagImageTwoDefault = sceneImageTwoDefault
                 existingFlag!.flagImageTwoCustom = sceneImageTwoCustom
             }
@@ -200,7 +185,7 @@ class DatabaseFlagsController: NSObject {
             existingFlag!.isBroadcast = isBroadcast as NSNumber
             existingFlag!.isLocalcast = isLocalcast as NSNumber
             
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
         }
     }
     
@@ -212,28 +197,25 @@ class DatabaseFlagsController: NSObject {
         let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway, predicateAddress])
         
         fetchRequest.predicate = combinedPredicate
+        
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Flag]
             return fetResults!
-        } catch let error1 as NSError {
-            print("Unresolved error \(error1), \(error1.userInfo)")
-            abort()
-        }
+        } catch let error1 as NSError { print("Unresolved error \(error1), \(error1.userInfo)") }
+        
         return []
     }
     
-    func deleteAllFlags(_ gateway:Gateway){
+    func deleteAllFlags(_ gateway:Gateway) {
         let flags = gateway.flags.allObjects as! [Flag]
-        for flag in flags {
-            self.appDel.managedObjectContext!.delete(flag)
-        }
+        for flag in flags { self.appDel.managedObjectContext!.delete(flag) }
         
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
     func deleteFlag(_ flag:Flag){
         self.appDel.managedObjectContext!.delete(flag)
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
 
 }

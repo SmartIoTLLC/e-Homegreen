@@ -12,7 +12,6 @@ protocol ChatDeviceDelegate{
     func choosedDevice(_ device: AnyObject, message:String)
 }
 
-
 class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var height: NSLayoutConstraint!
@@ -28,31 +27,28 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupViews()
+    }
+    
+    func setupViews() {
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ChatDeviceSuggestionVC.handleTap(_:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-//        if Common.screenHeight-60 > CGFloat(60 * listOfDevice.count + 5) {
-//            height.constant = CGFloat(60 * listOfDevice.count + 5)
-//        } else {
-//            height.constant = Common.screenHeight-60
-//        }
         
         height.constant = sugestionTableView.contentSize.height
         
         sugestionTableView.register(UINib(nibName: "VoiceControllerTableViewCell", bundle: nil), forCellReuseIdentifier: "sugestionCell")
-
-        // Do any additional setup after loading the view.
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         print(sugestionTableView.contentSize.height)
         height.constant = sugestionTableView.contentSize.height
     }
+    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: sugestionTableView){
-            return false
-        }
+        if touch.view!.isDescendant(of: sugestionTableView) { return false }
         return true
     }
     
@@ -70,30 +66,22 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        return 80
-//    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listOfDevice.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "sugestionCell", for: indexPath) as! VoiceControllerTableViewCell
-        cell.deviceLbl.text = listOfDevice[(indexPath as NSIndexPath).row]
-        return cell
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "sugestionCell", for: indexPath) as? VoiceControllerTableViewCell {
+            cell.deviceLbl.text = listOfDevice[indexPath.row]
+            return cell
+        }
+        
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.choosedDevice(objects[(indexPath as NSIndexPath).row], message: message)
+        delegate?.choosedDevice(objects[indexPath.row], message: message)
         self.dismiss(animated: true, completion: nil)
     }
 
@@ -148,12 +136,7 @@ extension ChatDeviceSuggestionVC : UIViewControllerTransitioningDelegate {
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+        if dismissed == self { return self } else { return nil }
     }
     
 }

@@ -30,11 +30,10 @@ class ScanFunction {
         self.counter = 0
         self.gateway = gateway
         gatewayAddress = [Byte(Int(gateway.addressOne)), Byte(Int(gateway.addressTwo)), Byte(Int(gateway.addressThree))]
+        
         switch scanForWhat {
-        case .zone:
-            scanWhat = ScanZone()
-        case .category:
-            scanWhat = ScanCategory()
+        case .zone: scanWhat = ScanZone()
+        case .category: scanWhat = ScanCategory()
         }
     }
     

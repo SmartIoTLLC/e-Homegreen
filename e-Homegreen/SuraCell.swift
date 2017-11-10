@@ -31,7 +31,7 @@ class SuraCell: UITableViewCell {
         selectedBackgroundView = bg
         backgroundColor = .clear
         suraName.textColor = .white
-        suraName.font = UIFont(name: "Tahoma", size: 15)
+        suraName.font = UIFont.tahoma(size: 15)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

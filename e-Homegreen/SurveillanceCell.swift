@@ -17,23 +17,21 @@ class SurveillenceCell:UICollectionViewCell{
     var camera:Surveillance!
     var timer:Foundation.Timer?
     
-    func setItem(_ surv:Surveillance, filterParametar:FilterItem){
+    func setItem(_ surv:Surveillance, filterParametar:FilterItem, tag: Int) {
         camera = surv
         timer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(SurveillenceCell.update), userInfo: nil, repeats: true)
         lblName.text = getName(surv, filterParametar: filterParametar)
+        lblName.tag = tag
+        lblName.isUserInteractionEnabled = true
+        
+        backgroundColor = UIColor.gray.withAlphaComponent(0.3)
     }
     
-    func update(){
-        print(camera.name)
+    func update() {
         let _ = SurveillanceHandler(surv: camera)
         
-//        SurveillanceHandler.shared.getCameraImage(camera) { (success) in
-        
-            if let data = self.camera.imageData {
-                self.setImageForSurveillance(UIImage(data: data as Data))
-            }else{
-                self.setImageForSurveillance(UIImage(named: "loading")!)
-            }
+            if let data = self.camera.imageData { self.setImageForSurveillance(UIImage(data: data as Data))
+            } else { self.setImageForSurveillance(UIImage(named: "loading")!) }
             
             if self.camera.lastDate != nil {
                 let formatter = DateFormatter()
@@ -44,20 +42,15 @@ class SurveillenceCell:UICollectionViewCell{
                 self.lblTime.text = " "
             }
 
-//        }
     }
     
     func getName(_ surv:Surveillance, filterParametar:FilterItem) -> String{
         var name:String = ""
-        if surv.location!.name != filterParametar.location{
-            name += surv.location!.name! + " "
-        }
-        if surv.surveillanceLevel != filterParametar.levelName{
-            name += surv.surveillanceLevel! + " "
-        }
-        if surv.surveillanceZone != filterParametar.zoneName{
-            name += surv.surveillanceZone! + " "
-        }
+        
+        if surv.location!.name != filterParametar.location { name += surv.location!.name! + " " }
+        if surv.surveillanceLevel != filterParametar.levelName { name += surv.surveillanceLevel! + " " }
+        if surv.surveillanceZone != filterParametar.zoneName { name += surv.surveillanceZone! + " " }
+        
         name += surv.name!
         return name
     }

@@ -29,19 +29,13 @@ class DatabaseSequencesController: NSObject {
                 predicateArray.append(locationPredicate)
             }
             if filterParametar.levelObjectId != "All" {
-                if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId){
-                    predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!))
-                }
+                if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId) { predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!)) }
             }
             if filterParametar.zoneObjectId != "All" {
-                if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
-                    predicateArray.append(NSPredicate(format: "sequenceZoneId == %@", zone.id!))
-                }
+                if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId) { predicateArray.append(NSPredicate(format: "sequenceZoneId == %@", zone.id!)) }
             }
             if filterParametar.categoryObjectId != "All" {
-                if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
-                    predicateArray.append(NSPredicate(format: "sequenceCategoryId == %@", category.id!))
-                }
+                if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId) { predicateArray.append(NSPredicate(format: "sequenceCategoryId == %@", category.id!)) }
             }
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
@@ -49,9 +43,7 @@ class DatabaseSequencesController: NSObject {
             do {
                 let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Sequence]
                 return fetResults!
-            } catch _ as NSError {
-                abort()
-            }
+            } catch {}
         }
         return []
     }
@@ -67,28 +59,23 @@ class DatabaseSequencesController: NSObject {
         predicateArray.append(NSPredicate(format: "gateway == %@", gateway))
         
         if filterParametar.levelObjectId != "All" {
-            if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId){
-                predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!))
-            }
+            if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId) { predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!)) }
         }
         if filterParametar.zoneObjectId != "All" {
-            if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
-                predicateArray.append(NSPredicate(format: "sequenceZoneId == %@", zone.id!))
-            }
+            if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId) { predicateArray.append(NSPredicate(format: "sequenceZoneId == %@", zone.id!)) }
         }
         if filterParametar.categoryObjectId != "All" {
-            if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
-                predicateArray.append(NSPredicate(format: "sequenceCategoryId == %@", category.id!))
-            }
+            if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId) { predicateArray.append(NSPredicate(format: "sequenceCategoryId == %@", category.id!)) }
         }
+        
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Sequence]
             return fetResults!
-        } catch{
-        }
+        } catch {}
+        
         return []
     }
     
@@ -114,7 +101,7 @@ class DatabaseSequencesController: NSObject {
                     sequence.sequenceImageOneDefault = nil
                     gateway.location.user!.addImagesObject(image)
                 }
-            }else{
+            } else {
                 sequence.sequenceImageOneDefault = sceneImageOneDefault
                 sequence.sequenceImageOneCustom = sceneImageOneCustom
             }
@@ -128,7 +115,7 @@ class DatabaseSequencesController: NSObject {
                     gateway.location.user!.addImagesObject(image)
                     
                 }
-            }else{
+            } else {
                 sequence.sequenceImageTwoDefault = sceneImageTwoDefault
                 sequence.sequenceImageTwoCustom = sceneImageTwoCustom
             }
@@ -143,7 +130,7 @@ class DatabaseSequencesController: NSObject {
             sequence.sequenceCycles = NSNumber(value: sequenceCycles)
             
             sequence.gateway = gateway
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             
         } else {
             
@@ -157,7 +144,7 @@ class DatabaseSequencesController: NSObject {
                     existingSequence!.sequenceImageOneDefault = nil
                     gateway.location.user!.addImagesObject(image)
                 }
-            }else{
+            } else {
                 existingSequence!.sequenceImageOneDefault = sceneImageOneDefault
                 existingSequence!.sequenceImageOneCustom = sceneImageOneCustom
             }
@@ -171,7 +158,7 @@ class DatabaseSequencesController: NSObject {
                     gateway.location.user!.addImagesObject(image)
                     
                 }
-            }else{
+            } else {
                 existingSequence!.sequenceImageTwoDefault = sceneImageTwoDefault
                 existingSequence!.sequenceImageTwoCustom = sceneImageTwoCustom
             }
@@ -185,7 +172,7 @@ class DatabaseSequencesController: NSObject {
             
             existingSequence!.sequenceCycles = NSNumber(value: sequenceCycles)
             
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
         }
     }
     
@@ -195,15 +182,13 @@ class DatabaseSequencesController: NSObject {
         let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
         let predicateAddress = NSPredicate(format: "address == %@", NSNumber(value: moduleAddress as Int))
         let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway, predicateAddress])
-        
         fetchRequest.predicate = combinedPredicate
+        
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Sequence]
             return fetResults!
-        } catch let error1 as NSError {
-            print("Unresolved error \(error1), \(error1.userInfo)")
-            abort()
-        }
+        } catch let error1 as NSError { print("Unresolved error \(error1), \(error1.userInfo)") }
+        
         return []
     }
     
@@ -213,11 +198,11 @@ class DatabaseSequencesController: NSObject {
             self.appDel.managedObjectContext!.delete(sequence)
         }
         
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
     func deleteSequence(_ sequence:Sequence){
         self.appDel.managedObjectContext!.delete(sequence)
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
 }

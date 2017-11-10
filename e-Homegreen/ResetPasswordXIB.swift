@@ -46,22 +46,11 @@ class ResetPasswordXIB: CommonXIBTransitionVC {
         oldPassswordTextField.delegate = self
         newPasswordTextField.delegate = self
         confirmPasswordTextField.delegate = self
-        
-        if !AdminController.shared.isAdminLogged(){
-//            topConstraint.constant = 73
-        }else{
-//            topConstraint.constant = 8
-//            oldPasswordLabel.hidden = true
-//            oldPassswordTextField.hidden = true
-        }
 
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: backView){
-            self.view.endEditing(true)
-            return false
-        }
+        if touch.view!.isDescendant(of: backView) { dismissEditing(); return false }
         return true
     }
     
@@ -70,32 +59,23 @@ class ResetPasswordXIB: CommonXIBTransitionVC {
     }
     
     @IBAction func save(_ sender: AnyObject) {
-        if !AdminController.shared.isAdminLogged(){
-            guard let oldPass = oldPassswordTextField.text , oldPass != "" else{
-                self.view.makeToast(message: "All fields must be filled")
-                return
-            }
-            if oldPass != user.password{
-                self.view.makeToast(message: "Your old password is not correct")
-                return
-            }
+        if !AdminController.shared.isAdminLogged() {
+            guard let oldPass = oldPassswordTextField.text , oldPass != "" else { self.view.makeToast(message: "All fields must be filled"); return }
+            
+            if oldPass != user.password { self.view.makeToast(message: "Your old password is not correct"); return }
         }
         
-        guard let newPass = newPasswordTextField.text , newPass != "", let confirmPass = confirmPasswordTextField.text , confirmPass != "" else{
+        guard let newPass = newPasswordTextField.text , newPass != "", let confirmPass = confirmPasswordTextField.text , confirmPass != "" else {
             self.view.makeToast(message: "All fields must be filled")
             return
         }
 
         
-        if newPass != confirmPass {
-            self.view.makeToast(message: "Passwords do not match")
-            return
-        }
+        if newPass != confirmPass { self.view.makeToast(message: "Passwords do not match"); return }
         
         user.password = newPass
         self.dismiss(animated: true, completion: nil)
         delegate?.resetPasswordFinished()
-        
     }
     
     @IBAction func cancel(_ sender: AnyObject) {

@@ -33,7 +33,7 @@ class NavigationTitleView: UIView {
     }
     
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: CGFloat.greatestFiniteMagnitude, height: 44)
+        return UILayoutFittingExpandedSize
     }
     
     func commonInit(){
@@ -55,25 +55,24 @@ class NavigationTitleView: UIView {
         self.addSubview(subtitleView)
         
         //set portrait constraint
-        titleTopConstraint = NSLayoutConstraint(item: titleView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 0)
-        titleLeadingConstraint = NSLayoutConstraint(item: titleView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0)
-        subtitleTopConstraint = NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: titleView, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0)
-        subtitleLeadingConstraint = NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0)
+        titleTopConstraint = NSLayoutConstraint(item: titleView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0)
+        titleLeadingConstraint = NSLayoutConstraint(item: titleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0)
+        subtitleTopConstraint = NSLayoutConstraint(item: subtitleView, attribute: .top, relatedBy: .equal, toItem: titleView, attribute: .bottom, multiplier: 1.0, constant: 0)
+        subtitleLeadingConstraint = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0)
         
         //set landscape constraint
-        titleCenterConstraint = NSLayoutConstraint(item: titleView, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.centerY, multiplier: 1.0, constant: 0)
+        titleCenterConstraint = NSLayoutConstraint(item: titleView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
         
-        subtitleCenterConstraint = NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: titleView, attribute: NSLayoutAttribute.centerY, multiplier: 1.0, constant: 0)
-        subtitleLeadingConstraintLandscape = NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: titleView, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 10)
+        subtitleCenterConstraint = NSLayoutConstraint(item: subtitleView, attribute: .centerY, relatedBy: .equal, toItem: titleView, attribute: .centerY, multiplier: 1.0, constant: 0)
+        subtitleLeadingConstraintLandscape = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: titleView, attribute: .trailing, multiplier: 1.0, constant: 10)
         
-        self.addConstraint(NSLayoutConstraint(item: subtitleView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: subtitleView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0))
 
         setPortraitTitle()
         
     }
     
     func setPortraitTitle(){
-        
         self.removeConstraint(titleLeadingConstraint)
         self.removeConstraint(titleCenterConstraint)
         self.removeConstraint(subtitleCenterConstraint)
@@ -83,11 +82,9 @@ class NavigationTitleView: UIView {
         self.addConstraint(titleLeadingConstraint)
         self.addConstraint(subtitleTopConstraint)
         self.addConstraint(subtitleLeadingConstraint)
-
     }
     
     func setLandscapeTitle(){
-        
         self.removeConstraint(titleLeadingConstraint)
         self.removeConstraint(titleTopConstraint)
         self.removeConstraint(subtitleTopConstraint)
@@ -97,7 +94,6 @@ class NavigationTitleView: UIView {
         self.addConstraint(titleLeadingConstraint)
         self.addConstraint(subtitleCenterConstraint)
         self.addConstraint(subtitleLeadingConstraintLandscape)
-        
     }
     
     func setTitleAndSubtitle(_ title:String, subtitle:String){

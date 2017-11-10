@@ -12,15 +12,31 @@ class DeviceImagePickerTVC: UITableViewCell {
 
     @IBOutlet weak var deviceImage: UIImageView!
     @IBOutlet weak var deviceState: UILabel!
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    
+    func setCell(deviceImages: [DeviceImage], indexPathRow: Int) {
+        backgroundColor = .clear
+        deviceState.text = ""
+        
+        if let stateText = deviceImages[indexPathRow].text {
+            deviceState.text = stateText
+        } else {
+            let av = Int(100 / (deviceImages.count - 1))
+            
+            if indexPathRow == 0 { deviceState.text = "0"
+            } else if indexPathRow == deviceImages.count - 1 { deviceState.text = "\((indexPathRow - 1) * av + 1) - 100"
+            } else { deviceState.text = "\((indexPathRow - 1) * av + 1) - \((indexPathRow - 1) * av + av)" }
+            
+        }
+        
+        if let id = deviceImages[indexPathRow].customImageId {
+            if let image = DatabaseImageController.shared.getImageById(id) {
+                
+                if let data =  image.imageData { deviceImage.image = UIImage(data: data)
+                } else { deviceImage.image = UIImage(named: deviceImages[indexPathRow].defaultImage!) }
+                
+            } else { deviceImage.image = UIImage(named: deviceImages[indexPathRow].defaultImage!) }
+        } else { deviceImage.image = UIImage(named: deviceImages[indexPathRow].defaultImage!) }
+        
     }
     
 }

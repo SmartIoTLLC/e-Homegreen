@@ -27,7 +27,6 @@ class ImportFilesViewController: UIViewController, UITableViewDataSource, UITabl
         super.init(nibName: "ImportFilesViewController", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.custom
-        
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -36,27 +35,24 @@ class ImportFilesViewController: UIViewController, UITableViewDataSource, UITabl
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.2)
-        backView.layer.cornerRadius = 10
         
-        let isFileInDir = enumerateDirectory() 
-        for item in isFileInDir{
-            if "json" == URL(string: item.replacingOccurrences(of: " ", with: ""))?.pathExtension{
-                listOfJson.append(item)
-            }
+        setupViews()
+    }
+    
+    func setupViews() {
+        self.tableOfFiles.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        
+        let isFileInDir = enumerateDirectory()
+        for item in isFileInDir {
+            if "json" == URL(string: item.replacingOccurrences(of: " ", with: ""))?.pathExtension { listOfJson.append(item) }
         }
         
-        self.tableOfFiles.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        backView.layer.cornerRadius = 10
     }
     
     @IBAction func btnImport(_ sender: AnyObject) {
-        if indexSelect != -1{
+        if indexSelect != -1 {
             delegate?.backURL(listOfJson[indexSelect])
             self.dismiss(animated: true, completion: nil)
         }
@@ -64,21 +60,13 @@ class ImportFilesViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func enumerateDirectory() -> [String] {
-        let dirs = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true) as [String]
-//        if dirs != nil {
-            let dir = dirs[0]
-            do {
-                let fileList = try FileManager.default.contentsOfDirectory(atPath: dir)
-                return fileList as [String]
-            }catch {
-                
-            }
+        if let dirs = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true) as [String]? {
             
-//        }else{
-//            return []
-//        }
-        return []
-        
+            do { return try FileManager.default.contentsOfDirectory(atPath: dirs[0])
+            } catch {}
+            
+            return []
+        }
     }
 
     @IBAction func btnCancel(_ sender: AnyObject) {
@@ -87,7 +75,7 @@ class ImportFilesViewController: UIViewController, UITableViewDataSource, UITabl
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
-        cell.textLabel?.text = listOfJson[(indexPath as NSIndexPath).row]
+        cell.textLabel?.text = listOfJson[indexPath.row]
         cell.textLabel?.numberOfLines = 0
         return cell
     }
@@ -97,7 +85,7 @@ class ImportFilesViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        indexSelect = (indexPath as NSIndexPath).row
+        indexSelect = indexPath.row
     }
     
 
@@ -152,12 +140,7 @@ extension ImportFilesViewController : UIViewControllerTransitioningDelegate {
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+        if dismissed == self { return self } else { return nil }
     }
     
 }

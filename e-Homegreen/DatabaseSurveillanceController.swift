@@ -14,8 +14,8 @@ class DatabaseSurveillanceController: NSObject {
     static let shared = DatabaseSurveillanceController()
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    func getSurveillace(_ filterParametar:FilterItem) -> [Surveillance]{
-        if let user = DatabaseUserController.shared.logedUserOrAdmin(){
+    func getSurveillace(_ filterParametar:FilterItem) -> [Surveillance] {
+        if let user = DatabaseUserController.shared.logedUserOrAdmin() {
             
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Surveillance.fetchRequest()
             
@@ -24,28 +24,18 @@ class DatabaseSurveillanceController: NSObject {
             fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptorTwo]
             
             var predicateArray:[NSPredicate] = [NSPredicate(format: "location.user == %@", user)]
-            if filterParametar.location != "All" {
-                predicateArray.append(NSPredicate(format: "location.name == %@", filterParametar.location))
-            }
-            if filterParametar.levelName != "All" {
-                let levelPredicate = NSPredicate(format: "surveillanceLevel == %@", filterParametar.levelName)
-                predicateArray.append(levelPredicate)
-            }
-            if filterParametar.zoneName != "All" {
-                let zonePredicate = NSPredicate(format: "surveillanceZone == %@", filterParametar.zoneName)
-                predicateArray.append(zonePredicate)
-            }
-            if filterParametar.categoryName != "All" {
-                let categoryPredicate = NSPredicate(format: "surveillanceCategory == %@", filterParametar.categoryName)
-                predicateArray.append(categoryPredicate)
-            }
+            if filterParametar.location != "All" { predicateArray.append(NSPredicate(format: "location.name == %@", filterParametar.location)) }
+            if filterParametar.levelName != "All" { predicateArray.append(NSPredicate(format: "surveillanceLevel == %@", filterParametar.levelName)) }
+            if filterParametar.zoneName != "All" { predicateArray.append(NSPredicate(format: "surveillanceZone == %@", filterParametar.zoneName)) }
+            if filterParametar.categoryName != "All" { predicateArray.append(NSPredicate(format: "surveillanceCategory == %@", filterParametar.categoryName)) }
+            
             fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicateArray)
+            
             do {
                 let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Surveillance]
                 return fetResults!
-            } catch _ as NSError {
-                abort()
-            }
+            } catch {}
+            
         }
         return []
     }

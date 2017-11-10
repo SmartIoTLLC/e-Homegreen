@@ -20,6 +20,7 @@ extension UIView {
         }
         return nil
     }
+    
     func rotate(_ times:Float){
         let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
         rotateAnimation.fromValue = 0.0
@@ -47,5 +48,15 @@ extension UIView {
         gradientLayer.frame = bounds
         
         layer.addSublayer(gradientLayer)
+    }
+    
+    func addShadows() {
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 2)
+        layer.shadowOpacity = 0.55
+        layer.shadowRadius = 1.0
+        clipsToBounds = false
+        layer.shouldRasterize = true
+        layer.rasterizationScale = UIScreen.main.scale
     }
 }

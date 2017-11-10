@@ -15,10 +15,10 @@ class DatabaseFilterController: NSObject {
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     //create filter when create user
-    func createFilters(_ user:User){
-        for item in Menu.allMenuItem{
-            if item != Menu.settings{
-                if let filter = NSEntityDescription.insertNewObject(forEntityName: "FilterParametar", into: appDel.managedObjectContext!) as? FilterParametar{
+    func createFilters(_ user:User) {
+        for item in Menu.allMenuItem {
+            if item != Menu.settings {
+                if let filter = NSEntityDescription.insertNewObject(forEntityName: "FilterParametar", into: appDel.managedObjectContext!) as? FilterParametar {
                     filter.filterId = NSNumber(value: item.rawValue)
                     filter.isDefault = false
                     filter.locationId = "All"
@@ -28,7 +28,7 @@ class DatabaseFilterController: NSObject {
                     filter.timerDuration = 0
                     filter.user = user
                 }
-                if let filter = NSEntityDescription.insertNewObject(forEntityName: "FilterParametar", into: appDel.managedObjectContext!) as? FilterParametar{
+                if let filter = NSEntityDescription.insertNewObject(forEntityName: "FilterParametar", into: appDel.managedObjectContext!) as? FilterParametar {
                     filter.filterId = NSNumber(value: item.rawValue)
                     filter.isDefault = true
                     filter.locationId = "All"
@@ -40,43 +40,45 @@ class DatabaseFilterController: NSObject {
                 }
             }
         }
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
-    func saveFilter(_ filterItem:FilterItem, menu:Menu){
-        if let user = DatabaseUserController.shared.getLoggedUser(){
+    func saveFilter(_ filterItem:FilterItem, menu:Menu) {
+        if let user = DatabaseUserController.shared.getLoggedUser() {
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FilterParametar.fetchRequest()
             var predicateArray:[NSPredicate] = []
             predicateArray.append(NSPredicate(format: "user == %@", user))
             predicateArray.append(NSPredicate(format: "filterId == %@", NSNumber(value: menu.rawValue as Int)))
             predicateArray.append(NSPredicate(format: "isDefault == %@", NSNumber(value: false as Bool)))
+            
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
+            
             do {
                 let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [FilterParametar]
-                if results.count != 0{
+                if results.count != 0 {
                     results[0].locationId = filterItem.locationObjectId
                     results[0].levelId = filterItem.levelObjectId
                     results[0].zoneId = filterItem.zoneObjectId
                     results[0].categoryId = filterItem.categoryObjectId
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                 }
-            } catch {
-                
-            }
+            } catch {}
             
         }
     }
     
-    func saveDeafultFilter(_ filterItem:FilterItem, menu:Menu, time: Int){
-        if let user = DatabaseUserController.shared.getLoggedUser(){
+    func saveDeafultFilter(_ filterItem:FilterItem, menu:Menu, time: Int) {
+        if let user = DatabaseUserController.shared.getLoggedUser() {
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FilterParametar.fetchRequest()
             var predicateArray:[NSPredicate] = []
             predicateArray.append(NSPredicate(format: "user == %@", user))
             predicateArray.append(NSPredicate(format: "filterId == %@", NSNumber(value: menu.rawValue as Int)))
             predicateArray.append(NSPredicate(format: "isDefault == %@", NSNumber(value: true as Bool)))
+            
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
+            
             do {
                 let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [FilterParametar]
                 if results.count != 0{
@@ -85,93 +87,87 @@ class DatabaseFilterController: NSObject {
                     results[0].zoneId = filterItem.zoneObjectId
                     results[0].categoryId = filterItem.categoryObjectId
                     results[0].timerDuration = NSNumber(value: time)
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                 }
-            } catch {
-                
-            }
+            } catch {}
             
         }
     }
     
-    func getDeafultFilterTimeDuration(menu:Menu) -> Int{
-        if let user = DatabaseUserController.shared.getLoggedUser(){
+    func getDeafultFilterTimeDuration(menu:Menu) -> Int {
+        if let user = DatabaseUserController.shared.getLoggedUser() {
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FilterParametar.fetchRequest()
             var predicateArray:[NSPredicate] = []
             predicateArray.append(NSPredicate(format: "user == %@", user))
             predicateArray.append(NSPredicate(format: "filterId == %@", NSNumber(value: menu.rawValue as Int)))
             predicateArray.append(NSPredicate(format: "isDefault == %@", NSNumber(value: true as Bool)))
+            
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
+            
             do {
                 let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [FilterParametar]
-                if results.count != 0{
-                    return Int(results[0].timerDuration)
-                }
-            } catch {
-                
-            }
+                if results.count != 0 { return Int(results[0].timerDuration) }
+            } catch {}
             
         }
         return 0
     }
     
-    func getFilterByMenu(_ menu:Menu) -> FilterParametar?{
+    func getFilterByMenu(_ menu:Menu) -> FilterParametar? {
         
-        if let user = DatabaseUserController.shared.getLoggedUser(){
+        if let user = DatabaseUserController.shared.getLoggedUser() {
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FilterParametar.fetchRequest()
             var predicateArray:[NSPredicate] = []
             predicateArray.append(NSPredicate(format: "user == %@", user))
             predicateArray.append(NSPredicate(format: "filterId == %@", NSNumber(value: menu.rawValue as Int)))
             predicateArray.append(NSPredicate(format: "isDefault == %@", NSNumber(value: false as Bool)))
+            
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
+            
             do {
                 let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [FilterParametar]
-                if results.count != 0{
-                    return results[0]
-                }
-            } catch {
-                
-            }            
+                if results.count != 0 { return results[0] }
+            } catch {}
+            
         }
-        if let user = DatabaseUserController.shared.getOtherUser(){
+        
+        if let user = DatabaseUserController.shared.getOtherUser() {
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FilterParametar.fetchRequest()
             var predicateArray:[NSPredicate] = []
             predicateArray.append(NSPredicate(format: "user == %@", user))
             predicateArray.append(NSPredicate(format: "filterId == %@", NSNumber(value: menu.rawValue as Int)))
             predicateArray.append(NSPredicate(format: "isDefault == %@", NSNumber(value: false as Bool)))
+            
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
+            
             do {
                 let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [FilterParametar]
-                if results.count != 0{
-                    return results[0]
-                }
-            } catch {
-                
-            }
+                if results.count != 0 { return results[0] }
+            } catch {}
+            
         }
         return nil
     }
     
-    func getDefaultFilterByMenu(_ menu:Menu) -> FilterParametar?{
-        if let user = DatabaseUserController.shared.getLoggedUser(){
+    func getDefaultFilterByMenu(_ menu:Menu) -> FilterParametar? {
+        if let user = DatabaseUserController.shared.getLoggedUser() {
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FilterParametar.fetchRequest()
             var predicateArray:[NSPredicate] = []
             predicateArray.append(NSPredicate(format: "user == %@", user))
             predicateArray.append(NSPredicate(format: "filterId == %@", NSNumber(value: menu.rawValue as Int)))
             predicateArray.append(NSPredicate(format: "isDefault == %@", NSNumber(value: true as Bool)))
+            
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
+            
             do {
                 let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [FilterParametar]
-                if results.count != 0{
-                    return results[0]
-                }
-            } catch {
-                
-            }
+                if results.count != 0 { return results[0] }
+            } catch {}
+            
         }
         return nil
     }

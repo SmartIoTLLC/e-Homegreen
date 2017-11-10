@@ -48,16 +48,20 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
         
         appDel = UIApplication.shared.delegate as! AppDelegate
         
-        self.view.backgroundColor = UIColor.clear
+        setupViews()
+    }
+    
+    func setupViews() {
+        view.backgroundColor = UIColor.clear
+
+        panStepSlider.addTarget(self, action: #selector(changePanStep(_:)), for: .valueChanged)
+        tiltStepSlider.addTarget(self, action: #selector(changeTiltStep(_:)), for: .valueChanged)
+        autoPanStepSlider.addTarget(self, action: #selector(changeAutoPanStep(_:)), for: .valueChanged)
+        dwellTimeSlider.addTarget(self, action: #selector(changeDwellTimeSlider(_:)), for: .valueChanged)
         
-        panStepSlider.addTarget(self, action: #selector(CameraParametarXIBViewController.changePanStep(_:)), for: .valueChanged)
-        tiltStepSlider.addTarget(self, action: #selector(CameraParametarXIBViewController.changeTiltStep(_:)), for: .valueChanged)
-        autoPanStepSlider.addTarget(self, action: #selector(CameraParametarXIBViewController.changeAutoPanStep(_:)), for: .valueChanged)
-        dwellTimeSlider.addTarget(self, action: #selector(CameraParametarXIBViewController.changeDwellTimeSlider(_:)), for: .valueChanged)
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CameraParametarXIBViewController.dismissViewController))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissViewController))
         tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
+        view.addGestureRecognizer(tapGesture)
         
         panStepSlider.value = Float(surv.panStep!)
         tiltStepSlider.value = Float(surv.tiltStep!)
@@ -68,8 +72,6 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
         tiltStepLabel.text = "\(tiltStepSlider.value)"
         autoPanStepLabel.text = "\(autoPanStepSlider.value)"
         dwellTimeLabel.text = "\(dwellTimeSlider.value)"
-
-        // Do any additional setup after loading the view.
     }
     
     func changePanStep(_ slider: UISlider){
@@ -98,20 +100,18 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
         surv!.tiltStep = tiltStepSlider.value as NSNumber?
         surv!.autSpanStep = autoPanStepSlider.value as NSNumber?
         surv!.dwellTime = dwellTimeSlider.value as NSNumber?
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
         
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: backView){
-            return false
-        }
+        if touch.view!.isDescendant(of: backView) { return false }
         return true
     }
     
     func dismissViewController () {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
 }
@@ -172,18 +172,13 @@ extension CameraParametarXIBViewController : UIViewControllerTransitioningDelega
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+        if dismissed == self { return self } else { return nil }
     }
     
 }
 extension UIViewController {
     func showCameraParametar(_ point:CGPoint, surveillance:Surveillance) {
         let sp = CameraParametarXIBViewController(point: point, surv: surveillance)
-        self.present(sp, animated: true, completion: nil)
+        present(sp, animated: true, completion: nil)
     }
 }

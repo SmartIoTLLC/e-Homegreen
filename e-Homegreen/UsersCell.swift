@@ -19,6 +19,8 @@ class TimerUserCell:UICollectionViewCell{
     
     var imageOne:UIImage?
     var imageTwo:UIImage?
+    let clock0 = UIImage(named: "15 Timer - CLock - 00")
+    let clock1 = UIImage(named: "15 Timer - CLock - 01")
     
     var cellTimer:Timer!
     var time:Foundation.Timer?
@@ -28,29 +30,65 @@ class TimerUserCell:UICollectionViewCell{
         imageTimer.clipsToBounds = true
     }
     
-    func setItem(_ timer:Timer, filterParametar:FilterItem){
+    func setItem(_ timer:Timer, filterParametar:FilterItem, tag: Int) {
         cellTimer = timer
         titleLabel.text = getName(timer, filterParametar: filterParametar)
         let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
         timeLabel.text = "\(h):\(m):\(s)"
         
+        titleLabel.isUserInteractionEnabled = true
+        
+        // Default
+        playButton.isHidden = false
+        pauseButton.isHidden = true
+        stopButton.isHidden = true
+        playButton.isEnabled = true
+        playButton.setTitle("Start", for: UIControlState())
+        
+        if timer.timerState == 1 {
+            playButton.isHidden = true
+            stopButton.isHidden = false
+            pauseButton.isHidden = false
+            startTimer()
+            pauseButton.setTitle("Pause", for: UIControlState())
+        }
+        if timer.timerState == 240 {
+            playButton.isHidden = false
+            pauseButton.isHidden = true
+            stopButton.isHidden = true
+            stopTimer()
+            playButton.isEnabled = true
+        }
+        if timer.timerState == 238 {
+            playButton.isHidden = true
+            stopButton.isHidden = false
+            pauseButton.isHidden = false
+            stopTimer()
+            pauseButton.setTitle("Resume", for: UIControlState())
+            stopButton.setTitle("Cancel", for: UIControlState())
+        }
+        
+        playButton.tag = tag
+        pauseButton.tag = tag
+        stopButton.tag = tag
+        
+        getImagesFrom(timer)
     }
     
     func secondsToHoursMinutesSeconds (_ seconds : Int) -> (Int, Int, Int) {
         return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
     }
     
-    func startTimer(){
+    func startTimer() {
         time?.invalidate()
         time = Foundation.Timer.scheduledTimer(timeInterval: 1, target:self, selector: #selector(TimerUserCell.countUp(_:)), userInfo:nil, repeats: true)
-            
     }
     
-    func stopTimer(){
+    func stopTimer() {
         time?.invalidate()
     }
     
-    func countUp(_ timer:Foundation.Timer){
+    func countUp(_ timer:Foundation.Timer) {
         cellTimer.timerCount += 1
         let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
         timeLabel.text = "\(h):\(m):\(s)"
@@ -60,72 +98,47 @@ class TimerUserCell:UICollectionViewCell{
         time?.invalidate()
     }
     
-    func getName(_ timer:Timer, filterParametar:FilterItem) -> String{
+    func getName(_ timer:Timer, filterParametar:FilterItem) -> String {
         var name:String = ""
-        if timer.gateway.location.name != filterParametar.location{
-            name += timer.gateway.location.name! + " "
-        }
-//        if timer.entityLevel != filterParametar.levelName{
-//            name += timer.entityLevel! + " "
-//        }
-//        if timer.timeZone != filterParametar.zoneName{
-//            name += timer.timeZone! + " "
-//        }
+        if timer.gateway.location.name != filterParametar.location { name += timer.gateway.location.name! + " " }
         name += timer.timerName
         return name
     }
     
     func getImagesFrom(_ timer:Timer) {
-        if let id = timer.timerImageOneCustom{
-            if let image = DatabaseImageController.shared.getImageById(id){
+        if let id = timer.timerImageOneCustom {
+            if let image = DatabaseImageController.shared.getImageById(id) {
                 if let data =  image.imageData {
                     imageOne = UIImage(data: data)
-                }else{
-                    if let defaultImage = timer.timerImageOneDefault{
-                        imageOne = UIImage(named: defaultImage)
-                    }else{
-                        imageOne = UIImage(named: "15 Timer - CLock - 00")
-                    }
+                } else {
+                    if let defaultImage = timer.timerImageOneDefault { imageOne = UIImage(named: defaultImage)
+                    } else { imageOne = clock0 }
                 }
-            }else{
-                if let defaultImage = timer.timerImageOneDefault{
-                    imageOne = UIImage(named: defaultImage)
-                }else{
-                    imageOne = UIImage(named: "15 Timer - CLock - 00")
-                }
+            } else {
+                if let defaultImage = timer.timerImageOneDefault { imageOne = UIImage(named: defaultImage)
+                } else { imageOne = clock0 }
             }
-        }else{
-            if let defaultImage = timer.timerImageOneDefault{
-                imageOne = UIImage(named: defaultImage)
-            }else{
-                imageOne = UIImage(named: "15 Timer - CLock - 00")
-            }
+            
+        } else {
+            if let defaultImage = timer.timerImageOneDefault { imageOne = UIImage(named: defaultImage)
+            } else { imageOne = clock0 }
         }
         
-        if let id = timer.timerImageTwoCustom{
-            if let image = DatabaseImageController.shared.getImageById(id){
+        if let id = timer.timerImageTwoCustom {
+            if let image = DatabaseImageController.shared.getImageById(id) {
                 if let data =  image.imageData {
                     imageTwo = UIImage(data: data)
-                }else{
-                    if let defaultImage = timer.timerImageTwoDefault{
-                        imageTwo = UIImage(named: defaultImage)
-                    }else{
-                        imageTwo = UIImage(named: "15 Timer - CLock - 01")
-                    }
+                } else {
+                    if let defaultImage = timer.timerImageTwoDefault { imageTwo = UIImage(named: defaultImage)
+                    } else { imageTwo = clock1 }
                 }
-            }else{
-                if let defaultImage = timer.timerImageTwoDefault{
-                    imageTwo = UIImage(named: defaultImage)
-                }else{
-                    imageTwo = UIImage(named: "15 Timer - CLock - 01")
-                }
+            } else {
+                if let defaultImage = timer.timerImageTwoDefault { imageTwo = UIImage(named: defaultImage)
+                } else { imageTwo = clock1 }
             }
-        }else{
-            if let defaultImage = timer.timerImageTwoDefault{
-                imageTwo = UIImage(named: defaultImage)
-            }else{
-                imageTwo = UIImage(named: "15 Timer - CLock - 01")
-            }
+        } else {
+            if let defaultImage = timer.timerImageTwoDefault { imageTwo = UIImage(named: defaultImage)
+            } else { imageTwo = clock1 }
         }
         imageTimer.image = imageOne
         setNeedsDisplay()

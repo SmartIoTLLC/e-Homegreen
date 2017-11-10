@@ -39,7 +39,7 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-//    2B162531-FD29-4758-85B4-555A6DFF00FF
+
     func endEditingNow(){
         editMajor.resignFirstResponder()
         editMinor.resignFirstResponder()
@@ -52,76 +52,21 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: backView){
-            return false
-        }
+        
+        if touch.view!.isDescendant(of: backView) { return false }
         return true
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.2)
-        
         appDel = UIApplication.shared.delegate as! AppDelegate
         
-        editMajor.inputAccessoryView = CustomToolBar()
-        editMinor.inputAccessoryView = CustomToolBar()
+        updateViews()
         
-        if UIScreen.main.scale > 2.5{
-            editName.layer.borderWidth = 1
-            editUUID.layer.borderWidth = 1
-            editMajor.layer.borderWidth = 1
-            editMinor.layer.borderWidth = 1
-        }else{
-            editName.layer.borderWidth = 0.5
-            editUUID.layer.borderWidth = 0.5
-            editMajor.layer.borderWidth = 0.5
-            editMinor.layer.borderWidth = 0.5
-        }
-        
-        editName.layer.cornerRadius = 2
-        editUUID.layer.cornerRadius = 2
-        editMajor.layer.cornerRadius = 2
-        editMinor.layer.cornerRadius = 2
-        
-        editName.layer.borderColor = UIColor.lightGray.cgColor
-        editUUID.layer.borderColor = UIColor.lightGray.cgColor
-        editMajor.layer.borderColor = UIColor.lightGray.cgColor
-        editMinor.layer.borderColor = UIColor.lightGray.cgColor
-        
-        editName.attributedPlaceholder = NSAttributedString(string:"Name",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
-        editUUID.attributedPlaceholder = NSAttributedString(string:"UUID",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
-        editMajor.attributedPlaceholder = NSAttributedString(string:"Major",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
-        editMinor.attributedPlaceholder = NSAttributedString(string:"Minor",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
-        
-        btnCancel.layer.cornerRadius = 2
-        btnSave.layer.cornerRadius = 2
-        
-        editName.delegate = self
-        editUUID.delegate = self
-        if iBeacon != nil {
-            editName.text = iBeacon?.name!
-            editUUID.text = iBeacon?.uuid!
-            editMajor.text = "\(iBeacon!.major!)"
-            editMinor.text = "\(iBeacon!.minor!)"
-        }
-        editUUID.text = "2B162531-FD29-4758-85B4-555A6DFF00FF"
-        editUUID.tag = 2
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(IBeaconSettingsVC.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(IBeaconSettingsVC.dismissViewController))
-        tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
-        
-        // Do any additional setup after loading the view.
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name:.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
     }
-    
+
     func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
@@ -136,35 +81,31 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
             completion: nil)
         return true
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     @IBAction func btnCancel(_ sender: AnyObject) {
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func btnSave(_ sender: AnyObject) {
-        if editName.text == "" || editUUID.text == "" || editMinor.text == "" || editMajor.text == ""{
+        if editName.text == "" || editUUID.text == "" || editMinor.text == "" || editMajor.text == "" {
            
         } else {
             if let minor = UInt16(editMinor.text!), let major = UInt16(editMajor.text!) {
-                if uuidRegex.numberOfMatches(in: editUUID.text!, options: [], range: NSMakeRange(0, editUUID.text!.characters.count)) > 0{
-                    if iBeacon == nil{
-                        let iBeaconNew = NSEntityDescription.insertNewObject(forEntityName: "IBeacon", into: appDel.managedObjectContext!) as! IBeacon
-                        iBeaconNew.name = editName.text!
-                        iBeaconNew.uuid = editUUID.text!
-                        iBeaconNew.major = NSNumber(value: major as UInt16)
-                        iBeaconNew.minor =  NSNumber(value: minor as UInt16)
+                if uuidRegex.numberOfMatches(in: editUUID.text!, options: [], range: NSMakeRange(0, editUUID.text!.count)) > 0 {
+                    if iBeacon == nil {
+                        if let iBeaconNew = NSEntityDescription.insertNewObject(forEntityName: "IBeacon", into: appDel.managedObjectContext!) as? IBeacon {
+                            iBeaconNew.name = editName.text!
+                            iBeaconNew.uuid = editUUID.text!
+                            iBeaconNew.major = NSNumber(value: major as UInt16)
+                            iBeaconNew.minor =  NSNumber(value: minor as UInt16)
+                        }
                     } else {
                         iBeacon!.name = editName.text!
                         iBeacon!.uuid = editUUID.text!
                         iBeacon!.major =  NSNumber(value: major as UInt16)
                         iBeacon!.minor = NSNumber(value: minor as UInt16)
                     }
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                     NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshIBeacon), object: self, userInfo: nil)
                     self.dismiss(animated: true, completion: nil)
                 }
@@ -173,37 +114,15 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
     }
     
     func keyboardWillShow(_ notification: Notification) {
-        var info = (notification as NSNotification).userInfo!
+        let info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
-        if editUUID.isFirstResponder{
-            if backView.frame.origin.y + editUUID.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editUUID.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editMajor.isFirstResponder{
-            if backView.frame.origin.y + editMajor.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editMajor.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editMinor.isFirstResponder{
-            if backView.frame.origin.y + editMinor.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editMinor.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-
- 
+        moveTextfield(textfield: editUUID, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: editMajor, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: editMinor, keyboardFrame: keyboardFrame, backView: backView)
         
         UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-        
     }
-
 
 }
 
@@ -247,7 +166,64 @@ extension IBeaconSettingsVC : UIViewControllerAnimatedTransitioning {
     }
 }
 
+extension IBeaconSettingsVC {
+    
+    func updateViews() {
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.2)
 
+        editMajor.inputAccessoryView = CustomToolBar()
+        editMinor.inputAccessoryView = CustomToolBar()
+        
+        if UIScreen.main.scale > 2.5 {
+            editName.layer.borderWidth = 1
+            editUUID.layer.borderWidth = 1
+            editMajor.layer.borderWidth = 1
+            editMinor.layer.borderWidth = 1
+        } else {
+            editName.layer.borderWidth = 0.5
+            editUUID.layer.borderWidth = 0.5
+            editMajor.layer.borderWidth = 0.5
+            editMinor.layer.borderWidth = 0.5
+        }
+        
+        editName.layer.cornerRadius = 2
+        editUUID.layer.cornerRadius = 2
+        editMajor.layer.cornerRadius = 2
+        editMinor.layer.cornerRadius = 2
+        
+        editName.layer.borderColor = UIColor.lightGray.cgColor
+        editUUID.layer.borderColor = UIColor.lightGray.cgColor
+        editMajor.layer.borderColor = UIColor.lightGray.cgColor
+        editMinor.layer.borderColor = UIColor.lightGray.cgColor
+        
+        editName.attributedPlaceholder = NSAttributedString(string:"Name",
+                                                            attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+        editUUID.attributedPlaceholder = NSAttributedString(string:"UUID",
+                                                            attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+        editMajor.attributedPlaceholder = NSAttributedString(string:"Major",
+                                                             attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+        editMinor.attributedPlaceholder = NSAttributedString(string:"Minor",
+                                                             attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+        
+        btnCancel.layer.cornerRadius = 2
+        btnSave.layer.cornerRadius = 2
+        
+        editName.delegate = self
+        editUUID.delegate = self
+        if iBeacon != nil {
+            editName.text = iBeacon?.name!
+            editUUID.text = iBeacon?.uuid!
+            editMajor.text = "\(iBeacon!.major!)"
+            editMinor.text = "\(iBeacon!.minor!)"
+        }
+        editUUID.text = "2B162531-FD29-4758-85B4-555A6DFF00FF"
+        editUUID.tag = 2
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissViewController))
+        tapGesture.delegate = self
+        self.view.addGestureRecognizer(tapGesture)
+    }
+}
 
 extension IBeaconSettingsVC : UIViewControllerTransitioningDelegate {
     
@@ -256,12 +232,7 @@ extension IBeaconSettingsVC : UIViewControllerTransitioningDelegate {
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+        if dismissed == self { return self } else { return nil }
     }
     
 }

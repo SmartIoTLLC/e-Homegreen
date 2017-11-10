@@ -30,9 +30,8 @@ class TagsXIB: CommonXIBTransitionVC {
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: backView){
-            return false
-        }
+        
+        if touch.view!.isDescendant(of: backView) { return false }
         return true
     }
 

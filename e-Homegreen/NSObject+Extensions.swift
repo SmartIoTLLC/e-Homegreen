@@ -15,10 +15,7 @@ extension NSObject {
         }
         var returnString = ""
         for (index, byte) in byteArray.enumerated() {
-            if index == byteArray.count-1 {
-                returnString += String.localizedStringWithFormat("%02x", byte)
-                break
-            }
+            if index == byteArray.count-1 { returnString += String.localizedStringWithFormat("%02x", byte); break }
             returnString += String.localizedStringWithFormat("%02x", byte) + ":"
         }
         return returnString.uppercased()

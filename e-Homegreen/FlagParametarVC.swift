@@ -33,55 +33,42 @@ class FlagParametarVC: CommonXIBTransitionVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(FlagParametarVC.dismissViewController))
+        appDel = UIApplication.shared.delegate as! AppDelegate
+
+        setupViews()
+    }
+    
+    func setupViews() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissViewController))
         tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
+        view.addGestureRecognizer(tapGesture)
         isBroadcast.tag = 100
         isBroadcast.isOn = flag!.isBroadcast.boolValue
-        isBroadcast.addTarget(self, action: #selector(FlagParametarVC.changeValue(_:)), for: UIControlEvents.valueChanged)
+        isBroadcast.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
         isLocalcast.tag = 200
         isLocalcast.isOn = flag!.isLocalcast.boolValue
-        isLocalcast.addTarget(self, action: #selector(FlagParametarVC.changeValue(_:)), for: UIControlEvents.valueChanged)
-        appDel = UIApplication.shared.delegate as! AppDelegate
-        
+        isLocalcast.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: backView){
-            return false
-        }
+        if touch.view!.isDescendant(of: backView) { return false }
         return true
     }
     
     @IBAction func btnSave(_ sender: AnyObject) {
-        if isBroadcast.isOn {
-            flag?.isBroadcast = true
-        } else {
-            flag?.isBroadcast = false
-        }
-        if isLocalcast.isOn {
-            flag?.isLocalcast = true
-        } else {
-            flag?.isLocalcast = false
-        }
-        CoreDataController.shahredInstance.saveChanges()
+        if isBroadcast.isOn { flag?.isBroadcast = true } else { flag?.isBroadcast = false }
+        if isLocalcast.isOn { flag?.isLocalcast = true } else { flag?.isLocalcast = false }
+        
+        CoreDataController.sharedInstance.saveChanges()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshTimer), object: self, userInfo: nil)
         self.dismiss(animated: true, completion: nil)
     }
     
-    func changeValue (_ sender:UISwitch){
+    func changeValue (_ sender:UISwitch) {
         if sender.tag == 100 {
-            if sender.isOn == true {
-                isLocalcast.isOn = false
-            } else {
-                isLocalcast.isOn = false
-            }
+            if sender.isOn == true { isLocalcast.isOn = false } else { isLocalcast.isOn = false }
         } else if sender.tag == 200 {
-            if sender.isOn == true {
-                isBroadcast.isOn = false
-            } else {
-                isBroadcast.isOn = false
-            }
+            if sender.isOn == true { isBroadcast.isOn = false } else { isBroadcast.isOn = false }
         }
     }
     
@@ -96,6 +83,6 @@ extension UIViewController {
     func showFlagParametar(_ flag:Flag) {
         let fp = FlagParametarVC()
         fp.flag = flag
-        self.present(fp, animated: true, completion: nil)
+        present(fp, animated: true, completion: nil)
     }
 }

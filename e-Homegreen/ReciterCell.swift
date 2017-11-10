@@ -27,14 +27,9 @@ class ReciterCell: UITableViewCell {
         bg.backgroundColor = UIColor.white.withAlphaComponent(0.4)
         selectedBackgroundView = bg
         backgroundColor = .clear
-        reciterLabel.font = UIFont(name: "Tahoma", size: 17)
+        reciterLabel.font = UIFont.tahoma(size: 15)
         reciterLabel.textColor = UIColor.white
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
     
 }

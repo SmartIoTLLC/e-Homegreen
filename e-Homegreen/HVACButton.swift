@@ -34,7 +34,7 @@ class HVACButton: UIButton {
     
     override func draw(_ rect: CGRect) {
         
-        if selectedButton{
+        if selectedButton {
             let path = UIBezierPath(roundedRect: rect,
                                     byRoundingCorners: UIRectCorner.allCorners,
                                     cornerRadii: CGSize(width: 5.0, height: 5.0))
@@ -46,7 +46,7 @@ class HVACButton: UIButton {
             
             self.setTitleColor(UIColor.white, for: UIControlState())
             self.backgroundColor = UIColor.clear
-        }else{
+        } else {
             
             let path = UIBezierPath(roundedRect: rect,
                                     byRoundingCorners: UIRectCorner.allCorners,

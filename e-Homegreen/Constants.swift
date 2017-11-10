@@ -53,16 +53,11 @@ struct CurtainModuleState {
     static func returnState(_ byte:Int) -> String {
         var state = ""
         switch byte {
-        case 0x00:
-            state = "Closed"
-        case 0xFE:
-            state = "Closing"
-        case 0xFF:
-            state = "Opening"
-        case 0x64:
-            state = "Opened"
-        default:
-            state = "\(byte)%"
+        case 0x00: state = "Closed"
+        case 0xFE: state = "Closing"
+        case 0xFF: state = "Opening"
+        case 0x64: state = "Opened"
+        default: state = "\(byte)%"
         }
         return state
     }
@@ -94,7 +89,7 @@ struct AlarmState {
 }
 
 struct Messages {
-    struct Security{
+    struct Security {
         static let NeedToDisarmFirst = "Attention! You need to disarm the security system before you can select the current security mode."
     }
     
@@ -115,12 +110,9 @@ struct DigitalInput {
     struct ControlMode {
         static func returnControlModeForId(_ id:Int) -> String {
             switch id {
-            case 2:
-                return "Normally Open"
-            case 4:
-                return "Normally Closed"
-            default:
-                return "Normally Open"
+            case 2: return "Normally Open"
+            case 4: return "Normally Closed"
+            default: return "Normally Open"
             }
         }
     }
@@ -144,50 +136,44 @@ struct DigitalInput {
         static let Open = 0x00
         static let Close = 0x01
         static func description()->String {return "Generic"}
-        static func description(_ state:Int) -> String {
-            return state == 0x00 ? "Open" : "Close"
-        }
+        static func description(_ state:Int) -> String { return state == 0x00 ? "Open" : "Close" }
     }
+    
     struct NormallyOpen {
         static let Ready = 0x00
         static let Triggerd = 0x01
         static func description()->String {return "Normally Open"}
-        static func description(_ state:Int) -> String {
-            return state == 0x00 ? "Ready" : "Triggerd"
-        }
+        static func description(_ state:Int) -> String { return state == 0x00 ? "Ready" : "Triggerd" }
     }
+    
     struct NormallyClosed {
         static let Triggered = 0x00
         static let Ready = 0x01
         static func description()->String {return "Normally Closed"}
-        static func description(_ state:Int) -> String {
-            return state == 0x00 ? "Triggered" : "Ready"
-        }
+        static func description(_ state:Int) -> String { return state == 0x00 ? "Triggered" : "Ready" }
     }
+    
     struct MotionSensor {
         static let Idle = 0x00
         static let Motion = 0x01
         static func description()->String {return "Motion Sensor"}
-        static func description(_ state:Int) -> String {
-            return state == 0x00 ? "Idle" : "Motion"
-        }
+        static func description(_ state:Int) -> String { return state == 0x00 ? "Idle" : "Motion" }
     }
+    
     struct ButtonNormallyOpen {
         static let Press = 0x00
         static let Release = 0x01
         static func description()->String {return "Button(NormallyOpen)"}
-        static func description(_ state:Int) -> String {
-            return state == 0x00 ? "Press" : "Release"
-        }
+        static func description(_ state:Int) -> String { return state == 0x00 ? "Press" : "Release" }
     }
+    
     struct ButtonNormallyClosed {
         static let Release = 0x00
         static let Press = 0x01
         static func description()->String {return "Button(NormallyClosed)"}
-        static func description(_ state:Int) -> String {
-            return state == 0x00 ? "Release" : "Press"
-        }
+        static func description(_ state:Int) -> String { return state == 0x00 ? "Release" : "Press" }
     }
+    
     struct DigitalInputMode {
         static let NormallyOpen = 0x00
         static let NormallyClosed = 0x01
@@ -428,13 +414,12 @@ class FilterParametars {
         self.categoryName = categoryName
     }
 }
+
 struct CellSize {
     static func calculateCellSize(_ size:inout CGSize, screenWidth:CGFloat) {
         var i:CGFloat = 2
         while i >= 2 {
-            if (screenWidth / i) >= 120 && (screenWidth / i) <= 160 {
-                break
-            }
+            if (screenWidth / i) >= 120 && (screenWidth / i) <= 160 { break }
             i += 1
         }
         let const = (2/i + (i*5-5)/i)
@@ -445,9 +430,7 @@ struct CellSize {
     static func calculateSurvCellSize(_ size:inout CGSize, screenWidth:CGFloat) {
         var i:CGFloat = 2
         while i >= 2 {
-            if (screenWidth / i) >= 120 && (screenWidth / i) <= 220 {
-                break
-            }
+            if (screenWidth / i) >= 120 && (screenWidth / i) <= 220 { break }
             i += 1
         }
         let const = (2/i + (i*5-5)/i)
@@ -465,6 +448,7 @@ struct FilterKey {
     static let zoneName = "kZoneName"
     static let categoryName = "kCategoryName"
 }
+
 enum FilterEnumeration:String {
     case Device = "Device" //prepravio
     case Scenes = "Scenes" //prepravio
@@ -481,8 +465,8 @@ enum FilterEnumeration:String {
     case Users = "Users"
     case Database = "Database"
     static let allFilters = [Device, Scenes, Events, Remote, Sequences, Timers, Flags, Chat, Security, Surveillance, Energy, PCControl, Users, Database]
-
 }
+
 //MARK: Notification constants
 struct NotificationKey {
     static let DidFindDevice = "kPLCDidFindDevice"
@@ -513,6 +497,9 @@ struct NotificationKey {
     static let RefreshScene = "refreshSceneListNotification"
     static let RefreshSurveillance = "refreshSurveillanceListNotification"
     static let RefreshPC = "refreshPCListNotification"
+    static let RefreshRemotes = "refreshRemotes"
+    
+    static let SameDeviceDifferentCommand = "sameDeviceDifferentCommand"
     
     static let IndicatorLamp = "indicatorGreen"
     

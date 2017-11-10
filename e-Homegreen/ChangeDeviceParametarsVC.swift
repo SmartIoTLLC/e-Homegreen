@@ -58,7 +58,11 @@ class ChangeDeviceParametarsVC: PopoverVC {
         
         appDel = UIApplication.shared.delegate as! AppDelegate
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ChangeDeviceParametarsVC.handleTap(_:)))
+        setupViews()
+    }
+    
+    func setupViews() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         
@@ -70,25 +74,13 @@ class ChangeDeviceParametarsVC: PopoverVC {
         lblChannel.text = "\(device.channel)"
         
         level = DatabaseZoneController.shared.getZoneById(Int(device.parentZoneId), location: device.gateway.location)
-        if let level = level, level.name != "Default"{
-            btnLevel.setTitle(level.name, for: UIControlState())
-        }else{
-            btnLevel.setTitle("All", for: UIControlState())
-        }
+        if let level = level, level.name != "Default" { btnLevel.setTitle(level.name, for: UIControlState()) } else { btnLevel.setTitle("All", for: UIControlState()) }
         
         zoneSelected = DatabaseZoneController.shared.getZoneById(Int(device.zoneId), location: device.gateway.location)
-        if zoneSelected != nil{
-            btnZone.setTitle(zoneSelected!.name, for: UIControlState())
-        }else{
-            btnZone.setTitle("All", for: UIControlState())
-        }
+        if zoneSelected != nil { btnZone.setTitle(zoneSelected!.name, for: UIControlState()) } else { btnZone.setTitle("All", for: UIControlState()) }
         
         let category = DatabaseCategoryController.shared.getCategoryById(Int(device.categoryId), location: device.gateway.location)
-        if category != nil{
-            btnCategory.setTitle(category?.name, for: UIControlState())
-        }else{
-           btnCategory.setTitle("All", for: UIControlState())
-        }
+        if category != nil { btnCategory.setTitle(category?.name, for: UIControlState()) } else { btnCategory.setTitle("All", for: UIControlState()) }
         
         btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", for: UIControlState())
         
@@ -100,14 +92,15 @@ class ChangeDeviceParametarsVC: PopoverVC {
         btnCategory.tag = 3
         btnControlType.tag = 4
     }
+    
     override func nameAndId(_ name: String, id: String) {
         
-        switch button.tag{
+        switch button.tag {
         case 1: // "All" selected
-            if let levelTemp = FilterController.shared.getZoneByObjectId(id), let id = levelTemp.id{
+            if let levelTemp = FilterController.shared.getZoneByObjectId(id), let id = levelTemp.id {
                 editedDevice?.levelId = (id.intValue)
                 level = levelTemp
-            }else{
+            } else {
                 // Set default levelId
                 editedDevice?.levelId = 255
                 btnZone.setTitle("All", for: UIControlState())
@@ -115,20 +108,20 @@ class ChangeDeviceParametarsVC: PopoverVC {
             }
             break
         case 2:
-            if let zoneTemp = FilterController.shared.getZoneByObjectId(id), let id = zoneTemp.id{
+            if let zoneTemp = FilterController.shared.getZoneByObjectId(id), let id = zoneTemp.id {
                 editedDevice?.zoneId = (id.intValue)
                 zoneSelected = zoneTemp
-            }else{
+            } else {
                 // Set default zoneId
                 editedDevice?.zoneId = 255
                 zoneSelected = nil
             }
             break
         case 3:
-            if let categoryTemp = FilterController.shared.getCategoryByObjectId(id), let id = categoryTemp.id{
+            if let categoryTemp = FilterController.shared.getCategoryByObjectId(id), let id = categoryTemp.id {
                 editedDevice?.categoryId = (id.intValue)
                 category = categoryTemp
-            }else{
+            } else {
                 // Set default categoryId
                 editedDevice?.categoryId = 255
                 category = nil
@@ -179,9 +172,7 @@ class ChangeDeviceParametarsVC: PopoverVC {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(device.gateway.location)
-        for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
-        }
+        for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
         popoverList.insert(PopOverItem(name: "All", id: "0"), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
@@ -191,11 +182,8 @@ class ChangeDeviceParametarsVC: PopoverVC {
         var popoverList:[PopOverItem] = []
         if let level = level{
             let list:[Zone] = DatabaseZoneController.shared.getZoneByLevel(device.gateway.location, parentZone: level)
-            for item in list {
-                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
-            }
+            for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
         }
-        
         popoverList.insert(PopOverItem(name: "All", id: "0"), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
@@ -204,10 +192,7 @@ class ChangeDeviceParametarsVC: PopoverVC {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(device.gateway.location)
-        for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
-        }
-        
+        for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
         popoverList.insert(PopOverItem(name: "All", id: "0"), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
@@ -220,7 +205,7 @@ class ChangeDeviceParametarsVC: PopoverVC {
             device.categoryId = NSNumber(value: editedDevice!.categoryId as Int)
             device.controlType = editedDevice!.controlType
             device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             device.resetImages(appDel.managedObjectContext!)
             self.delegate?.saveClicked()
             self.dismiss(animated: true, completion: nil)
@@ -241,12 +226,7 @@ extension ChangeDeviceParametarsVC : UITextFieldDelegate{
 
 extension ChangeDeviceParametarsVC : UIGestureRecognizerDelegate{
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if let touchView = touch.view{
-            if touchView.isDescendant(of: backView){
-                self.view.endEditing(true)
-                return false
-            }
-        }
+        if let touchView = touch.view { if touchView.isDescendant(of: backView) { dismissEditing(); return false } }
         return true
     }
 }
@@ -299,12 +279,7 @@ extension ChangeDeviceParametarsVC : UIViewControllerTransitioningDelegate {
         return self
     }
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+        if dismissed == self { return self } else { return nil }
     }
 }
 

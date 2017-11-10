@@ -30,9 +30,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
         
         userNameTextField.delegate = self
         
-        if let admin = AdminController.shared.getAdmin(){
-            users.append(admin.username)
-        }
+        if let admin = AdminController.shared.getAdmin() { users.append(admin.username) }
         if let usersDB = DatabaseUserController.shared.getUserForDropDownMenu() {
             for user in usersDB {
                 if user.username != nil {
@@ -40,30 +38,25 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
                 }
             }
         }
-//        for user in DatabaseUserController.shared.getUserForDropDownMenu(){
-//            users.append(user.username!)
-//        }
 
-        let tap = UITapGestureRecognizer(target: self, action: #selector(LogInViewController.dismissKeyboard))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(LogInViewController.dismissEditing))
         tap.delegate = self
         self.view.addGestureRecognizer(tap)
     }
     
-    func dismissKeyboard(){
+    override func dismissEditing() {
         tableView.isHidden = true
-        self.view.endEditing(true)
+        view.endEditing(true)
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: tableView){
-            return false
-        }
+        if touch.view!.isDescendant(of: tableView) { return false }
         return true
     }
     
     @IBAction func logInAction(_ sender: AnyObject) {
-        guard let username = userNameTextField.text , username != "", let password = passwordTextField.text , password != "" else{
-            self.view.makeToast(message: "All fields must be filled")
+        guard let username = userNameTextField.text , username != "", let password = passwordTextField.text , password != "" else {
+            view.makeToast(message: "All fields must be filled")
             return
         }
         
@@ -71,28 +64,28 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
             
             AdminController.shared.loginAdmin()
             
-            if AdminController.shared.isAdminLogged(){
+            if AdminController.shared.isAdminLogged() {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let sideMenu = storyboard.instantiateViewController(withIdentifier: "SideMenu") as! SWRevealViewController
                 let settings = Menu.settings.controller
                 sideMenu.setFront(settings, animated: true)
-                self.present(sideMenu, animated: true, completion: nil)
-            }else{
-                self.view.makeToast(message: "Something wrong, try again!")
+                present(sideMenu, animated: true, completion: nil)
+            } else {
+                view.makeToast(message: "Something wrong, try again!")
                 return
             }
             
-        }else{
-            if let user = DatabaseUserController.shared.getUser(username, password: password){
+        } else {
+            if let user = DatabaseUserController.shared.getUser(username, password: password) {
                 DatabaseUserController.shared.loginUser()
-                if DatabaseUserController.shared.setUser(user.objectID.uriRepresentation().absoluteString){
+                if DatabaseUserController.shared.setUser(user.objectID.uriRepresentation().absoluteString) {
                     
                     DatabaseLocationController.shared.startMonitoringAllLocationByUser(user)
                     
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let sideMenu = storyboard.instantiateViewController(withIdentifier: "SideMenu") as! SWRevealViewController
                     var controller:UINavigationController = user.isSuperUser.boolValue ? Menu.settings.controller : Menu.notSuperUserSettings.controller
-                    if user.openLastScreen.boolValue == true{
+                    if user.openLastScreen.boolValue == true {
                         if let id = user.lastScreenId as? Int, let menu = Menu(rawValue: id) {
                             controller = menu.controller
                         }
@@ -100,11 +93,11 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
                     
                     sideMenu.setFront(controller, animated: true)
                     self.present(sideMenu, animated: true, completion: nil)
-                }else{
-                    self.view.makeToast(message: "Error")
+                } else {
+                    view.makeToast(message: "Error")
                 }
-            }else{
-                self.view.makeToast(message: "Check username or password")
+            } else {
+                view.makeToast(message: "Check username or password")
             }
         }
         
@@ -125,14 +118,14 @@ extension LogInViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "defaultCell")
-        cell.textLabel?.text = users[(indexPath as NSIndexPath).row]
+        cell.textLabel?.text = users[indexPath.row]
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
         userNameTextField.text = cell?.textLabel?.text
-        self.dismissKeyboard()
+        dismissEditing()
         tableView.isHidden = true
         passwordTextField.becomeFirstResponder()
     }

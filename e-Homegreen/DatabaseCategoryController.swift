@@ -24,12 +24,12 @@ class DatabaseCategoryController: NSObject {
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.sortDescriptors = [sortDescriptors]
         fetchRequest.predicate = compoundPredicate
+        
         do {
             let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Category]
             return results
-        } catch{
-            
-        }
+        } catch {}
+        
         return []
     }
     
@@ -42,19 +42,18 @@ class DatabaseCategoryController: NSObject {
         
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
+        
         do {
             let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Category]
-            if results.count != 0{
-                return results[0]
-            }
-        } catch _ as NSError {
+            if results.count != 0 { return results[0] }
             
-        }
+        } catch {}
+        
         return nil
     }
     
     func changeAllowOption(_ option:Int, category:Category){
         category.allowOption = option as NSNumber!
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
 }

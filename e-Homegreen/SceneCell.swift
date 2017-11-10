@@ -16,4 +16,33 @@ class ScenesCell: UITableViewCell{
     @IBOutlet weak var imageTwo: UIImageView!
     @IBOutlet weak var address: UILabel!
     
+    func setCell(scene: Scene) {
+        backgroundColor = .clear
+        labelID.text = "\(scene.sceneId)"
+        labelName.text = "\(scene.sceneName)"
+        address.text = "\(returnThreeCharactersForByte(Int(scene.gateway.addressOne))):\(returnThreeCharactersForByte(Int(scene.gateway.addressTwo))):\(Int(scene.address))"
+        
+        if let id = scene.sceneImageOneCustom {
+            if let image = DatabaseImageController.shared.getImageById(id) {
+                
+                if let data = image.imageData {
+                    imageOne.image = UIImage(data: data)
+                } else { if let defaultImage = scene.sceneImageOneDefault { imageOne.image = UIImage(named: defaultImage) } }
+                
+            } else { if let defaultImage = scene.sceneImageOneDefault { imageOne.image = UIImage(named: defaultImage) } }
+        } else { if let defaultImage = scene.sceneImageOneDefault { imageOne.image = UIImage(named: defaultImage) } }
+        
+        if let id = scene.sceneImageTwoCustom {
+            if let image = DatabaseImageController.shared.getImageById(id) {
+                
+                if let data = image.imageData {
+                    imageOne.image = UIImage(data: data)
+                } else { if let defaultImage = scene.sceneImageTwoDefault { imageOne.image = UIImage(named: defaultImage) } }
+                
+            } else { if let defaultImage = scene.sceneImageTwoDefault { imageOne.image = UIImage(named: defaultImage) } }
+        } else { if let defaultImage = scene.sceneImageTwoDefault { imageOne.image = UIImage(named: defaultImage) } }
+        
+    }
+    
+    
 }

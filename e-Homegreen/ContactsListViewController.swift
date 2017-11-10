@@ -23,15 +23,13 @@ class ContactsListViewController: CommonXIBTransitionVC, UITableViewDataSource, 
     var contacts = [CNContact]()
     
     override func viewDidLoad() {
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTableViewConstraints), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
-        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTableViewConstraints), name: .UIDeviceOrientationDidChange, object: nil)
 
         tableView.delegate = self
         tableView.dataSource = self        
         tableView.register(UINib(nibName: String(describing: ContactCell.self), bundle: nil), forCellReuseIdentifier: cellId)
         updateViews()
         
-        tapBG.backgroundColor = .clear
         tapBG.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissOnTap)))
     }
     
@@ -69,18 +67,19 @@ class ContactsListViewController: CommonXIBTransitionVC, UITableViewDataSource, 
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIDeviceOrientationDidChange, object: nil)
     }
     
     func updateViews() {
-        
+        tapBG.backgroundColor = .clear
+
         let header = UILabel()
         header.frame.size = CGSize(width: tableView.frame.width, height: 60)        
         header.text = "    Contacts"
         header.font = UIFont(name: "Tahoma", size: 25)
         header.textColor = .white
         
-        view.backgroundColor = .clear
+        view.backgroundColor = .clear        
         
         updateTableViewConstraints()
 

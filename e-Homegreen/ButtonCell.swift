@@ -27,27 +27,20 @@ class ButtonCell: UICollectionViewCell {
     
     func updateCell() {
         backgroundColor = .clear
-        
+        addShadows()
     }
     
     func setButton(remote: RemoteDummy) {
         switch remote.buttonColor {
-        case UIColor.red?:
-            buttonView.backgroundColor = .red
-        case UIColor.gray?:
-            buttonView.backgroundColor = .gray
-        default:
-            buttonView.backgroundColor = .red
+        case UIColor.red?: buttonView.backgroundColor = .red
+        case UIColor.gray?: buttonView.backgroundColor = .gray
+        default: buttonView.backgroundColor = .red
         }
         
         switch remote.buttonShape {
-        case "Circle":
-            buttonView.frame.size = remote.buttonSize
-            buttonView.layer.cornerRadius = remote.buttonSize.width / 2
-        case "Rectangle":
-            buttonView.frame.size = remote.buttonSize
-        default:
-            break
+        case "Circle": buttonView.frame.size = remote.buttonSize; buttonView.layer.cornerRadius = remote.buttonSize.width / 2
+        case "Rectangle": buttonView.frame.size = remote.buttonSize
+        default: break
         }
     }
 

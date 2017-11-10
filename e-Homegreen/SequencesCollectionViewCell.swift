@@ -15,29 +15,38 @@ class SequenceCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var sequenceButton: UIButton!
     var imageOne:UIImage?
     var imageTwo:UIImage?
+    let lightBulb = UIImage(named: "lightBulb")
     
-    func setItem(_ sequence:Sequence, filterParametar:FilterItem){
+    func setItem(_ sequence:Sequence, filterParametar:FilterItem, tag: Int) {
         sequenceTitle.text = getName(sequence, filterParametar: filterParametar)
+        sequenceTitle.isUserInteractionEnabled = true
+        
+        sequenceImageView.tag = tag
+        sequenceImageView.isUserInteractionEnabled = true
+        sequenceImageView.layer.cornerRadius = 5
+        sequenceImageView.clipsToBounds = true
+        
+        sequenceButton.tag = tag
+        
+        layer.cornerRadius = 5
+        layer.borderColor = UIColor.gray.cgColor
+        layer.borderWidth = 0.5
+        
+        getImagesFrom(sequence)
     }
     
-    func getName(_ sequence:Sequence, filterParametar:FilterItem) -> String{
+    func getName(_ sequence:Sequence, filterParametar:FilterItem) -> String {
         var name:String = ""
-        if sequence.gateway.location.name != filterParametar.location{
-            name += sequence.gateway.location.name! + " "
-        }
-        if let id = sequence.entityLevelId as? Int{
+        if sequence.gateway.location.name != filterParametar.location { name += sequence.gateway.location.name! + " " }
+        if let id = sequence.entityLevelId as? Int {
             if let zone = DatabaseZoneController.shared.getZoneById(id, location: sequence.gateway.location){
-                if zone.name != filterParametar.levelName{
-                    name += zone.name! + " "
-                }
+                if zone.name != filterParametar.levelName { name += zone.name! + " " }
             }
         }
         
-        if let id = sequence.sequenceZoneId as? Int{
-            if let zone = DatabaseZoneController.shared.getZoneById(id, location: sequence.gateway.location){
-                if zone.name != filterParametar.zoneName{
-                    name += zone.name! + " "
-                }
+        if let id = sequence.sequenceZoneId as? Int {
+            if let zone = DatabaseZoneController.shared.getZoneById(id, location: sequence.gateway.location) {
+                if zone.name != filterParametar.zoneName { name += zone.name! + " " }
             }
         }
         name += sequence.sequenceName
@@ -46,70 +55,53 @@ class SequenceCollectionViewCell: UICollectionViewCell {
     
     func getImagesFrom(_ sequence:Sequence) {
         
-        if let id = sequence.sequenceImageOneCustom{
-            if let image = DatabaseImageController.shared.getImageById(id){
-                if let data =  image.imageData {
-                    imageOne = UIImage(data: data)
-                }else{
-                    if let defaultImage = sequence.sequenceImageOneDefault{
-                        imageOne = UIImage(named: defaultImage)
-                    }else{
-                        imageOne = UIImage(named: "lightBulb")
-                    }
-                }
-            }else{
-                if let defaultImage = sequence.sequenceImageOneDefault{
-                    imageOne = UIImage(named: defaultImage)
-                }else{
-                    imageOne = UIImage(named: "lightBulb")
-                }
-            }
-        }else{
-            if let defaultImage = sequence.sequenceImageOneDefault{
-                imageOne = UIImage(named: defaultImage)
-            }else{
-                imageOne = UIImage(named: "lightBulb")
-            }
+        if let id = sequence.sequenceImageOneCustom {
+            if let image = DatabaseImageController.shared.getImageById(id) {
+                if let data =  image.imageData { imageOne = UIImage(data: data)
+                } else {
+                    if let defaultImage = sequence.sequenceImageOneDefault { imageOne = UIImage(named: defaultImage)
+                    } else { imageOne = lightBulb } }
+                
+            } else {
+                if let defaultImage = sequence.sequenceImageOneDefault { imageOne = UIImage(named: defaultImage)
+                } else { imageOne = lightBulb } }
+            
+        } else {
+            if let defaultImage = sequence.sequenceImageOneDefault { imageOne = UIImage(named: defaultImage)
+            } else { imageOne = lightBulb }
         }
         
-        if let id = sequence.sequenceImageTwoCustom{
-            if let image = DatabaseImageController.shared.getImageById(id){
-                if let data =  image.imageData {
-                    imageTwo = UIImage(data: data)
-                }else{
-                    if let defaultImage = sequence.sequenceImageTwoDefault{
-                        imageTwo = UIImage(named: defaultImage)
-                    }else{
-                        imageTwo = UIImage(named: "lightBulb")
-                    }
-                }
-            }else{
-                if let defaultImage = sequence.sequenceImageTwoDefault{
-                    imageTwo = UIImage(named: defaultImage)
-                }else{
-                    imageTwo = UIImage(named: "lightBulb")
-                }
-            }
-        }else{
-            if let defaultImage = sequence.sequenceImageTwoDefault{
-                imageTwo = UIImage(named: defaultImage)
-            }else{
-                imageTwo = UIImage(named: "lightBulb")
-            }
+        if let id = sequence.sequenceImageTwoCustom {
+            if let image = DatabaseImageController.shared.getImageById(id) {
+                if let data =  image.imageData { imageTwo = UIImage(data: data)
+                } else {
+                    if let defaultImage = sequence.sequenceImageTwoDefault { imageTwo = UIImage(named: defaultImage)
+                    } else { imageTwo = lightBulb } }
+                
+            } else {
+                if let defaultImage = sequence.sequenceImageTwoDefault { imageTwo = UIImage(named: defaultImage)
+                } else { imageTwo = lightBulb } }
+            
+        } else {
+            if let defaultImage = sequence.sequenceImageTwoDefault { imageTwo = UIImage(named: defaultImage)
+            } else { imageTwo = lightBulb }
         }
         
         sequenceImageView.image = imageOne
         setNeedsDisplay()
     }
+    
     func commandSentChangeImage() {
         sequenceImageView.image = imageTwo
         setNeedsDisplay()
-        Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(SequenceCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
+        Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(changeImageToNormal), userInfo: nil, repeats: false)
     }
+    
     func changeImageToNormal () {
         sequenceImageView.image = imageOne
         setNeedsDisplay()
     }
+    
     override func draw(_ rect: CGRect) {
         let path = UIBezierPath(roundedRect: rect,
                                 byRoundingCorners: UIRectCorner.allCorners,

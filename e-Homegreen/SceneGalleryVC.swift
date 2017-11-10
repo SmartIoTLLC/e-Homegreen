@@ -230,9 +230,7 @@ class SceneGalleryVC: CommonXIBTransitionVC {
         self.gallery.register(UINib(nibName: "GalleryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cell")
     
         images = returnImages()
-        for item in galleryList {
-            galleryImages.append(item as AnyObject)
-        }
+        for item in galleryList { galleryImages.append(item as AnyObject) }
 
     }
     
@@ -245,21 +243,20 @@ class SceneGalleryVC: CommonXIBTransitionVC {
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: backview){
-            return false
-        }
+        
+        if touch.view!.isDescendant(of: backview) { return false }
         return true
     }
     
     func returnImages () -> [Image] {
-        if let user = user{
+        if let user = user {
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Image.fetchRequest()
             let predicateArray:[NSPredicate] = [NSPredicate(format: "user == %@", user)]
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
             do {
                 let fetchResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Image]
-                return fetchResults!
+                return fetchResults ?? []
             } catch let error as NSError {
                 print("Unresolved error \(error), \(error.userInfo)")
             }
@@ -289,11 +286,8 @@ class SceneGalleryVC: CommonXIBTransitionVC {
         let heightRatio = targetSize.height / image.size.height
         
         var newSize: CGSize
-        if(widthRatio > heightRatio) {
-            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
-        } else {
-            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
-        }
+        if (widthRatio > heightRatio) { newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+        } else { newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio) }
         
         let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
         
@@ -302,19 +296,18 @@ class SceneGalleryVC: CommonXIBTransitionVC {
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return newImage!
-        
+        return newImage!        
     }
     
     @IBAction func openGallery(_ sender: AnyObject) {
         let libraryViewController = CameraViewController.imagePickerViewController(croppingEnabled: true) { [weak self] image, asset in
-            if let backImage = image{
+            if let backImage = image {
                 self?.updateWithImage(backImage)
                 self?.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self!.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self!.imageIndex)
                 self?.dismiss(animated: true, completion: { () -> Void in
                     self?.dismiss(animated: true, completion: nil)
                 })
-            }else{
+            } else {
                 self?.dismiss(animated: true, completion:nil)
             }
         }
@@ -322,17 +315,13 @@ class SceneGalleryVC: CommonXIBTransitionVC {
     }
     
     @IBAction func changeGallery(_ sender: UISegmentedControl) {
-        if sender.selectedSegmentIndex == 0{
+        if sender.selectedSegmentIndex == 0 {
             galleryImages = []
-            for item in galleryList {
-                galleryImages.append(item as AnyObject)
-            }
-        }else{
+            for item in galleryList { galleryImages.append(item as AnyObject) }
+        } else {
             galleryImages = []
             images = returnImages()
-            for item in images {
-                galleryImages.append(item)
-            }
+            for item in images { galleryImages.append(item) }
         }
         gallery.reloadData()
     }
@@ -344,12 +333,12 @@ class SceneGalleryVC: CommonXIBTransitionVC {
     
     @IBAction func takePhoto(_ sender: AnyObject) {
         let cameraViewController = CameraViewController(croppingEnabled: true) { (image, asset) in
-            if let backImage = image{
+            if let backImage = image {
                 self.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self.imageIndex)
                 self.dismiss(animated: true, completion: { () -> Void in
                     self.dismiss(animated: true, completion: nil)
                 })
-            }else{
+            } else {
                 self.dismiss(animated: true, completion: nil)
             }
         }
@@ -363,18 +352,16 @@ extension SceneGalleryVC : UICollectionViewDataSource, UICollectionViewDelegate,
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = gallery.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! GalleryCollectionViewCell
-        if let image = galleryImages[(indexPath as NSIndexPath).row] as? Image {
-            cell.cellImage.image = UIImage(data: image.imageData! as Data)
-        }
-        if let string = galleryImages[(indexPath as NSIndexPath).row] as? String {
-            cell.cellImage.image = UIImage(named:string)
+        
+        if let cell = gallery.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? GalleryCollectionViewCell {
+            
+            if let image = galleryImages[indexPath.row] as? Image { cell.cellImage.image = UIImage(data: image.imageData! as Data) }
+            if let string = galleryImages[indexPath.row] as? String { cell.cellImage.image = UIImage(named:string) }
+            
+            return cell
         }
         
-        cell.layer.masksToBounds = true
-        cell.layer.cornerRadius = 5
-        
-        return cell
+        return UICollectionViewCell()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -382,19 +369,17 @@ extension SceneGalleryVC : UICollectionViewDataSource, UICollectionViewDelegate,
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let image = galleryImages[(indexPath as NSIndexPath).row] as? Image {
-            delegate?.backImage?(image, imageIndex: imageIndex)
-            //            delegate?.backImageFromGallery?(image.imageData!, imageIndex: imageIndex)
-        }
-        if let string = galleryImages[(indexPath as NSIndexPath).row] as? String {
-            delegate?.backString?(string, imageIndex: imageIndex)
-            //            delegate?.backImageFromGallery?(UIImageJPEGRepresentation(UIImage(named: string)!, 0.5)!, imageIndex: imageIndex)
-        }
+        
+        if let image = galleryImages[indexPath.row] as? Image { delegate?.backImage?(image, imageIndex: imageIndex) }
+        if let string = galleryImages[indexPath.row] as? String { delegate?.backString?(string, imageIndex: imageIndex) }
+        
         self.dismiss(animated: true, completion: nil)
     }
+    
     func handleTap(_ gesture:UITapGestureRecognizer){
         self.dismiss(animated: true, completion: nil)
     }
+    
 }
 
 extension UIViewController {

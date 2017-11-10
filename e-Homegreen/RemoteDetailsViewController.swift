@@ -21,8 +21,6 @@ class RemoteDetailsViewController: UIViewController {
     // sectionInsets i velicina celije na osnovu remote.rows
     //
     
-
-    
     @IBOutlet weak var remoteBackground: UIView!
     @IBOutlet weak var remoteHeader: UIView!
     @IBOutlet weak var remoteFooter: UIView!
@@ -41,28 +39,12 @@ class RemoteDetailsViewController: UIViewController {
     
     @IBOutlet weak var fullScreenButton: UIButton!
     @IBAction func fullScreenButton(_ sender: UIButton) {
-        sender.collapseInReturnToNormal(1)
-        if UIApplication.shared.isStatusBarHidden {
-            UIApplication.shared.isStatusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
-        } else {
-            UIApplication.shared.isStatusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        }
-        
-    }
-    
-    func changeFullScreeenImage() {
-        if UIApplication.shared.isStatusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
-        }
+        sender.switchFullscreen()        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        changeFullScreeenImage()
+        changeFullscreenImage(fullscreenButton: fullScreenButton)        
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,9 +57,9 @@ class RemoteDetailsViewController: UIViewController {
         updateViews()
     }
     
-    func updateViews() {
+    fileprivate func updateViews() {
         remoteTitleLabel.text = remote.buggerOff
-        remoteTitleLabel.font = UIFont(name: "Tahoma", size: 17)
+        remoteTitleLabel.font = UIFont.tahoma(size: 15)
         remoteTitleLabel.textColor = .white
         remoteTitleLabel.textAlignment = .center
         
@@ -101,7 +83,7 @@ class RemoteDetailsViewController: UIViewController {
         calculateRemoteHeight(remote: remote)
     }
     
-    func calculateRemoteHeight(remote: RemoteDummy) {
+    fileprivate func calculateRemoteHeight(remote: RemoteDummy) {
         var height: CGFloat = 0
         
         let collectionViewHeight = CGFloat(remote.rows!) * (remote.buttonSize?.height)! + CGFloat((remote.rows! - 1) * 5) + remote.buttonMargins.top + remote.buttonMargins.bottom
@@ -112,13 +94,13 @@ class RemoteDetailsViewController: UIViewController {
         remoteBackground.layoutIfNeeded()
     }
     
-    func setSectionInsets() {
+    fileprivate func setSectionInsets() {
         let availableSpace = buttonsCollectionView.frame.width - (CGFloat(remote.columns) * remote.buttonSize.width)
         interItemSpacing = availableSpace / remote.columns
         sectionInsets = remote.buttonMargins
     }
     
-    func roundUp(view: UIView, corners: UIRectCorner) {
+    fileprivate func roundUp(view: UIView, corners: UIRectCorner) {
         let rectShape = CAShapeLayer()
 
         rectShape.bounds = view.frame
@@ -130,15 +112,13 @@ class RemoteDetailsViewController: UIViewController {
         view.layer.mask = rectShape
     }
     
-    func signalRedIndicator() {
+    fileprivate func signalRedIndicator() {
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
 
         UIView.animate(withDuration: 0.2, animations: {
             self.remoteSignal.backgroundColor = .red
         }) { (true) in
-            UIView.animate(withDuration: 0.5, delay: 0.5, animations: {
-                self.remoteSignal.backgroundColor = .darkGray
-            })
+            UIView.animate(withDuration: 0.5, delay: 0.5, animations: { self.remoteSignal.backgroundColor = .darkGray })
         }
     }
     
@@ -156,6 +136,8 @@ extension RemoteDetailsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = buttonsCollectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? ButtonCell {
+            
+            if indexPath.row < 2 { cell.isHidden = true }
             
             cell.remote = remote
             cell.buttonTag = indexPath.item

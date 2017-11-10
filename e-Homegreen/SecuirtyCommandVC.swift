@@ -41,18 +41,19 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         
         appDel = UIApplication.shared.delegate as! AppDelegate
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(SecuirtyCommandVC.handleTap(_:)))
+        setupViews()
+        sizeText()
+    }
+    
+    func setupViews() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         
         self.popUpTextView.text = security.securityDescription
-        sizeText()
-        
-//        popUpTextView.delegate = self
     }
     
-    func sizeText(){
+    func sizeText() {
         let fixedWidth = popUpTextView.frame.size.width
         popUpTextView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
         let newSize = popUpTextView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
@@ -70,9 +71,7 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: popUpView){
-            return false
-        }
+        if touch.view!.isDescendant(of: popUpView) { return false }
         return true
     }
     
@@ -80,7 +79,7 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
         
         let address = [security.addressOne.uint8Value, security.addressTwo.uint8Value, security.addressThree.uint8Value]
         if let gatewayId = self.security.gatewayId {
-            if let gateway = CoreDataController.shahredInstance.fetchGatewayWithId(gatewayId){
+            if let gateway = CoreDataController.sharedInstance.fetchGatewayWithId(gatewayId){
                 let notificationName = NotificationKey.Security.ControlModeStartBlinking
                 switch security.securityName! {
                 case "Away":
@@ -177,12 +176,7 @@ extension SecuirtyCommandVC : UIViewControllerTransitioningDelegate {
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+        if dismissed == self { return self } else { return nil }
     }
     
 }

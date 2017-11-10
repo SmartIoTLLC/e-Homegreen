@@ -53,15 +53,16 @@ class LocationViewController: PopoverVC  {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        appDel = UIApplication.shared.delegate as! AppDelegate
+
+        updateViews()
+        updateLocationList()
+    }
+    
+    func updateViews() {
         gatewayTableView.estimatedRowHeight = 44.0
         gatewayTableView.rowHeight = UITableViewAutomaticDimension
-        
-        appDel = UIApplication.shared.delegate as! AppDelegate
-        
         self.gatewayTableView.contentInset = UIEdgeInsets(top: 15, left: 0, bottom: 15, right: 0)
-        
-        updateLocationList()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,9 +72,7 @@ class LocationViewController: PopoverVC  {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "scan" {
             if let vc = segue.destination as? ScanViewController {
-                if let gateway = sender as? Gateway{
-                    vc.gateway = gateway
-                }
+                if let gateway = sender as? Gateway { vc.gateway = gateway }
             }
         }
     }
@@ -101,49 +100,44 @@ class LocationViewController: PopoverVC  {
     @IBAction func addNewElementInLocation(_ sender: UIButton) {
         index = sender.tag
         var popoverList:[PopOverItem] = []
-        for item in TypeOfLocationDevice.allValues{
-            popoverList.append(PopOverItem(name: item.description, id: ""))
-        }
+        for item in TypeOfLocationDevice.allValues { popoverList.append(PopOverItem(name: item.description, id: "")) }
         
-        openPopover(sender, popOverList:popoverList)
-    }   // add camera or gateway
+        openPopover(sender, popOverList:popoverList) // add camera or gateway
+    }
 
     override func nameAndId(_ name: String, id: String) {
-        if TypeOfLocationDevice.Ehomegreen.description == name{
+        if TypeOfLocationDevice.Ehomegreen.description == name {
             self.showConnectionSettings(nil, location: locationList[index].location, gatewayType: TypeOfLocationDevice.Ehomegreen).delegate = self
         }
-        if TypeOfLocationDevice.Surveillance.description == name{
+        if TypeOfLocationDevice.Surveillance.description == name {
             showSurveillanceSettings(nil, location: locationList[index].location).delegate = self
         }
-        if TypeOfLocationDevice.Ehomeblue.description == name{
+        if TypeOfLocationDevice.Ehomeblue.description == name {
             self.showConnectionSettings(nil, location: locationList[index].location, gatewayType: TypeOfLocationDevice.Ehomeblue).delegate = self
         }
     }
     
-    func reloadLocations(){
+    func reloadLocations() {
         updateLocationList()
         gatewayTableView.reloadData()
     }
     
-    func updateLocationList(){
+    func updateLocationList() {
         locationList = []
         let location = DatabaseLocationController.shared.getLocation(user)
         
-        for item in location{
+        for item in location {
             var listOfChildrenDevice:[LocationDevice] = []
-            if let listOfGateway = item.gateways?.allObjects as? [Gateway]{
-                for gateway in listOfGateway{
-                    if Int(gateway.gatewayType) == TypeOfLocationDevice.Ehomegreen.rawValue{
-                        listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomegreen))
-                    }else{
-                        listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomeblue))
-                    }
+            if let listOfGateway = item.gateways?.allObjects as? [Gateway] {
+                
+                for gateway in listOfGateway {
+                    if Int(gateway.gatewayType) == TypeOfLocationDevice.Ehomegreen.rawValue { listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomegreen))
+                    } else { listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomeblue)) }
                 }
             }
+            
             if let listOfSurveillance = item.surveillances {
-                for surv in listOfSurveillance{
-                    listOfChildrenDevice.append(LocationDevice(device: surv as AnyObject, typeOfLocationDevice: .Surveillance))
-                }
+                for surv in listOfSurveillance { listOfChildrenDevice.append(LocationDevice(device: surv as AnyObject, typeOfLocationDevice: .Surveillance)) }
             }
             locationList.append(CollapsableViewModel(location: item, children: listOfChildrenDevice))
         }
@@ -155,18 +149,13 @@ class LocationViewController: PopoverVC  {
         locationList[index].children = []
         var listOfChildrenDevice:[LocationDevice] = []
         if let listOfGateway = locationEdit.gateways?.allObjects as? [Gateway] {
-            for gateway in listOfGateway{
-                if Int(gateway.gatewayType) == TypeOfLocationDevice.Ehomegreen.rawValue{
-                    listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomegreen))
-                }else{
-                    listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomeblue))
-                }
+            for gateway in listOfGateway {
+                if Int(gateway.gatewayType) == TypeOfLocationDevice.Ehomegreen.rawValue { listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomegreen))
+                } else { listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomeblue)) }
             }
         }
         if let listOfSurveillance = locationEdit.surveillances {
-            for surv in listOfSurveillance{
-                listOfChildrenDevice.append(LocationDevice(device: surv as AnyObject, typeOfLocationDevice: .Surveillance))
-            }
+            for surv in listOfSurveillance { listOfChildrenDevice.append(LocationDevice(device: surv as AnyObject, typeOfLocationDevice: .Surveillance)) }
         }
         locationList[index].children = listOfChildrenDevice
         gatewayTableView.reloadData()
@@ -176,21 +165,20 @@ class LocationViewController: PopoverVC  {
 extension LocationViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        if indexPath.row == 0{
+        if indexPath.row == 0 {
             if let cell = tableView.dequeueReusableCell(withIdentifier: "locationCell") as? LocationCell {
-                cell.setItem(locationList[(indexPath as NSIndexPath).section].location, isColapsed: locationList[indexPath.section].isCollapsed)
-                cell.addButton.tag = indexPath.section
-                cell.editButton.tag = indexPath.section
-                cell.deleteButton.tag = indexPath.section
+                cell.setItem(locationList[indexPath.section].location, isColapsed: locationList[indexPath.section].isCollapsed, tag: indexPath.section)
                 return cell
             }
-        }else{
+            
+        } else {
             let location = locationList[indexPath.section]
             let device = location.children[indexPath.row - 1]
-            switch device.typeOfLocationDevice{
+            switch device.typeOfLocationDevice {
+                
             case TypeOfLocationDevice.Ehomegreen:
                 if let cell = tableView.dequeueReusableCell(withIdentifier: "gatewayCell") as? GatewayCell {
-                    if let gateway = device.device as? Gateway{
+                    if let gateway = device.device as? Gateway {
                         cell.setEhomegreen()
                         cell.delegate = self
                         cell.setItem(gateway)
@@ -224,13 +212,9 @@ extension LocationViewController: UITableViewDataSource {
         cell.textLabel?.text = ""
         return cell
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if locationList[section].isCollapsed{
-            return (locationList[section].children).count + 1
-        }else{
-            return 1
-        }
-        
+        if locationList[section].isCollapsed { return (locationList[section].children).count + 1 } else { return 1 }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -241,21 +225,17 @@ extension LocationViewController: UITableViewDataSource {
 extension LocationViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        if indexPath.row == 0{
+        if indexPath.row == 0 {
             locationList[indexPath.section].isCollapsed = !locationList[indexPath.section].isCollapsed
             tableView.reloadData()
-        }else{
+        } else {
             let device = locationList[indexPath.section].children[indexPath.row - 1]
-            if let surv = device.device as? Surveillance{
-                DispatchQueue.main.async(execute: {
-                    self.showSurveillanceSettings(surv, location: surv.location).delegate = self
-                })
+            if let surv = device.device as? Surveillance {
+                DispatchQueue.main.async(execute: { self.showSurveillanceSettings(surv, location: surv.location).delegate = self })
             }
-            if let gateway = device.device as? Gateway{
+            if let gateway = device.device as? Gateway {
                 DispatchQueue.main.async(execute: {
-                    if let type = TypeOfLocationDevice(rawValue: Int(gateway.gatewayType)){
-                        self.showConnectionSettings(gateway, location: nil, gatewayType: type).delegate = self
-                    }
+                    if let type = TypeOfLocationDevice(rawValue: Int(gateway.gatewayType)) { self.showConnectionSettings(gateway, location: nil, gatewayType: type).delegate = self }
                 })
             }
         }
@@ -273,14 +253,12 @@ extension LocationViewController: UITableViewDelegate {
     }
 }
 
-extension LocationViewController: GatewayCellDelegate{
+extension LocationViewController: GatewayCellDelegate {
     func deleteGateway(_ gateway: Gateway, sender:UIButton) {
         showAlertView(sender, message: "Delete e-Homegreen?") { (action) in
             if action == ReturnedValueFromAlertView.delete {
                 DatabaseGatewayController.shared.deleteGateway(gateway)
-                DispatchQueue.main.async(execute: {
-                    self.editLocation()
-                })
+                DispatchQueue.main.async(execute: { self.editLocation() } )
             }
         }
     }
@@ -290,30 +268,24 @@ extension LocationViewController: GatewayCellDelegate{
     }
     
     // Turn on/off gateway
-    func changeSwitchValue(_ gateway:Gateway, gatewaySwitch:UISwitch){
-        if gatewaySwitch.isOn == true {
-            gateway.turnedOn = true
-        }else {
-            gateway.turnedOn = false
-        }
-        CoreDataController.shahredInstance.saveChanges()
+    func changeSwitchValue(_ gateway:Gateway, gatewaySwitch:UISwitch) {
+        if gatewaySwitch.isOn == true { gateway.turnedOn = true } else { gateway.turnedOn = false }
+        CoreDataController.sharedInstance.saveChanges()
         gatewayTableView.reloadData()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }
 }
 
 extension LocationViewController: SurveillanceCellDelegate {
-    func deleteSurveillance(_ surveillance:Surveillance, sender:UIButton){
+    func deleteSurveillance(_ surveillance:Surveillance, sender:UIButton) {
         showAlertView(sender, message: "Delete camera?") { (action) in
             if action == ReturnedValueFromAlertView.delete{
                 DatabaseSurveillanceController.shared.deleteSurveillance(surveillance)
-                DispatchQueue.main.async(execute: {
-                    self.editLocation()
-                })
+                DispatchQueue.main.async(execute: { self.editLocation() } )
             }
         }
     }
-    func scanURL(_ surveillance:Surveillance){
+    func scanURL(_ surveillance:Surveillance) {
         showCameraUrls(surveillance: surveillance)
     }
 }
@@ -331,7 +303,7 @@ extension LocationViewController: AddEditGatewayDelegate{
 }
 
 extension LocationViewController: AddEditSurveillanceDelegate{
-    func addEditSurveillanceFinished(){
+    func addEditSurveillanceFinished() {
         editLocation()
     }
 }

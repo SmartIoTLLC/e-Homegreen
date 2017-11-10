@@ -19,27 +19,28 @@ class PCControlCell: UICollectionViewCell {
         super.awakeFromNib()
     }
     
-    func setItem(_ pc:Device, tag:Int, filterParametar: FilterItem){
+    func setItem(_ pc:Device, tag:Int, filterParametar: FilterItem) {
         pccontrolSlider.tag = tag
+        pccontrolTitleLabel.tag = tag
+        pccontrolSlider.value = Float(pc.currentValue) / 100
         pccontrolTitleLabel.text = getName(pc, filterParametar: filterParametar)
     }
     
-    func getName(_ pc:Device, filterParametar:FilterItem) -> String{
+    func getName(_ pc:Device, filterParametar:FilterItem) -> String {
         var name:String = ""
-        if pc.gateway.location.name != filterParametar.location{
-            name += pc.gateway.location.name! + " "
+        
+        if pc.gateway.location.name != filterParametar.location { name += pc.gateway.location.name! + " " }
+        
+        if Int(pc.parentZoneId) != filterParametar.levelId {
+            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(pc.parentZoneId), location: pc.gateway.location), let nameOfZone = zone.name { name +=  nameOfZone + " " }
         }
-        if Int(pc.parentZoneId) != filterParametar.levelId{
-            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(pc.parentZoneId), location: pc.gateway.location), let nameOfZone = zone.name{
-                name +=  nameOfZone + " "
-            }
+        
+        if Int(pc.zoneId) != filterParametar.zoneId {
+            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(pc.zoneId), location: pc.gateway.location), let nameOfZone = zone.name { name +=  nameOfZone + " " }
         }
-        if Int(pc.zoneId) != filterParametar.zoneId{
-            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(pc.zoneId), location: pc.gateway.location), let nameOfZone = zone.name {
-                name +=  nameOfZone + " "
-            }
-        }
+        
         name += pc.name
+        
         return name
     }
     

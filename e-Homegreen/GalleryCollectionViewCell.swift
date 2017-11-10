@@ -14,7 +14,9 @@ class GalleryCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        layer.masksToBounds = true
+        layer.cornerRadius = 5
     }
 
 }

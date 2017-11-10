@@ -182,7 +182,8 @@ struct DeviceInfo {
         7:Interface.MotionSensorPIR,
         8:Interface.IRReceiver,
         9:Interface.DigitalInput,
-        10:Interface.DigitalInput2]
+        10:Interface.DigitalInput2
+    ]
     
     static let inputInterface10in1new:[Int:String] = [
         1:Interface.TemperatureProbe,
@@ -194,7 +195,8 @@ struct DeviceInfo {
         7:Interface.DigitalInput,
         8:Interface.IRReceiver,
         9:Interface.AnalogInput,
-        10:Interface.DigitalInput2]
+        10:Interface.DigitalInput2
+    ]
     
     static let inputInterface6in1:[Int:String] = [
         1:Interface.TemperatureProbe,
@@ -202,14 +204,16 @@ struct DeviceInfo {
         3:Interface.DigitalInputDryContact2,
         4:Interface.TemperatureProbe2,
         5:Interface.MotionSensorPIR,
-        6:Interface.DigitalInput]
+        6:Interface.DigitalInput
+    ]
     
     static let inteligentSwitch:[Int:String] = [
         1:Interface.TemperatureProbe,
         2:Interface.DigitalInputDryContact,
         3:Interface.DigitalInputDryContact2,
         4:Interface.TemperatureProbe2,
-        5:Interface.IRReceiver]
+        5:Interface.IRReceiver
+    ]
     
     static let categoryList:[Int:String] = [0:"",
         1:"Gateway & Control",
@@ -273,6 +277,7 @@ struct DeviceInfo {
         DeviceType(deviceId: 0x24, subId: 0x00):DeviceTypeCode(channel:Channel.Two, name:ControlType.Relay, MPN: "RM0220A"), // Relay Module 2CH 20A
         DeviceType(deviceId: 0x25, subId: 0x00):DeviceTypeCode(channel:Channel.Eight, name:ControlType.Relay, MPN: "RM0805A"), // Change Over Module 8CH, 5A
         DeviceType(deviceId: 0x26, subId: 0x00):DeviceTypeCode(channel:Channel.Eight, name:ControlType.Relay, MPN: "RM0810A"), // Relay Module 8CH 10A
+        
         DeviceType(deviceId: 0x27, subId: 0x00):DeviceTypeCode(channel:Channel.Eight, name:ControlType.Relay, MPN: "RM0816A"), // Relay Module 8CH 16A
         
         // Climate Control Series
@@ -302,7 +307,7 @@ struct DeviceInfo {
         
         DeviceType(deviceId: 0x47, subId: 0x00):DeviceTypeCode(channel:Channel.One, name:ControlType.IRTransmitter, MPN: "MS0502S"), // IR Transmitter, 2CH with 2 AI
         
-        // New device - seucirty, MAC address:40-D8-55-0F-E0-00
+        // New device - security, MAC address:40-D8-55-0F-E0-00
         DeviceType(deviceId: 0xC4, subId: 0x00):DeviceTypeCode(channel:Channel.One, name:ControlType.IRTransmitter, MPN: "UCM/EHG"), // Comfort Panel
         DeviceType(deviceId: 0x0C, subId: 0x00):DeviceTypeCode(channel:Channel.One, name:ControlType.PC, MPN: "PC0000S"), // e-Homegreen PC Controller
     ]
@@ -423,11 +428,3 @@ let temperatureImagesTwoStateNO = [DeviceImageState(defaultImage: "12 Appliance 
                                    DeviceImageState(defaultImage: "12 Appliance - Water Heater - 01", state: 1, text: "On")]
 let temperatureImagesTwoStateNC = [DeviceImageState(defaultImage: "12 Appliance - Water Heater - 00", state: 0, text: "On"),
                                    DeviceImageState(defaultImage: "12 Appliance - Water Heater - 01", state: 1, text: "Off")]
-
-
-
-
-
-
-
-    

@@ -16,14 +16,7 @@ class QuranViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     @IBOutlet weak var fullscreenButton: UIButton!
     @IBAction func fullscreenButton(_ sender: UIButton) {
-        sender.collapseInReturnToNormal(1)
-        if UIApplication.shared.isStatusBarHidden {
-            UIApplication.shared.isStatusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
-        } else {
-            UIApplication.shared.isStatusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        }
+        sender.switchFullscreen()
     }
     let context = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     
@@ -44,19 +37,10 @@ class QuranViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        revealViewController().delegate = self
+        setupSWRevealViewController(menuButton: menuButton)
         
-        if self.revealViewController() != nil {
-            
-            menuButton.target = self.revealViewController()
-            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-            //self.revealViewController().panGestureRecognizer().delegate = self
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            revealViewController().toggleAnimationDuration = 0.5
-            
-            revealViewController().rearViewRevealWidth = 200
-        }
-        
-        changeFullScreeenImage()
+        changeFullscreenImage(fullscreenButton: fullscreenButton)
     }
     
     func updateViews() {
@@ -64,14 +48,6 @@ class QuranViewController: UIViewController, UITableViewDataSource, UITableViewD
         tableView.separatorInset = UIEdgeInsets.zero
         navigationItem.title = "Reciters"
         navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
-    }
-    
-    func changeFullScreeenImage(){
-        if UIApplication.shared.isStatusBarHidden {
-            fullscreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        } else {
-            fullscreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
-        }
     }
 
     // MARK: - Table view data source
@@ -127,7 +103,7 @@ class QuranViewController: UIViewController, UITableViewDataSource, UITableViewD
                             let reciter = Reciter(context: context!, id: object["id"] as! String, name: object["name"] as! String, server: object["Server"] as! String, rewaya: object["rewaya"] as! String, count: object["count"] as! String, letter: object["letter"] as! String, suras: object["suras"] as! String)
                             self.reciters.append(reciter)
                         }
-                        self.tableView.reloadData()
+                        tableView.reloadData()
                     }
                 }
             }
@@ -137,4 +113,8 @@ class QuranViewController: UIViewController, UITableViewDataSource, UITableViewD
         
     }
 
+}
+
+extension QuranViewController: SWRevealViewControllerDelegate {
+    
 }

@@ -33,19 +33,15 @@ class GatewayCell: UITableViewCell {
     @IBOutlet weak var add3: UILabel!
     
     @IBAction func scanDevicesAction(_ sender: AnyObject) {
-        if let gate = gateway{
-            delegate?.scanDevice(gate)
-        }
+        if let gate = gateway { delegate?.scanDevice(gate) }
     }
     
     @IBAction func deleteGateway(_ sender: UIButton) {
-        if let gate = gateway{
-            delegate?.deleteGateway(gate, sender: sender)
-        }
+        if let gate = gateway { delegate?.deleteGateway(gate, sender: sender) }
     }
     
     @IBAction func changeSwitchValue(_ sender: AnyObject) {
-        if let gatewaySwitch = sender as? UISwitch, let gate = gateway{
+        if let gatewaySwitch = sender as? UISwitch, let gate = gateway {
             delegate?.changeSwitchValue(gate, gatewaySwitch: gatewaySwitch)
         }
     }
@@ -78,11 +74,7 @@ class GatewayCell: UITableViewCell {
         self.add2.text = returnThreeCharactersForByte(Int(gateway.addressTwo))
         self.add3.text = returnThreeCharactersForByte(Int(gateway.addressThree))
         self.switchGatewayState.isOn = gateway.turnedOn.boolValue
-        if gateway.turnedOn.boolValue {
-            self.buttonGatewayScan.isEnabled = true
-        } else {
-            self.buttonGatewayScan.isEnabled = false
-        }
+        if gateway.turnedOn.boolValue { self.buttonGatewayScan.isEnabled = true } else { self.buttonGatewayScan.isEnabled = false }
     }
     
     func setEhomeblue(){
@@ -127,13 +119,13 @@ class LocationCell: UITableViewCell {
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var deleteButton: UIButton!
     
-    func setItem(_ location:Location, isColapsed:Bool){
+    func setItem(_ location:Location, isColapsed:Bool, tag: Int) {
         locationNameLabel.text = location.name
-        if isColapsed{
-            arrowImage.image = UIImage(named: "strelica_gore")
-        }else{
-            arrowImage.image = UIImage(named: "strelica_dole")
-        }
+        if isColapsed { arrowImage.image = UIImage(named: "strelica_gore") } else { arrowImage.image = UIImage(named: "strelica_dole") }
+        
+        addButton.tag = tag
+        editButton.tag = tag
+        deleteButton.tag = tag
     }
     
 }
@@ -157,6 +149,7 @@ class SurvCell: UITableViewCell{
         self.surveillance = surveillance
         self.lblName.text = surveillance.name
     }
+    
     @IBAction func deleteSurveillance(_ sender: UIButton) {
         if let surv  = surveillance{
             delegate?.deleteSurveillance(surv, sender: sender)

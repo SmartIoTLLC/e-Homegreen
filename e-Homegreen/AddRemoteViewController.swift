@@ -13,6 +13,7 @@ class AddRemoteViewController: CommonXIBTransitionVC {
     @IBOutlet weak var scrollView: UIScrollView!
     
     var newRemote: RemoteDummy!
+    var filterParameter: FilterItem!
     
     @IBOutlet weak var nameTF: EditTextField!
     @IBOutlet weak var columnsTF: EditTextField!
@@ -42,68 +43,30 @@ class AddRemoteViewController: CommonXIBTransitionVC {
         self.dismiss(animated: true, completion: nil)
     }
     @IBAction func saveButton(_ sender: CustomGradientButton) {
-        guard let name = nameTF.text, name.count != 0 else {
-            self.view.makeToast(message: "Must name the remote controller.")
-            return
-        }
-        guard let columns = columnsTF.text, columns.count != 0, columns != "0" else {
-            self.view.makeToast(message: "Number of columns can't be 0.")
-            return
-        }
-        guard let rows = rowsTF.text,  rows.count != 0, rows != "0" else {
-            self.view.makeToast(message: "Number of columns can't be 0")
-            return
-        }
-        guard let addressOne = addressOneTF.text, addressOne.count != 0 else {
-            self.view.makeToast(message: "Invalid address.")
-            return
-        }
-        guard let addressTwo = addressTwoTF.text, addressTwo.count != 0 else {
-            self.view.makeToast(message: "Invalid address.")
-            return
-        }
-        guard let addressThree = addressThreeTF.text, addressThree.count != 0 else {
-            self.view.makeToast(message: "Invalid address.")
-            return
-        }
-        guard let channel = channelTF.text, channel.count != 0 else {
-            self.view.makeToast(message: "Invalid channel.")
-            return
-        }
-        guard let height = heightTF.text, height.count != 0, Int(height)! > 9 else {
-            self.view.makeToast(message: "Invalid height.")
-            return
-        }
-        guard let width = widthTF.text, width.count != 0, Int(width)! > 9 else {
-            self.view.makeToast(message: "Invalid width.")
-            return
-        }
+        guard let name = nameTF.text, name.count != 0 else { self.view.makeToast(message: "Must name the remote controller."); return }
+        guard let columns = columnsTF.text, columns.count != 0, columns != "0" else { self.view.makeToast(message: "Number of columns can't be 0."); return }
+        guard let rows = rowsTF.text,  rows.count != 0, rows != "0" else { self.view.makeToast(message: "Number of columns can't be 0"); return }
+        guard let addressOne = addressOneTF.text, addressOne.count != 0 else { self.view.makeToast(message: "Invalid address."); return }
+        guard let addressTwo = addressTwoTF.text, addressTwo.count != 0 else { self.view.makeToast(message: "Invalid address."); return }
+        guard let addressThree = addressThreeTF.text, addressThree.count != 0 else { self.view.makeToast(message: "Invalid address."); return }
+        guard let channel = channelTF.text, channel.count != 0 else { self.view.makeToast(message: "Invalid channel."); return }
+        guard let height = heightTF.text, height.count != 0, Int(height)! > 9 else { self.view.makeToast(message: "Invalid height."); return }
+        guard let width = widthTF.text, width.count != 0, Int(width)! > 9 else { self.view.makeToast(message: "Invalid width."); return }
         
         var top: Int!
         var bottom: Int!
-        if let topString = topTF.text, let topInt = Int(topString) {
-            top = topInt
-        } else { top = 0 }
+        if let topString = topTF.text, let topInt = Int(topString) { top = topInt } else { top = 0 }
         
-        if let bottomString = bottomTF.text, let bottomInt = Int(bottomString) {
-            bottom = bottomInt
-        } else { bottom = 0 }
+        if let bottomString = bottomTF.text, let bottomInt = Int(bottomString) { bottom = bottomInt } else { bottom = 0 }
         
         var color: UIColor!
         var shape: String!
-        if colorButton.titleLabel?.text == "Gray" {
-            color = .gray
-        } else { color = .red }
+        if colorButton.titleLabel?.text == "Gray" { color = .gray } else { color = .red }
         
-        if shapeButton.titleLabel?.text == "Rectangle" {
-            shape = "Rectangle"
-        } else { shape = "Circle" }
+        if shapeButton.titleLabel?.text == "Rectangle" { shape = "Rectangle" } else { shape = "Circle" }
         
         if shape == "Circle" {
-            if Int(width) != Int(height) {
-                self.view.makeToast(message: "Circle must have same width and height")
-                return
-            }
+            if Int(width) != Int(height) { self.view.makeToast(message: "Circle must have same width and height"); return }
         }
         
         newRemote = RemoteDummy(buggerOff: "Buggerica")
@@ -147,37 +110,23 @@ class AddRemoteViewController: CommonXIBTransitionVC {
         var info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
-        moveTextfield(textfield: nameTF, keyboardFrame: keyboardFrame)
-        moveTextfield(textfield: columnsTF, keyboardFrame: keyboardFrame)
-        moveTextfield(textfield: rowsTF, keyboardFrame: keyboardFrame)
-        moveTextfield(textfield: addressOneTF, keyboardFrame: keyboardFrame)
-        moveTextfield(textfield: addressTwoTF, keyboardFrame: keyboardFrame)
-        moveTextfield(textfield: addressThreeTF, keyboardFrame: keyboardFrame)
-        moveTextfield(textfield: channelTF, keyboardFrame: keyboardFrame)
-        moveTextfield(textfield: heightTF, keyboardFrame: keyboardFrame)
-        moveTextfield(textfield: widthTF, keyboardFrame: keyboardFrame)
-        moveTextfield(textfield: topTF, keyboardFrame: keyboardFrame)
-        moveTextfield(textfield: bottomTF, keyboardFrame: keyboardFrame)
+        moveTextfield(textfield: nameTF, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: columnsTF, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: rowsTF, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: addressOneTF, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: addressTwoTF, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: addressThreeTF, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: channelTF, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: heightTF, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: widthTF, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: topTF, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: bottomTF, keyboardFrame: keyboardFrame, backView: backView)
         
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear, animations: { 
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
-    
-    func keyboardWillHide(_ notification: Notification) {
-        view.frame.origin.y = 0
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear, animations: { 
-            self.view.layoutIfNeeded()
-        }, completion: nil)
-    }
-    
-    func moveTextfield(textfield: EditTextField, keyboardFrame: CGRect) {
-        if textfield.isFirstResponder {
-            if backView.frame.origin.y + textfield.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height {
-                self.view.frame.origin.y = -(5 + (self.backView.frame.origin.y + textfield.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height)))
-            }
-        }
-    }
+        
     
     func updateViews() {
         view.backgroundColor = .clear
@@ -195,7 +144,7 @@ class AddRemoteViewController: CommonXIBTransitionVC {
     }
     
     func prepareButtons() {
-        setButton(button: locationButton, title: "All")
+        setButton(button: locationButton, title: filterParameter.location)
         setButton(button: levelButton, title: "All")
         setButton(button: zoneButton, title: "All")
         setButton(button: colorButton, title: "Gray")
@@ -205,7 +154,7 @@ class AddRemoteViewController: CommonXIBTransitionVC {
     }
     
     func setButton(button: CustomGradientButton, title: String) {
-        button.titleLabel?.font = UIFont(name: "Tahoma", size: 17)
+        button.titleLabel?.font = UIFont.tahoma(size: 15)
         button.setTitle(title, for: UIControlState())
         button.backgroundColor = .clear
     }
@@ -247,8 +196,9 @@ extension AddRemoteViewController: UITextFieldDelegate {
 }
 
 extension UIViewController {
-    func showAddRemoteVC() {
+    func showAddRemoteVC(filter: FilterItem) {
         let vc = AddRemoteViewController()
+        vc.filterParameter = filter
         self.present(vc, animated: true, completion: nil)
     }
 }

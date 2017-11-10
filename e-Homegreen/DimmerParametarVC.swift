@@ -50,6 +50,13 @@ class DimmerParametarVC: CommonXIBTransitionVC {
         
         appDel = UIApplication.shared.delegate as! AppDelegate
         
+        setupViews()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    func setupViews() {
         editDelay.inputAccessoryView = CustomToolBar()
         editRunTime.inputAccessoryView = CustomToolBar()
         editSkipState.inputAccessoryView = CustomToolBar()
@@ -66,28 +73,19 @@ class DimmerParametarVC: CommonXIBTransitionVC {
         
         if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[indexPathRow].parentZoneId), location: devices[indexPathRow].gateway.location), let name = zone.name {
             lblLevel.text = "\(name)"
-        }else{
-            lblLevel.text = ""
-        }
+        } else { lblLevel.text = "" }
+        
         if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[indexPathRow].zoneId), location: devices[indexPathRow].gateway.location), let name = zone.name {
             lblZone.text = "\(name)"
-        }else{
-            lblZone.text = ""
-        }
+        } else { lblZone.text = "" }
         
         lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(devices[indexPathRow].categoryId), location: devices[indexPathRow].gateway.location))"
         deviceAddress.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].address)))"
         deviceChannel.text = "\(devices[indexPathRow].channel)"
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(DimmerParametarVC.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(DimmerParametarVC.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: backView){
-            self.view.endEditing(true)
-            return false
-        }
+        if touch.view!.isDescendant(of: backView) { dismissEditing(); return false }
         return true
     }
 
@@ -112,48 +110,24 @@ class DimmerParametarVC: CommonXIBTransitionVC {
     func getDeviceAndSave (_ numberOne:Int, numberTwo:Int, numberThree:Int) {
         if let deviceObject = appDel.managedObjectContext!.object(with: devices[indexPathRow].objectID) as? Device {
             device = deviceObject
-            print(device)
             device!.delay = NSNumber(value: numberOne)
             device!.runtime = NSNumber(value: numberTwo)
             device!.skipState = NSNumber(value: numberThree)
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
         }
     }
     
     func keyboardWillShow(_ notification: Notification) {
-        var info = (notification as NSNotification).userInfo!
+        let info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
-        if editDelay.isFirstResponder{
-            if backView.frame.origin.y + editDelay.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.editDelay.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editRunTime.isFirstResponder{
-            if backView.frame.origin.y + editRunTime.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.editRunTime.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editSkipState.isFirstResponder{
-            if backView.frame.origin.y + editSkipState.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.editSkipState.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
+        moveTextfield(textfield: editDelay, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: editRunTime, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: editSkipState, keyboardFrame: keyboardFrame, backView: backView)
         
         UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-        
     }
     
-    func keyboardWillHide(_ notification: Notification) {
-        self.centerY.constant = 0
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-    }
 }
 
 extension DimmerParametarVC: UITextFieldDelegate{

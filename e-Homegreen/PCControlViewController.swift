@@ -30,13 +30,22 @@ class PCControlViewController: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupViews()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerPCControl), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updatePCList), name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
+    }
+    
+    func setupViews() {
+        if #available(iOS 11, *) { headerTitleSubtitleView.layoutIfNeeded() }
+        
         UIView.hr_setToastThemeColor(color: UIColor.red)
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         
         scrollView.filterDelegate = self
         view.addSubview(scrollView)
-        updateConstraints()
+        updateConstraints(item: scrollView)
         scrollView.setItem(self.view)
         
         self.navigationItem.titleView = headerTitleSubtitleView
@@ -50,27 +59,14 @@ class PCControlViewController: PopoverVC {
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
         scrollView.setFilterItem(Menu.pcControl)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(PCControlViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerPCControl), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(PCControlViewController.updatePCList), name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
-        
-        if self.revealViewController() != nil {
-            menuButton.target = self.revealViewController()
-            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            revealViewController().toggleAnimationDuration = 0.5
-
-            revealViewController().rearViewRevealWidth = 200
-            
-        }
+        setupSWRevealViewController(menuButton: menuButton)
         
         updatePCList()
-        changeFullScreeenImage()
-        
+        changeFullscreenImage(fullscreenButton: fullScreenButton)        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -80,36 +76,13 @@ class PCControlViewController: PopoverVC {
     }
     
     override func viewWillLayoutSubviews() {
-        if scrollView.contentOffset.y != 0 {
-            let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
-            scrollView.setContentOffset(bottomOffset, animated: false)
-        }
-        scrollView.bottom.constant = -(self.view.frame.height - 2)
-        if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
-            headerTitleSubtitleView.setLandscapeTitle()
-        }else{
-            headerTitleSubtitleView.setPortraitTitle()
-        }
-        var size:CGSize = CGSize()
-        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
-        collectionViewCellSize = size
-        pccontrolCollectionView.reloadData()
-        
+        setContentOffset(for: scrollView)
+        setTitleView(view: headerTitleSubtitleView)        
+        collectionViewCellSize = calculateCellSize(completion: { pccontrolCollectionView.reloadData() })
     }
     
     override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
-    }
-    
-    func updateSubtitle(_ location: String, level: String, zone: String){
-        headerTitleSubtitleView.setTitleAndSubtitle("PC Control", subtitle: location + " " + level + " " + zone)
-    }
-    
-    func updateConstraints() {
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0.0))
     }
     
     func setDefaultFilterFromTimer() {
@@ -124,45 +97,21 @@ class PCControlViewController: PopoverVC {
     }
     
     @IBAction func fullScreen(_ sender: UIButton) {
-        sender.collapseInReturnToNormal(1)
-        if UIApplication.shared.isStatusBarHidden {
-            UIApplication.shared.isStatusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
-        } else {
-            UIApplication.shared.isStatusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-            if scrollView.contentOffset.y != 0 {
-                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
-                scrollView.setContentOffset(bottomOffset, animated: false)
-            }
-        }
-    }
-    
-    func changeFullScreeenImage(){
-        if UIApplication.shared.isStatusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
-        }
+        sender.switchFullscreen(viewThatNeedsOffset: scrollView)        
     }
     
     func refreshVisiblePCsInScrollView() {
         
         let indexPaths = pccontrolCollectionView.indexPathsForVisibleItems
-        for indexPath in indexPaths {
-            reloadPCFromPLC(indexPathRow: (indexPath as NSIndexPath).row)
-        }
+        for indexPath in indexPaths { reloadPCFromPLC(indexPathRow: indexPath.row) }
     }
     
     func reloadPCFromPLC(indexPathRow: Int) {
-        
         for pc in pcs {
-            if pc.gateway == pcs[indexPathRow].gateway && pc.address == pcs[indexPathRow].address {
-                pc.stateUpdatedAt = Date()
-            }
+            if pc.gateway == pcs[indexPathRow].gateway && pc.address == pcs[indexPathRow].address { pc.stateUpdatedAt = Date() }
         }
         
-        let address = [UInt8(Int(pcs[indexPathRow].gateway.addressOne)), UInt8(Int(pcs[indexPathRow].gateway.addressTwo)), UInt8(Int(pcs[indexPathRow].address))]
+        let address = [getByte(pcs[indexPathRow].gateway.addressOne), getByte(pcs[indexPathRow].gateway.addressTwo), getByte(pcs[indexPathRow].address)]
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getPCState(address), gateway: pcs[indexPathRow].gateway)
     }
     
@@ -174,10 +123,7 @@ class PCControlViewController: PopoverVC {
     func changeSliderValueOnOneTap(_ gesture: UIGestureRecognizer) {
         
         let s = gesture.view as! UISlider
-        
-        if s.isHighlighted {
-            return
-        }
+        if s.isHighlighted { return }
         
         let pt: CGPoint = gesture.location(in: s)
         let percentage: CGFloat = pt.x / s.bounds.size.width
@@ -185,7 +131,7 @@ class PCControlViewController: PopoverVC {
         let value: CGFloat = CGFloat(s.minimumValue) + delta
         s.setValue(Float(value), animated: true)
         let tag = s.tag
-        let address = [Byte(Int(pcs[tag].gateway.addressOne)), Byte(Int(pcs[tag].gateway.addressTwo)), Byte(Int(pcs[tag].address))]
+        let address = [getByte(pcs[tag].gateway.addressOne), getByte(pcs[tag].gateway.addressTwo), getByte(pcs[tag].address)]
         if value == 0x00 {
             SendingHandler.sendCommand(byteArray: OutgoingHandler.setPCVolume(address, volume: 0x00, mute: 0x01), gateway: pcs[tag].gateway)
         } else {
@@ -196,13 +142,10 @@ class PCControlViewController: PopoverVC {
     }
     
     @IBAction func changeSliderValue(_ sender: AnyObject) {
-        guard let slider = sender as? UISlider else {
-            return
-        }
-        guard let tag = sender.tag else {
-            return
-        }
-        let address = [Byte(Int(pcs[tag].gateway.addressOne)), Byte(Int(pcs[tag].gateway.addressTwo)), Byte(Int(pcs[tag].address))]
+        guard let slider = sender as? UISlider else { return }
+        guard let tag = sender.tag else { return }
+        
+        let address = [getByte(pcs[tag].gateway.addressOne), getByte(pcs[tag].gateway.addressTwo), getByte(pcs[tag].address)]
         let value = Byte(Int(slider.value * 100))
         if value == 0x00 {
             SendingHandler.sendCommand(byteArray: OutgoingHandler.setPCVolume(address, volume: 0x00, mute: 0x01), gateway: pcs[tag].gateway)
@@ -215,41 +158,33 @@ class PCControlViewController: PopoverVC {
 }
 
 // Parametar from filter and relaod data
-extension PCControlViewController: FilterPullDownDelegate{
+extension PCControlViewController: FilterPullDownDelegate {
     func filterParametars(_ filterItem: FilterItem){
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .PCControl)
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .PCControl)
-        updateSubtitle(filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        updateSubtitle(headerTitleSubtitleView, title: "PC Control", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)        
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.pcControl)
         updatePCList()
         TimerForFilter.shared.counterPCControl = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.pcControl)
         TimerForFilter.shared.startTimer(type: Menu.pcControl)
     }
     
-    func saveDefaultFilter(){
+    func saveDefaultFilter() {
         self.view.makeToast(message: "Default filter parametar saved!")
     }
 }
 
-extension PCControlViewController: SWRevealViewControllerDelegate{
+extension PCControlViewController: SWRevealViewControllerDelegate {
     
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
-        if(position == FrontViewPosition.left) {
-            pccontrolCollectionView.isUserInteractionEnabled = true
-        } else {
-            pccontrolCollectionView.isUserInteractionEnabled = false
-        }
+        if position == .left { pccontrolCollectionView.isUserInteractionEnabled = true } else { pccontrolCollectionView.isUserInteractionEnabled = false }
     }
     
-    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
-        if(position == FrontViewPosition.left) {
-            pccontrolCollectionView.isUserInteractionEnabled = true
-        } else {
-            pccontrolCollectionView.isUserInteractionEnabled = false
-        }
+    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition) {
+        if position == FrontViewPosition.left { pccontrolCollectionView.isUserInteractionEnabled = true } else { pccontrolCollectionView.isUserInteractionEnabled = false }
     }
     
-    func openNotificationSettings(_ gestureRecognizer: UILongPressGestureRecognizer){
+    func openNotificationSettings(_ gestureRecognizer: UILongPressGestureRecognizer) {
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             if let index = gestureRecognizer.view?.tag {
                 print("DUGO DRZANJE LABELE TAG: \(index)")
@@ -259,18 +194,16 @@ extension PCControlViewController: SWRevealViewControllerDelegate{
     }
 }
 
-extension PCControlViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
+extension PCControlViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pccontrolCell", for: indexPath) as? PCControlCell{
-            cell.setItem(pcs[(indexPath as NSIndexPath).row], tag: (indexPath as NSIndexPath).row, filterParametar: filterParametar)
-            cell.pccontrolTitleLabel.tag = (indexPath as NSIndexPath).row
+        
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pccontrolCell", for: indexPath) as? PCControlCell {
             
-            let volume = Float(pcs[(indexPath as NSIndexPath).row].currentValue)
-            cell.pccontrolSlider.value = volume/100
+            cell.setItem(pcs[indexPath.row], tag: indexPath.row, filterParametar: filterParametar)
             
-            cell.pccontrolSlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PCControlViewController.changeSliderValueOnOneTap(_:))))
+            cell.pccontrolSlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeSliderValueOnOneTap(_:))))
 
-            let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(PCControlViewController.openNotificationSettings(_:)))
+            let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(openNotificationSettings(_:)))
             longGesture.minimumPressDuration = 0.5
             cell.pccontrolTitleLabel.addGestureRecognizer(longGesture)
             
@@ -293,9 +226,7 @@ extension PCControlViewController: UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        DispatchQueue.main.async(execute: {
-            self.showPCInterface(self.pcs[(indexPath as NSIndexPath).row])
-        })
+        DispatchQueue.main.async(execute: { self.showPCInterface(self.pcs[indexPath.row]) })
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -310,10 +241,7 @@ extension PCControlViewController: UICollectionViewDataSource, UICollectionViewD
 extension PCControlViewController: UIGestureRecognizerDelegate {
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view! is UISlider {
-            return false
-        }
-        
+        if touch.view! is UISlider { return false }
         return true
     }
     

@@ -52,6 +52,10 @@ class InsertGatewayAddressXIB: CommonXIBTransitionVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupViews()
+    }
+    
+    func setupViews() {
         UIView.hr_setToastThemeColor(color: UIColor.red)
         
         addressOne.delegate = self
@@ -62,23 +66,16 @@ class InsertGatewayAddressXIB: CommonXIBTransitionVC {
         addressTwo.inputAccessoryView = CustomToolBar()
         addressThree.inputAccessoryView = CustomToolBar()
         
-        if whatToScan == ScanType.zone{
-            titleLabel.text = "Scan zones from address"
-        }else{
-            titleLabel.text = "Scan categories from address"
-        }
-
+        if whatToScan == ScanType.zone { titleLabel.text = "Scan zones from address" } else { titleLabel.text = "Scan categories from address" }
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: backView){
-            self.view.endEditing(true)
-            return false
-        }
+        
+        if touch.view!.isDescendant(of: backView) { dismissEditing(); return false }
         return true
     }
     
-    func dismissViewController () {
+    func dismissViewController() {
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -87,14 +84,10 @@ class InsertGatewayAddressXIB: CommonXIBTransitionVC {
     }
     
     @IBAction func scan(_ sender: AnyObject) {
-        guard let firstAddress = addressOne.text , firstAddress != "", let secondAddress = addressTwo.text , secondAddress != "", let thirdAddress = addressThree.text , thirdAddress != "" else{
-            self.view.makeToast(message: "All fields must be filled")
-            return
-        }
-        guard let addressOne = Int(firstAddress), let addressTwo = Int(secondAddress), let addressThree = Int(thirdAddress) else{
-            self.view.makeToast(message: "Insert number in field")
-            return
-        }
+        guard let firstAddress = addressOne.text , firstAddress != "", let secondAddress = addressTwo.text , secondAddress != "", let thirdAddress = addressThree.text , thirdAddress != "" else { self.view.makeToast(message: "All fields must be filled"); return }
+        
+        guard let addressOne = Int(firstAddress), let addressTwo = Int(secondAddress), let addressThree = Int(thirdAddress) else { self.view.makeToast(message: "Insert number in field"); return }
+        
         self.dismiss(animated: true) { 
             self.delegate?.addAddressFinished(Address(firstByte: addressOne, secondByte: addressTwo, thirdByte: addressThree))
         }

@@ -42,9 +42,7 @@ class SecurityNeedDisarmInformation: CommonXIBTransitionVC {
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: popUpView){
-            return false
-        }
+        if touch.view!.isDescendant(of: popUpView) { return false }
         return true
     }
     

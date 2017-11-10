@@ -102,7 +102,7 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "menuSettingsCell") as? MenuSettingsCell {
-            cell.setItem(menu[(indexPath as NSIndexPath).row])
+            cell.setItem(menu[indexPath.row])
             return cell
         }
         let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
@@ -115,10 +115,9 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
         return menu.count
     }
 
-
 }
 
-class MenuSettingsCell:UITableViewCell{
+class MenuSettingsCell:UITableViewCell {
     
     @IBOutlet weak var menuImage: UIImageView!
     @IBOutlet weak var menuSwitch: UISwitch!
@@ -126,18 +125,14 @@ class MenuSettingsCell:UITableViewCell{
     
     var menuItem:MenuItem!
     
-    func setItem(_ menuItem:MenuItem){
+    func setItem(_ menuItem:MenuItem) {
         self.menuItem = menuItem
-        if let item = Menu(rawValue: Int(menuItem.id)){
+        if let item = Menu(rawValue: Int(menuItem.id)) {
             menuImage.image = UIImage(named: item.description)
             menuLabel.text = item.description
             menuSwitch.isOn = Bool(menuItem.isVisible)
-            if item == Menu.settings{
-                menuSwitch.isEnabled = false
-            }else{
-                menuSwitch.isEnabled = true
-            }
             
+            if item == Menu.settings { menuSwitch.isEnabled = false } else { menuSwitch.isEnabled = true }
         }
     }
     

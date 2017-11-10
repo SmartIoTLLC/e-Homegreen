@@ -39,93 +39,60 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(SequenceParametarVC.dismissViewController))
+        appDel = UIApplication.shared.delegate as! AppDelegate
+        
+        setupViews()
+    }
+    
+    func setupViews() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissViewController))
         tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
+        view.addGestureRecognizer(tapGesture)
         cyclesTextField.text = "\(sequence!.sequenceCycles)"
         isBroadcast.tag = 100
         isBroadcast.isOn = sequence!.isBroadcast.boolValue
-        isBroadcast.addTarget(self, action: #selector(SequenceParametarVC.changeValue(_:)), for: UIControlEvents.valueChanged)
+        isBroadcast.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
         isLocalcast.tag = 200
         isLocalcast.isOn = sequence!.isLocalcast.boolValue
-        isLocalcast.addTarget(self, action: #selector(SequenceParametarVC.changeValue(_:)), for: UIControlEvents.valueChanged)
-        appDel = UIApplication.shared.delegate as! AppDelegate
+        isLocalcast.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
+        
         cyclesTextField.delegate = self
-        // Do any additional setup after loading the view.
     }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
-    func changeValue (_ sender:UISwitch){
+    func changeValue (_ sender:UISwitch) {
         if sender.tag == 100 {
-            if sender.isOn == true {
-                isLocalcast.isOn = false
-            } else {
-                isLocalcast.isOn = false
-            }
+            if sender.isOn == true { isLocalcast.isOn = false } else { isLocalcast.isOn = false }
         } else if sender.tag == 200 {
-            if sender.isOn == true {
-                isBroadcast.isOn = false
-            } else {
-                isBroadcast.isOn = false
-            }
+            if sender.isOn == true { isBroadcast.isOn = false } else { isBroadcast.isOn = false }
         }
     }
     
     func dismissViewController () {
-//        if cyclesTextField.text != "" {
-//            if let cycles = Int(cyclesTextField.text!) {
-//                sequence?.sequenceCycles = cycles
-//                saveChanges()
-//            }
-//        }
         self.dismiss(animated: true, completion: nil)
     }
+    
     @IBAction func btnSave(_ sender: AnyObject) {
-        if isBroadcast.isOn {
-            sequence?.isBroadcast = true
-        } else {
-            sequence?.isBroadcast = false
-        }
-        if isLocalcast.isOn {
-            sequence?.isLocalcast = true
-        } else {
-            sequence?.isLocalcast = false
-        }
+        
+        if isBroadcast.isOn { sequence?.isBroadcast = true } else { sequence?.isBroadcast = false }
+        if isLocalcast.isOn { sequence?.isLocalcast = true } else { sequence?.isLocalcast = false }
+        
         if cyclesTextField.text != "" {
-            if let cycles = Int(cyclesTextField.text!) {
-                sequence?.sequenceCycles = NSNumber(value: cycles)
-            }
+            if let cycles = Int(cyclesTextField.text!) { sequence?.sequenceCycles = NSNumber(value: cycles) }
         }
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshSequence), object: self, userInfo: nil)
         self.dismiss(animated: true, completion: nil)
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: backView){
-            return false
-        }
+        if touch.view!.isDescendant(of: backView) { return false }
         return true
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 
@@ -185,20 +152,14 @@ extension SequenceParametarVC : UIViewControllerTransitioningDelegate {
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+        if dismissed == self { return self } else { return nil }
     }
     
 }
 extension UIViewController {
     func showSequenceParametar(_ point:CGPoint, sequence:Sequence) {
         let sp = SequenceParametarVC(point: point)
-//        ad.indexPathRow = indexPathRow
         sp.sequence = sequence
-        self.present(sp, animated: true, completion: nil)
+        present(sp, animated: true, completion: nil)
     }
 }

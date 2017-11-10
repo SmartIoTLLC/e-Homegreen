@@ -56,11 +56,11 @@ extension PopOverViewController: UITableViewDelegate, UITableViewDataSource{
             if let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: PullDownViewTwoRowsCell())) as? PullDownViewTwoRowsCell {
                 
                 cell.tableItemName.text = popOverList[indexPath.row].name
-                cell.tableItemDescription.text = popOverList[(indexPath as NSIndexPath).row].id
+                cell.tableItemDescription.text = popOverList[indexPath.row].id
                 return cell
             }
             
-        }else{
+        } else {
             if let cell = tableView.dequeueReusableCell(withIdentifier: "pullCell") as? PullDownViewCell {
                 cell.tableItem.text = popOverList[indexPath.row].name
                 return cell
@@ -73,7 +73,7 @@ extension PopOverViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.dismiss(animated: true, completion: nil)
-        delegate?.nameAndId(popOverList[(indexPath as NSIndexPath).row].name, id: popOverList[(indexPath as NSIndexPath).row].id)
+        delegate?.nameAndId(popOverList[indexPath.row].name, id: popOverList[indexPath.row].id)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

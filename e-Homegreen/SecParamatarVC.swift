@@ -43,20 +43,23 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
         
         appDel = UIApplication.shared.delegate as! AppDelegate
         
+        setupViews()
+    }
+    
+    func setupViews() {
         popUpTextView.text = security.securityDescription
         popUpTextView.delegate = self
         textViewDidChange(popUpTextView)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(SecParamatarVC.handleTap(_:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-
     }
     
     override func viewWillLayoutSubviews() {
-        if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
+        if UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight {
             centarY.constant = -80
-        }else{
+        } else {
             centarY.constant = -60
         }
     }
@@ -64,16 +67,16 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
     @IBAction func btnUpdate(_ sender: AnyObject) {
         if popUpTextView.text != "" {
             security.securityDescription = popUpTextView.text
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             self.dismiss(animated: true, completion: nil)
         }
     }
     
     func keyboardWillShow(_ notification: Notification) {
-        var info = (notification as NSNotification).userInfo!
+        let info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        if popUpTextView.isFirstResponder{
-            if popUpView.frame.origin.y + popUpView.frame.size.height > self.view.frame.size.height - keyboardFrame.size.height{
+        if popUpTextView.isFirstResponder {
+            if popUpView.frame.origin.y + popUpView.frame.size.height > self.view.frame.size.height - keyboardFrame.size.height {
                 
                 self.centarY.constant = -50
                 
@@ -88,7 +91,7 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
         let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
         var newFrame = textView.frame
         newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
-        if newFrame.size.height + 60 < 190{
+        if newFrame.size.height + 60 < 190 {
             textView.frame = newFrame
             popUpViewHeight.constant = textView.frame.size.height + 60
         }
@@ -101,9 +104,7 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: popUpView){
-            return false
-        }
+        if touch.view!.isDescendant(of: popUpView) { return false }
         return true
     }
     
@@ -164,12 +165,7 @@ extension SecParamatarVC : UIViewControllerTransitioningDelegate {
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+        if dismissed == self { return self } else { return nil }
     }
     
 }

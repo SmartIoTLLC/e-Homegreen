@@ -44,11 +44,10 @@ class DatabaseUserController: NSObject {
         }
         return nil
     }
+    
     func setUser(_ url:String?) -> Bool{
         prefs.setValue(url, forKey: Login.User)
-        if let _ = prefs.value(forKey: Login.User){
-            return true
-        }
+        if let _ = prefs.value(forKey: Login.User) { return true }
         return false
         
     }
@@ -58,11 +57,10 @@ class DatabaseUserController: NSObject {
         
         do {
             let fetResults = try appDel.managedObjectContext?.fetch(fetchRequest) as? [User]
-            return fetResults
+            return fetResults ?? []
             
-        } catch  {
-            
-        }
+        } catch {}
+        
         return []
     }
     
@@ -76,58 +74,49 @@ class DatabaseUserController: NSObject {
         fetchRequest.predicate = compoundPredicate
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [User]
-            if fetResults?.count != 0{
-                return fetResults?[0]
-            }else{
-                return nil
-            }
+            if fetResults?.count != 0 { return fetResults?[0]
+            } else { return nil }
             
-            
-        } catch  {
-            
-        }
+        } catch {}
+        
         return nil
     }
     
-    func isLogged() -> Bool{
+    func isLogged() -> Bool {
         return prefs.bool(forKey: Login.IsLoged)
     }
     
-    func loginUser(){
+    func loginUser() {
         prefs.setValue(true, forKey: Login.IsLoged)
     }
 
-    func logoutUser(){    
+    func logoutUser() {
         prefs.setValue(false, forKey: Login.IsLoged)
     }
     
-    func getAllUsers() -> [User]? {
+    func getAllUsers() -> [User] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = User.fetchRequest()
         let sortDescriptorOne = NSSortDescriptor(key: "username", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorOne]
+        
         do {
             let fetResults = try appDel.managedObjectContext?.fetch(fetchRequest) as? [User]
-            return fetResults
-        } catch  {
-            
-        }
+            return fetResults ?? []
+        } catch {}
+        
         return []
     }
     
-    func removeUser(user: User){
+    func removeUser(user: User) {
         appDel.managedObjectContext?.delete(user)
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
-    func logedUserOrAdmin() -> User?{
+    func logedUserOrAdmin() -> User? {
         if AdminController.shared.isAdminLogged(){
-            if let user = DatabaseUserController.shared.getOtherUser(){
-                return user
-            }
-        }else{
-            if let user = DatabaseUserController.shared.getLoggedUser(){
-                return user
-            }
+            if let user = DatabaseUserController.shared.getOtherUser() { return user }
+        } else {
+            if let user = DatabaseUserController.shared.getLoggedUser() { return user }
         }
         return nil
     }

@@ -97,7 +97,7 @@
                         <rightBarButtonItems>
                             <barButtonItem style="plain" id="fZo-nX-c4s">
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="745-yK-4Ty">
-                                    <rect key="frame" x="329" y="7" width="30" height="30"/>
+                                    <rect key="frame" x="329" y="9" width="30" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <state key="normal" image="add sign"/>
                                     <connections>
@@ -107,7 +107,7 @@
                             </barButtonItem>
                             <barButtonItem style="plain" id="Pm0-9P-Px9">
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="s8f-JO-K5y">
-                                    <rect key="frame" x="291" y="7" width="30" height="30"/>
+                                    <rect key="frame" x="291" y="9" width="30" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <state key="normal" image="full screen"/>
                                     <connections>
@@ -257,7 +257,7 @@
                     <navigationItem key="navigationItem" id="8Mb-5c-XH5">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="hob-4d-qBr">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="vfE-j2-Y4T">
-                                <rect key="frame" x="329" y="7" width="30" height="30"/>
+                                <rect key="frame" x="329" y="9" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="full screen"/>
                                 <connections>

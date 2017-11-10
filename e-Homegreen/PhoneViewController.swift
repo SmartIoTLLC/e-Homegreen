@@ -23,6 +23,8 @@ class PhoneViewController: UIViewController {
     let usersContactStorage = CNContactStore()
     var contactsList = [CNContact]()
     
+    var dismissGesture: UITapGestureRecognizer!
+    
     @IBOutlet weak var background: UIImageView!
     
     @IBOutlet weak var microphoneView: UIView!
@@ -31,38 +33,64 @@ class PhoneViewController: UIViewController {
     
     var speechRecognitionTimeout: Foundation.Timer?
     var speechTimeoutInterval: TimeInterval = 2 {
-        didSet {
-            restartSpeechTimeout()
-        }
+        didSet { restartSpeechTimeout() }
     }
     
-    func setupMicrophoneView() {
-        microphoneView.layer.cornerRadius = 5
-        microphoneView.backgroundColor = Colors.AndroidGrayColor.withAlphaComponent(0.8)
-        microphoneView.isHidden = true
-
-        micImage.image = #imageLiteral(resourceName: "18 Media - Microphone - 00")
-        micImage.contentMode = .scaleAspectFit
-
-        micLabel.text = "Speak a contact's name"
-        micLabel.textColor = .white
-        micLabel.font = UIFont(name: "Tahoma", size: 15)
-        micLabel.backgroundColor = .clear
-        micLabel.adjustsFontSizeToFitWidth = true
-        micLabel.textAlignment = .center
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    
+    @IBOutlet weak var fullscreenButton: UIButton!
+    @IBAction func fullscreenButton(_ sender: UIButton) {
+        sender.switchFullscreen()
+    }
+    
+    @IBOutlet weak var makeCallButton: CustomGradientButton!
+    @IBAction func makeCallButton(_ sender: CustomGradientButton) {
+        toggleMic(off: false)
+        recordAndRecognizeSpeech()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupSWRevealViewController(menuButton: menuButton)
+        
+        changeFullscreenImage(fullscreenButton: fullscreenButton)        
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        dismissGesture = UITapGestureRecognizer(target: self, action: #selector(micBackgroundTapped(_:)))
+        
+        requestSpeechAuthorization()
+        updateViews()
     }
     
     func toggleMic(off: Bool) {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.3, animations: {
-                self.microphoneView.isHidden = off
-            })
+                if !off { self.microphoneView.alpha = 1.0 } else { self.microphoneView.alpha = 0.0 }
+            } )
         }
+        if !off { view.addGestureRecognizer(dismissGesture) }
+        if off { view.removeGestureRecognizer(dismissGesture) }
+    }
+    
+    func toggleButtonOnMainThread(button: UIButton, enabled: Bool) {
+        DispatchQueue.main.async { button.isEnabled = enabled }
+    }
+    
+    func micBackgroundTapped(_ gestureRecognizer: UITapGestureRecognizer) {
+        toggleMic(off: true)
+        stopRecording()
     }
     
     func restartSpeechTimeout() {
         speechRecognitionTimeout?.invalidate()
         speechRecognitionTimeout = Foundation.Timer.scheduledTimer(timeInterval: speechTimeoutInterval, target: self, selector: #selector(timedOut), userInfo: nil, repeats: false)
+    }
+    
+    func forceRemoveMic() {
+        DispatchQueue.main.async { self.microphoneView.alpha = 0.0 }
+        view.removeGestureRecognizer(dismissGesture)
     }
     
     func timedOut() {
@@ -76,72 +104,12 @@ class PhoneViewController: UIViewController {
         speechRecognitionTimeout?.invalidate()
         speechRecognitionTimeout = nil
     }
-    
-    @IBOutlet weak var menuButton: UIBarButtonItem!
-    
-    @IBOutlet weak var fullscreenButton: UIButton!
-    @IBAction func fullscreenButton(_ sender: UIButton) {
-        sender.collapseInReturnToNormal(1)
-        if UIApplication.shared.isStatusBarHidden {
-            UIApplication.shared.isStatusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
-        } else {
-            UIApplication.shared.isStatusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        }
-    }
-    
-    @IBOutlet weak var makeCallButton: CustomGradientButton!
-    @IBAction func makeCallButton(_ sender: CustomGradientButton) {
-        toggleMic(off: false)
-//        fetchContacts(recognizedContact: "John")
-        recordAndRecognizeSpeech()
-    }
-    
-    
-    func changeFullScreeenImage(){
-        if UIApplication.shared.isStatusBarHidden {
-            fullscreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        } else {
-            fullscreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if self.revealViewController() != nil {
-            
-            menuButton.target = self.revealViewController()
-            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-            //self.revealViewController().panGestureRecognizer().delegate = self
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            revealViewController().toggleAnimationDuration = 0.5
-            
-            revealViewController().rearViewRevealWidth = 200
-        }
-        
-        changeFullScreeenImage()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        requestSpeechAuthorization()
-        updateViews()
-    }
-    
-    func updateViews() {
-        navigationItem.title = "Phone"
-        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: .default)
-        
-        setupMicrophoneView()
-    }
 
     func recordAndRecognizeSpeech() {
         
         guard let node = audioEngine.inputNode else {
             hideToastActivityOnMainThread()
-            self.toggleMic(off: false)
+            self.forceRemoveMic()
             self.makeToastOnMainThread(message: "Audio engine failed.")
             return
         }
@@ -157,31 +125,31 @@ class PhoneViewController: UIViewController {
             try audioEngine.start()
         } catch let error as NSError {
             hideToastActivityOnMainThread()
-            self.toggleMic(off: false)
+            self.forceRemoveMic()
             makeToastOnMainThread(message: "Audio engine failed.")
             return print(error)
         }
         
         guard let myRecognizer = SFSpeechRecognizer() else {
             hideToastActivityOnMainThread()
-            toggleMic(off: true)
+            self.forceRemoveMic()
             makeToastOnMainThread(message: "Speech recognition failed.")
-            return }
+            node.removeTap(onBus: 0)
+            return
+        }
         
         if !myRecognizer.isAvailable {
             hideToastActivityOnMainThread()
-            toggleMic(off: true)
+            self.forceRemoveMic()
             makeToastOnMainThread(message: "Speech recognition failed.")
+            node.removeTap(onBus: 0)
             return
         }
         
         recognitionTask = speechRecognizer?.recognitionTask(with: request, resultHandler: { (result, error) in
             var isFinal: Bool = false
             
-            if let result = result {
-                print("Speech recognition result: ", result.bestTranscription.formattedString)                
-                isFinal = result.isFinal
-            }
+            if let result = result { isFinal = result.isFinal }
             
             if error != nil || isFinal {
                 self.audioEngine.stop()
@@ -197,12 +165,7 @@ class PhoneViewController: UIViewController {
                 self.toggleMic(off: true)
                 self.fetchContacts(recognizedContact: recognizedContact!)
             } else {
-                if error == nil {
-                    self.restartSpeechTimeout()
-                } else {
-                    self.toggleMic(off: true)
-                    self.makeToastOnMainThread(message: "Something went wrong. Please try again.")
-                }
+                if error == nil { self.restartSpeechTimeout() } else { self.toggleMic(off: true) }
             }
             
         })
@@ -211,37 +174,24 @@ class PhoneViewController: UIViewController {
     func requestSpeechAuthorization() {
         SFSpeechRecognizer.requestAuthorization { (authStatus) in
             switch authStatus {
-            case .authorized:
-                //staviti na main thread
-                self.makeCallButton.isEnabled = true
-                self.requestContactsAuthorization()
-            case .denied:
-                self.makeToastOnMainThread(message: "Please go to your Privacy Settings and provide us access to Speech Recognition.")
-                self.makeCallButton.isEnabled = false
-            case .notDetermined:
-                self.makeCallButton.isEnabled = false
-            case .restricted:
-                self.makeCallButton.isEnabled = false
+            case .authorized: self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: true); self.requestContactsAuthorization()
+            case .denied: self.makeToastOnMainThread(message: "Please go to your Privacy Settings and provide us access to Speech Recognition."); self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
+            case .notDetermined: self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
+            case .restricted: self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
             }
         }
     }
     
     func makeToastOnMainThread(message: String) {
-        DispatchQueue.main.async {
-            self.view.makeToast(message: message)
-        }
+        DispatchQueue.main.async { self.view.makeToast(message: message) }
     }
     
     func makeToastActivityOnMainThread() {
-        DispatchQueue.main.async {
-            self.view.makeToastActivity()
-        }
+        DispatchQueue.main.async { self.view.makeToastActivity() }
     }
     
     func hideToastActivityOnMainThread() {
-        DispatchQueue.main.async {
-            self.view.hideToastActivity()
-        }
+        DispatchQueue.main.async { self.view.hideToastActivity() }
     }
     
     func requestContactsAuthorization() {
@@ -249,15 +199,10 @@ class PhoneViewController: UIViewController {
         let authStatus = CNContactStore.authorizationStatus(for: .contacts)
         
         switch authStatus {
-        case .authorized:
-            self.makeCallButton.isEnabled = true
-        case .denied:
-            self.makeToastOnMainThread(message: "Please go to your Privacy Settings and provide us access to Contacts.")
-            self.makeCallButton.isEnabled = false
-        case .notDetermined:
-            self.makeCallButton.isEnabled = false
-        case .restricted:
-            self.makeCallButton.isEnabled = false
+        case .authorized: self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: true)
+        case .denied: self.makeToastOnMainThread(message: "Please go to your Privacy Settings and provide us access to Contacts."); self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
+        case .notDetermined: self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
+        case .restricted: self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
         }
     }
     
@@ -298,30 +243,62 @@ class PhoneViewController: UIViewController {
     }
 
     
-    func callContact(number: String) {
-        var formattedNumber = ""
-        for c in number.characters {
-            if ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].contains(c) {
-                formattedNumber += String(describing: c)
-            }
-        }
-        if let num = URL(string: "tel:\(formattedNumber)") {
-            UIApplication.shared.open(num, options: [:], completionHandler: nil)
-        }
-    }
+
 
 }
 
+// MARK : - Utility
 extension String {
     
     func cutToThreeCharachters() -> String {
         var newString = ""
         for c in self.characters {
-            if newString.characters.count < 4 {
-                newString.append(c)
-            }
+            if newString.count < 4 { newString.append(c) }
         }
         return newString
     }
     
+}
+
+extension PhoneViewController {
+    
+    func callContact(number: String) {
+        var formattedNumber = ""
+        for c in number.characters {
+            if ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].contains(c) { formattedNumber += String(describing: c) }
+        }
+        
+        if let num = URL(string: "tel:\(formattedNumber)") {
+            UIApplication.shared.open(num, options: [:], completionHandler: nil)
+        }
+    }
+}
+
+// MARK : - View setup
+extension PhoneViewController {
+    func setupMicrophoneView() {
+        microphoneView.layer.cornerRadius = 5
+        microphoneView.backgroundColor = .googleMicBackgroundWhite
+        microphoneView.alpha = 0.0
+        microphoneView.addShadows()
+        
+        micImage.image = #imageLiteral(resourceName: "siri_mic")
+        micImage.contentMode = .scaleAspectFit
+        micImage.layer.cornerRadius = micImage.frame.width / 2
+        micImage.layer.masksToBounds = true
+        
+        micLabel.text = "Speak to search"
+        micLabel.textColor = .googleMicTextGreen
+        micLabel.font = UIFont.tahoma(size: 15)
+        micLabel.backgroundColor = .clear
+        micLabel.adjustsFontSizeToFitWidth = true
+        micLabel.textAlignment = .center
+    }
+    
+    func updateViews() {
+        navigationItem.title = "Phone"
+        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: .default)
+        
+        setupMicrophoneView()
+    }
 }

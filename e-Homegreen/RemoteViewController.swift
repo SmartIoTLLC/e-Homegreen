@@ -16,25 +16,15 @@ class RemoteViewController: PopoverVC {
     @IBOutlet weak var addButton: UIButton!
     
     @IBAction func addButton(_ sender: UIButton) {
-        showAddRemoteVC()
+        showAddRemoteVC(filter: filterParametar)
     }
     @IBOutlet weak var fullScreenButton: UIButton!
     @IBAction func fullScreenButton(_ sender: UIButton) {
-        sender.collapseInReturnToNormal(1)
-        if UIApplication.shared.isStatusBarHidden {
-            UIApplication.shared.isStatusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
-        } else {
-            UIApplication.shared.isStatusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-            if scrollView.contentOffset.y != 0 {
-                let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
-                scrollView.setContentOffset(bottomOffset, animated: false)
-            }
-        }
+        sender.switchFullscreen(viewThatNeedsOffset: scrollView)        
     }
     
     var remotes: [RemoteDummy] = []
+    var remotesList: [Remote] = []
     var selectedRemote: RemoteDummy?
     var location: [Location] = []
     
@@ -51,6 +41,15 @@ class RemoteViewController: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupViews()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerRemotes), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loadRemotes), name: Notification.Name(rawValue: NotificationKey.RefreshRemotes), object: nil)
+    }
+    
+    func setupViews() {
+        if #available(iOS 11, *) { headerTitleSubtitleView.layoutIfNeeded() }
+        
         let remote = RemoteDummy(buggerOff: "Dummy")
         remote.columns = 3
         remote.rows = 5
@@ -58,20 +57,20 @@ class RemoteViewController: PopoverVC {
         remote.buttonColor = .red
         remote.buttonShape = "Circle"
         remote.buttonMargins = UIEdgeInsets(top: 25, left: 16, bottom: 20, right: 16)
-        remotes.append(remote)        
-
+        remotes.append(remote)
+        
         remoteCollectionView.reloadData()
         
         UIView.hr_setToastThemeColor(color: .red)
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: .default)
+        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: .default)
         
         remoteCollectionView.delegate = self
         remoteCollectionView.dataSource = self
         
-        scrollView.delegate = self
+        scrollView.filterDelegate = self
         view.addSubview(scrollView)
-        updateScrollViewConstraints()
+        updateConstraints(item: scrollView)
         scrollView.setItem(self.view)
         
         navigationItem.titleView = headerTitleSubtitleView
@@ -81,24 +80,14 @@ class RemoteViewController: PopoverVC {
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         scrollView.setFilterItem(Menu.remote)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerRemotes), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.revealViewController().delegate = self
+        revealViewController().delegate = self
+        setupSWRevealViewController(menuButton: menuButton)
         
-        if self.revealViewController() != nil {
-            menuButton.target = self.revealViewController()
-            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            revealViewController().toggleAnimationDuration = 0.5
-            
-            revealViewController().rearViewRevealWidth = 200
-            
-        }
-        
-        changeFullScreeenImage()
+        changeFullscreenImage(fullscreenButton: fullScreenButton)
+        toggleAddButton()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -107,26 +96,18 @@ class RemoteViewController: PopoverVC {
     }
     
     override func viewWillLayoutSubviews() {
-        if scrollView.contentOffset.y != 0 {
-            let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
-            scrollView.setContentOffset(bottomOffset, animated: false)
-        }
-        scrollView.bottom.constant = -(self.view.frame.height - 2)
-        
-        if UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight {
-            headerTitleSubtitleView.setLandscapeTitle()
-        } else {
-            headerTitleSubtitleView.setPortraitTitle()
-        }
-        
-        var size: CGSize = CGSize()
-        CellSize.calculateCellSize(&size, screenWidth: self.view.frame.size.width)
-        collectionViewCellSize = size
-        remoteCollectionView.reloadData()
+        setContentOffset(for: scrollView)
+        setTitleView(view: headerTitleSubtitleView)
+        collectionViewCellSize = calculateCellSize(completion: { remoteCollectionView.reloadData() })
     }
     
-    func updateSubtitle() {
-        headerTitleSubtitleView.setTitleAndSubtitle("Remote", subtitle: filterParametar.location + " " + filterParametar.levelName + " " + filterParametar.zoneName)
+    
+    override func nameAndId(_ name: String, id: String) {
+        scrollView.setButtonTitle(name, id: id)
+    }
+    
+    func toggleAddButton() {
+        if filterParametar.location != "All" { addButton.isEnabled = true } else { addButton.isEnabled = false }
     }
     
     func setDefaultFilterFromTimer() {
@@ -140,22 +121,8 @@ class RemoteViewController: PopoverVC {
         }
     }
     
-    func updateScrollViewConstraints() {
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: 1.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1.0, constant: 1.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1.0, constant: 1.0))
-        view.addConstraint(NSLayoutConstraint(item: scrollView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1.0, constant: 1.0))
-    }
-    
-    func changeFullScreeenImage(){
-        if UIApplication.shared.isStatusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
-        }
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if segue.identifier == "toSingleRemote" {
             if let vc: RemoteDetailsViewController = segue.destination as? RemoteDetailsViewController {
                 vc.remote = selectedRemote
@@ -184,6 +151,11 @@ extension RemoteViewController: UICollectionViewDataSource {
         }
         
         return UICollectionViewCell()
+    }
+    
+    func loadRemotes() {
+        //remotesList = DatabaseRemoteController.sharedInstance.getRemotes(filterParametar)
+        remoteCollectionView.reloadData()
     }
     
     
@@ -217,30 +189,26 @@ extension RemoteViewController: FilterPullDownDelegate {
     func filterParametars(_ filterItem: FilterItem) {
         filterParametar = filterItem
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.remote)
-        updateSubtitle()
+        updateSubtitle(headerTitleSubtitleView, title: "Remote", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        loadRemotes()
         // TODO:  Refresh remotes
         TimerForFilter.shared.counterRemote = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.remote)
         TimerForFilter.shared.startTimer(type: Menu.remote)
+        toggleAddButton()
     }
     
     func saveDefaultFilter() {
-        self.view.makeToast(message: "Default filter parametar saved!")
+        view.makeToast(message: "Default filter parametar saved!")
     }
 }
 
 extension RemoteViewController: SWRevealViewControllerDelegate {
-    func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
-        if(position == FrontViewPosition.left) {
-            remoteCollectionView.isUserInteractionEnabled = true
-        } else {
-            remoteCollectionView.isUserInteractionEnabled = false
-        }
+    
+    func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition) {
+        if position == .left { remoteCollectionView.isUserInteractionEnabled = true } else { remoteCollectionView.isUserInteractionEnabled = false }
     }
-    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
-        if(position == FrontViewPosition.left) {
-            remoteCollectionView.isUserInteractionEnabled = true
-        } else {
-            remoteCollectionView.isUserInteractionEnabled = false
-        }
+    
+    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition) {
+        if position == .left { remoteCollectionView.isUserInteractionEnabled = true } else { remoteCollectionView.isUserInteractionEnabled = false }
     }
 }

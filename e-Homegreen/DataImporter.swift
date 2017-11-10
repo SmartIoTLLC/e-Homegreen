@@ -24,7 +24,7 @@ class DataImporter {
                 string = string!.replacingOccurrences(of: "\u{201D}", with: "\"") as NSString?
                 let dataFormatted = string?.data(using: String.Encoding.utf8.rawValue)
                 let file = try JSONSerialization.jsonObject(with: dataFormatted!, options: []) as! JSONDictionary
-                print(file["Zones"])
+                print("\(String(describing: file["Zones"]))")
                 if let zonesDictionary = file["Zones"] as? [JSONDictionary] {
                     var zones:[ZoneJSON] = []
                     for zone in zonesDictionary {
@@ -34,7 +34,7 @@ class DataImporter {
                 }
             } catch let error1 as NSError {
                 jsonError = error1
-                print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
+                print("Unresolved error \(String(describing: jsonError)), \(jsonError!.userInfo)")
 //                abort()
             }
             return nil
@@ -59,7 +59,7 @@ class DataImporter {
                     string = string!.replacingOccurrences(of: "\u{201D}", with: "\"") as NSString?
                     let dataFormatted = string?.data(using: String.Encoding.utf8.rawValue)
                     let file = try JSONSerialization.jsonObject(with: dataFormatted!, options: []) as! JSONDictionary
-                    print(file["Zones"])
+                    print("\(String(describing: file["Zones"]))")
                     if let zonesDictionary = file["Zones"] as? [JSONDictionary] {
                         var zones:[ZoneJSON] = []
                         for zone in zonesDictionary {
@@ -69,7 +69,7 @@ class DataImporter {
                     }
                 } catch let error1 as NSError {
                     jsonError = error1
-                    print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
+                    print("Unresolved error \(String(describing: jsonError)), \(jsonError!.userInfo)")
 //                    abort()
                 }
                 return nil
@@ -95,7 +95,7 @@ class DataImporter {
                 string = string!.replacingOccurrences(of: "\u{201D}", with: "\"") as NSString?
                 let dataFormatted = string?.data(using: String.Encoding.utf8.rawValue)
                 let file = try JSONSerialization.jsonObject(with: dataFormatted!, options: []) as! JSONDictionary
-                print(file["Categories"])
+                print("\(String(describing: file["Categories"]))")
                 if let categoriesDictionary = file["Categories"] as? [JSONDictionary] {
                     var categories:[CategoryJSON] = []
                     for category in categoriesDictionary {
@@ -112,7 +112,7 @@ class DataImporter {
                 }
             } catch let error1 as NSError {
                 jsonError = error1
-                print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
+                print("Unresolved error \(String(describing: jsonError)), \(jsonError!.userInfo)")
 //                abort()
             }
             return nil
@@ -138,7 +138,7 @@ class DataImporter {
                     string = string!.replacingOccurrences(of: "\u{201D}", with: "\"") as NSString?
                     let dataFormatted = string?.data(using: String.Encoding.utf8.rawValue)
                     let file = try JSONSerialization.jsonObject(with: dataFormatted!, options: []) as! JSONDictionary
-                    print(file["Categories"])
+                    print("\(String(describing: file["Categories"]))")
                     if let categoriesDictionary = file["Categories"] as? [JSONDictionary] {
                         var categories:[CategoryJSON] = []
                         for category in categoriesDictionary {
@@ -155,7 +155,7 @@ class DataImporter {
                     }
                 } catch let error1 as NSError {
                     jsonError = error1
-                    print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
+                    print("Unresolved error \(String(describing: jsonError)), \(jsonError!.userInfo)")
 //                    abort()
                 }
                 return nil
@@ -182,7 +182,7 @@ class DataImporter {
                 string = string!.replacingOccurrences(of: "\u{201D}", with: "\"") as NSString?
                 let dataFormatted = string?.data(using: String.Encoding.utf8.rawValue)
                 let file = try JSONSerialization.jsonObject(with: dataFormatted!, options: []) as! JSONDictionary
-                print(file["Securities"])
+                print("\(String(describing: file["Securities"]))")
                 if let securitiesDictionary = file["Securities"] as? [JSONDictionary] {
                     var securities:[SecurityJSON] = []
                     for security in securitiesDictionary {
@@ -192,7 +192,7 @@ class DataImporter {
                 }
             } catch let error1 as NSError {
                 jsonError = error1
-                print("Unresolved error \(jsonError), \(jsonError!.userInfo)")
+                print("Unresolved error \(String(describing: jsonError)), \(jsonError!.userInfo)")
 //                abort()
             }
             return nil

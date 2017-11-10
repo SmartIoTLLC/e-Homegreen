@@ -41,11 +41,7 @@ class LeftCustomButtom: UIButton {
         pathButton.addLine(to: point3)
         pathButton.close()
         
-        if pathButton.contains(point){
-            return self
-        }else{
-            return nil
-        }
+        if pathButton.contains(point) { return self } else { return nil }
     }
     
     override var isHighlighted: Bool {

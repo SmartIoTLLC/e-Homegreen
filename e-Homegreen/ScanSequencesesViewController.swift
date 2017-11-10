@@ -54,7 +54,13 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
         super.viewDidLoad()
         
         refreshSequenceList()
+        setupViews()
         
+        // Notification that tells us that timer is received and stored
+        NotificationCenter.default.addObserver(self, selector: #selector(nameReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveSequenceFromGateway), object: nil)
+    }
+    
+    func setupViews() {
         devAddressThree.inputAccessoryView = CustomToolBar()
         IDedit.inputAccessoryView = CustomToolBar()
         editCycle.inputAccessoryView = CustomToolBar()
@@ -83,9 +89,6 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
         btnLevel.tag = 1
         btnZone.tag = 2
         btnCategory.tag = 3
-        
-        // Notification that tells us that timer is received and stored
-        NotificationCenter.default.addObserver(self, selector: #selector(ScanSequencesesViewController.nameReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveSequenceFromGateway), object: nil)
     }
     
     override func sendFilterParametar(_ filterParametar: FilterItem) {
@@ -120,11 +123,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     }
     
     func changeValue (_ sender:UISwitch){
-        if sender.tag == 100 {
-            localcastSwitch.isOn = false
-        } else if sender.tag == 200 {
-            broadcastSwitch.isOn = false
-        }
+        if sender.tag == 100 { localcastSwitch.isOn = false } else if sender.tag == 200 { broadcastSwitch.isOn = false }
     }
     
     func refreshSequenceList() {
@@ -132,11 +131,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
         if !searchBarText.isEmpty{
             sequences = self.sequences.filter() {
                 sequence in
-                if sequence.sequenceName.lowercased().range(of: searchBarText.lowercased()) != nil{
-                    return true
-                }else{
-                    return false
-                }
+                if sequence.sequenceName.lowercased().range(of: searchBarText.lowercased()) != nil { return true } else { return false }
             }
         }
         sequencesTableView.reloadData()
@@ -152,9 +147,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(gateway.location)
-        for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
-        }
+        for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
         popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
@@ -163,9 +156,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(gateway.location)
-        for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
-        }
+        for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
         
         popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
@@ -176,9 +167,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
         var popoverList:[PopOverItem] = []
         if let level = level{
             let list:[Zone] = DatabaseZoneController.shared.getZoneByLevel(gateway.location, parentZone: level)
-            for item in list {
-                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
-            }
+            for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
         }
         
         popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
@@ -190,23 +179,19 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
             if sequenceId <= 32767 && address <= 255 {
                 
                 var levelId:Int?
-                if let levelIdNumber = level?.id{
-                    levelId = Int(levelIdNumber)
-                }
+                if let levelIdNumber = level?.id { levelId = Int(levelIdNumber) }
+                
                 var zoneId:Int?
-                if let zoneIdNumber = zoneSelected?.id{
-                    zoneId = Int(zoneIdNumber)
-                }
+                if let zoneIdNumber = zoneSelected?.id { zoneId = Int(zoneIdNumber) }
+                
                 var categoryId:Int?
-                if let categoryIdNumber = category?.id{
-                    categoryId = Int(categoryIdNumber)
-                }
+                if let categoryIdNumber = category?.id { categoryId = Int(categoryIdNumber) }
                 
                 DatabaseSequencesController.shared.createSequence(sequenceId, sequenceName: sequenceName, moduleAddress: address, gateway: gateway, levelId: levelId, zoneId: zoneId, categoryId: categoryId, isBroadcast: broadcastSwitch.isOn, isLocalcast: localcastSwitch.isOn, sceneImageOneDefault: defaultImageOne, sceneImageTwoDefault: defaultImageTwo, sceneImageOneCustom: customImageOne, sceneImageTwoCustom: customImageTwo, imageDataOne: imageDataOne, imageDataTwo: imageDataTwo, sequenceCycles: cycles)
             }
             refreshSequenceList()
-            self.view.endEditing(true)
-        }else{
+            dismissEditing()
+        } else {
             self.view.makeToast(message: "Please check fields: name, id and address")
         }
     }
@@ -225,7 +210,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
             if action == ReturnedValueFromAlertView.delete{
                 DatabaseSequencesController.shared.deleteAllSequences(self.gateway)
                 self.refreshSequenceList()
-                self.view.endEditing(true)
+                dismissEditing()
             }
         }
     }
@@ -244,76 +229,46 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     
     // Gets all input parameters and prepares everything for scanning, and initiates scanning.
     func findSequences() {
-            arrayOfSequencesToBeSearched = [Int]()
-            indexOfSequencesToBeSearched = 0
-            
-            guard let address1Text = devAddressOne.text else{
-                return
-            }
-            guard let address1 = Int(address1Text) else{
-                return
-            }
-            addressOne = address1
-            
-            guard let address2Text = devAddressTwo.text else{
-                return
-            }
-            guard let address2 = Int(address2Text) else{
-                return
-            }
-            addressTwo = address2
-            
-            guard let address3Text = devAddressThree.text else{
-                self.view.makeToast(message: "Address can't be empty")
-                return
-            }
-            guard let address3 = Int(address3Text) else{
-                self.view.makeToast(message: "Address can be only number")
-                return
-            }
-            addressThree = address3
-            guard let rangeFromText = fromTextField.text else{
-                self.view.makeToast(message: "Address can't be empty")
-                return
-            }
-            
-            guard let rangeFrom = Int(rangeFromText) else{
-                self.view.makeToast(message: "Address can be only number")
-                return
-            }
-            let from = rangeFrom
-            
-            guard let rangeToText = toTextField.text else{
-                self.view.makeToast(message: "Address can't be empty")
-                return
-            }
-            
-            guard let rangeTo = Int(rangeToText) else{
-                self.view.makeToast(message: "Address can be only number")
-                return
-            }
-            let to = rangeTo
-            
-            if rangeTo < rangeFrom {
-                self.view.makeToast(message: "Range is not properly set")
-                return
-            }
-            for i in from...to{
-                arrayOfSequencesToBeSearched.append(i)
-            }
-            
-            UIApplication.shared.isIdleTimerDisabled = true
-            if arrayOfSequencesToBeSearched.count != 0{
-                let firstSequenceIndexThatDontHaveName = arrayOfSequencesToBeSearched[indexOfSequencesToBeSearched]
-                timesRepeatedCounter = 0
-                progressBarScreenSequences = ProgressBarVC(title: "Finding name", percentage: Float(1)/Float(arrayOfSequencesToBeSearched.count), howMuchOf: "1 / \(arrayOfSequencesToBeSearched.count)")
-                progressBarScreenSequences?.delegate = self
-                self.present(progressBarScreenSequences!, animated: true, completion: nil)
-                sequencesTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanSequencesesViewController.checkIfSequenceDidGetName(_:)), userInfo: firstSequenceIndexThatDontHaveName, repeats: false)
-                NSLog("func findNames \(firstSequenceIndexThatDontHaveName)")
-                Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningSequencesNameAndParameters)
-                sendCommandWithSequenceAddress(firstSequenceIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
-            }
+        arrayOfSequencesToBeSearched = [Int]()
+        indexOfSequencesToBeSearched = 0
+        
+        guard let address1Text = devAddressOne.text else { return }
+        guard let address1 = Int(address1Text) else { return }
+        addressOne = address1
+        
+        guard let address2Text = devAddressTwo.text else { return }
+        guard let address2 = Int(address2Text) else { return }
+        addressTwo = address2
+        
+        guard let address3Text = devAddressThree.text else { self.view.makeToast(message: "Address can't be empty"); return }
+        guard let address3 = Int(address3Text) else { self.view.makeToast(message: "Address can be only number"); return }
+        addressThree = address3
+        
+        guard let rangeFromText = fromTextField.text else { self.view.makeToast(message: "Address can't be empty"); return }
+        
+        guard let rangeFrom = Int(rangeFromText) else { self.view.makeToast(message: "Address can be only number"); return }
+        let from = rangeFrom
+        
+        guard let rangeToText = toTextField.text else { self.view.makeToast(message: "Address can't be empty"); return }
+        
+        guard let rangeTo = Int(rangeToText) else { self.view.makeToast(message: "Address can be only number"); return }
+        let to = rangeTo
+        
+        if rangeTo < rangeFrom { self.view.makeToast(message: "Range is not properly set"); return }
+        for i in from...to { arrayOfSequencesToBeSearched.append(i) }
+        
+        UIApplication.shared.isIdleTimerDisabled = true
+        if arrayOfSequencesToBeSearched.count != 0 {
+            let firstSequenceIndexThatDontHaveName = arrayOfSequencesToBeSearched[indexOfSequencesToBeSearched]
+            timesRepeatedCounter = 0
+            progressBarScreenSequences = ProgressBarVC(title: "Finding name", percentage: Float(1)/Float(arrayOfSequencesToBeSearched.count), howMuchOf: "1 / \(arrayOfSequencesToBeSearched.count)")
+            progressBarScreenSequences?.delegate = self
+            self.present(progressBarScreenSequences!, animated: true, completion: nil)
+            sequencesTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanSequencesesViewController.checkIfSequenceDidGetName(_:)), userInfo: firstSequenceIndexThatDontHaveName, repeats: false)
+            NSLog("func findNames \(firstSequenceIndexThatDontHaveName)")
+            Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningSequencesNameAndParameters)
+            sendCommandWithSequenceAddress(firstSequenceIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+        }
     }
     // Called from findSequences or from it self.
     // Checks which sequence ID should be searched for and calls sendCommandWithSequenceAddress for that specific sequence id.
@@ -322,27 +277,26 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
         // If three times reached, search for next timer ID if it exists
-        guard let sequenceIndex = timer.userInfo as? Int else{
-            return
-        }
+        guard let sequenceIndex = timer.userInfo as? Int else { return }
+        
         timesRepeatedCounter += 1
         if timesRepeatedCounter < 3 {
             sequencesTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanSequencesesViewController.checkIfSequenceDidGetName(_:)), userInfo: sequenceIndex, repeats: false)
             NSLog("func checkIfSceneDidGetName \(sequenceIndex)")
             sendCommandWithSequenceAddress(sequenceIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
-        }else{
+        } else {
             if let indexOfSequenceIndexInArrayOfNamesToBeSearched = arrayOfSequencesToBeSearched.index(of: sequenceIndex){ // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
-                if indexOfSequencesToBeSearched+1 < arrayOfSequencesToBeSearched.count{ // if next exists
-                    indexOfSequencesToBeSearched = indexOfSequenceIndexInArrayOfNamesToBeSearched+1
+                if indexOfSequencesToBeSearched + 1 < arrayOfSequencesToBeSearched.count{ // if next exists
+                    indexOfSequencesToBeSearched = indexOfSequenceIndexInArrayOfNamesToBeSearched + 1
                     let nextSceneIndexToBeSearched = arrayOfSequencesToBeSearched[indexOfSequencesToBeSearched]
                     timesRepeatedCounter = 0
                     sequencesTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanSequencesesViewController.checkIfSequenceDidGetName(_:)), userInfo: nextSceneIndexToBeSearched, repeats: false)
                     NSLog("func checkIfSceneDidGetName \(nextSceneIndexToBeSearched)")
                     sendCommandWithSequenceAddress(nextSceneIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
-                }else{
+                } else {
                     dismissScaningControls()
                 }
-            }else{
+            } else {
                 dismissScaningControls()
             }
         }
@@ -351,26 +305,20 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     // Checks whether there is next sequence ID to search for. If there is not, dismiss progres bar and end the search.
     func nameReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningSequencesNameAndParameters) {
-            guard let info = (notification as NSNotification).userInfo! as? [String:Int] else{
-                return
-            }
-            guard let timerIndex = info["sequenceId"] else{
-                return
-            }
-            guard let indexOfSequenceIndexInArrayOfNamesToBeSearched = arrayOfSequencesToBeSearched.index(of: timerIndex) else{ // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
-                return
-            }
+            guard let info = notification.userInfo! as? [String:Int] else { return }
+            guard let timerIndex = info["sequenceId"] else { return }
+            guard let indexOfSequenceIndexInArrayOfNamesToBeSearched = arrayOfSequencesToBeSearched.index(of: timerIndex) else{ return } // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
             
-            if indexOfSequenceIndexInArrayOfNamesToBeSearched+1 < arrayOfSequencesToBeSearched.count{ // if next exists
-                indexOfSequencesToBeSearched = indexOfSequenceIndexInArrayOfNamesToBeSearched+1
+            if indexOfSequenceIndexInArrayOfNamesToBeSearched + 1 < arrayOfSequencesToBeSearched.count { // if next exists
+                indexOfSequencesToBeSearched = indexOfSequenceIndexInArrayOfNamesToBeSearched + 1
                 let nextSequenceIndexToBeSearched = arrayOfSequencesToBeSearched[indexOfSequencesToBeSearched]
                 
                 timesRepeatedCounter = 0
                 sequencesTimer?.invalidate()
-                sequencesTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanSequencesesViewController.checkIfSequenceDidGetName(_:)), userInfo: nextSequenceIndexToBeSearched, repeats: false)
+                sequencesTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(checkIfSequenceDidGetName(_:)), userInfo: nextSequenceIndexToBeSearched, repeats: false)
                 NSLog("func nameReceivedFromPLC index:\(index) :deviceIndex\(nextSequenceIndexToBeSearched)")
                 sendCommandWithSequenceAddress(nextSequenceIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
-            }else{
+            } else {
                 dismissScaningControls()
             }
         }
@@ -466,49 +414,9 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "sequencesCell") as? SequencesCell {
-            cell.backgroundColor = UIColor.clear
-            cell.labelID.text = "\(sequences[(indexPath as NSIndexPath).row].sequenceId)"
-            cell.labelName.text = "\(sequences[(indexPath as NSIndexPath).row].sequenceName)"
-            cell.address.text = "\(returnThreeCharactersForByte(Int(sequences[(indexPath as NSIndexPath).row].gateway.addressOne))):\(returnThreeCharactersForByte(Int(sequences[(indexPath as NSIndexPath).row].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(sequences[(indexPath as NSIndexPath).row].address)))"
-            if let id = sequences[(indexPath as NSIndexPath).row].sequenceImageOneCustom{
-                if let image = DatabaseImageController.shared.getImageById(id){
-                    if let data =  image.imageData {
-                        cell.imageOne.image = UIImage(data: data)
-                    }else{
-                        if let defaultImage = sequences[(indexPath as NSIndexPath).row].sequenceImageOneDefault{
-                            cell.imageOne.image = UIImage(named: defaultImage)
-                        }
-                    }
-                }else{
-                    if let defaultImage = sequences[(indexPath as NSIndexPath).row].sequenceImageOneDefault{
-                        cell.imageOne.image = UIImage(named: defaultImage)
-                    }
-                }
-            }else{
-                if let defaultImage = sequences[(indexPath as NSIndexPath).row].sequenceImageOneDefault{
-                    cell.imageOne.image = UIImage(named: defaultImage)
-                }
-            }
             
-            if let id = sequences[(indexPath as NSIndexPath).row].sequenceImageTwoCustom{
-                if let image = DatabaseImageController.shared.getImageById(id){
-                    if let data =  image.imageData {
-                        cell.imageTwo.image = UIImage(data: data)
-                    }else{
-                        if let defaultImage = sequences[(indexPath as NSIndexPath).row].sequenceImageTwoDefault{
-                            cell.imageTwo.image = UIImage(named: defaultImage)
-                        }
-                    }
-                }else{
-                    if let defaultImage = sequences[(indexPath as NSIndexPath).row].sequenceImageTwoDefault{
-                        cell.imageTwo.image = UIImage(named: defaultImage)
-                    }
-                }
-            }else{
-                if let defaultImage = sequences[(indexPath as NSIndexPath).row].sequenceImageTwoDefault{
-                    cell.imageTwo.image = UIImage(named: defaultImage)
-                }
-            }
+            cell.setCell(sequence: sequences[indexPath.row])
+            
             return cell
         }
         
@@ -518,79 +426,8 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        IDedit.text = "\(sequences[(indexPath as NSIndexPath).row].sequenceId)"
-        nameEdit.text = "\(sequences[(indexPath as NSIndexPath).row].sequenceName)"
-        devAddressThree.text = "\(returnThreeCharactersForByte(Int(sequences[(indexPath as NSIndexPath).row].address)))"
-        editCycle.text = "\(sequences[(indexPath as NSIndexPath).row].sequenceCycles)"
-        broadcastSwitch.isOn = sequences[(indexPath as NSIndexPath).row].isBroadcast.boolValue
-        localcastSwitch.isOn = sequences[(indexPath as NSIndexPath).row].isLocalcast.boolValue
         
-        if let levelId = sequences[(indexPath as NSIndexPath).row].entityLevelId as? Int {
-            level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location)
-            btnLevel.setTitle(level?.name, for: UIControlState())
-        }else{
-            btnLevel.setTitle("All", for: UIControlState())
-        }
-        if let zoneId = sequences[(indexPath as NSIndexPath).row].sequenceZoneId as? Int {
-            zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location)
-            btnZone.setTitle(zoneSelected?.name, for: UIControlState())
-        }else{
-            btnZone.setTitle("All", for: UIControlState())
-        }
-        if let categoryId = sequences[(indexPath as NSIndexPath).row].sequenceCategoryId as? Int {
-            category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location)
-            btnCategory.setTitle(category?.name, for: UIControlState())
-        }else{
-            btnCategory.setTitle("All", for: UIControlState())
-        }
-        
-        defaultImageOne = sequences[(indexPath as NSIndexPath).row].sequenceImageOneDefault
-        customImageOne = sequences[(indexPath as NSIndexPath).row].sequenceImageOneCustom
-        imageDataOne = nil
-        
-        defaultImageTwo = sequences[(indexPath as NSIndexPath).row].sequenceImageTwoDefault
-        customImageTwo = sequences[(indexPath as NSIndexPath).row].sequenceImageTwoCustom
-        imageDataTwo = nil
-        
-        if let id = sequences[(indexPath as NSIndexPath).row].sequenceImageOneCustom{
-            if let image = DatabaseImageController.shared.getImageById(id){
-                if let data =  image.imageData {
-                    imageSceneOne.image = UIImage(data: data)
-                }else{
-                    if let defaultImage = sequences[(indexPath as NSIndexPath).row].sequenceImageOneDefault{
-                        imageSceneOne.image = UIImage(named: defaultImage)
-                    }
-                }
-            }else{
-                if let defaultImage = sequences[(indexPath as NSIndexPath).row].sequenceImageOneDefault{
-                    imageSceneOne.image = UIImage(named: defaultImage)
-                }
-            }
-        }else{
-            if let defaultImage = sequences[(indexPath as NSIndexPath).row].sequenceImageOneDefault{
-                imageSceneOne.image = UIImage(named: defaultImage)
-            }
-        }
-        
-        if let id = sequences[(indexPath as NSIndexPath).row].sequenceImageTwoCustom{
-            if let image = DatabaseImageController.shared.getImageById(id){
-                if let data =  image.imageData {
-                    imageSceneTwo.image = UIImage(data: data)
-                }else{
-                    if let defaultImage = sequences[(indexPath as NSIndexPath).row].sequenceImageTwoDefault{
-                        imageSceneTwo.image = UIImage(named: defaultImage)
-                    }
-                }
-            }else{
-                if let defaultImage = sequences[(indexPath as NSIndexPath).row].sequenceImageTwoDefault{
-                    imageSceneTwo.image = UIImage(named: defaultImage)
-                }
-            }
-        }else{
-            if let defaultImage = sequences[(indexPath as NSIndexPath).row].sequenceImageTwoDefault{
-                imageSceneTwo.image = UIImage(named: defaultImage)
-            }
-        }
+        didSelect(sequence: sequences[indexPath.row])
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -607,10 +444,55 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            DatabaseSequencesController.shared.deleteSequence(sequences[(indexPath as NSIndexPath).row])
-            sequences.remove(at: (indexPath as NSIndexPath).row)
+            DatabaseSequencesController.shared.deleteSequence(sequences[indexPath.row])
+            sequences.remove(at: indexPath.row)
             sequencesTableView.deleteRows(at: [indexPath], with: .fade)
         }
+        
+    }
+    
+    func didSelect(sequence: Sequence) {
+        IDedit.text = "\(sequence.sequenceId)"
+        nameEdit.text = "\(sequence.sequenceName)"
+        devAddressThree.text = "\(returnThreeCharactersForByte(Int(sequence.address)))"
+        editCycle.text = "\(sequence.sequenceCycles)"
+        broadcastSwitch.isOn = sequence.isBroadcast.boolValue
+        localcastSwitch.isOn = sequence.isLocalcast.boolValue
+        
+        if let levelId = sequence.entityLevelId as? Int { level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location); btnLevel.setTitle(level?.name, for: UIControlState())
+        } else { btnLevel.setTitle("All", for: UIControlState()) }
+        
+        if let zoneId = sequence.sequenceZoneId as? Int { zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location); btnZone.setTitle(zoneSelected?.name, for: UIControlState())
+        } else { btnZone.setTitle("All", for: UIControlState()) }
+        
+        if let categoryId = sequence.sequenceCategoryId as? Int { category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location); btnCategory.setTitle(category?.name, for: UIControlState())
+        } else { btnCategory.setTitle("All", for: UIControlState()) }
+        
+        defaultImageOne = sequence.sequenceImageOneDefault
+        customImageOne = sequence.sequenceImageOneCustom
+        imageDataOne = nil
+        
+        defaultImageTwo = sequence.sequenceImageTwoDefault
+        customImageTwo = sequence.sequenceImageTwoCustom
+        imageDataTwo = nil
+        
+        if let id = sequence.sequenceImageOneCustom{
+            if let image = DatabaseImageController.shared.getImageById(id){
+                
+                if let data =  image.imageData { imageSceneOne.image = UIImage(data: data)
+                } else { if let defaultImage = sequence.sequenceImageOneDefault { imageSceneOne.image = UIImage(named: defaultImage) } }
+                
+            } else { if let defaultImage = sequence.sequenceImageOneDefault { imageSceneOne.image = UIImage(named: defaultImage) } }
+        } else { if let defaultImage = sequence.sequenceImageOneDefault { imageSceneOne.image = UIImage(named: defaultImage) } }
+        
+        if let id = sequence.sequenceImageTwoCustom {
+            if let image = DatabaseImageController.shared.getImageById(id) {
+                
+                if let data =  image.imageData { imageSceneTwo.image = UIImage(data: data)
+                } else { if let defaultImage = sequence.sequenceImageTwoDefault{ imageSceneTwo.image = UIImage(named: defaultImage) } }
+                
+            } else { if let defaultImage = sequence.sequenceImageTwoDefault { imageSceneTwo.image = UIImage(named: defaultImage) } }
+        } else { if let defaultImage = sequence.sequenceImageTwoDefault { imageSceneTwo.image = UIImage(named: defaultImage) } }
         
     }
 }

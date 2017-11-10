@@ -51,7 +51,6 @@ class EditZoneViewController: PopoverVC {
         super.viewDidLoad()
         
         idTextField.inputAccessoryView = CustomToolBar()
-//        levelTextField.inputAccessoryView = CustomToolBar()
         
         appDel = UIApplication.shared.delegate as! AppDelegate
         
@@ -68,7 +67,7 @@ class EditZoneViewController: PopoverVC {
             levelButton.setTitle("", for: UIControlState())
             if let id = zoneForEdit.level?.intValue{
                 if id != 0 {
-                    if let level = DatabaseZoneController.shared.getZoneById(id, location: location){
+                    if let level = DatabaseZoneController.shared.getZoneById(id, location: location) {
                         self.level = level
                         levelButton.setTitle(level.name, for: UIControlState())
                     }
@@ -92,9 +91,7 @@ class EditZoneViewController: PopoverVC {
         var popoverList:[PopOverItem] = []
         
         let list:[Zone] = FilterController.shared.getLevelsByLocation(location)
-        for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
-        }
+        for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
         
         popoverList.insert(PopOverItem(name: "", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
@@ -116,35 +113,26 @@ class EditZoneViewController: PopoverVC {
             return fetResults!
         } catch let error1 as NSError {
             error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
+            print("Unresolved error \(String(describing: error)), \(error!.userInfo)")
+           // abort()
         }
         return nil
     }
     
     @IBAction func saveAction(_ sender: AnyObject) {
         
-        guard let name = nameTextField.text , name != "" else{
-            return
-        }
+        guard let name = nameTextField.text , name != "" else { return }
+        guard let idTemp = idTextField.text, let id = Int(idTemp) else { return }
         
-        guard let idTemp = idTextField.text, let id = Int(idTemp) else{
-            return
-        }
-        
-        if editZone == nil{
-            if let zones = fetchZones(id, location: location){
-                if zones != []{
-                    for item in zones{
+        if editZone == nil {
+            if let zones = fetchZones(id, location: location) {
+                if zones != [] {
+                    for item in zones {
                         item.name = name
-                        if let level = level{
-                            item.level = level.id
-                        }else{
-                            item.level = 0
-                        }
+                        if let level = level { item.level = level.id } else { item.level = 0 }
                     }
-                }else{
-                    if let zoneInsert = NSEntityDescription.insertNewObject(forEntityName: "Zone", into: appDel.managedObjectContext!) as? Zone{
+                } else {
+                    if let zoneInsert = NSEntityDescription.insertNewObject(forEntityName: "Zone", into: appDel.managedObjectContext!) as? Zone {
                         zoneInsert.id = id as NSNumber?
                         zoneInsert.name = name
                         zoneInsert.location = location
@@ -152,25 +140,17 @@ class EditZoneViewController: PopoverVC {
                         zoneInsert.allowOption = 1
                         zoneInsert.isVisible = true
                         zoneInsert.zoneDescription = levelTextField.text
-                        if let level = level{
-                            zoneInsert.level = level.id
-                        }else{
-                            zoneInsert.level = 0
-                        }
+                        if let level = level { zoneInsert.level = level.id } else { zoneInsert.level = 0 }
                     }
                 }
             }
-            CoreDataController.shahredInstance.saveChanges()
-        }else{
+            CoreDataController.sharedInstance.saveChanges()
+        } else {
             editZone?.name = name
             editZone?.zoneDescription = levelTextField.text
-            if let level = level{
-                editZone?.level = level.id
-            }else{
-                editZone?.level = 0
-            }
+            if let level = level { editZone?.level = level.id } else { editZone?.level = 0 }
             
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             saveChanges()
         }
         delegate?.editZoneFInished()
@@ -197,10 +177,8 @@ extension EditZoneViewController : UITextFieldDelegate{
 
 extension EditZoneViewController : UIGestureRecognizerDelegate{
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: backView){
-            self.view.endEditing(true)
-            return false
-        }
+        
+        if touch.view!.isDescendant(of: backView) { dismissEditing(); return false }
         return true
     }
 }
@@ -257,12 +235,8 @@ extension EditZoneViewController : UIViewControllerTransitioningDelegate {
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+        
+        if dismissed == self { return self } else { return nil }
     }
     
 }

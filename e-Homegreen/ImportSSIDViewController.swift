@@ -34,15 +34,15 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
-        
         appDel = UIApplication.shared.delegate as! AppDelegate
         
-        ssidNameTextfield.delegate = self
-        
+        setupViews()
         updateSSID()
-
-        // Do any additional setup after loading the view.
+    }
+    
+    func setupViews() {
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
+        ssidNameTextfield.delegate = self
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -62,9 +62,11 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         if let cell = tableView.dequeueReusableCell(withIdentifier: "ssidCell") as? SSIDCell {
-            cell.setItem(ssidList[(indexPath as NSIndexPath).row])
-            cell.backgroundColor = UIColor.clear
+            
+            cell.setItem(ssidList[indexPath.row])
+            
             return cell
         }
         let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
@@ -79,8 +81,8 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
         if editingStyle == .delete {
             showAlertView(tableView, message: "Delete SSID?", completion: { (action) in
                 if action == ReturnedValueFromAlertView.delete {
-                    self.appDel.managedObjectContext?.delete(self.ssidList[(indexPath as NSIndexPath).row])
-                    CoreDataController.shahredInstance.saveChanges()
+                    self.appDel.managedObjectContext?.delete(self.ssidList[indexPath.row])
+                    CoreDataController.sharedInstance.saveChanges()
                     self.updateSSID()
                 }
             })
@@ -92,25 +94,23 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
     }
 
     @IBAction func addSSID(_ sender: AnyObject) {
-        guard let name = ssidNameTextfield.text , name != "" else {
-            return
-        }
-        if let location = location{
-        if let ssid = NSEntityDescription.insertNewObject(forEntityName: "SSID", into: appDel.managedObjectContext!) as? SSID{
+        guard let name = ssidNameTextfield.text , name != "" else { return }
+        
+        if let location = location {
+            if let ssid = NSEntityDescription.insertNewObject(forEntityName: "SSID", into: appDel.managedObjectContext!) as? SSID {
                 ssid.name = name
                 ssid.location = location
-            CoreDataController.shahredInstance.saveChanges()
-            self.updateSSID()
-            ssidNameTextfield.text = ""
+                CoreDataController.sharedInstance.saveChanges()
+                self.updateSSID()
+                ssidNameTextfield.text = ""
             }
         }
     }
     
     @IBAction func removeAll(_ sender: AnyObject) {
-        for item in ssidList{
-            appDel.managedObjectContext?.delete(item)
-        }
-        CoreDataController.shahredInstance.saveChanges()
+        
+        for item in ssidList { appDel.managedObjectContext?.delete(item) }
+        CoreDataController.sharedInstance.saveChanges()
         self.updateSSID()
     }
     
@@ -120,7 +120,8 @@ class SSIDCell: UITableViewCell {
     
     @IBOutlet weak var nameLabel: UILabel!
     
-    func setItem(_ ssid:SSID){
+    func setItem(_ ssid:SSID) {
+        backgroundColor = UIColor.clear
         nameLabel.text = ssid.name
     }
 }

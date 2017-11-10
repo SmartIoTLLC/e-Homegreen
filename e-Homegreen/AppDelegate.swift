@@ -14,21 +14,16 @@ import Crashlytics
 
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
+  case let (l?, r?): return l < r
+  case (nil, _?): return true
+  default: return false
   }
 }
 
 fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
+  case let (l?, r?): return l > r
+  default: return rhs < lhs
   }
 }
 
@@ -39,24 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let locationManager = CLLocationManager()
     var timer: DispatchSource!
     var refreshTimer: DispatchSource!
-    
-//    func refreshDevicesToYesterday () {
-//        var error:NSError?
-//        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
-//        do {
-//            if let devices = try managedObjectContext!.fetch(fetchRequest) as? [Device] {
-//                for device in devices {
-//                    
-//                    device.stateUpdatedAt = Date.yesterDay()
-//                }
-//                saveContext()
-//            }
-//        } catch let error1 as NSError {
-//            error = error1
-//            print("Unresolved error \(error), \(error!.userInfo)")
-//            abort()
-//        }
-//    }
+    var broadcastTimeAndDateTimer: Foundation.Timer?
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         
@@ -64,6 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
         // slider setup
@@ -79,59 +58,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let fontDictionary = [ NSForegroundColorAttributeName:UIColor.white ]
         UINavigationBar.appearance().titleTextAttributes = fontDictionary
         
-        //whether there admin exist and if exist check if user logged in
+        // Check wheter admin exists, and if it exists - check if user is logged in
         if let _ = AdminController.shared.getAdmin() {
-            if AdminController.shared.isAdminLogged(){
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let sideMenu = storyboard.instantiateViewController(withIdentifier: "SideMenu") as! SWRevealViewController
-                let controller:UINavigationController = Menu.settings.controller
+            let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            var controller: UINavigationController = Menu.settings.controller
+            let sideMenu: SWRevealViewController = mainStoryboard.instantiateViewController(withIdentifier: "SideMenu") as! SWRevealViewController
+            
+            if AdminController.shared.isAdminLogged() {
                 sideMenu.setFront(controller, animated: true)
-                self.window?.rootViewController = sideMenu
-                self.window?.makeKeyAndVisible()
-            }else{
-                if !DatabaseUserController.shared.isLogged(){
-                    let storyboard = UIStoryboard(name: "Login", bundle: nil)
-                    let logIn = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LogInViewController
-                    self.window?.rootViewController = logIn
-                    self.window?.makeKeyAndVisible()
-                }else{
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let sideMenu = storyboard.instantiateViewController(withIdentifier: "SideMenu") as! SWRevealViewController
-                    var controller:UINavigationController = Menu.settings.controller
-                    if let user = DatabaseUserController.shared.getLoggedUser(){
-                        if user.openLastScreen.boolValue == true{
-                            if let id = user.lastScreenId as? Int, let menu = Menu(rawValue: id) {
-                                controller = menu.controller
+                window?.rootViewController = sideMenu
+            } else {
+                
+                if !DatabaseUserController.shared.isLogged() {
+                    let logIn = UIStoryboard(name: "Login", bundle: nil).instantiateViewController(withIdentifier: "LoginController") as! LogInViewController
+                    window?.rootViewController = logIn
+                } else {
+                    if let user = DatabaseUserController.shared.getLoggedUser() {
+                        if user.openLastScreen.boolValue == true {
+                            if let id = user.lastScreenId as? Int {
+                                if let menu = Menu(rawValue: id) { controller = menu.controller }
                             }
                         }
                     }
                     sideMenu.setFront(controller, animated: true)
-                    self.window?.rootViewController = sideMenu
-                    self.window?.makeKeyAndVisible()
+                    window?.rootViewController = sideMenu
                 }
             }
-        }else{
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            let createAdmin = storyboard.instantiateViewController(withIdentifier: "CreateAdmin") as! CreateAdminViewController
-            self.window?.rootViewController = createAdmin
-            self.window?.makeKeyAndVisible()
+            
+        } else {
+            let createAdmin = UIStoryboard(name: "Login", bundle: nil).instantiateViewController(withIdentifier: "CreateAdmin") as! CreateAdminViewController
+            window?.rootViewController = createAdmin
         }
+        window?.makeKeyAndVisible()
         
-        
-        
-//        broadcastTimeAndDate()
-//        refreshAllConnections()
         establishAllConnections()
-//        Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(AppDelegate.setFilterBySSIDOrByiBeacon), userInfo: nil, repeats: false)
+        setupBroadcastValues()
+
         locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
-        
-//        configureStateForTheFirstTime()
-        
-//        application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil))
-//        UIApplication.shared.cancelAllLocalNotifications()
-        
-//        setFilterBySSIDOrByiBeaconAgain()
         
         return true
     }
@@ -159,7 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let id = persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) {
                 if let location = managedObjectContext?.object(with: id) as? Location {
                     if let id = location.timerId{
-                        if let timer = DatabaseTimersController.shared.getTimerByid(id){
+                        if let timer = DatabaseTimersController.shared.getTimerByid(id) {
                             DatabaseTimersController.shared.startTImerOnLocation(timer)
                         }
                     }
@@ -171,320 +135,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return nil
     }
     
-//    func setFilterBySSIDOrByiBeaconAgain () {
-//        fetchIBeacons()
-//        loadItems()
-//        Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(AppDelegate.setFilterBySSIDOrByiBeacon), userInfo: nil, repeats: false)
-//    }
-    
-//    func setFilterBySSIDOrByiBeacon () {
-//        checkIfThereIsLocationWithExistingSSID()
-//        var beacon:IBeacon?
-//        for item in iBeacons {
-//            if beacon == nil {
-//                beacon = item
-//            }
-//            if beacon?.accuracy > item.accuracy {
-//                beacon = item
-//            }
-//        }
-//        if beacon != nil && beacon!.accuracy != 10000 {
-//            let zoneWithBeacon = returnZoneWithIBeacon(beacon!)
-//            // Check if zone exists with that iBeacon
-//            if let zone = zoneWithBeacon {
-//                print("OVO JE BIO NAJBLIZI IBEACON: \(beacon!.name) SA ACCURACY: \(beacon!.accuracy) ZA OVAJ GATEWAY: \(beacon?.iBeaconZone?.location!.name) A POKAZUJE OVAj GATEWAY: \(zone.location!.name)")
-//                if let zoneLocation = zone.location, let zoneName = zone.name, let lvlId = zone.level {
-//                    // Check if zone has level (which is another zone)
-//                    let levelId = Int(lvlId)
-//                    if levelId == 0 {
-//                        for item in  FilterEnumeration.allFilters {
-//                            Filter.sharedInstance.saveFilter(item: FilterItem(location:zoneLocation.name!, levelId:Int(zone.id!), zoneId:0, categoryId:0, levelName:zoneName, zoneName:"All", categoryName:"All"), forTab: item)
-//                        }
-//                        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshFilter), object: self, userInfo: nil)
-//                        return
-//                    } else {
-//                        if let level = fetchZone(Int(levelId)) {
-//                            for item in  FilterEnumeration.allFilters {
-//                                Filter.sharedInstance.saveFilter(item: FilterItem(location:zoneLocation.name!, levelId:Int(level.id!), zoneId:Int(zone.id!), categoryId:0, levelName:level.name!, zoneName:zoneName, categoryName:"All"), forTab: item)
-//                            }
-//                            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshFilter), object: self, userInfo: nil)
-//                            // Exit method
-//                            return
-//                        }
-//                    }
-//                }
-//            }
-//            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshFilter), object: self, userInfo: nil)
-//            for item in iBeacons {
-//                item.accuracy = 10000
-//            }
-//            beacon = nil
-//            stopiBeacons()
-//        }
-//    }
-//    func checkIfThereIsLocationWithExistingSSID() {
-//        if let ssid = UIDevice.current.SSID {
-//            let ssidsDB:[SSID] = fetchSSIDs()
-//            for ssidDB in ssidsDB {
-//                if ssid == ssidDB.name {
-//                    if let location = ssidDB.location, let locationName = location.name {
-//                        for item in  FilterEnumeration.allFilters {
-//                            let filter = Filter.sharedInstance.returnFilter(forTab: item)
-//                            if filter.location != locationName {
-//                                Filter.sharedInstance.saveFilter(item: FilterItem(location:locationName, levelId:0, zoneId:0, categoryId:0, levelName:"All", zoneName:"All", categoryName:"All"), forTab: item)
-//                            }
-//                        }
-//                        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshFilter), object: self, userInfo: nil)
-//                    }
-//                    break
-//                }
-//            }
-//        } else {
-//            print("Nije nasao ssid.")
-//        }
-//    }
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        Foundation.UserDefaults.standard.set(Date(), forKey: "timeTimerExitedApp")
         
-        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterDevices, forKey: "timerDevicesValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.devices)
-        
-
-        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterScenes, forKey: "timerScenesValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.scenes)
-
-        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterEvents, forKey: "timerEventsValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.events)
-
-        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterSequences, forKey: "timerSequencesValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.sequences)
-
-        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterTimers, forKey: "timerTimersValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.timers)
-        
-        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterSecurity, forKey: "timerSecurityValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.security)
-        
-        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterSurvailance, forKey: "timerSurvailanceValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.surveillance)
-        
-        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterFlags, forKey: "timerFlagsValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.flags)
-        
-        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterUsers, forKey: "timerUsersValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.users)
-        
-        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterPCControl, forKey: "timerPCControlValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.pcControl)
-        
-        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterEnergy, forKey: "timerEnergyValueWhenExitedApp")
-        TimerForFilter.shared.stopTimer(type: Menu.energy)
+        shutDownTimers()
     }
+    
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
+    
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        if let dateExitedTheApp = Foundation.UserDefaults.standard.value(forKey: "timeTimerExitedApp") as? Date{
-            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerDevicesValueWhenExitedApp") as? Int{
-                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
-                let currentTime = Date.timeIntervalSinceReferenceDate
-                let counterValue = currentTime - timeExitedTheApp
-                let seconds = Int(counterValue)
-                TimerForFilter.shared.counterDevices = timerOldValue - Int(seconds)
-                if TimerForFilter.shared.counterDevices > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.devices)
-                }else{
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerDevices), object: nil)
-                }
-            }
-            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerScenesValueWhenExitedApp") as? Int{
-                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
-                let currentTime = Date.timeIntervalSinceReferenceDate
-                let counterValue = currentTime - timeExitedTheApp
-                let seconds = Int(counterValue)
-                TimerForFilter.shared.counterScenes = timerOldValue - Int(seconds)
-                if TimerForFilter.shared.counterScenes > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.scenes)
-                }else{
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerScenes), object: nil)
-                }
-            }
-            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerEventsValueWhenExitedApp") as? Int{
-                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
-                let currentTime = Date.timeIntervalSinceReferenceDate
-                let counterValue = currentTime - timeExitedTheApp
-                let seconds = Int(counterValue)
-                TimerForFilter.shared.counterEvents = timerOldValue - Int(seconds)
-                if TimerForFilter.shared.counterEvents > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.events)
-                }else{
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEvents), object: nil)
-                }
-            }
-            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerSequencesValueWhenExitedApp") as? Int{
-                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
-                let currentTime = Date.timeIntervalSinceReferenceDate
-                let counterValue = currentTime - timeExitedTheApp
-                let seconds = Int(counterValue)
-                TimerForFilter.shared.counterSequences = timerOldValue - Int(seconds)
-                if TimerForFilter.shared.counterSequences > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.sequences)
-                }else{
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSequences), object: nil)
-                }
-            }
-            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerTimersValueWhenExitedApp") as? Int{
-                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
-                let currentTime = Date.timeIntervalSinceReferenceDate
-                let counterValue = currentTime - timeExitedTheApp
-                let seconds = Int(counterValue)
-                TimerForFilter.shared.counterTimers = timerOldValue - Int(seconds)
-                if TimerForFilter.shared.counterTimers > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.timers)
-                }else{
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerTimers), object: nil)
-                }
-            }
-            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerSecurityValueWhenExitedApp") as? Int{
-                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
-                let currentTime = Date.timeIntervalSinceReferenceDate
-                let counterValue = currentTime - timeExitedTheApp
-                let seconds = Int(counterValue)
-                TimerForFilter.shared.counterSecurity = timerOldValue - Int(seconds)
-                if TimerForFilter.shared.counterSecurity > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.security)
-                }else{
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSecurity), object: nil)
-                }
-            }
-            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerSurvailanceValueWhenExitedApp") as? Int{
-                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
-                let currentTime = Date.timeIntervalSinceReferenceDate
-                let counterValue = currentTime - timeExitedTheApp
-                let seconds = Int(counterValue)
-                TimerForFilter.shared.counterSurvailance = timerOldValue - Int(seconds)
-                if TimerForFilter.shared.counterSurvailance > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.surveillance)
-                }else{
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSurvailance), object: nil)
-                }
-            }
-            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerFlagsValueWhenExitedApp") as? Int{
-                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
-                let currentTime = Date.timeIntervalSinceReferenceDate
-                let counterValue = currentTime - timeExitedTheApp
-                let seconds = Int(counterValue)
-                TimerForFilter.shared.counterFlags = timerOldValue - Int(seconds)
-                if TimerForFilter.shared.counterFlags > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.flags)
-                }else{
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerFlags), object: nil)
-                }
-            }
-            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerUsersValueWhenExitedApp") as? Int{
-                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
-                let currentTime = Date.timeIntervalSinceReferenceDate
-                let counterValue = currentTime - timeExitedTheApp
-                let seconds = Int(counterValue)
-                TimerForFilter.shared.counterUsers = timerOldValue - Int(seconds)
-                if TimerForFilter.shared.counterUsers > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.users)
-                }else{
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerUsers), object: nil)
-                }
-            }
-            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerPCControlValueWhenExitedApp") as? Int{
-                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
-                let currentTime = Date.timeIntervalSinceReferenceDate
-                let counterValue = currentTime - timeExitedTheApp
-                let seconds = Int(counterValue)
-                TimerForFilter.shared.counterPCControl = timerOldValue - Int(seconds)
-                if TimerForFilter.shared.counterPCControl > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.pcControl)
-                }else{
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerPCControl), object: nil)
-                }
-            }
-            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerChatValueWhenExitedApp") as? Int{
-                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
-                let currentTime = Date.timeIntervalSinceReferenceDate
-                let counterValue = currentTime - timeExitedTheApp
-                let seconds = Int(counterValue)
-                TimerForFilter.shared.counterChat = timerOldValue - Int(seconds)
-                if TimerForFilter.shared.counterChat > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.chat)
-                }else{
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerChat), object: nil)
-                }
-            }
-            
-            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerEnergyValueWhenExitedApp") as? Int{
-                let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
-                let currentTime = Date.timeIntervalSinceReferenceDate
-                let counterValue = currentTime - timeExitedTheApp
-                let seconds = Int(counterValue)
-                TimerForFilter.shared.counterEnergy = timerOldValue - Int(seconds)
-                if TimerForFilter.shared.counterEnergy > 0 {
-                    TimerForFilter.shared.startTimer(type: Menu.energy)
-                }else{
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEnergy), object: nil)
-                }
-            }
-        }
+        restoreTimers()
     }
-    
-//    var iBeacons:[IBeacon] = []
-//    func fetchIBeacons() {
-//        var error:NSError?
-//        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = IBeacon.fetchRequest()
-//        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-//        fetchRequest.sortDescriptors = [sortDescriptor]
-//        do {
-//            let fetResults = try managedObjectContext!.fetch(fetchRequest) as? [IBeacon]
-//            iBeacons = fetResults!
-//        } catch let error1 as NSError {
-//            error = error1
-//            print("Unresolved error \(error), \(error!.userInfo)")
-//            abort()
-//        }
-//    }
-//    func fetchSSIDs() -> [SSID] {
-//        var error:NSError?
-//        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = SSID.fetchRequest()
-//        do {
-//            let fetResults = try managedObjectContext!.fetch(fetchRequest) as? [SSID]
-//            if let results = fetResults {return results}
-//            return []
-//        } catch let error1 as NSError {
-//            error = error1
-//            print("Unresolved error \(error), \(error!.userInfo)")
-//            abort()
-//        }
-//        return []
-//    }
-//    func fetchZone(_ id:Int) -> Zone? {
-//        var error:NSError?
-//        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
-//        do {
-//            let fetResults = try managedObjectContext!.fetch(fetchRequest) as? [Zone]
-//            let zone = fetResults![0]
-//            return zone
-//        } catch let error1 as NSError {
-//            error = error1
-//            print("Unresolved error \(error), \(error!.userInfo)")
-//            abort()
-//        }
-//        return nil
-//    }
     
     var inOutSockets:[InOutSocket] = []
     var gateways:[Gateway] = []
+    
     func fetchGateways () {
-        var error:NSError?
         let fetchRequest: NSFetchRequest<Gateway> = Gateway.fetchRequest()
         let predicateOne = NSPredicate(format: "turnedOn == %@", NSNumber(value: true as Bool))
         fetchRequest.predicate = predicateOne
@@ -493,34 +164,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         do {
             let fetResults = try managedObjectContext!.fetch(fetchRequest)
             gateways = fetResults
-        } catch let error1 as NSError {
-            error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
-        }
-        for item in self.gateways {
-            item.remoteIpInUse = self.returnIpAddress(item.remoteIp)
-        }
-        do {
-            try self.managedObjectContext!.save()
-        } catch let error1 as NSError {
-            error = error1
-        }
+        } catch let error as NSError { print("Unresolved error \(String(describing: error)), \(error.userInfo)") }
+        
+        for item in self.gateways { item.remoteIpInUse = self.returnIpAddress(item.remoteIp) }
+        
+        do { try self.managedObjectContext!.save() } catch let error as NSError { print("Error saving managed context: ", error, error.userInfo) }
     }
+    
     func returnIpAddress (_ url:String) -> String {
         let host = CFHostCreateWithName(nil,url as CFString).takeRetainedValue();
         CFHostStartInfoResolution(host, .addresses, nil);
         var success: DarwinBoolean = false
+        
         if let test = CFHostGetAddressing(host, &success) {
+            
             let addresses = test.takeUnretainedValue() as NSArray
-            if (addresses.count > 0){
+            if (addresses.count > 0) {
+                
                 let theAddress = addresses[0] as! Data;
                 var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
+                
                 if getnameinfo((theAddress as NSData).bytes.bindMemory(to: sockaddr.self, capacity: theAddress.count), socklen_t(theAddress.count),
                     &hostname, socklen_t(hostname.count), nil, 0, NI_NUMERICHOST) == 0 {
-                        if let numAddress = String(validatingUTF8: hostname) {
-                            return numAddress
-                        }
+                    
+                        if let numAddress = String(validatingUTF8: hostname) { return numAddress }
                 }
             }
         }
@@ -529,17 +196,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func disconnectAllConnections () {
         if inOutSockets != [] {
-            for inOutSocket in inOutSockets {
-                inOutSocket.socket.close()
-            }
-            for timer in timers{
-                timer.invalidate()
-            }
+            for inOutSocket in inOutSockets { inOutSocket.socket.close() }
+            for timer in timers { timer.invalidate() }
             timers = []
             inOutSockets = []
         }
     }
+    
     var timers:[Foundation.Timer] = []
+    
     func establishAllConnections () {
         disconnectAllConnections()
         fetchGateways()
@@ -550,24 +215,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     var foundRemote:Bool = false
                     var foundLocal:Bool = false
                     for inOutSocket in inOutSockets {
-                        if inOutSocket.port == UInt16(Int(gateway.localPort)) {
-                            foundLocal = true
-                        }
-                        if inOutSocket.port == UInt16(Int(gateway.remotePort)) {
-                            foundRemote = true
-                        }
+                        if inOutSocket.port == UInt16(Int(gateway.localPort)) { foundLocal = true }
+                        if inOutSocket.port == UInt16(Int(gateway.remotePort)) { foundRemote = true }
                     }
-                    if !foundLocal {
-                        inOutSockets.append(InOutSocket(port: UInt16(Int(gateway.localPort))))
-                    }
-                    if !foundRemote {
-                        inOutSockets.append(InOutSocket(port: UInt16(Int(gateway.remotePort))))
-                    }
+                    
+                    if !foundLocal { inOutSockets.append(InOutSocket(port: UInt16(Int(gateway.localPort)))) }
+                    if !foundRemote { inOutSockets.append(InOutSocket(port: UInt16(Int(gateway.remotePort)))) }
+                    
                 } else {
                     inOutSockets.append(InOutSocket(port: UInt16(Int(gateway.localPort))))
-                    if inOutSockets[0].port != UInt16(Int(gateway.remotePort)) {
-                        inOutSockets.append(InOutSocket(port: UInt16(Int(gateway.remotePort))))
-                    }
+                    if inOutSockets[0].port != UInt16(Int(gateway.remotePort)) { inOutSockets.append(InOutSocket(port: UInt16(Int(gateway.remotePort)))) }
                 }
             }
         }
@@ -578,7 +235,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let gateway = userInfo["gateway"] as? Gateway{
             let address = [Byte(Int(gateway.addressOne)), Byte(Int(gateway.addressTwo)), Byte(Int(gateway.addressThree))]
             SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address) , gateway: gateway)
-
         }
     }
     
@@ -599,6 +255,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         establishAllConnections()
+        checkForBroadcastAndSetItUp()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -647,8 +304,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             error = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
             // Replace this with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog("Unresolved error \(error), \(error!.userInfo)")
-            abort()
+            NSLog("Unresolved error \(String(describing: error)), \(error!.userInfo)")
+          //  abort()
         } catch {
             fatalError()
         }
@@ -678,9 +335,130 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     error = error1
                     // Replace this implementation with code to handle the error appropriately.
                     // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                    NSLog("Unresolved error \(error), \(error!.userInfo)")
+                    NSLog("Unresolved error \(String(describing: error)), \(error!.userInfo)")
                     abort()
                 }
+            }
+        }
+    }
+    
+    func shutDownTimers() {
+        Foundation.UserDefaults.standard.set(Date(), forKey: "timeTimerExitedApp")
+        
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterDevices, forKey: "timerDevicesValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.devices)
+        
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterScenes, forKey: "timerScenesValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.scenes)
+        
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterEvents, forKey: "timerEventsValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.events)
+        
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterSequences, forKey: "timerSequencesValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.sequences)
+        
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterTimers, forKey: "timerTimersValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.timers)
+        
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterSecurity, forKey: "timerSecurityValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.security)
+        
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterSurvailance, forKey: "timerSurvailanceValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.surveillance)
+        
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterFlags, forKey: "timerFlagsValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.flags)
+        
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterUsers, forKey: "timerUsersValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.users)
+        
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterPCControl, forKey: "timerPCControlValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.pcControl)
+        
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterEnergy, forKey: "timerEnergyValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.energy)
+        
+        Foundation.UserDefaults.standard.synchronize()
+    }
+    
+    func restoreTimers() {
+        if let dateExitedTheApp = Foundation.UserDefaults.standard.value(forKey: "timeTimerExitedApp") as? Date {
+            
+            let timeExitedTheApp = dateExitedTheApp.timeIntervalSinceReferenceDate
+            let currentTime = Date.timeIntervalSinceReferenceDate
+            let counterValue = currentTime - timeExitedTheApp
+            let seconds = Int(counterValue)
+            
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerDevicesValueWhenExitedApp") as? Int {
+                TimerForFilter.shared.counterDevices = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterDevices > 0 { TimerForFilter.shared.startTimer(type: Menu.devices)
+                } else { NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerDevices), object: nil) }
+            }
+            
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerScenesValueWhenExitedApp") as? Int {
+                TimerForFilter.shared.counterScenes = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterScenes > 0 { TimerForFilter.shared.startTimer(type: Menu.scenes)
+                } else { NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerScenes), object: nil) }
+            }
+            
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerEventsValueWhenExitedApp") as? Int {
+                TimerForFilter.shared.counterEvents = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterEvents > 0 { TimerForFilter.shared.startTimer(type: Menu.events)
+                } else {  NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEvents), object: nil) }
+            }
+            
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerSequencesValueWhenExitedApp") as? Int {
+                TimerForFilter.shared.counterSequences = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterSequences > 0 { TimerForFilter.shared.startTimer(type: Menu.sequences)
+                } else { NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSequences), object: nil) }
+            }
+            
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerTimersValueWhenExitedApp") as? Int {
+                TimerForFilter.shared.counterTimers = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterTimers > 0 { TimerForFilter.shared.startTimer(type: Menu.timers)
+                } else { NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerTimers), object: nil) }
+            }
+            
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerSecurityValueWhenExitedApp") as? Int {
+                TimerForFilter.shared.counterSecurity = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterSecurity > 0 { TimerForFilter.shared.startTimer(type: Menu.security)
+                } else { NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSecurity), object: nil) }
+            }
+            
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerSurvailanceValueWhenExitedApp") as? Int {
+                TimerForFilter.shared.counterSurvailance = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterSurvailance > 0 { TimerForFilter.shared.startTimer(type: Menu.surveillance)
+                } else { NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSurvailance), object: nil) }
+            }
+            
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerFlagsValueWhenExitedApp") as? Int {
+                TimerForFilter.shared.counterFlags = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterFlags > 0 { TimerForFilter.shared.startTimer(type: Menu.flags)
+                } else { NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerFlags), object: nil) }
+            }
+            
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerUsersValueWhenExitedApp") as? Int {
+                TimerForFilter.shared.counterUsers = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterUsers > 0 { TimerForFilter.shared.startTimer(type: Menu.users)
+                } else { NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerUsers), object: nil) }
+            }
+            
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerPCControlValueWhenExitedApp") as? Int {
+                TimerForFilter.shared.counterPCControl = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterPCControl > 0 { TimerForFilter.shared.startTimer(type: Menu.pcControl)
+                } else { NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerPCControl), object: nil) }
+            }
+            
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerChatValueWhenExitedApp") as? Int{
+                TimerForFilter.shared.counterChat = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterChat > 0 { TimerForFilter.shared.startTimer(type: Menu.chat)
+                } else { NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerChat), object: nil) }
+            }
+            
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerEnergyValueWhenExitedApp") as? Int{
+                TimerForFilter.shared.counterEnergy = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterEnergy > 0 { TimerForFilter.shared.startTimer(type: Menu.energy)
+                } else {  NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEnergy), object: nil) }
             }
         }
     }

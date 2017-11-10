@@ -33,14 +33,12 @@ class SuraPlayerViewController: UIViewController, UITableViewDataSource, UITable
     
     @IBOutlet weak var fullscreenButton: UIButton!
     @IBAction func fullscreenButton(_ sender: UIButton) {
-        sender.collapseInReturnToNormal(1)
-        if UIApplication.shared.isStatusBarHidden {
-            UIApplication.shared.isStatusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
-        } else {
-            UIApplication.shared.isStatusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        }
+        sender.switchFullscreen()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        changeFullscreenImage(fullscreenButton: fullscreenButton)
     }
     
     override func viewDidLoad() {
@@ -65,14 +63,6 @@ class SuraPlayerViewController: UIViewController, UITableViewDataSource, UITable
         tableView.backgroundColor = .clear
         tableView.separatorInset = UIEdgeInsets.zero
         navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: .default)
-    }
-    
-    func changeFullScreeenImage(){
-        if UIApplication.shared.isStatusBarHidden {
-            fullscreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        } else {
-            fullscreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
-        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -109,7 +99,7 @@ class SuraPlayerViewController: UIViewController, UITableViewDataSource, UITable
     func setupSuraPlayerView() {
         radioBar.backgroundColor = UIColor(cgColor: Colors.DarkGray)
         suraTitle.textColor = UIColor.white
-        suraTitle.font = UIFont(name: "Tahoma", size: 17)
+        suraTitle.font = UIFont.tahoma(size: 15)
         
         pauseButton.setImage(#imageLiteral(resourceName: "audio_pause"), for: UIControlState())
         pauseButton.imageView?.contentMode = .scaleAspectFit
@@ -148,10 +138,10 @@ class SuraPlayerViewController: UIViewController, UITableViewDataSource, UITable
                     let urlString = server + "/" + formattedSuraID(id: id) + ".mp3"
                     print("URL: ", urlString)
                     if let url = URL(string: urlString) {
-                        self.player = AVPlayer(url: url)
-                        self.player?.volume = 1.0
-                        self.player?.play()
-                        self.suraIsPlaying = true
+                        player = AVPlayer(url: url)
+                        player?.volume = 1.0
+                        player?.play()
+                        suraIsPlaying = true
                     }
                 }
             }
@@ -191,13 +181,13 @@ class SuraPlayerViewController: UIViewController, UITableViewDataSource, UITable
                     }
                 }
             }
-            self.tableView.reloadData()
+            tableView.reloadData()
         }
     }
     
     func formattedSuraID(id: NSNumber) -> String {
-        if String(describing: id).characters.count == 1 { return "00" + String(describing: id) }
-        if String(describing: id).characters.count == 2 { return "0" + String(describing: id) }
+        if String(describing: id).count == 1 { return "00" + String(describing: id) }
+        if String(describing: id).count == 2 { return "0" + String(describing: id) }
         return String(describing: id)
     }
 

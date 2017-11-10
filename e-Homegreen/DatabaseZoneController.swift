@@ -14,7 +14,7 @@ class DatabaseZoneController: NSObject {
     static let shared = DatabaseZoneController()
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    func getLevelsByLocation(_ location:Location) -> [Zone]{
+    func getLevelsByLocation(_ location:Location) -> [Zone] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
         let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
         
@@ -25,12 +25,12 @@ class DatabaseZoneController: NSObject {
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.sortDescriptors = [sortDescriptors]
         fetchRequest.predicate = compoundPredicate
+        
         do {
             let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Zone]
             return results
-        } catch {
-            
-        }
+        } catch {}
+        
         return[]
     }
     
@@ -50,9 +50,8 @@ class DatabaseZoneController: NSObject {
         do {
             let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Zone]
             return results
-        } catch{
-            
-        }
+        } catch {}
+        
         return []
         
     }
@@ -66,20 +65,18 @@ class DatabaseZoneController: NSObject {
         
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
+        
         do {
             let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Zone]
-            if results.count != 0{
-                return results[0]
-            }
-        } catch _ as NSError {
-            
-        }
+            if results.count != 0 { return results[0] }
+        } catch {}
+        
         return nil
     }
     
     func changeAllowOption(_ option:Int, zone:Zone){
         zone.allowOption = option as NSNumber!
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
 
 }

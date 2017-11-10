@@ -36,10 +36,10 @@ class ContactCell: UITableViewCell {
         let bg = UIView()
         bg.backgroundColor = UIColor.white.withAlphaComponent(0.4)
         
-        contactName.font = UIFont(name: "Tahoma", size: 17)
+        contactName.font = UIFont.tahoma(size: 15)
         contactName.textColor = .white
         contactName.adjustsFontSizeToFitWidth = true
-        contactNumber.font = UIFont(name: "Tahoma", size: 12)
+        contactNumber.font = UIFont.tahoma(size: 12)
         contactNumber.textColor = .white
     }
     

@@ -19,12 +19,11 @@ class DatabaseTimersController: NSObject {
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Timer.fetchRequest()
             
             fetchRequest.sortDescriptors = [sortDescripror]
+            
             do {
                 let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Timer]
                 return fetResults!
-            } catch _ as NSError {
-                abort()
-            }
+            } catch {}
         }
         return []
     }
@@ -44,36 +43,26 @@ class DatabaseTimersController: NSObject {
             var predicateArrayAnd:[NSPredicate] = [NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool))]
             predicateArrayAnd.append(NSPredicate(format: "gateway.location.user == %@", user))
             
-            if filterParametar.location != "All" {
-                predicateArrayAnd.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location))
-            }
+            if filterParametar.location != "All" { predicateArrayAnd.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location)) }
             
             if filterParametar.levelObjectId != "All" {
-                if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId){
-                    predicateArrayAnd.append(NSPredicate(format: "entityLevelId == %@", level.id!))
-                }
+                if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId) { predicateArrayAnd.append(NSPredicate(format: "entityLevelId == %@", level.id!)) }
             }
             if filterParametar.zoneObjectId != "All" {
-                if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
-                    predicateArrayAnd.append(NSPredicate(format: "timeZoneId == %@", zone.id!))
-                }
+                if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId) { predicateArrayAnd.append(NSPredicate(format: "timeZoneId == %@", zone.id!)) }
             }
             if filterParametar.categoryObjectId != "All" {
-                if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
-                    predicateArrayAnd.append(NSPredicate(format: "timerCategoryId == %@", category.id!))
-                }
+                if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId) { predicateArrayAnd.append(NSPredicate(format: "timerCategoryId == %@", category.id!)) }
             }
-            let compoundPredicate2 = NSCompoundPredicate(andPredicateWithSubpredicates: predicateArrayAnd)
             
+            let compoundPredicate2 = NSCompoundPredicate(andPredicateWithSubpredicates: predicateArrayAnd)
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: [compoundPredicate1, compoundPredicate2])
             fetchRequest.predicate = compoundPredicate
             
             do {
                 let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Timer]
                 return fetResults!
-            } catch _ as NSError {
-                abort()
-            }
+            } catch {}
         }
         return []
     }
@@ -89,27 +78,22 @@ class DatabaseTimersController: NSObject {
         predicateArray.append(NSPredicate(format: "gateway == %@", gateway))
         
         if filterParametar.levelObjectId != "All" {
-            if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId){
-                predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!))
-            }
+            if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId) { predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!)) }
         }
         if filterParametar.zoneObjectId != "All" {
-            if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId){
-                predicateArray.append(NSPredicate(format: "timeZoneId == %@", zone.id!))
-            }
+            if let zone = FilterController.shared.getZoneByObjectId(filterParametar.zoneObjectId) { predicateArray.append(NSPredicate(format: "timeZoneId == %@", zone.id!)) }
         }
         if filterParametar.categoryObjectId != "All" {
-            if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId){
-                predicateArray.append(NSPredicate(format: "timerCategoryId == %@", category.id!))
-            }
+            if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId) { predicateArray.append(NSPredicate(format: "timerCategoryId == %@", category.id!)) }
         }
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
+        
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Timer]
             return fetResults!
-        } catch{
-        }
+        } catch {}
+        
         return []
     }
     
@@ -120,12 +104,9 @@ class DatabaseTimersController: NSObject {
         fetchRequest.predicate = compoundPredicate
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Timer]
-            if fetResults?.count != 0{
-                return fetResults?.first
-            }
-        } catch _ as NSError {
-            abort()
-        }
+            if fetResults?.count != 0 { return fetResults?.first }
+            
+        } catch {}
         
         return nil
     }
@@ -146,16 +127,13 @@ class DatabaseTimersController: NSObject {
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Timer]
             return fetResults!
-        } catch _ as NSError {
-            abort()
-        }
+        } catch {}
+        
         return []
     }
     
     func getTimerByObjectID(_ objectID:NSManagedObjectID) -> Timer?{
-        if let timer = appDel.managedObjectContext?.object(with: objectID) as? Timer {
-            return timer
-        }
+        if let timer = appDel.managedObjectContext?.object(with: objectID) as? Timer { return timer }
         return nil
     }
     
@@ -163,12 +141,10 @@ class DatabaseTimersController: NSObject {
         if objectId != ""{
             if let url = URL(string: objectId){
                 if let id = appDel.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) {
-                    do{
+                    do {
                         let timer = try appDel.managedObjectContext?.existingObject(with: id) as? Timer
                         return timer
-                    }catch {
-                        
-                    }
+                    } catch {}
                 }
             }
         }
@@ -177,13 +153,9 @@ class DatabaseTimersController: NSObject {
     
     func startTImerOnLocation(_ timer:Timer){
         var address:[UInt8] = []
-        if timer.isBroadcast.boolValue {
-            address = [0xFF, 0xFF, 0xFF]
-        } else if timer.isLocalcast.boolValue {
-            address = [UInt8(Int(timer.gateway.addressOne)), UInt8(Int(timer.gateway.addressTwo)), 0xFF]
-        } else {
-            address = [UInt8(Int(timer.gateway.addressOne)), UInt8(Int(timer.gateway.addressTwo)), UInt8(Int(timer.address))]
-        }
+        if timer.isBroadcast.boolValue { address = [0xFF, 0xFF, 0xFF]
+        } else if timer.isLocalcast.boolValue { address = [UInt8(Int(timer.gateway.addressOne)), UInt8(Int(timer.gateway.addressTwo)), 0xFF]
+        } else { address = [UInt8(Int(timer.gateway.addressOne)), UInt8(Int(timer.gateway.addressTwo)), UInt8(Int(timer.address))] }
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getCancelTimerStatus(address, id: UInt8(Int(timer.timerId)), command: 0x01), gateway: timer.gateway)
     }
 
@@ -195,25 +167,22 @@ class DatabaseTimersController: NSObject {
             existingTimer = timerArray.first
             itExists = true
         }
+        
         if !itExists {
             let timer = NSEntityDescription.insertNewObject(forEntityName: "Timer", into: appDel.managedObjectContext!) as! Timer
             timer.timerId = NSNumber(value: timerId)
-            if let timerName = timerName {
-                timer.timerName = timerName
-            }else{
-                timer.timerName = ""
-            }
+            if let timerName = timerName { timer.timerName = timerName } else { timer.timerName = "" }
             timer.address = NSNumber(value: moduleAddress)
             
             if let imageDataOne = imageDataOne{
-                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
+                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image {
                     image.imageData = imageDataOne
                     image.imageId = UUID().uuidString
                     timer.timerImageOneCustom = image.imageId
                     timer.timerImageOneDefault = nil
                     gateway.location.user!.addImagesObject(image)
                 }
-            }else{
+            } else {
                 timer.timerImageOneDefault = sceneImageOneDefault
                 timer.timerImageOneCustom = sceneImageOneCustom
             }
@@ -227,7 +196,7 @@ class DatabaseTimersController: NSObject {
                     gateway.location.user!.addImagesObject(image)
                     
                 }
-            }else{
+            } else {
                 timer.timerImageTwoDefault = sceneImageTwoDefault
                 timer.timerImageTwoCustom = sceneImageTwoCustom
             }
@@ -240,45 +209,39 @@ class DatabaseTimersController: NSObject {
             timer.isLocalcast = isLocalcast as NSNumber
             if let type = type{
                 timer.type = NSNumber(value: type)
-            }else{
+            } else {
                 timer.type = 0
             }
             
             timer.id = UUID().uuidString
             timer.gateway = gateway
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             
         } else {
             
-            if let timerName = timerName {
-                existingTimer!.timerName = timerName
-            }
+            if let timerName = timerName { existingTimer!.timerName = timerName }
             
             existingTimer!.entityLevelId = levelId as NSNumber?
             existingTimer!.timeZoneId = selectedZoneId as NSNumber?
             existingTimer!.timerCategoryId = categoryId as NSNumber?
             
-            if let type = type{
-                existingTimer!.type = NSNumber(value: type)
-            }else{
-                existingTimer!.type = 0
-            }
+            if let type = type { existingTimer!.type = NSNumber(value: type) } else { existingTimer!.type = 0 }
             
-            if let imageDataOne = imageDataOne{
-                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
+            if let imageDataOne = imageDataOne {
+                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image {
                     image.imageData = imageDataOne
                     image.imageId = UUID().uuidString
                     existingTimer!.timerImageOneCustom = image.imageId
                     existingTimer!.timerImageOneDefault = nil
                     gateway.location.user!.addImagesObject(image)
                 }
-            }else{
+            } else {
                 existingTimer!.timerImageOneDefault = sceneImageOneDefault
                 existingTimer!.timerImageOneCustom = sceneImageOneCustom
             }
             
-            if let imageDataTwo = imageDataTwo{
-                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
+            if let imageDataTwo = imageDataTwo {
+                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image {
                     image.imageData = imageDataTwo
                     image.imageId = UUID().uuidString
                     existingTimer!.timerImageTwoCustom = image.imageId
@@ -286,7 +249,7 @@ class DatabaseTimersController: NSObject {
                     gateway.location.user!.addImagesObject(image)
                     
                 }
-            }else{
+            } else {
                 existingTimer!.timerImageTwoDefault = sceneImageTwoDefault
                 existingTimer!.timerImageTwoCustom = sceneImageTwoCustom
             }
@@ -294,11 +257,11 @@ class DatabaseTimersController: NSObject {
             existingTimer!.isBroadcast = isBroadcast as NSNumber
             existingTimer!.isLocalcast = isLocalcast as NSNumber
             
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
         }
     }
     
-    func fetchTimerWithId(_ timerId: Int, gateway: Gateway, moduleAddress:Int) -> [Timer]{
+    func fetchTimerWithId(_ timerId: Int, gateway: Gateway, moduleAddress:Int) -> [Timer] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Timer.fetchRequest()
         let predicateLocation = NSPredicate(format: "timerId == %@", NSNumber(value: timerId as Int))
         let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
@@ -306,28 +269,25 @@ class DatabaseTimersController: NSObject {
         let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway, predicateAddress])
         
         fetchRequest.predicate = combinedPredicate
+        
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Timer]
             return fetResults!
-        } catch let error1 as NSError {
-            print("Unresolved error \(error1), \(error1.userInfo)")
-            abort()
-        }
+        } catch let error1 as NSError { print("Unresolved error \(error1), \(error1.userInfo)") }
+        
         return []
     }
     
     func deleteAllTimers(_ gateway:Gateway){
         let timers = gateway.timers.allObjects as! [Timer]
-        for timer in timers {
-            self.appDel.managedObjectContext!.delete(timer)
-        }
+        for timer in timers { self.appDel.managedObjectContext!.delete(timer) }
         
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
     func deleteTimer(_ timer:Timer){
         self.appDel.managedObjectContext!.delete(timer)
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
 }

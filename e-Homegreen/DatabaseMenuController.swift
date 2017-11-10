@@ -16,43 +16,42 @@ class DatabaseMenuController: NSObject {
     
     //create menu when create user
     func createMenu(_ user:User){
-        if let menu = user.menu?.allObjects as? [MenuItem]{
-            for menuitem in menu{
-                appDel.managedObjectContext?.delete(menuitem)
-            }
+        if let menu = user.menu?.allObjects as? [MenuItem] {
+            for menuitem in menu { appDel.managedObjectContext?.delete(menuitem) }
         }
-        if user.isSuperUser == true{
-            for item in Menu.allMenuItem{
-                if let menu = NSEntityDescription.insertNewObject(forEntityName: "MenuItem", into: appDel.managedObjectContext!) as? MenuItem{
+        
+        if user.isSuperUser == true {
+            for item in Menu.allMenuItem {
+                if let menu = NSEntityDescription.insertNewObject(forEntityName: "MenuItem", into: appDel.managedObjectContext!) as? MenuItem {
                     menu.id = NSNumber(value: item.rawValue)
                     menu.orderId = NSNumber(value: item.rawValue)
                     menu.isVisible = true
                     menu.user = user
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                 }
             }
-        }else{
-            for item in Menu.allMenuItemNotSuperUser{
-                if let menu = NSEntityDescription.insertNewObject(forEntityName: "MenuItem", into: appDel.managedObjectContext!) as? MenuItem{
+        } else {
+            for item in Menu.allMenuItemNotSuperUser {
+                if let menu = NSEntityDescription.insertNewObject(forEntityName: "MenuItem", into: appDel.managedObjectContext!) as? MenuItem {
                     menu.id = NSNumber(value: item.rawValue)
                     menu.orderId = NSNumber(value: item.rawValue)
                     menu.isVisible = true
                     menu.user = user
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                 }
             }
         }
     }
     
     //menu for admin
-    func createMenuForAdmin() -> [MenuItem]{
+    func createMenuForAdmin() -> [MenuItem] {
         var menuList:[MenuItem] = []
-        if let entity = NSEntityDescription.entity(forEntityName: "MenuItem", in: appDel.managedObjectContext!){
-            for item in Menu.allMenuItem{
-                if let menu = NSManagedObject.init(entity: entity, insertInto: nil) as? MenuItem{
+        if let entity = NSEntityDescription.entity(forEntityName: "MenuItem", in: appDel.managedObjectContext!) {
+            for item in Menu.allMenuItem {
+                if let menu = NSManagedObject.init(entity: entity, insertInto: nil) as? MenuItem {
                     menu.id = NSNumber(value: item.rawValue)
                     menu.orderId = NSNumber(value: item.rawValue)
-                menu.isVisible = true
+                    menu.isVisible = true
                     menuList.append(menu)
                 }
             }
@@ -61,79 +60,72 @@ class DatabaseMenuController: NSObject {
         
     }
     
-    func getVisibleMenuItemByUser(_ user:User) -> [MenuItem]{
+    func getVisibleMenuItemByUser(_ user:User) -> [MenuItem] {
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = MenuItem.fetchRequest()
             let sortDescriptorOne = NSSortDescriptor(key: "orderId", ascending: true)
             var predicateArray:[NSPredicate] = [NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool))]
             predicateArray.append(NSPredicate(format: "user == %@", user))
             let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        
             fetchRequest.sortDescriptors = [sortDescriptorOne]
             fetchRequest.predicate = compoundPredicate
+        
             do {
                 let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [MenuItem]
                 return fetResults!
-            } catch _ as NSError {
-                abort()
-            }
+            } catch {}
+        
             return []
     }
     
-    func getDefaultMenuItemByUser(_ user:User) -> [MenuItem]{
+    func getDefaultMenuItemByUser(_ user:User) -> [MenuItem] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = MenuItem.fetchRequest()
         let sortDescriptorOne = NSSortDescriptor(key: "id", ascending: true)
         let predicateArray:[NSPredicate] = [NSPredicate(format: "user == %@", user)]
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.sortDescriptors = [sortDescriptorOne]
         fetchRequest.predicate = compoundPredicate
+        
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [MenuItem]
             return fetResults!
-        } catch _ as NSError {
-            abort()
-        }
+        } catch {}
+        
         return []
     }
     
-    func getMenuItemByUser(_ user:User) -> [MenuItem]{
+    func getMenuItemByUser(_ user:User) -> [MenuItem] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = MenuItem.fetchRequest()
         let sortDescriptorOne = NSSortDescriptor(key: "orderId", ascending: true)
         let predicateArray:[NSPredicate] = [NSPredicate(format: "user == %@", user)]
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.sortDescriptors = [sortDescriptorOne]
         fetchRequest.predicate = compoundPredicate
+        
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [MenuItem]
             return fetResults!
-        } catch _ as NSError {
-            abort()
-        }
+        } catch {}
+        
         return []
     }
     
-    func changeOrder(_ menu:[MenuItem], user:User){
+    func changeOrder(_ menu:[MenuItem], user:User) {
         let tempMenu = getMenuItemByUser(user)
-        for (tempIndex,tempItem) in tempMenu.enumerated(){
+        for (tempIndex,tempItem) in tempMenu.enumerated() {
             var exist = false
-            for (index,item) in menu.enumerated(){
-                if tempItem.id == item.id && tempItem.id != 13{
-                    tempItem.orderId = NSNumber(value: index)
-                    exist = true
-                }
+            for (index,item) in menu.enumerated() {
+                if tempItem.id == item.id && tempItem.id != 13 { tempItem.orderId = NSNumber(value: index); exist = true }
             }
-            if !exist && tempItem.id != 13{
-                tempItem.orderId = NSNumber(value: tempIndex)
-            }
+            
+            if !exist && tempItem.id != 13 { tempItem.orderId = NSNumber(value: tempIndex) }
         }
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
-    func changeState(_ menuItem:MenuItem){
-        if menuItem.isVisible == true{
-            menuItem.isVisible = false
-        }else{
-            menuItem.isVisible = true
-        }        
-        CoreDataController.shahredInstance.saveChanges()
+    func changeState(_ menuItem:MenuItem) {
+        if menuItem.isVisible == true { menuItem.isVisible = false } else { menuItem.isVisible = true }        
+        CoreDataController.sharedInstance.saveChanges()
     }
 
 }

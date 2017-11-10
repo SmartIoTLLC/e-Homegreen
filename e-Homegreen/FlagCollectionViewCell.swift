@@ -15,27 +15,43 @@ class FlagCollectionViewCell: UICollectionViewCell {
     var imageOne:UIImage?
     var imageTwo:UIImage?
     
-    func setItem(_ flag:Flag, filterParametar:FilterItem){
-        flagTitle.text = getName(flag, filterParametar: filterParametar)
-    }
+    let flag0 = UIImage(named: "16 Flag - Flag - 00")
+    let flag1 = UIImage(named: "16 Flag - Flag - 01")
     
-    func getName(_ flag:Flag, filterParametar:FilterItem) -> String{
+    func setItem(_ flag: Flag, filterParametar:FilterItem, tag: Int) {
+        flagTitle.text = getName(flag, filterParametar: filterParametar)
+        flagTitle.isUserInteractionEnabled = true
+        
+        flagImageView.tag = tag
+        flagImageView.isUserInteractionEnabled = true
+        
+        flagButton.tag = tag
+        
+        if flag.setState.boolValue { flagButton.setTitle("Set False", for: UIControlState())
+        } else { flagButton.setTitle("Set True", for: UIControlState()) }
+        
+        flagImageView.layer.cornerRadius = 5
+        flagImageView.clipsToBounds = true
+        
+        layer.cornerRadius = 5
+        layer.borderColor = UIColor.gray.cgColor
+        layer.borderWidth = 0.5
+        
+        getImagesFrom(flag)
+    }        
+    
+    func getName(_ flag:Flag, filterParametar:FilterItem) -> String {
         var name:String = ""
-        if flag.gateway.location.name != filterParametar.location{
-            name += flag.gateway.location.name! + " "
-        }
-        if let id = flag.entityLevelId as? Int{
-            if let zone = DatabaseZoneController.shared.getZoneById(id, location: flag.gateway.location){
-                if zone.name != filterParametar.levelName{
-                    name += zone.name! + " "
-                }
+        if flag.gateway.location.name != filterParametar.location { name += flag.gateway.location.name! + " " }
+        
+        if let id = flag.entityLevelId as? Int {
+            if let zone = DatabaseZoneController.shared.getZoneById(id, location: flag.gateway.location) {
+                if zone.name != filterParametar.levelName { name += zone.name! + " " }
             }
         }
-        if let id = flag.flagZoneId as? Int{
-            if let zone = DatabaseZoneController.shared.getZoneById(id, location: flag.gateway.location){
-                if zone.name != filterParametar.zoneName{
-                    name += zone.name! + " "
-                }
+        if let id = flag.flagZoneId as? Int {
+            if let zone = DatabaseZoneController.shared.getZoneById(id, location: flag.gateway.location) {
+                if zone.name != filterParametar.zoneName{ name += zone.name! + " " }
             }
         }
         name += flag.flagName
@@ -44,73 +60,55 @@ class FlagCollectionViewCell: UICollectionViewCell {
     
     func getImagesFrom(_ flag:Flag) {
         
-        if let id = flag.flagImageOneCustom{
-            if let image = DatabaseImageController.shared.getImageById(id){
-                if let data =  image.imageData {
-                    imageOne = UIImage(data: data)
-                }else{
-                    if let defaultImage = flag.flagImageOneDefault{
-                        imageOne = UIImage(named: defaultImage)
-                    }else{
-                        imageOne = UIImage(named: "16 Flag - Flag - 00")
-                    }
-                }
-            }else{
-                if let defaultImage = flag.flagImageOneDefault{
-                    imageOne = UIImage(named: defaultImage)
-                }else{
-                    imageOne = UIImage(named: "16 Flag - Flag - 00")
-                }
-            }
-        }else{
-            if let defaultImage = flag.flagImageOneDefault{
-                imageOne = UIImage(named: defaultImage)
-            }else{
-                imageOne = UIImage(named: "16 Flag - Flag - 00")
-            }
-        }
-        
-        if let id = flag.flagImageTwoCustom{
-            if let image = DatabaseImageController.shared.getImageById(id){
-                if let data =  image.imageData {
-                    imageTwo = UIImage(data: data)
-                }else{
-                    if let defaultImage = flag.flagImageTwoDefault{
-                        imageTwo = UIImage(named: defaultImage)
-                    }else{
-                        imageTwo = UIImage(named: "16 Flag - Flag - 01")
-                    }
-                }
-            }else{
-                if let defaultImage = flag.flagImageTwoDefault{
-                    imageTwo = UIImage(named: defaultImage)
-                }else{
-                    imageTwo = UIImage(named: "16 Flag - Flag - 01")
-                }
-            }
-        }else{
-            if let defaultImage = flag.flagImageTwoDefault{
-                imageTwo = UIImage(named: defaultImage)
-            }else{
-                imageTwo = UIImage(named: "16 Flag - Flag - 01")
-            }
-        }
-        if flag.setState.boolValue {
-            flagImageView.image = imageTwo
+        if let id = flag.flagImageOneCustom {
+            if let image = DatabaseImageController.shared.getImageById(id) {
+                
+                if let data =  image.imageData { imageOne = UIImage(data: data)
+                } else {
+                    if let defaultImage = flag.flagImageOneDefault { imageOne = UIImage(named: defaultImage)
+                    } else { imageOne = flag0 } }
+                
+            } else {
+                if let defaultImage = flag.flagImageOneDefault { imageOne = UIImage(named: defaultImage)
+                } else { imageOne = flag0 } }
+            
         } else {
-            flagImageView.image = imageOne
-        }
+            if let defaultImage = flag.flagImageOneDefault { imageOne = UIImage(named: defaultImage)
+            } else { imageOne = flag0 } }
+        
+        if let id = flag.flagImageTwoCustom {
+            if let image = DatabaseImageController.shared.getImageById(id) {
+                
+                if let data =  image.imageData { imageTwo = UIImage(data: data)
+                } else {
+                    if let defaultImage = flag.flagImageTwoDefault { imageTwo = UIImage(named: defaultImage)
+                    } else { imageTwo = flag1 } }
+                
+            } else {
+                if let defaultImage = flag.flagImageTwoDefault { imageTwo = UIImage(named: defaultImage)
+                } else { imageTwo = flag1 } }
+            
+        } else {
+            if let defaultImage = flag.flagImageTwoDefault { imageTwo = UIImage(named: defaultImage)
+            } else { imageTwo = flag1 } }
+        
+        
+        if flag.setState.boolValue { flagImageView.image = imageTwo } else { flagImageView.image = imageOne }
+        
         setNeedsDisplay()
     }
+    
     func commandSentChangeImage () {
         flagImageView.image = imageTwo
         setNeedsDisplay()
-        Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(FlagCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
+        Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(changeImageToNormal), userInfo: nil, repeats: false)
     }
+    
     func changeImageToNormal () {
         flagImageView.image = imageOne
         setNeedsDisplay()
     }
+    
     override func draw(_ rect: CGRect) {
         
         let path = UIBezierPath(roundedRect: rect,

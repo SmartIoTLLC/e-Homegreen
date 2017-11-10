@@ -40,10 +40,10 @@ class StationCell: UITableViewCell {
         bg.backgroundColor = UIColor.white.withAlphaComponent(0.4)
         selectedBackgroundView = bg
         
-        stationName.font = UIFont(name: "Tahoma", size: 20)
-        genre.font = UIFont(name: "Tahoma", size: 17)
-        area.font = UIFont(name: "Tahoma", size: 13)
-        city.font = UIFont(name: "Tahoma", size: 13)
+        stationName.font = UIFont.tahoma(size: 20)
+        genre.font = UIFont.tahoma(size: 15)
+        area.font = UIFont.tahoma(size: 13)
+        city.font = UIFont.tahoma(size: 13)
     }
 
     

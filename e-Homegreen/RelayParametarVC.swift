@@ -42,9 +42,15 @@ class RelayParametarVC: CommonXIBTransitionVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         appDel = UIApplication.shared.delegate as! AppDelegate
         
+        setupViews()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    func setupViews() {
         editDelay.delegate = self
         
         editDelay.inputAccessoryView = CustomToolBar()
@@ -55,20 +61,15 @@ class RelayParametarVC: CommonXIBTransitionVC {
         
         if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[indexPathRow].parentZoneId), location: devices[indexPathRow].gateway.location), let name = zone.name{
             lblLevel.text = "\(name)"
-        }else{
-            lblLevel.text = ""
-        }
+        } else { lblLevel.text = "" }
+        
         if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[indexPathRow].zoneId), location: devices[indexPathRow].gateway.location), let name = zone.name{
             lblZone.text = "\(name)"
-        }else{
-            lblZone.text = ""
-        }
+        } else { lblZone.text = "" }
+        
         lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(devices[indexPathRow].categoryId), location: devices[indexPathRow].gateway.location))"
         deviceAddress.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].address)))"
         deviceChannel.text = "\(devices[indexPathRow].channel)"
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(RelayParametarVC.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(RelayParametarVC.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
@@ -96,9 +97,8 @@ class RelayParametarVC: CommonXIBTransitionVC {
     func getDeviceAndSave (_ numberOne:Int) {
         if let deviceObject = appDel.managedObjectContext!.object(with: devices[indexPathRow].objectID) as? Device {
             device = deviceObject
-            print(device)
             device!.delay = NSNumber(value: numberOne)
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
         }
     }
     
@@ -107,45 +107,27 @@ class RelayParametarVC: CommonXIBTransitionVC {
     }
     
     func returnCategoryWithId(_ id:Int) -> String {
-        if id == 0{
-            return "All"
-        }
+        if id == 0 { return "All" }
+        
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Category.fetchRequest()
         let predicate = NSPredicate(format: "id == %@", NSNumber(value: id as Int))
         fetchRequest.predicate = predicate
+        
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Category]
-            if fetResults!.count != 0 {
-                return "\(fetResults![0].name)"
-            } else {
-                return "\(id)"
-            }
-        } catch _ as NSError {
-            print("Unresolved error")
-            abort()
-        }
+            if fetResults!.count != 0 { return "\(fetResults![0].name!)" } else { return "\(id)" }
+        } catch {}
+        
         return ""
     }
     
     func keyboardWillShow(_ notification: Notification) {
-        var info = (notification as NSNotification).userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
-        if editDelay.isFirstResponder{
-            if backView.frame.origin.y + editDelay.frame.origin.y + 30 > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centerY.constant = 0 - (5 + (self.backView.frame.origin.y + self.editDelay.frame.origin.y + 30 - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
+        moveTextfield(textfield: editDelay, keyboardFrame: keyboardFrame, backView: backView)
         
         UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
-    func keyboardWillHide(_ notification: Notification) {
-        self.centerY.constant = 0
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-    }
 }
 
 extension RelayParametarVC: UITextFieldDelegate{

@@ -29,30 +29,30 @@ class CreateAdminViewController: UIViewController, UITextFieldDelegate {
     }
 
     @IBAction func createAdmin(_ sender: AnyObject) {
-        guard let username = userNameTextField.text , username != "", let password = passwordTextField.text , password != "", let confirmPass = confirmPasswordTextField.text , confirmPass != "" else{
-            self.view.makeToast(message: "All fields must be filled")
+        guard let username = userNameTextField.text , username != "", let password = passwordTextField.text , password != "", let confirmPass = confirmPasswordTextField.text , confirmPass != "" else {
+            view.makeToast(message: "All fields must be filled")
             return
         }
         guard confirmPass == password else {
-            self.view.makeToast(message: "Passwords do not match")
+            view.makeToast(message: "Passwords do not match")
             return
         }
         
-        if AdminController.shared.setAdmin(username, password: password) == false{
-            self.view.makeToast(message: "Something wrong, try again!")
+        if AdminController.shared.setAdmin(username, password: password) == false {
+            view.makeToast(message: "Something wrong, try again!")
             return
         }
 
         AdminController.shared.loginAdmin()
         
-        if AdminController.shared.isAdminLogged(){
+        if AdminController.shared.isAdminLogged() {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let sideMenu = storyboard.instantiateViewController(withIdentifier: "SideMenu") as! SWRevealViewController
             let settings = Menu.settings.controller
             sideMenu.setFront(settings, animated: true)
-            self.present(sideMenu, animated: true, completion: nil)
-        }else{
-            self.view.makeToast(message: "Something wrong, try again!")
+            present(sideMenu, animated: true, completion: nil)
+        } else {
+            view.makeToast(message: "Something wrong, try again!")
             return
         }
         

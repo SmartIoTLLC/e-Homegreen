@@ -96,7 +96,7 @@ public class PhotoLibraryViewController: UIViewController {
     }
     
     internal func itemAtIndexPath(_ indexPath: IndexPath) -> PHAsset? {
-        return assets?[(indexPath as NSIndexPath).row]
+        return assets?[indexPath.row]
     }
 }
 

@@ -18,14 +18,51 @@ class DeviceCollectionCell: UICollectionViewCell {
     @IBOutlet weak var disabledCellView: UIView!
     var device:Device?
     
+    func setCell(device: Device, tag: Int) {
+        self.device = device
+        
+        typeOfLight.text = device.cellTitle
+        typeOfLight.tag = tag
+        
+        lightSlider.isContinuous = true
+        lightSlider.tag = tag
+        
+        let deviceValue:Double = { return Double(device.currentValue) }() ///255
+
+        picture.image = device.returnImage(Double(device.currentValue))
+        lightSlider.value = Float(deviceValue)/255 // Slider accepts values 0-1
+        picture.isUserInteractionEnabled = true
+        picture.tag = tag
+        
+        lblElectricity.text = "\(Float(device.current) * 0.01) A"
+        lblVoltage.text = "\(Float(device.voltage)) V"
+        labelPowrUsege.text = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
+        labelRunningTime.text = device.runningTime
+        
+        if device.info { infoView.isHidden = false; backView.isHidden = true
+        } else { infoView.isHidden = true; backView.isHidden = false }
+        
+        if device.warningState == 0 { backView.colorTwo = Colors.MediumGray }
+        else if device.warningState == 1 { backView.colorTwo = Colors.DirtyRedColor } // Upper state
+        else if device.warningState == 2 { backView.colorTwo = Colors.DirtyBlueColor } // Lower state
+        
+        if device.isEnabled.boolValue {
+            typeOfLight.isUserInteractionEnabled = true
+            disabledCellView.isHidden = true
+            disabledCellView.layer.cornerRadius = 5
+        } else {
+            disabledCellView.isHidden = false
+            disabledCellView.layer.cornerRadius = 5
+        }
+        
+    }
+    
     func getDevice (_ device:Device) {
         self.device = device
     }
     
     func refreshDevice(_ device:Device) {
-        let deviceValue:Double = {
-            return Double(device.currentValue)///255
-        }()
+        let deviceValue:Double = { return Double(device.currentValue) }() ///255
         
         picture.image = device.returnImage(Double(device.currentValue))
         lightSlider.value = Float(deviceValue/255)  // Slider accepts values from 0 to 1

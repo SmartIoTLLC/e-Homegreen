@@ -18,4 +18,9 @@ extension UIColor{
     func surveillanceColor() -> UIColor{
         return UIColor(red: 119/255, green: 128/255, blue: 46/255, alpha: 1)
     }
+    
+    static let googleMicBackgroundGreen = UIColor(red: 70/255, green: 182/255, blue: 172/255, alpha: 1)
+    static let googleMicTextGreen = UIColor(red: 90/255, green: 109/255, blue: 120/255, alpha: 1)
+    static let googleMicBackgroundWhite = UIColor(red: 235/255, green: 239/255, blue: 242/255, alpha: 1)
+    
 }

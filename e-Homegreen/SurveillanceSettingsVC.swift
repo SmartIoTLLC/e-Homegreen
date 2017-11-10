@@ -63,10 +63,18 @@ class SurveillanceSettingsVC: PopoverVC {
         
         appDel = UIApplication.shared.delegate as! AppDelegate
 
+        setupViews()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+
+    }
+    
+    func setupViews() {
         editPortRemote.inputAccessoryView = CustomToolBar()
         editPortLocal.inputAccessoryView = CustomToolBar()
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(SurveillanceSettingsVC.dismissViewController))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         
@@ -80,12 +88,10 @@ class SurveillanceSettingsVC: PopoverVC {
         editIPLocal.delegate = self
         editPortLocal.delegate = self
         
-        if let surv = surv{
+        if let surv = surv {
             
             editIPRemote.text = surv.ip
-            if let port = surv.port{
-                editPortRemote.text = "\(port)"
-            }
+            if let port = surv.port { editPortRemote.text = "\(port)" }
             editUserName.text = surv.username
             editPassword.text = surv.password
             editName.text = surv.name
@@ -94,34 +100,18 @@ class SurveillanceSettingsVC: PopoverVC {
             zoneButton.setTitle(surv.surveillanceZone, for: UIControlState())
             categoryButton.setTitle(surv.surveillanceCategory, for: UIControlState())
             
-            if let levelId = surv.surveillanceLevelId as? Int {
-                level = DatabaseZoneController.shared.getZoneById(levelId, location: surv.location!)
-            }
-            if let zoneId = surv.surveillanceLevelId as? Int {
-                zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: surv.location!)
-            }
-            if let categoryId = surv.surveillanceLevelId as? Int {
-                category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: surv.location!)
-            }
+            if let levelId = surv.surveillanceLevelId as? Int { level = DatabaseZoneController.shared.getZoneById(levelId, location: surv.location!) }
+            if let zoneId = surv.surveillanceLevelId as? Int { zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: surv.location!) }
+            if let categoryId = surv.surveillanceLevelId as? Int { category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: surv.location!) }
             
-
-            if let localIp = surv.localIp {
-                editIPLocal.text = localIp
-            }
-            if let localPort = surv.localPort {
-                editPortLocal.text = localPort
-            }
-            
+            if let localIp = surv.localIp { editIPLocal.text = localIp }
+            if let localPort = surv.localPort { editPortLocal.text = localPort }
         }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(SurveillanceSettingsVC.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)        
-        NotificationCenter.default.addObserver(self, selector: #selector(SurveillanceSettingsVC.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
-
     }
     
     override func nameAndId(_ name: String, id: String) {
         
-        switch button.tag{
+        switch button.tag {
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
             zoneButton.setTitle("All", for: UIControlState())
@@ -152,9 +142,7 @@ class SurveillanceSettingsVC: PopoverVC {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(parentLocation)
-        for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
-        }
+        for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
         popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
@@ -163,9 +151,7 @@ class SurveillanceSettingsVC: PopoverVC {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(parentLocation)
-        for item in list {
-            popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
-        }
+        for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
         
         popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
@@ -174,11 +160,9 @@ class SurveillanceSettingsVC: PopoverVC {
     @IBAction func btnZoneAction(_ sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-        if let level = level{
+        if let level = level {
             let list:[Zone] = DatabaseZoneController.shared.getZoneByLevel(parentLocation, parentZone: level)
-            for item in list {
-                popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString))
-            }
+            for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
         }
         
         popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
@@ -186,9 +170,9 @@ class SurveillanceSettingsVC: PopoverVC {
     }
     
     @IBAction func btnSave(_ sender: AnyObject) {
-        if  let remoteIp = editIPRemote.text,let remotePort = editPortRemote.text, let username =  editUserName.text, let password = editPassword.text, let name =  editName.text, let remotePortNumber = Int(remotePort),let localIp = editIPLocal.text, let localPort = editPortLocal.text  {
-            if surv == nil{
-                if let parentLocation = parentLocation{
+        if  let remoteIp = editIPRemote.text,let remotePort = editPortRemote.text, let username =  editUserName.text, let password = editPassword.text, let name =  editName.text, let remotePortNumber = Int(remotePort),let localIp = editIPLocal.text, let localPort = editPortLocal.text {
+            if surv == nil {
+                if let parentLocation = parentLocation {
                     let surveillance = Surveillance(context: appDel.managedObjectContext!)
                     
                     surveillance.name = name
@@ -224,9 +208,9 @@ class SurveillanceSettingsVC: PopoverVC {
                     surveillance.autSpanStep = 1
                     surveillance.dwellTime = 15
                     surveillance.location = parentLocation
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                 }
-            }else if let surv = surv{
+            }else if let surv = surv {
                 
                 surv.name = name
                 surv.username = username
@@ -245,7 +229,7 @@ class SurveillanceSettingsVC: PopoverVC {
                 surv.ip = remoteIp
                 surv.port = remotePortNumber as NSNumber?
                 
-                CoreDataController.shahredInstance.saveChanges()
+                CoreDataController.sharedInstance.saveChanges()
             }
             
             self.dismiss(animated: true, completion: nil)
@@ -254,85 +238,24 @@ class SurveillanceSettingsVC: PopoverVC {
     }
     
     func keyboardWillShow(_ notification: Notification) {
-        var info = (notification as NSNotification).userInfo!
+        let info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
-        if editPortRemote.isFirstResponder{
-            if backView.frame.origin.y + editPortRemote.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPortRemote.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editIPRemote.isFirstResponder{
-            if backView.frame.origin.y + editIPRemote.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editIPRemote.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editPortLocal.isFirstResponder{
-            if backView.frame.origin.y + editPortLocal.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPortLocal.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editIPLocal.isFirstResponder{
-            if backView.frame.origin.y + editIPLocal.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editIPLocal.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editUserName.isFirstResponder{
-            if backView.frame.origin.y + editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editPassword.isFirstResponder{
-            if backView.frame.origin.y + editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        
-        if editUserName.isFirstResponder{
-            if backView.frame.origin.y + editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editUserName.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
-        if editPassword.isFirstResponder{
-            if backView.frame.origin.y + editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y > self.view.frame.size.height - keyboardFrame.size.height{
-                
-                self.centarConstraint.constant = 0 - (5 + (self.backView.frame.origin.y + self.editPassword.frame.origin.y + 30 - self.scroll.contentOffset.y - (self.view.frame.size.height - keyboardFrame.size.height)))
-                
-            }
-        }
+        moveTextfield(textfield: editPortRemote, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: editIPRemote, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: editPortLocal, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: editIPLocal, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: editUserName, keyboardFrame: keyboardFrame, backView: backView)
+        moveTextfield(textfield: editPassword, keyboardFrame: keyboardFrame, backView: backView)
         
         UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-        
     }
     
-    func keyboardWillHide(_ notification: Notification) {
-        self.centarConstraint.constant = 0
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-    }
 }
 
 extension SurveillanceSettingsVC : UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if let touchView = touch.view{
-            if touchView.isDescendant(of: backView){
-                self.view.endEditing(true)
-                return false
-            }
-        }
+        if let touchView = touch.view { if touchView.isDescendant(of: backView) { dismissEditing(); return false } }
         return true
     }
 }
@@ -387,12 +310,7 @@ extension SurveillanceSettingsVC : UIViewControllerTransitioningDelegate {
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+        if dismissed == self { return self } else { return nil }
     }
     
 }

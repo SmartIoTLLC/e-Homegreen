@@ -22,7 +22,7 @@ class LogInTextField: UITextField {
     
     
     func updateTextField(){
-        self.font = UIFont(name: "Tahoma", size: 13)
+        self.font = UIFont.tahoma(size: 13)
         self.layer.borderColor = UIColor.black.cgColor
         self.layer.borderWidth = 1
         self.layer.cornerRadius = 5

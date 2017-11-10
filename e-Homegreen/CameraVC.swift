@@ -66,9 +66,9 @@ class CameraVC: UIViewController {
     }
     
     override func viewWillLayoutSubviews() {
-        if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight {
+        if UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight {
             print("vodoravno")
-        }else{
+        } else{
             self.dismiss(animated: true, completion: nil)
         }
     }
@@ -77,19 +77,6 @@ class CameraVC: UIViewController {
         timer.invalidate()
         self.dismiss(animated: true, completion: nil)
     }
-    
-    
-//    @IBAction func btnAutoSpan(sender: AnyObject) {
-//        moveCam.autoSpan(surv)
-//    }
-//    
-//    @IBAction func btnStop(sender: AnyObject) {
-//        moveCam.stop(surv)
-//    }
-//    
-//    @IBAction func btnPresetSequence(sender: AnyObject) {
-//        moveCam.presetSequence(surv)
-//    }
     
     @IBAction func btnAutoPan(_ sender: AnyObject) {
         var title = ""
@@ -100,7 +87,6 @@ class CameraVC: UIViewController {
     }
     
     @IBAction func btnHome(_ sender: AnyObject) {
-//        moveCam.stop(surv)
         moveCam.home(surv)
     }
     
@@ -117,16 +103,7 @@ class CameraVC: UIViewController {
     }
     
     func update(){
-        if surv.imageData != nil{
-            self.image.image = UIImage(data: surv.imageData! as Data)
-        }else{
-            self.image.image = UIImage(named: "loading")
-        }
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        if surv.imageData != nil { image.image = UIImage(data: surv.imageData! as Data) } else { image.image = UIImage(named: "loading") }
     }
     
     @IBAction func leftButtomAction(_ sender: AnyObject) {
@@ -201,12 +178,7 @@ extension CameraVC : UIViewControllerTransitioningDelegate {
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+        if dismissed == self { return self } else { return nil }
     }
     
 }

@@ -22,43 +22,36 @@ class ListOfDevice_AppViewController: UIViewController, UITableViewDelegate, UIT
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
-        
         appDel = UIApplication.shared.delegate as! AppDelegate
 
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         self.navigationItem.title = typeOfFile?.description
+
         pcCommandFilter()
-        // Do any additional setup after loading the view.
     }
     
     func pcCommandFilter(){
         filteredArray = []
         if let list = device.pcCommands {
             if let commandArray = Array(list) as? [PCCommand] {
-                if typeOfFile == FileType.app{
+                if typeOfFile == FileType.app {
                     filteredArray = commandArray.filter({ (pccommand) -> Bool in
-                        if Int(pccommand.commandType!) == CommandType.application.rawValue {
-                            return true
-                        }
+                        if Int(pccommand.commandType!) == CommandType.application.rawValue { return true }
                         return false
                     })
-                }else{
+                } else {
                     filteredArray = commandArray.filter({ (pccommand) -> Bool in
-                        if Int(pccommand.commandType!) == CommandType.media.rawValue {
-                            return true
-                        }
+                        if Int(pccommand.commandType!) == CommandType.media.rawValue { return true }
                         return false
                     })
                 }
-
             }
         }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "device_appCell", for: indexPath) as? Device_AppCell{
-            cell.setItem(filteredArray[(indexPath as NSIndexPath).row])
+            cell.setItem(filteredArray[indexPath.row])
             return cell
         }
         let cell = UITableViewCell(style: .default, reuseIdentifier: "defaultCell")
@@ -70,12 +63,12 @@ class ListOfDevice_AppViewController: UIViewController, UITableViewDelegate, UIT
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        showAddVideoAppXIB(typeOfFile, device:device, command:filteredArray[(indexPath as NSIndexPath).row]).delegate = self
+        showAddVideoAppXIB(typeOfFile, device:device, command:filteredArray[indexPath.row]).delegate = self
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            appDel.managedObjectContext?.delete(filteredArray[(indexPath as NSIndexPath).row])
+            appDel.managedObjectContext?.delete(filteredArray[indexPath.row])
             appDel.saveContext()
             pcCommandFilter()
             listTableView.reloadData()

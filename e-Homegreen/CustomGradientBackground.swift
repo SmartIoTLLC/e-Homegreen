@@ -27,7 +27,7 @@ class CustomGradientBackground: UIView {
     override func draw(_ rect: CGRect) {
         vRect = rect
         var path = UIBezierPath()
-        if isHeader == false{
+        if isHeader == false {
             path = UIBezierPath(roundedRect: rect,
                 byRoundingCorners: UIRectCorner.allCorners,
                 cornerRadii: CGSize(width: 5.0, height: 5.0))
@@ -48,22 +48,22 @@ class CustomGradientBackground: UIView {
         let endPoint = CGPoint(x:0, y:self.bounds.height)
         
         context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
-        if isHeader == false{
-            path.stroke()
-        }
+        
+        if isHeader == false { path.stroke() }
 //        gl = CAGradientLayer()
 //        gl.colors = [ colorOne, colorTwo]
 //        gl.locations = [ 0.0, 1.0]
 //        gl.frame = frame
 //        self.layer.insertSublayer(gl, atIndex: 0)
     }
-    func updateBackgroundColor(){
+    func updateBackgroundColor() {
         gl.colors = [ colorOne, colorTwo]
     }
-    func changeGradientColors(_ rect: CGRect){
+    
+    func changeGradientColors(_ rect: CGRect) {
         vRect = rect
         var path = UIBezierPath()
-        if isHeader == false{
+        if isHeader == false {
             path = UIBezierPath(roundedRect: rect,
                 byRoundingCorners: UIRectCorner.allCorners,
                 cornerRadii: CGSize(width: 5.0, height: 5.0))
@@ -72,6 +72,7 @@ class CustomGradientBackground: UIView {
             
             UIColor.lightGray.setStroke()
         }
+        
         let context = UIGraphicsGetCurrentContext()
         let colors = [colorOne , colorTwo]
         let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -84,9 +85,7 @@ class CustomGradientBackground: UIView {
         let endPoint = CGPoint(x:0, y:self.bounds.height)
         
         context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
-        if isHeader == false{
-            path.stroke()
-        }
+        if isHeader == false { path.stroke() }
     }
 
     

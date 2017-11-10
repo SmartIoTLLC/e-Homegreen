@@ -73,14 +73,18 @@ class AddLocationXIB: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        appDel = UIApplication.shared.delegate as! AppDelegate
+        
+        setupViews()
+    }
+    
+    func setupViews() {
         UIView.hr_setToastThemeColor(color: UIColor.red)
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(AddLocationXIB.dismissViewController))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        
-        appDel = UIApplication.shared.delegate as! AppDelegate
         
         locationMap.mapType = MKMapType.hybrid
         locationMap.showsUserLocation = true
@@ -89,11 +93,11 @@ class AddLocationXIB: PopoverVC {
         
         idTextField.inputAccessoryView = CustomToolBar()
         
-        let lpgr = UILongPressGestureRecognizer(target: self, action:#selector(AddLocationXIB.handleLongPress(_:)))
+        let lpgr = UILongPressGestureRecognizer(target: self, action:#selector(handleLongPress(_:)))
         lpgr.minimumPressDuration = 0.5
         locationMap.addGestureRecognizer(lpgr)
         
-        if let location = location{
+        if let location = location {
             zoneBtn.isEnabled = true
             categoryBtn.isEnabled = true
             ssidBtn.isEnabled = true
@@ -103,7 +107,7 @@ class AddLocationXIB: PopoverVC {
             securityArrowButton.isEnabled = true
             
             locationNameTextField.text = location.name
-            if let longitude = location.longitude, let latitude = location.latitude,let radius = location.radius{
+            if let longitude = location.longitude, let latitude = location.latitude,let radius = location.radius {
                 
                 let locationCoordinate = CLLocation(latitude: Double(latitude), longitude: Double(longitude))
                 
@@ -113,27 +117,18 @@ class AddLocationXIB: PopoverVC {
                 radiusLabel.text = "Radius: \(Int(radius))m"
                 radiusSlider.value = Float(radius)
                 addRadiusCircle(locationCoordinate)
-                if let orderId = location.orderId {
-                    idTextField.text = "\(orderId)"
+                if let orderId = location.orderId { idTextField.text = "\(orderId)" }
+                if let id = location.timerId {
+                    if let timer = DatabaseTimersController.shared.getTimerByid(id) { timerButton.setTitle(timer.timerName, for: UIControlState()) }
                 }
-                if let id = location.timerId{
-                    if let timer = DatabaseTimersController.shared.getTimerByid(id){
-                        timerButton.setTitle(timer.timerName, for: UIControlState())
-                    }
-                }
-                if let security = location.security?.allObjects as? [Security]{
-                    if security.count != 0{
-                        if let id = security[0].gatewayId{
-                            if let gateway = DatabaseGatewayController.shared.getGatewayByid(id){
-                                securityButton.setTitle(gateway.gatewayDescription, for: UIControlState())
-                            }
+                if let security = location.security?.allObjects as? [Security] {
+                    if security.count != 0 {
+                        if let id = security[0].gatewayId {
+                            if let gateway = DatabaseGatewayController.shared.getGatewayByid(id) { securityButton.setTitle(gateway.gatewayDescription, for: UIControlState()) }
                         }
                     }
                 }
-                if let filter = location.filterOnLocation as? Bool{
-                    setFilterSwitch.isOn = filter
-                }
-                
+                if let filter = location.filterOnLocation as? Bool { setFilterSwitch.isOn = filter }
                 
                 let center = locationCoordinate.coordinate
                 let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
@@ -161,20 +156,20 @@ class AddLocationXIB: PopoverVC {
     }
     
     override func nameAndId(_ name: String, id: String) {
-        if button.tag == 2{
-            if let gateway = DatabaseGatewayController.shared.getGatewayByStringObjectID(id){
+        if button.tag == 2 {
+            if let gateway = DatabaseGatewayController.shared.getGatewayByStringObjectID(id) {
                 DatabaseSecurityController.shared.createSecurityForLocation(location!, gateway: gateway)
                 securityButton.setTitle(gateway.gatewayDescription, for: UIControlState())
-            }else{
+            } else {
                 DatabaseSecurityController.shared.removeSecurityForLocation(location!)
                 securityButton.setTitle("", for: UIControlState())
             }
         }
-        if button.tag == 1{
-            if let timer = DatabaseTimersController.shared.getTimerByStringObjectID(id){
+        if button.tag == 1 {
+            if let timer = DatabaseTimersController.shared.getTimerByStringObjectID(id) {
                 location!.timerId = timer.id
                 timerButton.setTitle(timer.timerName, for: UIControlState())
-            }else{
+            } else {
                 location!.timerId = nil
                 timerButton.setTitle("", for: UIControlState())
             }
@@ -187,9 +182,7 @@ class AddLocationXIB: PopoverVC {
     
     // tap on map and find coordinate
     func handleLongPress(_ gestureReconizer: UILongPressGestureRecognizer) {
-        if gestureReconizer.state != UIGestureRecognizerState.began {
-            return
-        }
+        if gestureReconizer.state != UIGestureRecognizerState.began { return }
         if gestureReconizer.state != UIGestureRecognizerState.ended {
             let touchLocation = gestureReconizer.location(in: locationMap)
             let locationCoordinate = locationMap.convert(touchLocation,toCoordinateFrom: locationMap)
@@ -211,7 +204,7 @@ class AddLocationXIB: PopoverVC {
                 } else {
                     (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId, zone.allowOption) = (zoneJSON.id as NSNumber?, zoneJSON.name, zoneJSON.description, zoneJSON.level as NSNumber?, NSNumber(value: true as Bool), location, zoneJSON.id as NSNumber?, 1)
                 }
-                CoreDataController.shahredInstance.saveChanges()
+                CoreDataController.sharedInstance.saveChanges()
                 
             }
         }
@@ -223,7 +216,7 @@ class AddLocationXIB: PopoverVC {
                 } else {
                     (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId, category.allowOption) = (categoryJSON.id as NSNumber?, categoryJSON.name, categoryJSON.description, NSNumber(value: true as Bool), location, categoryJSON.id as NSNumber?, 3)
                 }
-                CoreDataController.shahredInstance.saveChanges()
+                CoreDataController.sharedInstance.saveChanges()
             }
         }
     }
@@ -243,33 +236,24 @@ class AddLocationXIB: PopoverVC {
     
     @IBAction func saveAction(_ sender: AnyObject) {
         
-        guard let locationName = locationNameTextField.text , locationName != "" else {
-            self.view.makeToast(message: "Write location name")
-            return
-        }
+        guard let locationName = locationNameTextField.text , locationName != "" else { self.view.makeToast(message: "Write location name"); return }
         
-        guard annotation.coordinate.longitude != 0 && annotation.coordinate.latitude != 0 else{
-            self.view.makeToast(message: "Choose location from map")
-            return
-        }
+        guard annotation.coordinate.longitude != 0 && annotation.coordinate.latitude != 0 else { self.view.makeToast(message: "Choose location from map"); return }
         
-        if let location = location{
-            guard let orderId = idTextField.text, let id = Int(orderId) else{
-                self.view.makeToast(message: "Id have to be a number")
-                return
-            }
+        if let location = location {
+            guard let orderId = idTextField.text, let id = Int(orderId) else { self.view.makeToast(message: "Id have to be a number"); return }
             location.name = locationNameTextField.text!
             location.latitude = annotation.coordinate.latitude as NSNumber?
             location.longitude = annotation.coordinate.longitude as NSNumber?
             location.orderId = id as NSNumber?
             location.radius = radius as NSNumber?
             location.filterOnLocation = setFilterSwitch.isOn as NSNumber?
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             
             delegate?.editAddLocationFinished()
             self.dismiss(animated: true, completion: nil)
-        }else{
-            if let user = user{
+        } else {
+            if let user = user {
                 if let newLocation = NSEntityDescription.insertNewObject(forEntityName: "Location", into: appDel.managedObjectContext!) as? Location{
                     newLocation.name = locationNameTextField.text!
                     newLocation.latitude = annotation.coordinate.latitude as NSNumber?
@@ -277,13 +261,10 @@ class AddLocationXIB: PopoverVC {
                     newLocation.radius = radius as NSNumber?
                     newLocation.user = user
                     newLocation.filterOnLocation = setFilterSwitch.isOn as NSNumber?
-                    if let orderId = idTextField.text, let id = Int(orderId){
-                        newLocation.orderId = id as NSNumber?
-                    }else{
-                        newLocation.orderId = DatabaseLocationController.shared.getNextAvailableId(user) as NSNumber?
-                    }
+                    if let orderId = idTextField.text, let id = Int(orderId) { newLocation.orderId = id as NSNumber?
+                    } else { newLocation.orderId = DatabaseLocationController.shared.getNextAvailableId(user) as NSNumber? }
                     createZonesAndCategories(newLocation)
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                     
                     DatabaseLocationController.shared.startMonitoringLocation(newLocation)
                     
@@ -317,12 +298,9 @@ class AddLocationXIB: PopoverVC {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Gateway] = DatabaseGatewayController.shared.getGatewayByLocationForSecurity(location!)
-        for item in list {
-            popoverList.append(PopOverItem(name: item.gatewayDescription, id: item.objectID.uriRepresentation().absoluteString))
-        }
+        for item in list { popoverList.append(PopOverItem(name: item.gatewayDescription, id: item.objectID.uriRepresentation().absoluteString)) }
         popoverList.insert(PopOverItem(name: "  ", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
-
     }
     
     @IBAction func changeRadiusAction(_ sender: UISlider) {
@@ -334,7 +312,7 @@ class AddLocationXIB: PopoverVC {
     @IBAction func importZone(_ sender: AnyObject) {
         
         if let navVC = UIStoryboard(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImportZone") as? UINavigationController{
-            if let importZoneViewController = navVC.topViewController as? ImportZoneViewController{
+            if let importZoneViewController = navVC.topViewController as? ImportZoneViewController {
                 importZoneViewController.location = location
                 self.present(navVC, animated: true, completion: nil)
             }
@@ -343,7 +321,7 @@ class AddLocationXIB: PopoverVC {
     
     @IBAction func importCategory(_ sender: AnyObject) {
         if let navVC = UIStoryboard(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImportCategory") as? UINavigationController{
-            if let importCategoryViewController = navVC.topViewController as? ImportCategoryViewController{
+            if let importCategoryViewController = navVC.topViewController as? ImportCategoryViewController {
                 importCategoryViewController.location = location
                 self.present(navVC, animated: true, completion: nil)
             }
@@ -352,7 +330,7 @@ class AddLocationXIB: PopoverVC {
     
     @IBAction func importSSID(_ sender: AnyObject) {
         if let navVC = UIStoryboard(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImportSSID") as? UINavigationController{
-            if let importSSID = navVC.topViewController as? ImportSSIDViewController{
+            if let importSSID = navVC.topViewController as? ImportSSIDViewController {
                 importSSID.location = location
                 self.present(navVC, animated: true, completion: nil)
             }
@@ -371,12 +349,7 @@ extension AddLocationXIB : UITextFieldDelegate {
 
 extension AddLocationXIB : UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if let touchView = touch.view{
-            if touchView.isDescendant(of: backView){
-                self.view.endEditing(true)
-                return false
-            }
-        }
+        if let touchView = touch.view { if touchView.isDescendant(of: backView) { dismissEditing(); return false } }
         return true
     }
 }
@@ -403,7 +376,6 @@ extension AddLocationXIB : CLLocationManagerDelegate {
         
         self.locationMap.setRegion(region, animated: true)
         locationManager.stopUpdatingLocation()
-        
     }
 }
 
@@ -457,12 +429,7 @@ extension AddLocationXIB : UIViewControllerTransitioningDelegate {
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+        if dismissed == self { return self } else { return nil }
     }
     
 }

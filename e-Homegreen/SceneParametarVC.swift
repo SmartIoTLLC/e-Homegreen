@@ -38,50 +38,38 @@ class SceneParametarVC: UIViewController, UIGestureRecognizerDelegate {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(SceneParametarVC.dismissViewController))
+
+        appDel = UIApplication.shared.delegate as! AppDelegate
+        setupViews()
+    }
+    
+    func setupViews() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         isBroadcast.tag = 100
         isBroadcast.isOn = scene!.isBroadcast.boolValue
-        isBroadcast.addTarget(self, action: #selector(SceneParametarVC.changeValue(_:)), for: UIControlEvents.valueChanged)
+        isBroadcast.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
         isLocalcast.tag = 200
         isLocalcast.isOn = scene!.isLocalcast.boolValue
-        isLocalcast.addTarget(self, action: #selector(SceneParametarVC.changeValue(_:)), for: UIControlEvents.valueChanged)
-        appDel = UIApplication.shared.delegate as! AppDelegate
-        
-        // Do any additional setup after loading the view.
+        isLocalcast.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
     }
     
     @IBAction func btnSave(_ sender: AnyObject) {
-        if isBroadcast.isOn {
-            scene?.isBroadcast = true
-        } else {
-            scene?.isBroadcast = false
-        }
-        if isLocalcast.isOn {
-            scene?.isLocalcast = true
-        } else {
-            scene?.isLocalcast = false
-        }
-        CoreDataController.shahredInstance.saveChanges()
+        
+        if isBroadcast.isOn { scene?.isBroadcast = true } else { scene?.isBroadcast = false }
+        if isLocalcast.isOn { scene?.isLocalcast = true } else { scene?.isLocalcast = false }
+        
+        CoreDataController.sharedInstance.saveChanges()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshScene), object: self, userInfo: nil)
         self.dismiss(animated: true, completion: nil)
     }
 
-    func changeValue (_ sender:UISwitch){
+    func changeValue (_ sender:UISwitch) {
         if sender.tag == 100 {
-            if sender.isOn == true {
-                isLocalcast.isOn = false
-            } else {
-                isLocalcast.isOn = false
-            }
+            if sender.isOn == true { isLocalcast.isOn = false } else { isLocalcast.isOn = false }
         } else if sender.tag == 200 {
-            if sender.isOn == true {
-                isBroadcast.isOn = false
-            } else {
-                isBroadcast.isOn = false
-            }
+            if sender.isOn == true { isBroadcast.isOn = false } else { isBroadcast.isOn = false }
         }
     }
     
@@ -89,28 +77,11 @@ class SceneParametarVC: UIViewController, UIGestureRecognizerDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: backView){
-            return false
-        }
+        if touch.view!.isDescendant(of: backView) { return false }
         return true
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
 }
 
 extension SceneParametarVC : UIViewControllerAnimatedTransitioning {
@@ -169,19 +140,13 @@ extension SceneParametarVC : UIViewControllerTransitioningDelegate {
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+        if dismissed == self { return self } else { return nil }
     }
     
 }
 extension UIViewController {
     func showSceneParametar(_ point:CGPoint, scene:Scene) {
         let sp = SceneParametarVC(point: point)
-//        ad.indexPathRow = indexPathRow
         sp.scene = scene
         self.present(sp, animated: true, completion: nil)
     }

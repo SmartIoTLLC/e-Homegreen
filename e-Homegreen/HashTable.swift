@@ -38,9 +38,7 @@ extension DeviceType: Hashable {
         case 0x34:if subId > 0x00 {newSubId = 0x00}
         case 0x35:if subId > 0x00 {newSubId = 0x00}
         case 0x54:if subId > 0x01 {newSubId = 0x01}
-        case 0x72:if subId > 0x00 {
-            newSubId = 0x00
-            }
+        case 0x72:if subId > 0x00 {newSubId = 0x00}
         case 0x41:if subId > 0x00 {newSubId = 0x00}
         case 0x42:if subId > 0x00 {newSubId = 0x00}
         case 0x43:if subId > 0x01 {newSubId = 0x01}
@@ -79,9 +77,7 @@ func == (lhs: DeviceType, rhs:DeviceType) -> Bool {
     case 0x34:if lhs.subId > 0x00 {lhsSubId = 0x00}
     case 0x35:if lhs.subId > 0x00 {lhsSubId = 0x00}
     case 0x54:if lhs.subId > 0x01 {lhsSubId = 0x01}
-    case 0x72:if lhs.subId > 0x00 {
-        lhsSubId = 0x00
-        }
+    case 0x72:if lhs.subId > 0x00 {lhsSubId = 0x00}
     case 0x41:if lhs.subId > 0x00 {lhsSubId = 0x00}
     case 0x42:if lhs.subId > 0x00 {lhsSubId = 0x00}
     case 0x43:if lhs.subId > 0x01 {lhsSubId = 0x01}
@@ -116,9 +112,7 @@ func == (lhs: DeviceType, rhs:DeviceType) -> Bool {
     case 0x34:if rhs.subId > 0x00 {rhsSubId = 0x00}
     case 0x35:if rhs.subId > 0x00 {rhsSubId = 0x00}
     case 0x54:if rhs.subId > 0x01 {rhsSubId = 0x01}
-    case 0x72:if rhs.subId > 0x00 {
-        rhsSubId = 0x00
-        }
+    case 0x72:if rhs.subId > 0x00 {rhsSubId = 0x00}
     case 0x41:if rhs.subId > 0x00 {rhsSubId = 0x00}
     case 0x42:if rhs.subId > 0x00 {rhsSubId = 0x00}
     case 0x43:if rhs.subId > 0x01 {rhsSubId = 0x01}

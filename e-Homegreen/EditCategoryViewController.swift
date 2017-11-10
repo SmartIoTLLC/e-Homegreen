@@ -30,7 +30,7 @@ class EditCategoryViewController: CommonXIBTransitionVC {
     var appDel:AppDelegate!
     var error:NSError? = nil
     
-    init(category:Category?, location:Location?){
+    init(category:Category?, location:Location?) {
         super.init(nibName: "EditCategoryViewController", bundle: nil)
         
         self.category = category
@@ -44,16 +44,18 @@ class EditCategoryViewController: CommonXIBTransitionVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        appDel = UIApplication.shared.delegate as! AppDelegate
+        setupViews()
+    }
+    
+    func setupViews() {
         idTextField.inputAccessoryView = CustomToolBar()
 
-        
-        appDel = UIApplication.shared.delegate as! AppDelegate
-        
         nameTextField.delegate = self
         descriptionTextField.delegate = self
         idTextField.delegate = self
         
-        if  let category = category{
+        if  let category = category {
             idTextField.text = "\(category.id!)"
             nameTextField.text = category.name
             descriptionTextField.text = category.categoryDescription
@@ -62,9 +64,7 @@ class EditCategoryViewController: CommonXIBTransitionVC {
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: backView){
-            return false
-        }
+        if touch.view!.isDescendant(of: backView) { return false }
         return true
     }
     
@@ -83,51 +83,42 @@ class EditCategoryViewController: CommonXIBTransitionVC {
             return fetResults!
         } catch let error1 as NSError {
             error = error1
-            print("Unresolved error \(error), \(error!.userInfo)")
-            abort()
+            print("Unresolved error \(String(describing: error)), \(error!.userInfo)")
         }
         return nil
     }
     
     @IBAction func saveAction(_ sender: AnyObject) {
         if let name = nameTextField.text, let id = idTextField.text, let idValid = Int(id) {
-            if category == nil{
+            if category == nil {
                 if let location = location, let category = fetchCategory(idValid, location: location){
-                    if category != []{
+                    if category != [] {
                         for item in category{
                             item.name = name
-                            if let desc = descriptionTextField.text{
-                                item.categoryDescription = desc
-                            }
+                            if let desc = descriptionTextField.text { item.categoryDescription = desc }
                         }
-                    }else{
-                        if let categoryNew = NSEntityDescription.insertNewObject(forEntityName: "Category", into: appDel.managedObjectContext!) as? Category{
+                    } else {
+                        if let categoryNew = NSEntityDescription.insertNewObject(forEntityName: "Category", into: appDel.managedObjectContext!) as? Category {
                             categoryNew.id = idValid as NSNumber?
                             categoryNew.name = name
-                            if let desc = descriptionTextField.text{
-                                categoryNew.categoryDescription = desc
-                            }
+                            if let desc = descriptionTextField.text { categoryNew.categoryDescription = desc }
                             categoryNew.location = location
                             categoryNew.orderId = idValid as NSNumber?
                             categoryNew.allowOption = 3
                             categoryNew.isVisible = true
                         }
                     }
-                }else if let categoryNew = NSEntityDescription.insertNewObject(forEntityName: "Category", into: appDel.managedObjectContext!) as? Category{
+                } else if let categoryNew = NSEntityDescription.insertNewObject(forEntityName: "Category", into: appDel.managedObjectContext!) as? Category {
                     categoryNew.id = idValid as NSNumber?
                     categoryNew.name = name
                     categoryNew.allowOption = 3
-                    if let desc = descriptionTextField.text{
-                        categoryNew.categoryDescription = desc
-                    }
-                    CoreDataController.shahredInstance.saveChanges()
+                    if let desc = descriptionTextField.text { categoryNew.categoryDescription = desc }
+                    CoreDataController.sharedInstance.saveChanges()
                 }
-            }else{
+            } else {
                 category?.name = name
-                if let desc = descriptionTextField.text{
-                    category?.categoryDescription = desc
-                }
-                CoreDataController.shahredInstance.saveChanges()
+                if let desc = descriptionTextField.text { category?.categoryDescription = desc }
+                CoreDataController.sharedInstance.saveChanges()
             }
             delegate?.editCategoryFInished()
             self.dismiss(animated: true, completion: nil)

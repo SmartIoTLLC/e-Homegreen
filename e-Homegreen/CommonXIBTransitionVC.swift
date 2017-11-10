@@ -27,7 +27,7 @@ class CommonXIBTransitionVC: UIViewController {
         
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(CommonXIBTransitionVC.tapOnView(_:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOnView(_:)))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
     }
@@ -96,12 +96,7 @@ extension CommonXIBTransitionVC : UIViewControllerTransitioningDelegate {
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if dismissed == self {
-            return self
-        }
-        else {
-            return nil
-        }
+        if dismissed == self { return self } else { return nil }
     }
     
 }

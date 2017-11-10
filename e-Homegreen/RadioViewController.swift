@@ -24,14 +24,7 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullscreenButton: UIButton!
     @IBAction func fullscreen(_ sender: UIButton) {
-        sender.collapseInReturnToNormal(1)
-        if UIApplication.shared.isStatusBarHidden {
-            UIApplication.shared.isStatusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
-        } else {
-            UIApplication.shared.isStatusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        }
+        sender.switchFullscreen()
     }
     
     @IBOutlet weak var tableView: UITableView!
@@ -44,19 +37,10 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        revealViewController().delegate = self
+        setupSWRevealViewController(menuButton: menuButton)
         
-        if self.revealViewController() != nil {
-            
-            menuButton.target = self.revealViewController()
-            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-            //self.revealViewController().panGestureRecognizer().delegate = self
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            revealViewController().toggleAnimationDuration = 0.5
-            
-            revealViewController().rearViewRevealWidth = 200
-        }
-        
-        changeFullScreeenImage()
+        changeFullscreenImage(fullscreenButton: fullscreenButton)        
     }
     
     override func viewDidLoad() {
@@ -84,14 +68,6 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
         tableView.separatorInset = UIEdgeInsets.zero
         navigationItem.title = "Radio"
         navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
-    }
-    
-    func changeFullScreeenImage(){
-        if UIApplication.shared.isStatusBarHidden {
-            fullscreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        } else {
-            fullscreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
-        }
     }
 
 
@@ -129,7 +105,7 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
     func setupRadioPlayerView() {
         radioBar.backgroundColor = UIColor(cgColor: Colors.DarkGray)
         radioTitle.textColor = UIColor.white
-        radioTitle.font = UIFont(name: "Tahoma", size: 17)
+        radioTitle.font = UIFont.tahoma(size: 15)
         
         pauseButton.setImage(#imageLiteral(resourceName: "audio_pause"), for: UIControlState())
         pauseButton.imageView?.contentMode = .scaleAspectFit
@@ -162,7 +138,7 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
                         let station = Radio(context: context!, stationName: object["stationName"] as! String, area: object["area"] as! String, city: object["city"] as! String, genre: object["genre"] as! String, url: object["url"] as! String, isWorking: object["isWorking"] as! Bool, radioDescription: object["description"] as! String)
                         radioStations.append(station)
                     }
-                    self.tableView.reloadData()
+                    tableView.reloadData()
                 }
             }
         } catch let error as NSError {
@@ -177,10 +153,10 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
         if !radioIsPlaying {
             if let urlString = currentStation.url {
                 if let url = URL(string: urlString) {
-                    self.player = AVPlayer(url: url)
-                    self.player?.volume = 1.0
-                    self.player?.play()
-                    self.radioIsPlaying = true
+                    player = AVPlayer(url: url)
+                    player?.volume = 1.0
+                    player?.play()
+                    radioIsPlaying = true
                 }
             }
         } else {
@@ -202,19 +178,11 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
 extension RadioViewController: SWRevealViewControllerDelegate{
     
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
-        if(position == FrontViewPosition.left) {
-            tableView.isUserInteractionEnabled = true
-        } else {
-            tableView.isUserInteractionEnabled = false
-        }
+        if position == .left { tableView.isUserInteractionEnabled = true } else { tableView.isUserInteractionEnabled = false }
     }
     
     func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
-        if(position == FrontViewPosition.left) {
-            tableView.isUserInteractionEnabled = true
-        } else {
-            tableView.isUserInteractionEnabled = false
-        }
+        if position == .left { tableView.isUserInteractionEnabled = true } else { tableView.isUserInteractionEnabled = false }
     }
     
 }

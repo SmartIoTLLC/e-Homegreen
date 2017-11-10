@@ -5,7 +5,7 @@
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -36,10 +36,17 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8uh-Wa-lvr">
-                                <rect key="frame" x="87" y="265" width="200" height="200"/>
+                                <rect key="frame" x="16" y="265" width="343" height="200"/>
                                 <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="w9t-JG-aBp">
+                                        <rect key="frame" x="121" y="50" width="100" height="100"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="Fh5-pf-LYN"/>
+                                            <constraint firstAttribute="height" constant="100" id="ckh-Fu-l1f"/>
+                                        </constraints>
+                                    </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNJ-YX-qau">
-                                        <rect key="frame" x="0.0" y="0.0" width="200" height="30"/>
+                                        <rect key="frame" x="71" y="8" width="200" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="oRr-x0-dS8"/>
                                         </constraints>
@@ -47,21 +54,16 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="w9t-JG-aBp">
-                                        <rect key="frame" x="0.0" y="38" width="200" height="162"/>
-                                    </imageView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="0.67022173236514526" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="gNJ-YX-qau" firstAttribute="leading" secondItem="8uh-Wa-lvr" secondAttribute="leading" id="4WD-yg-NbT"/>
-                                    <constraint firstItem="gNJ-YX-qau" firstAttribute="top" secondItem="8uh-Wa-lvr" secondAttribute="top" id="N2k-wC-6qX"/>
-                                    <constraint firstAttribute="trailing" secondItem="w9t-JG-aBp" secondAttribute="trailing" id="P9t-VL-plU"/>
-                                    <constraint firstAttribute="bottom" secondItem="w9t-JG-aBp" secondAttribute="bottom" id="b96-IV-dfz"/>
-                                    <constraint firstAttribute="trailing" secondItem="gNJ-YX-qau" secondAttribute="trailing" id="dAk-Si-hGf"/>
+                                    <constraint firstItem="gNJ-YX-qau" firstAttribute="leading" secondItem="8uh-Wa-lvr" secondAttribute="leading" constant="71" id="4WD-yg-NbT"/>
+                                    <constraint firstItem="w9t-JG-aBp" firstAttribute="centerY" secondItem="8uh-Wa-lvr" secondAttribute="centerY" id="9mD-rV-h7x"/>
+                                    <constraint firstItem="gNJ-YX-qau" firstAttribute="top" secondItem="8uh-Wa-lvr" secondAttribute="top" constant="8" id="N2k-wC-6qX"/>
+                                    <constraint firstAttribute="trailing" secondItem="gNJ-YX-qau" secondAttribute="trailing" constant="72" id="dAk-Si-hGf"/>
+                                    <constraint firstItem="w9t-JG-aBp" firstAttribute="centerX" secondItem="8uh-Wa-lvr" secondAttribute="centerX" id="e6a-cW-hL0"/>
                                     <constraint firstAttribute="height" constant="200" id="fY7-CG-f46"/>
-                                    <constraint firstAttribute="width" constant="200" id="fyX-sQ-A2S"/>
-                                    <constraint firstItem="w9t-JG-aBp" firstAttribute="leading" secondItem="8uh-Wa-lvr" secondAttribute="leading" id="gbP-EX-Heg"/>
-                                    <constraint firstItem="w9t-JG-aBp" firstAttribute="top" secondItem="gNJ-YX-qau" secondAttribute="bottom" constant="8" id="u7b-sU-WhK"/>
+                                    <constraint firstAttribute="width" constant="343" id="fyX-sQ-A2S"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -81,7 +83,7 @@
                         <barButtonItem key="leftBarButtonItem" image="Menu button" id="OJB-e8-oeV"/>
                         <barButtonItem key="rightBarButtonItem" style="plain" id="OOF-lm-Ja0">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="KRM-ex-Ah2">
-                                <rect key="frame" x="329" y="9" width="30" height="30"/>
+                                <rect key="frame" x="329" y="7" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="full screen"/>
                                 <connections>

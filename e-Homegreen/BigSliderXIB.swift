@@ -39,26 +39,24 @@ class BigSliderXIB: CommonXIBTransitionVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupSlider()
+    }
+    
+    func setupSlider() {
         slider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(BigSliderXIB.changeSliderValueOnOneTap(_:))))
         
         slider.value = Float(device.currentValue)/255
         slider.tag = index
-
-        // Do any additional setup after loading the view.
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: backView){
-            return false
-        }
+        if touch.view!.isDescendant(of: backView) { return false }
         return true
     }
     
     func changeSliderValueOnOneTap (_ gesture:UIGestureRecognizer) {
         let s = gesture.view as! UISlider
-        if s.isHighlighted{
-            return // tap on thumb, let slider deal with it
-        }
+        if s.isHighlighted { return } // tap on thumb, let slider deal with it
         let pt:CGPoint = gesture.location(in: s)
         let percentage:CGFloat = pt.x / s.bounds.size.width
         let delta:CGFloat = percentage * (CGFloat(s.maximumValue) - CGFloat(s.minimumValue))
