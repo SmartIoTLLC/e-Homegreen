@@ -63,12 +63,12 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
         imageCollectionView.register(UINib(nibName: String(describing: ButtonImageCell.self), bundle: nil), forCellWithReuseIdentifier: cellId)
         imageCollectionView.backgroundColor = .clear
         
-        view.backgroundColor = .clear
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         
         backgroundView.layer.borderColor   = Colors.MediumGray
         backgroundView.layer.borderWidth   = 1
         backgroundView.layer.cornerRadius  = 25
-        backgroundView.layer.masksToBounds = true
+        backgroundView.layer.masksToBounds = true             
         
         segmentedControl.setTitle("DEFAULT LIBRARY", forSegmentAt: 0)
         segmentedControl.setTitle("CUSTOM LIBRARY", forSegmentAt: 1)
@@ -337,9 +337,12 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
             handler.openCamera(on: self, allowsEditing: true)
         }
         
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
         optionMenu.addAction(photoGallery)
         optionMenu.addAction(savedPhotosAlbum)
         optionMenu.addAction(camera)
+        optionMenu.addAction(cancel)
         present(optionMenu, animated: true, completion: nil)
     }
     

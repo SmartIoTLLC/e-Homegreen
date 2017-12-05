@@ -5,7 +5,6 @@
 //  Created by Vladimir Tuchek on 10/2/17.
 //  Copyright © 2017 Teodor Stevic. All rights reserved.
 //
-
 import UIKit
 import AudioToolbox
 
@@ -18,7 +17,7 @@ class ButtonCell: UICollectionViewCell {
     var scene: Scene?
     var irDevice: Device?
     var hex: [Byte]?
-    
+        
     @IBOutlet weak var realButton: UIButton!
     
     @IBOutlet weak var btnWidthConstraint: NSLayoutConstraint!
@@ -32,6 +31,7 @@ class ButtonCell: UICollectionViewCell {
             imageScaleY = CGFloat(button.imageScaleY!)
             btnWidthConstraint.constant = width
             btnHeightConstraint.constant = height
+            realButton.center = contentView.center
             realButton.layoutIfNeeded()
             setButton(button: button)
             setNeedsLayout()
@@ -41,9 +41,9 @@ class ButtonCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-
+        
         updateCell()
-    }    
+    }
     
 }
 
@@ -60,11 +60,11 @@ extension ButtonCell {
     
     fileprivate func setButtonColor() {
         switch button.buttonColor! {
-            case ButtonColor.red    : contentView.backgroundColor = .red
-            case ButtonColor.gray   : contentView.backgroundColor = Colors.AndroidGrayColor
-            case ButtonColor.green  : contentView.backgroundColor = .green
-            case ButtonColor.blue   : contentView.backgroundColor = .red
-            default                 : contentView.backgroundColor = Colors.AndroidGrayColor
+        case ButtonColor.red    : realButton.backgroundColor = .red
+        case ButtonColor.gray   : realButton.backgroundColor = Colors.AndroidGrayColor
+        case ButtonColor.green  : realButton.backgroundColor = .green
+        case ButtonColor.blue   : realButton.backgroundColor = .red
+        default                 : realButton.backgroundColor = .clear
         }
     }
     
@@ -90,10 +90,15 @@ extension ButtonCell {
         setButtonColor()
         
         switch button.buttonShape! {
-            case ButtonShape.circle         : realButton.frame.size = CGSize(width: height, height: height); realButton.layer.cornerRadius = height / 2
+            case ButtonShape.circle       : realButton.frame.size = CGSize(width: height, height: height); realButton.layer.cornerRadius = height / 2
+            btnWidthConstraint.constant  = height
+            btnHeightConstraint.constant = height
             case ButtonShape.rectangle    : realButton.frame.size = CGSize(width: width, height: height); realButton.layer.cornerRadius = 3
+            btnWidthConstraint.constant  = width
+            btnHeightConstraint.constant = height
             default: break
         }
+        realButton.layoutIfNeeded()
         
         switch button.buttonState! {
             case ButtonState.visible    : setVisible()
@@ -107,7 +112,7 @@ extension ButtonCell {
         realButton.titleLabel?.textAlignment             = .center
         realButton.titleLabel?.font                      = .tahoma(size: 15)
         realButton.titleLabel?.adjustsFontSizeToFitWidth = true
-
+        
         let tap  = UITapGestureRecognizer(target: self, action: #selector(sendCommand)); tap.numberOfTapsRequired = 1
         let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(openButtonSettings)); lpgr.minimumPressDuration = 1.0
         realButton.addGestureRecognizer(tap)

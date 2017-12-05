@@ -155,3 +155,17 @@ extension UIFont {
     
 }
 
+public class HelperFunctions {
+    class func getGradientLayer(with colors: [CGColor], locations: [NSNumber], on view: UIView) -> CAGradientLayer {
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame      = view.bounds
+        gradientLayer.colors     = [colors]
+        gradientLayer.locations  = locations        
+        gradientLayer.startPoint = CGPoint(x: 1.0, y: 1.0)
+        gradientLayer.endPoint   = CGPoint(x: 0.0, y: 0.0)
+        
+        return gradientLayer
+    }
+}
+
