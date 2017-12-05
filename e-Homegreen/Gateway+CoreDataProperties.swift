@@ -2,20 +2,21 @@
 //  Gateway+CoreDataProperties.swift
 //  e-Homegreen
 //
-//  Created by Vladimir Tuchek on 10/27/17.
+//  Created by Vladimir Tuchek on 11/13/17.
 //  Copyright © 2017 Teodor Stevic. All rights reserved.
 //
 //
 
 import Foundation
 import CoreData
+//import e_Homegreen
 
 extension Gateway {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Gateway> {
         return NSFetchRequest<Gateway>(entityName: "Gateway")
     }
-
+    
     @NSManaged var addressOne: NSNumber
     @NSManaged var addressThree: NSNumber
     @NSManaged var addressTwo: NSNumber
@@ -39,7 +40,7 @@ extension Gateway {
     @NSManaged var sequences: NSSet
     @NSManaged var timers: NSSet
     @NSManaged var location: Location
-    @NSManaged var remotes: NSSet
+
 
 }
 
@@ -159,22 +160,5 @@ extension Gateway {
 
     @objc(removeTimers:)
     @NSManaged public func removeFromTimers(_ values: NSSet)
-
-}
-
-// MARK: Generated accessors for remotes
-extension Gateway {
-
-    @objc(addRemotesObject:)
-    @NSManaged public func addToRemotes(_ value: Remote)
-
-    @objc(removeRemotesObject:)
-    @NSManaged public func removeFromRemotes(_ value: Remote)
-
-    @objc(addRemotes:)
-    @NSManaged public func addToRemotes(_ values: NSSet)
-
-    @objc(removeRemotes:)
-    @NSManaged public func removeFromRemotes(_ values: NSSet)
 
 }

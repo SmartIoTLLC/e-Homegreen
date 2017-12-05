@@ -15,7 +15,7 @@ class DatabaseTimersController: NSObject {
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     func getAllTimersSortedBy(_ sortDescripror: NSSortDescriptor) -> [Timer] {
-        if let _ = DatabaseUserController.shared.logedUserOrAdmin(){
+        if let _ = DatabaseUserController.shared.loggedUserOrAdmin(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Timer.fetchRequest()
             
             fetchRequest.sortDescriptors = [sortDescripror]
@@ -29,7 +29,7 @@ class DatabaseTimersController: NSObject {
     }
     
     func getTimers(_ filterParametar:FilterItem) -> [Timer] {
-        if let user = DatabaseUserController.shared.logedUserOrAdmin(){
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Timer.fetchRequest()
             let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
             let sortDescriptorTwo = NSSortDescriptor(key: "timerId", ascending: true)

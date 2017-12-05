@@ -11,15 +11,34 @@ import AudioToolbox
 
 class RemoteDetailsViewController: UIViewController {
     
-    var remote: RemoteDummy!
+    // TODO: ubaciti ceo daljinski unutar ScrollView-a & collectionView.frame = scrollView.contentSize
+    
+    var rows        : Int!
+    var columns     : Int!
+    var buttonHeight: CGFloat!
+    var marginTop   : CGFloat!
+    var marginBottom: CGFloat!
+    var buttonWidth : CGFloat!
+    
+    var sectionInsets = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
+    var sectionInsetsDict: [Int: UIEdgeInsets] = [:]
+
+    var chunksOfButtons: [[RemoteButton]] = []
     let cellId = "buttonCell"
     
-    var sectionInsets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 16, bottom: 5, right: 16)
-    var interItemSpacing: CGFloat! = 0
+    @IBOutlet weak var remoteScrollView: UIScrollView!
     
-    // napraviti tag u celiji i dodeliti mu vrednost indexPath.row/item
-    // sectionInsets i velicina celije na osnovu remote.rows
-    //
+    var remote: Remote! {
+        didSet {
+            rows          = Int(remote.rows!)
+            columns       = Int(remote.columns!)
+            buttonHeight  = CGFloat(remote.buttonHeight!)
+            buttonWidth   = CGFloat(remote.buttonWidth!)
+            marginTop     = CGFloat(remote.marginTop!)
+            marginBottom  = CGFloat(remote.marginBottom!)
+            sectionInsets = UIEdgeInsets(top: marginTop, left: 8, bottom: 0, right: 8)
+        }
+    }
     
     @IBOutlet weak var remoteBackground: UIView!
     @IBOutlet weak var remoteHeader: UIView!
@@ -29,7 +48,6 @@ class RemoteDetailsViewController: UIViewController {
     
     @IBOutlet weak var remoteBackgroundHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var remoteTitleLabel: UILabel!
-    
     
     @IBOutlet weak var remoteSignal: UIView!
     
@@ -44,77 +62,138 @@ class RemoteDetailsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        changeFullscreenImage(fullscreenButton: fullScreenButton)        
+        changeFullscreenImage(fullscreenButton: fullScreenButton)
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        addObservers()
+        setupViews()
         
-        buttonsCollectionView.register(UINib(nibName: String(describing: ButtonCell.self), bundle: nil), forCellWithReuseIdentifier: cellId)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
-        buttonsCollectionView.delegate = self
-        buttonsCollectionView.dataSource = self
-        
+        loadButtons()
         updateViews()
     }
     
+}
+
+// MARK: - View setup & Logic
+extension RemoteDetailsViewController {
+    
+    fileprivate func setupViews() {
+        buttonsCollectionView.register(UINib(nibName: String(describing: ButtonCell.self), bundle: nil), forCellWithReuseIdentifier: cellId)
+        buttonsCollectionView.delegate   = self
+        buttonsCollectionView.dataSource = self
+    }
+    
     fileprivate func updateViews() {
-        remoteTitleLabel.text = remote.buggerOff
-        remoteTitleLabel.font = UIFont.tahoma(size: 15)
-        remoteTitleLabel.textColor = .white
+        remoteTitleLabel.text          = remote.name
+        remoteTitleLabel.font          = .tahoma(size: 15)
+        remoteTitleLabel.textColor     = .white
         remoteTitleLabel.textAlignment = .center
         
-        remoteBackground.backgroundColor = Colors.AndroidGrayColor
+        remoteBackground.backgroundColor    = Colors.AndroidGrayColor
         remoteBackground.layer.cornerRadius = 10
-        remoteBackground.layer.borderWidth = 2
-        remoteBackground.layer.borderColor = Colors.DarkGray
+        remoteBackground.layer.borderWidth  = 2
+        remoteBackground.layer.borderColor  = Colors.DarkGray
         
         remoteSignal.layer.cornerRadius = remoteSignal.frame.width / 2
-        remoteSignal.layer.borderColor = UIColor.black.cgColor
-        remoteSignal.layer.borderWidth = 1
+        remoteSignal.layer.borderColor  = UIColor.black.cgColor
+        remoteSignal.layer.borderWidth  = 1
         
         roundUp(view: remoteHeader, corners: [.topLeft, .topRight])
         roundUp(view: remoteFooter, corners: [.bottomLeft, .bottomRight])
         
-        buttonsCollectionView.backgroundColor = Colors.AndroidGrayColor
+        buttonsCollectionView.isScrollEnabled   = false
+        buttonsCollectionView.backgroundColor   = Colors.AndroidGrayColor
         buttonsCollectionView.layer.borderWidth = 2
         buttonsCollectionView.layer.borderColor = Colors.DarkGray
         
-        setSectionInsets()
         calculateRemoteHeight(remote: remote)
     }
     
-    fileprivate func calculateRemoteHeight(remote: RemoteDummy) {
-        var height: CGFloat = 0
+    fileprivate func calculateRemoteHeight(remote: Remote) {
         
-        let collectionViewHeight = CGFloat(remote.rows!) * (remote.buttonSize?.height)! + CGFloat((remote.rows! - 1) * 5) + remote.buttonMargins.top + remote.buttonMargins.bottom
+        let biggestButtons       = getBiggestButtons()
+        
+        var height: CGFloat      = 0
+        var collectionViewHeight = CGFloat(remote.marginTop!) + CGFloat(remote.marginBottom!)
+        for button in biggestButtons { collectionViewHeight += (CGFloat(button.buttonHeight!) + CGFloat(button.marginTop!)) + 4 }
         height = collectionViewHeight + (2 * 60) + (2 * 8)
-        remoteHeightConstraint.constant = collectionViewHeight
+        
+        remoteHeightConstraint.constant           = buttonsCollectionView.collectionViewLayout.collectionViewContentSize.height
         remoteBackgroundHeightConstraint.constant = height
+        findMargins()
         buttonsCollectionView.layoutIfNeeded()
         remoteBackground.layoutIfNeeded()
+        remoteScrollView.contentSize.height       = height
     }
     
-    fileprivate func setSectionInsets() {
-        let availableSpace = buttonsCollectionView.frame.width - (CGFloat(remote.columns) * remote.buttonSize.width)
-        interItemSpacing = availableSpace / remote.columns
-        sectionInsets = remote.buttonMargins
+    fileprivate func loadButtons() {
+        if let btns = remote.buttons {
+            var buttons: [RemoteButton] = []
+            
+            for button in btns { buttons.append(button as! RemoteButton) }
+            buttons            = buttons.sorted(by: { Int($0.buttonId!) < Int($1.buttonId!) } )
+            chunksOfButtons    = buttons.chunks(Int(remote.columns!))
+            buttonsCollectionView.reloadData()
+        }
+    }
+    
+    fileprivate func getBiggestButtons() -> [RemoteButton] {
+        var biggestButtons: [RemoteButton] = []
+        
+        for group in chunksOfButtons {
+            var biggestButton = group[0]
+            group.forEach({ (button) in
+                if Int(button.buttonHeight!) > Int(biggestButton.buttonHeight!) || (Int(button.buttonHeight!) == Int(biggestButton.buttonHeight!) && Int(button.marginTop!) > Int(biggestButton.marginTop!)) {
+                    biggestButton = button
+                }
+            })
+            biggestButtons.append(biggestButton)
+        }
+        return biggestButtons
+    }
+    
+    fileprivate func findMargins() {
+        sectionInsetsDict = [:]
+        let biggestButtons = getBiggestButtons()
+        for i in 0..<biggestButtons.count {
+            var si = sectionInsets
+            si.top = CGFloat(biggestButtons[i].marginTop!)
+            if i == 0 { si.top += marginTop }
+            if i == chunksOfButtons.count - 1 { si.bottom = marginBottom }
+            sectionInsetsDict[i] = si
+        }
+        buttonsCollectionView.collectionViewLayout.invalidateLayout()
     }
     
     fileprivate func roundUp(view: UIView, corners: UIRectCorner) {
         let rectShape = CAShapeLayer()
-
-        rectShape.bounds = view.frame
-        rectShape.position = view.center
-        rectShape.path = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: 10, height: 10)).cgPath
-        rectShape.borderColor = Colors.DarkGray
-        rectShape.borderWidth = 2
+        
+        rectShape.bounds           = view.frame
+        rectShape.position         = view.center
+        rectShape.path             = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: 10, height: 10)).cgPath
+        rectShape.lineWidth        = 2
+        rectShape.strokeColor      = Colors.DarkGray
         view.layer.backgroundColor = Colors.MediumGray
-        view.layer.mask = rectShape
+        view.layer.mask            = rectShape
     }
     
-    fileprivate func signalRedIndicator() {
+    @objc fileprivate func refreshRemote() {
+        loadButtons()
+        calculateRemoteHeight(remote: remote)
+        buttonsCollectionView.reloadData()
+    }
+ 
+    @objc fileprivate func signalRedIndicator() {
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-
+        
         UIView.animate(withDuration: 0.2, animations: {
             self.remoteSignal.backgroundColor = .red
         }) { (true) in
@@ -122,56 +201,17 @@ class RemoteDetailsViewController: UIViewController {
         }
     }
     
+    fileprivate func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(signalRedIndicator), name: Notification.Name(rawValue: NotificationKey.SendRemoteCommand), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshRemote), name: .ButtonUpdated, object: nil)
+    }
+    
 }
 
-extension RemoteDetailsViewController: UICollectionViewDataSource {
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return remote.columns * remote.rows
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = buttonsCollectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? ButtonCell {
-            
-            if indexPath.row < 2 { cell.isHidden = true }
-            
-            cell.remote = remote
-            cell.buttonTag = indexPath.item
-            
-            return cell
+extension Array {
+    func chunks(_ chunkSize: Int) -> [[Element]] {
+        return stride(from: 0, to: self.count, by: chunkSize).map {
+            Array(self[$0..<Swift.min($0 + chunkSize, self.count)])
         }
-        
-        return UICollectionViewCell()
-    }
-    
-}
-
-extension RemoteDetailsViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // TODO: send command function
-        signalRedIndicator()
-    }
-}
-
-extension RemoteDetailsViewController: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 5
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return interItemSpacing
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return sectionInsets
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: remote.buttonSize.width, height: remote.buttonSize.height)
     }
 }

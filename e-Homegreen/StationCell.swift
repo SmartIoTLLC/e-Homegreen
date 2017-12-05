@@ -18,9 +18,9 @@ class StationCell: UITableViewCell {
     var station: Radio! {
         didSet {
             stationName.text = station.stationName
-            genre.text = station.genre
-            area.text = station.area
-            city.text = station.city
+            genre.text       = station.genre
+            area.text        = station.area
+            city.text        = station.city
         }
     }
 
@@ -31,19 +31,20 @@ class StationCell: UITableViewCell {
     }
     
     func updateViews() {
-        backgroundColor = .clear
-        stationName.textColor = UIColor.white
-        genre.textColor = UIColor.white
-        area.textColor = UIColor.white
-        city.textColor = UIColor.white
+        backgroundColor       = .clear
+        stationName.textColor = .white
+        genre.textColor       = .white
+        area.textColor        = .white
+        city.textColor        = .white
+        
         let bg = UIView()
-        bg.backgroundColor = UIColor.white.withAlphaComponent(0.4)
+        bg.backgroundColor     = UIColor.white.withAlphaComponent(0.4)
         selectedBackgroundView = bg
         
-        stationName.font = UIFont.tahoma(size: 20)
-        genre.font = UIFont.tahoma(size: 15)
-        area.font = UIFont.tahoma(size: 13)
-        city.font = UIFont.tahoma(size: 13)
+        stationName.font = .tahoma(size: 20)
+        genre.font = .tahoma(size: 15)
+        area.font = .tahoma(size: 13)
+        city.font = .tahoma(size: 13)
     }
 
     

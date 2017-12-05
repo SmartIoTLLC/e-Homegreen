@@ -39,7 +39,7 @@ class DatabaseSecurityController: NSObject {
     }
     
     func getSecurity(_ filterParametar:FilterItem) -> [Security] {
-        if let user = DatabaseUserController.shared.logedUserOrAdmin(){
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Security.fetchRequest()
             
             var predicateArray:[NSPredicate] = []
@@ -58,7 +58,7 @@ class DatabaseSecurityController: NSObject {
     }
     
     func getAllSecuritiesSortedBy(_ sortDescriptor: NSSortDescriptor) -> [Security] {
-        if let _ = DatabaseUserController.shared.logedUserOrAdmin(){
+        if let _ = DatabaseUserController.shared.loggedUserOrAdmin(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Security.fetchRequest()
             
             fetchRequest.sortDescriptors = [sortDescriptor]

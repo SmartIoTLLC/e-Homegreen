@@ -99,7 +99,7 @@ class SuraPlayerViewController: UIViewController, UITableViewDataSource, UITable
     func setupSuraPlayerView() {
         radioBar.backgroundColor = UIColor(cgColor: Colors.DarkGray)
         suraTitle.textColor = UIColor.white
-        suraTitle.font = UIFont.tahoma(size: 15)
+        suraTitle.font = .tahoma(size: 15)
         
         pauseButton.setImage(#imageLiteral(resourceName: "audio_pause"), for: UIControlState())
         pauseButton.imageView?.contentMode = .scaleAspectFit

@@ -25,14 +25,35 @@ class ContactsListViewController: CommonXIBTransitionVC, UITableViewDataSource, 
     override func viewDidLoad() {
         NotificationCenter.default.addObserver(self, selector: #selector(updateTableViewConstraints), name: .UIDeviceOrientationDidChange, object: nil)
 
-        tableView.delegate = self
-        tableView.dataSource = self        
-        tableView.register(UINib(nibName: String(describing: ContactCell.self), bundle: nil), forCellReuseIdentifier: cellId)
+        setupViews()
         updateViews()
-        
-        tapBG.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissOnTap)))
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: .UIDeviceOrientationDidChange, object: nil)
+    }
+
+    func callContact(number: String) {
+        var formattedNumber = ""
+        for c in number.characters {
+            if ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].contains(c) {
+                formattedNumber += String(describing: c)
+            }
+        }
+        if let num = URL(string: "tel:\(formattedNumber)") {
+            UIApplication.shared.open(num, options: [:], completionHandler: { (bool) in
+                if bool {
+                    self.dismiss(animated: true, completion: nil)
+                }
+            })
+        }
+    }
+    
+}
+
+// MARK: - Table View Data Source
+extension ContactsListViewController {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -54,52 +75,59 @@ class ContactsListViewController: CommonXIBTransitionVC, UITableViewDataSource, 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
-    
-    func dismissOnTap() {
-        self.dismiss(animated: true, completion: nil)
-    }
+}
 
+// MARK: - Table View Delegate
+extension ContactsListViewController {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let number = contacts[indexPath.row].phoneNumbers.first?.value.stringValue {
             self.callContact(number: number)
         }
     }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: .UIDeviceOrientationDidChange, object: nil)
+}
+
+// MARK: - Setup views
+extension ContactsListViewController {
+    func dismissOnTap() {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func updateViews() {
-        tapBG.backgroundColor = .clear
-
-        let header = UILabel()
-        header.frame.size = CGSize(width: tableView.frame.width, height: 60)        
-        header.text = "    Contacts"
-        header.font = UIFont(name: "Tahoma", size: 25)
-        header.textColor = .white
+    fileprivate func setupViews() {
+        tableView.delegate   = self
+        tableView.dataSource = self
+        tableView.register(UINib(nibName: String(describing: ContactCell.self), bundle: nil), forCellReuseIdentifier: cellId)
         
-        view.backgroundColor = .clear        
+        tapBG.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissOnTap)))
+    }
+    
+    fileprivate func updateViews() {
+        tapBG.backgroundColor = .clear
+        
+        let header           = UILabel()
+        header.frame.size    = CGSize(width: tableView.frame.width, height: 60)
+        header.text          = "    Contacts"
+        header.font          = UIFont(name: "Tahoma", size: 25)
+        header.textColor     = .white
+        
+        view.backgroundColor = .clear
         
         updateTableViewConstraints()
-
-        tableView.separatorInset = UIEdgeInsets.zero
-        tableView.backgroundColor = Colors.AndroidGrayColor
-        tableView.separatorColor = .clear
+        
+        tableView.separatorInset     = .zero
+        tableView.backgroundColor    = Colors.AndroidGrayColor
+        tableView.separatorColor     = .clear
         tableView.layer.cornerRadius = 3
-        tableView.tableHeaderView = header
+        tableView.tableHeaderView    = header
         contacts = contacts.sorted(by: { ( $0.givenName < $1.givenName) })
         tableView.reloadData()
     }
     
-    func updateTableViewConstraints() {
-        var height = CGFloat((contacts.count + 1) * 60)
+    @objc fileprivate func updateTableViewConstraints() {
         
+        var height        = CGFloat((contacts.count + 1) * 60)
         let availableRows = round((view.frame.height - 60) / 60) - 1
         
-        if height > view.frame.height - 60 {
-            height = CGFloat(availableRows * 60)
-        }
+        if height > view.frame.height - 60 { height = CGFloat(availableRows * 60) }
         
         tableViewHeightConstraint.constant = height
         
@@ -112,23 +140,6 @@ class ContactsListViewController: CommonXIBTransitionVC, UITableViewDataSource, 
         
         tableView.layoutIfNeeded()
     }
-
-    func callContact(number: String) {
-        var formattedNumber = ""
-        for c in number.characters {
-            if ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].contains(c) {
-                formattedNumber += String(describing: c)
-            }
-        }
-        if let num = URL(string: "tel:\(formattedNumber)") {
-            UIApplication.shared.open(num, options: [:], completionHandler: { (bool) in
-                if bool {
-                    self.dismiss(animated: true, completion: nil)
-                }
-            })
-        }
-    }
-    
 }
 
 extension UIViewController {

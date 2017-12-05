@@ -112,7 +112,7 @@ class DatabaseUserController: NSObject {
         CoreDataController.sharedInstance.saveChanges()
     }
     
-    func logedUserOrAdmin() -> User? {
+    func loggedUserOrAdmin() -> User? {
         if AdminController.shared.isAdminLogged(){
             if let user = DatabaseUserController.shared.getOtherUser() { return user }
         } else {

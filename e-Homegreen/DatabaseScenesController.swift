@@ -15,7 +15,7 @@ class DatabaseScenesController: NSObject {
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     func getScene(_ filterParametar:FilterItem) -> [Scene] {
-        if let user = DatabaseUserController.shared.logedUserOrAdmin(){
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Scene.fetchRequest()
             
             let sortDescriptorOne = NSSortDescriptor(key: "gateway.location.name", ascending: true)
@@ -48,6 +48,36 @@ class DatabaseScenesController: NSObject {
         }
         return []
         
+    }
+    
+    func getScene(withId sceneId: Int, on location: Location) -> Scene? {
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
+            let fetchRequest = Scene.fetchRequest()
+            
+            let sortDescriptors = [
+                NSSortDescriptor(key: "gateway.location.name", ascending: true),
+                NSSortDescriptor(key: "sceneId", ascending: true),
+                NSSortDescriptor(key: "sceneName", ascending: true)
+            ]
+            
+            let predicateArray = [
+                NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool)),
+                NSPredicate(format: "gateway.location.user == %@", user),
+                NSPredicate(format: "gateway.location.name == %@", location.name!),
+                NSPredicate(format: "sceneId == %ld", sceneId)
+            ]
+            let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
+            
+            fetchRequest.sortDescriptors = sortDescriptors
+            fetchRequest.predicate = compoundPredicate
+            
+            do {
+                let fetchResults = try appDel.managedObjectContext?.fetch(fetchRequest) as? [Scene]
+                return fetchResults?.first ?? [].first
+            } catch {}
+            
+        }
+        return nil
     }
     
     func updateSceneList(_ gateway:Gateway, filterParametar:FilterItem) -> [Scene]{

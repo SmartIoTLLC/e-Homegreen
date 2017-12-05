@@ -210,7 +210,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
             if action == ReturnedValueFromAlertView.delete {
                 DatabaseScenesController.shared.deleteAllScenes(self.gateway)
                 self.refreshSceneList()
-                dismissEditing()
+                self.dismissEditing()
             }
         }
     }

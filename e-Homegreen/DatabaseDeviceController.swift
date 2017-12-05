@@ -15,7 +15,7 @@ class DatabaseDeviceController: NSObject {
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     func getPCs(_ filterParametar: FilterItem) -> [Device] {
-        if let user = DatabaseUserController.shared.logedUserOrAdmin() {
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
             
             let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
@@ -43,6 +43,37 @@ class DatabaseDeviceController: NSObject {
             
         }
         return []
+    }
+    
+    func getIRDevice(withChannelID id: Int) -> Device? {
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
+            
+            let sortDescriptors = [
+                NSSortDescriptor(key: "gateway.name", ascending: true),
+                NSSortDescriptor(key: "address", ascending: true),
+                NSSortDescriptor(key: "type", ascending: true),
+                NSSortDescriptor(key: "channel", ascending: true)
+            ]
+            fetchRequest.sortDescriptors = sortDescriptors
+            
+            let predicateArray = [
+                NSPredicate(format: "gateway.location.user == %@", user),
+                NSPredicate(format: "type == %@", ControlType.Sensor),
+                NSPredicate(format: "channel == %ld", id)
+            ]
+            
+            let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
+            
+            fetchRequest.predicate = compoundPredicate
+            
+            do {
+                let fetchResults = try appDel.managedObjectContext?.fetch(fetchRequest) as? [Device]
+                return fetchResults?.first
+            } catch {}
+        }
+        
+        return nil
     }
     
 }

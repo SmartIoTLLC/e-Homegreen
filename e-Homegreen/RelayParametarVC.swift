@@ -56,8 +56,8 @@ class RelayParametarVC: CommonXIBTransitionVC {
         editDelay.inputAccessoryView = CustomToolBar()
         
         lblLocation.text = "\(devices[indexPathRow].gateway.name)"
-        editDelay.text = "\(devices[indexPathRow].delay)"
-        lblName.text = "\(devices[indexPathRow].name)"
+        editDelay.text   = "\(devices[indexPathRow].delay)"
+        lblName.text     = "\(devices[indexPathRow].name)"
         
         if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[indexPathRow].parentZoneId), location: devices[indexPathRow].gateway.location), let name = zone.name{
             lblLevel.text = "\(name)"
@@ -122,6 +122,8 @@ class RelayParametarVC: CommonXIBTransitionVC {
     }
     
     func keyboardWillShow(_ notification: Notification) {
+        let info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue                
         
         moveTextfield(textfield: editDelay, keyboardFrame: keyboardFrame, backView: backView)
         

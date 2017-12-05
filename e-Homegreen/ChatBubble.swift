@@ -55,7 +55,7 @@ class ChatBubble: UIView {
             }
             labelChatText = UILabel(frame: CGRect(x: startX, y: startY, width: self.frame.width - 2 * startX , height: 5))
             labelChatText?.textAlignment = data.type == .mine ? .right : .left
-            labelChatText?.font = UIFont.tahoma(size: 15)
+            labelChatText?.font = .tahoma(size: 15)
             labelChatText?.numberOfLines = 0 // Making it multiline
             labelChatText?.text = data.text
             labelChatText?.sizeToFit() // Getting fullsize of it

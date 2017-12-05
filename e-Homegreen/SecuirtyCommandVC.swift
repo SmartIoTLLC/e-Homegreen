@@ -56,8 +56,8 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
     func sizeText() {
         let fixedWidth = popUpTextView.frame.size.width
         popUpTextView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
-        let newSize = popUpTextView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
-        var newFrame = popUpTextView.frame
+        let newSize   = popUpTextView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+        var newFrame  = popUpTextView.frame
         newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
         if newFrame.size.height + 60 < 200{
             popUpTextView.frame = newFrame

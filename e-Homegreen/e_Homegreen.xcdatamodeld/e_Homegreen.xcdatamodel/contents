@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13241" systemVersion="16G29" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13533" systemVersion="16G1036" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Card" representedClassName=".Card" syncable="YES">
         <attribute name="address" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="cardId" attributeType="String" syncable="YES"/>
@@ -150,7 +150,6 @@
         <relationship name="events" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Event" inverseName="gateway" inverseEntity="Event" syncable="YES"/>
         <relationship name="flags" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Flag" inverseName="gateway" inverseEntity="Flag" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="gateways" inverseEntity="Location" syncable="YES"/>
-        <relationship name="remotes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Remote" inverseName="gateway" inverseEntity="Remote" syncable="YES"/>
         <relationship name="scenes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Scene" inverseName="gateway" inverseEntity="Scene" syncable="YES"/>
         <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Sequence" inverseName="gateway" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="timers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Timer" inverseName="gateway" inverseEntity="Timer" syncable="YES"/>
@@ -178,6 +177,7 @@
         <attribute name="timerId" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Category" inverseName="location" inverseEntity="Category" syncable="YES"/>
         <relationship name="gateways" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Gateway" inverseName="location" inverseEntity="Gateway" syncable="YES"/>
+        <relationship name="remotes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Remote" inverseName="location" inverseEntity="Remote" syncable="YES"/>
         <relationship name="security" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Security" inverseName="location" inverseEntity="Security" syncable="YES"/>
         <relationship name="ssids" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SSID" inverseName="location" inverseEntity="SSID" syncable="YES"/>
         <relationship name="surveillances" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Surveillance" inverseName="location" inverseEntity="Surveillance" syncable="YES"/>
@@ -228,8 +228,34 @@
         <attribute name="marginBottom" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="marginTop" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="parentZoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="rows" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="remotes" inverseEntity="Gateway" syncable="YES"/>
+        <attribute name="zoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="buttons" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RemoteButton" inverseName="remote" inverseEntity="RemoteButton" syncable="YES"/>
+        <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="remotes" inverseEntity="Location" syncable="YES"/>
+    </entity>
+    <entity name="RemoteButton" representedClassName=".RemoteButton" syncable="YES">
+        <attribute name="addressOne" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="addressThree" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="addressTwo" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="buttonColor" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="buttonHeight" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="buttonId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="buttonInternalType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="buttonShape" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="buttonState" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="buttonType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="buttonWidth" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="channel" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="hexString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="imageScaleX" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="imageScaleY" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="imageState" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="marginTop" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sceneId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="remote" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Remote" inverseName="buttons" inverseEntity="Remote" syncable="YES"/>
     </entity>
     <entity name="Scene" representedClassName="e_Homegreen.Scene" syncable="YES">
         <attribute name="address" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
@@ -357,20 +383,22 @@
     </entity>
     <elements>
         <element name="Card" positionX="-1413" positionY="-1899" width="128" height="165"/>
-        <element name="Category" positionX="-1080" positionY="-1077" width="128" height="150"/>
+        <element name="Category" positionX="-1089" positionY="-1143" width="128" height="150"/>
         <element name="Device" positionX="-974" positionY="-2091" width="128" height="930"/>
         <element name="DeviceImage" positionX="-605" positionY="-1920" width="128" height="120"/>
         <element name="Event" positionX="-470" positionY="-1659" width="128" height="255"/>
         <element name="FilterParametar" positionX="-1197" positionY="-2304" width="128" height="165"/>
         <element name="Flag" positionX="-578" positionY="-1362" width="128" height="255"/>
-        <element name="Gateway" positionX="-1557" positionY="-1971" width="128" height="403"/>
-        <element name="IBeacon" positionX="-900" positionY="-697" width="128" height="58"/>
+        <element name="Gateway" positionX="-1557" positionY="-1971" width="128" height="388"/>
+        <element name="IBeacon" positionX="-1053" positionY="-517" width="128" height="58"/>
         <element name="Image" positionX="-252" positionY="-2043" width="128" height="90"/>
-        <element name="Location" positionX="-1244" positionY="-1143" width="128" height="270"/>
+        <element name="Location" positionX="-1244" positionY="-1143" width="128" height="283"/>
         <element name="MenuItem" positionX="-1217" positionY="-2025" width="128" height="105"/>
         <element name="PCCommand" positionX="-684" positionY="-2250" width="128" height="105"/>
         <element name="Radio" positionX="-1179" positionY="-1861" width="128" height="148"/>
         <element name="Reciter" positionX="-1575" positionY="-2241" width="128" height="165"/>
+        <element name="Remote" positionX="-882" positionY="-909" width="128" height="300"/>
+        <element name="RemoteButton" positionX="-614" positionY="-1026" width="128" height="360"/>
         <element name="Scene" positionX="-468" positionY="-1926" width="128" height="238"/>
         <element name="Security" positionX="-1503" positionY="-1311" width="128" height="150"/>
         <element name="Sequence" positionX="-1190" positionY="-1602" width="128" height="255"/>
@@ -379,7 +407,6 @@
         <element name="Surveillance" positionX="-1503" positionY="-999" width="128" height="480"/>
         <element name="Timer" positionX="-1712" positionY="-1638" width="128" height="300"/>
         <element name="User" positionX="-1422" positionY="-2322" width="128" height="225"/>
-        <element name="Zone" positionX="-1080" positionY="-882" width="128" height="180"/>
-        <element name="Remote" positionX="-263" positionY="-1926" width="128" height="253"/>
+        <element name="Zone" positionX="-1242" positionY="-765" width="128" height="180"/>
     </elements>
 </model>

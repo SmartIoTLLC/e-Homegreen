@@ -57,14 +57,14 @@ class AddUserXIB: CommonXIBTransitionVC {
     func setupViews() {
         UIView.hr_setToastThemeColor(color: UIColor.red)
         
-        usernameTextField.delegate = self
-        passwordTextView.delegate = self
+        usernameTextField.delegate       = self
+        passwordTextView.delegate        = self
         confirmPasswordtextView.delegate = self
         
         if let user = user {
             usernameTextField.text = user.username
             
-            passwordTextView.isEnabled = false
+            passwordTextView.isEnabled        = false
             confirmPasswordtextView.isEnabled = false
             
             superUserSwitch.isOn = user.isSuperUser as! Bool
@@ -100,59 +100,59 @@ class AddUserXIB: CommonXIBTransitionVC {
         
         dismissEditing()
         
-        if let user = user {
-            guard let username = usernameTextField.text , username != "" else { self.view.makeToast(message: "Enter username!"); return }
-            
-            user.username = username
-            user.isLocked = false
-            user.isSuperUser = superUserSwitch.isOn as NSNumber
-            
-            user.lastScreenId = 13
-            
-            if let customImage = customImage { user.customImageId = customImage; user.defaultImage = nil }
-            if let def = defaultImage { user.defaultImage = def; user.customImageId = nil }
-            if let data = imageData {
-                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image {
-                    image.imageData = data
-                    image.imageId = UUID().uuidString
-                    user.customImageId = image.imageId
-                    user.defaultImage = nil
-                    user.addImagesObject(image)
-                }
-            }
-
-            CoreDataController.sharedInstance.saveChanges()
-            DatabaseMenuController.shared.createMenu(user)
-        } else {
-            guard let username = usernameTextField.text , username != "", let password = passwordTextView.text , password != "", let confirmpass = confirmPasswordtextView.text , confirmpass != "" else { self.view.makeToast(message: "All fields must be filled"); return }
-            if password != confirmpass { self.view.makeToast(message: "Passwords do not match"); return }
-            
-            if let user = NSEntityDescription.insertNewObject(forEntityName: "User", into: appDel.managedObjectContext!) as? User {
+        if let moc = appDel.managedObjectContext {
+            if let user = user {
+                guard let username = usernameTextField.text , username != "" else { self.view.makeToast(message: "Enter username!"); return }
                 
-                user.username = username
-                user.password = password
-                user.isLocked = false
-                user.isSuperUser = superUserSwitch.isOn as NSNumber
-                user.openLastScreen = false
-                if let customImage = customImage { user.customImageId = customImage }
-                if let def = defaultImage { user.defaultImage = def }
+                user.username     = username
+                user.isLocked     = false
+                user.isSuperUser  = superUserSwitch.isOn as NSNumber
+                
+                user.lastScreenId = 13
+                
+                if let customImage = customImage { user.customImageId = customImage; user.defaultImage = nil }
+                if let def         = defaultImage { user.defaultImage = def; user.customImageId = nil }
                 if let data = imageData {
-                    if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image {
-                        image.imageData = data
-                        image.imageId = UUID().uuidString
+                    if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: moc) as? Image {
+                        image.imageData    = data
+                        image.imageId      = UUID().uuidString
                         user.customImageId = image.imageId
-                        
+                        user.defaultImage  = nil
                         user.addImagesObject(image)
                     }
                 }
                 
                 CoreDataController.sharedInstance.saveChanges()
                 DatabaseMenuController.shared.createMenu(user)
-                DatabaseFilterController.shared.createFilters(user)
+            } else {
+                guard let username = usernameTextField.text , username != "", let password = passwordTextView.text , password != "", let confirmpass = confirmPasswordtextView.text , confirmpass != "" else { self.view.makeToast(message: "All fields must be filled"); return }
+                if password != confirmpass { self.view.makeToast(message: "Passwords do not match"); return }
+                
+                if let user = NSEntityDescription.insertNewObject(forEntityName: "User", into: moc) as? User {
+                    user.username       = username
+                    user.password       = password
+                    user.isLocked       = false
+                    user.isSuperUser    = superUserSwitch.isOn as NSNumber
+                    user.openLastScreen = false
+                    if let customImage = customImage { user.customImageId = customImage }
+                    if let def  = defaultImage { user.defaultImage = def }
+                    if let data = imageData {
+                        if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: moc) as? Image {
+                            image.imageData    = data
+                            image.imageId      = UUID().uuidString
+                            user.customImageId = image.imageId
+                            
+                            user.addImagesObject(image)
+                        }
+                    }
+                    
+                    CoreDataController.sharedInstance.saveChanges()
+                    DatabaseMenuController.shared.createMenu(user)
+                    DatabaseFilterController.shared.createFilters(user)
+                }
             }
-
         }
-
+        
         delegate?.addUserFinished()
         self.dismiss(animated: true, completion: nil)
     }
@@ -168,22 +168,22 @@ extension AddUserXIB : SceneGalleryDelegate {
     
     func backImageFromGallery(_ data: Data, imageIndex: Int) {
         defaultImage = nil
-        customImage = nil
-        imageData = data
+        customImage  = nil
+        imageData    = data
         userImageButton.setImage(UIImage(data: data), for: UIControlState())
     }
     
     func backString(_ strText: String, imageIndex: Int) {
         userImageButton.setImage(UIImage(named: strText), for: UIControlState())
         defaultImage = strText
-        customImage = nil
-        imageData = nil
+        customImage  = nil
+        imageData    = nil
     }
     
     func backImage(_ image: Image, imageIndex: Int) {
         defaultImage = nil
-        customImage = image.imageId
-        imageData = nil
+        customImage  = image.imageId
+        imageData    = nil
         userImageButton.setImage(UIImage(data: image.imageData! as Data), for: UIControlState())
     }
     

@@ -225,9 +225,9 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
             if action == ReturnedValueFromAlertView.delete{
                 DatabaseEventsController.shared.deleteAllEvents(self.gateway)
                 self.refreshEventList()
-                dismissEditing()
+                self.dismissEditing()
             }
-        }
+        }        
     }
     
     // MARK: - FINDING EVENTS

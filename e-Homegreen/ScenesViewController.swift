@@ -195,7 +195,7 @@ extension ScenesViewController: UICollectionViewDataSource {
             
             _ = gesture.view!.tag
             let location = gesture.location(in: scenesCollectionView)
-            if let index = scenesCollectionView.indexPathForItem(at: location){
+            if let index = scenesCollectionView.indexPathForItem(at: location) {
                 if let cell = scenesCollectionView.cellForItem(at: index) as? SceneCollectionCell {
                     cell.changeImageForOneSecond()
                 }
@@ -203,7 +203,8 @@ extension ScenesViewController: UICollectionViewDataSource {
         }
         
     }
-    func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer){
+    
+    func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             let location = gestureRecognizer.location(in: scenesCollectionView)

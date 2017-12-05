@@ -8,26 +8,14 @@
 
 import Foundation
 
+// MARK: - Collection View Delegate Flow Layout & Delegate
 extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 5
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if devices[indexPath.row].isEnabled.boolValue {
-            if devices[indexPath.row].controlType == ControlType.Climate {
-                showClimaSettings(indexPath.row, devices: devices)
-                
-                // Dumb solution for the climate mode icon issue, but it'll work until we find the correct fix
-                self.deviceCollectionView.reloadItems(at: [indexPath])
-            }
-        }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -37,8 +25,20 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionViewCellSize.width, height: collectionViewCellSize.height)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if devices[indexPath.row].isEnabled.boolValue {
+            if devices[indexPath.row].controlType == ControlType.Climate {
+                showClimaSettings(indexPath.row, devices: devices)
+                
+                // Dumb solution for the climate mode icon issue, but it'll work until we find the correct fix
+                deviceCollectionView.reloadItems(at: [indexPath])
+            }
+        }
+    }
 }
 
+// MARK: - Collection View Data Source
 extension DevicesViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -49,72 +49,6 @@ extension DevicesViewController: UICollectionViewDataSource {
         return devices.count
     }
     
-    func updateDeviceStatus (indexPathRow: Int) {
-        for device in devices { if device.gateway == devices[indexPathRow].gateway && device.address == devices[indexPathRow].address { device.stateUpdatedAt = Date() } }
-
-        let address = [getByte(devices[indexPathRow].gateway.addressOne), getByte(devices[indexPathRow].gateway.addressTwo), getByte(devices[indexPathRow].address)]
-        
-        if devices[indexPathRow].controlType == ControlType.Dimmer { SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway) }
-        if devices[indexPathRow].controlType == ControlType.Relay { SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway) }
-        if devices[indexPathRow].controlType == ControlType.Climate { SendingHandler.sendCommand(byteArray: OutgoingHandler.getACStatus(address), gateway: devices[indexPathRow].gateway) }
-        
-        if devices[indexPathRow].controlType == ControlType.Sensor || devices[indexPathRow].controlType == ControlType.IntelligentSwitch || devices[indexPathRow].controlType == ControlType.Gateway {
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.getSensorState(address), gateway: devices[indexPathRow].gateway)
-        }
-        
-        if devices[indexPathRow].controlType == ControlType.Curtain { SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurtainStatus(address), gateway: devices[indexPathRow].gateway) }
-        if devices[indexPathRow].controlType == ControlType.SaltoAccess { SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessState(address, lockId: devices[indexPathRow].channel.intValue), gateway: devices[indexPathRow].gateway) } // TODO: CHECK
-        
-        CoreDataController.sharedInstance.saveChanges()
-    }
-    
-    func refreshVisibleDevicesInScrollView () {
-        let indexPaths = deviceCollectionView.indexPathsForVisibleItems
-        for indexPath in indexPaths { updateDeviceStatus (indexPathRow: indexPath.row) }
-    }
-    
-    func refreshCollectionView() {
-        deviceCollectionView.reloadData()
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if !decelerate {
-            if let collectionView = scrollView as? UICollectionView {
-                let indexPaths = collectionView.indexPathsForVisibleItems
-                for indexPath in indexPaths {
-                    if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as Date? {
-                        if let hourValue = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayHours) as? Int, let minuteValue = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayMinutes) as? Int {
-                            let minutes = (hourValue * 60 + minuteValue) * 60
-                            if Date().timeIntervalSince(stateUpdatedAt.addingTimeInterval(TimeInterval(NSNumber(value: minutes as Int)))) >= 0 { updateDeviceStatus (indexPathRow: indexPath.row) }
-                        }
-                    } else { updateDeviceStatus (indexPathRow: indexPath.row) }
-                }
-            }
-            
-            if shouldUpdate { shouldUpdate = false }
-            isScrolling = false
-        }
-    }
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if let collectionView = scrollView as? UICollectionView {
-            let indexPaths = collectionView.indexPathsForVisibleItems
-            for indexPath in indexPaths {
-                if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as Date? {
-                    if let hourValue = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayHours) as? Int, let minuteValue = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayMinutes) as? Int {
-                        let minutes = (hourValue * 60 + minuteValue) * 60
-                        if Date().timeIntervalSince(stateUpdatedAt.addingTimeInterval(TimeInterval(NSNumber(value: minutes as Int)))) >= 0 { updateDeviceStatus (indexPathRow: indexPath.row) }
-                    }
-                } else { updateDeviceStatus (indexPathRow: indexPath.row) }
-            }
-        }
-        if shouldUpdate { shouldUpdate = false }
-        isScrolling = false
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        isScrolling = true
-    }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if devices[indexPath.row].controlType == ControlType.Dimmer {
@@ -286,5 +220,79 @@ extension DevicesViewController: UICollectionViewDataSource {
             
             return UICollectionViewCell()
         }
+    }
+}
+
+// MARK: - Logic
+extension DevicesViewController {
+    func updateDeviceStatus (indexPathRow: Int) {
+        for device in devices { if device.gateway == devices[indexPathRow].gateway && device.address == devices[indexPathRow].address { device.stateUpdatedAt = Date() } }
+        
+        let address = [getByte(devices[indexPathRow].gateway.addressOne), getByte(devices[indexPathRow].gateway.addressTwo), getByte(devices[indexPathRow].address)]
+        
+        if devices[indexPathRow].controlType == ControlType.Dimmer { SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway) }
+        if devices[indexPathRow].controlType == ControlType.Relay { SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway) }
+        if devices[indexPathRow].controlType == ControlType.Climate { SendingHandler.sendCommand(byteArray: OutgoingHandler.getACStatus(address), gateway: devices[indexPathRow].gateway) }
+        
+        if devices[indexPathRow].controlType == ControlType.Sensor || devices[indexPathRow].controlType == ControlType.IntelligentSwitch || devices[indexPathRow].controlType == ControlType.Gateway {
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getSensorState(address), gateway: devices[indexPathRow].gateway)
+        }
+        
+        if devices[indexPathRow].controlType == ControlType.Curtain { SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurtainStatus(address), gateway: devices[indexPathRow].gateway) }
+        if devices[indexPathRow].controlType == ControlType.SaltoAccess { SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessState(address, lockId: devices[indexPathRow].channel.intValue), gateway: devices[indexPathRow].gateway) } // TODO: CHECK
+        
+        CoreDataController.sharedInstance.saveChanges()
+    }
+    
+    func refreshVisibleDevicesInScrollView () {
+        let indexPaths = deviceCollectionView.indexPathsForVisibleItems
+        for indexPath in indexPaths { updateDeviceStatus (indexPathRow: indexPath.row) }
+    }
+    
+    func refreshCollectionView() {
+        deviceCollectionView.reloadData()
+    }
+}
+
+// MARK: - Scroll View Delegate
+extension DevicesViewController {
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            if let collectionView = scrollView as? UICollectionView {
+                let indexPaths = collectionView.indexPathsForVisibleItems
+                for indexPath in indexPaths {
+                    if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as Date? {
+                        if let hourValue = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayHours) as? Int, let minuteValue = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayMinutes) as? Int {
+                            let minutes = (hourValue * 60 + minuteValue) * 60
+                            if Date().timeIntervalSince(stateUpdatedAt.addingTimeInterval(TimeInterval(NSNumber(value: minutes as Int)))) >= 0 { updateDeviceStatus (indexPathRow: indexPath.row) }
+                        }
+                    } else { updateDeviceStatus (indexPathRow: indexPath.row) }
+                }
+            }
+            
+            if shouldUpdate { shouldUpdate = false }
+            isScrolling = false
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if let collectionView = scrollView as? UICollectionView {
+            let indexPaths = collectionView.indexPathsForVisibleItems
+            for indexPath in indexPaths {
+                if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as Date? {
+                    if let hourValue = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayHours) as? Int, let minuteValue = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayMinutes) as? Int {
+                        let minutes = (hourValue * 60 + minuteValue) * 60
+                        if Date().timeIntervalSince(stateUpdatedAt.addingTimeInterval(TimeInterval(NSNumber(value: minutes as Int)))) >= 0 { updateDeviceStatus (indexPathRow: indexPath.row) }
+                    }
+                } else { updateDeviceStatus (indexPathRow: indexPath.row) }
+            }
+        }
+        if shouldUpdate { shouldUpdate = false }
+        isScrolling = false
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        isScrolling = true
     }
 }

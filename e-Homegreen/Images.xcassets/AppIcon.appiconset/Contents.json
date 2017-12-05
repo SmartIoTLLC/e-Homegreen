@@ -212,8 +212,9 @@
       "subtype" : "42mm"
     },
     {
-      "idiom" : "watch-marketing",
       "size" : "1024x1024",
+      "idiom" : "watch-marketing",
+      "filename" : "Smart IOT icon for App Store.png",
       "scale" : "1x"
     }
   ],

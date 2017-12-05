@@ -22,21 +22,21 @@ class DeviceCollectionCell: UICollectionViewCell {
         self.device = device
         
         typeOfLight.text = device.cellTitle
-        typeOfLight.tag = tag
+        typeOfLight.tag  = tag
         
         lightSlider.isContinuous = true
-        lightSlider.tag = tag
+        lightSlider.tag          = tag
         
         let deviceValue:Double = { return Double(device.currentValue) }() ///255
 
-        picture.image = device.returnImage(Double(device.currentValue))
-        lightSlider.value = Float(deviceValue)/255 // Slider accepts values 0-1
+        picture.image                    = device.returnImage(Double(device.currentValue))
+        lightSlider.value                = Float(deviceValue)/255 // Slider accepts values 0-1
         picture.isUserInteractionEnabled = true
-        picture.tag = tag
+        picture.tag                      = tag
         
-        lblElectricity.text = "\(Float(device.current) * 0.01) A"
-        lblVoltage.text = "\(Float(device.voltage)) V"
-        labelPowrUsege.text = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
+        lblElectricity.text   = "\(Float(device.current) * 0.01) A"
+        lblVoltage.text       = "\(Float(device.voltage)) V"
+        labelPowrUsege.text   = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
         labelRunningTime.text = device.runningTime
         
         if device.info { infoView.isHidden = false; backView.isHidden = true
@@ -48,10 +48,10 @@ class DeviceCollectionCell: UICollectionViewCell {
         
         if device.isEnabled.boolValue {
             typeOfLight.isUserInteractionEnabled = true
-            disabledCellView.isHidden = true
-            disabledCellView.layer.cornerRadius = 5
+            disabledCellView.isHidden            = true
+            disabledCellView.layer.cornerRadius  = 5
         } else {
-            disabledCellView.isHidden = false
+            disabledCellView.isHidden           = false
             disabledCellView.layer.cornerRadius = 5
         }
         
@@ -67,9 +67,9 @@ class DeviceCollectionCell: UICollectionViewCell {
         picture.image = device.returnImage(Double(device.currentValue))
         lightSlider.value = Float(deviceValue/255)  // Slider accepts values from 0 to 1
         
-        lblElectricity.text = "\(Float(device.current) * 0.01) A"
-        lblVoltage.text = "\(Float(device.voltage)) V"
-        labelPowrUsege.text = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
+        lblElectricity.text   = "\(Float(device.current) * 0.01) A"
+        lblVoltage.text       = "\(Float(device.voltage)) V"
+        labelPowrUsege.text   = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
         labelRunningTime.text = device.runningTime
         
         if device.info {

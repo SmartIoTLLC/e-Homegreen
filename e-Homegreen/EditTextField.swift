@@ -25,7 +25,7 @@ class EditTextField: UITextField {
     func updateTextField(){
         self.tintColor = UIColor.black
         self.textColor = UIColor.black
-        self.font = UIFont.tahoma(size: 13)
+        self.font = .tahoma(size: 13)
         self.layer.borderColor = UIColor.black.cgColor
         self.layer.borderWidth = 1
         self.layer.cornerRadius = 5

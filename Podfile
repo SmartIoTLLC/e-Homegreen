@@ -10,5 +10,6 @@ target 'e-Homegreen' do
     pod 'NSManagedObject-HYPPropertyMapper'
     pod 'ALCameraViewController'
     pod 'Zip', '~> 0.6'
+    pod 'AKImageCropperView'
 
 end

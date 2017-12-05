@@ -1,4 +1,5 @@
 PODS:
+  - AKImageCropperView (2.0.0)
   - ALCameraViewController (1.2.5)
   - CocoaAsyncSocket (7.5.0):
     - CocoaAsyncSocket/GCD (= 7.5.0)
@@ -13,12 +14,14 @@ PODS:
   - Zip (0.6.0)
 
 DEPENDENCIES:
+  - AKImageCropperView
   - ALCameraViewController
   - CocoaAsyncSocket
   - NSManagedObject-HYPPropertyMapper
   - Zip (~> 0.6)
 
 SPEC CHECKSUMS:
+  AKImageCropperView: 9c80fd45512daa69426161ad51c248655c1b5182
   ALCameraViewController: 3ce731eed0b58f2791ce7404f9d039d10f2235c3
   CocoaAsyncSocket: 3baeb1ddd969f81cf9fca81053ae49ef2d1cbbfa
   DateParser: 6609ccde5a21650e2f61cea718a2e5c6c34ce4e8
@@ -27,6 +30,6 @@ SPEC CHECKSUMS:
   NSString-HYPNetworking: a42e1fddceabb89735e53cbbb4b5865edd4f2bb6
   Zip: 805fc2fa9d2f05bbb7762d982d7a42ccdcc51f42
 
-PODFILE CHECKSUM: 05b8273a1b3bfb50fabca7dee71fa43410f67b2c
+PODFILE CHECKSUM: a3cec51b14ad9481cb001f33cbbd2b1ac6576500
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.2.1

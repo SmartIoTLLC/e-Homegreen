@@ -199,10 +199,10 @@ class PhoneViewController: UIViewController {
         let authStatus = CNContactStore.authorizationStatus(for: .contacts)
         
         switch authStatus {
-        case .authorized: self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: true)
-        case .denied: self.makeToastOnMainThread(message: "Please go to your Privacy Settings and provide us access to Contacts."); self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
-        case .notDetermined: self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
-        case .restricted: self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
+        case .authorized    : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: true)
+        case .denied        : self.makeToastOnMainThread(message: "Please go to your Privacy Settings and provide us access to Contacts."); self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
+        case .notDetermined : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
+        case .restricted    : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
         }
     }
     
@@ -278,21 +278,21 @@ extension PhoneViewController {
 extension PhoneViewController {
     func setupMicrophoneView() {
         microphoneView.layer.cornerRadius = 5
-        microphoneView.backgroundColor = .googleMicBackgroundWhite
-        microphoneView.alpha = 0.0
+        microphoneView.backgroundColor    = .googleMicBackgroundWhite
+        microphoneView.alpha              = 0.0
         microphoneView.addShadows()
         
-        micImage.image = #imageLiteral(resourceName: "siri_mic")
-        micImage.contentMode = .scaleAspectFit
-        micImage.layer.cornerRadius = micImage.frame.width / 2
+        micImage.image               = #imageLiteral(resourceName: "siri_mic")
+        micImage.contentMode         = .scaleAspectFit
+        micImage.layer.cornerRadius  = micImage.frame.width / 2
         micImage.layer.masksToBounds = true
         
-        micLabel.text = "Speak to search"
-        micLabel.textColor = .googleMicTextGreen
-        micLabel.font = UIFont.tahoma(size: 15)
-        micLabel.backgroundColor = .clear
+        micLabel.text                      = "Speak to search"
+        micLabel.textColor                 = .googleMicTextGreen
+        micLabel.font                      = .tahoma(size: 15)
+        micLabel.backgroundColor           = .clear
         micLabel.adjustsFontSizeToFitWidth = true
-        micLabel.textAlignment = .center
+        micLabel.textAlignment             = .center
     }
     
     func updateViews() {

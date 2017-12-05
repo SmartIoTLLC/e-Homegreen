@@ -13,18 +13,18 @@ class SecurityCollectionCell: UICollectionViewCell {
     @IBOutlet weak var securityImageView: UIImageView!
     @IBOutlet weak var securityButton: UIButton!
     
-    let inactiveAway = UIImage(named: "inactiveaway")
-    let inactiveNight = UIImage(named: "inactivenight")
-    let inactiveDay = UIImage(named: "inactiveday")
+    let inactiveAway     = UIImage(named: "inactiveaway")
+    let inactiveNight    = UIImage(named: "inactivenight")
+    let inactiveDay      = UIImage(named: "inactiveday")
     let inactiveVacation = UIImage(named: "inactivevacation")
-    let inactiveDisarm = UIImage(named: "inactivedisarm")
-    let inactivePanic = UIImage(named: "inactivepanic")
-    let activeAway = UIImage(named: "away")
-    let activeNight = UIImage(named: "night")
-    let activeDay = UIImage(named: "day")
-    let activeVacation = UIImage(named: "vacation")
-    let activeDisarm = UIImage(named: "disarm")
-    let activePanic = UIImage(named: "panic")
+    let inactiveDisarm   = UIImage(named: "inactivedisarm")
+    let inactivePanic    = UIImage(named: "inactivepanic")
+    let activeAway       = UIImage(named: "away")
+    let activeNight      = UIImage(named: "night")
+    let activeDay        = UIImage(named: "day")
+    let activeVacation   = UIImage(named: "vacation")
+    let activeDisarm     = UIImage(named: "disarm")
+    let activePanic      = UIImage(named: "panic")
 
     let defaults = Foundation.UserDefaults.standard
     var timer: Foundation.Timer?
@@ -36,9 +36,9 @@ class SecurityCollectionCell: UICollectionViewCell {
         NotificationCenter.default.addObserver(self, selector: #selector(startBlinking(_:)), name: NSNotification.Name(rawValue: NotificationKey.Security.ControlModeStartBlinking), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(stopBlinking), name: NSNotification.Name(rawValue: NotificationKey.Security.ControlModeStopBlinking), object: nil)
         
-        securityTitle.text = name
+        securityTitle.text                     = name
         securityTitle.isUserInteractionEnabled = true
-        securityTitle.tag = tag
+        securityTitle.tag                      = tag
         
         securityButton.tag = tag
         securityImageView.image = UIImage(named: "maaa")
@@ -49,23 +49,23 @@ class SecurityCollectionCell: UICollectionViewCell {
         securityButton.setTitle(securityButtonTitle, for: UIControlState())
         
         switch security.securityName! {
-            case "Away": securityImageView.image = inactiveAway
-            case "Night": securityImageView.image = inactiveNight
-            case "Day": securityImageView.image = inactiveDay
-            case "Vacation": securityImageView.image = inactiveVacation
-            case "Disarm": securityImageView.image = inactiveDisarm
-            case "Panic": securityImageView.image = inactivePanic
+            case "Away"     : securityImageView.image = inactiveAway
+            case "Night"    : securityImageView.image = inactiveNight
+            case "Day"      : securityImageView.image = inactiveDay
+            case "Vacation" : securityImageView.image = inactiveVacation
+            case "Disarm"   : securityImageView.image = inactiveDisarm
+            case "Panic"    : securityImageView.image = inactivePanic
             default: break
         }
         
         if let securityMode = defaults.value(forKey: UserDefaults.Security.SecurityMode) as? String {
             if security.securityName!.contains(securityMode) {
                 switch securityMode {
-                    case "Away": securityImageView.image = activeAway
-                    case "Night": securityImageView.image = activeNight
-                    case "Day": securityImageView.image = activeDay
-                    case "Vacation": securityImageView.image = activeVacation
-                    case "Disarm": securityImageView.image = activeDisarm
+                    case "Away"     : securityImageView.image = activeAway
+                    case "Night"    : securityImageView.image = activeNight
+                    case "Day"      : securityImageView.image = activeDay
+                    case "Vacation" : securityImageView.image = activeVacation
+                    case "Disarm"   : securityImageView.image = activeDisarm
                     default: break
                 }
             }
@@ -150,9 +150,9 @@ class SecurityCollectionCell: UICollectionViewCell {
         UIColor.lightGray.setStroke()
         
         let context = UIGraphicsGetCurrentContext()
-        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).withAlphaComponent(0.95).cgColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).withAlphaComponent(1.0).cgColor]
+        let colors  = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).withAlphaComponent(0.95).cgColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).withAlphaComponent(1.0).cgColor]
         
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let colorSpace               = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
         
         let gradient = CGGradient(colorsSpace: colorSpace,
@@ -160,7 +160,7 @@ class SecurityCollectionCell: UICollectionViewCell {
                                   locations: colorLocations)
         
         let startPoint = CGPoint.zero
-        let endPoint = CGPoint(x:0, y:self.bounds.height)
+        let endPoint   = CGPoint(x:0, y:self.bounds.height)
         
         context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
         

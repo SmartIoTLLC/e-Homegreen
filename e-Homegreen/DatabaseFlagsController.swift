@@ -14,7 +14,7 @@ class DatabaseFlagsController: NSObject {
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     func getFlags(_ filterParametar:FilterItem) -> [Flag] {
-        if let user = DatabaseUserController.shared.logedUserOrAdmin(){
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Flag.fetchRequest()
             let sortDescriptorOne = NSSortDescriptor(key: "gateway.location.name", ascending: true)
             let sortDescriptorTwo = NSSortDescriptor(key: "flagId", ascending: true)
@@ -47,7 +47,7 @@ class DatabaseFlagsController: NSObject {
     }
     
     func getAllFlags() -> [Flag] {
-        if let _ = DatabaseUserController.shared.logedUserOrAdmin(){
+        if let _ = DatabaseUserController.shared.loggedUserOrAdmin(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Flag.fetchRequest()
             let sortDescriptors = NSSortDescriptor(key: "flagName", ascending: true)
             fetchRequest.sortDescriptors = [sortDescriptors]

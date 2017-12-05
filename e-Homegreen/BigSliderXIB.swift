@@ -57,10 +57,12 @@ class BigSliderXIB: CommonXIBTransitionVC {
     func changeSliderValueOnOneTap (_ gesture:UIGestureRecognizer) {
         let s = gesture.view as! UISlider
         if s.isHighlighted { return } // tap on thumb, let slider deal with it
-        let pt:CGPoint = gesture.location(in: s)
-        let percentage:CGFloat = pt.x / s.bounds.size.width
-        let delta:CGFloat = percentage * (CGFloat(s.maximumValue) - CGFloat(s.minimumValue))
-        let value:CGFloat = CGFloat(s.minimumValue) + delta;
+        
+        let pt:CGPoint           = gesture.location(in: s)
+        let percentage:CGFloat   = pt.x / s.bounds.size.width
+        let delta:CGFloat        = percentage * (CGFloat(s.maximumValue) - CGFloat(s.minimumValue))
+        let value:CGFloat        = CGFloat(s.minimumValue) + delta
+        
         s.setValue(Float(value), animated: true)
         delegate?.valueChanged(slider)
     }

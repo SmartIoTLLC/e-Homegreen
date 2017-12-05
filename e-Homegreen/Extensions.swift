@@ -38,8 +38,18 @@ extension UIButton {
     
 }
 
+extension UICollectionViewCell {
+    func getByte(_ value: NSNumber) -> UInt8 {
+        return UInt8(Int(value))
+    }
+}
 
 extension UIViewController {
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
     
     func getByte(_ value: NSNumber) -> UInt8 {
         return UInt8(Int(value))
@@ -85,6 +95,16 @@ extension UIViewController {
     
     func dismissEditing() {
         view.endEditing(true)
+    }
+    
+    func dismissModal() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissEditing))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
     }
     
     func updateSubtitle(_ titleView: NavigationTitleView, title: String, location: String, level: String, zone: String) {

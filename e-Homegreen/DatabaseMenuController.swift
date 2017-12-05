@@ -16,66 +16,77 @@ class DatabaseMenuController: NSObject {
     
     //create menu when create user
     func createMenu(_ user:User){
-        if let menu = user.menu?.allObjects as? [MenuItem] {
-            for menuitem in menu { appDel.managedObjectContext?.delete(menuitem) }
+        if let moc = appDel.managedObjectContext {
+            
+            if let menu = user.menu?.allObjects as? [MenuItem] {
+                for menuitem in menu { moc.delete(menuitem) }
+            }
+            
+            if user.isSuperUser == true {
+                for item in Menu.allMenuItem {
+                    if let menu = NSEntityDescription.insertNewObject(forEntityName: "MenuItem", into: moc) as? MenuItem {
+                        menu.id = NSNumber(value: item.rawValue)
+                        menu.orderId = NSNumber(value: item.rawValue)
+                        menu.isVisible = true
+                        menu.user = user
+                        CoreDataController.sharedInstance.saveChanges()
+                    }
+                }
+            } else {
+                for item in Menu.allMenuItemNotSuperUser {
+                    if let menu = NSEntityDescription.insertNewObject(forEntityName: "MenuItem", into: moc) as? MenuItem {
+                        menu.id = NSNumber(value: item.rawValue)
+                        menu.orderId = NSNumber(value: item.rawValue)
+                        menu.isVisible = true
+                        menu.user = user
+                        CoreDataController.sharedInstance.saveChanges()
+                    }
+                }
+            }
         }
         
-        if user.isSuperUser == true {
-            for item in Menu.allMenuItem {
-                if let menu = NSEntityDescription.insertNewObject(forEntityName: "MenuItem", into: appDel.managedObjectContext!) as? MenuItem {
-                    menu.id = NSNumber(value: item.rawValue)
-                    menu.orderId = NSNumber(value: item.rawValue)
-                    menu.isVisible = true
-                    menu.user = user
-                    CoreDataController.sharedInstance.saveChanges()
-                }
-            }
-        } else {
-            for item in Menu.allMenuItemNotSuperUser {
-                if let menu = NSEntityDescription.insertNewObject(forEntityName: "MenuItem", into: appDel.managedObjectContext!) as? MenuItem {
-                    menu.id = NSNumber(value: item.rawValue)
-                    menu.orderId = NSNumber(value: item.rawValue)
-                    menu.isVisible = true
-                    menu.user = user
-                    CoreDataController.sharedInstance.saveChanges()
-                }
-            }
-        }
+
     }
     
     //menu for admin
     func createMenuForAdmin() -> [MenuItem] {
         var menuList:[MenuItem] = []
-        if let entity = NSEntityDescription.entity(forEntityName: "MenuItem", in: appDel.managedObjectContext!) {
-            for item in Menu.allMenuItem {
-                if let menu = NSManagedObject.init(entity: entity, insertInto: nil) as? MenuItem {
-                    menu.id = NSNumber(value: item.rawValue)
-                    menu.orderId = NSNumber(value: item.rawValue)
-                    menu.isVisible = true
-                    menuList.append(menu)
+        
+        if let moc = appDel.managedObjectContext {
+            if let entity = NSEntityDescription.entity(forEntityName: "MenuItem", in: moc) {
+                for item in Menu.allMenuItem {
+                    if let menu = NSManagedObject.init(entity: entity, insertInto: nil) as? MenuItem {
+                        menu.id = NSNumber(value: item.rawValue)
+                        menu.orderId = NSNumber(value: item.rawValue)
+                        menu.isVisible = true
+                        menuList.append(menu)
+                    }
                 }
             }
         }
-        return menuList
         
+        return menuList
     }
     
     func getVisibleMenuItemByUser(_ user:User) -> [MenuItem] {
-            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = MenuItem.fetchRequest()
-            let sortDescriptorOne = NSSortDescriptor(key: "orderId", ascending: true)
-            var predicateArray:[NSPredicate] = [NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool))]
-            predicateArray.append(NSPredicate(format: "user == %@", user))
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = MenuItem.fetchRequest()
+        let sortDescriptorOne = NSSortDescriptor(key: "orderId", ascending: true)
+        var predicateArray:[NSPredicate] = [NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool))]
+        predicateArray.append(NSPredicate(format: "user == %@", user))
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         
-            fetchRequest.sortDescriptors = [sortDescriptorOne]
-            fetchRequest.predicate = compoundPredicate
+        fetchRequest.sortDescriptors = [sortDescriptorOne]
+        fetchRequest.predicate = compoundPredicate
         
+        if let moc = appDel.managedObjectContext {
             do {
-                let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [MenuItem]
-                return fetResults!
+                let fetResults = try moc.fetch(fetchRequest) as? [MenuItem]
+                return fetResults ?? []
             } catch {}
+        }
         
-            return []
+        
+        return []
     }
     
     func getDefaultMenuItemByUser(_ user:User) -> [MenuItem] {
@@ -86,10 +97,12 @@ class DatabaseMenuController: NSObject {
         fetchRequest.sortDescriptors = [sortDescriptorOne]
         fetchRequest.predicate = compoundPredicate
         
-        do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [MenuItem]
-            return fetResults!
-        } catch {}
+        if let moc = appDel.managedObjectContext {
+            do {
+                let fetResults = try moc.fetch(fetchRequest) as? [MenuItem]
+                return fetResults ?? []
+            } catch {}
+        }
         
         return []
     }
@@ -102,10 +115,12 @@ class DatabaseMenuController: NSObject {
         fetchRequest.sortDescriptors = [sortDescriptorOne]
         fetchRequest.predicate = compoundPredicate
         
-        do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [MenuItem]
-            return fetResults!
-        } catch {}
+        if let moc = appDel.managedObjectContext {
+            do {
+                let fetResults = try moc.fetch(fetchRequest) as? [MenuItem]
+                return fetResults ?? []
+            } catch {}
+        }
         
         return []
     }

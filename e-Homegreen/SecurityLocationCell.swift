@@ -16,7 +16,7 @@ class SecurityLocationCell: UICollectionViewCell {
     
     func setItem(_ location:Location, tag: Int) {
         loactionTitleLabel.text = location.name
-        loactionTitleLabel.tag = tag
+        loactionTitleLabel.tag  = tag
         loactionTitleLabel.isUserInteractionEnabled = true
     }
     
@@ -31,9 +31,9 @@ class SecurityLocationCell: UICollectionViewCell {
         UIColor.lightGray.setStroke()
         
         let context = UIGraphicsGetCurrentContext()
-        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).withAlphaComponent(0.95).cgColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).withAlphaComponent(1.0).cgColor]
+        let colors  = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).withAlphaComponent(0.95).cgColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).withAlphaComponent(1.0).cgColor]
         
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let colorSpace               = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
         
         let gradient = CGGradient(colorsSpace: colorSpace,

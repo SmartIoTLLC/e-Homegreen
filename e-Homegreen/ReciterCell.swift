@@ -27,7 +27,7 @@ class ReciterCell: UITableViewCell {
         bg.backgroundColor = UIColor.white.withAlphaComponent(0.4)
         selectedBackgroundView = bg
         backgroundColor = .clear
-        reciterLabel.font = UIFont.tahoma(size: 15)
+        reciterLabel.font = .tahoma(size: 15)
         reciterLabel.textColor = UIColor.white
     }
 

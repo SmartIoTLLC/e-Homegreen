@@ -11,22 +11,22 @@ import AudioToolbox
 
 class RemoteCell: UICollectionViewCell {
     
-    var remote: RemoteDummy? {
+    var remote: Remote? {
         didSet {
-            remoteNameLabel.text = remote?.buggerOff
+            remoteNameLabel.text = remote?.name
         }
     }
     
     @IBOutlet weak var remoteNameLabel: UILabel!
     @IBOutlet weak var remoteImageView: UIImageView!
     
-    func setCell(remote: RemoteDummy) {
-        remoteNameLabel.textColor = .white
-        remoteNameLabel.font = UIFont.tahoma(size: 14)
+    func setCell(remote: Remote) {
+        remoteNameLabel.textColor     = .white
+        remoteNameLabel.font          = .tahoma(size: 14)
         remoteNameLabel.textAlignment = .center
         
-        remoteImageView.image = #imageLiteral(resourceName: "Remote")
-        remoteImageView.contentMode = .scaleAspectFit
+        remoteImageView.image                    = #imageLiteral(resourceName: "Remote")
+        remoteImageView.contentMode              = .scaleAspectFit
         remoteImageView.isUserInteractionEnabled = true
         
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(editRemote))
@@ -36,9 +36,9 @@ class RemoteCell: UICollectionViewCell {
         self.remote = remote
     }
     
-    func editRemote() {
+    @objc fileprivate func editRemote() {
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-        self.parentViewController?.showEditRemoteVC(remote: remote!)
+        parentViewController?.showEditRemoteVC(remote: remote!, location: (parentViewController as! RemoteViewController).pickedLocation!)
     }
     
     override func draw(_ rect: CGRect) {

@@ -15,7 +15,7 @@ class DatabaseSequencesController: NSObject {
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     func getSequences(_ filterParametar:FilterItem) -> [Sequence] {
-        if let user = DatabaseUserController.shared.logedUserOrAdmin(){
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Sequence.fetchRequest()
             let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
             let sortDescriptorTwo = NSSortDescriptor(key: "sequenceId", ascending: true)

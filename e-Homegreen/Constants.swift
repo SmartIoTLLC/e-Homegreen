@@ -501,6 +501,8 @@ struct NotificationKey {
     
     static let SameDeviceDifferentCommand = "sameDeviceDifferentCommand"
     
+    static let SendRemoteCommand = "sendRemoteCommand"
+    
     static let IndicatorLamp = "indicatorGreen"
     
     struct Surveillance {
@@ -549,6 +551,14 @@ struct NotificationKey {
     static let RefreshFilter = "kRefreshLocalParametarsNotification"
     
     static let RefreshIBeacon = "refreshIBeaconList"
+}
+
+extension Notification.Name {
+    static let ButtonColorChosen       = Notification.Name("buttonColorChosen")
+    static let ButtonShapeChosen       = Notification.Name("buttonShapeChosen")
+    static let ButtonUpdated           = Notification.Name("buttonUpdated")
+    static let ButtonImageChosen       = Notification.Name("buttonImageChosen")
+    static let CustomButtonImageEdited = Notification.Name("customButtonImagePicked")
 }
 
 struct AdminConstants {

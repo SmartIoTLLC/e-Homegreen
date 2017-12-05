@@ -15,7 +15,7 @@ class DatabaseGatewayController: NSObject {
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     func getGatewayByLocation(_ location:String) -> [Gateway] {
-        if let user = DatabaseUserController.shared.logedUserOrAdmin(){
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Gateway.fetchRequest()
             var predicateArray:[NSPredicate] = [NSPredicate(format: "turnedOn == %@", NSNumber(value: true as Bool))]
             predicateArray.append(NSPredicate(format: "location.user == %@", user))

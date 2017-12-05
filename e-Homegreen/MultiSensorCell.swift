@@ -28,7 +28,7 @@ class MultiSensorCell: UICollectionViewCell {
         
         self.device = device
         
-        sensorState.font = UIFont.tahoma(size: 15)
+        sensorState.font = .tahoma(size: 15)
         
         sensorTitle.isUserInteractionEnabled = true
         sensorTitle.text = device.cellTitle
@@ -50,14 +50,13 @@ class MultiSensorCell: UICollectionViewCell {
             
         } else if device.digitalInputMode == NSNumber(value: DigitalInput.DigitalInputMode.ButtonNormallyClosed) { digitalInputCurrentValue = DigitalInput.ButtonNormallyClosed.description(Int(device.currentValue))
             
-        } else if device.digitalInputMode == NSNumber(value: DigitalInput.DigitalInputMode.MotionSensor) { digitalInputCurrentValue = DigitalInput.MotionSensor.description(Int(device.currentValue))
-        }
+        } else if device.digitalInputMode == NSNumber(value: DigitalInput.DigitalInputMode.MotionSensor) { digitalInputCurrentValue = DigitalInput.MotionSensor.description(Int(device.currentValue)) }
         
         return digitalInputCurrentValue
     }
     
     func refreshDevice(_ device:Device) {
-        sensorState.font = UIFont.tahoma(size: 15)
+        sensorState.font = .tahoma(size: 15)
 
         sensorState.text = " "
         populateCell(device)
@@ -101,10 +100,10 @@ class MultiSensorCell: UICollectionViewCell {
             case 4: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = "\(device.currentValue) °C"
             case 5:
                 switch Int(device.currentValue) {
-                case DeviceValue.MotionSensor.Idle: sensorImage.image = sensorIdleImage; sensorState.text = "Idle"
-                case DeviceValue.MotionSensor.Motion: sensorImage.image = sensorMotionImage; sensorState.text = "Motion"
-                case DeviceValue.MotionSensor.IdleWarning: sensorImage.image = sensorThirdImage; sensorState.text = "Idle Warning"
-                case DeviceValue.MotionSensor.ResetTimer: sensorImage.image = sensorThirdImage; sensorState.text = "Reset Timer"
+                case DeviceValue.MotionSensor.Idle          : sensorImage.image = sensorIdleImage; sensorState.text = "Idle"
+                case DeviceValue.MotionSensor.Motion        : sensorImage.image = sensorMotionImage; sensorState.text = "Motion"
+                case DeviceValue.MotionSensor.IdleWarning   : sensorImage.image = sensorThirdImage; sensorState.text = "Idle Warning"
+                case DeviceValue.MotionSensor.ResetTimer    : sensorImage.image = sensorThirdImage; sensorState.text = "Reset Timer"
                 default: break
                 }
             case 6: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = "\(device.currentValue)"

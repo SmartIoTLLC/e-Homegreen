@@ -45,10 +45,6 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        tableView.register(UINib(nibName: String(describing: StationCell.self), bundle: nil), forCellReuseIdentifier: cellId)
         
         updateViews()
         fetchRadioStations()
@@ -59,24 +55,17 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        radioIsPlaying = false
-        player?.pause()
-    }
-    
-    func updateViews() {
-        tableView.backgroundColor = .clear
-        tableView.separatorInset = UIEdgeInsets.zero
-        navigationItem.title = "Radio"
-        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
+        stopRadio()
     }
 
+}
 
-    // MARK: - Table view data source
-
+// MARK: - Table View Data Source
+extension RadioViewController {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return radioStations.count
     }
@@ -95,38 +84,21 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 140
     }
-    
+}
+
+// MARK: - Table View Delegate
+extension RadioViewController {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         radioIsPlaying = false
         currentStation = radioStations[indexPath.row]
         playRadio()
     }
+}
+
+// MARK: - Logic
+extension RadioViewController {
     
-    func setupRadioPlayerView() {
-        radioBar.backgroundColor = UIColor(cgColor: Colors.DarkGray)
-        radioTitle.textColor = UIColor.white
-        radioTitle.font = UIFont.tahoma(size: 15)
-        
-        pauseButton.setImage(#imageLiteral(resourceName: "audio_pause"), for: UIControlState())
-        pauseButton.imageView?.contentMode = .scaleAspectFit
-        pauseButton.backgroundColor = UIColor(cgColor: Colors.DarkGrayColor)
-        pauseButton.layer.cornerRadius = 3
-        pauseButton.addTarget(self, action: #selector(pauseRadio), for: .touchUpInside)
-
-        stopButton.setImage(#imageLiteral(resourceName: "audio_stop"), for: UIControlState())
-        stopButton.backgroundColor = UIColor.darkGray
-        stopButton.layer.cornerRadius = 3
-        stopButton.imageView?.contentMode = .scaleAspectFit
-        stopButton.addTarget(self, action: #selector(stopRadio), for: .touchUpInside)
-
-        playButton.setImage(#imageLiteral(resourceName: "audio_play"), for: UIControlState())
-        playButton.backgroundColor = UIColor.darkGray
-        playButton.layer.cornerRadius = 3
-        playButton.imageView?.contentMode = .scaleAspectFit
-        playButton.addTarget(self, action: #selector(playRadio), for: .touchUpInside)
-    }
-
-    func fetchRadioStations() {
+    fileprivate func fetchRadioStations() {
         
         do {
             if let file = Bundle.main.url(forResource: "radio_station", withExtension: "json") {
@@ -147,7 +119,7 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
         
     }
     
-    func playRadio() {
+    @objc fileprivate func playRadio() {
         radioTitle.text = currentStation.stationName
         
         if !radioIsPlaying {
@@ -164,17 +136,56 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
     }
     
-    func pauseRadio() {
+    @objc fileprivate func pauseRadio() {
         player?.pause()
     }
     
-    func stopRadio() {
+    @objc fileprivate func stopRadio() {
         player?.pause()
         radioIsPlaying = false
     }
-
 }
 
+// MARK: - Setup views
+extension RadioViewController {
+    fileprivate func setupRadioPlayerView() {
+        radioBar.backgroundColor = UIColor(cgColor: Colors.DarkGray)
+        radioTitle.textColor     = UIColor.white
+        radioTitle.font          = .tahoma(size: 15)
+        
+        pauseButton.setImage(#imageLiteral(resourceName: "audio_pause"), for: UIControlState())
+        pauseButton.imageView?.contentMode = .scaleAspectFit
+        pauseButton.backgroundColor        = UIColor(cgColor: Colors.DarkGrayColor)
+        pauseButton.layer.cornerRadius     = 3
+        pauseButton.addTarget(self, action: #selector(pauseRadio), for: .touchUpInside)
+        
+        stopButton.setImage(#imageLiteral(resourceName: "audio_stop"), for: UIControlState())
+        stopButton.backgroundColor        = UIColor.darkGray
+        stopButton.layer.cornerRadius     = 3
+        stopButton.imageView?.contentMode = .scaleAspectFit
+        stopButton.addTarget(self, action: #selector(stopRadio), for: .touchUpInside)
+        
+        playButton.setImage(#imageLiteral(resourceName: "audio_play"), for: UIControlState())
+        playButton.backgroundColor        = UIColor.darkGray
+        playButton.layer.cornerRadius     = 3
+        playButton.imageView?.contentMode = .scaleAspectFit
+        playButton.addTarget(self, action: #selector(playRadio), for: .touchUpInside)
+    }
+    
+    fileprivate func updateViews() {
+        tableView.delegate   = self
+        tableView.dataSource = self
+        
+        tableView.register(UINib(nibName: String(describing: StationCell.self), bundle: nil), forCellReuseIdentifier: cellId)
+        
+        tableView.backgroundColor = .clear
+        tableView.separatorInset  = .zero
+        navigationItem.title = "Radio"
+        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
+    }
+}
+
+// MARK: - SWRevealVC Delegate
 extension RadioViewController: SWRevealViewControllerDelegate{
     
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,21 +19,26 @@
                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="as6-WI-xYb">
-                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mAr-dO-saT">
+                        <rect key="frame" x="-2" y="8" width="54" height="34"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="54" id="8l9-lM-kcB"/>
+                            <constraint firstAttribute="height" constant="34" id="iRv-FK-Sx0"/>
+                        </constraints>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <state key="normal" title="Button"/>
+                    </button>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="ZTg-uK-7eu" firstAttribute="bottom" secondItem="as6-WI-xYb" secondAttribute="bottom" id="Eu1-1g-SnY"/>
-                <constraint firstItem="as6-WI-xYb" firstAttribute="top" secondItem="ZTg-uK-7eu" secondAttribute="top" id="bHT-1H-ifb"/>
-                <constraint firstItem="ZTg-uK-7eu" firstAttribute="trailing" secondItem="as6-WI-xYb" secondAttribute="trailing" id="gUp-R6-AKi"/>
-                <constraint firstItem="as6-WI-xYb" firstAttribute="leading" secondItem="ZTg-uK-7eu" secondAttribute="leading" id="gaR-Gc-har"/>
+                <constraint firstItem="mAr-dO-saT" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="QSA-pj-Kp5"/>
+                <constraint firstItem="mAr-dO-saT" firstAttribute="centerY" secondItem="ZTg-uK-7eu" secondAttribute="centerY" id="gvr-9F-BVy"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <connections>
-                <outlet property="buttonView" destination="as6-WI-xYb" id="8lk-xD-mhQ"/>
+                <outlet property="btnHeightConstraint" destination="iRv-FK-Sx0" id="PN0-DD-Uwp"/>
+                <outlet property="btnWidthConstraint" destination="8l9-lM-kcB" id="icW-HW-I1t"/>
+                <outlet property="realButton" destination="mAr-dO-saT" id="CeF-47-NLu"/>
             </connections>
         </collectionViewCell>
     </objects>

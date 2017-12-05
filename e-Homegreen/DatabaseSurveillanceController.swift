@@ -15,7 +15,7 @@ class DatabaseSurveillanceController: NSObject {
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     func getSurveillace(_ filterParametar:FilterItem) -> [Surveillance] {
-        if let user = DatabaseUserController.shared.logedUserOrAdmin() {
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
             
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Surveillance.fetchRequest()
             

@@ -661,6 +661,11 @@ class FilterPullDown: UIScrollView {
         guard let location = location else { filterDelegate?.filterParametars(filterItem); return }
         
         filterItem.location = location.name!
+        // TODO:
+        // BUG:
+        /*
+         Kada u Remote ostane ucitana lokacija na filteru a lokacija se posle obrise, puci ce kada se ponovo udje na Remote ekran a ta vec ucitana lokacija je nil
+         */
         filterItem.locationObjectId = location.objectID.uriRepresentation().absoluteString
         
         if let category = category {

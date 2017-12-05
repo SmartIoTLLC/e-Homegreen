@@ -18,19 +18,19 @@ class SaltoAccessCell: UICollectionViewCell {
     let image1 = UIImage(named: "14 Security - Lock - 01")
     
     override func awakeFromNib() {
-        lockButton.layer.cornerRadius = 5
-        unlockButton.layer.cornerRadius = 5
+        lockButton.layer.cornerRadius       = 5
+        unlockButton.layer.cornerRadius     = 5
         disabledCellView.layer.cornerRadius = 5
     }
     
     func setCell(device: Device, tag: Int) {
-        saltoName.text = device.cellTitle
-        saltoName.tag = tag
-        saltoImage.tag = tag
+        saltoName.text   = device.cellTitle
+        saltoName.tag    = tag
+        saltoImage.tag   = tag
         unlockButton.tag = tag
-        lockButton.tag = tag
+        lockButton.tag   = tag
         
-        saltoName.isUserInteractionEnabled = true
+        saltoName.isUserInteractionEnabled  = true
         saltoImage.isUserInteractionEnabled = true
         
         if device.currentValue == 0 { saltoImage.image = image0 } else { saltoImage.image = image1 }

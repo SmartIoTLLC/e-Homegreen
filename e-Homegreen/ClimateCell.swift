@@ -42,7 +42,10 @@ class ClimateCell: UICollectionViewCell {
         device?.allowEnergySaving = NSNumber(value: switchAES.isOn as Bool)
         let address = [UInt8(Int(device!.gateway.addressOne)),UInt8(Int(device!.gateway.addressTwo)),UInt8(Int(device!.address))]
         let status:Byte = switchAES.isOn ? 0x01 : 0x00
-        SendingHandler.sendCommand(byteArray: OutgoingHandler.setACEnergySaving(address, channel: Byte(Int(device!.channel)), status: status), gateway: device!.gateway)
+        SendingHandler.sendCommand(
+            byteArray: OutgoingHandler.setACEnergySaving(address, channel: Byte(Int(device!.channel)), status: status),
+            gateway: device!.gateway
+        )
     }
     
     func setCell(device: Device, tag: Int) {
@@ -50,15 +53,15 @@ class ClimateCell: UICollectionViewCell {
         energySavingImage.isHidden = device.allowEnergySaving == NSNumber(value: true) ? false : true
         
         climateName.text = device.cellTitle
-        climateName.tag = tag
+        climateName.tag  = tag
         
-        temperature.font = UIFont.tahoma(size: 15)
+        temperature.font = .tahoma(size: 15)
         temperature.text = "\(device.roomTemperature) \(degrees)"
         
-        temperatureSetPoint.font = UIFont.tahoma(size: 15)
+        temperatureSetPoint.font = .tahoma(size: 15)
         temperatureSetPoint.text = "00 \(degrees)"
         
-        climateMode.text = device.mode
+        climateMode.text  = device.mode
         climateSpeed.text = device.speed
         climateName.isUserInteractionEnabled = true
 
@@ -70,34 +73,34 @@ class ClimateCell: UICollectionViewCell {
         
         disabledCellView.layer.cornerRadius = 5
         
-        var fanSpeed = 0.0
+        var fanSpeed   = 0.0
         let speedState = device.speedState
-        let modeState = device.modeState
-        let mode = device.mode
+        let modeState  = device.modeState
+        let mode       = device.mode
         
         if device.filterWarning { backView.colorTwo = Colors.DirtyRedColor } else { backView.colorTwo = Colors.MediumGray }
         
         if device.currentValue == 255 {
             switch speedState {
-            case "Low": fanSpeedImage.image = fanLowImage; fanSpeed = 1.0
-            case "Med": fanSpeedImage.image = fanMediumImage; fanSpeed = 0.3
-            case "High": fanSpeedImage.image = fanHighImage; fanSpeed = 0.1
-            default: fanSpeedImage.image = fanOffImage; fanSpeed = 0.0
+            case "Low"  : fanSpeedImage.image = fanLowImage; fanSpeed = 1.0
+            case "Med"  : fanSpeedImage.image = fanMediumImage; fanSpeed = 0.3
+            case "High" : fanSpeedImage.image = fanHighImage; fanSpeed = 0.1
+            default     : fanSpeedImage.image = fanOffImage; fanSpeed = 0.0
             }
             
             switch modeState {
-            case "Cool": modeImage.stopAnimating(); modeImage.image = fanCoolImage; temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
-            case "Heat": modeImage.stopAnimating(); modeImage.image = fanHeatImage; temperatureSetPoint.text = "\(device.heatTemperature) \(degrees)"
-            case "Fan": temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
+            case "Cool" : modeImage.stopAnimating(); modeImage.image = fanCoolImage; temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
+            case "Heat" : modeImage.stopAnimating(); modeImage.image = fanHeatImage; temperatureSetPoint.text = "\(device.heatTemperature) \(degrees)"
+            case "Fan"  : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
                 if fanSpeed == 0 { modeImage.image = fanAutoImage; modeImage.stopAnimating() }
                 else { modeImage.image = animationImages.first; modeImage.animationDuration = TimeInterval(fanSpeed); modeImage.startAnimating() }
-            case "Off": modeImage.stopAnimating(); modeImage.image = nil
+            case "Off"  : modeImage.stopAnimating(); modeImage.image = nil
                 switch mode {
-                case "Cool": temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
-                case "Heat": temperatureSetPoint.text = "\(device.heatTemperature) \(degrees)"
-                case "Fan": temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
-                case "Auto": temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
-                default: break
+                case "Cool" : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
+                case "Heat" : temperatureSetPoint.text = "\(device.heatTemperature) \(degrees)"
+                case "Fan"  : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
+                case "Auto" : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
+                default     : break
                 }
                 
             default: break
@@ -106,7 +109,7 @@ class ClimateCell: UICollectionViewCell {
         } else {
             fanSpeedImage.image = fanOffImage; modeImage.stopAnimating()
         }
-        // TODO: - Bug sa mode indikatorom
+        
         if device.currentValue == 0 { imageOnOff.image = powerOffImage; modeImage.image = nil } else { imageOnOff.image = powerOnImage }
         if device.info { infoView.isHidden = false; backView.isHidden = true } else { infoView.isHidden = true; backView.isHidden = false }
         if device.isEnabled.boolValue { disabledCellView.isHidden = true } else { disabledCellView.isHidden = false }
@@ -115,38 +118,42 @@ class ClimateCell: UICollectionViewCell {
     
     func refreshDevice(_ device:Device) {
         self.device = device
-        temperature.font = UIFont.tahoma(size: 15)
-        temperature.text = "\(device.roomTemperature) \(degrees)"
+        
+        temperature.font           = .tahoma(size: 15)
+        temperature.text           = "\(device.roomTemperature) \(degrees)"
         energySavingImage.isHidden = device.allowEnergySaving == NSNumber(value: true as Bool) ? false : true
+        
         if device.filterWarning { backView.colorTwo = Colors.DirtyRedColor } else { backView.colorTwo = Colors.MediumGray }
-        climateMode.text = device.mode
+        
+        climateMode.text  = device.mode
         climateSpeed.text = device.speed
-        var fanSpeed = 0.0
+        
+        var fanSpeed   = 0.0
         let speedState = device.speedState
-        let modeState = device.modeState
-        let mode = device.mode
+        let modeState  = device.modeState
+        let mode       = device.mode
 
         if device.currentValue == 255 {
             switch speedState {
-            case "Low": fanSpeedImage.image = fanLowImage; fanSpeed = 1.0
-            case "Med": fanSpeedImage.image = fanMediumImage; fanSpeed = 0.3
-            case "High": fanSpeedImage.image = fanHighImage; fanSpeed = 0.1
-            default: fanSpeedImage.image = fanOffImage; fanSpeed = 0.0
+            case "Low"  : fanSpeedImage.image = fanLowImage; fanSpeed = 1.0
+            case "Med"  : fanSpeedImage.image = fanMediumImage; fanSpeed = 0.3
+            case "High" : fanSpeedImage.image = fanHighImage; fanSpeed = 0.1
+            default     : fanSpeedImage.image = fanOffImage; fanSpeed = 0.0
             }
             
             switch modeState {
-            case "Cool": modeImage.stopAnimating(); modeImage.image = fanCoolImage; temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
-            case "Heat": modeImage.stopAnimating(); modeImage.image = fanHeatImage; temperatureSetPoint.text = "\(device.heatTemperature) \(degrees)"
-            case "Fan": temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
+            case "Cool" : modeImage.stopAnimating(); modeImage.image = fanCoolImage; temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
+            case "Heat" : modeImage.stopAnimating(); modeImage.image = fanHeatImage; temperatureSetPoint.text = "\(device.heatTemperature) \(degrees)"
+            case "Fan"  : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
             if fanSpeed == 0 { modeImage.image = fanAutoImage; modeImage.stopAnimating() }
             else { modeImage.image = animationImages.first; modeImage.animationDuration = TimeInterval(fanSpeed); modeImage.startAnimating() }
                 
-            default: modeImage.stopAnimating(); modeImage.image = nil
-            switch mode {
-            case "Cool": temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
-            case "Heat": temperatureSetPoint.text = "\(device.heatTemperature) \(degrees)"
-            case "Fan": temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
-            default: temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
+            default : modeImage.stopAnimating(); modeImage.image = nil
+                switch mode {
+                case "Cool" : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
+                case "Heat" : temperatureSetPoint.text = "\(device.heatTemperature) \(degrees)"
+                case "Fan"  : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
+                default     : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
                 }
             }
             

@@ -9,77 +9,49 @@
 import UIKit
 import AudioToolbox
 
+struct RemoteMeasures {
+    let allowedWidth  : CGFloat
+    let allowedHeight : CGFloat
+}
+
 class RemoteViewController: PopoverVC {
+
+    @IBOutlet weak var backgroundView: UIImageView!
     
-    @IBOutlet weak var menuButton: UIBarButtonItem!
-    
-    @IBOutlet weak var addButton: UIButton!
-    
-    @IBAction func addButton(_ sender: UIButton) {
-        showAddRemoteVC(filter: filterParametar)
-    }
-    @IBOutlet weak var fullScreenButton: UIButton!
-    @IBAction func fullScreenButton(_ sender: UIButton) {
-        sender.switchFullscreen(viewThatNeedsOffset: scrollView)        
-    }
-    
-    var remotes: [RemoteDummy] = []
     var remotesList: [Remote] = []
-    var selectedRemote: RemoteDummy?
+    var selectedRemote: Remote?
+    
+    var user: User?
+    
     var location: [Location] = []
-    
-    fileprivate var sectionInsets = UIEdgeInsets(top: 25, left: 0, bottom: 20, right: 0)
-    fileprivate let cellId = "RemoteCell"
-    
-    @IBOutlet weak var remoteCollectionView: UICollectionView!
+    var pickedLocation: Location?
     
     var scrollView = FilterPullDown()
     let headerTitleSubtitleView = NavigationTitleView(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     var filterParametar: FilterItem = Filter.sharedInstance.returnFilter(forTab: .Remote)
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    
+    @IBOutlet weak var addButton: UIButton!
+    @IBAction func addButton(_ sender: UIButton) {
+        showAddRemoteVC(filter: filterParametar, location: pickedLocation!)
+    }
+    @IBOutlet weak var fullScreenButton: UIButton!
+    @IBAction func fullScreenButton(_ sender: UIButton) {
+        sender.switchFullscreen(viewThatNeedsOffset: scrollView)        
+    }
+    
+    fileprivate var sectionInsets = UIEdgeInsets(top: 25, left: 0, bottom: 20, right: 0)
+    fileprivate let cellId = "RemoteCell"
+    @IBOutlet weak var remoteCollectionView: UICollectionView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupViews()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerRemotes), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(loadRemotes), name: Notification.Name(rawValue: NotificationKey.RefreshRemotes), object: nil)
-    }
-    
-    func setupViews() {
-        if #available(iOS 11, *) { headerTitleSubtitleView.layoutIfNeeded() }
-        
-        let remote = RemoteDummy(buggerOff: "Dummy")
-        remote.columns = 3
-        remote.rows = 5
-        remote.buttonSize = CGSize(width: 50, height: 50)
-        remote.buttonColor = .red
-        remote.buttonShape = "Circle"
-        remote.buttonMargins = UIEdgeInsets(top: 25, left: 16, bottom: 20, right: 16)
-        remotes.append(remote)
-        
-        remoteCollectionView.reloadData()
-        
-        UIView.hr_setToastThemeColor(color: .red)
-        
-        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: .default)
-        
-        remoteCollectionView.delegate = self
-        remoteCollectionView.dataSource = self
-        
-        scrollView.filterDelegate = self
-        view.addSubview(scrollView)
-        updateConstraints(item: scrollView)
-        scrollView.setItem(self.view)
-        
-        navigationItem.titleView = headerTitleSubtitleView
-        headerTitleSubtitleView.setTitleAndSubtitle("Remote", subtitle: "All All All")
-        
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(defaultFilter(_:)))
-        longPress.minimumPressDuration = 0.5
-        headerTitleSubtitleView.addGestureRecognizer(longPress)
-        scrollView.setFilterItem(Menu.remote)
+        addObservers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,6 +60,7 @@ class RemoteViewController: PopoverVC {
         
         changeFullscreenImage(fullscreenButton: fullScreenButton)
         toggleAddButton()
+        loadRemotesOnStart(from: pickedLocation)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -101,9 +74,86 @@ class RemoteViewController: PopoverVC {
         collectionViewCellSize = calculateCellSize(completion: { remoteCollectionView.reloadData() })
     }
     
-    
     override func nameAndId(_ name: String, id: String) {
         scrollView.setButtonTitle(name, id: id)
+    }
+    
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "toSingleRemote" {
+            if let vc: RemoteDetailsViewController = segue.destination as? RemoteDetailsViewController {
+                vc.remote = selectedRemote
+            }
+        }
+    }
+
+}
+
+// MARK: - Functions
+extension RemoteViewController {
+    func prepareLocation() {
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
+            
+            let locations = DatabaseLocationController.shared.getLocation(user)
+            locations.forEach({ (loc) in
+                if loc.name == filterParametar.location { self.pickedLocation = loc }
+            })
+            
+        } else { view.makeToast(message: "Can't get logged user"); return }
+        
+    }
+    
+    func loadRemotes(from location: Location) {
+        remotesList = DatabaseRemoteController.sharedInstance.getRemotes(from: location)
+        remoteCollectionView.reloadData()
+    }
+    
+    func loadRemotesOnStart(from location: Location?) {
+        if filterParametar.location != "All" {
+            if let location = location {
+                loadRemotes(from: location)
+            }
+        }
+    }
+    
+    func refreshRemotes() {
+        remotesList = DatabaseRemoteController.sharedInstance.getRemotes(from: pickedLocation!)
+        remoteCollectionView.reloadData()
+    }
+    
+}
+
+// MARK: - Screen setup
+extension RemoteViewController {
+    
+    fileprivate func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerRemotes), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshRemotes), name: Notification.Name(rawValue: NotificationKey.RefreshRemotes), object: nil)
+    }
+    
+    func setupViews() {
+        if #available(iOS 11, *) { headerTitleSubtitleView.layoutIfNeeded() }
+        
+        UIView.hr_setToastThemeColor(color: .red)
+        
+        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: .default)
+        
+        remoteCollectionView.delegate = self
+        remoteCollectionView.dataSource = self
+        
+        scrollView.filterDelegate = self
+        view.addSubview(scrollView)
+        updateConstraints(item: scrollView)
+        scrollView.setItem(view)
+        
+        navigationItem.titleView = headerTitleSubtitleView
+        headerTitleSubtitleView.setTitleAndSubtitle("Remote", subtitle: "All All All")
+        
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(defaultFilter(_:)))
+        longPress.minimumPressDuration = 0.5
+        headerTitleSubtitleView.addGestureRecognizer(longPress)
+        scrollView.setFilterItem(Menu.remote)
     }
     
     func toggleAddButton() {
@@ -120,18 +170,9 @@ class RemoteViewController: PopoverVC {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == "toSingleRemote" {
-            if let vc: RemoteDetailsViewController = segue.destination as? RemoteDetailsViewController {
-                vc.remote = selectedRemote
-            }
-        }
-    }
-
 }
 
+// MARK: - UICollectionView DataSource
 extension RemoteViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -139,13 +180,13 @@ extension RemoteViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return remotes.count
+        return remotesList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = remoteCollectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? RemoteCell {
             
-            cell.setCell(remote: remotes[indexPath.item])
+            cell.setCell(remote: remotesList[indexPath.item])
             
             return cell
         }
@@ -153,18 +194,14 @@ extension RemoteViewController: UICollectionViewDataSource {
         return UICollectionViewCell()
     }
     
-    func loadRemotes() {
-        //remotesList = DatabaseRemoteController.sharedInstance.getRemotes(filterParametar)
-        remoteCollectionView.reloadData()
-    }
-    
     
 }
 
+// MARK: - UICollectionView Delegate
 extension RemoteViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedRemote = remotes[indexPath.row]
+        selectedRemote = remotesList[indexPath.row]
         performSegue(withIdentifier: "toSingleRemote", sender: self)
     }
     
@@ -185,13 +222,21 @@ extension RemoteViewController: UICollectionViewDelegate, UICollectionViewDelega
     }
 }
 
+// MARK: - Navigation
+extension RemoteViewController {
+    
+    
+}
+
+// MARK: - FilterPullDown Delegate
 extension RemoteViewController: FilterPullDownDelegate {
     func filterParametars(_ filterItem: FilterItem) {
         filterParametar = filterItem
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.remote)
         updateSubtitle(headerTitleSubtitleView, title: "Remote", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        loadRemotes()
-        // TODO:  Refresh remotes
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.remote)
+        prepareLocation()
+        if pickedLocation != nil { loadRemotes(from: pickedLocation!) }
+    
         TimerForFilter.shared.counterRemote = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.remote)
         TimerForFilter.shared.startTimer(type: Menu.remote)
         toggleAddButton()
@@ -202,6 +247,7 @@ extension RemoteViewController: FilterPullDownDelegate {
     }
 }
 
+// MARK: - SWRevealViewController Delegate
 extension RemoteViewController: SWRevealViewControllerDelegate {
     
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition) {

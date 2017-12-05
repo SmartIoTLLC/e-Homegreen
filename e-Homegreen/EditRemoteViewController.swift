@@ -10,8 +10,8 @@ import UIKit
 
 class EditRemoteViewController: CommonXIBTransitionVC {
     
-    var remote: RemoteDummy?
-    var realRemote: Remote!
+    //var remote: RemoteDummy?
+    var remote: Remote!
     var location: Location!
     var zoneId: Zone!
     
@@ -24,14 +24,18 @@ class EditRemoteViewController: CommonXIBTransitionVC {
     @IBAction func cancelButton(_ sender: Any) {
         dismissVC()
     }
+    
     @IBAction func deleteButton(_ sender: Any) {
-        DatabaseRemoteController.sharedInstance.deleteRemote(realRemote)
+        DatabaseRemoteController.sharedInstance.deleteRemote(remote: remote, from: location)
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshRemotes), object: nil)
+        dismissVC()
     }
     
     @IBAction func copyButton(_ sender: Any) {
-        cloneRemote(remote: realRemote)
+        
+        DatabaseRemoteController.sharedInstance.cloneRemote(remote: remote, on: location)
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshRemotes), object: nil)
+        dismissVC()                
     }
     
     @IBOutlet weak var backView: UIView!
@@ -45,12 +49,12 @@ class EditRemoteViewController: CommonXIBTransitionVC {
     
 
     func updateViews() {
-        dismissView.backgroundColor = .clear
-        backView.backgroundColor = Colors.AndroidGrayColor
+        dismissView.backgroundColor  = .clear
+        backView.backgroundColor     = Colors.AndroidGrayColor
         backView.setGradientBackground()
-        backView.layer.cornerRadius = 10
-        backView.layer.borderColor = Colors.MediumGray
-        backView.layer.borderWidth = 1
+        backView.layer.cornerRadius  = 10
+        backView.layer.borderColor   = Colors.MediumGray
+        backView.layer.borderWidth   = 1
         backView.layer.masksToBounds = true
         backView.bringSubview(toFront: cancelButton)
         backView.bringSubview(toFront: deleteButton)
@@ -60,18 +64,14 @@ class EditRemoteViewController: CommonXIBTransitionVC {
     func dismissVC() {
         dismiss(animated: true, completion: nil)
     }
-    
-    func cloneRemote(remote: Remote) {
-        DatabaseRemoteController.sharedInstance.createRemote(name: remote.name!, columns: remote.columns!, rows: remote.rows!, location: location, level: 0, zone: zoneId, addressOne: remote.addressOne!, addressTwo: remote.addressTwo!, addressThree: remote.addressThree!, channel: remote.channel!, buttonHeight: remote.buttonHeight!, buttonWidth: remote.buttonWidth!, marginTop: remote.marginTop!, marginBottom: remote.marginBottom!, buttonColor: remote.buttonColor!, buttonShape: remote.buttonShape!)
-    }
-    
 
 }
 
 extension UIViewController {
-    func showEditRemoteVC(remote: RemoteDummy) {
+    func showEditRemoteVC(remote: Remote, location: Location) {
         let vc = EditRemoteViewController()
         vc.remote = remote
-        self.present(vc, animated: true, completion: nil)
+        vc.location = location
+        present(vc, animated: true, completion: nil)
     }
 }

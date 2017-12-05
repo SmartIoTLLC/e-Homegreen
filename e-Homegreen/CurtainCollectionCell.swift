@@ -35,17 +35,17 @@ class CurtainCollectionCell: UICollectionViewCell {
     
     func setCell(device: Device, tag: Int) {
         curtainName.text = device.cellTitle
-        curtainName.tag = tag
+        curtainName.tag  = tag
         curtainImage.tag = tag
-        openButton.tag = tag
-        closeButton.tag = tag
+        openButton.tag   = tag
+        closeButton.tag  = tag
         
         setImageForDevice(device)
         
-        curtainName.isUserInteractionEnabled = true
+        curtainName.isUserInteractionEnabled  = true
         curtainImage.isUserInteractionEnabled = true
         
-        disabledCellView.layer.cornerRadius = 5
+        disabledCellView.layer.cornerRadius   = 5
         
         if device.isEnabled.boolValue { disabledCellView.isHidden = true } else { disabledCellView.isHidden = false }
         

@@ -161,14 +161,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         fetchRequest.predicate = predicateOne
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
-        do {
-            let fetResults = try managedObjectContext!.fetch(fetchRequest)
-            gateways = fetResults
-        } catch let error as NSError { print("Unresolved error \(String(describing: error)), \(error.userInfo)") }
         
-        for item in self.gateways { item.remoteIpInUse = self.returnIpAddress(item.remoteIp) }
-        
-        do { try self.managedObjectContext!.save() } catch let error as NSError { print("Error saving managed context: ", error, error.userInfo) }
+        if let moc = managedObjectContext {
+            do {
+                let fetResults = try moc.fetch(fetchRequest)
+                gateways = fetResults
+            } catch let error as NSError { print("Unresolved error \(String(describing: error)), \(error.userInfo)") }
+            
+            for item in self.gateways { item.remoteIpInUse = self.returnIpAddress(item.remoteIp) }
+            
+            do { try moc.save() } catch let error as NSError { print("Error saving managed context: ", error, error.userInfo) }
+        }
+
     }
     
     func returnIpAddress (_ url:String) -> String {
@@ -354,6 +358,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterEvents, forKey: "timerEventsValueWhenExitedApp")
         TimerForFilter.shared.stopTimer(type: Menu.events)
         
+        Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterRemote, forKey: "timerRemoteValueWhenExitedApp")
+        TimerForFilter.shared.stopTimer(type: Menu.remote)
+        
         Foundation.UserDefaults.standard.set(TimerForFilter.shared.counterSequences, forKey: "timerSequencesValueWhenExitedApp")
         TimerForFilter.shared.stopTimer(type: Menu.sequences)
         
@@ -405,6 +412,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 TimerForFilter.shared.counterEvents = timerOldValue - Int(seconds)
                 if TimerForFilter.shared.counterEvents > 0 { TimerForFilter.shared.startTimer(type: Menu.events)
                 } else {  NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEvents), object: nil) }
+            }
+            
+            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerRemoteValueWhenExitedApp") as? Int {
+                TimerForFilter.shared.counterRemote = timerOldValue - Int(seconds)
+                if TimerForFilter.shared.counterRemote > 0 { TimerForFilter.shared.startTimer(type: Menu.remote)
+                } else { NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.FilterTimers.timerRemotes), object: nil) }
             }
             
             if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerSequencesValueWhenExitedApp") as? Int {

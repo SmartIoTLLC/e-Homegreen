@@ -16,10 +16,9 @@ class ContactCell: UITableViewCell {
     
     var contact: CNContact? {
         didSet {
-            let firstName = contact?.givenName ?? ""
-            let lastName = contact?.familyName ?? ""
-            contactName.text = firstName + " " + lastName
-            //resi razmak ovde
+            let firstName    = contact?.givenName ?? ""
+            let lastName     = contact?.familyName ?? ""
+            contactName.text = firstName + " " + lastName            
             if let phoneNumber = contact?.phoneNumbers.first?.value.stringValue {
                 contactNumber.text = phoneNumber
             }
@@ -32,15 +31,16 @@ class ContactCell: UITableViewCell {
     }
     
     func updateCell() {
-        backgroundColor = .clear
+        backgroundColor    = .clear
+        
         let bg = UIView()
         bg.backgroundColor = UIColor.white.withAlphaComponent(0.4)
         
-        contactName.font = UIFont.tahoma(size: 15)
-        contactName.textColor = .white
+        contactName.font                      = .tahoma(size: 15)
+        contactName.textColor                 = .white
         contactName.adjustsFontSizeToFitWidth = true
-        contactNumber.font = UIFont.tahoma(size: 12)
-        contactNumber.textColor = .white
+        contactNumber.font                    = .tahoma(size: 12)
+        contactNumber.textColor               = .white
     }
     
 }

@@ -45,6 +45,11 @@ class DimmerParametarVC: CommonXIBTransitionVC {
         fatalError("init(coder:) has not been implemented")
     }
 
+    fileprivate func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -52,24 +57,24 @@ class DimmerParametarVC: CommonXIBTransitionVC {
         
         setupViews()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        addObservers()
     }
     
     func setupViews() {
-        editDelay.inputAccessoryView = CustomToolBar()
-        editRunTime.inputAccessoryView = CustomToolBar()
+        editDelay.inputAccessoryView     = CustomToolBar()
+        editRunTime.inputAccessoryView   = CustomToolBar()
         editSkipState.inputAccessoryView = CustomToolBar()
         
-        editDelay.delegate = self
-        editRunTime.delegate = self
-        editSkipState.delegate = self
-        editDelay.text = "\(devices[indexPathRow].delay)"
-        editRunTime.text = "\(devices[indexPathRow].runtime)"
-        editSkipState.text = "\(devices[indexPathRow].skipState)"
+        editDelay.delegate      = self
+        editRunTime.delegate    = self
+        editSkipState.delegate  = self
+        
+        editDelay.text          = "\(devices[indexPathRow].delay)"
+        editRunTime.text        = "\(devices[indexPathRow].runtime)"
+        editSkipState.text      = "\(devices[indexPathRow].skipState)"
         
         lblLocation.text = "\(devices[indexPathRow].gateway.name)"
-        lblName.text = "\(devices[indexPathRow].name)"
+        lblName.text     = "\(devices[indexPathRow].name)"
         
         if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[indexPathRow].parentZoneId), location: devices[indexPathRow].gateway.location), let name = zone.name {
             lblLevel.text = "\(name)"

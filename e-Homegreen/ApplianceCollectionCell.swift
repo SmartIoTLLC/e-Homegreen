@@ -29,9 +29,9 @@ class ApplianceCollectionCell: UICollectionViewCell {
         if device.info { infoView.isHidden = false; backView.isHidden = true } else { infoView.isHidden = true; backView.isHidden = false }
         
         labelRunningTime.text = "\(device.runningTime)"
-        lblElectricity.text = "\(Float(device.current) * 0.01) A"
-        lblVoltage.text = "\(Float(device.voltage)) V"
-        labelPowrUsege.text = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
+        lblElectricity.text   = "\(Float(device.current) * 0.01) A"
+        lblVoltage.text       = "\(Float(device.voltage)) V"
+        labelPowrUsege.text   = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
         
         disabledCellView.layer.cornerRadius = 5
 
@@ -57,9 +57,9 @@ class ApplianceCollectionCell: UICollectionViewCell {
         if device.info { infoView.isHidden = false; backView.isHidden = true } else { infoView.isHidden = true; backView.isHidden = false }
         
         labelRunningTime.text = "\(device.runningTime)"
-        lblElectricity.text = "\(Float(device.current) * 0.01) A"
-        lblVoltage.text = "\(Float(device.voltage)) V"
-        labelPowrUsege.text = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
+        lblElectricity.text   = "\(Float(device.current) * 0.01) A"
+        lblVoltage.text       = "\(Float(device.voltage)) V"
+        labelPowrUsege.text   = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
         
         // If device is enabled add all interactions
         if device.isEnabled.boolValue { disabledCellView.isHidden = true } else { disabledCellView.isHidden = false }

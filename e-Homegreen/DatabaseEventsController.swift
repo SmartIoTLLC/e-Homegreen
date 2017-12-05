@@ -15,7 +15,7 @@ class DatabaseEventsController: NSObject {
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
 
     func getEvents(_ filterParametar:FilterItem) -> [Event] {
-        if let user = DatabaseUserController.shared.logedUserOrAdmin(){
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Event.fetchRequest()
             let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
             let sortDescriptorTwo = NSSortDescriptor(key: "eventId", ascending: true)

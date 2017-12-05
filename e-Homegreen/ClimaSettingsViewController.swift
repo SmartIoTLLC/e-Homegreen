@@ -134,10 +134,10 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
     func setACSpeed () {
         let address = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
         switch hvacCommand.fan {
-        case .low: SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSpeed(address, channel: getByte(device.channel), value: 0x01), gateway: device.gateway)
-        case .med: SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSpeed(address, channel: getByte(device.channel), value: 0x02), gateway: device.gateway)
-        case .high: SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSpeed(address, channel: getByte(device.channel), value: 0x03), gateway: device.gateway)
-        case .auto: SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSpeed(address, channel: getByte(device.channel), value: 0x00), gateway: device.gateway)
+        case .low   : SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSpeed(address, channel: getByte(device.channel), value: 0x01), gateway: device.gateway)
+        case .med   : SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSpeed(address, channel: getByte(device.channel), value: 0x02), gateway: device.gateway)
+        case .high  : SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSpeed(address, channel: getByte(device.channel), value: 0x03), gateway: device.gateway)
+        case .auto  : SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSpeed(address, channel: getByte(device.channel), value: 0x00), gateway: device.gateway)
         default :break
         }
     }
@@ -145,10 +145,10 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
     func setACmode () {
         let address = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
         switch hvacCommand.mode {
-        case .cool: SendingHandler.sendCommand(byteArray: OutgoingHandler.setACmode(address, channel: getByte(device.channel), value: 0x01), gateway: device.gateway)
-        case .heat: SendingHandler.sendCommand(byteArray: OutgoingHandler.setACmode(address, channel: getByte(device.channel), value: 0x02), gateway: device.gateway)
-        case .fan: SendingHandler.sendCommand(byteArray: OutgoingHandler.setACmode(address, channel: getByte(device.channel), value: 0x03), gateway: device.gateway)
-        case .auto: SendingHandler.sendCommand(byteArray: OutgoingHandler.setACmode(address, channel: getByte(device.channel), value: 0x00), gateway: device.gateway)
+        case .cool  : SendingHandler.sendCommand(byteArray: OutgoingHandler.setACmode(address, channel: getByte(device.channel), value: 0x01), gateway: device.gateway)
+        case .heat  : SendingHandler.sendCommand(byteArray: OutgoingHandler.setACmode(address, channel: getByte(device.channel), value: 0x02), gateway: device.gateway)
+        case .fan   : SendingHandler.sendCommand(byteArray: OutgoingHandler.setACmode(address, channel: getByte(device.channel), value: 0x03), gateway: device.gateway)
+        case .auto  : SendingHandler.sendCommand(byteArray: OutgoingHandler.setACmode(address, channel: getByte(device.channel), value: 0x00), gateway: device.gateway)
         default :break
         }
     }
@@ -167,13 +167,13 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         getACState()
         
         if device.coolModeVisible == false {
-            btnCool.isHidden = true
-            coolView.isHidden = true
+            btnCool.isHidden     = true
+            coolView.isHidden    = true
             
             if device.heatModeVisible == false {
-                btnHeat.isHidden = true
+                btnHeat.isHidden            = true
                 thresholdSTackView.isHidden = true
-                threshholdLbl.isHidden = true
+                threshholdLbl.isHidden      = true
             }
         }
         
@@ -211,18 +211,18 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         let speedState = device.speed
         
         switch speedState {
-        case "Low": hvacCommand.fan = .low; pressedLow()
-        case "Med" : hvacCommand.fan = .med; pressedMed()
-        case "High": hvacCommand.fan = .high; pressedHigh()
-        default: hvacCommand.fan = .auto; pressedAutoSecond()
+        case "Low"  : hvacCommand.fan = .low; pressedLow()
+        case "Med"  : hvacCommand.fan = .med; pressedMed()
+        case "High" : hvacCommand.fan = .high; pressedHigh()
+        default     : hvacCommand.fan = .auto; pressedAutoSecond()
         }
         
         let modeState = device.mode
         switch modeState {
-        case "Cool": hvacCommand.mode = .cool; pressedCool()
-        case "Heat": hvacCommand.mode = .heat; pressedHeat()
-        case "Fan": hvacCommand.mode = .fan; pressedFan()
-        default: hvacCommand.mode = .auto; pressedAuto()
+        case "Cool" : hvacCommand.mode = .cool; pressedCool()
+        case "Heat" : hvacCommand.mode = .heat; pressedHeat()
+        case "Fan"  : hvacCommand.mode = .fan; pressedFan()
+        default     : hvacCommand.mode = .auto; pressedAuto()
         }
         
         lblCool.text = "\(device.coolTemperature)"
