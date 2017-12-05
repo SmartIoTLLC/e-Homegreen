@@ -31,8 +31,8 @@ class MultiSensorCell: UICollectionViewCell {
         sensorState.font = .tahoma(size: 15)
         
         sensorTitle.isUserInteractionEnabled = true
-        sensorTitle.text = device.cellTitle
-        sensorTitle.tag = tag
+        sensorTitle.text                     = device.cellTitle
+        sensorTitle.tag                      = tag
         populateCell(device)
         
         if device.info { infoView.isHidden = false; backView.isHidden = true } else { infoView.isHidden = true; backView.isHidden = false }
@@ -40,17 +40,19 @@ class MultiSensorCell: UICollectionViewCell {
     
     func returnDigitalInputModeStateinterpreter (_ device:Device) -> String {
         var digitalInputCurrentValue = " "
-        if device.digitalInputMode == NSNumber(value: DigitalInput.DigitalInputMode.NormallyOpen) { digitalInputCurrentValue = DigitalInput.NormallyOpen.description(Int(device.currentValue))
+        let inputMode = device.digitalInputMode
+        
+        if inputMode == NSNumber(value: DigitalInput.DigitalInputMode.NormallyOpen) { digitalInputCurrentValue = DigitalInput.NormallyOpen.description(Int(device.currentValue))
             
-        } else if device.digitalInputMode == NSNumber(value: DigitalInput.DigitalInputMode.NormallyClosed) { digitalInputCurrentValue = DigitalInput.NormallyClosed.description(Int(device.currentValue))
+        } else if inputMode == NSNumber(value: DigitalInput.DigitalInputMode.NormallyClosed) { digitalInputCurrentValue = DigitalInput.NormallyClosed.description(Int(device.currentValue))
             
-        } else if device.digitalInputMode == NSNumber(value: DigitalInput.DigitalInputMode.Generic) { digitalInputCurrentValue = DigitalInput.Generic.description(Int(device.currentValue))
+        } else if inputMode == NSNumber(value: DigitalInput.DigitalInputMode.Generic) { digitalInputCurrentValue = DigitalInput.Generic.description(Int(device.currentValue))
             
-        } else if device.digitalInputMode == NSNumber(value: DigitalInput.DigitalInputMode.ButtonNormallyOpen) { digitalInputCurrentValue = DigitalInput.ButtonNormallyOpen.description(Int(device.currentValue))
+        } else if inputMode == NSNumber(value: DigitalInput.DigitalInputMode.ButtonNormallyOpen) { digitalInputCurrentValue = DigitalInput.ButtonNormallyOpen.description(Int(device.currentValue))
             
-        } else if device.digitalInputMode == NSNumber(value: DigitalInput.DigitalInputMode.ButtonNormallyClosed) { digitalInputCurrentValue = DigitalInput.ButtonNormallyClosed.description(Int(device.currentValue))
+        } else if inputMode == NSNumber(value: DigitalInput.DigitalInputMode.ButtonNormallyClosed) { digitalInputCurrentValue = DigitalInput.ButtonNormallyClosed.description(Int(device.currentValue))
             
-        } else if device.digitalInputMode == NSNumber(value: DigitalInput.DigitalInputMode.MotionSensor) { digitalInputCurrentValue = DigitalInput.MotionSensor.description(Int(device.currentValue)) }
+        } else if inputMode == NSNumber(value: DigitalInput.DigitalInputMode.MotionSensor) { digitalInputCurrentValue = DigitalInput.MotionSensor.description(Int(device.currentValue)) }
         
         return digitalInputCurrentValue
     }
@@ -68,69 +70,63 @@ class MultiSensorCell: UICollectionViewCell {
     }
     
     func populateCell(_ device:Device) {
+        let dValue = Double(device.currentValue)
+        let value  = device.currentValue
         
         if device.numberOfDevices == 10 {
             switch device.channel {
-            case 1: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = "\(device.currentValue) °C"
-            case 2: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = returnDigitalInputModeStateinterpreter(device)
-            case 3: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = returnDigitalInputModeStateinterpreter(device)
-            case 9: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = "\(device.currentValue)%"
-            case 4: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = "\(device.currentValue) °C"
-            case 5: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = "\(device.currentValue) LUX"
-            case 6:
-                switch Int(device.currentValue) {
-                case DeviceValue.MotionSensor.Idle: sensorImage.image = sensorIdleImage; sensorState.text = "Idle"
-                case DeviceValue.MotionSensor.Motion: sensorImage.image = sensorMotionImage; sensorState.text = "Motion"
-                case DeviceValue.MotionSensor.IdleWarning: sensorImage.image = sensorThirdImage; sensorState.text = "Idle Warning"
-                case DeviceValue.MotionSensor.ResetTimer: sensorImage.image = sensorThirdImage; sensorState.text = "Reset Timer"
+            case 1, 4 : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value) °C"
+            case 2, 3 : sensorImage.image = device.returnImage(dValue); sensorState.text = returnDigitalInputModeStateinterpreter(device)
+            case 9    : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value)%"
+            case 5    : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value) LUX"
+            case 6    :
+                switch Int(value) {
+                case DeviceValue.MotionSensor.Idle        : sensorImage.image = sensorIdleImage; sensorState.text = "Idle"
+                case DeviceValue.MotionSensor.Motion      : sensorImage.image = sensorMotionImage; sensorState.text = "Motion"
+                case DeviceValue.MotionSensor.IdleWarning : sensorImage.image = sensorThirdImage; sensorState.text = "Idle Warning"
+                case DeviceValue.MotionSensor.ResetTimer  : sensorImage.image = sensorThirdImage; sensorState.text = "Reset Timer"
                 default: break
                 }
-            case 8: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = "\(device.currentValue)"
-            case 7: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = "\(device.currentValue)"
-            case 10: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = "\(device.currentValue)"
-            default: sensorState.text = "..."
+            case 7, 8, 10 : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value)"
+            default       : sensorState.text  = "..."
             }
         }
         
         if device.numberOfDevices == 6 {
             switch device.channel {
-            case 1: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = "\(device.currentValue) C"
-            case 2: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = returnDigitalInputModeStateinterpreter(device)
-            case 3: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = returnDigitalInputModeStateinterpreter(device)
-            case 4: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = "\(device.currentValue) °C"
-            case 5:
-                switch Int(device.currentValue) {
-                case DeviceValue.MotionSensor.Idle          : sensorImage.image = sensorIdleImage; sensorState.text = "Idle"
-                case DeviceValue.MotionSensor.Motion        : sensorImage.image = sensorMotionImage; sensorState.text = "Motion"
-                case DeviceValue.MotionSensor.IdleWarning   : sensorImage.image = sensorThirdImage; sensorState.text = "Idle Warning"
-                case DeviceValue.MotionSensor.ResetTimer    : sensorImage.image = sensorThirdImage; sensorState.text = "Reset Timer"
-                default: break
-                }
-            case 6: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = "\(device.currentValue)"
-            default: sensorState.text = "..."
+                case 1, 4  : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value) °C"
+                case 2, 3 : sensorImage.image = device.returnImage(dValue); sensorState.text = returnDigitalInputModeStateinterpreter(device)
+                case 5    :
+                    switch Int(value) {
+                        case DeviceValue.MotionSensor.Idle          : sensorImage.image = sensorIdleImage; sensorState.text = "Idle"
+                        case DeviceValue.MotionSensor.Motion        : sensorImage.image = sensorMotionImage; sensorState.text = "Motion"
+                        case DeviceValue.MotionSensor.IdleWarning   : sensorImage.image = sensorThirdImage; sensorState.text = "Idle Warning"
+                        case DeviceValue.MotionSensor.ResetTimer    : sensorImage.image = sensorThirdImage; sensorState.text = "Reset Timer"
+                        default: break
+                    }
+                case 6   : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value)"
+                default  : sensorState.text = "..."
             }
         }
         
         if device.numberOfDevices == 5 {
             switch device.channel {
-            case 1: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = "\(device.currentValue) °C"
-            case 2: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = returnDigitalInputModeStateinterpreter(device)
-            case 3: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = returnDigitalInputModeStateinterpreter(device)
-            case 4: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = "\(device.currentValue) \u{00B0}c"
-            case 5: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = "\(device.currentValue)"
-            default: sensorState.text = "..."
+                case 1    : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value) °C"
+                case 2, 3 : sensorImage.image = device.returnImage(dValue); sensorState.text = returnDigitalInputModeStateinterpreter(device)
+                case 4    : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value) \u{00B0}c"
+                case 5    : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value)"
+                default   : sensorState.text  = "..."
             }
         }
         
-        if device.numberOfDevices == 4 { sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = returnDigitalInputModeStateinterpreter(device)
+        if device.numberOfDevices == 4 { sensorImage.image = device.returnImage(dValue); sensorState.text = returnDigitalInputModeStateinterpreter(device)
         }
         
         if device.numberOfDevices == 3 {
             switch device.channel {
-            case 1: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = "\(device.currentValue) °C"
-            case 2: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = returnDigitalInputModeStateinterpreter(device)
-            case 3: sensorImage.image = device.returnImage(Double(device.currentValue)); sensorState.text = returnDigitalInputModeStateinterpreter(device)
-            default: sensorState.text = "..."
+                case 1    : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value) °C"
+                case 2, 3 : sensorImage.image = device.returnImage(dValue); sensorState.text = returnDigitalInputModeStateinterpreter(device)
+                default   : sensorState.text  = "..."
             }
         }
         

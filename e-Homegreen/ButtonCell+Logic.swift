@@ -47,12 +47,14 @@ extension ButtonCell {
         }
     }
     
-    func formatHexStringToByteArray(hex: String) -> [Byte] {
+    func formatHexStringToByteArray(hex: String?) -> [Byte] {
         var byteArray: [Byte]     = []
-        let stringArray: [String] = hex.split(separator: " ").map(String.init)
-        for string in stringArray {
-            if let byte = Int(string) { byteArray.append(UInt8(byte)) }
-        }
+        if let hex = hex {
+            let stringArray: [String] = hex.split(separator: " ").map(String.init)
+            for string in stringArray {
+                if let byte = Int(string) { byteArray.append(UInt8(byte)) }
+            }
+        }        
         
         return byteArray
     }

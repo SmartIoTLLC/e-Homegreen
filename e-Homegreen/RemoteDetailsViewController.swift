@@ -103,8 +103,8 @@ extension RemoteDetailsViewController {
         remoteBackground.layer.borderColor  = Colors.DarkGray
         
         remoteSignal.layer.cornerRadius = remoteSignal.frame.width / 2
-        remoteSignal.layer.borderColor  = UIColor.black.cgColor
-        remoteSignal.layer.borderWidth  = 1
+        remoteSignal.layer.borderColor  = Colors.AndroidGrayColor.cgColor
+        remoteSignal.layer.borderWidth  = 2
         
         roundUp(view: remoteHeader, corners: [.topLeft, .topRight])
         roundUp(view: remoteFooter, corners: [.bottomLeft, .bottomRight])
@@ -175,14 +175,20 @@ extension RemoteDetailsViewController {
     
     fileprivate func roundUp(view: UIView, corners: UIRectCorner) {
         let rectShape = CAShapeLayer()
-        
         rectShape.bounds           = view.frame
         rectShape.position         = view.center
         rectShape.path             = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: 10, height: 10)).cgPath
-        rectShape.lineWidth        = 2
-        rectShape.strokeColor      = Colors.DarkGray
         view.layer.backgroundColor = Colors.MediumGray
         view.layer.mask            = rectShape
+        
+        let borderLayer = CAShapeLayer()
+        borderLayer.path        = rectShape.path
+        borderLayer.fillColor   = UIColor.clear.cgColor
+        borderLayer.strokeColor = Colors.DarkGray
+        borderLayer.lineWidth   = 2
+        borderLayer.bounds      = view.frame
+        borderLayer.position    = view.center
+        view.layer.addSublayer(borderLayer)
     }
     
     @objc fileprivate func refreshRemote() {

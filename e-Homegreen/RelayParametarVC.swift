@@ -55,21 +55,25 @@ class RelayParametarVC: CommonXIBTransitionVC {
         
         editDelay.inputAccessoryView = CustomToolBar()
         
-        lblLocation.text = "\(devices[indexPathRow].gateway.name)"
-        editDelay.text   = "\(devices[indexPathRow].delay)"
-        lblName.text     = "\(devices[indexPathRow].name)"
+        let deviceIn = devices[indexPathRow]
+        let gateway  = deviceIn.gateway
+        let location = gateway.location
         
-        if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[indexPathRow].parentZoneId), location: devices[indexPathRow].gateway.location), let name = zone.name{
+        lblLocation.text = "\(gateway.name)"
+        editDelay.text   = "\(deviceIn.delay)"
+        lblName.text     = "\(deviceIn.name)"
+        
+        if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(deviceIn.parentZoneId), location: location), let name = zone.name {
             lblLevel.text = "\(name)"
         } else { lblLevel.text = "" }
         
-        if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[indexPathRow].zoneId), location: devices[indexPathRow].gateway.location), let name = zone.name{
+        if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(deviceIn.zoneId), location: location), let name = zone.name {
             lblZone.text = "\(name)"
         } else { lblZone.text = "" }
         
-        lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(devices[indexPathRow].categoryId), location: devices[indexPathRow].gateway.location))"
-        deviceAddress.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].address)))"
-        deviceChannel.text = "\(devices[indexPathRow].channel)"
+        lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(deviceIn.categoryId), location: location))"
+        deviceAddress.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne))):\(returnThreeCharactersForByte(Int(gateway.addressTwo))):\(returnThreeCharactersForByte(Int(deviceIn.address)))"
+        deviceChannel.text = "\(deviceIn.channel)"
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
@@ -95,10 +99,12 @@ class RelayParametarVC: CommonXIBTransitionVC {
     }
     
     func getDeviceAndSave (_ numberOne:Int) {
-        if let deviceObject = appDel.managedObjectContext!.object(with: devices[indexPathRow].objectID) as? Device {
-            device = deviceObject
-            device!.delay = NSNumber(value: numberOne)
-            CoreDataController.sharedInstance.saveChanges()
+        if let moc = appDel.managedObjectContext {
+            if let deviceObject = moc.object(with: devices[indexPathRow].objectID) as? Device {
+                device        = deviceObject
+                device!.delay = NSNumber(value: numberOne)
+                CoreDataController.sharedInstance.saveChanges()
+            }
         }
     }
     
@@ -114,8 +120,11 @@ class RelayParametarVC: CommonXIBTransitionVC {
         fetchRequest.predicate = predicate
         
         do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Category]
-            if fetResults!.count != 0 { return "\(fetResults![0].name!)" } else { return "\(id)" }
+            if let moc = appDel.managedObjectContext {
+                let fetResults = try moc.fetch(fetchRequest) as? [Category]
+                if fetResults!.count != 0 { return "\(fetResults![0].name!)" } else { return "\(id)" }
+            }
+            
         } catch {}
         
         return ""

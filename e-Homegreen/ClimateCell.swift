@@ -24,14 +24,14 @@ class ClimateCell: UICollectionViewCell {
     let animationImages:[UIImage] = [UIImage(named: "h1")!, UIImage(named: "h2")!, UIImage(named: "h3")!, UIImage(named: "h4")!, UIImage(named: "h5")!, UIImage(named: "h6")!, UIImage(named: "h7")!, UIImage(named: "h8")!]
     let fanLowImage = UIImage(named: "fanlow")
     let fanMediumImage = UIImage(named: "fanmedium")
-    let fanHighImage = UIImage(named: "fanhigh")
-    let fanOffImage = UIImage(named: "fanoff")
-    let fanCoolImage = #imageLiteral(resourceName: "cool")
-    let fanHeatImage = #imageLiteral(resourceName: "heat")
-    let fanAutoImage = #imageLiteral(resourceName: "fanauto")
+    let fanHighImage   = UIImage(named: "fanhigh")
+    let fanOffImage    = UIImage(named: "fanoff")
+    let fanCoolImage   = #imageLiteral(resourceName: "cool")
+    let fanHeatImage   = #imageLiteral(resourceName: "heat")
+    let fanAutoImage   = #imageLiteral(resourceName: "fanauto")
     
-    let powerOffImage = UIImage(named: "poweroff")
-    let powerOnImage = UIImage(named: "poweron")
+    let powerOffImage  = UIImage(named: "poweroff")
+    let powerOnImage   = UIImage(named: "poweron")
     
     let degrees = "\u{00B0}c"
     

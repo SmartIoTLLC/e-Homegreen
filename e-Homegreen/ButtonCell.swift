@@ -43,13 +43,7 @@ class ButtonCell: UICollectionViewCell {
         super.awakeFromNib()
 
         updateCell()
-    }
-    /* TODO:
-        - refaktorisati deo logike oko borderColor zbog setDisabled i setRegular
-        - scale image odraditi manuelno na frame imageView-a
-     
-     scale - buttonframe - width*X & height*Y
-     */
+    }    
     
 }
 
@@ -106,7 +100,6 @@ extension ButtonCell {
             case ButtonState.invisible  : setInvisible()
             case ButtonState.disable    : setDisabled()
             default: break
-            // NIJE DOBRO
         }
         
         realButton.setTitle(button.name, for: UIControlState())
@@ -123,7 +116,7 @@ extension ButtonCell {
         switch button.buttonType! {
             case ButtonType.sceneButton : loadScene()
             case ButtonType.irButton    : loadIRDevice()
-            case ButtonType.hexButton   : hex = formatHexStringToByteArray(hex: button.hexString!)
+            case ButtonType.hexButton   : hex = formatHexStringToByteArray(hex: button.hexString)
             default: break
         }
         
@@ -150,7 +143,6 @@ extension ButtonCell {
     fileprivate func setupRegular() {
         setButtonColor()
         realButton.addShadows(opacity: 1)
-        
         realButton.setImage(nil, for: UIControlState())
     }
 }
@@ -163,8 +155,7 @@ extension ButtonCell {
         }
     }
     
-    fileprivate func scaleAndSetButtonImage() { // Ne valja kad se dodeljuje 0.5 i 0.5
-
+    fileprivate func scaleAndSetButtonImage() {
         if let image = button.image {
             let uiImage = UIImage(data: image as Data)
             if imageScaleX != 1.0 || imageScaleY != 1.0 {
@@ -184,7 +175,7 @@ extension ButtonCell {
 extension UIImage {
     fileprivate func getScaledButtonImage(x: CGFloat, y: CGFloat) -> UIImage? {
         
-        let newSize        = CGSize(width: size.width * x, height: size.height * y)
+        let newSize = CGSize(width: size.width * x, height: size.height * y)
         
         UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
         draw(in: CGRect(origin: CGPoint.zero, size: newSize))

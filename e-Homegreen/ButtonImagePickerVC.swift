@@ -52,10 +52,9 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
     }()
     
     override func viewDidLoad() {
-        // TODO: brisanje custom slike na long press
         setupViews()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(loadCustomImages), name: .CustomButtonImageEdited, object: nil)
+        addObservers()
     }
 
     fileprivate func setupViews() {
@@ -399,6 +398,10 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
         button.backgroundColor  = .clear
         
         bottomToolbar.addSubview(button)
+    }
+    
+    fileprivate func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadCustomImages), name: .CustomButtonImageEdited, object: nil)
     }
     
 }

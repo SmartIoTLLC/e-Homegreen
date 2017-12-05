@@ -47,20 +47,24 @@ class IntelligentSwitchParameter: CommonXIBTransitionVC {
     }
     
     func setupViews() {
+        let deviceIn = devices[indexPathRow]
+        let gateway  = deviceIn.gateway
+        let location = gateway.location
+        
         lblLocation.text = "\(devices[indexPathRow].gateway.name)"
         lblName.text = "\(devices[indexPathRow].name)"
         
-        if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[indexPathRow].parentZoneId), location: devices[indexPathRow].gateway.location), let name = zone.name {
+        if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(deviceIn.parentZoneId), location: location), let name = zone.name {
             lblLevel.text = "\(name)"
         } else { lblLevel.text = "" }
         
-        if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(devices[indexPathRow].zoneId), location: devices[indexPathRow].gateway.location), let name = zone.name {
+        if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(deviceIn.zoneId), location: location), let name = zone.name {
             lblZone.text = "\(name)"
         } else { lblZone.text = "" }
         
-        lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(devices[indexPathRow].categoryId), location: devices[indexPathRow].gateway.location))"
-        deviceAddress.text = "\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressOne))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].gateway.addressTwo))):\(returnThreeCharactersForByte(Int(devices[indexPathRow].address)))"
-        deviceChannel.text = "\(devices[indexPathRow].channel)"
+        lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(deviceIn.categoryId), location: location))"
+        deviceAddress.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne))):\(returnThreeCharactersForByte(Int(gateway.addressTwo))):\(returnThreeCharactersForByte(Int(deviceIn.address)))"
+        deviceChannel.text = "\(deviceIn.channel)"
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
@@ -82,12 +86,14 @@ class IntelligentSwitchParameter: CommonXIBTransitionVC {
     }
     
     func getDeviceAndSave (_ numberOne:Int, numberTwo:Int, numberThree:Int) {
-        if let deviceObject = appDel.managedObjectContext!.object(with: devices[indexPathRow].objectID) as? Device {
-            device = deviceObject
-            device!.delay = NSNumber(value: numberOne)
-            device!.runtime = NSNumber(value: numberTwo)
-            device!.skipState = NSNumber(value: numberThree)
-            CoreDataController.sharedInstance.saveChanges()
+        if let moc = appDel.managedObjectContext {
+            if let deviceObject = moc.object(with: devices[indexPathRow].objectID) as? Device {
+                device            = deviceObject
+                device!.delay     = NSNumber(value: numberOne)
+                device!.runtime   = NSNumber(value: numberTwo)
+                device!.skipState = NSNumber(value: numberThree)
+                CoreDataController.sharedInstance.saveChanges()
+            }
         }
     }
 }

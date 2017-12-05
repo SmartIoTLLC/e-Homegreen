@@ -27,8 +27,10 @@ extension DevicesViewController: UICollectionViewDelegate, UICollectionViewDeleg
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if devices[indexPath.row].isEnabled.boolValue {
-            if devices[indexPath.row].controlType == ControlType.Climate {
+        let device = devices[indexPath.row]
+        
+        if device.isEnabled.boolValue {
+            if device.controlType == ControlType.Climate {
                 showClimaSettings(indexPath.row, devices: devices)
                 
                 // Dumb solution for the climate mode icon issue, but it'll work until we find the correct fix
@@ -51,15 +53,19 @@ extension DevicesViewController: UICollectionViewDataSource {
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if devices[indexPath.row].controlType == ControlType.Dimmer {
+        let device      = devices[indexPath.row]
+        let controlType = device.controlType
+        let tag         = indexPath.row
+        
+        if controlType == ControlType.Dimmer {
             
             // MARK: - Device cell
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? DeviceCollectionCell {
                 
-                cell.setCell(device: devices[indexPath.row], tag: indexPath.row)
+                cell.setCell(device: device, tag: tag)
                 
                 // If device is enabled add all interactions
-                if devices[indexPath.row].isEnabled.boolValue {
+                if device.isEnabled.boolValue {
                     
                     let longPress = UILongPressGestureRecognizer(target: self, action: #selector(cellParametarLongPress(_:)))
                     longPress.minimumPressDuration = 0.5
@@ -88,14 +94,14 @@ extension DevicesViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
             
-        else if devices[indexPath.row].controlType == ControlType.Curtain {
+        else if controlType == ControlType.Curtain {
             
             // MARK: - Curtain cell
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "curtainCell", for: indexPath) as? CurtainCollectionCell {
-                cell.setCell(device: devices[indexPath.row], tag: indexPath.row)
+                cell.setCell(device: device, tag: tag)
                 
                 // If device is enabled add all interactions
-                if devices[indexPath.row].isEnabled.boolValue {
+                if device.isEnabled.boolValue {
                     
                     cell.openButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openCurtain(_:))))
                     cell.closeButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeCurtain(_:))))
@@ -114,15 +120,15 @@ extension DevicesViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
             
-        else if devices[indexPath.row].controlType == ControlType.SaltoAccess {
+        else if controlType == ControlType.SaltoAccess {
             
             // MARK: Salto Access cell
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "saltoAccessCell", for: indexPath) as? SaltoAccessCell {
                 
-                cell.setCell(device: devices[indexPath.row], tag: indexPath.row)
+                cell.setCell(device: device, tag: tag)
                 
                 // If device is enabled add all interactions
-                if devices[indexPath.row].isEnabled.boolValue {
+                if device.isEnabled.boolValue {
                     cell.unlockButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(unlockSalto(_:))))
                     cell.lockButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(lockSalto(_:))))
                     cell.saltoImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(thirdFcnSalto(_:))))
@@ -139,14 +145,14 @@ extension DevicesViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
             
-        else if devices[indexPath.row].controlType == ControlType.Relay || devices[indexPath.row].controlType == ControlType.DigitalOutput {
+        else if controlType == ControlType.Relay || controlType == ControlType.DigitalOutput {
             
             // MARK: - Appliance cell
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "applianceCell", for: indexPath) as? ApplianceCollectionCell {
-                cell.setCell(device: devices[indexPath.row], tag: indexPath.row)
+                cell.setCell(device: device, tag: tag)
                 
                 // If device is enabled add all interactions
-                if devices[indexPath.row].isEnabled.boolValue {
+                if device.isEnabled.boolValue {
                     
                     
                     let longPress = UILongPressGestureRecognizer(target: self, action: #selector(cellParametarLongPress(_:)))
@@ -169,12 +175,12 @@ extension DevicesViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
             
-        else if devices[indexPath.row].controlType == ControlType.Climate {
+        else if controlType == ControlType.Climate {
             
             // MARK: - Climate cell
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "climaCell", for: indexPath) as? ClimateCell {
                 
-                cell.setCell(device: devices[indexPath.row], tag: indexPath.row)
+                cell.setCell(device: device, tag: tag)
                 
                 cell.imageOnOff.addGestureRecognizer(UITapGestureRecognizer(target:self, action: #selector(setACPowerStatus(_:))))
                 
@@ -194,12 +200,12 @@ extension DevicesViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
             
-        else if devices[indexPath.row].controlType == ControlType.Sensor || devices[indexPath.row].controlType == ControlType.IntelligentSwitch || devices[indexPath.row].controlType == ControlType.Gateway || devices[indexPath.row].controlType == ControlType.DigitalInput {
+        else if controlType == ControlType.Sensor || controlType == ControlType.IntelligentSwitch || controlType == ControlType.Gateway || controlType == ControlType.DigitalInput {
             
             // MARK: - MultiSensor cell
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "multiSensorCell", for: indexPath) as? MultiSensorCell {
                 
-                cell.setCell(device: devices[indexPath.row], tag: indexPath.row)
+                cell.setCell(device: device, tag: tag)
                 
                 let longPress = UILongPressGestureRecognizer(target: self, action: #selector(cellParametarLongPress(_:)))
                 longPress.minimumPressDuration = 0.5
@@ -228,18 +234,23 @@ extension DevicesViewController {
     func updateDeviceStatus (indexPathRow: Int) {
         for device in devices { if device.gateway == devices[indexPathRow].gateway && device.address == devices[indexPathRow].address { device.stateUpdatedAt = Date() } }
         
-        let address = [getByte(devices[indexPathRow].gateway.addressOne), getByte(devices[indexPathRow].gateway.addressTwo), getByte(devices[indexPathRow].address)]
+        let device      = devices[indexPathRow]
+        let controlType = device.controlType
+        let gateway     = device.gateway
+        let channel     = device.channel.intValue
         
-        if devices[indexPathRow].controlType == ControlType.Dimmer { SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway) }
-        if devices[indexPathRow].controlType == ControlType.Relay { SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: devices[indexPathRow].gateway) }
-        if devices[indexPathRow].controlType == ControlType.Climate { SendingHandler.sendCommand(byteArray: OutgoingHandler.getACStatus(address), gateway: devices[indexPathRow].gateway) }
+        let address = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
         
-        if devices[indexPathRow].controlType == ControlType.Sensor || devices[indexPathRow].controlType == ControlType.IntelligentSwitch || devices[indexPathRow].controlType == ControlType.Gateway {
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.getSensorState(address), gateway: devices[indexPathRow].gateway)
+        if controlType == ControlType.Dimmer { SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway) }
+        if controlType == ControlType.Relay { SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway) }
+        if controlType == ControlType.Climate { SendingHandler.sendCommand(byteArray: OutgoingHandler.getACStatus(address), gateway: gateway) }
+        
+        if controlType == ControlType.Sensor || controlType == ControlType.IntelligentSwitch || controlType == ControlType.Gateway {
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.getSensorState(address), gateway: gateway)
         }
         
-        if devices[indexPathRow].controlType == ControlType.Curtain { SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurtainStatus(address), gateway: devices[indexPathRow].gateway) }
-        if devices[indexPathRow].controlType == ControlType.SaltoAccess { SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessState(address, lockId: devices[indexPathRow].channel.intValue), gateway: devices[indexPathRow].gateway) } // TODO: CHECK
+        if controlType == ControlType.Curtain { SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurtainStatus(address), gateway: gateway) }
+        if controlType == ControlType.SaltoAccess { SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessState(address, lockId: channel), gateway: gateway) } // TODO: CHECK
         
         CoreDataController.sharedInstance.saveChanges()
     }

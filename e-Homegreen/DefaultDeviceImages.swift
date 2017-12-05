@@ -19,7 +19,7 @@ struct DeviceImageState {
 class DefaultDeviceImages: NSObject {
     func getNewImagesForDevice (_ device:Device) -> [DeviceImageState] {
         
-        let categoryId = device.categoryId
+        let categoryId  = device.categoryId
         let controlType = device.controlType
         var controlMode = 1
         if let mode = device.digitalInputMode{
@@ -27,33 +27,33 @@ class DefaultDeviceImages: NSObject {
         }
         
         switch controlType {
-        case ControlType.Dimmer:
-            switch Int(categoryId) {
-            case CategoryId.Blind: return blindImagesMultistate
-            case CategoryId.Curtain: return curtainImagesMultistate
-            default: return lightningImagesMultistate
-            }
+            case ControlType.Dimmer  :
+                switch Int(categoryId) {
+                    case CategoryId.Blind   : return blindImagesMultistate
+                    case CategoryId.Curtain : return curtainImagesMultistate
+                    default                 : return lightningImagesMultistate
+                }
             
-        case ControlType.Curtain:
-            switch Int(categoryId) {
-            case CategoryId.Blind: return blindImagesThreeStateNO
-            default: return curtainImagesTwoStateNO
-            }
-        case ControlType.IntelligentSwitch: return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
-        case ControlType.Climate: return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
-        case ControlType.AnalogInput: return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
-        case ControlType.AnalogOutput: return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
-        case ControlType.DigitalInput: return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
-        case ControlType.DigitalOutput:
-            if (DigitalInput.modeInfo[controlMode] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlMode] == DigitalInput.NormallyClosed.description()) {
-                return appliancePowerImagesTwoStateNC
-            } else {
-                return appliancePowerImagesTwoStateNO
-            }
-        case ControlType.Sensor: return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
-        case ControlType.IRTransmitter: return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
-        case ControlType.SaltoAccess: return securityImagesTwoStateNO
-        default: return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode) // ControlType == Relay
+            case ControlType.Curtain :
+                switch Int(categoryId) {
+                    case CategoryId.Blind : return blindImagesThreeStateNO
+                    default               : return curtainImagesTwoStateNO
+                }
+            case ControlType.IntelligentSwitch : return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
+            case ControlType.Climate           : return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
+            case ControlType.AnalogInput       : return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
+            case ControlType.AnalogOutput      : return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
+            case ControlType.DigitalInput      : return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
+            case ControlType.DigitalOutput     :
+                if (DigitalInput.modeInfo[controlMode] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlMode] == DigitalInput.NormallyClosed.description()) {
+                    return appliancePowerImagesTwoStateNC
+                } else {
+                    return appliancePowerImagesTwoStateNO
+                }
+            case ControlType.Sensor        : return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
+            case ControlType.IRTransmitter : return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode)
+            case ControlType.SaltoAccess   : return securityImagesTwoStateNO
+            default: return returnImagesArrayDependingOnCategoryId(categoryId, controlMode: controlMode) // ControlType == Relay
         }
     }
     
@@ -61,8 +61,7 @@ class DefaultDeviceImages: NSObject {
         switch Int(categoryId) {
         case CategoryId.GatewayControl:
             guard let controlModeTemp = controlMode else { return lightningImagesTwoStateNO }
-            if DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description() { return lightningImagesTwoStateNC
-            } else { return lightningImagesTwoStateNO }
+            if DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description() { return lightningImagesTwoStateNC } else { return lightningImagesTwoStateNO }
             
         case CategoryId.DimmingControl:
             guard let controlModeTemp = controlMode else { return lightningImagesTwoStateNO }
