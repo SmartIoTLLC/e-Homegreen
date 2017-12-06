@@ -21,8 +21,6 @@ class ButtonImageEditorVC: CommonXIBTransitionVC {
     @IBOutlet weak var saveButton: UIButton!
     
     override func viewDidLoad() {
-       // super.viewDidLoad()
-
         setupViews()
     }
     
@@ -111,16 +109,12 @@ extension ButtonImageEditorVC: UIImagePickerControllerDelegate {
     
 }
 
-extension ButtonImageEditorVC: UINavigationControllerDelegate {
-    
-}
-
+extension ButtonImageEditorVC: UINavigationControllerDelegate {}
 
 extension UIViewController {
     func showButtonImageEditorVC(image: UIImage) {
         let vc = ButtonImageEditorVC()
         vc.image = image
         present(vc, animated: true, completion: nil)
-        //UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.present(vc, animated: true, completion: nil)        
     }
 }

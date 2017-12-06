@@ -56,11 +56,23 @@ extension UIView {
         if isOn { layer.shadowColor = UIColor.black.cgColor
         } else { layer.shadowColor = UIColor.clear.cgColor }
         
-        layer.shadowOffset = CGSize(width: 0, height: 2)
-        layer.shadowOpacity = opacity
-        layer.shadowRadius = 1.0
-        clipsToBounds = false
-        layer.shouldRasterize = true
+        layer.shadowOffset       = CGSize(width: 0, height: 2)
+        layer.shadowOpacity      = opacity
+        layer.shadowRadius       = 1.0
+        clipsToBounds            = false
+        layer.shouldRasterize    = true
+        layer.rasterizationScale = UIScreen.main.scale
+    }
+    
+    func addButtonShadows(isOn: Bool = true) {
+        if isOn { layer.shadowColor = UIColor.black.cgColor
+        } else { layer.shadowColor = UIColor.clear.cgColor }
+        
+        layer.shadowOffset       = CGSize(width: 0.75, height: 1.5)
+        layer.shadowOpacity      = 1.0
+        layer.shadowRadius       = 1.0
+        clipsToBounds            = true
+        layer.shouldRasterize    = true
         layer.rasterizationScale = UIScreen.main.scale
     }
 }

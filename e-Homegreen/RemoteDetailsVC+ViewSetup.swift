@@ -23,7 +23,7 @@ extension RemoteDetailsViewController: UICollectionViewDataSource {
         if let cell = buttonsCollectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? ButtonCell {
             
             cell.button = chunksOfButtons[indexPath.section][indexPath.item]
-            cell.tag = indexPath.item
+            cell.tag = indexPath.item            
             
             return cell
         }

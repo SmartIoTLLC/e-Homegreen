@@ -9,9 +9,7 @@
 import UIKit
 import AudioToolbox
 
-class RemoteDetailsViewController: UIViewController {
-    
-    // TODO: ubaciti ceo daljinski unutar ScrollView-a & collectionView.frame = scrollView.contentSize
+class RemoteDetailsViewController: UIViewController {        
     
     var rows        : Int!
     var columns     : Int!
@@ -90,6 +88,8 @@ extension RemoteDetailsViewController {
         buttonsCollectionView.delegate   = self
         buttonsCollectionView.dataSource = self
     }
+    
+    // BUG: Border remote header-a/footer-a ne menja velicinu na ostalim velicinama ekrana
     
     fileprivate func updateViews() {
         remoteTitleLabel.text          = remote.name

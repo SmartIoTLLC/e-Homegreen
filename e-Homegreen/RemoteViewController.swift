@@ -35,8 +35,11 @@ class RemoteViewController: PopoverVC {
     
     @IBOutlet weak var addButton: UIButton!
     @IBAction func addButton(_ sender: UIButton) {
-        showAddRemoteVC(filter: filterParametar, location: pickedLocation!)
+        if let _ = DatabaseUserController.shared.loggedUserOrAdmin() {
+            showAddRemoteVC(filter: filterParametar, location: pickedLocation!)
+        } else { view.makeToast(message: "No user database selected.") }
     }
+    
     @IBOutlet weak var fullScreenButton: UIButton!
     @IBAction func fullScreenButton(_ sender: UIButton) {
         sender.switchFullscreen(viewThatNeedsOffset: scrollView)        
@@ -100,7 +103,7 @@ extension RemoteViewController {
                 if loc.name == filterParametar.location { self.pickedLocation = loc }
             })
             
-        } else { view.makeToast(message: "Can't get logged user"); return }
+        } else { view.makeToast(message: "No user database selected."); return }
         
     }
     

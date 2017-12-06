@@ -54,6 +54,7 @@ class DeleteButtonImageVC: CommonXIBTransitionVC {
         if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
             user.removeFromImages(image)
             
+            CoreDataController.sharedInstance.saveChanges()
             NotificationCenter.default.post(name: .CustomButtonImageEdited, object: nil)
             dismissModal()
         }

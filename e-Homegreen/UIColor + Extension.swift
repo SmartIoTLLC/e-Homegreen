@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension UIColor{
+extension UIColor {
     func e_homegreenColor() -> UIColor{
         return UIColor(red: 48/255, green: 119/255, blue: 61/255, alpha: 1)
     }
@@ -23,4 +23,7 @@ extension UIColor{
     static let googleMicTextGreen = UIColor(red: 90/255, green: 109/255, blue: 120/255, alpha: 1)
     static let googleMicBackgroundWhite = UIColor(red: 235/255, green: 239/255, blue: 242/255, alpha: 1)
     
+    struct eHome {
+        static let turquoiseBlue = UIColor(displayP3Red: 175/255, green: 238/255, blue: 238/255, alpha: 1)
+    }
 }

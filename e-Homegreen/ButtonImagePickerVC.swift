@@ -29,6 +29,7 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
         didSet {
             if let image = button.image {
                 selectedImage = UIImage(data: image as Data)
+                // TODO: cuvati i image string zbog prikazivanja indikatora po ponovnom ulasku na ekran
             }
         }
     }
@@ -46,8 +47,8 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
 
     var scBottomLine: CALayer = {
         let layer = CALayer()
-        layer.borderColor = UIColor.blue.cgColor
-        layer.borderWidth = 3
+        layer.borderColor = UIColor.eHome.turquoiseBlue.cgColor
+        layer.borderWidth = 2
         return layer
     }()
     
@@ -67,7 +68,7 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
         
         backgroundView.layer.borderColor   = Colors.MediumGray
         backgroundView.layer.borderWidth   = 1
-        backgroundView.layer.cornerRadius  = 25
+        backgroundView.layer.cornerRadius  = 15
         backgroundView.layer.masksToBounds = true             
         
         segmentedControl.setTitle("DEFAULT LIBRARY", forSegmentAt: 0)
@@ -78,7 +79,7 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
         ]
         segmentedControl.setTitleTextAttributes(attributes, for: UIControlState())
         
-        scBottomLine.frame = CGRect(x: segmentedControl.frame.minX, y: segmentedControl.frame.height - 3, width: segmentedControl.frame.width / 2, height: 3)
+        scBottomLine.frame = CGRect(x: segmentedControl.frame.minX, y: segmentedControl.frame.height - 2, width: segmentedControl.frame.width / 2, height: 2)
         segmentedControl.layer.addSublayer(scBottomLine)
         
         bottomToolbar.backgroundColor = .clear
@@ -103,9 +104,9 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
         
         let barWidth = sender.frame.size.width / 2
         let x        = CGFloat(sender.selectedSegmentIndex) * barWidth
-        let y        = sender.frame.height - 3
+        let y        = sender.frame.height - 2
         
-        scBottomLine.frame = CGRect(x: x, y: y, width: barWidth, height: 3)
+        scBottomLine.frame = CGRect(x: x, y: y, width: barWidth, height: 2)
         segmentedControl.layer.addSublayer(scBottomLine)
         
         switch sender.selectedSegmentIndex {
@@ -419,8 +420,7 @@ extension ButtonImagePickerVC: UIImagePickerControllerDelegate {
         } else if let image = info[UIImagePickerControllerOriginalImage] as? UIImage{
             pickedImage = image
         }
-        
-        // TODO: Otvoriti cropper
+                
         if let moc = managedContext {
             let moImage = Image(context: moc, image: UIImagePNGRepresentation(pickedImage)!, id: "buttonImage")
             

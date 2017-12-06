@@ -183,6 +183,7 @@
 		4E3CFD7D1F823C2F00E22C92 /* ButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E3CFD7B1F823C2F00E22C92 /* ButtonCell.xib */; };
 		4E5BE4011F7D42E700497335 /* EditRemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5BE3FF1F7D42E700497335 /* EditRemoteViewController.swift */; };
 		4E5BE4021F7D42E700497335 /* EditRemoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E5BE4001F7D42E700497335 /* EditRemoteViewController.xib */; };
+		4E605AA61FD81DEF00747EDC /* RealButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E605AA51FD81DEF00747EDC /* RealButton.swift */; };
 		4E62ABC81FBB1F51006D85E7 /* RemoteButton+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E62ABC61FBB1F51006D85E7 /* RemoteButton+CoreDataClass.swift */; };
 		4E62ABC91FBB1F51006D85E7 /* RemoteButton+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E62ABC71FBB1F51006D85E7 /* RemoteButton+CoreDataProperties.swift */; };
 		4E7115C11FD15E9D007DB67C /* ButtonImageEditorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7115BF1FD15E9D007DB67C /* ButtonImageEditorVC.swift */; };
@@ -604,6 +605,7 @@
 		4E3CFD7B1F823C2F00E22C92 /* ButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonCell.xib; sourceTree = "<group>"; };
 		4E5BE3FF1F7D42E700497335 /* EditRemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditRemoteViewController.swift; sourceTree = "<group>"; };
 		4E5BE4001F7D42E700497335 /* EditRemoteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditRemoteViewController.xib; sourceTree = "<group>"; };
+		4E605AA51FD81DEF00747EDC /* RealButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealButton.swift; sourceTree = "<group>"; };
 		4E62ABC61FBB1F51006D85E7 /* RemoteButton+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteButton+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4E62ABC71FBB1F51006D85E7 /* RemoteButton+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteButton+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4E7115BF1FD15E9D007DB67C /* ButtonImageEditorVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonImageEditorVC.swift; sourceTree = "<group>"; };
@@ -1378,6 +1380,7 @@
 				4E3CFD7A1F823C2F00E22C92 /* ButtonCell.swift */,
 				4E3CFD7B1F823C2F00E22C92 /* ButtonCell.xib */,
 				4E19613A1FD5385500F48272 /* ButtonCell+Logic.swift */,
+				4E605AA51FD81DEF00747EDC /* RealButton.swift */,
 			);
 			name = "Button Cell";
 			sourceTree = "<group>";
@@ -2375,6 +2378,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */,
+				4E605AA61FD81DEF00747EDC /* RealButton.swift in Sources */,
 				22F2C9E51D41058A008A04DE /* NavigationTitleView.swift in Sources */,
 				739866801C0DEE1600CEBDB4 /* DatabaseHandler.swift in Sources */,
 				495726B11D4F4842004F2A3D /* ApplianceCollectionCell.swift in Sources */,

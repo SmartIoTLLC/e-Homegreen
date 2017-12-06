@@ -17,8 +17,10 @@ class ButtonCell: UICollectionViewCell {
     var scene: Scene?
     var irDevice: Device?
     var hex: [Byte]?
-        
-    @IBOutlet weak var realButton: UIButton!
+    
+    var shadowColor: UIColor!
+    
+    @IBOutlet weak var realButton: RealButton!
     
     @IBOutlet weak var btnWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnHeightConstraint: NSLayoutConstraint!
@@ -33,6 +35,16 @@ class ButtonCell: UICollectionViewCell {
             btnHeightConstraint.constant = height
             realButton.center = contentView.center
             realButton.layoutIfNeeded()
+            
+            switch button.buttonColor! {
+                case ButtonColor.red   : shadowColor = .red
+                case ButtonColor.blue  : shadowColor = .blue
+                case ButtonColor.gray  : shadowColor = Colors.AndroidGrayColor
+                case ButtonColor.green : shadowColor = .green
+                default: shadowColor = .black
+            }
+            
+            realButton.button = button
             setButton(button: button)
             setNeedsLayout()
             setNeedsDisplay()
@@ -45,6 +57,13 @@ class ButtonCell: UICollectionViewCell {
         updateCell()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        setButtonColor()
+        setShadows()
+    }
+            
 }
 
 // MARK: - Button setup
@@ -56,48 +75,135 @@ extension ButtonCell {
         layer.masksToBounds          = true
         contentView.backgroundColor  = .clear
         contentView.clipsToBounds    = true
+        realButton.layer.borderWidth = 1
     }
     
+    // MARK: - Gradient background & Shadows
     fileprivate func setButtonColor() {
-        switch button.buttonColor! {
-        case ButtonColor.red    : realButton.backgroundColor = .red
-        case ButtonColor.gray   : realButton.backgroundColor = Colors.AndroidGrayColor
-        case ButtonColor.green  : realButton.backgroundColor = .green
-        case ButtonColor.blue   : realButton.backgroundColor = .red
-        default                 : realButton.backgroundColor = .clear
+        removeGradient()
+        
+        var color: UIColor!
+        switch button.buttonState! {
+        case ButtonState.visible, ButtonState.disable:
+            switch button.buttonColor! {
+                case ButtonColor.red    : color = .red
+                case ButtonColor.gray   : color = Colors.AndroidGrayColor
+                case ButtonColor.green  : color = .green
+                case ButtonColor.blue   : color = .blue
+                default                 : color = .clear
+            }
+        default: color = .clear
+        }
+        
+        realButton.setGradientBackground(colors: [color.withAlphaComponent(0.5).cgColor, color.cgColor])
+        
+        if let imageView = realButton.imageView {
+            realButton.bringSubview(toFront: imageView)
+        }
+        
+        switch button.buttonState! {
+            case ButtonState.visible                        :
+                switch button.buttonInternalType! {
+                    case ButtonInternalType.image       : hideBorder()
+                    case ButtonInternalType.imageButton : showBorder()
+                    case ButtonInternalType.regular     : showBorder()
+                    default: break
+                }
+            case ButtonState.invisible, ButtonState.disable : hideBorder()
+            default: break
+        }
+        realButton.clipsToBounds = true
+        realButton.layoutSubviews()
+        realButton.layoutIfNeeded()
+        realButton.setNeedsDisplay()
+
+    }
+    
+    fileprivate func removeGradient() {
+        if (realButton.layer.sublayers?[0] != nil && realButton.layer.sublayers?[0] is CAGradientLayer) { realButton.layer.sublayers![0].removeFromSuperlayer() }
+    }
+    
+    fileprivate func setShadows() {
+        switch button.buttonState! {
+            case ButtonState.visible:
+                switch button.buttonInternalType! {
+                    case ButtonInternalType.image       : hideShadows()
+                    case ButtonInternalType.imageButton : showShadows()
+                    case ButtonInternalType.regular     : showShadows()
+                    default: break
+                }
+            case ButtonState.invisible, ButtonState.disable: hideShadows()
+            default: break
         }
     }
     
+    func showShadows() {
+        //realButton.addButtonShadows()
+        realButton.needsShadow = true
+    }
+    func hideShadows() {
+        //realButton.addButtonShadows(isOn: false)
+        realButton.needsShadow = false
+    }
+    
+    func showBorder() {
+        realButton.layer.borderColor = Colors.DarkGray
+    }
+    func hideBorder() {
+        realButton.layer.borderColor = UIColor.clear.cgColor
+    }
+    
+    // MARK: - Visibility
     func setVisible() {
         realButton.isHidden                 = false
         realButton.isUserInteractionEnabled = true
-        realButton.backgroundColor          = Colors.AndroidGrayColor
     }
     
     func setInvisible() {
         realButton.isHidden                 = true
         realButton.isUserInteractionEnabled = true
-        realButton.backgroundColor          = Colors.AndroidGrayColor
     }
     
     func setDisabled() {
         realButton.isHidden                 = false
         realButton.isUserInteractionEnabled = false
-        realButton.backgroundColor          = .clear
+    }
+    
+    // MARK: - Button Internal Type
+    fileprivate func setupImageButton() {
+        setButtonColor()
+        setShadows()
+        scaleAndSetButtonImage()
+    }
+    
+    fileprivate func setupImage() {
+        removeGradient()
+        setShadows()
+        scaleAndSetButtonImage()
+    }
+    
+    fileprivate func setupRegular() {
+        setButtonColor()
+        setShadows()
+        realButton.setImage(nil, for: UIControlState())
     }
     
     func setButton(button: RemoteButton) {
-        setButtonColor()
         
         switch button.buttonShape! {
-            case ButtonShape.circle       : realButton.frame.size = CGSize(width: height, height: height); realButton.layer.cornerRadius = height / 2
-            btnWidthConstraint.constant  = height
-            btnHeightConstraint.constant = height
-            case ButtonShape.rectangle    : realButton.frame.size = CGSize(width: width, height: height); realButton.layer.cornerRadius = 3
-            btnWidthConstraint.constant  = width
-            btnHeightConstraint.constant = height
+            case ButtonShape.circle       :
+                realButton.frame.size = CGSize(width: height, height: height)
+                realButton.layer.cornerRadius = height / 2
+                btnWidthConstraint.constant   = height
+                btnHeightConstraint.constant  = height
+            case ButtonShape.rectangle    :
+                realButton.frame.size = CGSize(width: width, height: height)
+                realButton.layer.cornerRadius = 3
+                btnWidthConstraint.constant   = width
+                btnHeightConstraint.constant  = height
             default: break
         }
+        
         realButton.layoutIfNeeded()
         
         switch button.buttonState! {
@@ -131,25 +237,9 @@ extension ButtonCell {
             case ButtonInternalType.regular     : setupRegular()
             default: break
         }
+        
     }
-    
-    fileprivate func setupImageButton() {
-        setButtonColor()
-        realButton.addShadows(opacity: 1)
-        scaleAndSetButtonImage()
-    }
-    
-    fileprivate func setupImage() {
-        addShadows(opacity: 1, isOn: false)
-        realButton.backgroundColor = .clear
-        scaleAndSetButtonImage()
-    }
-    
-    fileprivate func setupRegular() {
-        setButtonColor()
-        realButton.addShadows(opacity: 1)
-        realButton.setImage(nil, for: UIControlState())
-    }
+
 }
 
 // MARK: - Setup Views
@@ -172,6 +262,8 @@ extension ButtonCell {
             }
             realButton.imageView?.contentMode = .scaleAspectFit
             realButton.imageEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
+        } else {
+            realButton.setImage(nil, for: UIControlState())
         }
     }
     

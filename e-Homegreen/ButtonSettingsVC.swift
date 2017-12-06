@@ -56,16 +56,7 @@ class ButtonSettingsVC: CommonXIBTransitionVC, UITextFieldDelegate {
         super.viewDidAppear(animated)
         
         setButtonImage()
-    }
-    
-    /* TODO:
-     
-     [ text label should not be visible if image type is chosen ]
-     
-     choose button image:
-     - pick from app gallery
-     - pick from phone gallery
-     */
+    }        
     
     // MARK: - Button look
     func receivedButtonColor(_ notification: Notification) {
@@ -112,7 +103,7 @@ class ButtonSettingsVC: CommonXIBTransitionVC, UITextFieldDelegate {
         addressThreeTF.setEnabled()
         channelTF.setEnabled()
         
-        // if button.nestoNestoZaIR != nil { posatviti buttonTypeIDTF.text }
+        // if button.nestoNestoZaIR != nil { postaviti buttonTypeIDTF.text }
         buttonTypeIDTF.placeholder = "Enter IR ID"
     }
     
@@ -282,9 +273,10 @@ extension ButtonSettingsVC {
     fileprivate func updateViews() {
         view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
         
-        backgroundView.layer.cornerRadius = 5
-        backgroundView.layer.borderColor  = Colors.AndroidGrayColor.cgColor
-        backgroundView.layer.borderWidth  = 2
+        backgroundView.layer.cornerRadius  = 15
+        backgroundView.layer.borderColor   = Colors.AndroidGrayColor.cgColor
+        backgroundView.layer.borderWidth   = 2
+        backgroundView.layer.masksToBounds = true
         
         hideKeyboardWhenTappedAround()
         
@@ -389,7 +381,7 @@ extension ButtonSettingsVC {
         moveTextfield(textfield: scaleYTF, keyboardFrame: keyboardFrame, backView: backgroundView)
         moveTextfield(textfield: topMarginTF, keyboardFrame: keyboardFrame, backView: backgroundView)
         
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
 }

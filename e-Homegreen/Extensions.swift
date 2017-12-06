@@ -145,6 +145,23 @@ extension UIViewController {
         view.frame.origin.y = 0
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
+    
+    
+}
+
+extension UIView {
+    
+    func setGradientBackground(colors: [CGColor]) {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame      = bounds
+        gradientLayer.colors     = colors
+        gradientLayer.locations  = [0.0, 1.0]
+        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
+        gradientLayer.endPoint   = .zero
+        
+        layer.insertSublayer(gradientLayer, at: 0)
+        
+    }
 }
 
 extension UIFont {
@@ -156,6 +173,7 @@ extension UIFont {
 }
 
 public class HelperFunctions {
+
     class func getGradientLayer(with colors: [CGColor], locations: [NSNumber], on view: UIView) -> CAGradientLayer {
         
         let gradientLayer = CAGradientLayer()
