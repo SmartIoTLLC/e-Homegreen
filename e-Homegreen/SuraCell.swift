@@ -27,17 +27,11 @@ class SuraCell: UITableViewCell {
     
     func updateCell() {
         let bg = UIView()
-        bg.backgroundColor = UIColor.white.withAlphaComponent(0.4)
+        bg.backgroundColor     = UIColor.white.withAlphaComponent(0.4)
         selectedBackgroundView = bg
-        backgroundColor = .clear
-        suraName.textColor = .white
-        suraName.font = .tahoma(size: 15)
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+        backgroundColor        = .clear
+        suraName.textColor     = .white
+        suraName.font          = .tahoma(size: 15)
     }
     
 }

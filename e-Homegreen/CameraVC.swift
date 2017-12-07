@@ -27,7 +27,7 @@ class CameraVC: UIViewController {
     
     var surv:Surveillance!
     var point:CGPoint?
-    var oldPoint:CGPoint?
+    var oldPoint:CGPoint? = .zero
     
     var moveCam:MoveCameraHandler = MoveCameraHandler()
     
@@ -131,43 +131,8 @@ extension CameraVC : UIViewControllerAnimatedTransitioning {
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        //Add presentation and dismiss animation transition here.
-        if isPresenting == true{
-            isPresenting = false
-            let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
-            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
-            let containerView = transitionContext.containerView
-            
-            presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
-            self.oldPoint = presentedControllerView.center
-            presentedControllerView.center = self.point!
-            presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
-            containerView.addSubview(presentedControllerView)
-            
-            UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
-                
-                presentedControllerView.center = self.oldPoint!
-                presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
-                
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }else{
-            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
-            
-            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
-                
-                presentedControllerView.center = self.point!
-                presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
-                
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }
-        
+        //Add presentation and dismiss animation transition here.        
+        animateTransitioning(isPresenting: &isPresenting, oldPoint: &oldPoint!, point: point!, using: transitionContext)
     }
 }
 

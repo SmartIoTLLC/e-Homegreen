@@ -15,8 +15,6 @@ class ImagePickerHandler: NSObject {
     private let isPhotoLibraryAvailable = UIImagePickerController.isSourceTypeAvailable(.photoLibrary)
     private let isSavedPhotoAlbumAvailable = UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum)
     private let isCameraAvailable = UIImagePickerController.isSourceTypeAvailable(.camera)
-    private let isRearCameraAvailable = UIImagePickerController.isCameraDeviceAvailable(.rear)
-    private let isFrontCameraAvailable = UIImagePickerController.isCameraDeviceAvailable(.front)
     
     var delegate: UINavigationControllerDelegate & UIImagePickerControllerDelegate
     

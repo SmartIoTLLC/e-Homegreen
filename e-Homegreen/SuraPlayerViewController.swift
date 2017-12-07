@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-class SuraPlayerViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class SuraPlayerViewController: UIViewController {
 
     let cellId = "suraCell"
     
@@ -44,33 +44,26 @@ class SuraPlayerViewController: UIViewController, UITableViewDataSource, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(UINib(nibName: String(describing: SuraCell.self), bundle: nil), forCellReuseIdentifier: cellId)
-        fetchSuraInfo()
         updateViews()
+        fetchSuraInfo()
         setupSuraPlayerView()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        suraIsPlaying = false
-        player?.pause()
+        stopSura()
     }
-    
-    func updateViews() {
-        navigationItem.title = "Suras"
-        tableView.backgroundColor = .clear
-        tableView.separatorInset = UIEdgeInsets.zero
-        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: .default)
-    }
-    
+
+}
+
+// MARK: - Table View Data Source & Delegate
+extension SuraPlayerViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
+        
         return availableSurasList.count
     }
     
@@ -92,34 +85,51 @@ class SuraPlayerViewController: UIViewController, UITableViewDataSource, UITable
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         suraIsPlaying = false
-        currentSura = availableSurasList[indexPath.row]
+        currentSura   = availableSurasList[indexPath.row]
         playSura()
     }
+}
+
+// MARK: - View setup
+extension SuraPlayerViewController {
+    fileprivate func updateViews() {
+        tableView.register(UINib(nibName: String(describing: SuraCell.self), bundle: nil), forCellReuseIdentifier: cellId)
+        tableView.delegate        = self
+        tableView.dataSource      = self
+        tableView.backgroundColor = .clear
+        tableView.separatorInset  = .zero
+        
+        navigationItem.title      = "Suras"
+        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: .default)
+    }
     
-    func setupSuraPlayerView() {
+    fileprivate func setupSuraPlayerView() {
         radioBar.backgroundColor = UIColor(cgColor: Colors.DarkGray)
-        suraTitle.textColor = UIColor.white
-        suraTitle.font = .tahoma(size: 15)
+        suraTitle.textColor      = UIColor.white
+        suraTitle.font           = .tahoma(size: 15)
         
         pauseButton.setImage(#imageLiteral(resourceName: "audio_pause"), for: UIControlState())
         pauseButton.imageView?.contentMode = .scaleAspectFit
-        pauseButton.backgroundColor = UIColor(cgColor: Colors.DarkGrayColor)
-        pauseButton.layer.cornerRadius = 3
+        pauseButton.backgroundColor        = UIColor(cgColor: Colors.DarkGrayColor)
+        pauseButton.layer.cornerRadius     = 3
         pauseButton.addTarget(self, action: #selector(pauseSura), for: .touchUpInside)
         
         stopButton.setImage(#imageLiteral(resourceName: "audio_stop"), for: UIControlState())
-        stopButton.backgroundColor = UIColor.darkGray
-        stopButton.layer.cornerRadius = 3
+        stopButton.backgroundColor        = UIColor.darkGray
+        stopButton.layer.cornerRadius     = 3
         stopButton.imageView?.contentMode = .scaleAspectFit
         stopButton.addTarget(self, action: #selector(stopSura), for: .touchUpInside)
         
         playButton.setImage(#imageLiteral(resourceName: "audio_play"), for: UIControlState())
-        playButton.backgroundColor = UIColor.darkGray
-        playButton.layer.cornerRadius = 3
+        playButton.backgroundColor        = UIColor.darkGray
+        playButton.layer.cornerRadius     = 3
         playButton.imageView?.contentMode = .scaleAspectFit
         playButton.addTarget(self, action: #selector(playSura), for: .touchUpInside)
     }
-    
+}
+
+// MARK: - Logic
+extension SuraPlayerViewController {
     func pauseSura() {
         player?.pause()
     }
@@ -141,7 +151,7 @@ class SuraPlayerViewController: UIViewController, UITableViewDataSource, UITable
                         player = AVPlayer(url: url)
                         player?.volume = 1.0
                         player?.play()
-                        suraIsPlaying = true
+                        suraIsPlaying  = true
                     }
                 }
             }
@@ -150,7 +160,7 @@ class SuraPlayerViewController: UIViewController, UITableViewDataSource, UITable
             player?.play()
         }
     }
-
+    
     func fetchSuraInfo() {
         do {
             if let file = Bundle.main.url(forResource: "sura_english", withExtension: "json") {
@@ -159,8 +169,14 @@ class SuraPlayerViewController: UIViewController, UITableViewDataSource, UITable
                 
                 if let suras = json as? [[String:Any]] {
                     for sura in suras {
-                        let object = Sura(context: managedContext!, id: sura["id"] as! Int16, name: sura["name"] as! String)
-                        surasList.append(object)
+                        if let moc = managedContext {
+                            let object = Sura(
+                                context : moc,
+                                id      : sura["id"] as! Int16,
+                                name    : sura["name"] as! String
+                            )
+                            surasList.append(object)
+                        }
                     }
                     getAvailableSuras()
                 }
@@ -190,6 +206,4 @@ class SuraPlayerViewController: UIViewController, UITableViewDataSource, UITable
         if String(describing: id).count == 2 { return "0" + String(describing: id) }
         return String(describing: id)
     }
-
-
 }

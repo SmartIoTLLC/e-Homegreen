@@ -239,38 +239,7 @@ extension PCControlNotificationsXIB : UIViewControllerAnimatedTransitioning {
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         //Add presentation and dismiss animation transition here.
-        if isPresenting == true{
-            isPresenting = false
-            let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
-            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
-            let containerView = transitionContext.containerView
-            
-            presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
-            //        presentedControllerView.center.y -= containerView.bounds.size.height
-            presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
-            containerView.addSubview(presentedControllerView)
-            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
-                //            presentedControllerView.center.y += containerView.bounds.size.height
-                presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }else{
-            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
-            //            let containerView = transitionContext.containerView()
-            
-            // Animate the presented view off the bottom of the view
-            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
-                //                presentedControllerView.center.y += containerView.bounds.size.height
-                presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }
-        
+        animateTransitioning(isPresenting: &isPresenting, scaleOneX: 1.5, scaleOneY: 1.5, scaleTwoX: 1.1, scaleTwoY: 1.1, using: transitionContext)        
     }
 }
 

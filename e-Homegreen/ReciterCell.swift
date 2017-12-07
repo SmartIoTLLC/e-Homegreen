@@ -24,10 +24,10 @@ class ReciterCell: UITableViewCell {
     
     func updateCell() {
         let bg = UIView()
-        bg.backgroundColor = UIColor.white.withAlphaComponent(0.4)
+        bg.backgroundColor     = UIColor.white.withAlphaComponent(0.4)
         selectedBackgroundView = bg
-        backgroundColor = .clear
-        reciterLabel.font = .tahoma(size: 15)
+        backgroundColor        = .clear
+        reciterLabel.font      = .tahoma(size: 15)
         reciterLabel.textColor = UIColor.white
     }
 

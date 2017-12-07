@@ -26,14 +26,82 @@ class EnergyViewController: PopoverVC  {
     var sumPow:Float = 0
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Energy)
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         appDel = UIApplication.shared.delegate as! AppDelegate
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEnergy), object: nil)
+        addObserversVDL()
     }
+    
+    override func viewWillLayoutSubviews() {
+        setContentOffset(for: scrollView)
+        setTitleView(view: headerTitleSubtitleView)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.revealViewController().delegate = self
+        setupSWRevealViewController(menuButton: menuButton)
+        
+        changeFullscreenImage(fullscreenButton: fullScreenButton)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        refreshLocalParametars()
+        addObserversVDA()
+        scrollView.setContentOffset(bottomOffset, animated: false)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        removeObservers()
+    }
+    
+    override func nameAndId(_ name : String, id:String){
+        scrollView.setButtonTitle(name, id: id)
+    }
+
+    @IBAction func fullScreen(_ sender: UIButton) {
+        sender.switchFullscreen(viewThatNeedsOffset: scrollView)        
+    }
+}
+
+// MARK: - Parametar from filter and relaod data
+extension EnergyViewController: FilterPullDownDelegate{
+    func filterParametars(_ filterItem: FilterItem){
+        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Energy)
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
+        
+        updateSubtitle(headerTitleSubtitleView, title: "Energy", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.energy)
+        refreshLocalParametars()
+        
+        TimerForFilter.shared.counterEnergy = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.energy)
+        TimerForFilter.shared.startTimer(type: Menu.energy)
+    }
+    
+    func saveDefaultFilter(){
+        self.view.makeToast(message: "Default filter parametar saved!")
+    }
+    
+    func setDefaultFilterFromTimer(){
+        scrollView.setDefaultFilterItem(Menu.energy)
+    }
+    
+    func refreshLocalParametars() {
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
+        updateDeviceList()
+    }
+    
+    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
+            scrollView.setDefaultFilterItem(Menu.energy)
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+        }
+    }
+}
+
+// MARK: - View setup
+extension EnergyViewController {
     
     func setupViews() {
         if #available(iOS 11, *) { headerTitleSubtitleView.layoutIfNeeded() }
@@ -59,53 +127,20 @@ class EnergyViewController: PopoverVC  {
         scrollView.setFilterItem(Menu.energy)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        self.revealViewController().delegate = self
-        setupSWRevealViewController(menuButton: menuButton)
-        
-        changeFullscreenImage(fullscreenButton: fullScreenButton)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
-        refreshLocalParametars()
-        addObservers()
-        scrollView.setContentOffset(bottomOffset, animated: false)
-    }
-    
-    override func viewWillLayoutSubviews() {
-        setContentOffset(for: scrollView)        
-        setTitleView(view: headerTitleSubtitleView)
-    }
-    
-    override func nameAndId(_ name : String, id:String){
-        scrollView.setButtonTitle(name, id: id)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        removeObservers()
-    }
-    
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){        
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
-            scrollView.setDefaultFilterItem(Menu.energy)
-            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-        }
-    }
-    
-    func refreshLocalParametars() {
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
-        updateDeviceList()
-    }
-
-    func addObservers() {
+    fileprivate func addObserversVDA() {
         NotificationCenter.default.addObserver(self, selector: #selector(refreshLocalParametars), name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
     }
-    
-    func removeObservers() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
+    fileprivate func addObserversVDL() {
+        NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEnergy), object: nil)
     }
     
+    fileprivate func removeObservers() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
+    }
+}
+
+// MARK: - Logic
+extension EnergyViewController {
     func updateDeviceList() {
         sumAmp = 0
         sumPow = 0
@@ -120,7 +155,7 @@ class EnergyViewController: PopoverVC  {
         let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool))
         let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool))
         var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo]
-
+        
         if filterParametar.location != "All" {
             let locationPredicate = NSPredicate(format: "gateway.name == %@", filterParametar.location)
             predicateArray.append(locationPredicate)
@@ -154,33 +189,6 @@ class EnergyViewController: PopoverVC  {
         }
         current.text = "\(sumAmp * 0.01) A"
         powerUsage.text = "\(sumPow) W"
-    }
-    
-    func setDefaultFilterFromTimer(){
-        scrollView.setDefaultFilterItem(Menu.energy)
-    }
-    
-    @IBAction func fullScreen(_ sender: UIButton) {
-        sender.switchFullscreen(viewThatNeedsOffset: scrollView)        
-    }
-}
-
-// Parametar from filter and relaod data
-extension EnergyViewController: FilterPullDownDelegate{
-    func filterParametars(_ filterItem: FilterItem){
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Energy)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
-        
-        updateSubtitle(headerTitleSubtitleView, title: "Energy", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.energy)
-        refreshLocalParametars()
-        
-        TimerForFilter.shared.counterEnergy = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.energy)
-        TimerForFilter.shared.startTimer(type: Menu.energy)
-    }
-    
-    func saveDefaultFilter(){
-        self.view.makeToast(message: "Default filter parametar saved!")
     }
 }
 

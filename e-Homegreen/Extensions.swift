@@ -146,6 +146,86 @@ extension UIViewController {
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
+    func animateTransitioning(isPresenting: inout Bool, oldPoint: inout CGPoint, point: CGPoint, using transitionContext: UIViewControllerContextTransitioning) {
+        if isPresenting {
+            isPresenting = false
+            
+            if let presentedController = transitionContext.viewController(forKey: .to) {
+                if let presentedControllerView = transitionContext.view(forKey: .to) {
+                    let containerView = transitionContext.containerView
+                    
+                    presentedControllerView.frame     = transitionContext.finalFrame(for: presentedController)
+                    oldPoint                          = presentedControllerView.center
+                    presentedControllerView.center    = point
+                    presentedControllerView.alpha     = 0
+                    presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
+                    containerView.addSubview(presentedControllerView)
+                    
+                    let oldPointValue = oldPoint
+                    
+                    UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
+                        presentedControllerView.center    = oldPointValue
+                        presentedControllerView.alpha     = 1
+                        presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
+                    }, completion: {
+                        (completed: Bool) -> Void in
+                        transitionContext.completeTransition(completed)
+                    })
+                }
+            }
+            
+        } else {
+            if let presentedControllerView = transitionContext.view(forKey: .from) {
+                UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
+                    presentedControllerView.center    = point
+                    presentedControllerView.alpha     = 0
+                    presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
+                }, completion: {
+                    (completed: Bool) -> Void in
+                    transitionContext.completeTransition(completed)
+                })
+            }
+        }
+        
+    }
+    
+    func animateTransitioning(isPresenting: inout Bool, scaleOneX: CGFloat, scaleOneY: CGFloat, scaleTwoX: CGFloat, scaleTwoY: CGFloat, using transitionContext: UIViewControllerContextTransitioning) {
+        if isPresenting {
+            isPresenting = false
+            
+            if let presentedController = transitionContext.viewController(forKey: .to) {
+                if let presentedControllerView = transitionContext.view(forKey: .to) {
+                    let containerView = transitionContext.containerView
+                    
+                    presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
+                    presentedControllerView.alpha = 0
+                    presentedControllerView.transform = CGAffineTransform(scaleX: scaleOneX, y: scaleOneY)
+                    
+                    containerView.addSubview(presentedControllerView)
+                    
+                    UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
+                        presentedControllerView.alpha = 1
+                        presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)                        
+                    }, completion: { (completed: Bool) -> Void in
+                        transitionContext.completeTransition(completed)
+                    })
+                }
+            }
+            
+            
+        } else {
+            if let presentedControllerView = transitionContext.view(forKey: .from) {
+                
+                UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
+                    presentedControllerView.alpha = 0
+                    presentedControllerView.transform = CGAffineTransform(scaleX: scaleTwoX, y: scaleTwoY)
+                }, completion: { (completed: Bool) -> Void in
+                    transitionContext.completeTransition(completed)
+                })
+            }
+        }
+    }
+    
     
 }
 

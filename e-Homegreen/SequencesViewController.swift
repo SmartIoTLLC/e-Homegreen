@@ -10,9 +10,6 @@ import UIKit
 import AudioToolbox
 
 class SequencesViewController: PopoverVC {
-    @IBOutlet weak var menuButton: UIBarButtonItem!
-    @IBOutlet weak var fullScreenButton: UIButton!
-    @IBOutlet weak var sequenceCollectionView: UICollectionView!
     
     var scrollView = FilterPullDown()
     var senderButton:UIButton?
@@ -23,34 +20,21 @@ class SequencesViewController: PopoverVC {
     fileprivate var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     fileprivate let reuseIdentifier = "SequenceCell"
     
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var fullScreenButton: UIButton!
+    @IBOutlet weak var sequenceCollectionView: UICollectionView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupViews()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSequences), object: nil)
+        addObservers()
     }
     
-    func setupViews() {
-        if #available(iOS 11, *) { headerTitleSubtitleView.layoutIfNeeded() }
-        
-        UIView.hr_setToastThemeColor(color: UIColor.red)
-        
-        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
-        
-        scrollView.filterDelegate = self
-        view.addSubview(scrollView)
-        updateConstraints(item: scrollView)
-        scrollView.setItem(self.view)
-        
-        navigationItem.titleView = headerTitleSubtitleView
-        headerTitleSubtitleView.setTitleAndSubtitle("Sequences", subtitle: "All All All")
-        
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(defaultFilter(_:)))
-        longPress.minimumPressDuration = 0.5
-        headerTitleSubtitleView.addGestureRecognizer(longPress)
-        
-        scrollView.setFilterItem(Menu.sequences)
+    override func viewWillLayoutSubviews() {
+        setContentOffset(for: scrollView)
+        setTitleView(view: headerTitleSubtitleView)
+        collectionViewCellSize = calculateCellSize(completion: { sequenceCollectionView.reloadData() })
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,14 +52,28 @@ class SequencesViewController: PopoverVC {
         scrollView.setContentOffset(bottomOffset, animated: false)
     }
     
-    override func viewWillLayoutSubviews() {
-        setContentOffset(for: scrollView)
-        setTitleView(view: headerTitleSubtitleView)
-        collectionViewCellSize = calculateCellSize(completion: { sequenceCollectionView.reloadData() })
-    }
-    
     override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
+    }
+
+    @IBAction func fullScreen(_ sender: UIButton) {
+        sender.switchFullscreen(viewThatNeedsOffset: scrollView)        
+    }
+}
+
+// Parametar from filter and relaod data
+extension SequencesViewController: FilterPullDownDelegate{
+    func filterParametars(_ filterItem: FilterItem){
+        filterParametar = filterItem
+        updateSubtitle(headerTitleSubtitleView, title: "Sequences", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.sequences)
+        updateSequencesList()
+        TimerForFilter.shared.counterSequences = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.sequences)
+        TimerForFilter.shared.startTimer(type: Menu.sequences)
+    }
+    
+    func saveDefaultFilter(){
+        view.makeToast(message: "Default filter parametar saved!")
     }
     
     func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
@@ -96,39 +94,10 @@ class SequencesViewController: PopoverVC {
     func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.sequences)
     }
-    
-    @IBAction func fullScreen(_ sender: UIButton) {
-        sender.switchFullscreen(viewThatNeedsOffset: scrollView)        
-    }
 }
 
-// Parametar from filter and relaod data
-extension SequencesViewController: FilterPullDownDelegate{
-    func filterParametars(_ filterItem: FilterItem){
-        filterParametar = filterItem
-        updateSubtitle(headerTitleSubtitleView, title: "Sequences", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.sequences)
-        updateSequencesList()
-        TimerForFilter.shared.counterSequences = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.sequences)
-        TimerForFilter.shared.startTimer(type: Menu.sequences)
-    }
-    
-    func saveDefaultFilter(){
-        view.makeToast(message: "Default filter parametar saved!")
-    }
-}
 
-extension SequencesViewController: SWRevealViewControllerDelegate{
-    func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
-        if position == FrontViewPosition.left { sequenceCollectionView.isUserInteractionEnabled = true } else { sequenceCollectionView.isUserInteractionEnabled = false }
-    }
-    
-    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
-        if position == FrontViewPosition.left { sequenceCollectionView.isUserInteractionEnabled = true } else { sequenceCollectionView.isUserInteractionEnabled = false }
-    }
-    
-}
-
+// MARK: - Collection View Delegate Flow Layout
 extension SequencesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -141,6 +110,7 @@ extension SequencesViewController: UICollectionViewDelegate, UICollectionViewDel
     }
 }
 
+// MARK: - Collection View Data Source
 extension SequencesViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -151,13 +121,15 @@ extension SequencesViewController: UICollectionViewDataSource {
         return sequences.count
     }
     
-    func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer){
-        let tag = gestureRecognizer.view!.tag
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
-            let location = gestureRecognizer.location(in: sequenceCollectionView)
-            if let index = sequenceCollectionView.indexPathForItem(at: location){
-                let cell = sequenceCollectionView.cellForItem(at: index)
-                showSequenceParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - sequenceCollectionView.contentOffset.y), sequence: sequences[tag])
+    func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer) {
+        if let tag = gestureRecognizer.view?.tag {
+            if gestureRecognizer.state == UIGestureRecognizerState.began {
+                let location = gestureRecognizer.location(in: sequenceCollectionView)
+                if let index = sequenceCollectionView.indexPathForItem(at: location) {
+                    if let cell = sequenceCollectionView.cellForItem(at: index) {
+                        showSequenceParametar(CGPoint(x: cell.center.x, y: cell.center.y - sequenceCollectionView.contentOffset.y), sequence: sequences[tag])
+                    }
+                }
             }
         }
     }
@@ -187,49 +159,110 @@ extension SequencesViewController: UICollectionViewDataSource {
     @objc(collectionView:layout:minimumInteritemSpacingForSectionAtIndex:) func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
-    
-    func setSequence (_ gesture:UIGestureRecognizer) {
-        if let tag = gesture.view?.tag {
-            var address:[UInt8] = []
-            if sequences[tag].isBroadcast.boolValue {
-                address = [0xFF, 0xFF, 0xFF]
-            } else if sequences[tag].isLocalcast.boolValue {
-                address = [getByte(sequences[tag].gateway.addressOne), getByte(sequences[tag].gateway.addressTwo), 0xFF]
-            } else {
-                address = [getByte(sequences[tag].gateway.addressOne), getByte(sequences[tag].gateway.addressTwo), getByte(sequences[tag].address)]
-            }
-            let cycles = Int(sequences[tag].sequenceCycles)
-            if cycles >= 0 && cycles <= 255 {
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.setSequence(address, id: Int(sequences[tag].sequenceId), cycle: UInt8(cycles)), gateway: sequences[tag].gateway)
-            }
-            let pointInTable = gesture.view?.convert(gesture.view!.bounds.origin, to: sequenceCollectionView)
-            let indexPath = sequenceCollectionView.indexPathForItem(at: pointInTable!)
-            if let cell = sequenceCollectionView.cellForItem(at: indexPath!) as? SequenceCollectionViewCell {
-                cell.commandSentChangeImage()
-            }
-        }
+
+}
+
+// MARK: - View setup
+extension SequencesViewController {
+    fileprivate func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSequences), object: nil)
     }
-    func tapStop (_ gesture:UITapGestureRecognizer) {
-        //   Take cell from touched point
-        let pointInTable = gesture.view?.convert(gesture.view!.bounds.origin, to: sequenceCollectionView)
-        let indexPath = sequenceCollectionView.indexPathForItem(at: pointInTable!)
-        if let cell = sequenceCollectionView.cellForItem(at: indexPath!) as? SequenceCollectionViewCell {
-            //   Take tag from touced views
-            let tag = gesture.view!.tag
-            let sequenceId = Int(sequences[tag].sequenceId)
-            var address:[UInt8] = []
-            if sequences[tag].isBroadcast.boolValue {
-                address = [0xFF, 0xFF, 0xFF]
-            } else if sequences[tag].isLocalcast.boolValue {
-                address = [getByte(sequences[tag].gateway.addressOne), getByte(sequences[tag].gateway.addressTwo), 0xFF]
-            } else {
-                address = [getByte(sequences[tag].gateway.addressOne), getByte(sequences[tag].gateway.addressTwo), getByte(sequences[tag].address)]
-            }
-            //  0xEF = 239, stops it?
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.setSequence(address, id: sequenceId, cycle: 0xEF), gateway: sequences[tag].gateway)
-            cell.commandSentChangeImage()
-        }
+    
+    func setupViews() {
+        if #available(iOS 11, *) { headerTitleSubtitleView.layoutIfNeeded() }
+        
+        UIView.hr_setToastThemeColor(color: UIColor.red)
+        
+        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
+        
+        scrollView.filterDelegate = self
+        view.addSubview(scrollView)
+        updateConstraints(item: scrollView)
+        scrollView.setItem(self.view)
+        
+        navigationItem.titleView = headerTitleSubtitleView
+        headerTitleSubtitleView.setTitleAndSubtitle("Sequences", subtitle: "All All All")
+        
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(defaultFilter(_:)))
+        longPress.minimumPressDuration = 0.5
+        headerTitleSubtitleView.addGestureRecognizer(longPress)
+        
+        scrollView.setFilterItem(Menu.sequences)
     }
 }
 
+// MARK: - Logic
+extension SequencesViewController {
+    
+    func setSequence (_ gesture:UIGestureRecognizer) {
+        if let originPoint = gesture.view?.bounds.origin {
+            if let pointInCollection = gesture.view?.convert(originPoint, to: sequenceCollectionView) {
+                if let indexPath = sequenceCollectionView.indexPathForItem(at: pointInCollection) {
+                    if let cell = sequenceCollectionView.cellForItem(at: indexPath) as? SequenceCollectionViewCell {
+                        if let tag = gesture.view?.tag {
+                            sendSequenceCommand(.set, onViewWithTag: tag)
+                            cell.commandSentChangeImage()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func tapStop (_ gesture:UITapGestureRecognizer) {
+        if let originPoint = gesture.view?.bounds.origin {
+            if let pointInCollection = gesture.view?.convert(originPoint, to: sequenceCollectionView) {
+                if let indexPath = sequenceCollectionView.indexPathForItem(at: pointInCollection) {
+                    if let cell = sequenceCollectionView.cellForItem(at: indexPath) as? SequenceCollectionViewCell {
+                        if let tag = gesture.view?.tag {
+                            
+                            sendSequenceCommand(.stop, onViewWithTag: tag)
+                            cell.commandSentChangeImage()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    fileprivate func sendSequenceCommand(_ seqCommand: SequenceCommand, onViewWithTag tag: Int) {
+        
+        let sequence   = sequences[tag]
+        let sequenceID = Int(sequence.sequenceId)
+        let gateway    = sequence.gateway
+        
+        var address:[UInt8] = []
+        if sequence.isBroadcast.boolValue {
+            address = [0xFF, 0xFF, 0xFF]
+        } else if sequence.isLocalcast.boolValue {
+            address = [getByte(sequence.gateway.addressOne), getByte(sequence.gateway.addressTwo), 0xFF]
+        } else {
+            address = [getByte(sequence.gateway.addressOne), getByte(sequence.gateway.addressTwo), getByte(sequence.address)]
+        }
+        var command: UInt8!
 
+        switch seqCommand {
+            case .set: command = UInt8(sequence.sequenceCycles)
+            if command >= 0 && command <= 255 { SendingHandler.sendCommand(byteArray: OutgoingHandler.setSequence(address, id: sequenceID, cycle: command), gateway: gateway) }
+        case .stop: command = 0xEF    //0xEF = 239, stops it?
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setSequence(address, id: sequenceID, cycle: command), gateway: gateway)
+        }
+    }
+    
+    enum SequenceCommand {
+        case set
+        case stop
+    }
+}
+
+// MARK: - SW Reveal View Controller Delegate
+extension SequencesViewController: SWRevealViewControllerDelegate{
+    func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
+        if position == FrontViewPosition.left { sequenceCollectionView.isUserInteractionEnabled = true } else { sequenceCollectionView.isUserInteractionEnabled = false }
+    }
+    
+    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
+        if position == FrontViewPosition.left { sequenceCollectionView.isUserInteractionEnabled = true } else { sequenceCollectionView.isUserInteractionEnabled = false }
+    }
+    
+}

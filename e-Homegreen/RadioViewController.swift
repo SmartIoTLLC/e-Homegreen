@@ -107,8 +107,19 @@ extension RadioViewController {
                 
                 if let objects = json as? [[String: Any]] {
                     for object in objects {
-                        let station = Radio(context: context!, stationName: object["stationName"] as! String, area: object["area"] as! String, city: object["city"] as! String, genre: object["genre"] as! String, url: object["url"] as! String, isWorking: object["isWorking"] as! Bool, radioDescription: object["description"] as! String)
-                        radioStations.append(station)
+                        if let moc = context {
+                            let station = Radio(
+                                context: moc,
+                                stationName: object["stationName"] as! String,
+                                area: object["area"] as! String,
+                                city: object["city"] as! String,
+                                genre: object["genre"] as! String,
+                                url: object["url"] as! String,
+                                isWorking: object["isWorking"] as! Bool,
+                                radioDescription: object["description"] as! String
+                            )
+                            radioStations.append(station)
+                        }
                     }
                     tableView.reloadData()
                 }

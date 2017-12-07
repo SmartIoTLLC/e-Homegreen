@@ -215,9 +215,11 @@ extension ButtonCell {
         
         realButton.setTitle(button.name, for: UIControlState())
         realButton.setTitleColor(.white, for: UIControlState())
-        realButton.titleLabel?.textAlignment             = .center
-        realButton.titleLabel?.font                      = .tahoma(size: 15)
-        realButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        if let rbLabel = realButton.titleLabel {        
+            rbLabel.textAlignment             = .center
+            rbLabel.font                      = .tahoma(size: 15)
+            rbLabel.adjustsFontSizeToFitWidth = true
+        }
         
         let tap  = UITapGestureRecognizer(target: self, action: #selector(sendCommand)); tap.numberOfTapsRequired = 1
         let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(openButtonSettings)); lpgr.minimumPressDuration = 1.0
@@ -227,7 +229,7 @@ extension ButtonCell {
         switch button.buttonType! {
             case ButtonType.sceneButton : loadScene()
             case ButtonType.irButton    : loadIRDevice()
-            case ButtonType.hexButton   : hex = formatHexStringToByteArray(hex: button.hexString)
+            case ButtonType.hexButton   : loadHexByteArray()
             default: break
         }
         
@@ -238,7 +240,7 @@ extension ButtonCell {
             default: break
         }
         
-    }
+    }        
 
 }
 

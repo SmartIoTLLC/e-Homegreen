@@ -22,6 +22,9 @@ class FlagParametarVC: CommonXIBTransitionVC {
     
     @IBOutlet weak var isBroadcast: UISwitch!
     @IBOutlet weak var isLocalcast: UISwitch!
+    @IBAction func btnSave(_ sender: AnyObject) {
+        save()
+    }
     
     init(){
         super.init(nibName: "FlagParametarVC", bundle: nil)
@@ -30,40 +33,18 @@ class FlagParametarVC: CommonXIBTransitionVC {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         appDel = UIApplication.shared.delegate as! AppDelegate
-
         setupViews()
     }
-    
-    func setupViews() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissViewController))
-        tapGesture.delegate = self
-        view.addGestureRecognizer(tapGesture)
-        isBroadcast.tag = 100
-        isBroadcast.isOn = flag!.isBroadcast.boolValue
-        isBroadcast.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
-        isLocalcast.tag = 200
-        isLocalcast.isOn = flag!.isLocalcast.boolValue
-        isLocalcast.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
-    }
-    
-    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: backView) { return false }
-        return true
-    }
-    
-    @IBAction func btnSave(_ sender: AnyObject) {
-        if isBroadcast.isOn { flag?.isBroadcast = true } else { flag?.isBroadcast = false }
-        if isLocalcast.isOn { flag?.isLocalcast = true } else { flag?.isLocalcast = false }
-        
-        CoreDataController.sharedInstance.saveChanges()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshTimer), object: self, userInfo: nil)
-        self.dismiss(animated: true, completion: nil)
-    }
-    
+
+}
+
+// MARK: - Logic
+extension FlagParametarVC {
     func changeValue (_ sender:UISwitch) {
         if sender.tag == 100 {
             if sender.isOn == true { isLocalcast.isOn = false } else { isLocalcast.isOn = false }
@@ -72,11 +53,41 @@ class FlagParametarVC: CommonXIBTransitionVC {
         }
     }
     
+    fileprivate func save() {
+        if isBroadcast.isOn { flag?.isBroadcast = true } else { flag?.isBroadcast = false }
+        if isLocalcast.isOn { flag?.isLocalcast = true } else { flag?.isLocalcast = false }
+        
+        CoreDataController.sharedInstance.saveChanges()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshTimer), object: self, userInfo: nil)
+        self.dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - View setup
+extension FlagParametarVC {
+    func setupViews() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissViewController))
+        tapGesture.delegate = self
+        view.addGestureRecognizer(tapGesture)
+        
+        isBroadcast.tag  = 100
+        isBroadcast.isOn = flag!.isBroadcast.boolValue
+        
+        isLocalcast.tag  = 200
+        isLocalcast.isOn = flag!.isLocalcast.boolValue
+        
+        isLocalcast.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
+        isBroadcast.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
+    }
+    
     func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
     
-    
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: backView) { return false }
+        return true
+    }
 }
 
 extension UIViewController {

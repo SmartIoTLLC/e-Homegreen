@@ -8,15 +8,17 @@
 
 import UIKit
 
-class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
+class SequenceParametarVC: UIViewController {
     
     var point:CGPoint?
-    var oldPoint:CGPoint?
+    var oldPoint:CGPoint? = .zero
     var indexPathRow: Int = -1
     var sequence:Sequence?
     
     var appDel:AppDelegate!
     var error:NSError? = nil
+    
+    var isPresenting: Bool = true
     
     @IBOutlet weak var backView: UIView!
     
@@ -24,9 +26,11 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
     @IBOutlet weak var isBroadcast: UISwitch!
     @IBOutlet weak var isLocalcast: UISwitch!
     
-    var isPresenting: Bool = true
-    
-    init(point:CGPoint){
+    @IBAction func btnSave(_ sender: AnyObject) {
+        save()
+    }
+
+    init(point:CGPoint) {
         super.init(nibName: "SequenceParametarVC", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.custom
@@ -40,9 +44,13 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
         super.viewDidLoad()
         
         appDel = UIApplication.shared.delegate as! AppDelegate
-        
         setupViews()
     }
+
+}
+
+// MARK: - View setup
+extension SequenceParametarVC: UITextFieldDelegate, UIGestureRecognizerDelegate {
     
     func setupViews() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissViewController))
@@ -59,25 +67,24 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
         cyclesTextField.delegate = self
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: backView) { return false }
         return true
-    }
-    
-    func changeValue (_ sender:UISwitch) {
-        if sender.tag == 100 {
-            if sender.isOn == true { isLocalcast.isOn = false } else { isLocalcast.isOn = false }
-        } else if sender.tag == 200 {
-            if sender.isOn == true { isBroadcast.isOn = false } else { isBroadcast.isOn = false }
-        }
     }
     
     func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func btnSave(_ sender: AnyObject) {
-        
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+// MARK: - Logic
+extension SequenceParametarVC {
+    fileprivate func save() {
         if isBroadcast.isOn { sequence?.isBroadcast = true } else { sequence?.isBroadcast = false }
         if isLocalcast.isOn { sequence?.isLocalcast = true } else { sequence?.isLocalcast = false }
         
@@ -89,13 +96,16 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
         self.dismiss(animated: true, completion: nil)
     }
     
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: backView) { return false }
-        return true
+    func changeValue (_ sender:UISwitch) {
+        if sender.tag == 100 {
+            if sender.isOn == true { isLocalcast.isOn = false } else { isLocalcast.isOn = false }
+        } else if sender.tag == 200 {
+            if sender.isOn == true { isBroadcast.isOn = false } else { isBroadcast.isOn = false }
+        }
     }
-
 }
 
+// MARK: - Animated Transition
 extension SequenceParametarVC : UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
@@ -104,44 +114,7 @@ extension SequenceParametarVC : UIViewControllerAnimatedTransitioning {
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         //Add presentation and dismiss animation transition here.
-        if isPresenting == true{
-            isPresenting = false
-            let presentedController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
-            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
-            let containerView = transitionContext.containerView
-            
-            presentedControllerView.frame = transitionContext.finalFrame(for: presentedController)
-            self.oldPoint = presentedControllerView.center
-            presentedControllerView.center = self.point!
-            presentedControllerView.alpha = 0
-            presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
-            containerView.addSubview(presentedControllerView)
-            
-            UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
-                
-                presentedControllerView.center = self.oldPoint!
-                presentedControllerView.alpha = 1
-                presentedControllerView.transform = CGAffineTransform(scaleX: 1, y: 1)
-                
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }else{
-            let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
-//            let containerView = transitionContext.containerView()
-            
-            // Animate the presented view off the bottom of the view
-            UIView.animate(withDuration: 0.4, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .allowUserInteraction, animations: {
-                
-                presentedControllerView.center = self.point!
-                presentedControllerView.alpha = 0
-                presentedControllerView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
-                
-                }, completion: {(completed: Bool) -> Void in
-                    transitionContext.completeTransition(completed)
-            })
-        }
-        
+        animateTransitioning(isPresenting: &isPresenting, oldPoint: &oldPoint!, point: point!, using: transitionContext)
     }
 }
 

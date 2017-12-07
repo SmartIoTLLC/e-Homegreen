@@ -58,6 +58,9 @@ extension ButtonCell {
         
         return byteArray
     }
+    func loadHexByteArray() {
+        hex = formatHexStringToByteArray(hex: button.hexString)
+    }
     
     func sendHexCommand() {
         if let locationName = button.remote?.location?.name {

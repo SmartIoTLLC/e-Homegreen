@@ -15,13 +15,13 @@ public class Reciter: NSManagedObject {
     convenience init(context: NSManagedObjectContext, id: String, name: String, server: String, rewaya: String, count: String, letter: String, suras: String) {
         self.init(context: context)
         
-        self.id = id
-        self.name = name
+        self.id     = id
+        self.name   = name
         self.server = server
         self.rewaya = rewaya
-        self.count = count
+        self.count  = count
         self.letter = letter
-        self.suras = suras
+        self.suras  = suras
     }
     
     func getRecitersSurasAsInt() -> [Int16]? {

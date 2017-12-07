@@ -63,7 +63,13 @@ class PhoneViewController: UIViewController {
         requestSpeechAuthorization()
         updateViews()
     }
+
+}
+
+// MARK: - Logic
+extension PhoneViewController {
     
+    // AUDIO
     func toggleMic(off: Bool) {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.3, animations: {
@@ -104,7 +110,7 @@ class PhoneViewController: UIViewController {
         speechRecognitionTimeout?.invalidate()
         speechRecognitionTimeout = nil
     }
-
+    
     func recordAndRecognizeSpeech() {
         
         guard let node = audioEngine.inputNode else {
@@ -174,10 +180,10 @@ class PhoneViewController: UIViewController {
     func requestSpeechAuthorization() {
         SFSpeechRecognizer.requestAuthorization { (authStatus) in
             switch authStatus {
-            case .authorized: self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: true); self.requestContactsAuthorization()
-            case .denied: self.makeToastOnMainThread(message: "Please go to your Privacy Settings and provide us access to Speech Recognition."); self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
-            case .notDetermined: self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
-            case .restricted: self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
+            case .authorized    : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: true); self.requestContactsAuthorization()
+            case .denied        : self.makeToastOnMainThread(message: "Please go to your Privacy Settings and provide us access to Speech Recognition."); self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
+            case .notDetermined : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
+            case .restricted    : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
             }
         }
     }
@@ -194,6 +200,8 @@ class PhoneViewController: UIViewController {
         DispatchQueue.main.async { self.view.hideToastActivity() }
     }
     
+    
+    // CONTACTS
     func requestContactsAuthorization() {
         
         let authStatus = CNContactStore.authorizationStatus(for: .contacts)
@@ -241,10 +249,6 @@ class PhoneViewController: UIViewController {
             }
         } catch { self.makeToastOnMainThread(message: "Failed fetching contacts.") }
     }
-
-    
-
-
 }
 
 // MARK : - Utility
@@ -259,7 +263,6 @@ extension String {
     }
     
 }
-
 extension PhoneViewController {
     
     func callContact(number: String) {

@@ -104,36 +104,20 @@ class SecurityCollectionCell: UICollectionViewCell {
     func toggleBtnImage(_ timer: Foundation.Timer) {
         if let info = timer.userInfo as? [String:AnyObject] {
             if let i = info["controlMode"] as? String {
+                let image = securityImageView.image
+                var changedImage: UIImage!
                 
                 switch i {
-                    
-                case SecurityControlMode.Away:
-                    if securityImageView.image == inactiveAway { securityImageView.image = activeAway }
-                    else { securityImageView.image = inactiveAway }
-                    
-                case SecurityControlMode.Day:
-                    if securityImageView.image == inactiveDay { securityImageView.image = activeDay }
-                    else { securityImageView.image = inactiveDay }
-                    
-                case SecurityControlMode.Disarm:
-                    if securityImageView.image == inactiveDisarm { securityImageView.image = activeDisarm }
-                    else { securityImageView.image = inactiveDisarm }
-                    
-                case SecurityControlMode.Night:
-                    if securityImageView.image == inactiveNight { securityImageView.image = activeNight }
-                    else { securityImageView.image = inactiveNight }
-                    
-                case SecurityControlMode.Vacation:
-                    if securityImageView.image == inactiveVacation { securityImageView.image = activeVacation }
-                    else { securityImageView.image = inactiveVacation }
-                    
-                case SecurityControlMode.Panic:
-                    if securityImageView.image == inactivePanic { securityImageView.image = activePanic }
-                    else { securityImageView.image = inactivePanic }
-                    
-                default:
-                    break
+                    case SecurityControlMode.Away     : if image == inactiveAway { changedImage = activeAway } else { changedImage = inactiveAway }
+                    case SecurityControlMode.Day      : if image == inactiveDay { changedImage = activeDay } else { changedImage = inactiveDay }
+                    case SecurityControlMode.Disarm   : if image == inactiveDisarm { changedImage = activeDisarm } else { changedImage = inactiveDisarm }
+                    case SecurityControlMode.Night    : if image == inactiveNight { changedImage = activeNight } else { changedImage = inactiveNight }
+                    case SecurityControlMode.Vacation : if image == inactiveVacation { changedImage = activeVacation } else { changedImage = inactiveVacation }
+                    case SecurityControlMode.Panic    : if image == inactivePanic { changedImage = activePanic } else { changedImage = inactivePanic }
+                    default: break
                 }
+                
+                securityImageView.image = changedImage
             }
         }
         

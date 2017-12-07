@@ -53,7 +53,7 @@ class SecurityViewController: PopoverVC {
         updateViews()
         refreshSecurityAlarmStateAndSecurityMode()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSecurity), object: nil)
+        addObserversVDL()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,10 +71,7 @@ class SecurityViewController: PopoverVC {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshSecurity), name: NSNotification.Name(rawValue: NotificationKey.RefreshSecurity), object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(startBlinking(_:)), name: NSNotification.Name(rawValue: NotificationKey.Security.ControlModeStartBlinking), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(stopBlinking(_:)), name: NSNotification.Name(rawValue: NotificationKey.Security.ControlModeStopBlinking), object: nil)
+        addObserversVDA()
     }
     
     override func viewWillLayoutSubviews() {
@@ -86,9 +83,9 @@ class SecurityViewController: PopoverVC {
     override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshSecurity), object: nil)
+        removeObservers()
     }
     
     func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
@@ -98,6 +95,10 @@ class SecurityViewController: PopoverVC {
         }
     }
     
+}
+
+// MARK: - View Setup
+extension SecurityViewController {
     func setupScrollView() {
         scrollView.filterDelegate = self
         view.addSubview(scrollView)
@@ -108,7 +109,7 @@ class SecurityViewController: PopoverVC {
     
     func updateViews() {
         if #available(iOS 11, *) { headerTitleSubtitleView.layoutIfNeeded() }
-
+        
         UIView.hr_setToastThemeColor(color: UIColor.red)
         
         navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
@@ -120,6 +121,21 @@ class SecurityViewController: PopoverVC {
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(defaultFilter(_:)))
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
+    }
+    
+    fileprivate func addObserversVDL() {
+        NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSecurity), object: nil)
+    }
+    
+    fileprivate func addObserversVDA() {
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshSecurity), name: NSNotification.Name(rawValue: NotificationKey.RefreshSecurity), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(startBlinking(_:)), name: NSNotification.Name(rawValue: NotificationKey.Security.ControlModeStartBlinking), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(stopBlinking(_:)), name: NSNotification.Name(rawValue: NotificationKey.Security.ControlModeStopBlinking), object: nil)
+    }
+    
+    fileprivate func removeObservers() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshSecurity), object: nil)
     }
     
     func reorganizeSecurityArray () {
@@ -134,6 +150,10 @@ class SecurityViewController: PopoverVC {
         }
         securities = tempSecurities
     }
+}
+
+// MARK: - Logic
+extension SecurityViewController {
     
     func refreshSecurity() {
         updateSecurityList()
@@ -141,7 +161,17 @@ class SecurityViewController: PopoverVC {
         securityCollectionView.reloadData()
     }
     
-    func refreshSecurityAlarmStateAndSecurityMode () {
+    func updateSecurityList () {
+        if filterParametar.location == "All" {
+            securityItem = SecurityItem.location
+            location     = FilterController.shared.getLocationForFilterByUser()
+        } else {
+            securityItem = SecurityItem.security
+            securities   = DatabaseSecurityController.shared.getSecurity(filterParametar)
+        }
+    }
+    
+    func refreshSecurityAlarmStateAndSecurityMode() {
         if securities.count > 0 {
             let address:[UInt8] = [getByte(securities[0].addressOne), getByte(securities[0].addressTwo), getByte(securities[0].addressThree)]
             if let id = securities[0].gatewayId {
@@ -150,16 +180,6 @@ class SecurityViewController: PopoverVC {
                     SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurrentSecurityMode(address), gateway: gateway)
                 }
             }
-        }
-    }
-    
-    func updateSecurityList () {
-        if filterParametar.location == "All" {
-            securityItem = SecurityItem.location
-            location = FilterController.shared.getLocationForFilterByUser()
-        } else {
-            securityItem = SecurityItem.security
-            securities = DatabaseSecurityController.shared.getSecurity(filterParametar)
         }
     }
     
@@ -225,7 +245,7 @@ class SecurityViewController: PopoverVC {
                 userDefaults.synchronize()
                 NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: notificationName), object: self, userInfo: ["controlMode": SecurityControlMode.Panic]))
             }
-
+            
         default: break
         }
     }
@@ -236,7 +256,7 @@ class SecurityViewController: PopoverVC {
     func stopBlinking(_ notification: Notification){
         securityCollectionView.isScrollEnabled = true
     }
-
+    
     func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.security)
     }

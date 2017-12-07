@@ -8,7 +8,13 @@
 
 import UIKit
 
-class QuranViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class QuranViewController: UIViewController {
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
+    
+    let cellId   = "reciterCell"
+    var reciters = [Reciter]()
+    var selectedReciter: Reciter?
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -18,19 +24,11 @@ class QuranViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBAction func fullscreenButton(_ sender: UIButton) {
         sender.switchFullscreen()
     }
-    let context = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
-    
-    let cellId = "reciterCell"
-    var reciters = [Reciter]()
-    var selectedReciter: Reciter?
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(UINib(nibName: String(describing: ReciterCell.self), bundle: nil), forCellReuseIdentifier: cellId)
-        
         updateViews()
         fetchReciters()
     }
@@ -43,15 +41,19 @@ class QuranViewController: UIViewController, UITableViewDataSource, UITableViewD
         changeFullscreenImage(fullscreenButton: fullscreenButton)
     }
     
-    func updateViews() {
-        tableView.backgroundColor = .clear
-        tableView.separatorInset = UIEdgeInsets.zero
-        navigationItem.title = "Reciters"
-        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toSuraPlayer" {
+            if let destVC: SuraPlayerViewController = segue.destination as? SuraPlayerViewController {
+                destVC.reciter = selectedReciter
+            }
+        }
     }
 
-    // MARK: - Table view data source
-    
+}
+
+// MARK: - Table View Data Source & Delegate
+extension QuranViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? ReciterCell {
             
@@ -66,7 +68,7 @@ class QuranViewController: UIViewController, UITableViewDataSource, UITableViewD
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return reciters.count
     }
@@ -74,23 +76,30 @@ class QuranViewController: UIViewController, UITableViewDataSource, UITableViewD
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedReciter = reciters[indexPath.row]
         self.performSegue(withIdentifier: "toSuraPlayer", sender: self)
     }
-    
-    // MARK: - Navigation
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toSuraPlayer" {
-            if let destVC: SuraPlayerViewController = segue.destination as? SuraPlayerViewController {
-                destVC.reciter = selectedReciter
-            }
-        }
+}
+
+// MARK: - View setup
+extension QuranViewController {
+    fileprivate func updateViews() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UINib(nibName: String(describing: ReciterCell.self), bundle: nil), forCellReuseIdentifier: cellId)
+        
+        tableView.backgroundColor = .clear
+        tableView.separatorInset  = .zero
+        navigationItem.title      = "Reciters"
+        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
     }
-    
-    func fetchReciters() {
+}
+
+// MARK: - Logic
+extension QuranViewController {
+    fileprivate func fetchReciters() {
         do {
             if let file = Bundle.main.url(forResource: "reciters", withExtension: "json") {
                 let data = try Data(contentsOf: file)
@@ -99,9 +108,21 @@ class QuranViewController: UIViewController, UITableViewDataSource, UITableViewD
                 if let reciters = json as? [String:[[String:Any]]] {
                     if let objects = reciters["reciters"] {
                         for object in objects {
-                            print(object)
-                            let reciter = Reciter(context: context!, id: object["id"] as! String, name: object["name"] as! String, server: object["Server"] as! String, rewaya: object["rewaya"] as! String, count: object["count"] as! String, letter: object["letter"] as! String, suras: object["suras"] as! String)
-                            self.reciters.append(reciter)
+                            
+                            if let moc = context {
+                                let reciter = Reciter(
+                                    context : moc,
+                                    id      : object["id"] as! String,
+                                    name    : object["name"] as! String,
+                                    server  : object["Server"] as! String,
+                                    rewaya  : object["rewaya"] as! String,
+                                    count   : object["count"] as! String,
+                                    letter  : object["letter"] as! String,
+                                    suras   : object["suras"] as! String
+                                )
+                                self.reciters.append(reciter)
+                            }
+                            
                         }
                         tableView.reloadData()
                     }
@@ -112,7 +133,6 @@ class QuranViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
         
     }
-
 }
 
 extension QuranViewController: SWRevealViewControllerDelegate {

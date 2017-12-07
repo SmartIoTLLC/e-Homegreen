@@ -188,17 +188,18 @@ extension EventsViewController: UICollectionViewDataSource {
     }
     func setEvent (_ gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
+            let event = events[tag]
             var address:[UInt8] = []
-            if events[tag].isBroadcast.boolValue {
+            if event.isBroadcast.boolValue {
                 address = [0xFF, 0xFF, 0xFF]
-            } else if events[tag].isLocalcast.boolValue {
-                address = [getByte(events[tag].gateway.addressOne), getByte(events[tag].gateway.addressTwo), 0xFF]
+            } else if event.isLocalcast.boolValue {
+                address = [getByte(event.gateway.addressOne), getByte(event.gateway.addressTwo), 0xFF]
             } else {
-                address = [getByte(events[tag].gateway.addressOne), getByte(events[tag].gateway.addressTwo), getByte(events[tag].address)]
+                address = [getByte(event.gateway.addressOne), getByte(event.gateway.addressTwo), getByte(event.address)]
             }
             
-            let eventId = Int(events[tag].eventId)
-            if eventId >= 0 && eventId <= 255 { SendingHandler.sendCommand(byteArray: OutgoingHandler.runEvent(address, id: UInt8(eventId)), gateway: events[tag].gateway) }
+            let eventId = Int(event.eventId)
+            if eventId >= 0 && eventId <= 255 { SendingHandler.sendCommand(byteArray: OutgoingHandler.runEvent(address, id: UInt8(eventId)), gateway: event.gateway) }
             
             let pointInTable = gesture.view?.convert(gesture.view!.bounds.origin, to: eventCollectionView)
             let indexPath = eventCollectionView.indexPathForItem(at: pointInTable!)
@@ -212,19 +213,21 @@ extension EventsViewController: UICollectionViewDataSource {
         let pointInTable = gesture.view?.convert(gesture.view!.bounds.origin, to: eventCollectionView)
         let indexPath = eventCollectionView.indexPathForItem(at: pointInTable!)
         if let cell = eventCollectionView.cellForItem(at: indexPath!) as? EventsCollectionViewCell {
-            //   Take tag from touced vies
-            let tag = gesture.view!.tag
-            let eventId = Int(events[tag].eventId)
-            var address:[UInt8] = []
-            if events[tag].isBroadcast.boolValue {
-                address = [0xFF, 0xFF, 0xFF]
-            } else if events[tag].isLocalcast.boolValue {
-                address = [getByte(events[tag].gateway.addressOne), getByte(events[tag].gateway.addressTwo), 0xFF]
-            } else {
-                address = [getByte(events[tag].gateway.addressOne), getByte(events[tag].gateway.addressTwo), getByte(events[tag].address)]
+            if let tag = gesture.view?.tag {
+
+                let event   = events[tag]
+                let eventId = Int(event.eventId)
+                var address:[UInt8] = []
+                if event.isBroadcast.boolValue {
+                    address = [0xFF, 0xFF, 0xFF]
+                } else if event.isLocalcast.boolValue {
+                    address = [getByte(event.gateway.addressOne), getByte(event.gateway.addressTwo), 0xFF]
+                } else {
+                    address = [getByte(event.gateway.addressOne), getByte(event.gateway.addressTwo), getByte(event.address)]
+                }
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.cancelEvent(address, id: UInt8(eventId)), gateway: event.gateway)
+                cell.commandSentChangeImage()
             }
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.cancelEvent(address, id: UInt8(eventId)), gateway: events[tag].gateway)
-            cell.commandSentChangeImage()
         }
     }
     

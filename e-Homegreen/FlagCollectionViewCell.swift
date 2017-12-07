@@ -31,11 +31,11 @@ class FlagCollectionViewCell: UICollectionViewCell {
         } else { flagButton.setTitle("Set True", for: UIControlState()) }
         
         flagImageView.layer.cornerRadius = 5
-        flagImageView.clipsToBounds = true
+        flagImageView.clipsToBounds      = true
         
         layer.cornerRadius = 5
-        layer.borderColor = UIColor.gray.cgColor
-        layer.borderWidth = 0.5
+        layer.borderColor  = UIColor.gray.cgColor
+        layer.borderWidth  = 0.5
         
         getImagesFrom(flag)
     }        

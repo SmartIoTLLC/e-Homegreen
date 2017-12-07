@@ -69,19 +69,6 @@ class DevicesViewController: PopoverVC{
         changeFullscreenImage(fullscreenButton: fullScreenButton)
     }
     
-    fileprivate func getUserAndUpdateDeviceList() {
-        if AdminController.shared.isAdminLogged() {
-            if let user = DatabaseUserController.shared.getOtherUser() { userLogged = user; updateDeviceList(user)
-            } else { devices = [] }
-            
-        } else {
-            if let user = DatabaseUserController.shared.getLoggedUser() { userLogged = user; updateDeviceList(user)
-            } else { devices = [] }
-            
-        }
-        deviceCollectionView.reloadData()
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
@@ -104,22 +91,6 @@ class DevicesViewController: PopoverVC{
     
     override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
-    }
-    
-    func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshDeviceList), name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshVisibleDevicesInScrollView), name: NSNotification.Name(rawValue: NotificationKey.DidRefreshDeviceInfo), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshLocalParametars), name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshCollectionView), name: NSNotification.Name(rawValue: NotificationKey.RefreshClimate), object: nil)
-    }
-    
-    func removeObservers() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidRefreshDeviceInfo), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
-        
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshClimate), object: nil)
     }
 
     func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
@@ -165,31 +136,32 @@ class DevicesViewController: PopoverVC{
         let location = gesture.location(in: deviceCollectionView)
         if let index = deviceCollectionView.indexPathForItem(at: location) {
             
+            let cell        = deviceCollectionView.cellForItem(at: index)
             let controlType = devices[index.row].controlType
             let options: UIViewAnimationOptions = [.transitionFlipFromBottom, .showHideTransitionViews]
             
             if controlType == ControlType.Dimmer {
-                if let cell = deviceCollectionView.cellForItem(at: index) as? DeviceCollectionCell {
+                if let cell = cell as? DeviceCollectionCell {
                     UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil)
                 }
                 
             } else if controlType == ControlType.Relay {
-                if let cell = deviceCollectionView.cellForItem(at: index) as? ApplianceCollectionCell {
+                if let cell = cell as? ApplianceCollectionCell {
                     UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil)
                 }
                 
             } else if controlType == ControlType.Sensor || controlType == ControlType.IntelligentSwitch || controlType == ControlType.Gateway {
-                if let cell = deviceCollectionView.cellForItem(at: index) as? MultiSensorCell {
+                if let cell = cell as? MultiSensorCell {
                     UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil)
                 }
                 
             } else if controlType == ControlType.Climate {
-                if let cell = deviceCollectionView.cellForItem(at: index) as? ClimateCell {
+                if let cell = cell as? ClimateCell {
                     UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil)
                 }
                 
             } else if controlType == ControlType.Curtain { // TODO: MAKE (REVISE) FUNCTIONALITY
-                if let cell = deviceCollectionView.cellForItem(at: index) as? CurtainCollectionCell {
+                if let cell = cell as? CurtainCollectionCell {
                     UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil)
                 }
             }
@@ -202,31 +174,32 @@ class DevicesViewController: PopoverVC{
         let location = gesture.location(in: deviceCollectionView)
         if let index = deviceCollectionView.indexPathForItem(at: location) {
             
+            let cell                            = deviceCollectionView.cellForItem(at: index)
             let controlType                     = devices[index.row].controlType
             let options: UIViewAnimationOptions = [.transitionFlipFromBottom, .showHideTransitionViews]
             
             if controlType == ControlType.Dimmer {
-                if let cell = deviceCollectionView.cellForItem(at: index) as? DeviceCollectionCell {
+                if let cell = cell as? DeviceCollectionCell {
                     UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil)
                 }
                 
             } else if controlType == ControlType.Relay {
-                if let cell = deviceCollectionView.cellForItem(at: index) as? ApplianceCollectionCell {
+                if let cell = cell as? ApplianceCollectionCell {
                     UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil)
                 }
                 
             } else if controlType == ControlType.Sensor || controlType == ControlType.IntelligentSwitch || controlType == ControlType.Gateway {
-                if let cell = deviceCollectionView.cellForItem(at: index) as? MultiSensorCell {
+                if let cell = cell as? MultiSensorCell {
                     UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil)
                 }
                 
             } else if controlType == ControlType.Climate {
-                if let cell = deviceCollectionView.cellForItem(at: index) as? ClimateCell {
+                if let cell = cell as? ClimateCell {
                     UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil)
                 }
                 
             } else if controlType == ControlType.Curtain { // TODO: MAKE (REVISE) FUNCTIONALITY
-                if let cell = deviceCollectionView.cellForItem(at: index) as? CurtainCollectionCell {
+                if let cell = cell as? CurtainCollectionCell {
                     UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil)
                 }
             }
@@ -239,6 +212,10 @@ class DevicesViewController: PopoverVC{
             deviceInControlMode = false
             if slider.isHighlighted { changeSliderValueEnded(slider); return }
             
+            let tag       = slider.tag
+            let device    = devices[tag]
+            let indexPath = IndexPath(item: tag, section: 0)
+            
             let sliderOldValue = slider.value*100
             let pt             = gesture.location(in: slider)
             let percentage     = pt.x/slider.bounds.size.width
@@ -248,41 +225,41 @@ class DevicesViewController: PopoverVC{
             if !((value/255) >= 0 && (value/255) <= 255) { return }
             
             slider.setValue(value/255, animated: true)
-            let tag = slider.tag
-            let indexPath = IndexPath(item: tag, section: 0)
             
-            devices[tag].oldValue     = devices[tag].currentValue
-            devices[tag].currentValue = NSNumber(value: Int(value))
+            device.oldValue     = device.currentValue
+            device.currentValue = NSNumber(value: Int(value))
             
-            if let cell = self.deviceCollectionView.cellForItem(at: indexPath) as? DeviceCollectionCell {
-                cell.picture.image     = devices[tag].returnImage(Double(value))
+            if let cell = deviceCollectionView.cellForItem(at: indexPath) as? DeviceCollectionCell {
+                cell.picture.image     = device.returnImage(Double(value))
                 cell.lightSlider.value = slider.value
                 cell.setNeedsDisplay()
-            } else if let cell = self.deviceCollectionView.cellForItem(at: indexPath) as? CurtainCollectionCell {
-                cell.setImageForDevice(devices[tag]); cell.setNeedsDisplay()
+            } else if let cell = deviceCollectionView.cellForItem(at: indexPath) as? CurtainCollectionCell {
+                cell.setImageForDevice(device); cell.setNeedsDisplay()
             }
             changeSliderValueWithTag(tag, withOldValue: Int(sliderOldValue))
         }
     }
     func changeSliderValueWithTag(_ tag:Int, withOldValue:Int) {
-        let address = [getByte(devices[tag].gateway.addressOne), getByte(devices[tag].gateway.addressTwo), getByte(devices[tag].address)]
+        let device      = devices[tag]
+        let controlType = device.controlType
+        let address     = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
 
         deviceInControlMode = false
         //   Dimmer
-        if devices[tag].controlType == ControlType.Dimmer {
-            let setValue = UInt8(Int(devices[tag].currentValue.doubleValue*100/255))
+        if controlType == ControlType.Dimmer {
+            let setValue = UInt8(Int(device.currentValue.doubleValue*100/255))
             
             DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: {
                 DispatchQueue.main.async(execute: {
                     RunnableList.sharedInstance.checkForSameDevice(
-                        device: self.devices[tag].objectID,
+                        device: device.objectID,
                         newCommand: NSNumber(value: setValue),
                         oldValue: NSNumber(value: withOldValue)
                     )
                     _ = RepeatSendingHandler(
-                        byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(self.devices[tag].channel), value: setValue, delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: self.getByte(self.devices[tag].skipState)),
-                        gateway: self.devices[tag].gateway,
-                        device: self.devices[tag],
+                        byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setValue, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: self.getByte(device.skipState)),
+                        gateway: device.gateway,
+                        device: device,
                         oldValue: withOldValue,
                         command: NSNumber(value: setValue)
                     )
@@ -290,21 +267,21 @@ class DevicesViewController: PopoverVC{
             })
         }
         //  Curtain
-        if devices[tag].controlType == ControlType.Curtain {
+        if controlType == ControlType.Curtain {
             let deviceGroupId = devices[tag].curtainGroupID.intValue
             DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: {
                 DispatchQueue.main.async(execute: {
                     RunnableList.sharedInstance.checkForSameDevice(
-                        device: self.devices[tag].objectID,
-                        newCommand: self.devices[tag].currentValue,
+                        device: device.objectID,
+                        newCommand: device.currentValue,
                         oldValue: NSNumber(value: withOldValue)
                     )
                     _ = RepeatSendingHandler(
-                        byteArray: OutgoingHandler.setCurtainStatus(address, value: self.getByte(self.devices[tag].currentValue), groupId:  UInt8(deviceGroupId)),
-                        gateway: self.devices[tag].gateway,
-                        device: self.devices[tag],
+                        byteArray: OutgoingHandler.setCurtainStatus(address, value: self.getByte(device.currentValue), groupId:  UInt8(deviceGroupId)),
+                        gateway: device.gateway,
+                        device: device,
                         oldValue: withOldValue,
-                        command: self.devices[tag].currentValue
+                        command: device.currentValue
                     )
                 })
             })
@@ -318,10 +295,11 @@ class DevicesViewController: PopoverVC{
     
     func changeSliderValueEnded (_ sender:UISlider) {
         let tag         = sender.tag
-        let controlType = devices[tag].controlType
-        let address     = [getByte(devices[tag].gateway.addressOne), getByte(devices[tag].gateway.addressTwo), getByte(devices[tag].address)]
+        let device      = devices[tag]
+        let controlType = device.controlType
+        let address     = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
         //   Dimmer
-        let v  = self.devices[tag].currentValue.doubleValue
+        let v  = device.currentValue.doubleValue
         let v2 = v*100/255
         let v3 = Int(v2)
         let v4 = UInt8(v3)
@@ -329,14 +307,14 @@ class DevicesViewController: PopoverVC{
         if controlType == ControlType.Dimmer {
             DispatchQueue.main.async(execute: {
                 RunnableList.sharedInstance.checkForSameDevice(
-                    device: self.devices[tag].objectID,
+                    device: device.objectID,
                     newCommand: NSNumber(value: v4),
                     oldValue: NSNumber(value: self.changeSliderValueOldValue)
                 )
                 _ = RepeatSendingHandler(
-                    byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(self.devices[tag].channel), value: UInt8(v4), delay: Int(self.devices[tag].delay), runningTime: Int(self.devices[tag].runtime), skipLevel: self.getByte(self.devices[tag].skipState)),
-                    gateway: self.devices[tag].gateway,
-                    device: self.devices[tag],
+                    byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: UInt8(v4), delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: self.getByte(device.skipState)),
+                    gateway: device.gateway,
+                    device: device,
                     oldValue: self.changeSliderValueOldValue,
                     command: NSNumber(value: v4)
                 )
@@ -346,16 +324,16 @@ class DevicesViewController: PopoverVC{
         if controlType == ControlType.Curtain {
             DispatchQueue.main.async(execute: {
                 RunnableList.sharedInstance.checkForSameDevice(
-                    device: self.devices[tag].objectID,
-                    newCommand: self.devices[tag].currentValue,
+                    device: device.objectID,
+                    newCommand: device.currentValue,
                     oldValue: NSNumber(value: self.changeSliderValueOldValue)
                 )
                 _ = RepeatSendingHandler(
-                    byteArray: OutgoingHandler.setCurtainStatus(address, value: self.getByte(self.devices[tag].currentValue), groupId:  0x00),
-                    gateway: self.devices[tag].gateway,
-                    device: self.devices[tag],
+                    byteArray: OutgoingHandler.setCurtainStatus(address, value: self.getByte(device.currentValue), groupId:  0x00),
+                    gateway: device.gateway,
+                    device: device,
                     oldValue: self.changeSliderValueOldValue,
-                    command: self.devices[tag].currentValue
+                    command: device.currentValue
                 )
             })
         }
@@ -364,17 +342,18 @@ class DevicesViewController: PopoverVC{
     }
     
     func changeSliderValue(_ sender: UISlider){
-        let tag = sender.tag
-        devices[tag].currentValue = NSNumber(value: Int(sender.value * 255))   // device values is Int, 0 to 255 (0x00 to 0xFF)
+        let tag    = sender.tag
+        let device = devices[tag]
+        device.currentValue = NSNumber(value: Int(sender.value * 255))   // device values is Int, 0 to 255 (0x00 to 0xFF)
         
         let indexPath = IndexPath(item: tag, section: 0)
         if let cell = deviceCollectionView.cellForItem(at: indexPath) as? DeviceCollectionCell {
-            let deviceValue:Double = { return Double(Double(devices[tag].currentValue)) }()
-            cell.picture.image     = devices[tag].returnImage(Double(deviceValue))
+            let deviceValue:Double = { return Double(device.currentValue) }()
+            cell.picture.image     = device.returnImage(Double(deviceValue))
             cell.lightSlider.value = Float(deviceValue/255) // Slider value accepts values from 0 to 1
             cell.setNeedsDisplay()
         } else if let cell = self.deviceCollectionView.cellForItem(at: indexPath) as? CurtainCollectionCell {
-            cell.setImageForDevice(devices[tag]); cell.setNeedsDisplay()
+            cell.setImageForDevice(device); cell.setNeedsDisplay()
         }
     }
     
@@ -744,16 +723,33 @@ extension DevicesViewController {
     func updateCells() {
         let indexPaths = deviceCollectionView.indexPathsForVisibleItems
         for indexPath in indexPaths {
+            let cell   = deviceCollectionView.cellForItem(at: indexPath)
             let device = devices[indexPath.row]
             let tag    = indexPath.row
             
-            if let cell = deviceCollectionView.cellForItem(at: indexPath) as? DeviceCollectionCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
-            else if let cell = deviceCollectionView.cellForItem(at: indexPath) as? CurtainCollectionCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
-            else if let cell = deviceCollectionView.cellForItem(at: indexPath) as? MultiSensorCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
-            else if let cell = deviceCollectionView.cellForItem(at: indexPath) as? ClimateCell { cell.setCell(device: device, tag: tag); cell.setNeedsDisplay() }
-            else if let cell = deviceCollectionView.cellForItem(at: indexPath) as? ApplianceCollectionCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
-            else if let cell = deviceCollectionView.cellForItem(at: indexPath) as? SaltoAccessCell { cell.setCell(device: device, tag: tag); cell.setNeedsDisplay() }
+            if let cell = cell as? DeviceCollectionCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
+            else if let cell = cell as? CurtainCollectionCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
+            else if let cell = cell as? MultiSensorCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
+            else if let cell = cell as? ClimateCell { cell.setCell(device: device, tag: tag); cell.setNeedsDisplay() }
+            else if let cell = cell as? ApplianceCollectionCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
+            else if let cell = cell as? SaltoAccessCell { cell.setCell(device: device, tag: tag); cell.setNeedsDisplay() }
         }
+    }
+    
+    func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshDeviceList), name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshVisibleDevicesInScrollView), name: NSNotification.Name(rawValue: NotificationKey.DidRefreshDeviceInfo), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshLocalParametars), name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshCollectionView), name: NSNotification.Name(rawValue: NotificationKey.RefreshClimate), object: nil)
+    }
+    
+    func removeObservers() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidRefreshDeviceInfo), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshClimate), object: nil)
     }
 }
 
@@ -858,15 +854,28 @@ extension DevicesViewController {
         }
     }
     
+    fileprivate func getUserAndUpdateDeviceList() {
+        if AdminController.shared.isAdminLogged() {
+            if let user = DatabaseUserController.shared.getOtherUser() { userLogged = user; updateDeviceList(user)
+            } else { devices = [] }
+            
+        } else {
+            if let user = DatabaseUserController.shared.getLoggedUser() { userLogged = user; updateDeviceList(user)
+            } else { devices = [] }
+            
+        }
+        deviceCollectionView.reloadData()
+    }
+    
     func oneTap(_ gestureRecognizer:UITapGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
         let device      = devices[tag]
-        let controlType = devices[tag].controlType
+        let controlType = device.controlType
         
-        let address              = [getByte(devices[tag].gateway.addressOne), getByte(devices[tag].gateway.addressTwo), getByte(devices[tag].address)]
+        let address              = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
         var setDeviceValue:UInt8 = 0
         var skipLevel:UInt8      = 0
-        let deviceCurrentValue   = devices[tag].currentValue
+        let deviceCurrentValue   = device.currentValue
         
         // Light
         if controlType == ControlType.Dimmer {
