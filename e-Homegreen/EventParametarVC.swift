@@ -18,14 +18,17 @@ class EventParametarVC: UIViewController, UIGestureRecognizerDelegate {
     var appDel:AppDelegate!
     var error:NSError? = nil
     
-    @IBOutlet weak var backView: UIView!
-    
     var isPresenting: Bool = true
+
     
+    @IBOutlet weak var backView: UIView!
     @IBOutlet var superView: UIView!
     
     @IBOutlet weak var isBroadcast: UISwitch!
     @IBOutlet weak var isLocalcast: UISwitch!
+    @IBAction func btnSave(_ sender: AnyObject) {
+        save()
+    }
     
     init(point:CGPoint){
         super.init(nibName: "EventParametarVC", bundle: nil)
@@ -42,10 +45,13 @@ class EventParametarVC: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         
         appDel = UIApplication.shared.delegate as! AppDelegate
-
         setupViews()
     }
     
+}
+
+// MARK: - View setup
+extension EventParametarVC {
     func setupViews() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissViewController))
         tapGesture.delegate = self
@@ -58,23 +64,6 @@ class EventParametarVC: UIViewController, UIGestureRecognizerDelegate {
         isLocalcast.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
     }
     
-    func changeValue (_ sender:UISwitch) {
-        if sender.tag == 100 {
-            if sender.isOn == true { isLocalcast.isOn = false } else { isLocalcast.isOn = false }
-        } else if sender.tag == 200 {
-            if sender.isOn == true { isBroadcast.isOn = false } else { isBroadcast.isOn = false }
-        }
-    }
-    
-    @IBAction func btnSave(_ sender: AnyObject) {
-        if isBroadcast.isOn { event?.isBroadcast = true } else { event?.isBroadcast = false }
-        if isLocalcast.isOn { event?.isLocalcast = true } else { event?.isLocalcast = false }
-        
-        CoreDataController.sharedInstance.saveChanges()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshEvent), object: self, userInfo: nil)
-        self.dismiss(animated: true, completion: nil)
-    }
-    
     func dismissViewController () {
         dismiss(animated: true, completion: nil)
     }
@@ -83,7 +72,27 @@ class EventParametarVC: UIViewController, UIGestureRecognizerDelegate {
         if touch.view!.isDescendant(of: backView) { return false }
         return true
     }
+}
 
+// MARK: - Logic
+extension EventParametarVC {
+    
+    fileprivate func save() {
+        if isBroadcast.isOn { event?.isBroadcast = true } else { event?.isBroadcast = false }
+        if isLocalcast.isOn { event?.isLocalcast = true } else { event?.isLocalcast = false }
+        
+        CoreDataController.sharedInstance.saveChanges()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshEvent), object: self, userInfo: nil)
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func changeValue (_ sender:UISwitch) {
+        if sender.tag == 100 {
+            if sender.isOn == true { isLocalcast.isOn = false } else { isLocalcast.isOn = false }
+        } else if sender.tag == 200 {
+            if sender.isOn == true { isBroadcast.isOn = false } else { isBroadcast.isOn = false }
+        }
+    }
 }
 
 extension EventParametarVC : UIViewControllerAnimatedTransitioning {

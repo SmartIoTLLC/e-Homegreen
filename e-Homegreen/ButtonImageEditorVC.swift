@@ -12,10 +12,9 @@ import AKImageCropperView
 class ButtonImageEditorVC: CommonXIBTransitionVC {
     
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
-    @IBOutlet weak var cropView: AKImageCropperView!
-    
     var image: UIImage?
     
+    @IBOutlet weak var cropView: AKImageCropperView!
     @IBOutlet weak var loadButton: UIButton!
     @IBOutlet weak var casiButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
@@ -24,10 +23,13 @@ class ButtonImageEditorVC: CommonXIBTransitionVC {
         setupViews()
     }
     
+}
+
+// MARK: - Setup views
+extension ButtonImageEditorVC {
     fileprivate func setupViews() {
         cropView.backgroundColor = Colors.AndroidGrayColor
         view.backgroundColor     = Colors.AndroidGrayColor
-        
         
         if let image = image {
             cropView.image = image
@@ -37,7 +39,10 @@ class ButtonImageEditorVC: CommonXIBTransitionVC {
         casiButton.addTarget(self, action: #selector(cropAndSaveImage), for: .touchUpInside)
         saveButton.addTarget(self, action: #selector(saveImage), for: .touchUpInside)
     }
-    
+}
+
+// MARK: - Logic
+extension ButtonImageEditorVC {
     @objc fileprivate func loadImage() {
         let handler = ImagePickerHandler(delegate: self)
         let optionMenu = UIAlertController(title: "", message: "", preferredStyle: .alert)
@@ -90,6 +95,7 @@ class ButtonImageEditorVC: CommonXIBTransitionVC {
     }
 }
 
+// MARK: - Image Picker Delegate
 extension ButtonImageEditorVC: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
@@ -97,7 +103,7 @@ extension ButtonImageEditorVC: UIImagePickerControllerDelegate {
         
         if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
             pickedImage = image
-        } else if let image = info[UIImagePickerControllerOriginalImage] as? UIImage{
+        } else if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
             pickedImage = image
         }
         

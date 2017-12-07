@@ -11,7 +11,8 @@ import UIKit
 class ButtonSettingsVC: CommonXIBTransitionVC, UITextFieldDelegate {
     
     var button: RemoteButton!
-    
+    var imageString: String?
+
     @IBOutlet weak var backgroundView: CustomGradientBackground!
     
     @IBOutlet weak var nameTF: EditTextField!
@@ -29,7 +30,6 @@ class ButtonSettingsVC: CommonXIBTransitionVC, UITextFieldDelegate {
 
     @IBOutlet weak var buttonInternalType: CustomGradientButton!
     @IBOutlet weak var imageButton: UIButton!
-    var imageString: String?
     
     @IBOutlet weak var scaleXTF: EditTextField!
     @IBOutlet weak var scaleYTF: EditTextField!

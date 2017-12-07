@@ -24,7 +24,11 @@ class ChooseButtonShapeVC: CommonXIBTransitionVC {
         updateViews()
         setButtons()
     }
-    
+
+}
+
+// MARK: - View setup
+extension ChooseButtonShapeVC {
     fileprivate func updateViews() {
         backgroundView.backgroundColor = Colors.AndroidGrayColor
         view.backgroundColor        = .clear
@@ -41,7 +45,10 @@ class ChooseButtonShapeVC: CommonXIBTransitionVC {
         rectangleButton.addTarget(self, action: #selector(pickShape(_:)), for: .touchUpInside)
         circleButton.addTarget(self, action: #selector(pickShape(_:)), for: .touchUpInside)
     }
-    
+}
+
+// MARK: - Logic
+extension ChooseButtonShapeVC {
     @objc fileprivate func pickShape(_ sender: UIButton) {
         switch sender.titleLabel!.text! {
             case "Use master"               : pickedShape = masterShape
@@ -53,7 +60,6 @@ class ChooseButtonShapeVC: CommonXIBTransitionVC {
         NotificationCenter.default.post(name: .ButtonShapeChosen, object: pickedShape)
         dismissModal()
     }
-    
 }
 
 extension UIViewController {

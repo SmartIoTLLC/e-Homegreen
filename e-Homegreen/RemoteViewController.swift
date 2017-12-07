@@ -15,8 +15,6 @@ struct RemoteMeasures {
 }
 
 class RemoteViewController: PopoverVC {
-
-    @IBOutlet weak var backgroundView: UIImageView!
     
     var remotesList: [Remote] = []
     var selectedRemote: Remote?
@@ -31,30 +29,32 @@ class RemoteViewController: PopoverVC {
     var filterParametar: FilterItem = Filter.sharedInstance.returnFilter(forTab: .Remote)
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
-    @IBOutlet weak var menuButton: UIBarButtonItem!
+    fileprivate var sectionInsets = UIEdgeInsets(top: 25, left: 0, bottom: 20, right: 0)
+    fileprivate let cellId = "RemoteCell"
     
+    @IBOutlet weak var backgroundView: UIImageView!
+    @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var addButton: UIButton!
     @IBAction func addButton(_ sender: UIButton) {
-        if let _ = DatabaseUserController.shared.loggedUserOrAdmin() {
-            showAddRemoteVC(filter: filterParametar, location: pickedLocation!)
-        } else { view.makeToast(message: "No user database selected.") }
+        addTapped()
     }
-    
     @IBOutlet weak var fullScreenButton: UIButton!
     @IBAction func fullScreenButton(_ sender: UIButton) {
         sender.switchFullscreen(viewThatNeedsOffset: scrollView)        
     }
-    
-    fileprivate var sectionInsets = UIEdgeInsets(top: 25, left: 0, bottom: 20, right: 0)
-    fileprivate let cellId = "RemoteCell"
     @IBOutlet weak var remoteCollectionView: UICollectionView!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupViews()
         addObservers()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        setContentOffset(for: scrollView)
+        setTitleView(view: headerTitleSubtitleView)
+        collectionViewCellSize = calculateCellSize(completion: { remoteCollectionView.reloadData() })
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,12 +69,6 @@ class RemoteViewController: PopoverVC {
     override func viewDidAppear(_ animated: Bool) {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
-    }
-    
-    override func viewWillLayoutSubviews() {
-        setContentOffset(for: scrollView)
-        setTitleView(view: headerTitleSubtitleView)
-        collectionViewCellSize = calculateCellSize(completion: { remoteCollectionView.reloadData() })
     }
     
     override func nameAndId(_ name: String, id: String) {
@@ -93,9 +87,9 @@ class RemoteViewController: PopoverVC {
 
 }
 
-// MARK: - Functions
+// MARK: - Logic
 extension RemoteViewController {
-    func prepareLocation() {
+    fileprivate func prepareLocation() {
         if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
             
             let locations = DatabaseLocationController.shared.getLocation(user)
@@ -107,12 +101,12 @@ extension RemoteViewController {
         
     }
     
-    func loadRemotes(from location: Location) {
+    fileprivate func loadRemotes(from location: Location) {
         remotesList = DatabaseRemoteController.sharedInstance.getRemotes(from: location)
         remoteCollectionView.reloadData()
     }
     
-    func loadRemotesOnStart(from location: Location?) {
+    fileprivate func loadRemotesOnStart(from location: Location?) {
         if filterParametar.location != "All" {
             if let location = location {
                 loadRemotes(from: location)
@@ -120,9 +114,15 @@ extension RemoteViewController {
         }
     }
     
-    func refreshRemotes() {
+    @objc fileprivate func refreshRemotes() {
         remotesList = DatabaseRemoteController.sharedInstance.getRemotes(from: pickedLocation!)
         remoteCollectionView.reloadData()
+    }
+    
+    fileprivate func addTapped() {
+        if let _ = DatabaseUserController.shared.loggedUserOrAdmin() {
+            showAddRemoteVC(filter: filterParametar, location: pickedLocation!)
+        } else { view.makeToast(message: "No user database selected.") }
     }
     
 }

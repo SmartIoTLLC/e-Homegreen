@@ -26,7 +26,11 @@ class ChooseButtonColorVC: CommonXIBTransitionVC {
         updateViews()
         setButtons()
     }
-    
+
+}
+
+// MARK: - View setup
+extension ChooseButtonColorVC {
     fileprivate func updateViews() {
         view.backgroundColor = .clear
         backgroundView.backgroundColor = Colors.AndroidGrayColor
@@ -47,7 +51,10 @@ class ChooseButtonColorVC: CommonXIBTransitionVC {
         greenButton.addTarget(self, action: #selector(pickColor(_:)), for: .touchUpInside)
         blueButton.addTarget(self, action: #selector(pickColor(_:)), for: .touchUpInside)
     }
-    
+}
+
+// MARK: - Logic
+extension ChooseButtonColorVC {
     @objc fileprivate func pickColor(_ sender: UIButton) {
         switch sender.titleLabel!.text! {
             case "Use master"       : pickedColor = masterColor
@@ -59,13 +66,11 @@ class ChooseButtonColorVC: CommonXIBTransitionVC {
         }
         NotificationCenter.default.post(name: .ButtonColorChosen, object: pickedColor)
         dismissModal()
-    }    
-
+    }
 }
 
 extension UIButton {
     func setPickButton() {
-        //titleLabel?.textAlignment = .left
         contentHorizontalAlignment = .left
         contentEdgeInsets.left = 8
         setTitleColor(.white, for: UIControlState())

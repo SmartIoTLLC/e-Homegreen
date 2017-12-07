@@ -24,31 +24,26 @@ class EditRemoteViewController: CommonXIBTransitionVC {
     @IBAction func cancelButton(_ sender: Any) {
         dismissVC()
     }
-    
     @IBAction func deleteButton(_ sender: Any) {
-        DatabaseRemoteController.sharedInstance.deleteRemote(remote: remote, from: location)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshRemotes), object: nil)
-        dismissVC()
+        delete()
     }
-    
     @IBAction func copyButton(_ sender: Any) {
-        
-        DatabaseRemoteController.sharedInstance.cloneRemote(remote: remote, on: location)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshRemotes), object: nil)
-        dismissVC()                
+        clone()
     }
-    
     @IBOutlet weak var backView: UIView!
     
     override func viewDidLoad() {
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        dismissView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissVC)))
-
         updateViews()
     }
-    
 
-    func updateViews() {
+}
+
+// MARK: - View setup
+extension EditRemoteViewController {
+    fileprivate func updateViews() {
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        dismissView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissVC)))
+        
         dismissView.backgroundColor  = .clear
         backView.backgroundColor     = Colors.AndroidGrayColor
         backView.setGradientBackground()
@@ -64,7 +59,20 @@ class EditRemoteViewController: CommonXIBTransitionVC {
     func dismissVC() {
         dismiss(animated: true, completion: nil)
     }
-
+}
+// MARK: - Logic
+extension EditRemoteViewController {
+    fileprivate func delete() {
+        DatabaseRemoteController.sharedInstance.deleteRemote(remote: remote, from: location)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshRemotes), object: nil)
+        dismissVC()
+    }
+    
+    fileprivate func clone() {
+        DatabaseRemoteController.sharedInstance.cloneRemote(remote: remote, on: location)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshRemotes), object: nil)
+        dismissVC()
+    }
 }
 
 extension UIViewController {

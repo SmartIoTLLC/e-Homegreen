@@ -25,6 +25,13 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
     
     var isCustom: Bool = false
     
+    var scBottomLine: CALayer = {
+        let layer = CALayer()
+        layer.borderColor = UIColor.eHome.turquoiseBlue.cgColor
+        layer.borderWidth = 2
+        return layer
+    }()
+    
     var button: RemoteButton! {
         didSet {
             if let image = button.image {
@@ -45,12 +52,7 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
         scTapped(sender)
     }
 
-    var scBottomLine: CALayer = {
-        let layer = CALayer()
-        layer.borderColor = UIColor.eHome.turquoiseBlue.cgColor
-        layer.borderWidth = 2
-        return layer
-    }()
+
     
     override func viewDidLoad() {
         setupViews()

@@ -24,8 +24,6 @@ class RemoteDetailsViewController: UIViewController {
     var chunksOfButtons: [[RemoteButton]] = []
     let cellId = "buttonCell"
     
-    @IBOutlet weak var remoteScrollView: UIScrollView!
-    
     var remote: Remote! {
         didSet {
             rows          = Int(remote.rows!)
@@ -38,6 +36,7 @@ class RemoteDetailsViewController: UIViewController {
         }
     }
     
+    @IBOutlet weak var remoteScrollView: UIScrollView!    
     @IBOutlet weak var remoteBackground: UIView!
     @IBOutlet weak var remoteHeader: UIView!
     @IBOutlet weak var remoteFooter: UIView!
@@ -58,11 +57,6 @@ class RemoteDetailsViewController: UIViewController {
         sender.switchFullscreen()        
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        changeFullscreenImage(fullscreenButton: fullScreenButton)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -78,6 +72,10 @@ class RemoteDetailsViewController: UIViewController {
         updateViews()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        changeFullscreenImage(fullscreenButton: fullScreenButton)
+    }
 }
 
 // MARK: - View setup & Logic

@@ -8,53 +8,7 @@
 
 import UIKit
 
-class AddRemoteViewController: CommonXIBTransitionVC, UIPopoverPresentationControllerDelegate, PopOverIndexDelegate {
-    
-    fileprivate func openPopover(_ sender: AnyObject, popoverList: [PopOverItem]) {
-        if let popoverVC = UIStoryboard(name: "Popover", bundle: nil).instantiateViewController(withIdentifier: "codePopover") as? PopOverViewController {
-            popoverVC.modalPresentationStyle = .popover
-            popoverVC.preferredContentSize = CGSize(width: 300, height: 200)
-            popoverVC.delegate = self
-            popoverVC.popOverList = popoverList
-            if let popC = popoverVC.popoverPresentationController {
-                popC.delegate = self
-                popC.permittedArrowDirections = .any
-                popC.sourceView = sender as? UIView
-                popC.sourceRect = sender.bounds
-                popC.backgroundColor = .lightGray
-                present(popoverVC, animated: true, completion: nil)
-            }
-        }
-    }
-    
-    func nameAndId(_ name: String, id: String) {
-        switch usedButton.tag {
-            case 0 : break // Sme li da se menja lokacija sa ovog ekrana??
-            case 1 :
-                if let levelTemp = FilterController.shared.getZoneByObjectId(id) {
-                    levelButton.setTitle(levelTemp.name, for: UIControlState())
-                    selectedLevel = levelTemp
-                } else {
-                    levelButton.setTitle("All", for: UIControlState())
-                    selectedLevel = nil
-                }
-            case 2 :
-                if let zoneTemp = FilterController.shared.getZoneByObjectId(id) {
-                    zoneButton.setTitle(zoneTemp.name, for: UIControlState())
-                    selectedZone = zoneTemp
-                } else {
-                    zoneButton.setTitle("All", for: UIControlState())
-                    selectedZone = nil
-            }
-            default: break
-        }
-    }
-    
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .none
-    }
-    
-    @IBOutlet weak var scrollView: UIScrollView!
+class AddRemoteViewController: CommonXIBTransitionVC {
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     
     var filterParameter: FilterItem!
@@ -67,6 +21,7 @@ class AddRemoteViewController: CommonXIBTransitionVC, UIPopoverPresentationContr
     
     var usedButton: CustomGradientButton!
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var nameTF: EditTextField!
     @IBOutlet weak var columnsTF: EditTextField!
     @IBOutlet weak var rowsTF: EditTextField!
@@ -78,24 +33,39 @@ class AddRemoteViewController: CommonXIBTransitionVC, UIPopoverPresentationContr
     @IBOutlet weak var widthTF: EditTextField!
     @IBOutlet weak var topTF: EditTextField!
     @IBOutlet weak var bottomTF: EditTextField!
-    
     @IBOutlet weak var dismissView: UIView!
     @IBOutlet weak var backView: CustomGradientBackground!
-    
     @IBOutlet weak var locationButton: CustomGradientButton!
     @IBOutlet weak var levelButton: CustomGradientButton!
     @IBAction func levelButton(_ sender: CustomGradientButton) {
-        usedButton = sender
-        var popoverList: [PopOverItem] = []
-        let list: [Zone] = DatabaseZoneController.shared.getLevelsByLocation(location)
-        for level in list { popoverList.append(PopOverItem(name: level.name!, id: level.objectID.uriRepresentation().absoluteString)) }
-        popoverList.insert(PopOverItem(name: "All", id: "0"), at: 0)
-        openPopover(sender, popoverList: popoverList)
+        openLevelPopover(sender: sender)
     }
-    
-    
     @IBOutlet weak var zoneButton: CustomGradientButton!
     @IBAction func zoneButton(_ sender: CustomGradientButton) {
+        openZonePopover(sender: sender)
+    }
+    @IBOutlet weak var colorButton: CustomGradientButton!
+    @IBOutlet weak var shapeButton: CustomGradientButton!
+    @IBOutlet weak var cancelButton: CustomGradientButton!
+    @IBOutlet weak var saveButton: CustomGradientButton!
+    @IBAction func cancelButton(_ sender: CustomGradientButton) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    @IBAction func saveButton(_ sender: CustomGradientButton) {
+        saveRemoteController()
+    }
+    
+    override func viewDidLoad() {
+        updateViews()
+        setTextFieldDelegates()
+        addObservers()
+    }
+
+}
+
+// MARK: - Navigation
+extension AddRemoteViewController {
+    fileprivate func openZonePopover(sender: CustomGradientButton) {
         usedButton = sender
         var popoverList: [PopOverItem] = []
         if let level = selectedLevel {
@@ -106,27 +76,14 @@ class AddRemoteViewController: CommonXIBTransitionVC, UIPopoverPresentationContr
         openPopover(sender, popoverList: popoverList)
     }
     
-    
-    @IBOutlet weak var colorButton: CustomGradientButton!
-    @IBOutlet weak var shapeButton: CustomGradientButton!
-    @IBOutlet weak var cancelButton: CustomGradientButton!
-    @IBOutlet weak var saveButton: CustomGradientButton!
-    
-
-    @IBAction func cancelButton(_ sender: CustomGradientButton) {
-        self.dismiss(animated: true, completion: nil)
+    fileprivate func openLevelPopover(sender: CustomGradientButton) {
+        usedButton = sender
+        var popoverList: [PopOverItem] = []
+        let list: [Zone] = DatabaseZoneController.shared.getLevelsByLocation(location)
+        for level in list { popoverList.append(PopOverItem(name: level.name!, id: level.objectID.uriRepresentation().absoluteString)) }
+        popoverList.insert(PopOverItem(name: "All", id: "0"), at: 0)
+        openPopover(sender, popoverList: popoverList)
     }
-    @IBAction func saveButton(_ sender: CustomGradientButton) {
-        saveRemoteController()
-    }
-    
-    override func viewDidLoad() {
-
-        updateViews()
-        setTextFieldDelegates()
-        addObservers()
-    }
-
 }
 
 // MARK: - Setup views
@@ -278,8 +235,6 @@ extension AddRemoteViewController {
     }
 }
 
-
-
 // MARK: - Logic
 extension AddRemoteViewController {
     // TODO: Create Remote from JSON
@@ -338,6 +293,53 @@ extension AddRemoteViewController {
             dismissVC()
         }
 
+    }
+}
+
+// MARK: - Popover Presentation Controller Delegate
+extension AddRemoteViewController: UIPopoverPresentationControllerDelegate, PopOverIndexDelegate {
+    fileprivate func openPopover(_ sender: AnyObject, popoverList: [PopOverItem]) {
+        if let popoverVC = UIStoryboard(name: "Popover", bundle: nil).instantiateViewController(withIdentifier: "codePopover") as? PopOverViewController {
+            popoverVC.modalPresentationStyle = .popover
+            popoverVC.preferredContentSize = CGSize(width: 300, height: 200)
+            popoverVC.delegate = self
+            popoverVC.popOverList = popoverList
+            if let popC = popoverVC.popoverPresentationController {
+                popC.delegate = self
+                popC.permittedArrowDirections = .any
+                popC.sourceView = sender as? UIView
+                popC.sourceRect = sender.bounds
+                popC.backgroundColor = .lightGray
+                present(popoverVC, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func nameAndId(_ name: String, id: String) {
+        switch usedButton.tag {
+        case 0 : break // Sme li da se menja lokacija sa ovog ekrana??
+        case 1 :
+            if let levelTemp = FilterController.shared.getZoneByObjectId(id) {
+                levelButton.setTitle(levelTemp.name, for: UIControlState())
+                selectedLevel = levelTemp
+            } else {
+                levelButton.setTitle("All", for: UIControlState())
+                selectedLevel = nil
+            }
+        case 2 :
+            if let zoneTemp = FilterController.shared.getZoneByObjectId(id) {
+                zoneButton.setTitle(zoneTemp.name, for: UIControlState())
+                selectedZone = zoneTemp
+            } else {
+                zoneButton.setTitle("All", for: UIControlState())
+                selectedZone = nil
+            }
+        default: break
+        }
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
     }
 }
 

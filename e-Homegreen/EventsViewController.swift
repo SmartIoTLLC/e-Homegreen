@@ -11,52 +11,35 @@ import AudioToolbox
 
 class EventsViewController: PopoverVC{
     
-    @IBOutlet weak var eventCollectionView: UICollectionView!
-    @IBOutlet weak var broadcastSwitch: UISwitch!
-    
-    var events:[Event] = []
-
-    var scrollView = FilterPullDown()
-    
-    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
-    
-    @IBOutlet weak var menuButton: UIBarButtonItem!
-    @IBOutlet weak var fullScreenButton: UIButton!
-    
     fileprivate var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     fileprivate let reuseIdentifier = "EventCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
     var filterParametar:FilterItem!
+    var events:[Event] = []
+    
+    var scrollView = FilterPullDown()
+    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
+    
+    @IBOutlet weak var eventCollectionView: UICollectionView!
+    @IBOutlet weak var broadcastSwitch: UISwitch!
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var fullScreenButton: UIButton!
+    @IBAction func fullScreen(_ sender: UIButton) {
+        sender.switchFullscreen(viewThatNeedsOffset: scrollView)        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupViews()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEvents), object: nil)
+        addObservers()
     }
     
-    func setupViews() {
-        if #available(iOS 11, *) { headerTitleSubtitleView.layoutIfNeeded() }
-        
-        UIView.hr_setToastThemeColor(color: UIColor.red)
-        
-        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
-        
-        scrollView.filterDelegate = self
-        view.addSubview(scrollView)
-        updateConstraints(item: scrollView)
-        scrollView.setItem(self.view)
-        
-        navigationItem.titleView = headerTitleSubtitleView
-        headerTitleSubtitleView.setTitleAndSubtitle("Events", subtitle: "All All All")
-        
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(defaultFilter(_:)))
-        longPress.minimumPressDuration = 0.5
-        headerTitleSubtitleView.addGestureRecognizer(longPress)
-        
-        scrollView.setFilterItem(Menu.events)
+    override func viewWillLayoutSubviews() {
+        setContentOffset(for: scrollView)
+        setTitleView(view: headerTitleSubtitleView)
+        collectionViewCellSize = calculateCellSize(completion: { eventCollectionView.reloadData() })
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,38 +57,8 @@ class EventsViewController: PopoverVC{
         scrollView.setContentOffset(bottomOffset, animated: false)
     }
     
-    override func viewWillLayoutSubviews() {
-        setContentOffset(for: scrollView)
-        setTitleView(view: headerTitleSubtitleView)
-        collectionViewCellSize = calculateCellSize(completion: { eventCollectionView.reloadData() })            
-    }
-    
     override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
-    }
-    
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
-            scrollView.setDefaultFilterItem(Menu.events)
-            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-        }
-    }
-    
-    @IBAction func fullScreen(_ sender: UIButton) {
-        sender.switchFullscreen(viewThatNeedsOffset: scrollView)        
-    }
-    
-    func updateEventsList(){
-        events = DatabaseEventsController.shared.getEvents(filterParametar)
-        eventCollectionView.reloadData()
-    }
-    func refreshLocalParametars() {
-        eventCollectionView.reloadData()
-    }
-    
-    // Helper functions
-    func setDefaultFilterFromTimer(){
-        scrollView.setDefaultFilterItem(Menu.events)
     }
 
 }
@@ -125,19 +78,28 @@ extension EventsViewController: FilterPullDownDelegate{
     func saveDefaultFilter(){
         self.view.makeToast(message: "Default filter parametar saved!")
     }
-}
-
-extension EventsViewController: SWRevealViewControllerDelegate{
-    func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
-        if position == .left { eventCollectionView.isUserInteractionEnabled = true } else { eventCollectionView.isUserInteractionEnabled = false }
+    
+    func updateEventsList(){
+        events = DatabaseEventsController.shared.getEvents(filterParametar)
+        eventCollectionView.reloadData()
+    }
+    func refreshLocalParametars() {
+        eventCollectionView.reloadData()
     }
     
-    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
-        if position == .left { eventCollectionView.isUserInteractionEnabled = true } else { eventCollectionView.isUserInteractionEnabled = false }
+    func setDefaultFilterFromTimer(){
+        scrollView.setDefaultFilterItem(Menu.events)
     }
     
+    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
+            scrollView.setDefaultFilterItem(Menu.events)
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+        }
+    }
 }
 
+// MARK: - Collection View Delegate Flow Layout
 extension EventsViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -156,8 +118,8 @@ extension EventsViewController: UICollectionViewDelegate, UICollectionViewDelega
     }
 }
 
+// MARK: - Collection View Data Source
 extension EventsViewController: UICollectionViewDataSource {
-    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -184,12 +146,58 @@ extension EventsViewController: UICollectionViewDataSource {
         }
         
         return UICollectionViewCell()
-
     }
+
+}
+
+// MARK: - View setup
+extension EventsViewController {
+    func setupViews() {
+        if #available(iOS 11, *) { headerTitleSubtitleView.layoutIfNeeded() }
+        
+        UIView.hr_setToastThemeColor(color: UIColor.red)
+        
+        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
+        
+        scrollView.filterDelegate = self
+        view.addSubview(scrollView)
+        updateConstraints(item: scrollView)
+        scrollView.setItem(self.view)
+        
+        navigationItem.titleView = headerTitleSubtitleView
+        headerTitleSubtitleView.setTitleAndSubtitle("Events", subtitle: "All All All")
+        
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(defaultFilter(_:)))
+        longPress.minimumPressDuration = 0.5
+        headerTitleSubtitleView.addGestureRecognizer(longPress)
+        
+        scrollView.setFilterItem(Menu.events)
+    }
+    
+    fileprivate func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEvents), object: nil)
+    }
+    
+}
+
+// MARK: - Logic
+extension EventsViewController {
+    
     func setEvent (_ gesture:UIGestureRecognizer) {
+        sendEventCommand(from: gesture, eventType: .run)
+    }
+    func tapCancel (_ gesture:UITapGestureRecognizer) {
+        sendEventCommand(from: gesture, eventType: .cancel)
+    }
+    
+    fileprivate func sendEventCommand(from gesture: UIGestureRecognizer, eventType: EventType) {
         if let tag = gesture.view?.tag {
-            let event = events[tag]
-            var address:[UInt8] = []
+            let event   = events[tag]
+            let eventID = Int(event.eventId)
+            let gateway = event.gateway
+            
+            var address: [Byte] = []
+            
             if event.isBroadcast.boolValue {
                 address = [0xFF, 0xFF, 0xFF]
             } else if event.isLocalcast.boolValue {
@@ -198,37 +206,25 @@ extension EventsViewController: UICollectionViewDataSource {
                 address = [getByte(event.gateway.addressOne), getByte(event.gateway.addressTwo), getByte(event.address)]
             }
             
-            let eventId = Int(event.eventId)
-            if eventId >= 0 && eventId <= 255 { SendingHandler.sendCommand(byteArray: OutgoingHandler.runEvent(address, id: UInt8(eventId)), gateway: event.gateway) }
+            switch eventType {
+                case .run    : if eventID >= 0 && eventID <= 255 { SendingHandler.sendCommand(byteArray: OutgoingHandler.runEvent(address, id: UInt8(eventID)), gateway: gateway) }
+                case .cancel : SendingHandler.sendCommand(byteArray: OutgoingHandler.cancelEvent(address, id: UInt8(eventID)), gateway: gateway)
+            }
             
-            let pointInTable = gesture.view?.convert(gesture.view!.bounds.origin, to: eventCollectionView)
-            let indexPath = eventCollectionView.indexPathForItem(at: pointInTable!)
-            if let cell = eventCollectionView.cellForItem(at: indexPath!) as? EventsCollectionViewCell {
-                cell.commandSentChangeImage()
+            if let originPoint = gesture.view?.bounds.origin {
+                if let pointInCollection = gesture.view?.convert(originPoint, to: eventCollectionView) {
+                    if let indexPath = eventCollectionView.indexPathForItem(at: pointInCollection) {
+                        if let cell = eventCollectionView.cellForItem(at: indexPath) as? EventsCollectionViewCell {
+                            cell.commandSentChangeImage()
+                        }
+                    }
+                }
             }
         }
     }
-    func tapCancel (_ gesture:UITapGestureRecognizer) {
-        //   Take cell from touched point
-        let pointInTable = gesture.view?.convert(gesture.view!.bounds.origin, to: eventCollectionView)
-        let indexPath = eventCollectionView.indexPathForItem(at: pointInTable!)
-        if let cell = eventCollectionView.cellForItem(at: indexPath!) as? EventsCollectionViewCell {
-            if let tag = gesture.view?.tag {
-
-                let event   = events[tag]
-                let eventId = Int(event.eventId)
-                var address:[UInt8] = []
-                if event.isBroadcast.boolValue {
-                    address = [0xFF, 0xFF, 0xFF]
-                } else if event.isLocalcast.boolValue {
-                    address = [getByte(event.gateway.addressOne), getByte(event.gateway.addressTwo), 0xFF]
-                } else {
-                    address = [getByte(event.gateway.addressOne), getByte(event.gateway.addressTwo), getByte(event.address)]
-                }
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.cancelEvent(address, id: UInt8(eventId)), gateway: event.gateway)
-                cell.commandSentChangeImage()
-            }
-        }
+    enum EventType {
+        case run
+        case cancel
     }
     
     func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer) {
@@ -241,4 +237,17 @@ extension EventsViewController: UICollectionViewDataSource {
             }
         }
     }
+}
+
+
+// MARK: - SW Reveal View Controller Delegate
+extension EventsViewController: SWRevealViewControllerDelegate{
+    func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
+        if position == .left { eventCollectionView.isUserInteractionEnabled = true } else { eventCollectionView.isUserInteractionEnabled = false }
+    }
+    
+    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
+        if position == .left { eventCollectionView.isUserInteractionEnabled = true } else { eventCollectionView.isUserInteractionEnabled = false }
+    }
+    
 }
