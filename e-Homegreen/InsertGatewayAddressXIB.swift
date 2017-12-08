@@ -58,12 +58,12 @@ class InsertGatewayAddressXIB: CommonXIBTransitionVC {
     func setupViews() {
         UIView.hr_setToastThemeColor(color: UIColor.red)
         
-        addressOne.delegate = self
-        addressTwo.delegate = self
+        addressOne.delegate   = self
+        addressTwo.delegate   = self
         addressThree.delegate = self
         
-        addressOne.inputAccessoryView = CustomToolBar()
-        addressTwo.inputAccessoryView = CustomToolBar()
+        addressOne.inputAccessoryView   = CustomToolBar()
+        addressTwo.inputAccessoryView   = CustomToolBar()
         addressThree.inputAccessoryView = CustomToolBar()
         
         if whatToScan == ScanType.zone { titleLabel.text = "Scan zones from address" } else { titleLabel.text = "Scan categories from address" }

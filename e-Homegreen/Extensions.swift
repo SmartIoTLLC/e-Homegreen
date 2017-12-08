@@ -226,7 +226,6 @@ extension UIViewController {
         }
     }
     
-    
 }
 
 extension UIView {
@@ -264,6 +263,29 @@ public class HelperFunctions {
         gradientLayer.endPoint   = CGPoint(x: 0.0, y: 0.0)
         
         return gradientLayer
+    }
+    
+    class func snapshotOfCell(_ inputView: UIView) -> UIView? {
+        UIGraphicsBeginImageContextWithOptions(inputView.bounds.size, false, 0.0)
+        
+        if let graphicContext = UIGraphicsGetCurrentContext() {
+            inputView.layer.render(in: graphicContext)
+            if let image = UIGraphicsGetImageFromCurrentImageContext() {
+                UIGraphicsEndImageContext()
+                
+                let cellSnapshot : UIView = UIImageView(image: image)
+                cellSnapshot.layer.masksToBounds = false
+                cellSnapshot.layer.cornerRadius = 0.0
+                cellSnapshot.layer.shadowOffset = CGSize(width: -5.0, height: 0.0)
+                cellSnapshot.layer.shadowRadius = 5.0
+                cellSnapshot.layer.shadowOpacity = 0.4
+                
+                return cellSnapshot
+            }
+        }
+        UIGraphicsEndImageContext()
+        return nil
+        
     }
 }
 

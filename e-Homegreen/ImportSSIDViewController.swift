@@ -20,7 +20,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+class ImportSSIDViewController: UIViewController {
     
     var ssidList:[SSID] = []
     var location:Location?
@@ -29,38 +29,28 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
     var error:NSError? = nil
 
     @IBOutlet weak var ssidNameTextfield: UITextField!
-    
     @IBOutlet weak var ssidTableView: UITableView!
+    @IBAction func doneAction(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    @IBAction func addSSID(_ sender: AnyObject) {
+        addSSID()
+    }
+    @IBAction func removeAll(_ sender: AnyObject) {
+        remove()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        appDel = UIApplication.shared.delegate as! AppDelegate
         
         setupViews()
         updateSSID()
     }
     
-    func setupViews() {
-        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
-        ssidNameTextfield.delegate = self
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    func updateSSID(){
-        if let location = location{
-            if let list = location.ssids?.allObjects as? [SSID]{
-                ssidList = list.sorted(by: { (first, second) -> Bool in
-                    return first.name < second.name
-                })
-            }
-        }
-        ssidTableView.reloadData()
-    }
-    
+}
+
+// MARK: - TableView DataSource & Delegate
+extension ImportSSIDViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "ssidCell") as? SSIDCell {
@@ -78,27 +68,29 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            showAlertView(tableView, message: "Delete SSID?", completion: { (action) in
-                if action == ReturnedValueFromAlertView.delete {
-                    self.appDel.managedObjectContext?.delete(self.ssidList[indexPath.row])
-                    CoreDataController.sharedInstance.saveChanges()
-                    self.updateSSID()
-                }
-            })
-        }
+        if editingStyle == .delete { deleteSSID(at: indexPath, of: tableView) }
     }
+}
 
-    @IBAction func doneAction(_ sender: AnyObject) {
-        self.dismiss(animated: true, completion: nil)
+// MARK: - View setup
+extension ImportSSIDViewController {
+    func setupViews() {
+        appDel = UIApplication.shared.delegate as! AppDelegate
+        
+        self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
+        ssidNameTextfield.delegate = self
     }
+}
 
-    @IBAction func addSSID(_ sender: AnyObject) {
+// MARK: - Logic
+extension ImportSSIDViewController {
+    
+    fileprivate func addSSID() {
         guard let name = ssidNameTextfield.text , name != "" else { return }
         
         if let location = location {
             if let ssid = NSEntityDescription.insertNewObject(forEntityName: "SSID", into: appDel.managedObjectContext!) as? SSID {
-                ssid.name = name
+                ssid.name     = name
                 ssid.location = location
                 CoreDataController.sharedInstance.saveChanges()
                 self.updateSSID()
@@ -107,15 +99,47 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
     
-    @IBAction func removeAll(_ sender: AnyObject) {
-        
-        for item in ssidList { appDel.managedObjectContext?.delete(item) }
-        CoreDataController.sharedInstance.saveChanges()
-        self.updateSSID()
+    func updateSSID() {
+        if let location = location{
+            if let list = location.ssids?.allObjects as? [SSID]{
+                ssidList = list.sorted(by: { (first, second) -> Bool in
+                    return first.name < second.name
+                })
+            }
+        }
+        ssidTableView.reloadData()
     }
     
+    fileprivate func deleteSSID(at indexPath: IndexPath, of tableView: UITableView) {
+        showAlertView(tableView, message: "Delete SSID?", completion: { (action) in
+            if action == ReturnedValueFromAlertView.delete {
+                let ssid = self.ssidList[indexPath.row]
+                if let moc = self.appDel.managedObjectContext {
+                    moc.delete(ssid)
+                    CoreDataController.sharedInstance.saveChanges()
+                    self.updateSSID()
+                }
+            }
+        })
+    }
+    
+    fileprivate func remove() {
+        if let moc = appDel.managedObjectContext {
+            for item in ssidList { moc.delete(item) }
+            CoreDataController.sharedInstance.saveChanges()
+            self.updateSSID()
+        }
+    }
 }
 
+extension ImportSSIDViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+// MARK: - SSID TableView Cell
 class SSIDCell: UITableViewCell {
     
     @IBOutlet weak var nameLabel: UILabel!

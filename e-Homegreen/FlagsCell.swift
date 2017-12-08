@@ -19,9 +19,9 @@ class FlagsCell:UITableViewCell{
     func setCell(flag: Flag) {
         backgroundColor = UIColor.clear
         
-        labelID.text = "\(flag.flagId)"
+        labelID.text   = "\(flag.flagId)"
         labelName.text = "\(flag.flagName)"
-        address.text = "\(returnThreeCharactersForByte(Int(flag.gateway.addressOne))):\(returnThreeCharactersForByte(Int(flag.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(flag.address)))"
+        address.text   = "\(returnThreeCharactersForByte(Int(flag.gateway.addressOne))):\(returnThreeCharactersForByte(Int(flag.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(flag.address)))"
         
         if let id = flag.flagImageOneCustom{
             if let image = DatabaseImageController.shared.getImageById(id) {

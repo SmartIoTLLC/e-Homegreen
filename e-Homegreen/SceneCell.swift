@@ -18,9 +18,9 @@ class ScenesCell: UITableViewCell{
     
     func setCell(scene: Scene) {
         backgroundColor = .clear
-        labelID.text = "\(scene.sceneId)"
-        labelName.text = "\(scene.sceneName)"
-        address.text = "\(returnThreeCharactersForByte(Int(scene.gateway.addressOne))):\(returnThreeCharactersForByte(Int(scene.gateway.addressTwo))):\(Int(scene.address))"
+        labelID.text    = "\(scene.sceneId)"
+        labelName.text  = "\(scene.sceneName)"
+        address.text    = "\(returnThreeCharactersForByte(Int(scene.gateway.addressOne))):\(returnThreeCharactersForByte(Int(scene.gateway.addressTwo))):\(Int(scene.address))"
         
         if let id = scene.sceneImageOneCustom {
             if let image = DatabaseImageController.shared.getImageById(id) {

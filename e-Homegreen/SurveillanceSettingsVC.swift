@@ -32,6 +32,24 @@ class SurveillanceSettingsVC: PopoverVC {
     @IBOutlet weak var editPassword: UITextField!
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var btnSave: UIButton!
+    func dismissViewController () {
+        self.dismiss(animated: true, completion: nil)
+    }
+    @IBAction func btnCancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    @IBAction func btnLevel(_ sender: UIButton) {
+        levelTapped(sender: sender)
+    }
+    @IBAction func btnCategoryAction(_ sender: UIButton) {
+        categoryTapped(sender: sender)
+    }
+    @IBAction func btnZoneAction(_ sender: UIButton) {
+        zoneTapped(sender: sender)
+    }
+    @IBAction func btnSave(_ sender: AnyObject) {
+        save()
+    }
     
     var isPresenting: Bool = true
     var delegate:AddEditSurveillanceDelegate?
@@ -61,52 +79,8 @@ class SurveillanceSettingsVC: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.shared.delegate as! AppDelegate
-
         setupViews()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
-
-    }
-    
-    func setupViews() {
-        editPortRemote.inputAccessoryView = CustomToolBar()
-        editPortLocal.inputAccessoryView = CustomToolBar()
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissViewController))
-        tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
-        
-        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        
-        editIPRemote.delegate = self
-        editPortRemote.delegate = self
-        editUserName.delegate = self
-        editPassword.delegate = self
-        editName.delegate = self
-        editIPLocal.delegate = self
-        editPortLocal.delegate = self
-        
-        if let surv = surv {
-            
-            editIPRemote.text = surv.ip
-            if let port = surv.port { editPortRemote.text = "\(port)" }
-            editUserName.text = surv.username
-            editPassword.text = surv.password
-            editName.text = surv.name
-            
-            levelButton.setTitle(surv.surveillanceLevel, for: UIControlState())
-            zoneButton.setTitle(surv.surveillanceZone, for: UIControlState())
-            categoryButton.setTitle(surv.surveillanceCategory, for: UIControlState())
-            
-            if let levelId = surv.surveillanceLevelId as? Int { level = DatabaseZoneController.shared.getZoneById(levelId, location: surv.location!) }
-            if let zoneId = surv.surveillanceLevelId as? Int { zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: surv.location!) }
-            if let categoryId = surv.surveillanceLevelId as? Int { category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: surv.location!) }
-            
-            if let localIp = surv.localIp { editIPLocal.text = localIp }
-            if let localPort = surv.localPort { editPortLocal.text = localPort }
-        }
+        addObservers()
     }
     
     override func nameAndId(_ name: String, id: String) {
@@ -129,111 +103,55 @@ class SurveillanceSettingsVC: PopoverVC {
         
         button.setTitle(name, for: UIControlState())
     }
+    
+}
 
-    func dismissViewController () {
-        self.dismiss(animated: true, completion: nil)
+// MARK: - View setup
+extension SurveillanceSettingsVC {
+    
+    fileprivate func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
     }
     
-    @IBAction func btnCancel(_ sender: AnyObject) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func btnLevel(_ sender: UIButton) {
-        button = sender
-        var popoverList:[PopOverItem] = []
-        let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(parentLocation)
-        for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
-        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
-        openPopover(sender, popOverList:popoverList)
-    }
-    
-    @IBAction func btnCategoryAction(_ sender: UIButton) {
-        button = sender
-        var popoverList:[PopOverItem] = []
-        let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(parentLocation)
-        for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
+    fileprivate func setupViews() {
+        appDel = UIApplication.shared.delegate as! AppDelegate
         
-        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
-        openPopover(sender, popOverList:popoverList)
-    }
-    
-    @IBAction func btnZoneAction(_ sender: UIButton) {
-        button = sender
-        var popoverList:[PopOverItem] = []
-        if let level = level {
-            let list:[Zone] = DatabaseZoneController.shared.getZoneByLevel(parentLocation, parentZone: level)
-            for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
-        }
+        editPortRemote.inputAccessoryView = CustomToolBar()
+        editPortLocal.inputAccessoryView  = CustomToolBar()
         
-        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
-        openPopover(sender, popOverList:popoverList)
-    }
-    
-    @IBAction func btnSave(_ sender: AnyObject) {
-        if  let remoteIp = editIPRemote.text,let remotePort = editPortRemote.text, let username =  editUserName.text, let password = editPassword.text, let name =  editName.text, let remotePortNumber = Int(remotePort),let localIp = editIPLocal.text, let localPort = editPortLocal.text {
-            if surv == nil {
-                if let parentLocation = parentLocation {
-                    let surveillance = Surveillance(context: appDel.managedObjectContext!)
-                    
-                    surveillance.name = name
-                    surveillance.username = username
-                    surveillance.password = password
-                    surveillance.surveillanceLevel = levelButton.titleLabel?.text
-                    surveillance.surveillanceZone = zoneButton.titleLabel?.text
-                    surveillance.surveillanceCategory = categoryButton.titleLabel?.text
-                    surveillance.localIp = localIp
-                    surveillance.localPort = localPort
-                    surveillance.ip = remoteIp
-                    surveillance.port = remotePortNumber as NSNumber?
-                    
-                    surveillance.isVisible = true
-                    
-                    surveillance.urlHome = ""
-                    surveillance.urlMoveUp = ""
-                    surveillance.urlMoveRight = ""
-                    surveillance.urlMoveLeft = ""
-                    surveillance.urlMoveDown = ""
-                    surveillance.urlAutoPan = ""
-                    surveillance.urlAutoPanStop = ""
-                    surveillance.urlPresetSequence = ""
-                    surveillance.urlPresetSequenceStop = ""
-                    surveillance.urlGetImage = ""
-                    
-                    surveillance.surveillanceLevelId = level?.id
-                    surveillance.surveillanceZoneId = zoneSelected?.id
-                    surveillance.surveillanceCategoryId = category?.id
-                    
-                    surveillance.tiltStep = 1
-                    surveillance.panStep = 1
-                    surveillance.autSpanStep = 1
-                    surveillance.dwellTime = 15
-                    surveillance.location = parentLocation
-                    CoreDataController.sharedInstance.saveChanges()
-                }
-            }else if let surv = surv {
-                
-                surv.name = name
-                surv.username = username
-                surv.password = password
-                
-                surv.surveillanceLevel = levelButton.titleLabel?.text
-                surv.surveillanceZone = zoneButton.titleLabel?.text
-                surv.surveillanceCategory = categoryButton.titleLabel?.text
-                
-                surv.surveillanceLevelId = level?.id
-                surv.surveillanceZoneId = zoneSelected?.id
-                surv.surveillanceCategoryId = category?.id
-                
-                surv.localIp = localIp
-                surv.localPort = localPort
-                surv.ip = remoteIp
-                surv.port = remotePortNumber as NSNumber?
-                
-                CoreDataController.sharedInstance.saveChanges()
-            }
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissViewController))
+        tapGesture.delegate = self
+        self.view.addGestureRecognizer(tapGesture)
+        
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        
+        editIPRemote.delegate   = self
+        editPortRemote.delegate = self
+        editUserName.delegate   = self
+        editPassword.delegate   = self
+        editName.delegate       = self
+        editIPLocal.delegate    = self
+        editPortLocal.delegate  = self
+        
+        if let surv = surv {
             
-            self.dismiss(animated: true, completion: nil)
-            delegate?.addEditSurveillanceFinished()
+            editIPRemote.text = surv.ip
+            if let port = surv.port { editPortRemote.text = "\(port)" }
+            editUserName.text = surv.username
+            editPassword.text = surv.password
+            editName.text     = surv.name
+            
+            levelButton.setTitle(surv.surveillanceLevel, for: UIControlState())
+            zoneButton.setTitle(surv.surveillanceZone, for: UIControlState())
+            categoryButton.setTitle(surv.surveillanceCategory, for: UIControlState())
+            
+            if let levelId = surv.surveillanceLevelId as? Int { level = DatabaseZoneController.shared.getZoneById(levelId, location: surv.location!) }
+            if let zoneId = surv.surveillanceLevelId as? Int { zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: surv.location!) }
+            if let categoryId = surv.surveillanceLevelId as? Int { category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: surv.location!) }
+            
+            if let localIp = surv.localIp { editIPLocal.text = localIp }
+            if let localPort = surv.localPort { editPortLocal.text = localPort }
         }
     }
     
@@ -250,9 +168,111 @@ class SurveillanceSettingsVC: PopoverVC {
         
         UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
-    
 }
 
+// MARK: - Logic
+extension SurveillanceSettingsVC {
+    fileprivate func save() {
+        if  let remoteIp = editIPRemote.text,let remotePort = editPortRemote.text, let username =  editUserName.text, let password = editPassword.text, let name =  editName.text, let remotePortNumber = Int(remotePort),let localIp = editIPLocal.text, let localPort = editPortLocal.text {
+            if surv == nil {
+                if let parentLocation = parentLocation {
+                    let surveillance = Surveillance(context: appDel.managedObjectContext!)
+                    
+                    surveillance.name                 = name
+                    surveillance.username             = username
+                    surveillance.password             = password
+                    surveillance.surveillanceLevel    = levelButton.titleLabel?.text
+                    surveillance.surveillanceZone     = zoneButton.titleLabel?.text
+                    surveillance.surveillanceCategory = categoryButton.titleLabel?.text
+                    surveillance.localIp              = localIp
+                    surveillance.localPort            = localPort
+                    surveillance.ip                   = remoteIp
+                    surveillance.port                 = remotePortNumber as NSNumber?
+                    
+                    surveillance.isVisible = true
+                    
+                    surveillance.urlHome               = ""
+                    surveillance.urlMoveUp             = ""
+                    surveillance.urlMoveRight          = ""
+                    surveillance.urlMoveLeft           = ""
+                    surveillance.urlMoveDown           = ""
+                    surveillance.urlAutoPan            = ""
+                    surveillance.urlAutoPanStop        = ""
+                    surveillance.urlPresetSequence     = ""
+                    surveillance.urlPresetSequenceStop = ""
+                    surveillance.urlGetImage           = ""
+                    
+                    surveillance.surveillanceLevelId    = level?.id
+                    surveillance.surveillanceZoneId     = zoneSelected?.id
+                    surveillance.surveillanceCategoryId = category?.id
+                    
+                    surveillance.tiltStep    = 1
+                    surveillance.panStep     = 1
+                    surveillance.autSpanStep = 1
+                    surveillance.dwellTime   = 15
+                    surveillance.location    = parentLocation
+                    CoreDataController.sharedInstance.saveChanges()
+                }
+            }else if let surv = surv {
+                
+                surv.name     = name
+                surv.username = username
+                surv.password = password
+                
+                surv.surveillanceLevel    = levelButton.titleLabel?.text
+                surv.surveillanceZone     = zoneButton.titleLabel?.text
+                surv.surveillanceCategory = categoryButton.titleLabel?.text
+                
+                surv.surveillanceLevelId    = level?.id
+                surv.surveillanceZoneId     = zoneSelected?.id
+                surv.surveillanceCategoryId = category?.id
+                
+                surv.localIp   = localIp
+                surv.localPort = localPort
+                surv.ip        = remoteIp
+                surv.port      = remotePortNumber as NSNumber?
+                
+                CoreDataController.sharedInstance.saveChanges()
+            }
+            
+            self.dismiss(animated: true, completion: nil)
+            delegate?.addEditSurveillanceFinished()
+        }
+    }
+    
+    fileprivate func levelTapped(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(parentLocation)
+        for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
+        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
+        openPopover(sender, popOverList:popoverList)
+    }
+    
+    fileprivate func categoryTapped(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(parentLocation)
+        for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
+        
+        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
+        openPopover(sender, popOverList:popoverList)
+    }
+    
+    fileprivate func zoneTapped(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        if let level = level {
+            let list:[Zone] = DatabaseZoneController.shared.getZoneByLevel(parentLocation, parentZone: level)
+            for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
+        }
+        
+        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
+        openPopover(sender, popOverList:popoverList)
+    }
+}
+
+// MARK: - Gesture Recognizer Delegate
 extension SurveillanceSettingsVC : UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if let touchView = touch.view { if touchView.isDescendant(of: backView) { dismissEditing(); return false } }
@@ -284,6 +304,7 @@ extension SurveillanceSettingsVC : UIViewControllerTransitioningDelegate {
     
 }
 
+// MARK: - TextField Delegate
 extension SurveillanceSettingsVC: UITextFieldDelegate{
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

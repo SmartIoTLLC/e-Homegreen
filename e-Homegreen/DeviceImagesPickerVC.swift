@@ -17,18 +17,15 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
     var isPresenting: Bool = true
     var appDel:AppDelegate
     
-    @IBAction func btnBack(_ sender: AnyObject) {
-        self.dismiss(animated: true) { () -> Void in
-        }
-    }
+    var deviceImages:[DeviceImage]
     
+    @IBAction func btnBack(_ sender: AnyObject) {
+        dismissModal()
+    }
     @IBAction func addNewImage(_ sender: AnyObject) {
         showGallery(-1, user: device.gateway.location.user!).delegate = self
     }
-    
     @IBOutlet weak var tableView: UITableView!
-    
-    var deviceImages:[DeviceImage]
 
     init(device:Device, point:CGPoint){
         self.device = device
@@ -44,11 +41,88 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupViews()
+    }
+ 
+}
+
+// MARK: - TableView Delegate
+extension DeviceImagesPickerVC {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        showGallery(indexPath.row, user: device.gateway.location.user).delegate = self
+    }
+}
+
+// MARK: - TableView Data Source
+extension DeviceImagesPickerVC {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return deviceImages.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "deviceImageCell", for: indexPath) as? DeviceImagePickerTVC {
+            
+            cell.setCell(deviceImages: deviceImages, indexPathRow: indexPath.row)
+            
+            return cell
+        }
+        
+        return UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        return makeRowAction(at: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete { deleteDevices(indexPath: indexPath) }
+    }
+}
+
+// MARK: - Setup views
+extension DeviceImagesPickerVC {
+    fileprivate func setupViews() {
         tableView.register(UINib(nibName: "DeviceImagePickerTVC", bundle: nil), forCellReuseIdentifier: "deviceImageCell")
         tableView.reloadData()
+    }
+    
+    fileprivate func makeRowAction(at indexPath: IndexPath) -> [UITableViewRowAction] {
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
+            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.destructive){(action) -> Void in
+                self.tableView(self.tableView, commit: UITableViewCellEditingStyle.delete, forRowAt: indexPath)
+            }
+            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+            deleteMenu.addAction(delete)
+            deleteMenu.addAction(cancelDelete)
+            if let presentationController = deleteMenu.popoverPresentationController {
+                if let cell = self.tableView.cellForRow(at: indexPath) {
+                    presentationController.sourceView = cell
+                    presentationController.sourceRect = cell.bounds
+                }
+            }
+            self.present(deleteMenu, animated: true, completion: nil)
+        })
+        
+        button.backgroundColor = UIColor.red
+        return [button]
+    }
+}
+// MARK: - Logic
+extension DeviceImagesPickerVC {
+    fileprivate func deleteDevices(indexPath: IndexPath) {
+        // Here needs to be deleted even devices that are from gateway that is going to be deleted
+        if let moc = appDel.managedObjectContext {
+            moc.delete(deviceImages[indexPath.row])
+            deviceImages.remove(at: indexPath.row)
+            appDel.saveContext()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+            tableView.reloadData()
+        }
+        
     }
     
     func backString(_ strText: String, imageIndex:Int) {
@@ -101,12 +175,12 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
         } catch {}
         
         tableView.reloadData()
-
+        
     }
     
     func backImage(_ image:Image, imageIndex:Int) {
         if imageIndex == -1 {
-            // This coudl be a problem because it doesn't have default image. So default image was putt in this case:
+            // This could be a problem because it doesn't have default image. So default image was putt in this case:
             let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
             deviceImage.state = NSNumber(value: (Int(deviceImages[deviceImages.count-1].state!) + 1))
             deviceImage.defaultImage = "12 Appliance - Power - 02"
@@ -117,62 +191,13 @@ class DeviceImagesPickerVC: UIViewController, UITableViewDataSource, UITableView
             deviceImages[imageIndex].customImageId = image.imageId
         }
         
-        do { try appDel.managedObjectContext?.save()
+        do {
+            if let moc = appDel.managedObjectContext {
+                try moc.save()
+            }
         } catch {}
         
         tableView.reloadData()
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return deviceImages.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "deviceImageCell", for: indexPath) as? DeviceImagePickerTVC {
-            
-            cell.setCell(deviceImages: deviceImages, indexPathRow: indexPath.row)
-            
-            return cell
-        }
-
-        return UITableViewCell()
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        showGallery(indexPath.row, user: device.gateway.location.user).delegate = self
-    }
-    
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
-            let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.destructive){(action) -> Void in
-                self.tableView(self.tableView, commit: UITableViewCellEditingStyle.delete, forRowAt: indexPath)
-            }
-            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
-            deleteMenu.addAction(delete)
-            deleteMenu.addAction(cancelDelete)
-            if let presentationController = deleteMenu.popoverPresentationController {
-                presentationController.sourceView = tableView.cellForRow(at: indexPath)
-                presentationController.sourceRect = tableView.cellForRow(at: indexPath)!.bounds
-            }
-            self.present(deleteMenu, animated: true, completion: nil)
-        })
-        
-        button.backgroundColor = UIColor.red
-        return [button]
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        
-        if editingStyle == .delete {
-            // Here needs to be deleted even devices that are from gateway that is going to be deleted
-            appDel.managedObjectContext?.delete(deviceImages[indexPath.row])
-            deviceImages.remove(at: indexPath.row)
-            appDel.saveContext()
-            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
-            tableView.reloadData()
-        }
-        
     }
 }
 

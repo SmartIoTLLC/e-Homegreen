@@ -21,6 +21,19 @@ class AddLocationXIB: PopoverVC {
     
     var delegate:AddEditLocationDelegate?
     
+    var annotation = MKPointAnnotation()
+
+    let locationManager = CLLocationManager()
+    
+    var button:UIButton!
+    
+    var appDel:AppDelegate!
+    var error:NSError? = nil
+    var location:Location?
+    var user:User?
+    
+    var radius:Double = 50
+    
     @IBOutlet weak var zoneBtn: CustomGradientButton!
     @IBOutlet weak var categoryBtn: CustomGradientButton!
     @IBOutlet weak var ssidBtn: CustomGradientButton!
@@ -40,45 +53,81 @@ class AddLocationXIB: PopoverVC {
     @IBOutlet weak var timerArrowButton: UIButton!
     @IBOutlet weak var securityArrowButton: UIButton!
     
-    var annotation = MKPointAnnotation()
-    
     @IBOutlet weak var radiusLabel: UILabel!
     @IBOutlet weak var radiusSlider: UISlider!
     
     @IBOutlet weak var setFilterSwitch: UISwitch!
-    
-    let locationManager = CLLocationManager()
-    
-    var button:UIButton!
-    
-    var appDel:AppDelegate!
-    var error:NSError? = nil
-    var location:Location?
-    var user:User?
-    
-    var radius:Double = 50
-    
+
+    @IBAction func saveAction(_ sender: AnyObject) {
+        save()
+    }
+    @IBAction func cancelAction(_ sender: UIButton) {
+        cancel()
+    }
+    @IBAction func chooseTimerAction(_ sender: UIButton) {
+        chooseTimer(sender: sender)
+    }
+    @IBAction func chooseSecurity(_ sender: UIButton) {
+        chooseSecurity(via: sender)
+    }
+    @IBAction func changeRadiusAction(_ sender: UISlider) {
+        changedRadius(sender: sender)
+    }
+    @IBAction func importZone(_ sender: AnyObject) {
+        importZone()
+    }
+    @IBAction func importCategory(_ sender: AnyObject) {
+        importCategory()
+    }
+    @IBAction func importSSID(_ sender: AnyObject) {
+        importSSID()
+    }
+
     init(location:Location?, user:User?){
         super.init(nibName: "AddLocationXIB", bundle: nil)
-        transitioningDelegate = self
+        transitioningDelegate  = self
         modalPresentationStyle = UIModalPresentationStyle.custom
-        self.location = location
-        self.user = user
+        self.location          = location
+        self.user              = user
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        appDel = UIApplication.shared.delegate as! AppDelegate
         
         setupViews()
     }
     
+    override func nameAndId(_ name: String, id: String) {
+        if button.tag == 2 {
+            if let gateway = DatabaseGatewayController.shared.getGatewayByStringObjectID(id) {
+                DatabaseSecurityController.shared.createSecurityForLocation(location!, gateway: gateway)
+                securityButton.setTitle(gateway.gatewayDescription, for: UIControlState())
+            } else {
+                DatabaseSecurityController.shared.removeSecurityForLocation(location!)
+                securityButton.setTitle("", for: UIControlState())
+            }
+        }
+        if button.tag == 1 {
+            if let timer = DatabaseTimersController.shared.getTimerByStringObjectID(id) {
+                location!.timerId = timer.id
+                timerButton.setTitle(timer.timerName, for: UIControlState())
+            } else {
+                location!.timerId = nil
+                timerButton.setTitle("", for: UIControlState())
+            }
+        }
+    }
+}
+
+// MARK: - Setup views
+extension AddLocationXIB {
     func setupViews() {
+        appDel = UIApplication.shared.delegate as! AppDelegate
+        
         UIView.hr_setToastThemeColor(color: UIColor.red)
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         
@@ -98,12 +147,12 @@ class AddLocationXIB: PopoverVC {
         locationMap.addGestureRecognizer(lpgr)
         
         if let location = location {
-            zoneBtn.isEnabled = true
-            categoryBtn.isEnabled = true
-            ssidBtn.isEnabled = true
-            timerButton.isEnabled = true
-            securityButton.isEnabled = true
-            timerArrowButton.isEnabled = true
+            zoneBtn.isEnabled             = true
+            categoryBtn.isEnabled         = true
+            ssidBtn.isEnabled             = true
+            timerButton.isEnabled         = true
+            securityButton.isEnabled      = true
+            timerArrowButton.isEnabled    = true
             securityArrowButton.isEnabled = true
             
             locationNameTextField.text = location.name
@@ -136,48 +185,130 @@ class AddLocationXIB: PopoverVC {
                 self.locationMap.setRegion(region, animated: true)
             }
         }else{
-            zoneBtn.isEnabled = false
-            categoryBtn.isEnabled = false
-            ssidBtn.isEnabled = false
-            timerButton.isEnabled = false
-            securityButton.isEnabled = false
-            timerArrowButton.isEnabled = false
+            zoneBtn.isEnabled             = false
+            categoryBtn.isEnabled         = false
+            ssidBtn.isEnabled             = false
+            timerButton.isEnabled         = false
+            securityButton.isEnabled      = false
+            timerArrowButton.isEnabled    = false
             securityArrowButton.isEnabled = false
             
             radiusLabel.text = "Radius: \(Int(radius))m"
             if CLLocationManager.locationServicesEnabled() {
-                locationManager.delegate = self
+                locationManager.delegate        = self
                 locationManager.desiredAccuracy = kCLLocationAccuracyBest
                 locationManager.requestAlwaysAuthorization()
                 locationManager.startUpdatingLocation()
             }
         }
-
-    }
-    
-    override func nameAndId(_ name: String, id: String) {
-        if button.tag == 2 {
-            if let gateway = DatabaseGatewayController.shared.getGatewayByStringObjectID(id) {
-                DatabaseSecurityController.shared.createSecurityForLocation(location!, gateway: gateway)
-                securityButton.setTitle(gateway.gatewayDescription, for: UIControlState())
-            } else {
-                DatabaseSecurityController.shared.removeSecurityForLocation(location!)
-                securityButton.setTitle("", for: UIControlState())
-            }
-        }
-        if button.tag == 1 {
-            if let timer = DatabaseTimersController.shared.getTimerByStringObjectID(id) {
-                location!.timerId = timer.id
-                timerButton.setTitle(timer.timerName, for: UIControlState())
-            } else {
-                location!.timerId = nil
-                timerButton.setTitle("", for: UIControlState())
-            }
-        }
+        
     }
     
     func endEditingNow(){
         idTextField.resignFirstResponder()
+    }
+}
+
+// MARK: - Logic
+extension AddLocationXIB {
+    fileprivate func importZone() {
+        if let navVC = UIStoryboard(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImportZone") as? UINavigationController{
+            if let importZoneViewController = navVC.topViewController as? ImportZoneViewController {
+                importZoneViewController.location = location
+                self.present(navVC, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    fileprivate func importCategory() {
+        if let navVC = UIStoryboard(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImportCategory") as? UINavigationController{
+            if let importCategoryViewController = navVC.topViewController as? ImportCategoryViewController {
+                importCategoryViewController.location = location
+                self.present(navVC, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    fileprivate func importSSID() {
+        if let navVC = UIStoryboard(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImportSSID") as? UINavigationController{
+            if let importSSID = navVC.topViewController as? ImportSSIDViewController {
+                importSSID.location = location
+                self.present(navVC, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    fileprivate func save() {
+        guard let locationName = locationNameTextField.text , locationName != "" else { self.view.makeToast(message: "Write location name"); return }
+        
+        guard annotation.coordinate.longitude != 0 && annotation.coordinate.latitude != 0 else { self.view.makeToast(message: "Choose location from map"); return }
+        
+        if let location = location {
+            guard let orderId = idTextField.text, let id = Int(orderId) else { self.view.makeToast(message: "Id have to be a number"); return }
+            location.name             = locationNameTextField.text!
+            location.latitude         = annotation.coordinate.latitude as NSNumber?
+            location.longitude        = annotation.coordinate.longitude as NSNumber?
+            location.orderId          = id as NSNumber?
+            location.radius           = radius as NSNumber?
+            location.filterOnLocation = setFilterSwitch.isOn as NSNumber?
+            CoreDataController.sharedInstance.saveChanges()
+            
+            delegate?.editAddLocationFinished()
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            if let user = user {
+                if let newLocation = NSEntityDescription.insertNewObject(forEntityName: "Location", into: appDel.managedObjectContext!) as? Location{
+                    newLocation.name             = locationNameTextField.text!
+                    newLocation.latitude         = annotation.coordinate.latitude as NSNumber?
+                    newLocation.longitude        = annotation.coordinate.longitude as NSNumber?
+                    newLocation.radius           = radius as NSNumber?
+                    newLocation.user             = user
+                    newLocation.filterOnLocation = setFilterSwitch.isOn as NSNumber?
+                    if let orderId = idTextField.text, let id = Int(orderId) { newLocation.orderId = id as NSNumber?
+                    } else { newLocation.orderId = DatabaseLocationController.shared.getNextAvailableId(user) as NSNumber? }
+                    createZonesAndCategories(newLocation)
+                    CoreDataController.sharedInstance.saveChanges()
+                    
+                    DatabaseLocationController.shared.startMonitoringLocation(newLocation)
+                    
+                    delegate?.editAddLocationFinished()
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }
+        }
+    }
+    
+    fileprivate func cancel() {
+        if let moc = appDel.managedObjectContext {
+            moc.rollback()
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    fileprivate func chooseSecurity(via sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        let list:[Gateway] = DatabaseGatewayController.shared.getGatewayByLocationForSecurity(location!)
+        for item in list { popoverList.append(PopOverItem(name: item.gatewayDescription, id: item.objectID.uriRepresentation().absoluteString)) }
+        popoverList.insert(PopOverItem(name: "  ", id: ""), at: 0)
+        openPopover(sender, popOverList:popoverList)
+    }
+    
+    fileprivate func chooseTimer(sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        let list:[Timer] = DatabaseTimersController.shared.getUserTimers(location!)
+        for item in list {
+            popoverList.append(PopOverItem(name: item.timerName, id: item.objectID.uriRepresentation().absoluteString))
+        }
+        popoverList.insert(PopOverItem(name: "  ", id: ""), at: 0)
+        openPopover(sender, popOverList:popoverList)
+    }
+    
+    fileprivate func changedRadius(sender: UISlider) {
+        radius = Double(sender.value)
+        radiusLabel.text = "Radius: \(Int(radius))m"
+        addRadiusCircle(CLLocation(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude))
     }
     
     // tap on map and find coordinate
@@ -192,31 +323,36 @@ class AddLocationXIB: PopoverVC {
             addRadiusCircle(CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude))
             return
         }
-
+        
     }
     
     func createZonesAndCategories(_ location:Location) {
         if let zonesJSON = DataImporter.createZonesFromFileFromNSBundle() {
             for zoneJSON in zonesJSON {
-                let zone = NSEntityDescription.insertNewObject(forEntityName: "Zone", into: appDel.managedObjectContext!) as! Zone
-                if zoneJSON.id == 254 || zoneJSON.id == 255 {
-                    (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId, zone.allowOption) = (zoneJSON.id as NSNumber?, zoneJSON.name, zoneJSON.description, zoneJSON.level as NSNumber?, NSNumber(value: false as Bool), location, zoneJSON.id as NSNumber?, 1)
-                } else {
-                    (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId, zone.allowOption) = (zoneJSON.id as NSNumber?, zoneJSON.name, zoneJSON.description, zoneJSON.level as NSNumber?, NSNumber(value: true as Bool), location, zoneJSON.id as NSNumber?, 1)
+                if let moc = appDel.managedObjectContext {
+                    if let zone = NSEntityDescription.insertNewObject(forEntityName: "Zone", into: moc) as? Zone {
+                        if zoneJSON.id == 254 || zoneJSON.id == 255 {
+                            (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId, zone.allowOption) = (zoneJSON.id as NSNumber?, zoneJSON.name, zoneJSON.description, zoneJSON.level as NSNumber?, NSNumber(value: false as Bool), location, zoneJSON.id as NSNumber?, 1)
+                        } else {
+                            (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId, zone.allowOption) = (zoneJSON.id as NSNumber?, zoneJSON.name, zoneJSON.description, zoneJSON.level as NSNumber?, NSNumber(value: true as Bool), location, zoneJSON.id as NSNumber?, 1)
+                        }
+                        CoreDataController.sharedInstance.saveChanges()
+                    }
                 }
-                CoreDataController.sharedInstance.saveChanges()
-                
             }
         }
         if let categoriesJSON = DataImporter.createCategoriesFromFileFromNSBundle() {
             for categoryJSON in categoriesJSON {
-                let category = NSEntityDescription.insertNewObject(forEntityName: "Category", into: appDel.managedObjectContext!) as! Category
-                if categoryJSON.id == 2 || categoryJSON.id == 3 || categoryJSON.id == 5 || categoryJSON.id == 6 || categoryJSON.id == 7 || categoryJSON.id == 8 || categoryJSON.id == 9 || categoryJSON.id == 10 || categoryJSON.id == 255 {
-                    (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId, category.allowOption) = (categoryJSON.id as NSNumber?, categoryJSON.name, categoryJSON.description, NSNumber(value: false as Bool), location, categoryJSON.id as NSNumber?, 3)
-                } else {
-                    (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId, category.allowOption) = (categoryJSON.id as NSNumber?, categoryJSON.name, categoryJSON.description, NSNumber(value: true as Bool), location, categoryJSON.id as NSNumber?, 3)
+                if let moc = appDel.managedObjectContext {
+                    if let category = NSEntityDescription.insertNewObject(forEntityName: "Category", into: moc) as? Category {
+                        if categoryJSON.id == 2 || categoryJSON.id == 3 || categoryJSON.id == 5 || categoryJSON.id == 6 || categoryJSON.id == 7 || categoryJSON.id == 8 || categoryJSON.id == 9 || categoryJSON.id == 10 || categoryJSON.id == 255 {
+                            (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId, category.allowOption) = (categoryJSON.id as NSNumber?, categoryJSON.name, categoryJSON.description, NSNumber(value: false as Bool), location, categoryJSON.id as NSNumber?, 3)
+                        } else {
+                            (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId, category.allowOption) = (categoryJSON.id as NSNumber?, categoryJSON.name, categoryJSON.description, NSNumber(value: true as Bool), location, categoryJSON.id as NSNumber?, 3)
+                        }
+                        CoreDataController.sharedInstance.saveChanges()
+                    }
                 }
-                CoreDataController.sharedInstance.saveChanges()
             }
         }
     }
@@ -234,112 +370,9 @@ class AddLocationXIB: PopoverVC {
         self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func saveAction(_ sender: AnyObject) {
-        
-        guard let locationName = locationNameTextField.text , locationName != "" else { self.view.makeToast(message: "Write location name"); return }
-        
-        guard annotation.coordinate.longitude != 0 && annotation.coordinate.latitude != 0 else { self.view.makeToast(message: "Choose location from map"); return }
-        
-        if let location = location {
-            guard let orderId = idTextField.text, let id = Int(orderId) else { self.view.makeToast(message: "Id have to be a number"); return }
-            location.name = locationNameTextField.text!
-            location.latitude = annotation.coordinate.latitude as NSNumber?
-            location.longitude = annotation.coordinate.longitude as NSNumber?
-            location.orderId = id as NSNumber?
-            location.radius = radius as NSNumber?
-            location.filterOnLocation = setFilterSwitch.isOn as NSNumber?
-            CoreDataController.sharedInstance.saveChanges()
-            
-            delegate?.editAddLocationFinished()
-            self.dismiss(animated: true, completion: nil)
-        } else {
-            if let user = user {
-                if let newLocation = NSEntityDescription.insertNewObject(forEntityName: "Location", into: appDel.managedObjectContext!) as? Location{
-                    newLocation.name = locationNameTextField.text!
-                    newLocation.latitude = annotation.coordinate.latitude as NSNumber?
-                    newLocation.longitude = annotation.coordinate.longitude as NSNumber?
-                    newLocation.radius = radius as NSNumber?
-                    newLocation.user = user
-                    newLocation.filterOnLocation = setFilterSwitch.isOn as NSNumber?
-                    if let orderId = idTextField.text, let id = Int(orderId) { newLocation.orderId = id as NSNumber?
-                    } else { newLocation.orderId = DatabaseLocationController.shared.getNextAvailableId(user) as NSNumber? }
-                    createZonesAndCategories(newLocation)
-                    CoreDataController.sharedInstance.saveChanges()
-                    
-                    DatabaseLocationController.shared.startMonitoringLocation(newLocation)
-                    
-                    delegate?.editAddLocationFinished()
-                    self.dismiss(animated: true, completion: nil)
-                }
-            }
-        }
-
-        
-    }
-    
-    @IBAction func cancelAction(_ sender: UIButton) {
-        appDel.managedObjectContext?.rollback()
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func chooseTimerAction(_ sender: UIButton) {
-        button = sender
-        var popoverList:[PopOverItem] = []
-        let list:[Timer] = DatabaseTimersController.shared.getUserTimers(location!)
-        for item in list {
-            popoverList.append(PopOverItem(name: item.timerName, id: item.objectID.uriRepresentation().absoluteString))
-        }
-        popoverList.insert(PopOverItem(name: "  ", id: ""), at: 0)
-        openPopover(sender, popOverList:popoverList)
-
-    }
-    
-    @IBAction func chooseSecurity(_ sender: UIButton) {
-        button = sender
-        var popoverList:[PopOverItem] = []
-        let list:[Gateway] = DatabaseGatewayController.shared.getGatewayByLocationForSecurity(location!)
-        for item in list { popoverList.append(PopOverItem(name: item.gatewayDescription, id: item.objectID.uriRepresentation().absoluteString)) }
-        popoverList.insert(PopOverItem(name: "  ", id: ""), at: 0)
-        openPopover(sender, popOverList:popoverList)
-    }
-    
-    @IBAction func changeRadiusAction(_ sender: UISlider) {
-        radius = Double(sender.value)
-        radiusLabel.text = "Radius: \(Int(radius))m"
-        addRadiusCircle(CLLocation(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude))
-    }
-    
-    @IBAction func importZone(_ sender: AnyObject) {
-        
-        if let navVC = UIStoryboard(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImportZone") as? UINavigationController{
-            if let importZoneViewController = navVC.topViewController as? ImportZoneViewController {
-                importZoneViewController.location = location
-                self.present(navVC, animated: true, completion: nil)
-            }
-        }
-    }
-    
-    @IBAction func importCategory(_ sender: AnyObject) {
-        if let navVC = UIStoryboard(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImportCategory") as? UINavigationController{
-            if let importCategoryViewController = navVC.topViewController as? ImportCategoryViewController {
-                importCategoryViewController.location = location
-                self.present(navVC, animated: true, completion: nil)
-            }
-        }
-    }
-    
-    @IBAction func importSSID(_ sender: AnyObject) {
-        if let navVC = UIStoryboard(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImportSSID") as? UINavigationController{
-            if let importSSID = navVC.topViewController as? ImportSSIDViewController {
-                importSSID.location = location
-                self.present(navVC, animated: true, completion: nil)
-            }
-        }
-    }
-    
-
 }
 
+// MARK: - TextField Delegate
 extension AddLocationXIB : UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -347,6 +380,7 @@ extension AddLocationXIB : UITextFieldDelegate {
     }
 }
 
+// MARK: - Gesture recognizer delegate
 extension AddLocationXIB : UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if let touchView = touch.view { if touchView.isDescendant(of: backView) { dismissEditing(); return false } }
@@ -354,6 +388,7 @@ extension AddLocationXIB : UIGestureRecognizerDelegate {
     }
 }
 
+// MARK: - MapView delegate
 extension AddLocationXIB : MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKCircle {
@@ -367,6 +402,7 @@ extension AddLocationXIB : MKMapViewDelegate {
     }
 }
 
+// MARK: - Location service
 extension AddLocationXIB : CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
         let location = locations.last! as CLLocation

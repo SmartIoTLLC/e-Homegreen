@@ -133,12 +133,12 @@ class EditZoneViewController: PopoverVC {
                     }
                 } else {
                     if let zoneInsert = NSEntityDescription.insertNewObject(forEntityName: "Zone", into: appDel.managedObjectContext!) as? Zone {
-                        zoneInsert.id = id as NSNumber?
-                        zoneInsert.name = name
-                        zoneInsert.location = location
-                        zoneInsert.orderId = id as NSNumber?
-                        zoneInsert.allowOption = 1
-                        zoneInsert.isVisible = true
+                        zoneInsert.id              = id as NSNumber?
+                        zoneInsert.name            = name
+                        zoneInsert.location        = location
+                        zoneInsert.orderId         = id as NSNumber?
+                        zoneInsert.allowOption     = 1
+                        zoneInsert.isVisible       = true
                         zoneInsert.zoneDescription = levelTextField.text
                         if let level = level { zoneInsert.level = level.id } else { zoneInsert.level = 0 }
                     }
@@ -146,7 +146,7 @@ class EditZoneViewController: PopoverVC {
             }
             CoreDataController.sharedInstance.saveChanges()
         } else {
-            editZone?.name = name
+            editZone?.name            = name
             editZone?.zoneDescription = levelTextField.text
             if let level = level { editZone?.level = level.id } else { editZone?.level = 0 }
             

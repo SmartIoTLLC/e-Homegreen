@@ -19,14 +19,14 @@ class PopoverVC: UIViewController, UIPopoverPresentationControllerDelegate, PopO
         let storyboard = UIStoryboard(name: "Popover", bundle: nil)
         popoverVC = storyboard.instantiateViewController(withIdentifier: "codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .popover
-        popoverVC.preferredContentSize = CGSize(width: 300, height: 200)
-        popoverVC.delegate = self
-        popoverVC.popOverList = popOverList
+        popoverVC.preferredContentSize   = CGSize(width: 300, height: 200)
+        popoverVC.delegate               = self
+        popoverVC.popOverList            = popOverList
         if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
+            popoverController.delegate                 = self
             popoverController.permittedArrowDirections = .any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
+            popoverController.sourceView               = sender as? UIView
+            popoverController.sourceRect               = sender.bounds
             popoverController.backgroundColor = UIColor.lightGray
             present(popoverVC, animated: true, completion: nil)
         }
@@ -36,16 +36,16 @@ class PopoverVC: UIViewController, UIPopoverPresentationControllerDelegate, PopO
         let storyboard = UIStoryboard(name: "Popover", bundle: nil)
         popoverVC = storyboard.instantiateViewController(withIdentifier: "codePopover") as! PopOverViewController
         popoverVC.modalPresentationStyle = .popover
-        popoverVC.preferredContentSize = CGSize(width: 300, height: 200)
-        popoverVC.delegate = self
-        popoverVC.popOverList = popOverList
-        popoverVC.cellWithTwoTextRows = true
+        popoverVC.preferredContentSize   = CGSize(width: 300, height: 200)
+        popoverVC.delegate               = self
+        popoverVC.popOverList            = popOverList
+        popoverVC.cellWithTwoTextRows    = true
         if let popoverController = popoverVC.popoverPresentationController {
-            popoverController.delegate = self
+            popoverController.delegate                 = self
             popoverController.permittedArrowDirections = .any
-            popoverController.sourceView = sender as? UIView
-            popoverController.sourceRect = sender.bounds
-            popoverController.backgroundColor = UIColor.lightGray
+            popoverController.sourceView               = sender as? UIView
+            popoverController.sourceRect               = sender.bounds
+            popoverController.backgroundColor          = UIColor.lightGray
             present(popoverVC, animated: true, completion: nil)
         }
     }

@@ -15,17 +15,20 @@ import UIKit
 class ProgressBarVC: UIViewController {
     var delegate:ProgressBarDelegate?
     
-    @IBOutlet weak var progressBarView: UIView!
-    @IBOutlet weak var lblTitle: UILabel!
-    @IBOutlet weak var progressView: UIProgressView!
-    @IBOutlet weak var lblPercentage: UILabel!
-    @IBOutlet weak var lblHowMuchOf: UILabel!
-    
     var progressBarTitle:String = ""
     var percentage:Float = 0.0
     var howMuchOf:String = ""
     
     var isPresenting: Bool = true
+    
+    @IBOutlet weak var progressBarView: UIView!
+    @IBOutlet weak var lblTitle: UILabel!
+    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var lblPercentage: UILabel!
+    @IBOutlet weak var lblHowMuchOf: UILabel!
+    @IBAction func btnExit(_ sender: AnyObject) {
+        delegate?.progressBarDidPressedExit()
+    }
     
     init (title:String, percentage: Float, howMuchOf:String) {
         super.init(nibName: "ProgressBarVC", bundle: nil)
@@ -35,13 +38,9 @@ class ProgressBarVC: UIViewController {
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.custom
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    @IBAction func btnExit(_ sender: AnyObject) {
-        delegate?.progressBarDidPressedExit()
     }
     
     override func viewDidLoad() {
@@ -49,7 +48,11 @@ class ProgressBarVC: UIViewController {
         
         setupViews()
     }
-    
+
+}
+
+// MARK: - View setup
+extension ProgressBarVC {
     func setupViews() {
         progressBarView.layer.borderWidth = 1
         progressBarView.layer.borderColor = UIColor.lightGray.cgColor
@@ -63,7 +66,6 @@ class ProgressBarVC: UIViewController {
     func dissmissProgressBar () {
         self.dismiss(animated: true, completion: nil)
     }
-
 }
 
 extension ProgressBarVC : UIViewControllerAnimatedTransitioning {

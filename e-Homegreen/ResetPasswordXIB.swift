@@ -43,8 +43,8 @@ class ResetPasswordXIB: CommonXIBTransitionVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        oldPassswordTextField.delegate = self
-        newPasswordTextField.delegate = self
+        oldPassswordTextField.delegate    = self
+        newPasswordTextField.delegate     = self
         confirmPasswordTextField.delegate = self
 
     }

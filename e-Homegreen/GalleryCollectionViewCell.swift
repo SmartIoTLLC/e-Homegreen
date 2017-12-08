@@ -16,7 +16,7 @@ class GalleryCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         
         layer.masksToBounds = true
-        layer.cornerRadius = 5
+        layer.cornerRadius  = 5
     }
 
 }

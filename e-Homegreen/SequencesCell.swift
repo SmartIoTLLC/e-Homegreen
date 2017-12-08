@@ -18,9 +18,9 @@ class SequencesCell: UITableViewCell{
     
     func setCell(sequence: Sequence) {
         backgroundColor = .clear
-        labelID.text = "\(sequence.sequenceId)"
-        labelName.text = "\(sequence.sequenceName)"
-        address.text = "\(returnThreeCharactersForByte(Int(sequence.gateway.addressOne))):\(returnThreeCharactersForByte(Int(sequence.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(sequence.address)))"
+        labelID.text    = "\(sequence.sequenceId)"
+        labelName.text  = "\(sequence.sequenceName)"
+        address.text    = "\(returnThreeCharactersForByte(Int(sequence.gateway.addressOne))):\(returnThreeCharactersForByte(Int(sequence.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(sequence.address)))"
         
         if let id = sequence.sequenceImageOneCustom {
             if let image = DatabaseImageController.shared.getImageById(id) {

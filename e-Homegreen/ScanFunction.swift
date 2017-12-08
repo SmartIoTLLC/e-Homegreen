@@ -24,16 +24,16 @@ class ScanFunction {
     let gatewayAddress:[Byte]
     
     init(from:Int, to:Int, gateway:Gateway, scanForWhat:WhatToScan) {
-        self.from = from
-        self.to = to
-        self.sum = to - from + 1
-        self.counter = 0
-        self.gateway = gateway
+        self.from      = from
+        self.to        = to
+        self.sum       = to - from + 1
+        self.counter   = 0
+        self.gateway   = gateway
         gatewayAddress = [Byte(Int(gateway.addressOne)), Byte(Int(gateway.addressTwo)), Byte(Int(gateway.addressThree))]
         
         switch scanForWhat {
-        case .zone: scanWhat = ScanZone()
-        case .category: scanWhat = ScanCategory()
+            case .zone     : scanWhat = ScanZone()
+            case .category : scanWhat = ScanCategory()
         }
     }
     

@@ -46,9 +46,8 @@ extension TagsXIB: UITextFieldDelegate{
 }
 
 extension UIViewController {
-    func showTag() -> TagsXIB{
+    func showTag() {
         let tag = TagsXIB()
         self.present(tag, animated: true, completion: nil)
-        return tag
     }
 }

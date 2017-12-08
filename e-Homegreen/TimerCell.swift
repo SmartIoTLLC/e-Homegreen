@@ -18,9 +18,9 @@ class TimersCell: UITableViewCell{
     func setCell(timer: Timer) {
         backgroundColor = .clear
         
-        labelID.text = "\(timer.timerId)"
+        labelID.text   = "\(timer.timerId)"
         labelName.text = timer.timerName
-        address.text = "\(returnThreeCharactersForByte(Int(timer.gateway.addressOne))):\(returnThreeCharactersForByte(Int(timer.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(timer.address)))"
+        address.text   = "\(returnThreeCharactersForByte(Int(timer.gateway.addressOne))):\(returnThreeCharactersForByte(Int(timer.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(timer.address)))"
         
         if let id = timer.timerImageOneCustom {
             if let image = DatabaseImageController.shared.getImageById(id) {

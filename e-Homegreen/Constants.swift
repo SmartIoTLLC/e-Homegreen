@@ -29,15 +29,15 @@ enum InputError: Error {
 extension InputError: CustomStringConvertible {
     var description: String {
         switch self {
-        case .notConvertibleToInt: return "Not convertible to number."
-        case .fromBiggerThanTo: return "From is bigger then to."
-        case .notPositiveNumbers: return "Numbers must be positive."
-        case .inputMissing: return "Missing input."
-        case .idIncorrect: return "Id is incorrect."
-        case .numbersAreNegative: return "Numbers cab't be negative."
-        case .nothingToSearchFor: return "There is nothing to search for."
-        case .outOfRange: return "Search range is out of range."
-        case .specifyRange: return "You need to specify range."
+            case .notConvertibleToInt : return "Not convertible to number."
+            case .fromBiggerThanTo    : return "From is bigger then to."
+            case .notPositiveNumbers  : return "Numbers must be positive."
+            case .inputMissing        : return "Missing input."
+            case .idIncorrect         : return "Id is incorrect."
+            case .numbersAreNegative  : return "Numbers cab't be negative."
+            case .nothingToSearchFor  : return "There is nothing to search for."
+            case .outOfRange          : return "Search range is out of range."
+            case .specifyRange        : return "You need to specify range."
         }
     }
 }
@@ -74,18 +74,18 @@ struct CurtainControlMode {
     static let NOAndReset = 0x04
 }
 struct SecurityControlMode {
-    static let Away = "Away"
-    static let Day = "Day"
-    static let Night = "Night"
+    static let Away     = "Away"
+    static let Day      = "Day"
+    static let Night    = "Night"
     static let Vacation = "Vacation"
-    static let Disarm = "Disarm"
-    static let Panic = "Panic"
+    static let Disarm   = "Disarm"
+    static let Panic    = "Panic"
 }
 struct AlarmState {
-    static let Idle = "Idle"
+    static let Idle    = "Idle"
     static let Trouble = "Trouble"
-    static let Alarm = "Alarm"
-    static let Alert = "Alert"
+    static let Alarm   = "Alarm"
+    static let Alert   = "Alert"
 }
 
 struct Messages {
@@ -133,14 +133,14 @@ struct DigitalInput {
 //        DigitalInput.MotionSensor.description():0x84]
     
     struct Generic {
-        static let Open = 0x00
+        static let Open  = 0x00
         static let Close = 0x01
         static func description()->String {return "Generic"}
         static func description(_ state:Int) -> String { return state == 0x00 ? "Open" : "Close" }
     }
     
     struct NormallyOpen {
-        static let Ready = 0x00
+        static let Ready    = 0x00
         static let Triggerd = 0x01
         static func description()->String {return "Normally Open"}
         static func description(_ state:Int) -> String { return state == 0x00 ? "Ready" : "Triggerd" }
@@ -148,20 +148,20 @@ struct DigitalInput {
     
     struct NormallyClosed {
         static let Triggered = 0x00
-        static let Ready = 0x01
+        static let Ready     = 0x01
         static func description()->String {return "Normally Closed"}
         static func description(_ state:Int) -> String { return state == 0x00 ? "Triggered" : "Ready" }
     }
     
     struct MotionSensor {
-        static let Idle = 0x00
+        static let Idle   = 0x00
         static let Motion = 0x01
         static func description()->String {return "Motion Sensor"}
         static func description(_ state:Int) -> String { return state == 0x00 ? "Idle" : "Motion" }
     }
     
     struct ButtonNormallyOpen {
-        static let Press = 0x00
+        static let Press   = 0x00
         static let Release = 0x01
         static func description()->String {return "Button(NormallyOpen)"}
         static func description(_ state:Int) -> String { return state == 0x00 ? "Press" : "Release" }
@@ -169,18 +169,18 @@ struct DigitalInput {
     
     struct ButtonNormallyClosed {
         static let Release = 0x00
-        static let Press = 0x01
+        static let Press   = 0x01
         static func description()->String {return "Button(NormallyClosed)"}
         static func description(_ state:Int) -> String { return state == 0x00 ? "Release" : "Press" }
     }
     
     struct DigitalInputMode {
-        static let NormallyOpen = 0x00
-        static let NormallyClosed = 0x01
-        static let Generic = 0x02
-        static let ButtonNormallyOpen = 0x03
+        static let NormallyOpen         = 0x00
+        static let NormallyClosed       = 0x01
+        static let Generic              = 0x02
+        static let ButtonNormallyOpen   = 0x03
         static let ButtonNormallyClosed = 0x83
-        static let MotionSensor = 0x04
+        static let MotionSensor         = 0x04
 //        static let MultiSensorNormallyClosed = 0x84
     }
 }

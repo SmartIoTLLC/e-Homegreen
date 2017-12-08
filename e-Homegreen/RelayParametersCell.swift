@@ -14,6 +14,16 @@ protocol DevicePropertiesDelegate {
 
 class RelayParametersCell: PopoverVC {
     
+    var button:UIButton!
+    var level:Zone?
+    var zoneSelected:Zone?
+    var category:Category?
+    var device:Device
+    var appDel:AppDelegate!
+    var editedDevice:EditedDevice?
+    var isPresenting: Bool = true
+    var delegate: DevicePropertiesDelegate?
+    
     @IBOutlet weak var txtFieldName: UITextField!
     @IBOutlet weak var lblAddress:UILabel!
     @IBOutlet weak var lblChannel:UILabel!
@@ -27,20 +37,35 @@ class RelayParametersCell: PopoverVC {
     @IBOutlet weak var switchAllowCurtainControl: UISwitch!
     @IBOutlet weak var txtCurtainGroupId: UITextField!
     
-    var button:UIButton!
-    var level:Zone?
-    var zoneSelected:Zone?
-    var category:Category?
-    var device:Device
-    var appDel:AppDelegate!
-    var editedDevice:EditedDevice?
-    var isPresenting: Bool = true
-    var delegate: DevicePropertiesDelegate?
-    
     @IBOutlet weak var centerY: NSLayoutConstraint!
-    
     @IBOutlet weak var scrollView: UIScrollView!
-        
+    @IBAction func switchTrigered(_ sender: AnyObject) {
+    }
+    @IBAction func btnCancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    @IBAction func btnImages(_ sender: AnyObject, forEvent event: UIEvent) {
+        showImagePicker(sender: sender, event: event)
+    }
+    @IBAction func changeControlMode(_ sender: UIButton) {
+        changeControlModeTapped(sender: sender)
+    }
+    @IBAction func changeControlType(_ sender: UIButton) {
+        changeControlTypeTapped(sender: sender)
+    }
+    @IBAction func btnLevel (_ sender: UIButton) {
+        levelTapped(sender: sender)
+    }
+    @IBAction func btnZone (_ sender: UIButton) {
+        zoneTapped(sender: sender)
+    }
+    @IBAction func btnCategory (_ sender: UIButton) {
+        categoryTapped(sender: sender)
+    }
+    @IBAction func btnSave(_ sender: AnyObject) {
+        save()
+    }
+    
     init(device: Device){
         self.device = device
         editedDevice = EditedDevice(levelId: Int(device.parentZoneId), zoneId: Int(device.zoneId), categoryId: Int(device.categoryId), controlType: device.controlType, digitalInputMode: Int(device.digitalInputMode!))
@@ -56,61 +81,8 @@ class RelayParametersCell: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.shared.delegate as! AppDelegate
-        
         setupViews()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
-    }
-    
-    func setupViews() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-        tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
-        
-        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        
-        txtCurtainGroupId.inputAccessoryView = CustomToolBar()
-        
-        txtFieldName.text = device.name
-        lblAddress.text = "\(returnThreeCharactersForByte(Int(device.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device.address)))"
-        lblChannel.text = "\(device.channel)"
-        
-        level = DatabaseZoneController.shared.getZoneById(Int(device.parentZoneId), location: device.gateway.location)
-        if let level = level { btnLevel.setTitle(level.name, for: UIControlState()) } else { btnLevel.setTitle("All", for: UIControlState()) }
-        
-        zoneSelected = DatabaseZoneController.shared.getZoneById(Int(device.zoneId), location: device.gateway.location)
-        if let zoneSelected = zoneSelected { btnZone.setTitle(zoneSelected.name, for: UIControlState()) } else { btnZone.setTitle("All", for: UIControlState()) }
-        
-        let category = DatabaseCategoryController.shared.getCategoryById(Int(device.categoryId), location: device.gateway.location)
-        if category != nil { btnCategory.setTitle(category?.name, for: UIControlState()) } else { btnCategory.setTitle("All", for: UIControlState()) }
-        
-        if var digInputMode = device.digitalInputMode?.intValue {
-            if digInputMode == 1 || digInputMode == 2 {} else { digInputMode = 1 }
-            let controlType = DigitalInput.modeInfo[digInputMode]
-            // It can be only NO and NC. If nothing is selected from those two set default value (NormallyOpen)
-            if controlType != "" || controlType != DigitalInput.NormallyOpen.description() || controlType != DigitalInput.NormallyClosed.description() {
-                changeControlMode.setTitle(controlType, for: UIControlState())
-            } else { changeControlMode.setTitle(DigitalInput.NormallyOpen.description(), for: UIControlState()) }
-        }
-        
-        btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", for: UIControlState())
-        
-        txtFieldName.delegate = self
-        
-        switchAllowCurtainControl.isOn = device.isCurtainModeAllowed.boolValue
-        txtCurtainGroupId.text = "\(device.curtainGroupID.intValue)"
-        
-        // Setting control mode.
-        // If device original type is Dimmer, then Control Type could change but control mode mustn't
-        if device.type == ControlType.Dimmer { changeControlMode.isEnabled = false } else { changeControlMode.isEnabled = true }
-        
-        btnLevel.tag = 1
-        btnZone.tag = 2
-        btnCategory.tag = 3
-        btnControlType.tag = 4
-        changeControlMode.tag = 5
+        addObservers()
     }
     
     override func nameAndId(_ name: String, id: String) {
@@ -146,22 +118,94 @@ class RelayParametersCell: PopoverVC {
         button.setTitle(name, for: UIControlState())
     }
     
-    @IBAction func switchTrigered(_ sender: AnyObject) {
+}
 
+// MARK: - View setup
+extension RelayParametersCell {
+    
+    func setupViews() {
+        appDel = UIApplication.shared.delegate as! AppDelegate
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        tapGesture.delegate = self
+        self.view.addGestureRecognizer(tapGesture)
+        
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        
+        txtCurtainGroupId.inputAccessoryView = CustomToolBar()
+        
+        txtFieldName.text = device.name
+        lblAddress.text   = "\(returnThreeCharactersForByte(Int(device.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device.address)))"
+        lblChannel.text   = "\(device.channel)"
+        
+        level = DatabaseZoneController.shared.getZoneById(Int(device.parentZoneId), location: device.gateway.location)
+        if let level = level { btnLevel.setTitle(level.name, for: UIControlState()) } else { btnLevel.setTitle("All", for: UIControlState()) }
+        
+        zoneSelected = DatabaseZoneController.shared.getZoneById(Int(device.zoneId), location: device.gateway.location)
+        if let zoneSelected = zoneSelected { btnZone.setTitle(zoneSelected.name, for: UIControlState()) } else { btnZone.setTitle("All", for: UIControlState()) }
+        
+        let category = DatabaseCategoryController.shared.getCategoryById(Int(device.categoryId), location: device.gateway.location)
+        if category != nil { btnCategory.setTitle(category?.name, for: UIControlState()) } else { btnCategory.setTitle("All", for: UIControlState()) }
+        
+        if var digInputMode = device.digitalInputMode?.intValue {
+            if digInputMode == 1 || digInputMode == 2 {} else { digInputMode = 1 }
+            let controlType = DigitalInput.modeInfo[digInputMode]
+            // It can be only NO and NC. If nothing is selected from those two set default value (NormallyOpen)
+            if controlType != "" || controlType != DigitalInput.NormallyOpen.description() || controlType != DigitalInput.NormallyClosed.description() {
+                changeControlMode.setTitle(controlType, for: UIControlState())
+            } else { changeControlMode.setTitle(DigitalInput.NormallyOpen.description(), for: UIControlState()) }
+        }
+        
+        btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", for: UIControlState())
+        
+        txtFieldName.delegate = self
+        
+        switchAllowCurtainControl.isOn = device.isCurtainModeAllowed.boolValue
+        txtCurtainGroupId.text         = "\(device.curtainGroupID.intValue)"
+        
+        // Setting control mode.
+        // If device original type is Dimmer, then Control Type could change but control mode mustn't
+        if device.type == ControlType.Dimmer { changeControlMode.isEnabled = false } else { changeControlMode.isEnabled = true }
+        
+        btnLevel.tag          = 1
+        btnZone.tag           = 2
+        btnCategory.tag       = 3
+        btnControlType.tag    = 4
+        changeControlMode.tag = 5
     }
     
-    @IBAction func btnCancel(_ sender: AnyObject) {
+    fileprivate func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    func keyboardWillShow(_ notification: Notification) {
+        let info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        
+        moveTextfield(textfield: txtCurtainGroupId, keyboardFrame: keyboardFrame, backView: backView)
+        
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+    }
+    
+    func handleTap(_ gesture:UITapGestureRecognizer){
         self.dismiss(animated: true, completion: nil)
     }
-    
-    @IBAction func btnImages(_ sender: AnyObject, forEvent event: UIEvent) {
-        let touches = event.touches(for: sender as! UIView)
-        let touch:UITouch = touches!.first!
-        let touchPoint = touch.location(in: self.view)
-        showDeviceImagesPicker(device, point: touchPoint)
+}
+
+// MARK: - Logic
+extension RelayParametersCell {
+    fileprivate func showImagePicker(sender: AnyObject, event: UIEvent) {
+        if let sender = sender as? UIView {
+            let touches = event.touches(for: sender)
+            if let touch = touches?.first {
+                let touchPoint = touch.location(in: view)
+                showDeviceImagesPicker(device, point: touchPoint)
+            }
+        }
     }
     
-    @IBAction func changeControlMode(_ sender: UIButton) {
+    fileprivate func changeControlModeTapped(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         popoverList.append(PopOverItem(name: DigitalInput.NormallyOpen.description(), id: ""))
@@ -169,7 +213,7 @@ class RelayParametersCell: PopoverVC {
         openPopover(sender, popOverList:popoverList)
     }
     
-    @IBAction func changeControlType(_ sender: UIButton) {
+    fileprivate func changeControlTypeTapped(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         popoverList.append(PopOverItem(name: ControlType.Dimmer, id: ""))
@@ -177,7 +221,7 @@ class RelayParametersCell: PopoverVC {
         openPopover(sender, popOverList:popoverList)
     }
     
-    @IBAction func btnLevel (_ sender: UIButton) {
+    fileprivate func levelTapped(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(device.gateway.location)
@@ -186,7 +230,7 @@ class RelayParametersCell: PopoverVC {
         openPopover(sender, popOverList:popoverList)
     }
     
-    @IBAction func btnZone (_ sender: UIButton) {
+    fileprivate func zoneTapped(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         if let level = level {
@@ -196,7 +240,8 @@ class RelayParametersCell: PopoverVC {
         popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
-    @IBAction func btnCategory (_ sender: UIButton) {
+    
+    fileprivate func categoryTapped(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(device.gateway.location)
@@ -204,54 +249,43 @@ class RelayParametersCell: PopoverVC {
         popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
         openPopover(sender, popOverList:popoverList)
     }
-    @IBAction func btnSave(_ sender: AnyObject) {
+    
+    fileprivate func save() {
         if txtFieldName.text != "" {
-            device.name = txtFieldName.text!
-            device.isCurtainModeAllowed = switchAllowCurtainControl.isOn as NSNumber
-            if let groupId = txtCurtainGroupId.text {
-                if let _ = Int(groupId) { device.curtainGroupID = NSNumber(value: Int(groupId)!) }
-            }
-            device.parentZoneId = NSNumber(value: editedDevice!.levelId as Int)
-            device.zoneId = NSNumber(value: editedDevice!.zoneId as Int)
-            device.categoryId = NSNumber(value: editedDevice!.categoryId as Int)
-            
-            if editedDevice!.controlType == ControlType.Relay {
-                if device.isCurtainModeAllowed.boolValue { device.controlType = ControlType.Curtain } else { device.controlType = ControlType.Relay }
+            if let moc = appDel.managedObjectContext {
+                device.name                 = txtFieldName.text!
+                device.isCurtainModeAllowed = switchAllowCurtainControl.isOn as NSNumber
+                if let groupId = txtCurtainGroupId.text {
+                    if let _ = Int(groupId) { device.curtainGroupID = NSNumber(value: Int(groupId)!) }
+                }
+                device.parentZoneId = NSNumber(value: editedDevice!.levelId as Int)
+                device.zoneId       = NSNumber(value: editedDevice!.zoneId as Int)
+                device.categoryId   = NSNumber(value: editedDevice!.categoryId as Int)
                 
-            } else {
-                if editedDevice!.controlType == ControlType.Curtain {
-                    if device.isCurtainModeAllowed.boolValue { device.controlType = ControlType.Curtain // Stay curtain
-                    } else { device.controlType = ControlType.Relay } // if isCurtainModeAllowed is disabbled, set it to relay
+                if editedDevice!.controlType == ControlType.Relay {
+                    if device.isCurtainModeAllowed.boolValue { device.controlType = ControlType.Curtain } else { device.controlType = ControlType.Relay }
                     
-                } else { device.controlType = editedDevice!.controlType }
+                } else {
+                    if editedDevice!.controlType == ControlType.Curtain {
+                        if device.isCurtainModeAllowed.boolValue { device.controlType = ControlType.Curtain // Stay curtain
+                        } else { device.controlType = ControlType.Relay } // if isCurtainModeAllowed is disabbled, set it to relay
+                        
+                    } else { device.controlType = editedDevice!.controlType }
+                }
+                
+                device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
+                
+                device.resetImages(moc)
+                CoreDataController.sharedInstance.saveChanges()
+                
+                self.dismiss(animated: true, completion: nil)
+                self.delegate?.saveClicked()
             }
-            
-            device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
-            
-            device.resetImages(appDel.managedObjectContext!)
-            CoreDataController.sharedInstance.saveChanges()
-            
-            self.dismiss(animated: true, completion: nil)
-            self.delegate?.saveClicked()
         }
     }
-
-    func handleTap(_ gesture:UITapGestureRecognizer){
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    func keyboardWillShow(_ notification: Notification) {
-        let info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        
-        moveTextfield(textfield: txtCurtainGroupId, keyboardFrame: keyboardFrame, backView: backView)        
-        
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-    }
-    
-
 }
 
+// MARK: - TextField Delegate
 extension RelayParametersCell : UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -259,6 +293,7 @@ extension RelayParametersCell : UITextFieldDelegate{
     }
 }
 
+// MARK: - Gesture recognizer delegate
 extension RelayParametersCell : UIGestureRecognizerDelegate{
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if let touchView = touch.view { if touchView.isDescendant(of: backView) { dismissEditing(); return false } }

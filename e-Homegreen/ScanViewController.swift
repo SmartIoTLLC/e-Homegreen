@@ -4,7 +4,6 @@
 //
 //  Created by Vladimir on 7/27/15.
 //  Copyright (c) 2015 Teodor Stevic. All rights reserved.
-// UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning,
 
 import UIKit
 
@@ -15,11 +14,6 @@ enum ChoosedTab:String {
 }
 
 class ScanViewController: PopoverVC {
-    
-    @IBOutlet weak var topView: UIView!
-    @IBOutlet weak var container: UIView!
-    @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var senderButton:UIButton!
     
     var scanSceneViewController: ScanScenesViewController!
     var scanDeviceViewController: ScanDevicesViewController!
@@ -38,32 +32,35 @@ class ScanViewController: PopoverVC {
     var gateway:Gateway!
     
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Database)
-
+    
+    @IBOutlet weak var topView: UIView!
+    @IBOutlet weak var container: UIView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var senderButton:UIButton!
+    
+    @IBAction func btnScenes(_ sender: UIButton) {
+        scenesTapped(sender: sender)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        updateViews()
+        setupViews()
         setupViewControllersInit()
         setupVCfiltersAndGateways()
         
-        self.addChildViewController(scanDeviceViewController)
-        scanDeviceViewController.view.frame = CGRect(x: 0, y: 0, width: self.container.frame.size.width, height: self.container.frame.size.height)
-        container.addSubview(scanDeviceViewController.view)
-        scanDeviceViewController.didMove(toParentViewController: self)
-        
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
-    }
-    
-    
-    override func viewDidAppear(_ animated: Bool) {
-        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
-        scrollView.setContentOffset(bottomOffset, animated: false)
-        scrollView.isHidden = false
+        updateViews()
     }
     
     override func viewDidLayoutSubviews() {
         setContentOffset(forScan: scrollView)
         setTitleView(view: headerTitleSubtitleView)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        scrollView.setContentOffset(bottomOffset, animated: false)
+        scrollView.isHidden = false
     }
     
     override func nameAndId(_ name: String, id: String) {
@@ -72,41 +69,37 @@ class ScanViewController: PopoverVC {
             searchBar.text = ""
             senderButton.setTitle(name, for: UIControlState())
             switch to {
-            case .Devices: toViewController = scanDeviceViewController
-            case .Scenes: toViewController = scanSceneViewController
-            case .Events: toViewController = scanEventsViewController
-            case .Sequences: toViewController = scanSequencesViewController
-            case .Timers: toViewController = scanTimersViewController
-            case .Flags: toViewController = scanFlagsViewController
-            case .Cards: toViewController = scanCardsViewController
+                case .Devices   : toViewController = scanDeviceViewController
+                case .Scenes    : toViewController = scanSceneViewController
+                case .Events    : toViewController = scanEventsViewController
+                case .Sequences : toViewController = scanSequencesViewController
+                case .Timers    : toViewController = scanTimersViewController
+                case .Flags     : toViewController = scanFlagsViewController
+                case .Cards     : toViewController = scanCardsViewController
             }
             
-            let fromViewController = childViewControllers.last!
-            if toViewController != fromViewController {
-                self.addChildViewController(toViewController)
-                self.transition(from: fromViewController, to: toViewController, duration: 0.0, options: UIViewAnimationOptions.transitionFlipFromRight, animations: nil, completion: {finished in
-                    fromViewController.removeFromParentViewController()
-                    self.toViewController.didMove(toParentViewController: self)
-                    self.toViewController.view.frame = self.container.bounds
-                })
-            } else {
-                childViewControllers.last!.viewWillAppear(true)
-                childViewControllers.last!.viewDidAppear(true)
+            if let fromViewController = childViewControllers.last {
+                if toViewController != fromViewController {
+                    self.addChildViewController(toViewController)
+                    self.transition(from: fromViewController, to: toViewController, duration: 0.0, options: UIViewAnimationOptions.transitionFlipFromRight, animations: nil, completion: {finished in
+                        fromViewController.removeFromParentViewController()
+                        self.toViewController.didMove(toParentViewController: self)
+                        self.toViewController.view.frame = self.container.bounds
+                    })
+                } else {
+                    childViewControllers.last!.viewWillAppear(true)
+                    childViewControllers.last!.viewDidAppear(true)
+                }
             }
+            
         } else {
             scrollView.setButtonTitle(name, id: id)
         }
     }
     
-    //popup controller
-    @IBAction func btnScenes(_ sender: UIButton) {
-        senderButton = sender
-        var popoverList:[PopOverItem] = []
-        for item in ChoosedTab.allItem { popoverList.append(PopOverItem(name: item.rawValue, id: "")) }
-        openPopover(sender, popOverList:popoverList)
-    }
 }
 
+// MARK: - Filter PullDown Delegate
 extension ScanViewController: ScanFilterPullDownDelegate{
     func scanFilterParametars(_ filterItem: FilterItem) {
         toViewController.sendFilterParametar(filterItem)
@@ -114,6 +107,7 @@ extension ScanViewController: ScanFilterPullDownDelegate{
     }
 }
 
+// MARK: - SearchBar Delegate
 extension ScanViewController: UISearchBarDelegate{
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = true  // show cancel buttton when search bar being active
@@ -131,8 +125,9 @@ extension ScanViewController: UISearchBarDelegate{
     }
 }
 
+// MARK: - View setup & Logic
 extension ScanViewController {
-    func updateViews() {
+    func setupViews() {
         if #available(iOS 11, *) { headerTitleSubtitleView.layoutIfNeeded() }
         
         scrollView.scanFilterDelegate = self
@@ -141,26 +136,35 @@ extension ScanViewController {
         scrollView.setItem(self.view, location: gateway.location)
         scrollView.isHidden = true
         
-        searchBar.barTintColor = UIColor.clear
+        searchBar.barTintColor    = UIColor.clear
         searchBar.backgroundImage = UIImage()
-        searchBar.tintColor = UIColor.lightGray
-        searchBar.returnKeyType = .done
-        searchBar.delegate = self
+        searchBar.tintColor       = UIColor.lightGray
+        searchBar.returnKeyType   = .done
+        searchBar.delegate        = self
         
         self.navigationItem.titleView = headerTitleSubtitleView
         headerTitleSubtitleView.setTitleAndSubtitle("Scan", subtitle: gateway.location.name! + " All All")
     }
     
+    fileprivate func updateViews() {
+        self.addChildViewController(scanDeviceViewController)
+        scanDeviceViewController.view.frame = CGRect(x: 0, y: 0, width: self.container.frame.size.width, height: self.container.frame.size.height)
+        container.addSubview(scanDeviceViewController.view)
+        scanDeviceViewController.didMove(toParentViewController: self)
+        
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
+    }
+    
     func setupViewControllersInit() {
         let storyboard = UIStoryboard(name: "Settings", bundle: nil)
         
-        scanSceneViewController = storyboard.instantiateViewController(withIdentifier: "ScanScenesViewController") as! ScanScenesViewController
-        scanDeviceViewController = storyboard.instantiateViewController(withIdentifier: "ScanDevicesViewController") as! ScanDevicesViewController
+        scanSceneViewController     = storyboard.instantiateViewController(withIdentifier: "ScanScenesViewController") as! ScanScenesViewController
+        scanDeviceViewController    = storyboard.instantiateViewController(withIdentifier: "ScanDevicesViewController") as! ScanDevicesViewController
         scanSequencesViewController = storyboard.instantiateViewController(withIdentifier: "ScanSequencesesViewController") as! ScanSequencesesViewController
-        scanEventsViewController = storyboard.instantiateViewController(withIdentifier: "ScanEventsViewController") as! ScanEventsViewController
-        scanTimersViewController = storyboard.instantiateViewController(withIdentifier: "ScanTimerViewController") as! ScanTimerViewController
-        scanFlagsViewController = storyboard.instantiateViewController(withIdentifier: "ScanFlagViewController") as! ScanFlagViewController
-        scanCardsViewController = storyboard.instantiateViewController(withIdentifier: "ScanCardsViewController") as! ScanCardsViewController
+        scanEventsViewController    = storyboard.instantiateViewController(withIdentifier: "ScanEventsViewController") as! ScanEventsViewController
+        scanTimersViewController    = storyboard.instantiateViewController(withIdentifier: "ScanTimerViewController") as! ScanTimerViewController
+        scanFlagsViewController     = storyboard.instantiateViewController(withIdentifier: "ScanFlagViewController") as! ScanFlagViewController
+        scanCardsViewController     = storyboard.instantiateViewController(withIdentifier: "ScanCardsViewController") as! ScanCardsViewController
         
         toViewController = scanDeviceViewController
     }
@@ -178,5 +182,12 @@ extension ScanViewController {
         scanFlagsViewController.gateway = gateway
         scanFlagsViewController.filterParametar = filterParametar
         scanCardsViewController.gateway = gateway
+    }
+    
+    fileprivate func scenesTapped(sender: UIButton) {
+        senderButton = sender
+        var popoverList:[PopOverItem] = []
+        for item in ChoosedTab.allItem { popoverList.append(PopOverItem(name: item.rawValue, id: "")) }
+        openPopover(sender, popOverList:popoverList)
     }
 }

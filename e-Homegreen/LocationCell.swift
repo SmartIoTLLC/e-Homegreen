@@ -123,8 +123,8 @@ class LocationCell: UITableViewCell {
         locationNameLabel.text = location.name
         if isColapsed { arrowImage.image = UIImage(named: "strelica_gore") } else { arrowImage.image = UIImage(named: "strelica_dole") }
         
-        addButton.tag = tag
-        editButton.tag = tag
+        addButton.tag    = tag
+        editButton.tag   = tag
         deleteButton.tag = tag
     }
     
@@ -146,8 +146,8 @@ class SurvCell: UITableViewCell{
     
     func setItem(_ surveillance:Surveillance){
         self.backgroundColor = UIColor.clear
-        self.surveillance = surveillance
-        self.lblName.text = surveillance.name
+        self.surveillance    = surveillance
+        self.lblName.text    = surveillance.name
     }
     
     @IBAction func deleteSurveillance(_ sender: UIButton) {

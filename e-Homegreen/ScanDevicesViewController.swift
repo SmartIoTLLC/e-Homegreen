@@ -18,12 +18,6 @@ struct SearchParametars {
 
 class ScanDevicesViewController: UIViewController, UITextFieldDelegate, ProgressBarDelegate {
     
-    @IBOutlet weak var rangeFrom: UITextField!
-    @IBOutlet weak var rangeTo: UITextField!
-    @IBOutlet weak var findDevicesBtn: CustomGradientButton!
-    @IBOutlet weak var findNamesBtn: CustomGradientButton!
-    @IBOutlet weak var deviceTableView: UITableView!
-    
     var appDel:AppDelegate!
     var error:NSError? = nil
     var devices:[Device] = []
@@ -40,15 +34,25 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     
     var searchBarText:String = ""
     
+    @IBOutlet weak var rangeFrom: UITextField!
+    @IBOutlet weak var rangeTo: UITextField!
+    @IBOutlet weak var findDevicesBtn: CustomGradientButton!
+    @IBOutlet weak var findNamesBtn: CustomGradientButton!
+    @IBOutlet weak var deviceTableView: UITableView!
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         appDel = UIApplication.shared.delegate as! AppDelegate
-
-        for device in gateway.devices { devices.append(device as! Device) }
+        loadDevices()
         
         refreshDeviceList()
         setupViews()
+    }
+    
+    fileprivate func loadDevices() {
+        for device in gateway.devices { devices.append(device as! Device) }
     }
     
     func setupViews() {

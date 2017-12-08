@@ -18,6 +18,20 @@ struct EditedDevice {
 }
 
 class ChangeDeviceParametarsVC: PopoverVC {
+    
+    var button:UIButton!
+    
+    var level:Zone?
+    var zoneSelected:Zone?
+    var category:Category?
+    
+    var device:Device
+    var appDel:AppDelegate!
+    var editedDevice:EditedDevice?
+    
+    var isPresenting: Bool = true
+    var delegate: DevicePropertiesDelegate?
+    
     @IBOutlet weak var txtFieldName: UITextField!
     @IBOutlet weak var lblAddress:UILabel!
     @IBOutlet weak var lblChannel:UILabel!
@@ -27,19 +41,29 @@ class ChangeDeviceParametarsVC: PopoverVC {
     @IBOutlet weak var btnZone: UIButton!
     @IBOutlet weak var btnCategory: UIButton!
     @IBOutlet weak var btnImages: UIButton!
-    
-    var button:UIButton!
-    
-    var level:Zone?
-    var zoneSelected:Zone?
-    var category:Category?
-
-    var device:Device
-    var appDel:AppDelegate!
-    var editedDevice:EditedDevice?
-    
-    var isPresenting: Bool = true
-    var delegate: DevicePropertiesDelegate?
+    @IBAction func btnCancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    @IBAction func btnImages(_ sender: AnyObject, forEvent event: UIEvent) {
+        showDeviceImagesPicker(sender: sender, event: event)
+    }
+    @IBAction func btnImages(_ sender: AnyObject) {
+    }
+    @IBAction func changeControlType(_ sender: UIButton) {
+        changeControlType(via: sender)
+    }
+    @IBAction func btnLevel (_ sender: UIButton) {
+        levelTapped(sender: sender)
+    }
+    @IBAction func btnZone (_ sender: UIButton) {
+        zoneTapped(sender: sender)
+    }
+    @IBAction func btnCategory (_ sender: UIButton) {
+        categoryTapped(sender: sender)
+    }
+    @IBAction func btnSave(_ sender: AnyObject) {
+        save()
+    }
     
     init(device: Device){
         self.device = device
@@ -56,41 +80,7 @@ class ChangeDeviceParametarsVC: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.shared.delegate as! AppDelegate
-        
         setupViews()
-    }
-    
-    func setupViews() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-        tapGesture.delegate = self
-        self.view.addGestureRecognizer(tapGesture)
-        
-        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        self.title = "Device Parameters"
-        
-        txtFieldName.text = device.name
-        lblAddress.text = "\(returnThreeCharactersForByte(Int(device.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device.address)))"
-        lblChannel.text = "\(device.channel)"
-        
-        level = DatabaseZoneController.shared.getZoneById(Int(device.parentZoneId), location: device.gateway.location)
-        if let level = level, level.name != "Default" { btnLevel.setTitle(level.name, for: UIControlState()) } else { btnLevel.setTitle("All", for: UIControlState()) }
-        
-        zoneSelected = DatabaseZoneController.shared.getZoneById(Int(device.zoneId), location: device.gateway.location)
-        if zoneSelected != nil { btnZone.setTitle(zoneSelected!.name, for: UIControlState()) } else { btnZone.setTitle("All", for: UIControlState()) }
-        
-        let category = DatabaseCategoryController.shared.getCategoryById(Int(device.categoryId), location: device.gateway.location)
-        if category != nil { btnCategory.setTitle(category?.name, for: UIControlState()) } else { btnCategory.setTitle("All", for: UIControlState()) }
-        
-        btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", for: UIControlState())
-        
-        txtFieldName.delegate = self
-        
-        //TODO: Add for gateway when it is defined
-        btnLevel.tag = 1
-        btnZone.tag = 2
-        btnCategory.tag = 3
-        btnControlType.tag = 4
     }
     
     override func nameAndId(_ name: String, id: String) {
@@ -137,22 +127,51 @@ class ChangeDeviceParametarsVC: PopoverVC {
         
         button.setTitle(name, for: UIControlState())
     }
+}
+
+// MARK: - Setup views
+extension ChangeDeviceParametarsVC {
+    func setupViews() {
+        appDel = UIApplication.shared.delegate as! AppDelegate
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        tapGesture.delegate = self
+        self.view.addGestureRecognizer(tapGesture)
+        
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        self.title = "Device Parameters"
+        
+        txtFieldName.text = device.name
+        lblAddress.text = "\(returnThreeCharactersForByte(Int(device.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device.address)))"
+        lblChannel.text = "\(device.channel)"
+        
+        level = DatabaseZoneController.shared.getZoneById(Int(device.parentZoneId), location: device.gateway.location)
+        if let level = level, level.name != "Default" { btnLevel.setTitle(level.name, for: UIControlState()) } else { btnLevel.setTitle("All", for: UIControlState()) }
+        
+        zoneSelected = DatabaseZoneController.shared.getZoneById(Int(device.zoneId), location: device.gateway.location)
+        if zoneSelected != nil { btnZone.setTitle(zoneSelected!.name, for: UIControlState()) } else { btnZone.setTitle("All", for: UIControlState()) }
+        
+        let category = DatabaseCategoryController.shared.getCategoryById(Int(device.categoryId), location: device.gateway.location)
+        if category != nil { btnCategory.setTitle(category?.name, for: UIControlState()) } else { btnCategory.setTitle("All", for: UIControlState()) }
+        
+        btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", for: UIControlState())
+        
+        txtFieldName.delegate = self
+        
+        //TODO: Add for gateway when it is defined
+        btnLevel.tag = 1
+        btnZone.tag = 2
+        btnCategory.tag = 3
+        btnControlType.tag = 4
+    }
     
-    @IBAction func btnCancel(_ sender: AnyObject) {
+    func handleTap(_ gesture:UITapGestureRecognizer){
         self.dismiss(animated: true, completion: nil)
     }
+}
 
-    @IBAction func btnImages(_ sender: AnyObject, forEvent event: UIEvent) {
-        let touches = event.touches(for: sender as! UIView)
-        let touch:UITouch = touches!.first!
-        let touchPoint = touch.location(in: self.view)
-        showDeviceImagesPicker(device, point: touchPoint)
-    }
-    
-    @IBAction func btnImages(_ sender: AnyObject) {
-    }
-    
-    @IBAction func changeControlType(_ sender: UIButton) {
+// MARK: - Logic
+extension ChangeDeviceParametarsVC {
+    fileprivate func changeControlType(via sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         if device.controlType == ControlType.Sensor{
@@ -168,7 +187,7 @@ class ChangeDeviceParametarsVC: PopoverVC {
         openPopover(sender, popOverList:popoverList)
     }
     
-    @IBAction func btnLevel (_ sender: UIButton) {
+    fileprivate func levelTapped(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(device.gateway.location)
@@ -177,7 +196,7 @@ class ChangeDeviceParametarsVC: PopoverVC {
         openPopover(sender, popOverList:popoverList)
     }
     
-    @IBAction func btnZone (_ sender: UIButton) {
+    fileprivate func zoneTapped(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         if let level = level{
@@ -188,7 +207,7 @@ class ChangeDeviceParametarsVC: PopoverVC {
         openPopover(sender, popOverList:popoverList)
     }
     
-    @IBAction func btnCategory (_ sender: UIButton) {
+    fileprivate func categoryTapped(sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(device.gateway.location)
@@ -197,26 +216,35 @@ class ChangeDeviceParametarsVC: PopoverVC {
         openPopover(sender, popOverList:popoverList)
     }
     
-    @IBAction func btnSave(_ sender: AnyObject) {
+    fileprivate func save() {
         if txtFieldName.text != "" {
-            device.name = txtFieldName.text!
-            device.parentZoneId = NSNumber(value: editedDevice!.levelId as Int)
-            device.zoneId = NSNumber(value: editedDevice!.zoneId as Int)
-            device.categoryId = NSNumber(value: editedDevice!.categoryId as Int)
-            device.controlType = editedDevice!.controlType
-            device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
-            CoreDataController.sharedInstance.saveChanges()
-            device.resetImages(appDel.managedObjectContext!)
-            self.delegate?.saveClicked()
-            self.dismiss(animated: true, completion: nil)
+            if let moc = appDel.managedObjectContext {
+                device.name             = txtFieldName.text!
+                device.parentZoneId     = NSNumber(value: editedDevice!.levelId as Int)
+                device.zoneId           = NSNumber(value: editedDevice!.zoneId as Int)
+                device.categoryId       = NSNumber(value: editedDevice!.categoryId as Int)
+                device.controlType      = editedDevice!.controlType
+                device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
+                CoreDataController.sharedInstance.saveChanges()
+                device.resetImages(moc)
+                self.delegate?.saveClicked()
+                self.dismiss(animated: true, completion: nil)
+            }
         }
     }
-
-    func handleTap(_ gesture:UITapGestureRecognizer){
-        self.dismiss(animated: true, completion: nil)
+    
+    fileprivate func showDeviceImagesPicker(sender: AnyObject, event: UIEvent) {
+        if let sender = sender as? UIView {
+            let touches = event.touches(for: sender)
+            if let touch = touches?.first {
+                let touchPoint = touch.location(in: view)
+                showDeviceImagesPicker(device, point: touchPoint)
+            }
+        }
     }
 }
 
+// MARK: - TextField Delegate
 extension ChangeDeviceParametarsVC : UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -224,6 +252,7 @@ extension ChangeDeviceParametarsVC : UITextFieldDelegate{
     }
 }
 
+// MARK: - Gesture recognizer
 extension ChangeDeviceParametarsVC : UIGestureRecognizerDelegate{
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if let touchView = touch.view { if touchView.isDescendant(of: backView) { dismissEditing(); return false } }

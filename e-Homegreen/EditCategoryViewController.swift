@@ -102,14 +102,14 @@ class EditCategoryViewController: CommonXIBTransitionVC {
                             categoryNew.id = idValid as NSNumber?
                             categoryNew.name = name
                             if let desc = descriptionTextField.text { categoryNew.categoryDescription = desc }
-                            categoryNew.location = location
-                            categoryNew.orderId = idValid as NSNumber?
+                            categoryNew.location    = location
+                            categoryNew.orderId     = idValid as NSNumber?
                             categoryNew.allowOption = 3
                             categoryNew.isVisible = true
                         }
                     }
                 } else if let categoryNew = NSEntityDescription.insertNewObject(forEntityName: "Category", into: appDel.managedObjectContext!) as? Category {
-                    categoryNew.id = idValid as NSNumber?
+                    categoryNew.id   = idValid as NSNumber?
                     categoryNew.name = name
                     categoryNew.allowOption = 3
                     if let desc = descriptionTextField.text { categoryNew.categoryDescription = desc }
