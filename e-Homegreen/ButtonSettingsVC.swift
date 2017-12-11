@@ -12,8 +12,12 @@ class ButtonSettingsVC: CommonXIBTransitionVC, UITextFieldDelegate {
     
     var button: RemoteButton!
     var imageString: String?
-
+    
+    
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     @IBOutlet weak var backgroundView: CustomGradientBackground!
+    @IBOutlet weak var backgroundViewHeight: NSLayoutConstraint!
     
     @IBOutlet weak var nameTF: EditTextField!
     @IBOutlet weak var addressOneTF: EditTextField!
@@ -51,12 +55,17 @@ class ButtonSettingsVC: CommonXIBTransitionVC, UITextFieldDelegate {
         
         addObservers()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         setButtonImage()
-    }        
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        scrollView.contentSize.height = backgroundViewHeight.constant
+    }
     
     // MARK: - Button look
     func receivedButtonColor(_ notification: Notification) {
@@ -76,7 +85,7 @@ class ButtonSettingsVC: CommonXIBTransitionVC, UITextFieldDelegate {
             imageButton.setBackgroundImage(UIImage(data: buttonImage as Data), for: UIControlState())            
         } else {
             imageButton.setBackgroundImage(#imageLiteral(resourceName: "galleryIcon").withRenderingMode(.alwaysTemplate), for: UIControlState())
-            imageButton.imageView?.tintColor = .white
+            (imageButton.subviews[0] as! UIImageView).tintColor = .white            
         }
         (imageButton.subviews[0] as! UIImageView).contentMode = .scaleAspectFit
         

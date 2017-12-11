@@ -16,12 +16,11 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
     
     var customImagesMO: [Image] = []
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
-    // Toolbar buttons
+    
     var setButton: UIButton!
     var cancelButton: UIButton!
     var importButton: UIButton!
     var editButton: UIButton!
-    //
     
     var isCustom: Bool = false
     
@@ -34,8 +33,7 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
     
     var button: RemoteButton! {
         didSet {
-            if let image = button.image {
-                selectedImage = UIImage(data: image as Data)
+            if let image = button.image { selectedImage = UIImage(data: image as Data)
                 // TODO: cuvati i image string zbog prikazivanja indikatora po ponovnom ulasku na ekran
             }
         }
@@ -47,19 +45,41 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var imageCollectionView: UICollectionView!
     @IBOutlet weak var bottomToolbar: UIView!
-    
     @IBAction func segmentedControlTapped(_ sender: UISegmentedControl) {
         scTapped(sender)
     }
-
-
     
     override func viewDidLoad() {
         setupViews()
         
         addObservers()
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateViews()
+        
+        // TODO: toolbar,dugmad i collectionView nakon rotacije
+    }
 
+}
+
+// MARK: - Image Picker Delegate
+extension ButtonImagePickerVC: UIImagePickerControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        savePickedImage(info: info)
+        
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismissModal()
+    }
+}
+
+// MARK: - View setup
+extension ButtonImagePickerVC {
     fileprivate func setupViews() {
         imageCollectionView.delegate   = self
         imageCollectionView.dataSource = self
@@ -71,7 +91,7 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
         backgroundView.layer.borderColor   = Colors.MediumGray
         backgroundView.layer.borderWidth   = 1
         backgroundView.layer.cornerRadius  = 15
-        backgroundView.layer.masksToBounds = true             
+        backgroundView.layer.masksToBounds = true
         
         segmentedControl.setTitle("DEFAULT LIBRARY", forSegmentAt: 0)
         segmentedControl.setTitle("CUSTOM LIBRARY", forSegmentAt: 1)
@@ -80,11 +100,6 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
             NSFontAttributeName: UIFont(name: "Tahoma", size: 15.0)!
         ]
         segmentedControl.setTitleTextAttributes(attributes, for: UIControlState())
-        
-        scBottomLine.frame = CGRect(x: segmentedControl.frame.minX, y: segmentedControl.frame.height - 2, width: segmentedControl.frame.width / 2, height: 2)
-        segmentedControl.layer.addSublayer(scBottomLine)
-        
-        bottomToolbar.backgroundColor = .clear
         
         let toolbarSeparator = UIView()
         toolbarSeparator.frame           = CGRect(x: 8, y: 0, width: bottomToolbar.frame.width - 16, height: 1)
@@ -95,10 +110,18 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
         cancelButton = UIButton()
         cancelButton.addTarget(self, action: #selector(dismissModal), for: .touchUpInside)
         setButton.addTarget(self, action: #selector(chooseImage), for: .touchUpInside)
-        set(button: setButton, tag: 3)
-        set(button: cancelButton, tag: 2)
         
         loadDefaultImages()
+    }
+    
+    fileprivate func updateViews() {
+        scBottomLine.frame = CGRect(x: segmentedControl.frame.minX, y: segmentedControl.frame.height - 2, width: segmentedControl.frame.width / 2, height: 2)
+        segmentedControl.layer.addSublayer(scBottomLine)
+        
+        bottomToolbar.backgroundColor = .clear
+        
+        set(button: setButton, tag: 3)
+        set(button: cancelButton, tag: 2)
     }
     
     fileprivate func scTapped(_ sender: UISegmentedControl) {
@@ -112,9 +135,9 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
         segmentedControl.layer.addSublayer(scBottomLine)
         
         switch sender.selectedSegmentIndex {
-            case 0  : setToolbarForDefaultLibrary(); loadDefaultImages()
-            case 1  : setToolbarForCustomLibrary(); loadCustomImages()
-            default : break
+        case 0  : setToolbarForDefaultLibrary(); loadDefaultImages()
+        case 1  : setToolbarForCustomLibrary(); loadCustomImages()
+        default : break
         }
         
         imageCollectionView.reloadData()
@@ -124,7 +147,7 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
         importButton.removeFromSuperview()
         editButton.removeFromSuperview()
     }
-
+    
     fileprivate func setToolbarForCustomLibrary() {
         importButton = UIButton()
         editButton   = UIButton()
@@ -132,6 +155,22 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
         importButton.addTarget(self, action: #selector(openImagePicker), for: .touchUpInside)
         set(button: importButton, tag: 1)
         set(button: editButton, tag: 0)
+    }
+    
+    @objc fileprivate func loadCustomImages() {
+        availableImages = []
+        
+        customImagesMO = []
+        customImagesMO = DatabaseRemoteButtonController.sharedInstance.loadCustomImages()
+        
+        customImagesMO.forEach { (image) in
+            if let data = image.imageData {
+                if let image = UIImage(data: data) { availableImages.append(image) }
+            }
+        }
+        
+        isCustom = true
+        imageCollectionView.reloadData()
     }
     
     fileprivate func loadDefaultImages() {
@@ -323,6 +362,77 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
         imageCollectionView.reloadData()
     }
     
+    fileprivate func set(button: UIButton, tag: CGFloat) {
+        switch tag {
+            case 0  : button.setTitle("EDIT", for: UIControlState())
+            case 1  : button.setTitle("IMPORT", for: UIControlState())
+            case 2  : button.setTitle("CANCEL", for: UIControlState())
+            case 3  : button.setTitle("SET", for: UIControlState())
+            default : break
+        }
+        
+        button.setTitleColor(.white, for: UIControlState())
+        button.titleLabel?.font = .tahoma(size: 15)
+        
+        let width = bottomToolbar.frame.width / 4
+        
+        button.frame.size       = CGSize(width: width, height: bottomToolbar.frame.height)
+        button.frame.origin.x   = tag * width
+        button.frame.origin.y   = 0
+        
+        button.backgroundColor  = .clear
+        
+        bottomToolbar.addSubview(button)
+    }
+    
+    
+    
+    fileprivate func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(loadCustomImages), name: .CustomButtonImageEdited, object: nil)
+    }
+}
+
+// MARK: - Logic
+extension ButtonImagePickerVC {
+    
+    fileprivate func savePickedImage(info: [String: Any]) {
+        var pickedImage: UIImage!
+        
+        if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
+            pickedImage = image
+        } else if let image = info[UIImagePickerControllerOriginalImage] as? UIImage{
+            pickedImage = image
+        }
+        
+        if let moc = managedContext {
+            let moImage = Image(context: moc, image: UIImagePNGRepresentation(pickedImage)!, id: "buttonImage")
+            
+            if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
+                user.addImagesObject(moImage)
+                CoreDataController.sharedInstance.saveChanges()
+                NotificationCenter.default.post(name: .CustomButtonImageEdited, object: nil)
+            }
+        }
+    }
+    
+    @objc fileprivate func chooseImage() {
+        if let selectedImage = selectedImage {
+            button.image = UIImagePNGRepresentation(selectedImage)! as NSData
+            NotificationCenter.default.post(name: .ButtonImageChosen, object: nil)
+            dismissModal()
+        } else {
+            view.makeToast(message: "You didn't select any image.")
+        }
+    }
+    
+    @objc fileprivate func editImage() {
+        if let image = selectedImage {
+            showButtonImageEditorVC(image: image)
+        } else {
+            view.makeToast(message: "You didn't select any image.")
+        }
+    }
+    
     @objc fileprivate func openImagePicker() {
         let handler = ImagePickerHandler(delegate: self)
         let optionMenu = UIAlertController(title: "", message: "", preferredStyle: .alert)
@@ -348,102 +458,9 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
         optionMenu.addAction(cancel)
         present(optionMenu, animated: true, completion: nil)
     }
-    
-    @objc fileprivate func loadCustomImages() {
-        availableImages = []
-        
-        customImagesMO = []
-        customImagesMO = DatabaseRemoteButtonController.sharedInstance.loadCustomImages()
-        
-        customImagesMO.forEach { (image) in
-            if let data = image.imageData {
-                if let image = UIImage(data: data) { availableImages.append(image) }
-            }
-        }
-        
-        isCustom = true
-        imageCollectionView.reloadData()
-    }
-    
-    @objc fileprivate func chooseImage() {
-        if let selectedImage = selectedImage {
-            button.image = UIImagePNGRepresentation(selectedImage)! as NSData
-            NotificationCenter.default.post(name: .ButtonImageChosen, object: nil)
-            dismissModal()
-        } else {
-            view.makeToast(message: "You didn't select any image.")
-        }
-    }
-    
-    @objc fileprivate func editImage() {
-        if let image = selectedImage {
-            showButtonImageEditorVC(image: image)
-        } else {
-            view.makeToast(message: "You didn't select any image.")
-        }
-    }
-    
-    fileprivate func set(button: UIButton, tag: CGFloat) {
-        switch tag {
-            case 0  : button.setTitle("EDIT", for: UIControlState())
-            case 1  : button.setTitle("IMPORT", for: UIControlState())
-            case 2  : button.setTitle("CANCEL", for: UIControlState())
-            case 3  : button.setTitle("SET", for: UIControlState())
-            default : break
-        }
-        
-        button.setTitleColor(.white, for: UIControlState())
-        button.titleLabel?.font = .tahoma(size: 15)
-        
-        let width = bottomToolbar.frame.width / 4
-        
-        button.frame.size       = CGSize(width: width, height: bottomToolbar.frame.height)
-        button.frame.origin.x   = tag * width
-        button.frame.origin.y   = 0
-        
-        button.backgroundColor  = .clear
-        
-        bottomToolbar.addSubview(button)
-    }
-    
-    fileprivate func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(loadCustomImages), name: .CustomButtonImageEdited, object: nil)
-    }
-    
 }
 
-extension ButtonImagePickerVC: UIImagePickerControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
-        var pickedImage: UIImage!
-        
-        if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
-            pickedImage = image
-        } else if let image = info[UIImagePickerControllerOriginalImage] as? UIImage{
-            pickedImage = image
-        }
-                
-        if let moc = managedContext {
-            let moImage = Image(context: moc, image: UIImagePNGRepresentation(pickedImage)!, id: "buttonImage")
-            
-            if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
-                user.addImagesObject(moImage)
-                CoreDataController.sharedInstance.saveChanges()
-                NotificationCenter.default.post(name: .CustomButtonImageEdited, object: nil)
-            }
-        }
-        
-        picker.dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismissModal()
-    }
-}
-
-extension ButtonImagePickerVC: UINavigationControllerDelegate {
-    
-}
+extension ButtonImagePickerVC: UINavigationControllerDelegate {}
 
 // MARK: - Collection View Data Source
 extension ButtonImagePickerVC: UICollectionViewDataSource {

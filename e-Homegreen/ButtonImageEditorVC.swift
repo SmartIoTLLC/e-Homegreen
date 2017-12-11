@@ -14,6 +14,10 @@ class ButtonImageEditorVC: CommonXIBTransitionVC {
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     var image: UIImage?
     
+    @IBOutlet weak var upperView: UIView!
+    @IBOutlet weak var backButton: UIButton!
+    
+    @IBOutlet weak var backView: UIView!
     @IBOutlet weak var cropView: AKImageCropperView!
     @IBOutlet weak var loadButton: UIButton!
     @IBOutlet weak var casiButton: UIButton!
@@ -23,21 +27,52 @@ class ButtonImageEditorVC: CommonXIBTransitionVC {
         setupViews()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        updateViews()
+    }
+    
 }
 
 // MARK: - Setup views
 extension ButtonImageEditorVC {
     fileprivate func setupViews() {
-        cropView.backgroundColor = Colors.AndroidGrayColor
-        view.backgroundColor     = Colors.AndroidGrayColor
+        cropView.backgroundColor  = Colors.AndroidGrayColor
+        view.backgroundColor      = Colors.AndroidGrayColor
         
         if let image = image {
             cropView.image = image
         }
         
+        if let titleLabel = casiButton.titleLabel {
+            titleLabel.numberOfLines = 2
+            titleLabel.textAlignment = .center
+            casiButton.setTitle("CROP AND\nSAVE IMAGE", for: UIControlState())
+        }
+        
         loadButton.addTarget(self, action: #selector(loadImage), for: .touchUpInside)
         casiButton.addTarget(self, action: #selector(cropAndSaveImage), for: .touchUpInside)
         saveButton.addTarget(self, action: #selector(saveImage), for: .touchUpInside)
+        backButton.addTarget(self, action: #selector(dismissModal), for: .touchUpInside)
+    }
+    
+    fileprivate func updateViews() {
+        let width  = backView.frame.width / 3
+        let height = backView.frame.height
+        let size   = CGSize(width: width, height: height)
+        
+        loadButton.frame.size   = size
+        loadButton.frame.origin = CGPoint.zero
+        
+        casiButton.frame.size   = size
+        casiButton.frame.origin = CGPoint(x: loadButton.frame.maxX, y: 0)
+        
+        saveButton.frame.size   = size
+        saveButton.frame.origin = CGPoint(x: casiButton.frame.maxX, y: 0)
+        
+        upperView.setGradientBackground()
+        upperView.bringSubview(toFront: backButton)
     }
 }
 

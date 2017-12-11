@@ -8,6 +8,8 @@
 import UIKit
 import AudioToolbox
 
+// TODO: Zaseban layer za shadow
+
 class ButtonCell: UICollectionViewCell {
     var width: CGFloat!
     var height: CGFloat!
@@ -42,13 +44,12 @@ class ButtonCell: UICollectionViewCell {
                 case ButtonColor.blue  : shadowColor = .blue
                 case ButtonColor.gray  : shadowColor = Colors.AndroidGrayColor
                 case ButtonColor.green : shadowColor = .green
-                default: shadowColor = .black
+                default                : shadowColor = .black
             }
             
             realButton.button = button
             setButton(button: button)
             layoutIfNeeded()
-            //setNeedsLayout()
             setNeedsDisplay()
         }
     }
@@ -78,9 +79,8 @@ extension ButtonCell {
         contentView.backgroundColor  = .clear
         contentView.clipsToBounds    = true
         realButton.layer.borderWidth = 1
+        realButton.layer.masksToBounds = true
     }
-    
-
     
     // MARK: - Gradient background & Shadows
     fileprivate func setButtonColor() {
@@ -100,7 +100,6 @@ extension ButtonCell {
         }
         
         addGradient(color: color)
-        //realButton.setGradientBackground(colors: [color.withAlphaComponent(0.5).cgColor, color.cgColor])
         
         if let imageView = realButton.imageView {
             realButton.bringSubview(toFront: imageView)
@@ -117,16 +116,14 @@ extension ButtonCell {
             case ButtonState.invisible, ButtonState.disable : hideBorder()
             default: break
         }
-        realButton.clipsToBounds = true
+        //realButton.clipsToBounds = true
         realButton.layoutSubviews()
         realButton.layoutIfNeeded()
         realButton.setNeedsDisplay()
-
     }
     
     fileprivate func removeGradient() {
         if backgroundLayer != nil { backgroundLayer.removeFromSuperlayer() }
-//        if (realButton.layer.sublayers?[0] != nil && realButton.layer.sublayers?[0] is CAGradientLayer) { realButton.layer.sublayers![0].removeFromSuperlayer() }
     }
     
     fileprivate func setShadows() {
@@ -144,11 +141,9 @@ extension ButtonCell {
     }
     
     func showShadows() {
-        //realButton.addButtonShadows()
         realButton.needsShadow = true
     }
     func hideShadows() {
-        //realButton.addButtonShadows(isOn: false)
         realButton.needsShadow = false
     }
     
@@ -278,8 +273,11 @@ extension ButtonCell {
     fileprivate func addGradient(color: UIColor) {
         let colors = [color.withAlphaComponent(0.5).cgColor, color.cgColor]
         let gradient = CAGradientLayer.gradientLayerForBounds(bounds, colors: colors)
-        backgroundLayer = gradient
-        realButton.layer.insertSublayer(backgroundLayer, at: 1)
+        backgroundLayer          = gradient
+        backgroundLayer.position = realButton.center
+        var index: UInt32 = 0
+        if realButton.needsShadow { index = 1 }
+        realButton.layer.insertSublayer(backgroundLayer, at: index)
     }
     
 }

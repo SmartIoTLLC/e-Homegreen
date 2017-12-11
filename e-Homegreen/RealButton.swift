@@ -37,9 +37,9 @@ class RealButton: UIButton {
                 shadowLayer.fillColor     = UIColor.clear.cgColor
                 shadowLayer.shadowColor   = UIColor.black.cgColor
                 shadowLayer.shadowPath    = shadowLayer.path
-                shadowLayer.shadowOffset  = CGSize(width: 0.75, height: 2)
-                shadowLayer.shadowOpacity = 1.0
-                shadowLayer.shadowRadius  = 1
+                shadowLayer.shadowOffset  = CGSize(width: 1, height: 2)
+                shadowLayer.shadowOpacity = 0.8
+                shadowLayer.shadowRadius  = 2
                 
                 layer.insertSublayer(shadowLayer, at: 0)
             }

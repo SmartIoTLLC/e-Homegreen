@@ -32,10 +32,12 @@ class EditRemoteViewController: CommonXIBTransitionVC {
     }
     @IBOutlet weak var backView: UIView!
     
-    override func viewDidLoad() {
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         updateViews()
+        setButtonSizes()
     }
-
+    
 }
 
 // MARK: - View setup
@@ -47,6 +49,10 @@ extension EditRemoteViewController {
         dismissView.backgroundColor  = .clear
         backView.backgroundColor     = Colors.AndroidGrayColor
         backView.setGradientBackground()
+        let width  = view.frame.width - 32
+        let height = CGFloat(46)
+        backView.frame.size          = CGSize(width: width, height: height)
+        backView.center              = view.center
         backView.layer.cornerRadius  = 10
         backView.layer.borderColor   = Colors.MediumGray
         backView.layer.borderWidth   = 1
@@ -54,6 +60,23 @@ extension EditRemoteViewController {
         backView.bringSubview(toFront: cancelButton)
         backView.bringSubview(toFront: deleteButton)
         backView.bringSubview(toFront: copyButton)
+    }
+    
+    fileprivate func setButtonSizes() {
+        let width = (backView.bounds.width - 2 * 4 - 2 * 8) / 3
+        let height: CGFloat = 30
+        let size            = CGSize(width: width, height: height)
+        cancelButton.frame.size = size
+        deleteButton.frame.size = size
+        copyButton.frame.size   = size
+        
+        deleteButton.center       = backView.center
+        cancelButton.frame.origin = CGPoint(x: 8, y: 8)
+        copyButton.frame.origin   = CGPoint(x: backView.frame.width - 8 - width, y: 8)
+        
+        deleteButton.layoutIfNeeded()
+        cancelButton.layoutIfNeeded()
+        copyButton.layoutIfNeeded()
     }
     
     func dismissVC() {

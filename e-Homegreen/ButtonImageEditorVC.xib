@@ -9,13 +9,21 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Tahoma.ttf">
+            <string>Tahoma</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ButtonImageEditorVC" customModule="e_Homegreen" customModuleProvider="target">
             <connections>
+                <outlet property="backButton" destination="fyX-H2-SPe" id="CXB-bs-CbH"/>
+                <outlet property="backView" destination="Plj-2z-M9N" id="hAC-da-sK0"/>
                 <outlet property="casiButton" destination="tq8-Ol-Uzd" id="FpQ-FE-SAm"/>
                 <outlet property="cropView" destination="Ddy-KV-zRr" id="RRQ-To-ZtL"/>
                 <outlet property="loadButton" destination="FWU-U8-u8X" id="eix-HC-nnm"/>
                 <outlet property="saveButton" destination="l6F-ie-fXr" id="1sJ-HE-4el"/>
+                <outlet property="upperView" destination="EFF-Fe-99e" id="emL-KG-OkB"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -24,13 +32,32 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EFF-Fe-99e">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fyX-H2-SPe">
+                            <rect key="frame" x="8" y="28" width="34" height="34"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="34" id="MTH-71-0Rb"/>
+                                <constraint firstAttribute="width" constant="34" id="koE-bK-kRZ"/>
+                            </constraints>
+                            <state key="normal" image="back"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="fyX-H2-SPe" firstAttribute="leading" secondItem="EFF-Fe-99e" secondAttribute="leading" constant="8" id="DA2-6W-q2S"/>
+                        <constraint firstAttribute="height" constant="70" id="WP4-Pv-DzL"/>
+                        <constraint firstAttribute="bottom" secondItem="fyX-H2-SPe" secondAttribute="bottom" constant="8" id="ZYY-QO-6c9"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Plj-2z-M9N">
                     <rect key="frame" x="0.0" y="617" width="375" height="50"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tq8-Ol-Uzd">
                             <rect key="frame" x="137" y="0.0" width="100" height="50"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                             <state key="normal" title="CROP AND SAVE IMAGE">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -38,6 +65,7 @@
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l6F-ie-fXr">
                             <rect key="frame" x="267" y="0.0" width="100" height="50"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                             <state key="normal" title="SAVE IMAGE">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -45,6 +73,7 @@
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FWU-U8-u8X">
                             <rect key="frame" x="8" y="0.0" width="100" height="50"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
                             <state key="normal" title="LOAD IMAGE">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -57,7 +86,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ddy-KV-zRr" customClass="AKImageCropperView" customModule="AKImageCropperView">
-                    <rect key="frame" x="0.0" y="20" width="375" height="589"/>
+                    <rect key="frame" x="0.0" y="70" width="375" height="539"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
             </subviews>
@@ -65,14 +94,20 @@
             <constraints>
                 <constraint firstItem="Ddy-KV-zRr" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="9Sa-0Y-Pqj"/>
                 <constraint firstItem="Plj-2z-M9N" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="G44-7T-Xb9"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="EFF-Fe-99e" secondAttribute="trailing" id="J60-8E-oJU"/>
+                <constraint firstItem="EFF-Fe-99e" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="-20" id="KPd-o0-naK"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Plj-2z-M9N" secondAttribute="bottom" id="Ta3-Cd-7lO"/>
                 <constraint firstItem="Plj-2z-M9N" firstAttribute="top" secondItem="Ddy-KV-zRr" secondAttribute="bottom" constant="8" id="VB4-Yi-lDs"/>
+                <constraint firstItem="Ddy-KV-zRr" firstAttribute="top" secondItem="EFF-Fe-99e" secondAttribute="bottom" id="WNc-wR-a8l"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Ddy-KV-zRr" secondAttribute="trailing" id="hct-Ma-0RX"/>
-                <constraint firstItem="Ddy-KV-zRr" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="jDS-w7-Dnj"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Plj-2z-M9N" secondAttribute="trailing" id="lsT-W7-dci"/>
+                <constraint firstItem="EFF-Fe-99e" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="sHA-47-lE5"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="25.5" y="52.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="back" width="78" height="78"/>
+    </resources>
 </document>

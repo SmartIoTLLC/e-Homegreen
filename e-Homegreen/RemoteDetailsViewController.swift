@@ -78,7 +78,9 @@ class RemoteDetailsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         changeFullscreenImage(fullscreenButton: fullScreenButton)
+        layoutHeaderAndFooter()
     }
+    
 }
 
 // MARK: - View setup & Logic
@@ -202,6 +204,11 @@ extension RemoteDetailsViewController {
             footerBorder = borderLayer
             view.layer.addSublayer(footerBorder)
         }
+    }
+    
+    fileprivate func layoutHeaderAndFooter() {
+        remoteHeader.layoutIfNeeded()
+        remoteFooter.layoutIfNeeded()
     }
     
     @objc fileprivate func refreshRemote() {
