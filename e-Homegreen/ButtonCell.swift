@@ -20,8 +20,9 @@ class ButtonCell: UICollectionViewCell {
     
     var shadowColor: UIColor!
     
-    @IBOutlet weak var realButton: RealButton!
+    var backgroundLayer: CAGradientLayer!
     
+    @IBOutlet weak var realButton: RealButton!
     @IBOutlet weak var btnWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnHeightConstraint: NSLayoutConstraint!
     
@@ -46,7 +47,8 @@ class ButtonCell: UICollectionViewCell {
             
             realButton.button = button
             setButton(button: button)
-            setNeedsLayout()
+            layoutIfNeeded()
+            //setNeedsLayout()
             setNeedsDisplay()
         }
     }
@@ -63,7 +65,7 @@ class ButtonCell: UICollectionViewCell {
         setButtonColor()
         setShadows()
     }
-            
+    
 }
 
 // MARK: - Button setup
@@ -77,6 +79,8 @@ extension ButtonCell {
         contentView.clipsToBounds    = true
         realButton.layer.borderWidth = 1
     }
+    
+
     
     // MARK: - Gradient background & Shadows
     fileprivate func setButtonColor() {
@@ -95,7 +99,8 @@ extension ButtonCell {
         default: color = .clear
         }
         
-        realButton.setGradientBackground(colors: [color.withAlphaComponent(0.5).cgColor, color.cgColor])
+        addGradient(color: color)
+        //realButton.setGradientBackground(colors: [color.withAlphaComponent(0.5).cgColor, color.cgColor])
         
         if let imageView = realButton.imageView {
             realButton.bringSubview(toFront: imageView)
@@ -120,7 +125,8 @@ extension ButtonCell {
     }
     
     fileprivate func removeGradient() {
-        if (realButton.layer.sublayers?[0] != nil && realButton.layer.sublayers?[0] is CAGradientLayer) { realButton.layer.sublayers![0].removeFromSuperlayer() }
+        if backgroundLayer != nil { backgroundLayer.removeFromSuperlayer() }
+//        if (realButton.layer.sublayers?[0] != nil && realButton.layer.sublayers?[0] is CAGradientLayer) { realButton.layer.sublayers![0].removeFromSuperlayer() }
     }
     
     fileprivate func setShadows() {
@@ -267,6 +273,13 @@ extension ButtonCell {
         } else {
             realButton.setImage(nil, for: UIControlState())
         }
+    }
+    
+    fileprivate func addGradient(color: UIColor) {
+        let colors = [color.withAlphaComponent(0.5).cgColor, color.cgColor]
+        let gradient = CAGradientLayer.gradientLayerForBounds(bounds, colors: colors)
+        backgroundLayer = gradient
+        realButton.layer.insertSublayer(backgroundLayer, at: 1)
     }
     
 }

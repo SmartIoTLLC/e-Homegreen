@@ -24,6 +24,9 @@ class RemoteDetailsViewController: UIViewController {
     var chunksOfButtons: [[RemoteButton]] = []
     let cellId = "buttonCell"
     
+    var headerBorder: CAShapeLayer!
+    var footerBorder: CAShapeLayer!
+    
     var remote: Remote! {
         didSet {
             rows          = Int(remote.rows!)
@@ -87,8 +90,6 @@ extension RemoteDetailsViewController {
         buttonsCollectionView.dataSource = self
     }
     
-    // BUG: Border remote header-a/footer-a ne menja velicinu na ostalim velicinama ekrana
-    
     fileprivate func updateViews() {
         remoteTitleLabel.text          = remote.name
         remoteTitleLabel.font          = .tahoma(size: 15)
@@ -104,8 +105,10 @@ extension RemoteDetailsViewController {
         remoteSignal.layer.borderColor  = Colors.AndroidGrayColor.cgColor
         remoteSignal.layer.borderWidth  = 2
         
-        roundUp(view: remoteHeader, corners: [.topLeft, .topRight])
-        roundUp(view: remoteFooter, corners: [.bottomLeft, .bottomRight])
+        remoteHeader.setGradient(isUp: true)
+        roundUp(view: remoteHeader, isHeader: true)
+        remoteFooter.setGradient(isUp: false)
+        roundUp(view: remoteFooter, isHeader: false)
         
         buttonsCollectionView.isScrollEnabled   = false
         buttonsCollectionView.backgroundColor   = Colors.AndroidGrayColor
@@ -171,7 +174,10 @@ extension RemoteDetailsViewController {
         buttonsCollectionView.collectionViewLayout.invalidateLayout()
     }
     
-    fileprivate func roundUp(view: UIView, corners: UIRectCorner) {
+    fileprivate func roundUp(view: UIView, isHeader: Bool) {
+        var corners: UIRectCorner = []
+        if isHeader { corners = [.topLeft, .topRight] } else { corners = [.bottomLeft, .bottomRight] }
+        
         let rectShape = CAShapeLayer()
         rectShape.bounds           = view.frame
         rectShape.position         = view.center
@@ -184,9 +190,18 @@ extension RemoteDetailsViewController {
         borderLayer.fillColor   = UIColor.clear.cgColor
         borderLayer.strokeColor = Colors.DarkGray
         borderLayer.lineWidth   = 2
-        borderLayer.bounds      = view.frame
+        borderLayer.bounds      = rectShape.frame
         borderLayer.position    = view.center
-        view.layer.addSublayer(borderLayer)
+        
+        if isHeader {
+            if headerBorder != nil { headerBorder.removeFromSuperlayer() }
+            headerBorder = borderLayer
+            view.layer.addSublayer(headerBorder)
+        } else {
+            if footerBorder != nil { footerBorder.removeFromSuperlayer() }
+            footerBorder = borderLayer
+            view.layer.addSublayer(footerBorder)
+        }
     }
     
     @objc fileprivate func refreshRemote() {
@@ -210,6 +225,13 @@ extension RemoteDetailsViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(refreshRemote), name: .ButtonUpdated, object: nil)
     }
     
+}
+
+extension UIView {
+    fileprivate func setGradient(isUp: Bool) {
+        let gradientLayer = CAGradientLayer.gradientLayerForBounds(bounds, isReversed: isUp)
+        layer.insertSublayer(gradientLayer, at: 0)
+    }
 }
 
 extension Array {

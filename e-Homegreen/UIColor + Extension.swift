@@ -24,6 +24,8 @@ extension UIColor {
     static let googleMicBackgroundWhite = UIColor(red: 235/255, green: 239/255, blue: 242/255, alpha: 1)
     
     struct eHome {
+        
+        
         static let turquoiseBlue = UIColor(displayP3Red: 175/255, green: 238/255, blue: 238/255, alpha: 1)
     }
 }

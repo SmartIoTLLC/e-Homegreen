@@ -115,7 +115,9 @@ class CoreDataController: NSObject {
     
     func saveChanges() {
         do {
-            try appDel.managedObjectContext!.save()
+            if let moc = appDel.managedObjectContext {
+                try moc.save()
+            }            
         } catch let error1 as NSError { let error = error1; print("Unresolved error \(error), \(error.userInfo)") }
     }
     

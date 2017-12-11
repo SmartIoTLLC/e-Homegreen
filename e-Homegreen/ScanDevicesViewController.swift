@@ -16,6 +16,8 @@ struct SearchParametars {
     let initialPercentage:Float
 }
 
+// TODO: nastaviti odavde
+
 class ScanDevicesViewController: UIViewController, UITextFieldDelegate, ProgressBarDelegate {
     
     var appDel:AppDelegate!
@@ -555,40 +557,22 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     
     func sendCommandForFindingName(index:Int) {
         setProgressBarParametarsForFindingNames(index)
+        let device  = devices[index]
+        let type    = device.type
+        let gateway = device.gateway
+        let channel = getByte(device.channel)
+        let address = [getByte(gateway.addressOne), getByte(gateway.addressTwo), getByte(device.address)]
         
-        if devices[index].type == ControlType.Dimmer || devices[index].type == ControlType.AnalogOutput {
-            let address = [getByte(devices[index].gateway.addressOne), getByte(devices[index].gateway.addressTwo), getByte(devices[index].address)]
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.getChannelName(address, channel: getByte(devices[index].channel)), gateway: devices[index].gateway)
-        }
-        
-        if devices[index].type == ControlType.Curtain || devices[index].type == ControlType.PC {
-            let address = [getByte(devices[index].gateway.addressOne), getByte(devices[index].gateway.addressTwo), getByte(devices[index].address)]
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.getModuleName(address), gateway: devices[index].gateway)
-        }
-        
-        if devices[index].type == ControlType.Relay || devices[index].type == ControlType.DigitalOutput {
-            let address = [getByte(devices[index].gateway.addressOne), getByte(devices[index].gateway.addressTwo), getByte(devices[index].address)]
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.getChannelName(address, channel: getByte(devices[index].channel)), gateway: devices[index].gateway)
-        }
-        
-        if devices[index].type == ControlType.Climate {
-            let address = [getByte(devices[index].gateway.addressOne), getByte(devices[index].gateway.addressTwo), getByte(devices[index].address)]
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.getACName(address, channel: getByte(devices[index].channel)), gateway: devices[index].gateway)
-        }
-        
-        if devices[index].type == ControlType.Sensor || devices[index].type == ControlType.IntelligentSwitch || devices[index].type == ControlType.Gateway  || devices[index].type == ControlType.DigitalInput {
-            let address = [getByte(devices[index].gateway.addressOne), getByte(devices[index].gateway.addressTwo), getByte(devices[index].address)]
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.getSensorName(address, channel: getByte(devices[index].channel)), gateway: devices[index].gateway)
-        }
-        
-        if devices[index].type == ControlType.SaltoAccess {
-            let address = [getByte(devices[index].gateway.addressOne), getByte(devices[index].gateway.addressTwo), getByte(devices[index].address)]
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessInfoWithAddress(address), gateway: devices[index].gateway)
-        }
-        
-        if devices[index].type == ControlType.IntelligentSwitch {
-            let address = [getByte(devices[index].gateway.addressOne), getByte(devices[index].gateway.addressTwo), getByte(devices[index].address)]
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.getModuleName(address), gateway: devices[index].gateway)
+        switch type {
+            case ControlType.Dimmer, ControlType.AnalogOutput : SendingHandler.sendCommand(byteArray: OutgoingHandler.getChannelName(address, channel: channel), gateway: gateway)
+            case ControlType.Curtain, ControlType.PC          : SendingHandler.sendCommand(byteArray: OutgoingHandler.getModuleName(address), gateway: gateway)
+            case ControlType.Relay, ControlType.DigitalOutput : SendingHandler.sendCommand(byteArray: OutgoingHandler.getChannelName(address, channel: channel), gateway: gateway)
+            case ControlType.Climate                          : SendingHandler.sendCommand(byteArray: OutgoingHandler.getACName(address, channel: channel), gateway: gateway)
+            case ControlType.SaltoAccess                      : SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessInfoWithAddress(address), gateway: gateway)
+            case ControlType.IntelligentSwitch                : SendingHandler.sendCommand(byteArray: OutgoingHandler.getModuleName(address), gateway: gateway)
+            case ControlType.Sensor, ControlType.IntelligentSwitch,
+                 ControlType.Gateway,ControlType.DigitalInput : SendingHandler.sendCommand(byteArray: OutgoingHandler.getSensorName(address, channel: channel), gateway: gateway)
+            default: break
         }
     }
     
@@ -838,36 +822,56 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        DispatchQueue.main.async(execute: { self.showChangeDeviceParametar(device: self.devices[indexPath.row], scanDevicesViewController: self) })
-        
+        showChangeDeviceParametar(at: indexPath)
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return devices.count
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        return makeButtonAction(at: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete { deleteDevices(indexPath: indexPath) }
+    }
+    
+    fileprivate func showChangeDeviceParametar(at indexPath: IndexPath) {
+        DispatchQueue.main.async {
+            self.showChangeDeviceParametar(device: self.devices[indexPath.row], scanDevicesViewController: self)
+        }
+    }
+    
+    fileprivate func deleteDevices(indexPath: IndexPath) {
+        // Here needs to be deleted even devices that are from gateway that is going to be deleted
+        if let moc = appDel.managedObjectContext {
+            let device = devices[indexPath.row]
+            moc.delete(device)
+            CoreDataController.sharedInstance.saveChanges()
+            updateDeviceList()
+            refreshDeviceList()
+        }
+    }
+    
+    fileprivate func makeButtonAction(at indexPath: IndexPath) -> [UITableViewRowAction] {
         let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
             self.tableView(self.deviceTableView, commit: UITableViewCellEditingStyle.delete, forRowAt: indexPath)
         })
         button.backgroundColor = UIColor.red
         return [button]
     }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Here needs to be deleted even devices that are from gateway that is going to be deleted
-            appDel.managedObjectContext?.delete(devices[indexPath.row])
-            CoreDataController.sharedInstance.saveChanges()
-            updateDeviceList()
-            refreshDeviceList()
-        }
-    }
 }
 
 extension ScanDevicesViewController: DeleteAllDelegate {
     func deleteConfirmed() {
-        for item in 0..<self.devices.count { if self.devices[item].gateway.objectID == self.gateway.objectID { self.appDel.managedObjectContext!.delete(self.devices[item]) } }
+        for item in 0..<devices.count {
+            if devices[item].gateway.objectID == gateway.objectID {
+                if let moc = appDel.managedObjectContext {
+                    moc.delete(devices[item])
+                }
+            }
+        }
         CoreDataController.sharedInstance.saveChanges()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }

@@ -222,9 +222,12 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pJg-kw-4vi">
                                                 <rect key="frame" x="8" y="152" width="327" height="60"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="e-Home Controls" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v61-0j-Umn">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="e-Home Controls" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v61-0j-Umn">
                                                         <rect key="frame" x="97" y="15" width="132" height="30"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="30" id="1Li-BD-lV2"/>
+                                                            <constraint firstAttribute="width" constant="132" id="oJR-Sf-dXM"/>
+                                                        </constraints>
                                                         <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
@@ -232,7 +235,9 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
+                                                    <constraint firstItem="v61-0j-Umn" firstAttribute="centerY" secondItem="pJg-kw-4vi" secondAttribute="centerY" id="6ld-5K-EaR"/>
                                                     <constraint firstAttribute="height" constant="60" id="FOe-jg-jH6"/>
+                                                    <constraint firstItem="v61-0j-Umn" firstAttribute="centerX" secondItem="pJg-kw-4vi" secondAttribute="centerX" id="TQu-3z-DGe"/>
                                                 </constraints>
                                             </view>
                                         </subviews>

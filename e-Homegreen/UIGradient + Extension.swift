@@ -9,10 +9,24 @@
 import Foundation
 
 extension CAGradientLayer {
-    class func gradientLayerForBounds(_ bounds: CGRect) -> CAGradientLayer {
+    class func gradientLayerForBounds(_ bounds: CGRect, isReversed: Bool = false) -> CAGradientLayer {
         let layer = CAGradientLayer()
         layer.frame = bounds
-        layer.colors = [Colors.DarkGray, Colors.MediumGray]
+        if !isReversed {
+            layer.colors = [Colors.DarkGray, Colors.MediumGray]
+        } else {
+            layer.colors = [Colors.MediumGray, Colors.DarkGray]
+        }
+        
         return layer
     }
+    
+    class func gradientLayerForBounds(_ bounds: CGRect, colors: [CGColor]) -> CAGradientLayer {
+        let layer = CAGradientLayer()
+        layer.frame  = bounds
+        layer.colors = colors
+        
+        return layer
+    }
+    
 }
