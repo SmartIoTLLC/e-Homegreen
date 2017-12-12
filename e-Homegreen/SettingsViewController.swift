@@ -26,6 +26,9 @@ enum SettingsItem{
 }
 
 class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWRevealViewControllerDelegate, SettingsDelegate {
+    
+    let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
+    
     var user:User?
     var appDel:AppDelegate!
     var error:NSError? = nil
@@ -52,6 +55,9 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
         if AdminController.shared.isAdminLogged() || user != nil { navigationItem.leftBarButtonItems = [] }
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
+        if #available(iOS 11, *) { titleView.layoutIfNeeded() }
+        titleView.setTitle("Settings")
+        navigationItem.titleView = titleView
         
         settingArray = [.mainMenu, .interfaces, .refreshStatusDelay, .openLastScreen, .broadcast]
         

@@ -40,6 +40,8 @@ struct CollapsableViewModel {
 
 class LocationViewController: PopoverVC  {
     
+    let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
+    
     @IBOutlet weak var ipHostTextField: UITextField!
     @IBOutlet weak var portTextField: UITextField!
     @IBOutlet weak var gatewayTableView: UITableView!
@@ -186,6 +188,10 @@ extension LocationViewController {
         gatewayTableView.estimatedRowHeight = 44.0
         gatewayTableView.rowHeight          = UITableViewAutomaticDimension
         self.gatewayTableView.contentInset  = UIEdgeInsets(top: 15, left: 0, bottom: 15, right: 0)
+        
+        titleView.setTitle("Locations")
+        if #available(iOS 11, *) { titleView.layoutIfNeeded() }
+        navigationItem.titleView = titleView
     }
 }
 

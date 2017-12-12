@@ -14,6 +14,8 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     let cellId = "stationCell"
     
+    let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
+    
     let context = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     var radioStations = [Radio]()
     var currentStation: Radio!
@@ -191,8 +193,13 @@ extension RadioViewController {
         
         tableView.backgroundColor = .clear
         tableView.separatorInset  = .zero
+        
         navigationItem.title = "Radio"
         navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
+        if #available(iOS 11, *) { titleView.layoutIfNeeded() }
+        
+        navigationItem.titleView = titleView
+        titleView.setTitle("Radio")
     }
 }
 

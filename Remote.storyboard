@@ -16,7 +16,7 @@
         </array>
     </customFonts>
     <scenes>
-        <!--Remote-->
+        <!--Remote View Controller-->
         <scene sceneID="TlI-1X-eTZ">
             <objects>
                 <viewController id="OFc-pz-4je" customClass="RemoteViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
@@ -92,7 +92,8 @@
                             <constraint firstItem="zc9-1z-mr7" firstAttribute="centerX" secondItem="wsb-Jm-AqH" secondAttribute="centerX" id="nrt-Yg-xc4"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Remote" id="P8e-5v-jqx">
+                    <navigationItem key="navigationItem" id="P8e-5v-jqx">
+                        <barButtonItem key="backBarButtonItem" title=" " id="G8H-1h-Cx3"/>
                         <barButtonItem key="leftBarButtonItem" image="Menu button" id="nxI-zM-8t5"/>
                         <rightBarButtonItems>
                             <barButtonItem style="plain" id="fZo-nX-c4s">

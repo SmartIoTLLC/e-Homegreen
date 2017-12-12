@@ -21,6 +21,10 @@ class NavigationTitleView: UIView {
     var titleCenterConstraint = NSLayoutConstraint()
     var subtitleCenterConstraint = NSLayoutConstraint()
     var subtitleLeadingConstraintLandscape = NSLayoutConstraint()
+    
+    let timeLabel = UILabel()
+    
+    var clockTimer: Foundation.Timer!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,34 +40,58 @@ class NavigationTitleView: UIView {
         return UILayoutFittingExpandedSize
     }
     
-    func commonInit(){
+    deinit {
+        clockTimer = nil
+    }
+    
+    @objc fileprivate func tickTock() {
+        timeLabel.text = DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .short)
+    }
+    
+    func commonInit() {
+        timeLabel.text = DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .short)
+        clockTimer     = Foundation.Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(tickTock), userInfo: nil, repeats: true)
+        
         self.translatesAutoresizingMaskIntoConstraints = true        
-        self.backgroundColor = UIColor.clear
+        self.backgroundColor = .clear
         
         titleView.translatesAutoresizingMaskIntoConstraints = false
-        titleView.backgroundColor = UIColor.clear
-        titleView.font = UIFont.boldSystemFont(ofSize: 20)
-        titleView.textColor = UIColor.white
+        titleView.backgroundColor = .clear
+        titleView.font            = .tahoma(size: 20)
+        titleView.textColor       = .white
         titleView.setContentHuggingPriority(1000, for: .horizontal)
         self.addSubview(titleView)
         
         subtitleView.translatesAutoresizingMaskIntoConstraints = false
-        subtitleView.backgroundColor = UIColor.clear
-        subtitleView.font = UIFont.boldSystemFont(ofSize: 13)
-        subtitleView.textColor = UIColor.white
+        subtitleView.backgroundColor           = .clear
+        subtitleView.font                      = .tahoma(size: 13)
+        subtitleView.textColor                 = .white
         subtitleView.adjustsFontSizeToFitWidth = true
         self.addSubview(subtitleView)
         
-        //set portrait constraint
-        titleTopConstraint = NSLayoutConstraint(item: titleView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0)
-        titleLeadingConstraint = NSLayoutConstraint(item: titleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0)
-        subtitleTopConstraint = NSLayoutConstraint(item: subtitleView, attribute: .top, relatedBy: .equal, toItem: titleView, attribute: .bottom, multiplier: 1.0, constant: 0)
-        subtitleLeadingConstraint = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0)
+        timeLabel.translatesAutoresizingMaskIntoConstraints = false
+        timeLabel.backgroundColor           = .clear
+        timeLabel.font                      = .tahoma(size: 20)
+        timeLabel.textColor                 = .white
+        timeLabel.adjustsFontSizeToFitWidth = true
+        self.addSubview(timeLabel)
         
-        //set landscape constraint
+        // Clock constraints
+        let timeCenterY           = NSLayoutConstraint(item: timeLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
+        let timeTrailing          = NSLayoutConstraint(item: timeLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0)
+        self.addConstraint(timeCenterY)
+        self.addConstraint(timeTrailing)
+        
+        // set portrait constraint
+        titleTopConstraint        = NSLayoutConstraint(item: titleView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0)
+        titleLeadingConstraint    = NSLayoutConstraint(item: titleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 24)
+        subtitleTopConstraint     = NSLayoutConstraint(item: subtitleView, attribute: .top, relatedBy: .equal, toItem: titleView, attribute: .bottom, multiplier: 1.0, constant: 0)
+        subtitleLeadingConstraint = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 24)
+        
+        // set landscape constraint
         titleCenterConstraint = NSLayoutConstraint(item: titleView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
         
-        subtitleCenterConstraint = NSLayoutConstraint(item: subtitleView, attribute: .centerY, relatedBy: .equal, toItem: titleView, attribute: .centerY, multiplier: 1.0, constant: 0)
+        subtitleCenterConstraint           = NSLayoutConstraint(item: subtitleView, attribute: .centerY, relatedBy: .equal, toItem: titleView, attribute: .centerY, multiplier: 1.0, constant: 0)
         subtitleLeadingConstraintLandscape = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: titleView, attribute: .trailing, multiplier: 1.0, constant: 10)
         
         self.addConstraint(NSLayoutConstraint(item: subtitleView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0))

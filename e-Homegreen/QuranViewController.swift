@@ -12,6 +12,8 @@ class QuranViewController: UIViewController {
     
     let context = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     
+    let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
+    
     let cellId   = "reciterCell"
     var reciters = [Reciter]()
     var selectedReciter: Reciter?
@@ -45,7 +47,7 @@ class QuranViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toSuraPlayer" {
             if let destVC: SuraPlayerViewController = segue.destination as? SuraPlayerViewController {
-                destVC.reciter = selectedReciter
+                destVC.reciter = selectedReciter                
             }
         }
     }
@@ -86,14 +88,18 @@ extension QuranViewController: UITableViewDataSource, UITableViewDelegate {
 // MARK: - View setup
 extension QuranViewController {
     fileprivate func updateViews() {
+        if #available(iOS 11, *) { titleView.layoutIfNeeded() }
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UINib(nibName: String(describing: ReciterCell.self), bundle: nil), forCellReuseIdentifier: cellId)
         
         tableView.backgroundColor = .clear
         tableView.separatorInset  = .zero
-        navigationItem.title      = "Reciters"
+                
         navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
+        navigationItem.titleView  = titleView
+        titleView.setTitle("Reciters")
     }
 }
 

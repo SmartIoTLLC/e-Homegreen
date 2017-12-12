@@ -13,6 +13,8 @@ import Zip
 
 class ProjectManagerViewController: UIViewController {
     
+    let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
+    
     @IBOutlet weak var usersTableView: UITableView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
@@ -36,7 +38,11 @@ class ProjectManagerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if #available(iOS 11, *) { titleView.layoutIfNeeded() }
+        titleView.setTitle("Project Manager")
+        navigationItem.titleView = titleView
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
+        
         UIView.hr_setToastThemeColor(color: UIColor.red)
         
         if !AdminController.shared.isAdminLogged() { addButton.isHidden = true }

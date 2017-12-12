@@ -14,6 +14,7 @@
             <connections>
                 <outlet property="backgroundView" destination="51A-d2-va8" id="RaT-aV-2e8"/>
                 <outlet property="bottomToolbar" destination="3QN-1s-kIm" id="JVW-eE-Ni6"/>
+                <outlet property="dismissArea" destination="3Z2-Kq-bS8" id="03O-ih-aKR"/>
                 <outlet property="imageCollectionView" destination="xEl-kk-goa" id="NpQ-mu-LLA"/>
                 <outlet property="segmentedControl" destination="Cfd-NE-5Sp" id="67U-aC-GvB"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -24,8 +25,12 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Z2-Kq-bS8">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="51A-d2-va8" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
-                    <rect key="frame" x="16" y="20" width="343" height="627"/>
+                    <rect key="frame" x="16" y="40" width="343" height="607"/>
                     <subviews>
                         <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Cfd-NE-5Sp">
                             <rect key="frame" x="8" y="8" width="327" height="51"/>
@@ -42,14 +47,14 @@
                             </connections>
                         </segmentedControl>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3QN-1s-kIm">
-                            <rect key="frame" x="8" y="577" width="327" height="50"/>
+                            <rect key="frame" x="8" y="557" width="327" height="50"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="4BU-rR-FeK"/>
                             </constraints>
                         </view>
                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="xEl-kk-goa">
-                            <rect key="frame" x="8" y="66" width="327" height="503"/>
+                            <rect key="frame" x="8" y="66" width="327" height="483"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="oth-TS-eRW">
                                 <size key="itemSize" width="50" height="50"/>
@@ -79,9 +84,15 @@
             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="51A-d2-va8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="1Wg-Qh-ijv"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="top" secondItem="51A-d2-va8" secondAttribute="top" id="BhD-lM-O0A"/>
+                <constraint firstItem="51A-d2-va8" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="62P-YE-at3"/>
+                <constraint firstItem="51A-d2-va8" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="20" id="BqK-De-SPT"/>
+                <constraint firstItem="51A-d2-va8" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="Obn-04-h29"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="51A-d2-va8" secondAttribute="bottom" constant="20" id="V85-JA-gSA"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="3Z2-Kq-bS8" secondAttribute="bottom" id="YSA-5r-RXT"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="51A-d2-va8" secondAttribute="trailing" constant="16" id="cpM-rb-ce5"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="51A-d2-va8" secondAttribute="bottom" constant="20" id="fub-bG-Ldc"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="3Z2-Kq-bS8" secondAttribute="trailing" id="h2l-CC-3fB"/>
+                <constraint firstItem="3Z2-Kq-bS8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="nbn-nR-9O4"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="top" secondItem="3Z2-Kq-bS8" secondAttribute="top" constant="20" id="sql-ob-Wsm"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="24.5" y="51.5"/>

@@ -101,6 +101,10 @@ extension UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    func popVC() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissEditing))
         tap.cancelsTouchesInView = false
@@ -248,6 +252,7 @@ extension UIFont {
     open class func tahoma(size: CGFloat) -> UIFont {
         return UIFont(name: "Tahoma", size: size)!
     }
+    
     
 }
 

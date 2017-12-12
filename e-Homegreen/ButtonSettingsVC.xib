@@ -49,7 +49,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <scrollView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fpf-MA-WnO">
-                    <rect key="frame" x="16" y="20" width="343" height="627"/>
+                    <rect key="frame" x="16" y="40" width="343" height="607"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="llW-Nw-nRn" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="0.0" width="343" height="627"/>
@@ -474,13 +474,15 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="fpf-MA-WnO" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="20" id="85P-nh-Vvd"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="fpf-MA-WnO" secondAttribute="bottom" constant="20" id="Hwj-hI-xxg"/>
                 <constraint firstItem="fpf-MA-WnO" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leadingMargin" id="Qzj-G0-D2D"/>
                 <constraint firstItem="fpf-MA-WnO" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailingMargin" id="Rj4-lE-98Y"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="fpf-MA-WnO" secondAttribute="trailing" constant="16" id="SPX-n8-UDd"/>
+                <constraint firstItem="fpf-MA-WnO" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="aS4-p1-cGF"/>
                 <constraint firstAttribute="bottom" secondItem="fpf-MA-WnO" secondAttribute="bottom" constant="20" symbolic="YES" id="e20-Up-51O"/>
+                <constraint firstItem="fpf-MA-WnO" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="gbT-Sj-Duv"/>
                 <constraint firstItem="fpf-MA-WnO" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="kdl-BA-95D"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="fpf-MA-WnO" secondAttribute="bottom" constant="20" id="pQi-qd-5ke"/>
-                <constraint firstItem="fpf-MA-WnO" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="tlR-of-LJs"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="77.5" y="59.5"/>

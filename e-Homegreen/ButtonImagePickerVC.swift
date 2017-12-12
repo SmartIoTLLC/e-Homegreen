@@ -13,6 +13,7 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
     let cellId = "imageCell"
     
     var availableImages: [UIImage] = []
+    var defaultImages: [UIImage] = []
     
     var customImagesMO: [Image] = []
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
@@ -21,7 +22,9 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
     var cancelButton: UIButton!
     var importButton: UIButton!
     var editButton: UIButton!
-    
+
+    let toolbarSeparator = UIView()
+
     var isCustom: Bool = false
     
     var scBottomLine: CALayer = {
@@ -33,14 +36,14 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
     
     var button: RemoteButton! {
         didSet {
-            if let image = button.image { selectedImage = UIImage(data: image as Data)
-                // TODO: cuvati i image string zbog prikazivanja indikatora po ponovnom ulasku na ekran
-            }
+            if let image = button.image { selectedImage = UIImage(data: image as Data) }
         }
     }
     
     var selectedImage: UIImage?
 
+    
+    @IBOutlet weak var dismissArea: UIView!
     @IBOutlet weak var backgroundView: CustomGradientBackground!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var imageCollectionView: UICollectionView!
@@ -50,6 +53,7 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
     }
     
     override func viewDidLoad() {
+        prepareDefaultImages()
         setupViews()
         
         addObservers()
@@ -58,7 +62,7 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateViews()
-        
+        print("LAYOUT SUBVIEWS CALLED")
         // TODO: toolbar,dugmad i collectionView nakon rotacije
     }
 
@@ -86,6 +90,8 @@ extension ButtonImagePickerVC {
         imageCollectionView.register(UINib(nibName: String(describing: ButtonImageCell.self), bundle: nil), forCellWithReuseIdentifier: cellId)
         imageCollectionView.backgroundColor = .clear
         
+        dismissArea.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissModal)))
+        
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         
         backgroundView.layer.borderColor   = Colors.MediumGray
@@ -101,27 +107,43 @@ extension ButtonImagePickerVC {
         ]
         segmentedControl.setTitleTextAttributes(attributes, for: UIControlState())
         
-        let toolbarSeparator = UIView()
-        toolbarSeparator.frame           = CGRect(x: 8, y: 0, width: bottomToolbar.frame.width - 16, height: 1)
         toolbarSeparator.backgroundColor = UIColor(cgColor: Colors.MediumGray).withAlphaComponent(0.5)
         bottomToolbar.addSubview(toolbarSeparator)
         
         setButton    = UIButton()
         cancelButton = UIButton()
+        importButton = UIButton()
+        editButton   = UIButton()
+        set(button: setButton, tag: 3)
+        set(button: cancelButton, tag: 2)
+        set(button: importButton, tag: 1)
+        set(button: editButton, tag: 0)
+        
+        add(button: setButton)
+        add(button: cancelButton)
         cancelButton.addTarget(self, action: #selector(dismissModal), for: .touchUpInside)
         setButton.addTarget(self, action: #selector(chooseImage), for: .touchUpInside)
+        editButton.addTarget(self, action: #selector(editImage), for: .touchUpInside)
+        importButton.addTarget(self, action: #selector(openImagePicker), for: .touchUpInside)
         
         loadDefaultImages()
     }
     
     fileprivate func updateViews() {
+        bottomToolbar.layoutIfNeeded()
+        toolbarSeparator.frame = CGRect(x: 8, y: 0, width: bottomToolbar.frame.width - 16, height: 1)
+        toolbarSeparator.layoutIfNeeded()
+        
+        scBottomLine.removeFromSuperlayer()
         scBottomLine.frame = CGRect(x: segmentedControl.frame.minX, y: segmentedControl.frame.height - 2, width: segmentedControl.frame.width / 2, height: 2)
         segmentedControl.layer.addSublayer(scBottomLine)
         
         bottomToolbar.backgroundColor = .clear
         
-        set(button: setButton, tag: 3)
-        set(button: cancelButton, tag: 2)
+        setButtonFrame(button: setButton, tag: 3)
+        setButtonFrame(button: cancelButton, tag: 2)
+        setButtonFrame(button: importButton, tag: 1)
+        setButtonFrame(button: editButton, tag: 0)
     }
     
     fileprivate func scTapped(_ sender: UISegmentedControl) {
@@ -135,9 +157,9 @@ extension ButtonImagePickerVC {
         segmentedControl.layer.addSublayer(scBottomLine)
         
         switch sender.selectedSegmentIndex {
-        case 0  : setToolbarForDefaultLibrary(); loadDefaultImages()
-        case 1  : setToolbarForCustomLibrary(); loadCustomImages()
-        default : break
+            case 0  : setToolbarForDefaultLibrary(); loadDefaultImages()
+            case 1  : setToolbarForCustomLibrary(); loadCustomImages()
+            default : break
         }
         
         imageCollectionView.reloadData()
@@ -149,12 +171,36 @@ extension ButtonImagePickerVC {
     }
     
     fileprivate func setToolbarForCustomLibrary() {
-        importButton = UIButton()
-        editButton   = UIButton()
-        editButton.addTarget(self, action: #selector(editImage), for: .touchUpInside)
-        importButton.addTarget(self, action: #selector(openImagePicker), for: .touchUpInside)
-        set(button: importButton, tag: 1)
-        set(button: editButton, tag: 0)
+        add(button: editButton)
+        add(button: importButton)
+    }
+    
+    fileprivate func set(button: UIButton, tag: CGFloat) {
+        switch tag {
+            case 0  : button.setTitle("EDIT", for: UIControlState())
+            case 1  : button.setTitle("IMPORT", for: UIControlState())
+            case 2  : button.setTitle("CANCEL", for: UIControlState())
+            case 3  : button.setTitle("SET", for: UIControlState())
+            default : break
+        }
+        
+        button.setTitleColor(.white, for: UIControlState())
+        button.titleLabel?.font = .tahoma(size: 15)
+        
+        button.backgroundColor  = .clear
+    }
+    
+    fileprivate func add(button: UIButton) {
+        bottomToolbar.addSubview(button)
+    }
+    
+    fileprivate func setButtonFrame(button: UIButton, tag: CGFloat) {
+        let width = bottomToolbar.frame.width / 4
+        
+        button.frame.size       = CGSize(width: width, height: bottomToolbar.frame.height)
+        button.frame.origin.x   = tag * width
+        button.frame.origin.y   = 0
+        button.layoutIfNeeded()
     }
     
     @objc fileprivate func loadCustomImages() {
@@ -174,7 +220,13 @@ extension ButtonImagePickerVC {
     }
     
     fileprivate func loadDefaultImages() {
-        availableImages = []
+        availableImages = defaultImages
+
+        isCustom = false
+        imageCollectionView.reloadData()
+    }
+    
+    fileprivate func prepareDefaultImages() {
         let defaultImages = [
             "04 Climate Control - Air Freshener - 00",
             "04 Climate Control - Air Freshener - 01",
@@ -356,36 +408,9 @@ extension ButtonImagePickerVC {
         ]
         
         defaultImages.forEach { (string) in
-            if let image = UIImage(named: string) { availableImages.append(image) }
+            if let image = UIImage(named: string) { self.defaultImages.append(image) }
         }
-        isCustom = false
-        imageCollectionView.reloadData()
     }
-    
-    fileprivate func set(button: UIButton, tag: CGFloat) {
-        switch tag {
-            case 0  : button.setTitle("EDIT", for: UIControlState())
-            case 1  : button.setTitle("IMPORT", for: UIControlState())
-            case 2  : button.setTitle("CANCEL", for: UIControlState())
-            case 3  : button.setTitle("SET", for: UIControlState())
-            default : break
-        }
-        
-        button.setTitleColor(.white, for: UIControlState())
-        button.titleLabel?.font = .tahoma(size: 15)
-        
-        let width = bottomToolbar.frame.width / 4
-        
-        button.frame.size       = CGSize(width: width, height: bottomToolbar.frame.height)
-        button.frame.origin.x   = tag * width
-        button.frame.origin.y   = 0
-        
-        button.backgroundColor  = .clear
-        
-        bottomToolbar.addSubview(button)
-    }
-    
-    
     
     fileprivate func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(loadCustomImages), name: .CustomButtonImageEdited, object: nil)
@@ -405,12 +430,14 @@ extension ButtonImagePickerVC {
         }
         
         if let moc = managedContext {
-            let moImage = Image(context: moc, image: UIImagePNGRepresentation(pickedImage)!, id: "buttonImage")
-            
-            if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
-                user.addImagesObject(moImage)
-                CoreDataController.sharedInstance.saveChanges()
-                NotificationCenter.default.post(name: .CustomButtonImageEdited, object: nil)
+            if let image = UIImagePNGRepresentation(pickedImage) {
+                let moImage = Image(context: moc, image: image, id: "buttonImage")
+                
+                if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
+                    user.addImagesObject(moImage)
+                    CoreDataController.sharedInstance.saveChanges()
+                    NotificationCenter.default.post(name: .CustomButtonImageEdited, object: nil)
+                }
             }
         }
     }

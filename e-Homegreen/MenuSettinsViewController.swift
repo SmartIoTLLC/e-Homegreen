@@ -88,18 +88,27 @@ class MenuViewController{
 
 class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate  {
     
-    @IBOutlet weak var topView: UIView!
+    let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
+    
     var user:User!
     
     var menu:[MenuItem] = []
-    
     var menuList:[String] = []
+    
+    @IBOutlet weak var topView: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupViews()
+    }
+    
+    fileprivate func setupViews() {
         menu = DatabaseMenuController.shared.getDefaultMenuItemByUser(user)
-      
+        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
+        if #available(iOS 11, *) { titleView.layoutIfNeeded() }
+        navigationItem.titleView = titleView
+        titleView.setTitle("Main Menu")
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

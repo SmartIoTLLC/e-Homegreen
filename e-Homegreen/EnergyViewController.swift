@@ -30,6 +30,7 @@ class EnergyViewController: PopoverVC  {
         super.viewDidLoad()
         
         appDel = UIApplication.shared.delegate as! AppDelegate
+        setupViews()
         addObserversVDL()
     }
     
@@ -181,7 +182,7 @@ extension EnergyViewController {
         do {
             let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Device]
             devices = fetResults!
-        } catch let error1 as NSError { error = error1; print("Unresolved error", error, error!.userInfo) }
+        } catch let error1 as NSError { error = error1; print("Unresolved error: \(String(describing: error!.userInfo))") }
         
         for item in devices {
             sumAmp += Float(item.current)

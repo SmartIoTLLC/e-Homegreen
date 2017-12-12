@@ -73,12 +73,12 @@ class ButtonCell: UICollectionViewCell {
 extension ButtonCell {
     
     func updateCell() {
-        backgroundColor              = .clear
-        clipsToBounds                = true
-        layer.masksToBounds          = true
-        contentView.backgroundColor  = .clear
-        contentView.clipsToBounds    = true
-        realButton.layer.borderWidth = 1
+        backgroundColor                = .clear
+        clipsToBounds                  = true
+        layer.masksToBounds            = true
+        contentView.backgroundColor    = .clear
+        contentView.clipsToBounds      = true
+        realButton.layer.borderWidth   = 1
         realButton.layer.masksToBounds = true
     }
     
@@ -117,9 +117,10 @@ extension ButtonCell {
             default: break
         }
         //realButton.clipsToBounds = true
-        realButton.layoutSubviews()
-        realButton.layoutIfNeeded()
-        realButton.setNeedsDisplay()
+
+        //        realButton.layoutSubviews()
+//        realButton.layoutIfNeeded()
+//        realButton.setNeedsDisplay()
     }
     
     fileprivate func removeGradient() {
@@ -271,7 +272,7 @@ extension ButtonCell {
     }
     
     fileprivate func addGradient(color: UIColor) {
-        let colors = [color.withAlphaComponent(0.5).cgColor, color.cgColor]
+        let colors   = [color.withAlphaComponent(0.5).cgColor, color.cgColor]
         let gradient = CAGradientLayer.gradientLayerForBounds(bounds, colors: colors)
         backgroundLayer          = gradient
         backgroundLayer.position = realButton.center
@@ -288,7 +289,7 @@ extension UIImage {
         let newSize = CGSize(width: size.width * x, height: size.height * y)
         
         UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
-        draw(in: CGRect(origin: CGPoint.zero, size: newSize))
+        draw(in: CGRect(origin: .zero, size: newSize))
         
         if let newImage = UIGraphicsGetImageFromCurrentImageContext() {
             UIGraphicsEndImageContext()

@@ -192,6 +192,7 @@
 		4E7945521F6FC64F006C3ACA /* Sura+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7945501F6FC64F006C3ACA /* Sura+CoreDataProperties.swift */; };
 		4E7945551F6FCE31006C3ACA /* SuraCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7945531F6FCE31006C3ACA /* SuraCell.swift */; };
 		4E7945561F6FCE31006C3ACA /* SuraCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E7945541F6FCE31006C3ACA /* SuraCell.xib */; };
+		4E8515451FE00EC70017AA6D /* NavigationTitleViewNF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8515441FE00EC70017AA6D /* NavigationTitleViewNF.swift */; };
 		4E8C21711FCF0979004C0883 /* ButtonImagePickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8C216F1FCF0979004C0883 /* ButtonImagePickerVC.swift */; };
 		4E8C21721FCF0979004C0883 /* ButtonImagePickerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C21701FCF0979004C0883 /* ButtonImagePickerVC.xib */; };
 		4E8C21751FCF20F6004C0883 /* ButtonImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8C21731FCF20F6004C0883 /* ButtonImageCell.swift */; };
@@ -614,6 +615,7 @@
 		4E7945501F6FC64F006C3ACA /* Sura+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sura+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4E7945531F6FCE31006C3ACA /* SuraCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuraCell.swift; sourceTree = "<group>"; };
 		4E7945541F6FCE31006C3ACA /* SuraCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SuraCell.xib; sourceTree = "<group>"; };
+		4E8515441FE00EC70017AA6D /* NavigationTitleViewNF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationTitleViewNF.swift; sourceTree = "<group>"; };
 		4E8C216F1FCF0979004C0883 /* ButtonImagePickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonImagePickerVC.swift; sourceTree = "<group>"; };
 		4E8C21701FCF0979004C0883 /* ButtonImagePickerVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonImagePickerVC.xib; sourceTree = "<group>"; };
 		4E8C21731FCF20F6004C0883 /* ButtonImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonImageCell.swift; sourceTree = "<group>"; };
@@ -1879,6 +1881,7 @@
 				E79FD4EA1BCE43B600CA17DB /* ChatBubble.swift */,
 				E76B57681BBD1EE400A70F69 /* CustomGradientBackground.swift */,
 				22F2C9E41D41058A008A04DE /* NavigationTitleView.swift */,
+				4E8515441FE00EC70017AA6D /* NavigationTitleViewNF.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -2504,6 +2507,7 @@
 				73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */,
 				2233628D1CA2E477006C80C4 /* EditTextField.swift in Sources */,
 				4E8C21711FCF0979004C0883 /* ButtonImagePickerVC.swift in Sources */,
+				4E8515451FE00EC70017AA6D /* NavigationTitleViewNF.swift in Sources */,
 				E79FD4EB1BCE43B600CA17DB /* ChatBubbleData.swift in Sources */,
 				223690CD1CAD5A500037B54A /* DatabaseUserController.swift in Sources */,
 				73CE03D31C69E9C5005E108F /* NSManagedObject+Extension.swift in Sources */,

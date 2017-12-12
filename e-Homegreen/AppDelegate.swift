@@ -56,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().isTranslucent = false
         UINavigationBar.appearance().tintColor = UIColor.white
         let fontDictionary = [ NSForegroundColorAttributeName:UIColor.white ]
-        UINavigationBar.appearance().titleTextAttributes = fontDictionary
+        UINavigationBar.appearance().titleTextAttributes = fontDictionary        
         
         // Check wheter admin exists, and if it exists - check if user is logged in
         if let _ = AdminController.shared.getAdmin() {

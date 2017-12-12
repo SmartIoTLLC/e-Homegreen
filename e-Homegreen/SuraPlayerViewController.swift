@@ -13,6 +13,8 @@ class SuraPlayerViewController: UIViewController {
 
     let cellId = "suraCell"
     
+    let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
+    
     var reciter: Reciter!
     var surasList = [Sura]()
     var availableSurasList = [Sura]()
@@ -98,9 +100,11 @@ extension SuraPlayerViewController {
         tableView.dataSource      = self
         tableView.backgroundColor = .clear
         tableView.separatorInset  = .zero
-        
-        navigationItem.title      = "Suras"
+                
         navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: .default)
+        if #available(iOS 11, *) { titleView.layoutIfNeeded() }
+        navigationItem.titleView  = titleView
+        titleView.setTitle(reciter.name!)
     }
     
     fileprivate func setupSuraPlayerView() {

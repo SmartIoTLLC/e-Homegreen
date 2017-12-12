@@ -9,7 +9,9 @@
 import UIKit
 import AudioToolbox
 
-class RemoteDetailsViewController: UIViewController {        
+class RemoteDetailsViewController: UIViewController {
+    
+    let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
     var rows        : Int!
     var columns     : Int!
@@ -90,9 +92,15 @@ extension RemoteDetailsViewController {
         buttonsCollectionView.register(UINib(nibName: String(describing: ButtonCell.self), bundle: nil), forCellWithReuseIdentifier: cellId)
         buttonsCollectionView.delegate   = self
         buttonsCollectionView.dataSource = self
+        
+        navigationItem.backBarButtonItem?.setBackgroundImage(#imageLiteral(resourceName: "back"), for: .normal, barMetrics: .default)
     }
     
     fileprivate func updateViews() {
+        if #available(iOS 11, *) { titleView.layoutIfNeeded() }
+        titleView.setTitle("")
+        navigationItem.titleView       = titleView
+        
         remoteTitleLabel.text          = remote.name
         remoteTitleLabel.font          = .tahoma(size: 15)
         remoteTitleLabel.textColor     = .white

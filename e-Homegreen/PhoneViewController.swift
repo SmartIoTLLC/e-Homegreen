@@ -12,6 +12,8 @@ import Contacts
 
 class PhoneViewController: UIViewController {
     
+    let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
+    
     let audioEngine = AVAudioEngine()
     let speechRecognizer: SFSpeechRecognizer? = SFSpeechRecognizer()
     let request = SFSpeechAudioBufferRecognitionRequest()
@@ -19,6 +21,11 @@ class PhoneViewController: UIViewController {
     
     var recognizedSpeechString: String?
     var recognizedSpeechStringsSeparated: [String]?
+    
+    var speechRecognitionTimeout: Foundation.Timer?
+    var speechTimeoutInterval: TimeInterval = 2 {
+        didSet { restartSpeechTimeout() }
+    }
     
     let usersContactStorage = CNContactStore()
     var contactsList = [CNContact]()
@@ -30,14 +37,7 @@ class PhoneViewController: UIViewController {
     @IBOutlet weak var microphoneView: UIView!
     @IBOutlet weak var micLabel: UILabel!
     @IBOutlet weak var micImage: UIImageView!
-    
-    var speechRecognitionTimeout: Foundation.Timer?
-    var speechTimeoutInterval: TimeInterval = 2 {
-        didSet { restartSpeechTimeout() }
-    }
-    
     @IBOutlet weak var menuButton: UIBarButtonItem!
-    
     @IBOutlet weak var fullscreenButton: UIButton!
     @IBAction func fullscreenButton(_ sender: UIButton) {
         sender.switchFullscreen()
@@ -256,7 +256,7 @@ extension String {
     
     func cutToThreeCharachters() -> String {
         var newString = ""
-        for c in self.characters {
+        for c in self {
             if newString.count < 4 { newString.append(c) }
         }
         return newString
@@ -267,7 +267,7 @@ extension PhoneViewController {
     
     func callContact(number: String) {
         var formattedNumber = ""
-        for c in number.characters {
+        for c in number {
             if ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].contains(c) { formattedNumber += String(describing: c) }
         }
         
@@ -299,7 +299,9 @@ extension PhoneViewController {
     }
     
     func updateViews() {
-        navigationItem.title = "Phone"
+        navigationItem.titleView = titleView
+        titleView.setTitle("Phone")
+        if #available(iOS 11, *) { titleView.layoutIfNeeded() }
         navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: .default)
         
         setupMicrophoneView()

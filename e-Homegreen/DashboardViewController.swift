@@ -32,6 +32,8 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
     var calendar = FSCalendar()
     var clock : SPClockView!
     
+    let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
+    
     @IBOutlet weak var lblPlace: UILabel!
     @IBOutlet weak var lblMinMaxTemp: UILabel!
     @IBOutlet weak var lblTemp: UILabel!
@@ -43,12 +45,18 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if #available(iOS 11, *) { titleView.layoutIfNeeded() }
+        
         let date = Date()
         let calendarUnit = Calendar.current
         let components = (calendarUnit as NSCalendar).components([.hour, .minute], from: date)
         let hour = components.hour
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
+        
+        navigationItem.titleView = titleView
+        titleView.setTitle("Dashboard")
         
         if hour! < 20 && hour! > 6 { backgroundImage.image = UIImage(named: "dashboardDay")
         } else { backgroundImage.image = UIImage(named: "dashboardNight") }
@@ -122,25 +130,25 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         } else { backgroundImage.image = UIImage(named: "dashboardNight") }
         
         do {
-            let json = try JSONSerialization.jsonObject(with: weatherData, options:JSONSerialization.ReadingOptions.mutableContainers ) as! NSDictionary
-            
-            if let name = json["name"] as? String { lblPlace.text = name }
-            
-            if let weather = json["weather"] as? NSArray {
+            if let json = try JSONSerialization.jsonObject(with: weatherData, options:JSONSerialization.ReadingOptions.mutableContainers ) as? NSDictionary {
+                if let name = json["name"] as? String { lblPlace.text = name }
                 
-                if let weatherDict = weather[0] as? NSDictionary {
-                    if let main = weatherDict["main"] as? String { lblWeather.text = main }
-                    if let icon = weatherDict["icon"] as? String { imageWeather.image = UIImage(named: weatherDictionary[icon]!) }
+                if let weather = json["weather"] as? NSArray {
+                    
+                    if let weatherDict = weather[0] as? NSDictionary {
+                        if let main = weatherDict["main"] as? String { lblWeather.text = main }
+                        if let icon = weatherDict["icon"] as? String { imageWeather.image = UIImage(named: weatherDictionary[icon]!) }
+                    }
+                    
                 }
                 
-            }
-            
-            if let main = json["main"] as? NSDictionary {
-                if let temp = main["temp"] as? Double { lblTemp.text =  String(format: "%.1f", temp - 273) + "°C" }
-                var str:String!
-                if let temp_min = main["temp_min"] as? Double { str = String(format: "%.1f", temp_min - 273) + "°C/" }
-                
-                if let temp_max = main["temp_max"] as? Double { lblMinMaxTemp.text = str + (String(format: "%.1f", temp_max - 273) + "°C") }
+                if let main = json["main"] as? NSDictionary {
+                    if let temp = main["temp"] as? Double { lblTemp.text =  String(format: "%.1f", temp - 273) + "°C" }
+                    var str:String!
+                    if let temp_min = main["temp_min"] as? Double { str = String(format: "%.1f", temp_min - 273) + "°C/" }
+                    
+                    if let temp_max = main["temp_max"] as? Double { lblMinMaxTemp.text = str + (String(format: "%.1f", temp_max - 273) + "°C") }
+                }
             }
             
         } catch {}
