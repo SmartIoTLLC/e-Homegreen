@@ -8,11 +8,6 @@
    
    import UIKit
    
-   //@objc
-   //protocol SidePanelViewControllerDelegate {
-   //    optional func menuItemSelected(menuItem: MenuItem)
-   //}
-   
    class SidePanelViewController: UIViewController, LXReorderableCollectionViewDataSource, LXReorderableCollectionViewDelegateFlowLayout {
     
     @IBOutlet weak var logoImageView: UIImageView!
@@ -82,9 +77,9 @@
             let _ = DatabaseUserController.shared.setUser(nil)
             AdminController.shared.logoutAdmin()
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            let logIn = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LogInViewController
-            self.present(logIn, animated: false, completion: nil)
-            
+            if let logIn = storyboard.instantiateViewController(withIdentifier: "LoginController") as? LogInViewController {
+                self.present(logIn, animated: false, completion: nil)
+            }
         })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
@@ -154,16 +149,19 @@
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MenuItemCell", for: indexPath) as? MenuItemCell {
                 
                 cell.configureForMenu(menu[indexPath.row])
+                if cell.menuItemName.text == "Remote" { cell.isUserInteractionEnabled = false } else { cell.isUserInteractionEnabled = true }
                 
                 return cell
             }
             
             return UICollectionViewCell()
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LogOutCell", for: indexPath) as! LogOutCell
-            cell.setItem(user)
-            return cell
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LogOutCell", for: indexPath) as? LogOutCell {
+                cell.setItem(user)
+                return cell
+            }
         }
+        return UICollectionViewCell()
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

@@ -181,6 +181,7 @@ extension RemoteDetailsViewController {
             if i == chunksOfButtons.count - 1 { si.bottom = marginBottom }
             sectionInsetsDict[i] = si
         }
+        // TODO: situacija kada je dugme manje ali ima marginu koja je veca od razlike u visini sa najvecim dugmetom + njegovom marginom
         buttonsCollectionView.collectionViewLayout.invalidateLayout()
     }
     

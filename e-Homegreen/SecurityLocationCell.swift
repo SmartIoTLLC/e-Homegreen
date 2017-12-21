@@ -10,14 +10,43 @@ import UIKit
 
 class SecurityLocationCell: UICollectionViewCell {
     
+    let defaults = Foundation.UserDefaults.standard
+    
+    let inactiveAway     = UIImage(named: "inactiveaway")
+    let inactiveNight    = UIImage(named: "inactivenight")
+    let inactiveDay      = UIImage(named: "inactiveday")
+    let inactiveVacation = UIImage(named: "inactivevacation")
+    let inactiveDisarm   = UIImage(named: "inactivedisarm")
+    let inactivePanic    = UIImage(named: "inactivepanic")
+    let activeAway       = UIImage(named: "away")
+    let activeNight      = UIImage(named: "night")
+    let activeDay        = UIImage(named: "day")
+    let activeVacation   = UIImage(named: "vacation")
+    let activeDisarm     = UIImage(named: "disarm")
+    let activePanic      = UIImage(named: "panic")
+    
     @IBOutlet weak var loactionTitleLabel: UILabel!
     @IBOutlet weak var locationImageLabel: UIImageView!
     @IBOutlet weak var locationBottomLabel: UILabel!
     
-    func setItem(_ location:Location, tag: Int) {
+    func setItem(_ location:Location, tag: Int, security: Security) {
         loactionTitleLabel.text = location.name
         loactionTitleLabel.tag  = tag
         loactionTitleLabel.isUserInteractionEnabled = true
+        
+        if let securityMode = defaults.value(forKey: UserDefaults.Security.SecurityMode) as? String {
+            switch securityMode {
+            case "Away"     : locationImageLabel.image = activeAway
+            case "Night"    : locationImageLabel.image = activeNight
+            case "Day"      : locationImageLabel.image = activeDay
+            case "Vacation" : locationImageLabel.image = activeVacation
+            case "Disarm"   : locationImageLabel.image = activeDisarm
+            default         : locationImageLabel.image = activeDisarm
+            }
+        }
+        
+        if defaults.bool(forKey: UserDefaults.Security.IsPanic) { locationImageLabel.image = activePanic }        
+        
     }
     
     override func draw(_ rect: CGRect) {

@@ -12,6 +12,16 @@ import AudioToolbox
 
 class SecurityViewController: PopoverVC {
     
+    var refreshTimer: Foundation.Timer?
+    
+    fileprivate func startRefreshTimer() {
+        refreshTimer = Foundation.Timer.scheduledTimer(timeInterval: 30.0, target: self, selector: #selector(refreshSecurityAlarmStateAndSecurityMode), userInfo: nil, repeats: true)
+    }
+    fileprivate func stopRefreshTimer() {
+        refreshTimer?.invalidate()
+        refreshTimer = nil
+    }
+    
     enum SecurityItem {
         case location, security
     }
@@ -65,6 +75,7 @@ class SecurityViewController: PopoverVC {
         refreshSecurity()
                 
         changeFullscreenImage(fullscreenButton: fullScreenButton)
+        startRefreshTimer()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -82,6 +93,10 @@ class SecurityViewController: PopoverVC {
     
     override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        stopRefreshTimer()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -162,13 +177,16 @@ extension SecurityViewController {
     }
     
     func updateSecurityList () {
-        if filterParametar.location == "All" {
-            securityItem = SecurityItem.location
+        if let _ = DatabaseUserController.shared.loggedUserOrAdmin() {
+            if filterParametar.location == "All" {
+                securityItem = SecurityItem.location
+            } else {
+                securityItem = SecurityItem.security
+            }
             location     = FilterController.shared.getLocationForFilterByUser()
-        } else {
-            securityItem = SecurityItem.security
             securities   = DatabaseSecurityController.shared.getSecurity(filterParametar)
-        }
+        } else { view.makeToast(message: "No user database selected.") }
+        
     }
     
     func refreshSecurityAlarmStateAndSecurityMode() {
@@ -356,7 +374,7 @@ extension SecurityViewController: UICollectionViewDataSource {
             // MARK - Security location cell
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SecurityLocationCell", for: indexPath) as? SecurityLocationCell {
                 
-                cell.setItem(location[indexPath.row], tag: indexPath.row)
+                cell.setItem(location[indexPath.row], tag: indexPath.row, security: securities[indexPath.row])
                 
                 let longPress = UILongPressGestureRecognizer(target: self, action: #selector(openMode(_:)))
                 longPress.minimumPressDuration = 0.5

@@ -50,14 +50,14 @@ class NavigationTitleView: UIView {
     
     func commonInit() {
         timeLabel.text = DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .short)
-        clockTimer     = Foundation.Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(tickTock), userInfo: nil, repeats: true)
+        clockTimer     = Foundation.Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(tickTock), userInfo: nil, repeats: true)
         
         self.translatesAutoresizingMaskIntoConstraints = true        
         self.backgroundColor = .clear
         
         titleView.translatesAutoresizingMaskIntoConstraints = false
         titleView.backgroundColor = .clear
-        titleView.font            = .tahoma(size: 20)
+        titleView.font            = .tahoma(size: 17)
         titleView.textColor       = .white
         titleView.setContentHuggingPriority(1000, for: .horizontal)
         self.addSubview(titleView)
@@ -71,7 +71,7 @@ class NavigationTitleView: UIView {
         
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         timeLabel.backgroundColor           = .clear
-        timeLabel.font                      = .tahoma(size: 20)
+        timeLabel.font                      = .tahoma(size: 17)
         timeLabel.textColor                 = .white
         timeLabel.adjustsFontSizeToFitWidth = true
         self.addSubview(timeLabel)
@@ -84,9 +84,9 @@ class NavigationTitleView: UIView {
         
         // set portrait constraint
         titleTopConstraint        = NSLayoutConstraint(item: titleView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0)
-        titleLeadingConstraint    = NSLayoutConstraint(item: titleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 24)
+        titleLeadingConstraint    = NSLayoutConstraint(item: titleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 16)
         subtitleTopConstraint     = NSLayoutConstraint(item: subtitleView, attribute: .top, relatedBy: .equal, toItem: titleView, attribute: .bottom, multiplier: 1.0, constant: 0)
-        subtitleLeadingConstraint = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 24)
+        subtitleLeadingConstraint = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 16)
         
         // set landscape constraint
         titleCenterConstraint = NSLayoutConstraint(item: titleView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)

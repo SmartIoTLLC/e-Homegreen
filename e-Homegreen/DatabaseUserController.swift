@@ -16,13 +16,16 @@ class DatabaseUserController: NSObject {
     let prefs = Foundation.UserDefaults.standard
     
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
+    let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     
-    func getLoggedUser() -> User?{
-        if let stringUrl = prefs.value(forKey: Login.User) as? String{
-            if let url = URL(string: stringUrl){
+    func getLoggedUser() -> User? {
+        if let stringUrl = prefs.value(forKey: Login.User) as? String {
+            if let url = URL(string: stringUrl) {
                 if let id = appDel.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) {
-                    if let user = appDel.managedObjectContext?.object(with: id) as? User {
-                        return user
+                    if let moc = managedContext {
+                        if let user = moc.object(with: id) as? User {
+                            return user
+                        }
                     }
                 }
             }
@@ -31,12 +34,14 @@ class DatabaseUserController: NSObject {
         return nil
     }
     
-    func getOtherUser() -> User?{
-        if let stringUrl = AdminController.shared.getOtherUser(){
-            if let url = URL(string: stringUrl){
+    func getOtherUser() -> User? {
+        if let stringUrl = AdminController.shared.getOtherUser() {
+            if let url = URL(string: stringUrl) {
                 if let id = appDel.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) {
-                    if let user = appDel.managedObjectContext?.object(with: id) as? User {
-                        return user
+                    if let moc = managedContext {
+                        if let user = moc.object(with: id) as? User {
+                            return user
+                        }
                     }
                 }
             }
@@ -56,9 +61,11 @@ class DatabaseUserController: NSObject {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = User.fetchRequest()
         
         do {
-            let fetResults = try appDel.managedObjectContext?.fetch(fetchRequest) as? [User]
-            return fetResults ?? []
-            
+            if let moc = managedContext {
+                if let fetResults = try moc.fetch(fetchRequest) as? [User] {
+                    return fetResults
+                }
+            }
         } catch {}
         
         return []
@@ -66,17 +73,19 @@ class DatabaseUserController: NSObject {
     
     func getUser(_ username:String, password:String) -> User? {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = User.fetchRequest()
-        let predicateOne = NSPredicate(format: "username == %@", username)
-        let predicateTwo = NSPredicate(format: "password == %@", password)
-        let predicateArray:[NSPredicate] = [predicateOne, predicateTwo]
+        let predicateArray:[NSPredicate] = [
+            NSPredicate(format: "username == %@", username),
+            NSPredicate(format: "password == %@", password)
+        ]
         
         let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [User]
-            if fetResults?.count != 0 { return fetResults?[0]
-            } else { return nil }
-            
+            if let moc = managedContext {
+                if let fetResults = try moc.fetch(fetchRequest) as? [User] {
+                    if fetResults.count != 0 { return fetResults[0] } else { return nil }
+                }
+            }
         } catch {}
         
         return nil
@@ -100,8 +109,12 @@ class DatabaseUserController: NSObject {
         fetchRequest.sortDescriptors = [sortDescriptorOne]
         
         do {
-            let fetResults = try appDel.managedObjectContext?.fetch(fetchRequest) as? [User]
-            return fetResults ?? []
+            if let moc = managedContext {
+                if let fetResults = try moc.fetch(fetchRequest) as? [User] {
+                    return fetResults
+                }
+            }
+            
         } catch {}
         
         return []

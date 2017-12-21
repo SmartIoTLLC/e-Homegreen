@@ -398,24 +398,26 @@ class IncomingHandler: NSObject {
                         
                         let deviceInformation = DeviceInformation(address: Int(byteArray[4]), channel: i, numberOfDevices: channel, type: controlType, gateway: gateways[0], mac: Data(bytes: UnsafePointer<UInt8>(MAC), count: MAC.count), isClimate:isClimate)
                         
-                        if (controlType == ControlType.Sensor ||
-                            controlType == ControlType.IntelligentSwitch) && i > 1 {
-                            
-                            let _ = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
-                            
-                        } else if controlType == ControlType.Climate ||
-                            controlType == ControlType.SaltoAccess ||
-                            controlType == ControlType.AnalogInput ||
-                            controlType == ControlType.AnalogOutput ||
-                            controlType == ControlType.DigitalInput ||
-                            controlType == ControlType.DigitalOutput ||
-                            controlType == ControlType.IRTransmitter ||
-                            controlType == ControlType.Curtain ||
-                            controlType == ControlType.PC ||
-                            controlType == ControlType.Relay ||
-                            controlType == ControlType.Dimmer{
-                            
-                            let _ = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation)
+                        if let moc = appDel.managedObjectContext {
+                            if (controlType == ControlType.Sensor ||
+                                controlType == ControlType.IntelligentSwitch) && i > 1 {
+                                
+                                let _ = Device(context: moc, specificDeviceInformation: deviceInformation)
+                                
+                            } else if controlType == ControlType.Climate ||
+                                controlType == ControlType.SaltoAccess ||
+                                controlType == ControlType.AnalogInput ||
+                                controlType == ControlType.AnalogOutput ||
+                                controlType == ControlType.DigitalInput ||
+                                controlType == ControlType.DigitalOutput ||
+                                controlType == ControlType.IRTransmitter ||
+                                controlType == ControlType.Curtain ||
+                                controlType == ControlType.PC ||
+                                controlType == ControlType.Relay ||
+                                controlType == ControlType.Dimmer{
+                                
+                                let _ = Device(context: moc, specificDeviceInformation: deviceInformation)
+                            }
                         }
                         
                         CoreDataController.sharedInstance.saveChanges()
@@ -443,7 +445,9 @@ class IncomingHandler: NSObject {
                     for i in 1...4 {
                         let deviceInformation = DeviceInformation(address: Int(byteArray[4]), channel: i, numberOfDevices: 4, type: controlType, gateway: gateways[0], mac: Data(bytes: UnsafePointer<UInt8>(MAC), count: MAC.count), isClimate:false)
                         
-                        if controlType == ControlType.SaltoAccess { let _ = Device(context: appDel.managedObjectContext!, specificDeviceInformation: deviceInformation, channelName: "Lock \(i)") }
+                        if controlType == ControlType.SaltoAccess {
+                            if let moc = appDel.managedObjectContext { let _ = Device(context: moc, specificDeviceInformation: deviceInformation, channelName: "Lock \(i)") }
+                        }
                         
                         CoreDataController.sharedInstance.saveChanges()
                         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
@@ -464,14 +468,16 @@ class IncomingHandler: NSObject {
             devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
             for device in devices {
                 if isCorrectDeviceAddress(device: device, for: byteArray) {
-                    let name: String = getName(count: 12, byteArray: byteArray) // device name
-                    if name != "" { device.name = name } else { device.name = "Unknown" }
-                    
-                    device.categoryId = getNSNumber(for: byteArray[8])
-                    device.zoneId = getNSNumber(for: byteArray[9])
-                    device.parentZoneId = getNSNumber(for: byteArray[10])
-                    // When we change category it will reset images
-                    device.resetImages(appDel.managedObjectContext!)
+                    if let moc = appDel.managedObjectContext {
+                        let name: String = getName(count: 12, byteArray: byteArray) // device name
+                        if name != "" { device.name = name } else { device.name = "Unknown" }
+                        
+                        device.categoryId = getNSNumber(for: byteArray[8])
+                        device.zoneId = getNSNumber(for: byteArray[9])
+                        device.parentZoneId = getNSNumber(for: byteArray[10])
+                        // When we change category it will reset images
+                        device.resetImages(moc)
+                    }
                 }
             }
             CoreDataController.sharedInstance.saveChanges()
@@ -775,32 +781,32 @@ class IncomingHandler: NSObject {
         
         for device in devices {
             if isCorrectDeviceAddress(device: device, for: byteArray) && isCorrectDeviceChannel(device: device, byteArray: byteArray) {
-                
-                device.categoryId = NSNumber(value: Int(byteArray[8]))
-                
-                // Parse zone and parent zone
-                if Int(byteArray[10]) == 0 {
-                    device.zoneId       = 0
-                    device.parentZoneId = getNSNumber(for: byteArray[9])
-                } else {
-                    device.zoneId       = getNSNumber(for: byteArray[9])
-                    device.parentZoneId = getNSNumber(for: byteArray[10])
+                if let moc = appDel.managedObjectContext {
+                    device.categoryId = NSNumber(value: Int(byteArray[8]))
+                    
+                    // Parse zone and parent zone
+                    if Int(byteArray[10]) == 0 {
+                        device.zoneId       = 0
+                        device.parentZoneId = getNSNumber(for: byteArray[9])
+                    } else {
+                        device.zoneId       = getNSNumber(for: byteArray[9])
+                        device.parentZoneId = getNSNumber(for: byteArray[10])
+                    }
+                    
+                    // When we change category it will reset images
+                    device.digitalInputMode = Int(byteArray[14]) as NSNumber?
+                    if byteArray[11] >= 0x80 {
+                        device.isEnabled = getNSNumber(from: true)
+                        device.isVisible = getNSNumber(from: true)
+                    } else {
+                        device.isEnabled = getNSNumber(from: false)
+                        device.isVisible = getNSNumber(from: false)
+                    }
+                    device.resetImages(moc)
+                    let data = ["sensorIndexForFoundParametar":counter]
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshInterface), object: self, userInfo: nil)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindSensorParametar), object: self, userInfo: data)
                 }
-                
-                // When we change category it will reset images
-                device.digitalInputMode = Int(byteArray[14]) as NSNumber?
-                if byteArray[11] >= 0x80 {
-                    device.isEnabled = getNSNumber(from: true)
-                    device.isVisible = getNSNumber(from: true)
-                } else {
-                    device.isEnabled = getNSNumber(from: false)
-                    device.isVisible = getNSNumber(from: false)
-                }
-                device.resetImages(appDel.managedObjectContext!)
-                let data = ["sensorIndexForFoundParametar":counter]
-                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshInterface), object: self, userInfo: nil)
-                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindSensorParametar), object: self, userInfo: data)
-                
             }
             counter = counter + 1
         }
@@ -871,49 +877,51 @@ class IncomingHandler: NSObject {
             devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
             for i in 0..<devices.count {
                 if  isCorrectDeviceAddress(i: i, for: byteArray) && isCorrectDeviceChannel(i: i, byteArray: byteArray) {
-                    // Parse device name
-                    let name: String = getName(count: 8+47, byteArray: byteArray) // device name
-                    if name != "" { devices[i].name = name } else { devices[i].name = "Unknown" }
-                    
-                    devices[i].overrideControl1 = getNSNumber(for: byteArray[23])
-                    devices[i].overrideControl2 = getNSNumber(for: byteArray[24])
-                    devices[i].overrideControl3 = getNSNumber(for: byteArray[25])
-                    
-                    // Parse zone and parent zone
-                    if Int(byteArray[10]) == 0 {
-                        devices[i].zoneId       = 0
-                        devices[i].parentZoneId = getNSNumber(for: byteArray[9])
-                    } else {
-                        devices[i].zoneId       = getNSNumber(for: byteArray[9])
-                        devices[i].parentZoneId = getNSNumber(for: byteArray[10])
+                    if let moc = appDel.managedObjectContext {
+                        // Parse device name
+                        let name: String = getName(count: 8+47, byteArray: byteArray) // device name
+                        if name != "" { devices[i].name = name } else { devices[i].name = "Unknown" }
+                        
+                        devices[i].overrideControl1 = getNSNumber(for: byteArray[23])
+                        devices[i].overrideControl2 = getNSNumber(for: byteArray[24])
+                        devices[i].overrideControl3 = getNSNumber(for: byteArray[25])
+                        
+                        // Parse zone and parent zone
+                        if Int(byteArray[10]) == 0 {
+                            devices[i].zoneId       = 0
+                            devices[i].parentZoneId = getNSNumber(for: byteArray[9])
+                        } else {
+                            devices[i].zoneId       = getNSNumber(for: byteArray[9])
+                            devices[i].parentZoneId = getNSNumber(for: byteArray[10])
+                        }
+                        
+                        // Parse Category
+                        devices[i].categoryId = getNSNumber(for: byteArray[8])
+                        devices[i].resetImages(moc)
+                        
+                        // Enabled/Visible
+                        if byteArray[22] == 0x01 {
+                            devices[i].isEnabled = getNSNumber(from: true)
+                            devices[i].isVisible = getNSNumber(from: true)
+                        } else {
+                            devices[i].isEnabled = getNSNumber(from: false)
+                            devices[i].isVisible = getNSNumber(from: false)
+                        }
+                        
+                        if byteArray[28] == 0x01 {
+                            devices[i].isDimmerModeAllowed = getNSNumber(from: true)
+                            devices[i].controlType         = ControlType.Dimmer
+                        }
+                        if byteArray[33] == 0x01 {
+                            devices[i].isCurtainModeAllowed = getNSNumber(from: true)
+                            devices[i].controlType          = ControlType.Curtain
+                        }
+                        devices[i].curtainGroupID     = getNSNumber(for: byteArray[34]) // CurtainGroupID defines the curtain device. If curtain group is the same on 2 channels then that is the same Curtain
+                        devices[i].curtainControlMode = getNSNumber(for: byteArray[35]) // Will be used later (17.07.2016)
+                        let data = ["deviceIndexForFoundName":i]
+                        NSLog("dosao je u ovaj incoming handler sa deviceom: \(i)")
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDeviceName), object: self, userInfo: data)
                     }
-                    
-                    // Parse Category
-                    devices[i].categoryId = getNSNumber(for: byteArray[8])
-                    devices[i].resetImages(appDel.managedObjectContext!)
-                    
-                    // Enabled/Visible
-                    if byteArray[22] == 0x01 {
-                        devices[i].isEnabled = getNSNumber(from: true)
-                        devices[i].isVisible = getNSNumber(from: true)
-                    } else {
-                        devices[i].isEnabled = getNSNumber(from: false)
-                        devices[i].isVisible = getNSNumber(from: false)
-                    }
-                    
-                    if byteArray[28] == 0x01 {
-                        devices[i].isDimmerModeAllowed = getNSNumber(from: true)
-                        devices[i].controlType         = ControlType.Dimmer
-                    }
-                    if byteArray[33] == 0x01 {
-                        devices[i].isCurtainModeAllowed = getNSNumber(from: true)
-                        devices[i].controlType          = ControlType.Curtain
-                    }
-                    devices[i].curtainGroupID     = getNSNumber(for: byteArray[34]) // CurtainGroupID defines the curtain device. If curtain group is the same on 2 channels then that is the same Curtain
-                    devices[i].curtainControlMode = getNSNumber(for: byteArray[35]) // Will be used later (17.07.2016)
-                    let data = ["deviceIndexForFoundName":i]
-                    NSLog("dosao je u ovaj incoming handler sa deviceom: \(i)")
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDeviceName), object: self, userInfo: data)
                 }
             }
             CoreDataController.sharedInstance.saveChanges()
@@ -1049,9 +1057,11 @@ class IncomingHandler: NSObject {
                 
                 if idDoesExist {
                 } else {
-                    let zone = Zone(context: appDel.managedObjectContext!)
-                    (zone.id, zone.name, zone.level, zone.zoneDescription, zone.location, zone.orderId, zone.allowOption, zone.isVisible) = (getNSNumber(for: id), name, getNSNumber(for: level), description, gateways[0].location, getNSNumber(for: id), 1, true)
-                    CoreDataController.sharedInstance.saveChanges()
+                    if let moc = appDel.managedObjectContext {
+                        let zone = Zone(context: moc)
+                        (zone.id, zone.name, zone.level, zone.zoneDescription, zone.location, zone.orderId, zone.allowOption, zone.isVisible) = (getNSNumber(for: id), name, getNSNumber(for: level), description, gateways[0].location, getNSNumber(for: id), 1, true)
+                        CoreDataController.sharedInstance.saveChanges()
+                    }
                 }
                 
                 let data = ["zoneId":Int(id)]
@@ -1090,9 +1100,12 @@ class IncomingHandler: NSObject {
                 }
             }
             if !idDoesExist {
-                let category = NSEntityDescription.insertNewObject(forEntityName: "Category", into: appDel.managedObjectContext!) as! Category
-                (category.id, category.name, category.categoryDescription, category.location, category.orderId, category.allowOption, category.isVisible) = (getNSNumber(for: id), name, description, gateways[0].location, getNSNumber(for: id), 3, true)
-                CoreDataController.sharedInstance.saveChanges()
+                if let moc = appDel.managedObjectContext {
+                    if let category = NSEntityDescription.insertNewObject(forEntityName: "Category", into: moc) as? Category {
+                        (category.id, category.name, category.categoryDescription, category.location, category.orderId, category.allowOption, category.isVisible) = (getNSNumber(for: id), name, description, gateways[0].location, getNSNumber(for: id), 3, true)
+                        CoreDataController.sharedInstance.saveChanges()
+                    }                    
+                }
             }
             
             let data = ["categoryId":Int(id)]

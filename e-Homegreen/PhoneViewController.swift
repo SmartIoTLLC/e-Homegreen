@@ -209,7 +209,7 @@ extension PhoneViewController {
         switch authStatus {
         case .authorized    : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: true)
         case .denied        : self.makeToastOnMainThread(message: "Please go to your Privacy Settings and provide us access to Contacts."); self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
-        case .notDetermined : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
+        case .notDetermined : break //self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
         case .restricted    : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
         }
     }

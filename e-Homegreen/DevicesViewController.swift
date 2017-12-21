@@ -15,6 +15,16 @@ import AudioToolbox
 
 class DevicesViewController: PopoverVC{
     
+    var refreshTimer: Foundation.Timer?
+    
+    fileprivate func startRefreshTimer() {
+        refreshTimer = Foundation.Timer.scheduledTimer(timeInterval: 30.0, target: self, selector: #selector(refreshVisibleDevicesInScrollView), userInfo: nil, repeats: true)
+    }
+    fileprivate func stopRefreshTimer() {
+        refreshTimer?.invalidate()
+        refreshTimer = nil
+    }
+    
     var sectionInsets = UIEdgeInsets(top: 25, left: 0, bottom: 20, right: 0)
     let reuseIdentifier = "deviceCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
@@ -49,6 +59,7 @@ class DevicesViewController: PopoverVC{
     @IBOutlet weak var selectLabel: UILabel!
     @IBOutlet weak var zoneCategoryControl: UISegmentedControl!
     @IBOutlet weak var zoneAndCategorySlider: UISlider!
+    @IBOutlet weak var iBeaconButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +78,7 @@ class DevicesViewController: PopoverVC{
         
         getUserAndUpdateDeviceList()
         changeFullscreenImage(fullscreenButton: fullScreenButton)
+        startRefreshTimer()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -87,6 +99,7 @@ class DevicesViewController: PopoverVC{
     
     override func viewWillDisappear(_ animated: Bool) {
         removeObservers()
+        stopRefreshTimer()
     }
     
     override func nameAndId(_ name : String, id:String){
@@ -665,8 +678,11 @@ class DevicesViewController: PopoverVC{
         sender.rotate(1)
     }
     @IBAction func location(_ sender: AnyObject) {
-        
+        // TODO: Dugme treba da se prikazuje samo ako za zonu postoji vezan iBeacon
+        // TODO: ova funkcija (well, duh)
     }
+    
+
     
 }
 
@@ -759,19 +775,20 @@ extension DevicesViewController {
     // GENERAL
     func updateDeviceList (_ user:User) {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
-        let sortDescriptorOne   = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo   = NSSortDescriptor(key: "address", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
-        let sortDescriptorFour  = NSSortDescriptor(key: "channel", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
+
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: "gateway.name", ascending: true),
+            NSSortDescriptor(key: "address", ascending: true),
+            NSSortDescriptor(key: "type", ascending: true),
+            NSSortDescriptor(key: "channel", ascending: true)
+        ]
         
-        var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
-        predicateArray.append(NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool)))
-        predicateArray.append(NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool)))
-        
-        // Filtering out PC devices
-        predicateArray.append(NSPredicate(format: "type != %@", ControlType.PC))
+        var predicateArray:[NSPredicate] = [
+            NSPredicate(format: "gateway.location.user == %@", user),
+            NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool)),
+            NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool)),
+            NSPredicate(format: "type != %@", ControlType.PC)         // Filtering out PC devices
+        ]
         
         // Filtering by parametars from filter
         if filterParametar.location != "All" { predicateArray.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location)) }
@@ -783,30 +800,34 @@ extension DevicesViewController {
         fetchRequest.predicate = compoundPredicate
         
         do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Device]
-            devices = fetResults!.map({$0})
-            
-            // filter Curtain devices that are, actually, one device
-            
-            // All curtains
-            let curtainDevices = devices.filter({$0.controlType == ControlType.Curtain})
-            if curtainDevices.count > 0 {
-                for i in 0...curtainDevices.count - 1 {
-                    if i+1 < curtainDevices.count { // if next exist
-                        for j in i+1...curtainDevices.count - 1 {
-                            if (curtainDevices[i].address == curtainDevices[j].address
-                                && curtainDevices[i].controlType == curtainDevices[j].controlType
-                                && curtainDevices[i].isCurtainModeAllowed.boolValue
-                                && curtainDevices[j].isCurtainModeAllowed.boolValue
-                                && curtainDevices[i].curtainGroupID == curtainDevices[j].curtainGroupID) {
-                                
-                                if let indexOfDeviceToBeNotShown = devices.index(of: curtainDevices[j]) { devices.remove(at: indexOfDeviceToBeNotShown) }
+            if let moc = appDel.managedObjectContext {
+                if let fetResults = try moc.fetch(fetchRequest) as? [Device] {
+                    devices = fetResults.map({$0})
+                    
+                    // filter Curtain devices that are, actually, one device
+                    
+                    // All curtains
+                    let curtainDevices = devices.filter({$0.controlType == ControlType.Curtain})
+                    if curtainDevices.count > 0 {
+                        for i in 0...curtainDevices.count - 1 {
+                            if i+1 < curtainDevices.count { // if next exist
+                                for j in i+1...curtainDevices.count - 1 {
+                                    if (curtainDevices[i].address == curtainDevices[j].address
+                                        && curtainDevices[i].controlType == curtainDevices[j].controlType
+                                        && curtainDevices[i].isCurtainModeAllowed.boolValue
+                                        && curtainDevices[j].isCurtainModeAllowed.boolValue
+                                        && curtainDevices[i].curtainGroupID == curtainDevices[j].curtainGroupID) {
+                                        
+                                        if let indexOfDeviceToBeNotShown = devices.index(of: curtainDevices[j]) { devices.remove(at: indexOfDeviceToBeNotShown) }
+                                    }
+                                }
                             }
                         }
                     }
+                    for device in devices { device.cellTitle = returnNameForDeviceAccordingToFilter(device) }
                 }
             }
-            for device in devices { device.cellTitle = returnNameForDeviceAccordingToFilter(device) }
+
             
         } catch let error1 as NSError { error = error1; print("Unresolved error \(String(describing: error)), \(error!.userInfo)") }
     }
@@ -816,7 +837,7 @@ extension DevicesViewController {
             let tag         = button.tag
             let controlType = devices[tag].controlType
             let gateway     = devices[tag].gateway
-            let address     = [getByte(devices[tag].gateway.addressOne), getByte(devices[tag].gateway.addressTwo), getByte(devices[tag].address)]
+            let address     = [getByte(gateway.addressOne), getByte(gateway.addressTwo), getByte(devices[tag].address)]
             
             // Light
             if controlType == ControlType.Dimmer {
@@ -1276,6 +1297,7 @@ extension DevicesViewController: FilterPullDownDelegate{
         }
         TimerForFilter.shared.counterDevices = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.devices)
         TimerForFilter.shared.startTimer(type: Menu.devices)
+        
     }
     
     func saveDefaultFilter(){

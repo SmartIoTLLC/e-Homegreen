@@ -40,21 +40,21 @@ class NavigationTitleViewNF: UIView {
     
     func commonInit() {
         timeLabel.text = DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .short)
-        clockTimer     = Foundation.Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(tickTock), userInfo: nil, repeats: true)
+        clockTimer     = Foundation.Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(tickTock), userInfo: nil, repeats: true)
         
         self.translatesAutoresizingMaskIntoConstraints = true
         self.backgroundColor = UIColor.clear
         
         titleView.translatesAutoresizingMaskIntoConstraints = false
         titleView.backgroundColor = .clear
-        titleView.font            = .tahoma(size: 20)
+        titleView.font            = .tahoma(size: 17)
         titleView.textColor       = .white
         titleView.setContentHuggingPriority(1000, for: .horizontal)
         self.addSubview(titleView)
         
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         timeLabel.backgroundColor           = .clear
-        timeLabel.font                      = .tahoma(size: 20)
+        timeLabel.font                      = .tahoma(size: 17)
         timeLabel.textColor                 = .white
         timeLabel.adjustsFontSizeToFitWidth = true
         self.addSubview(timeLabel)
@@ -67,7 +67,7 @@ class NavigationTitleViewNF: UIView {
         
         // Title constraints
         let titleCenterY = NSLayoutConstraint(item: titleView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
-        let titleLeading = NSLayoutConstraint(item: titleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 24)
+        let titleLeading = NSLayoutConstraint(item: titleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 16)
         self.addConstraint(titleCenterY)
         self.addConstraint(titleLeading)
     }

@@ -133,14 +133,14 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     func updateDeviceList () {
         appDel = UIApplication.shared.delegate as! AppDelegate
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
-        let sortDescriptorFour = NSSortDescriptor(key: "deviceIdForScanningScreen", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: "gateway.name", ascending: true),
+            NSSortDescriptor(key: "address", ascending: true),
+            NSSortDescriptor(key: "type", ascending: true),
+            NSSortDescriptor(key: "deviceIdForScanningScreen", ascending: true)
+        ]
 
-        var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "gateway == %@", gateway.objectID))
+        var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway == %@", gateway.objectID)]
         
         if filterParametar.levelName != "All" { predicateArray.append(NSPredicate(format: "parentZoneId == %@", NSNumber(value: filterParametar.levelId as Int))) }
         if filterParametar.zoneName != "All" { predicateArray.append(NSPredicate(format: "zoneId == %@", NSNumber(value: filterParametar.zoneId as Int))) }
@@ -150,8 +150,12 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         fetchRequest.predicate = compoundPredicate
         
         do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Device]
-            devices = fetResults!
+            if let moc = appDel.managedObjectContext {
+                if let fetResults = try moc.fetch(fetchRequest) as? [Device] {
+                    devices = fetResults
+                }
+            }
+            
         } catch let error1 as NSError {
             error = error1; print("Unresolved error \(String(describing: error)), \(error!.userInfo)")
         }
@@ -159,14 +163,18 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     
     @IBAction func btnDeleteTextFields(_ sender: AnyObject) {
         rangeFrom.text = ""
-        rangeTo.text = ""
+        rangeTo.text   = ""
     }
     
     @IBAction func deleteAll(_ sender: UIButton) {
         showAlertView(sender, message: "Are you sure you want to delete all devices?") { (action) in
             if action == ReturnedValueFromAlertView.delete {
                 for item in self.devices {
-                    if item.gateway.objectID == self.gateway.objectID { self.appDel.managedObjectContext!.delete(item) }
+                    if item.gateway.objectID == self.gateway.objectID {
+                        if let moc = self.appDel.managedObjectContext {
+                            moc.delete(item)
+                        }
+                    }
                 }
                 CoreDataController.sharedInstance.saveChanges()
                 self.refreshDeviceList()
@@ -483,8 +491,9 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             if let deviceIsSaltoTemp = info["saltoAccess"] { deviceIsSalto = deviceIsSaltoTemp }
             
             guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: deviceIndex) else { return } // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            guard let moc = appDel.managedObjectContext else { return }
             
-            devices[deviceIndex].resetImages(appDel.managedObjectContext!) // Needs to be here in order for images to be loaded correctly. After the names are loaded then we know which pictures to load for which device.
+            devices[deviceIndex].resetImages(moc) // Needs to be here in order for images to be loaded correctly. After the names are loaded then we know which pictures to load for which device.
             if deviceIsSalto == 1 {
                 if indexOfDeviceIndexInArrayOfNamesToBeSearched+4 < arrayOfNamesToBeSearched.count{ // if next exists
                     indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfNamesToBeSearched+4

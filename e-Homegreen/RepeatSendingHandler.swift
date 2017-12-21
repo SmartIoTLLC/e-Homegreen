@@ -98,9 +98,11 @@ class RepeatSendingHandler: NSObject {
                     SendingHandler.sendCommand(byteArray: byteArray, gateway: gateway)
                     
                     repeatCounter += 1
+                    didGetResponseTimer.invalidate()
                     didGetResponseTimer = nil
                     didGetResponseTimer = Foundation.Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(sendCommand), userInfo: nil, repeats: false)
                 } else {
+                    didGetResponseTimer.invalidate()
                     didGetResponseTimer = nil
                     device.currentValue = RunnableList.sharedInstance.deviceOldValue[device.objectID] ?? (deviceOldValue as NSNumber)
                     updateRunnableList(deviceID: device.objectID)
@@ -109,6 +111,7 @@ class RepeatSendingHandler: NSObject {
                     NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self)
                 }
             }else{
+                didGetResponseTimer.invalidate()
                 didGetResponseTimer = nil
                 updateRunnableList(deviceID: device.objectID)
                 CoreDataController.sharedInstance.saveChanges()
@@ -116,6 +119,7 @@ class RepeatSendingHandler: NSObject {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self)
             }
         } else {
+            didGetResponseTimer.invalidate()
             didGetResponseTimer = nil
             return
         }
@@ -131,6 +135,7 @@ class RepeatSendingHandler: NSObject {
                     
                     SendingHandler.sendCommand(byteArray: byteArray, gateway: gateway)
                     repeatCounter += 1
+                    didGetResponseTimer.invalidate()
                     didGetResponseTimer = nil
                     didGetResponseTimer = Foundation.Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(sendCommandForSaltoAccess), userInfo: nil, repeats: false)
                     
@@ -143,6 +148,7 @@ class RepeatSendingHandler: NSObject {
                     
                 }
             }else{
+                didGetResponseTimer.invalidate()
                 didGetResponseTimer = nil
                 NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: nil)
                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self)

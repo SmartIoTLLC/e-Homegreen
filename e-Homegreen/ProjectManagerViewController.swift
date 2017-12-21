@@ -13,7 +13,7 @@ import Zip
 
 class ProjectManagerViewController: UIViewController {
     
-    let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
+    //let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
     @IBOutlet weak var usersTableView: UITableView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
@@ -38,9 +38,10 @@ class ProjectManagerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if #available(iOS 11, *) { titleView.layoutIfNeeded() }
-        titleView.setTitle("Project Manager")
-        navigationItem.titleView = titleView
+        //if #available(iOS 11, *) { titleView.layoutIfNeeded() }
+        //titleView.setTitle("Project Manager")
+       // navigationItem.titleView = titleView
+        navigationItem.title = "Project Manager"
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         
         UIView.hr_setToastThemeColor(color: UIColor.red)

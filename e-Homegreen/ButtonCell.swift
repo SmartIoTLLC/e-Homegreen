@@ -179,7 +179,8 @@ extension ButtonCell {
     }
     
     fileprivate func setupImage() {
-        removeGradient()
+        //removeGradient()
+        setButtonColor()
         setShadows()
         scaleAndSetButtonImage()
     }
