@@ -91,7 +91,7 @@ class IntelligentSwitchParameter: CommonXIBTransitionVC {
             device!.delay = NSNumber(value: numberOne)
             device!.runtime = NSNumber(value: numberTwo)
             device!.skipState = NSNumber(value: numberThree)
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
         }
     }
 }

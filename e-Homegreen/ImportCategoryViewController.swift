@@ -161,7 +161,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
                     let id = categories[(index as NSIndexPath).row].orderId
                     categories[(index as NSIndexPath).row].orderId = categories[(initial as NSIndexPath).row].orderId
                     categories[(initial as NSIndexPath).row].orderId = id
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                     
                 }
                 
@@ -228,7 +228,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
                 }
                 
                 self.createCategories()
-                CoreDataController.shahredInstance.saveChanges()
+                CoreDataController.sharedInstance.saveChanges()
                 self.refreshCategoryList()
             }
         }
@@ -398,7 +398,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
                     } else {
                         category.isVisible = NSNumber(value: true as Bool)
                     }
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                 }
             }
         }
@@ -413,7 +413,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
                 } else {
                     (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId, category.allowOption) = (categoryJSON.id as NSNumber?, categoryJSON.name, categoryJSON.description, NSNumber(value: true as Bool), location, categoryJSON.id as NSNumber?, 3)
                 }
-                CoreDataController.shahredInstance.saveChanges()
+                CoreDataController.sharedInstance.saveChanges()
             }
         }
     }
@@ -448,7 +448,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         }else {
             categories[sender.tag].isVisible = false
         }
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
         importCategoryTableView.reloadData()
     }
 }

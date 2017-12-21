@@ -143,7 +143,7 @@ class DatabaseSequencesController: NSObject {
             sequence.sequenceCycles = NSNumber(value: sequenceCycles)
             
             sequence.gateway = gateway
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             
         } else {
             
@@ -185,7 +185,7 @@ class DatabaseSequencesController: NSObject {
             
             existingSequence!.sequenceCycles = NSNumber(value: sequenceCycles)
             
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
         }
     }
     
@@ -213,11 +213,11 @@ class DatabaseSequencesController: NSObject {
             self.appDel.managedObjectContext!.delete(sequence)
         }
         
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
     func deleteSequence(_ sequence:Sequence){
         self.appDel.managedObjectContext!.delete(sequence)
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
 }

@@ -5,7 +5,6 @@
 //  Created by Vladimir Zivanov on 4/14/16.
 //  Copyright © 2016 Teodor Stevic. All rights reserved.
 //
-
 import Foundation
 
 class SecurityCollectionCell: UICollectionViewCell {
@@ -13,72 +12,111 @@ class SecurityCollectionCell: UICollectionViewCell {
     @IBOutlet weak var securityImageView: UIImageView!
     @IBOutlet weak var securityButton: UIButton!
     
+    let inactiveAway     = UIImage(named: "inactiveaway")
+    let inactiveNight    = UIImage(named: "inactivenight")
+    let inactiveDay      = UIImage(named: "inactiveday")
+    let inactiveDisarm   = UIImage(named: "inactivedisarm")
+    let inactivePanic    = UIImage(named: "inactivepanic")
+    let activeAway       = UIImage(named: "away")
+    let activeNight      = UIImage(named: "night")
+    let activeDay        = UIImage(named: "day")
+    let activeDisarm     = UIImage(named: "disarm")
+    let activePanic      = UIImage(named: "panic")
+    
+    let defaults = Foundation.UserDefaults.standard
     var timer: Foundation.Timer?
     
-    func setCell(_ name: String, securityName: String, securityBtnTitle: String){
-        
+    var securityButtonTitle: String!
+    
+    func setCell(_ name: String, security: Security, tag: Int) {
         // These two notifications are used to start and stop blinking correct cell, which is being activated.
-        NotificationCenter.default.addObserver(self, selector: #selector(SecurityCollectionCell.startBlinking(_:)), name: NSNotification.Name(rawValue: NotificationKey.Security.ControlModeStartBlinking), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(SecurityCollectionCell.stopBlinking), name: NSNotification.Name(rawValue: NotificationKey.Security.ControlModeStopBlinking), object: nil)
-        self.securityTitle.text = name
-        self.securityTitle.isUserInteractionEnabled = true
-        self.securityImageView.image = UIImage(named: "maaa")
-        self.securityButton.setTitle(securityBtnTitle, for: UIControlState())
+        NotificationCenter.default.addObserver(self, selector: #selector(startBlinking(_:)), name: NSNotification.Name(rawValue: NotificationKey.Security.ControlModeStartBlinking), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(stopBlinking), name: NSNotification.Name(rawValue: NotificationKey.Security.ControlModeStopBlinking), object: nil)
         
+        securityTitle.text                     = name
+        securityTitle.isUserInteractionEnabled = true
+        securityTitle.tag                      = tag
         
-        switch securityName {
-        case "Away":
-            self.securityImageView.image = UIImage(named: "inactiveaway")
-        case "Night":
-            self.securityImageView.image = UIImage(named: "inactivenight")
-        case "Day":
-            self.securityImageView.image = UIImage(named: "inactiveday")
-//        case "Vacation":
-//            self.securityImageView.image = UIImage(named: "inactivevacation")
-        case "Disarm":
-            self.securityImageView.image = UIImage(named: "inactivedisarm")
-        case "Panic":
-            self.securityImageView.image = UIImage(named: "inactivepanic")
+        securityButton.tag = tag
+        securityImageView.image = UIImage(named: "maaa")
+        
+        if security.securityName! == SecurityControlMode.Disarm { securityButtonTitle = "ENTER CODE" }
+        else if security.securityName! == SecurityControlMode.Panic { securityButtonTitle = "TRIGGER" }
+        else { securityButtonTitle = "ARM" }
+        securityButton.setTitle(securityButtonTitle, for: UIControlState())
+        
+        switch security.securityName! {
+        case "Away"     : securityImageView.image = inactiveAway
+        case "Night"    : securityImageView.image = inactiveNight
+        case "Day"      : securityImageView.image = inactiveDay
+        case "Disarm"   : securityImageView.image = inactiveDisarm
+        case "Panic"    : securityImageView.image = inactivePanic
         default: break
         }
         
-        let defaults = Foundation.UserDefaults.standard
         if let securityMode = defaults.value(forKey: UserDefaults.Security.SecurityMode) as? String {
-            if securityName.contains(securityMode) {
+            if security.securityName!.contains(securityMode) {
                 switch securityMode {
-                case "Away":
-                    self.securityImageView.image = UIImage(named: "away")
-                case "Night":
-                    self.securityImageView.image = UIImage(named: "night")
-                case "Day":
-                    self.securityImageView.image = UIImage(named: "day")
-//                case "Vacation":
-//                    self.securityImageView.image = UIImage(named: "vacation")
-                case "Disarm":
-                    self.securityImageView.image = UIImage(named: "disarm")
+                case "Away"     : securityImageView.image = activeAway
+                case "Night"    : securityImageView.image = activeNight
+                case "Day"      : securityImageView.image = activeDay
+                case "Disarm"   : securityImageView.image = activeDisarm
                 default: break
                 }
-                setNeedsDisplay()
             }
         }
-        if securityName == "Panic" {
-            if defaults.bool(forKey: UserDefaults.Security.IsPanic) {
-                //                cell.setImageForSecuirity(UIImage(named: "panic")!)
-                self.securityImageView.image = UIImage(named: "panic")
-                //setNeedsDisplay()
-            } else {
-                //                cell.setImageForSecuirity(UIImage(named: "inactivepanic")!)
-                self.securityImageView.image = UIImage(named: "inactivepanic")
-                //setNeedsDisplay()
-            }
-            setNeedsDisplay()
+        
+        if security.securityName! == "Panic" {
+            if defaults.bool(forKey: UserDefaults.Security.IsPanic) { securityImageView.image = activePanic }
+            else { securityImageView.image = inactivePanic }
         }
     }
     
-    func setImageForSecuirity (_ image:UIImage) {
-        securityImageView.image = image
-        setNeedsDisplay()
+    func startBlinking(_ notification: Notification) {
+        guard let notificationControlMode = notification.userInfo?["controlMode"] as? String else { return }
+        guard let securityCellName = securityTitle.text else { return }
+        
+        if securityCellName.contains(notificationControlMode) {
+            if timer == nil {
+                
+                if securityCellName == "Panic" { timer = Foundation.Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(toggleBtnImage(_:)), userInfo: notification.userInfo, repeats: false)
+                } else { timer = Foundation.Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(toggleBtnImage(_:)), userInfo: notification.userInfo, repeats: true) }
+            }
+            
+        } else {
+            if let _ = timer { timer!.invalidate(); timer = nil }
+        }
     }
+    
+    // Indicates cell to stop blinking (new state has occured)
+    func stopBlinking() {
+        
+        guard let timer = self.timer else { return }
+        timer.invalidate()
+    }
+    
+    // Function used to toggle images on-off until App receives new state
+    func toggleBtnImage(_ timer: Foundation.Timer) {
+        if let info = timer.userInfo as? [String:AnyObject] {
+            if let i = info["controlMode"] as? String {
+                let image = securityImageView.image
+                var changedImage: UIImage!
+                
+                switch i {
+                case SecurityControlMode.Away     : if image == inactiveAway { changedImage = activeAway } else { changedImage = inactiveAway }
+                case SecurityControlMode.Day      : if image == inactiveDay { changedImage = activeDay } else { changedImage = inactiveDay }
+                case SecurityControlMode.Disarm   : if image == inactiveDisarm { changedImage = activeDisarm } else { changedImage = inactiveDisarm }
+                case SecurityControlMode.Night    : if image == inactiveNight { changedImage = activeNight } else { changedImage = inactiveNight }
+                case SecurityControlMode.Panic    : if image == inactivePanic { changedImage = activePanic } else { changedImage = inactivePanic }
+                default: break
+                }
+                
+                securityImageView.image = changedImage
+            }
+        }
+        
+    }
+    
     override func draw(_ rect: CGRect) {
         
         let path = UIBezierPath(roundedRect: rect,
@@ -90,121 +128,21 @@ class SecurityCollectionCell: UICollectionViewCell {
         UIColor.lightGray.setStroke()
         
         let context = UIGraphicsGetCurrentContext()
-        let colors = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).withAlphaComponent(0.95).cgColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).withAlphaComponent(1.0).cgColor]
+        let colors  = [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).withAlphaComponent(0.95).cgColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).withAlphaComponent(1.0).cgColor]
         
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let colorSpace               = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
         
         let gradient = CGGradient(colorsSpace: colorSpace,
-                                                  colors: colors as CFArray,
-                                                  locations: colorLocations)
+                                  colors: colors as CFArray,
+                                  locations: colorLocations)
         
         let startPoint = CGPoint.zero
-        let endPoint = CGPoint(x:0, y:self.bounds.height)
+        let endPoint   = CGPoint(x:0, y:self.bounds.height)
         
         context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
         
         path.stroke()
-    }
-    
-    func startBlinking(_ notification: Notification){
-        print("Celija: \(String(describing:self.securityTitle.text))")
-        guard let notificationControlMode = (notification as NSNotification).userInfo?["controlMode"] as? String else{
-            return
-        }
-        guard let securityCellName = self.securityTitle.text else{
-            return
-        }
-        if (securityCellName.contains(notificationControlMode)) {
-            if timer == nil {
-                if securityCellName == "Panic" {
-//                timer = Foundation.Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(SecurityCollectionCell.toggleBtnImage(_:)), userInfo: (notification as NSNotification).userInfo, repeats: true)
-                } else {
-                timer = Foundation.Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(SecurityCollectionCell.toggleBtnImage(_:)), userInfo: (notification as NSNotification).userInfo, repeats: true)
-                }
-            }
-            
-        }else{
-            if let _ = self.timer{
-                timer!.invalidate()
-                timer = nil
-            }
-        }
-    }
-    // Indicates cell to stop blinking (new state has occured)
-    func stopBlinking(){
-//        let defaults = Foundation.UserDefaults.standard
-//        guard let currentControlMode = defaults.value(forKey: UserDefaults.Security.SecurityMode) as? String else{
-//            return
-//        }
-//        
-//        if currentControlMode != SecurityControlMode.Disarm {
-//            guard let timer = self.timer else{
-//                return
-//            }
-//            
-//            timer.invalidate()
-//        }
-        
-        guard let timer = self.timer else { return }
-        timer.invalidate()
-    }
-    // Function used to toggle immages on-off until App receives new state
-    func toggleBtnImage(_ timer: Foundation.Timer){
-        if let info = timer.userInfo as? [String: AnyObject] {
-            if let i = info["controlMode"] as? String{
-                switch i {
-                case SecurityControlMode.Away:
-                    if self.securityImageView.image == UIImage(named: "inactiveaway"){
-                        self.securityImageView.image = UIImage(named: "away")
-                    }else{
-                        self.securityImageView.image = UIImage(named: "inactiveaway")
-                    }
-                case SecurityControlMode.Day:
-                    if self.securityImageView.image == UIImage(named: "inactiveday"){
-                        self.securityImageView.image = UIImage(named: "day")
-                    }else{
-                        self.securityImageView.image = UIImage(named: "inactiveday")
-                    }
-                case SecurityControlMode.Disarm:
-                    if self.securityImageView.image == UIImage(named: "inactivedisarm"){
-                        self.securityImageView.image = UIImage(named: "disarm")
-                    }else{
-                        self.securityImageView.image = UIImage(named: "inactivedisarm")
-                    }
-                case SecurityControlMode.Night:
-                    if self.securityImageView.image == UIImage(named: "inactivenight"){
-                        self.securityImageView.image = UIImage(named: "night")
-                    }else{
-                        self.securityImageView.image = UIImage(named: "inactivenight")
-                    }
-//                case SecurityControlMode.Vacation:
-//                    if self.securityImageView.image == UIImage(named: "inactivevacation"){
-//                        self.securityImageView.image = UIImage(named: "vacation")
-//                    }else{
-//                        self.securityImageView.image = UIImage(named: "inactivevacation")
-//                    }
-                case SecurityControlMode.Panic:
-                    if self.securityImageView.image == UIImage(named: "inactivepanic"){
-                        self.securityImageView.image = UIImage(named: "panic")
-                        print("Postavljen PANIC image")
-                    }else{
-                        self.securityImageView.image = UIImage(named: "panic")
-                        print("Sklonjen PANIC image")
-                    }
-                default:
-                    break
-//                    if self.securityImageView.image == UIImage(named: "inactivepanic"){
-//                        self.securityImageView.image = UIImage(named: "panic")
-//                        print("Postavljen PANIC image")
-//                    }else{
-//                        self.securityImageView.image = UIImage(named: "inactivepanic")
-//                        print("Sklonjen PANIC image")
-//                    }
-                }
-            }
-        }
-        
     }
     
 }

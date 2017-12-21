@@ -164,7 +164,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
                     let id = zones[(index as NSIndexPath).row].orderId
                     zones[(index as NSIndexPath).row].orderId = zones[(initial as NSIndexPath).row].orderId
                     zones[(initial as NSIndexPath).row].orderId = id
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                     
                 }
                 
@@ -265,7 +265,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
                     } else {
                         zone.isVisible = NSNumber(value: true as Bool)
                     }
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                 }
             } else {
                 let alert = UIAlertController(title: "Something Went Wrong", message: "There was problem parsing json file. Please configure your file.", preferredStyle: UIAlertControllerStyle.alert)
@@ -455,7 +455,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
                     }
                 }
                 self.createZones(self.location!)
-                CoreDataController.shahredInstance.saveChanges()
+                CoreDataController.sharedInstance.saveChanges()
                 self.refreshZoneList()
             }
         }
@@ -476,7 +476,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
                 } else {
                     (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId, zone.allowOption) = (zoneJSON.id as NSNumber?, zoneJSON.name, zoneJSON.description, zoneJSON.level as NSNumber?, NSNumber(value: true as Bool), location, zoneJSON.id as NSNumber?, 1)
                 }
-                CoreDataController.shahredInstance.saveChanges()
+                CoreDataController.sharedInstance.saveChanges()
             }
         }
     }
@@ -508,7 +508,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         }else {
             zones[sender.tag].isVisible = false
         }
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
         importZoneTableView.reloadData()
     }
     

@@ -120,14 +120,14 @@ class EditCategoryViewController: CommonXIBTransitionVC {
                     if let desc = descriptionTextField.text{
                         categoryNew.categoryDescription = desc
                     }
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                 }
             }else{
                 category?.name = name
                 if let desc = descriptionTextField.text{
                     category?.categoryDescription = desc
                 }
-                CoreDataController.shahredInstance.saveChanges()
+                CoreDataController.sharedInstance.saveChanges()
             }
             delegate?.editCategoryFInished()
             self.dismiss(animated: true, completion: nil)

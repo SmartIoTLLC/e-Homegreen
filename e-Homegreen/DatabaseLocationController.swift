@@ -81,7 +81,7 @@ class DatabaseLocationController: NSObject {
     
     func deleteLocation(_ location:Location){
         appDel.managedObjectContext?.delete(location)
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
     func getLocation(_ user:User) -> [Location]{

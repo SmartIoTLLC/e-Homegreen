@@ -132,7 +132,7 @@ class AddVideo_AppXIB: CommonXIBTransitionVC{
             command?.name = name
             command?.comand = commandText
         }
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
         delegate?.importFinished()
         self.dismiss(animated: true, completion: nil)
         

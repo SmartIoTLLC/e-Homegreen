@@ -160,7 +160,7 @@ class EditZoneViewController: PopoverVC {
                     }
                 }
             }
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
         }else{
             editZone?.name = name
             editZone?.zoneDescription = levelTextField.text
@@ -170,7 +170,7 @@ class EditZoneViewController: PopoverVC {
                 editZone?.level = 0
             }
             
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             saveChanges()
         }
         delegate?.editZoneFInished()

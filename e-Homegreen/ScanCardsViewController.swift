@@ -685,7 +685,7 @@ extension ScanCardsViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             appDel.managedObjectContext?.delete(cards[(indexPath as NSIndexPath).row])
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             reloadCards()
         }
     }

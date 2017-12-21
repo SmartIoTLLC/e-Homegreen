@@ -164,7 +164,7 @@ class IBeaconSettingsVC: UIViewController, UITextFieldDelegate, UIGestureRecogni
                         iBeacon!.major =  NSNumber(value: major as UInt16)
                         iBeacon!.minor = NSNumber(value: minor as UInt16)
                     }
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                     NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshIBeacon), object: self, userInfo: nil)
                     self.dismiss(animated: true, completion: nil)
                 }

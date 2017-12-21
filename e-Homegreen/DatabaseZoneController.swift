@@ -79,7 +79,7 @@ class DatabaseZoneController: NSObject {
     
     func changeAllowOption(_ option:Int, zone:Zone){
         zone.allowOption = option as NSNumber!
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
 
 }

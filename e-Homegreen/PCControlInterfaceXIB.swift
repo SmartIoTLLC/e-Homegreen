@@ -292,10 +292,10 @@ class PCControlInterfaceXIB: PopoverVC {
         
     }
     
-    func keyboardWillHide(_ notification: Notification) {
-        self.centerX.constant = 0
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-    }
+//    func keyboardWillHide(_ notification: Notification) {
+//        self.centerX.constant = 0
+//        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+//    }
     
 }
 

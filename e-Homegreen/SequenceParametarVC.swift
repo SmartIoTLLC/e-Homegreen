@@ -99,7 +99,7 @@ class SequenceParametarVC: UIViewController, UITextFieldDelegate, UIGestureRecog
                 sequence?.sequenceCycles = NSNumber(value: cycles)
             }
         }
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshSequence), object: self, userInfo: nil)
         self.dismiss(animated: true, completion: nil)
     }

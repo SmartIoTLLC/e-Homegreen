@@ -268,7 +268,7 @@ class RelayParametersCell: PopoverVC {
             device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
             
             device.resetImages(appDel.managedObjectContext!)
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             
             self.dismiss(animated: true, completion: nil)
             self.delegate?.saveClicked()
@@ -294,10 +294,10 @@ class RelayParametersCell: PopoverVC {
         UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
-    func keyboardWillHide(_ notification: Notification) {
-        self.centerY.constant = 0
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-    }
+//    func keyboardWillHide(_ notification: Notification) {
+//        self.centerY.constant = 0
+//        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+//    }
 }
 
 extension RelayParametersCell : UITextFieldDelegate{

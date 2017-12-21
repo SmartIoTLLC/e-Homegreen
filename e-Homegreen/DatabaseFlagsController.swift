@@ -158,7 +158,7 @@ class DatabaseFlagsController: NSObject {
             flag.isLocalcast = isLocalcast as NSNumber
             
             flag.gateway = gateway
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             
         } else {
             
@@ -200,7 +200,7 @@ class DatabaseFlagsController: NSObject {
             existingFlag!.isBroadcast = isBroadcast as NSNumber
             existingFlag!.isLocalcast = isLocalcast as NSNumber
             
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
         }
     }
     
@@ -228,12 +228,12 @@ class DatabaseFlagsController: NSObject {
             self.appDel.managedObjectContext!.delete(flag)
         }
         
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
     func deleteFlag(_ flag:Flag){
         self.appDel.managedObjectContext!.delete(flag)
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
 
 }

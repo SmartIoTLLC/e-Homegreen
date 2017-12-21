@@ -246,7 +246,7 @@ class DatabaseTimersController: NSObject {
             
             timer.id = UUID().uuidString
             timer.gateway = gateway
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             
         } else {
             
@@ -294,7 +294,7 @@ class DatabaseTimersController: NSObject {
             existingTimer!.isBroadcast = isBroadcast as NSNumber
             existingTimer!.isLocalcast = isLocalcast as NSNumber
             
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
         }
     }
     
@@ -322,12 +322,12 @@ class DatabaseTimersController: NSObject {
             self.appDel.managedObjectContext!.delete(timer)
         }
         
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
     func deleteTimer(_ timer:Timer){
         self.appDel.managedObjectContext!.delete(timer)
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
 }

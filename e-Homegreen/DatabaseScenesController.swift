@@ -146,7 +146,7 @@ class DatabaseScenesController: NSObject {
             scene.isLocalcast = isLocalcast as NSNumber
             
             scene.gateway = gateway
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             
         } else {
             
@@ -186,7 +186,7 @@ class DatabaseScenesController: NSObject {
             existingScene!.isBroadcast = isBroadcast as NSNumber
             existingScene!.isLocalcast = isLocalcast as NSNumber
             
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
         }
     }
     
@@ -214,12 +214,12 @@ class DatabaseScenesController: NSObject {
             self.appDel.managedObjectContext!.delete(scene)
         }
         
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
     func deleteScene(_ scene:Scene){
         self.appDel.managedObjectContext!.delete(scene)
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
 
     

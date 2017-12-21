@@ -298,7 +298,7 @@ extension LocationViewController: GatewayCellDelegate{
         }else {
             gateway.turnedOn = false
         }
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
         gatewayTableView.reloadData()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }

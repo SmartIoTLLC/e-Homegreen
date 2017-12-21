@@ -64,7 +64,7 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
     @IBAction func btnUpdate(_ sender: AnyObject) {
         if popUpTextView.text != "" {
             security.securityDescription = popUpTextView.text
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             self.dismiss(animated: true, completion: nil)
         }
     }

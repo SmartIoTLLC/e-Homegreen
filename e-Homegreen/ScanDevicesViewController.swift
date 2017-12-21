@@ -169,7 +169,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                         self.appDel.managedObjectContext!.delete(item)
                     }
                 }
-                CoreDataController.shahredInstance.saveChanges()
+                CoreDataController.sharedInstance.saveChanges()
                 self.refreshDeviceList()
             }
         }
@@ -398,7 +398,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         } else {
             devices[sender.tag].isEnabled = NSNumber(value: false as Bool)
         }
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
         //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanDevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
     }
     func changeValueVisible (_ sender:UISwitch) {
@@ -407,7 +407,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         } else {
             devices[sender.tag].isVisible = NSNumber(value: false as Bool)
         }
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
         //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ScanDevicesViewController.refreshDeviceList), name: NotificationKey.RefreshDevice, object: nil)
     }
     
@@ -952,7 +952,7 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
         if editingStyle == .delete {
             // Here needs to be deleted even devices that are from gateway that is going to be deleted
             appDel.managedObjectContext?.delete(devices[(indexPath as NSIndexPath).row])
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             updateDeviceList()
             refreshDeviceList()
         }
@@ -966,7 +966,7 @@ extension ScanDevicesViewController: DeleteAllDelegate {
                 self.appDel.managedObjectContext!.delete(self.devices[item])
             }
         }
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }
 }

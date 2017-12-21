@@ -80,7 +80,7 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
         
         let address = [security.addressOne.uint8Value, security.addressTwo.uint8Value, security.addressThree.uint8Value]
         if let gatewayId = self.security.gatewayId {
-            if let gateway = CoreDataController.shahredInstance.fetchGatewayWithId(gatewayId){
+            if let gateway = CoreDataController.sharedInstance.fetchGatewayWithId(gatewayId){
                 let notificationName = NotificationKey.Security.ControlModeStartBlinking
                 switch security.securityName! {
                 case "Away":

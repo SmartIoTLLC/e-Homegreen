@@ -98,7 +98,7 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
         surv!.tiltStep = tiltStepSlider.value as NSNumber?
         surv!.autSpanStep = autoPanStepSlider.value as NSNumber?
         surv!.dwellTime = dwellTimeSlider.value as NSNumber?
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
         
         self.dismiss(animated: true, completion: nil)
     }

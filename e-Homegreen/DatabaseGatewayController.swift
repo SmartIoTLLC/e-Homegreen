@@ -109,7 +109,7 @@ class DatabaseGatewayController: NSObject {
     
     func deleteGateway(_ gateway:Gateway){
         appDel.managedObjectContext?.delete(gateway)
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
 }

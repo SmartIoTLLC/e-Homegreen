@@ -80,7 +80,7 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
             showAlertView(tableView, message: "Delete SSID?", completion: { (action) in
                 if action == ReturnedValueFromAlertView.delete {
                     self.appDel.managedObjectContext?.delete(self.ssidList[(indexPath as NSIndexPath).row])
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                     self.updateSSID()
                 }
             })
@@ -99,7 +99,7 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
         if let ssid = NSEntityDescription.insertNewObject(forEntityName: "SSID", into: appDel.managedObjectContext!) as? SSID{
                 ssid.name = name
                 ssid.location = location
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             self.updateSSID()
             ssidNameTextfield.text = ""
             }
@@ -110,7 +110,7 @@ class ImportSSIDViewController: UIViewController, UITableViewDelegate, UITableVi
         for item in ssidList{
             appDel.managedObjectContext?.delete(item)
         }
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
         self.updateSSID()
     }
     

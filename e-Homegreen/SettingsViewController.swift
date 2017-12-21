@@ -167,7 +167,7 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
         }else if let user = DatabaseUserController.shared.getLoggedUser(){
             user.isLocked = sender.isOn as NSNumber
         }
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
         
     }
     func didTouchSettingButton (_ sender:AnyObject) {

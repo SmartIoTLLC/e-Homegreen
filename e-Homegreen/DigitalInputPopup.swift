@@ -237,7 +237,7 @@ class DigitalInputPopup: PopoverVC {
             }
             device.resetImages(appDel.managedObjectContext!)
             device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             self.delegate?.saveClicked()
             self.dismiss(animated: true, completion: nil)
         }

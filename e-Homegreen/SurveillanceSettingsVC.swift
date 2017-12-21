@@ -224,7 +224,7 @@ class SurveillanceSettingsVC: PopoverVC {
                     surveillance.autSpanStep = 1
                     surveillance.dwellTime = 15
                     surveillance.location = parentLocation
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                 }
             }else if let surv = surv{
                 
@@ -245,7 +245,7 @@ class SurveillanceSettingsVC: PopoverVC {
                 surv.ip = remoteIp
                 surv.port = remotePortNumber as NSNumber?
                 
-                CoreDataController.shahredInstance.saveChanges()
+                CoreDataController.sharedInstance.saveChanges()
             }
             
             self.dismiss(animated: true, completion: nil)
@@ -319,10 +319,10 @@ class SurveillanceSettingsVC: PopoverVC {
         
     }
     
-    func keyboardWillHide(_ notification: Notification) {
-        self.centarConstraint.constant = 0
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-    }
+//    func keyboardWillHide(_ notification: Notification) {
+//        self.centarConstraint.constant = 0
+//        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+//    }
 }
 
 extension SurveillanceSettingsVC : UIGestureRecognizerDelegate {

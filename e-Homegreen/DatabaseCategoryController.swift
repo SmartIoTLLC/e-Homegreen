@@ -55,6 +55,6 @@ class DatabaseCategoryController: NSObject {
     
     func changeAllowOption(_ option:Int, category:Category){
         category.allowOption = option as NSNumber!
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
 }

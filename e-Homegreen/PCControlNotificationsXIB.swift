@@ -234,7 +234,7 @@ class PCControlNotificationsXIB: PopoverVC {
         
         pc.notificationType = notificationType.rawValue as NSNumber?
         pc.notificationPosition = notificationPosition.rawValue as NSNumber?
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
         
         self.dismiss(animated: true, completion: nil)
     }
@@ -263,10 +263,10 @@ class PCControlNotificationsXIB: PopoverVC {
         
     }
     
-    func keyboardWillHide(_ notification: Notification) {
-        self.centerY.constant = 0
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-    }
+//    func keyboardWillHide(_ notification: Notification) {
+//        self.centerY.constant = 0
+//        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+//    }
     
 }
 

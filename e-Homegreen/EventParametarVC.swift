@@ -79,7 +79,7 @@ class EventParametarVC: UIViewController, UIGestureRecognizerDelegate {
         } else {
             event?.isLocalcast = false
         }
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshEvent), object: self, userInfo: nil)
         self.dismiss(animated: true, completion: nil)
     }

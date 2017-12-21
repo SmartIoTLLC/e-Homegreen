@@ -287,7 +287,7 @@ class HvacParametersCell: PopoverVC {
             device.autoSpeedVisible = switchAutoSpeed.isOn as NSNumber?
             
             device.resetImages(appDel.managedObjectContext!)
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             
             // Why was the next line commented out?
             

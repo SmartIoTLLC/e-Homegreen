@@ -145,7 +145,7 @@ class DatabaseEventsController: NSObject {
             event.report = report as NSNumber
             
             event.gateway = gateway
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             
         } else {
             
@@ -187,7 +187,7 @@ class DatabaseEventsController: NSObject {
             
             existingEvent!.report = report as NSNumber
             
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
         }
     }
     
@@ -215,11 +215,11 @@ class DatabaseEventsController: NSObject {
             self.appDel.managedObjectContext!.delete(event)
         }
         
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
     func deleteEvent(_ event:Event){
         self.appDel.managedObjectContext!.delete(event)
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
 }

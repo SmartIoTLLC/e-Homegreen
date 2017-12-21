@@ -116,7 +116,7 @@ class DimmerParametarVC: CommonXIBTransitionVC {
             device!.delay = NSNumber(value: numberOne)
             device!.runtime = NSNumber(value: numberTwo)
             device!.skipState = NSNumber(value: numberThree)
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
         }
     }
     
@@ -150,10 +150,10 @@ class DimmerParametarVC: CommonXIBTransitionVC {
         
     }
     
-    func keyboardWillHide(_ notification: Notification) {
-        self.centerY.constant = 0
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-    }
+//    func keyboardWillHide(_ notification: Notification) {
+//        self.centerY.constant = 0
+//        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+//    }
 }
 
 extension DimmerParametarVC: UITextFieldDelegate{

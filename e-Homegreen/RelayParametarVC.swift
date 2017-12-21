@@ -98,7 +98,7 @@ class RelayParametarVC: CommonXIBTransitionVC {
             device = deviceObject
             print(device)
             device!.delay = NSNumber(value: numberOne)
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
         }
     }
     
@@ -142,10 +142,6 @@ class RelayParametarVC: CommonXIBTransitionVC {
         UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
-    func keyboardWillHide(_ notification: Notification) {
-        self.centerY.constant = 0
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-    }
 }
 
 extension RelayParametarVC: UITextFieldDelegate{

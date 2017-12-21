@@ -145,7 +145,7 @@ class AddUserXIB: CommonXIBTransitionVC {
                 }
             }
 
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             DatabaseMenuController.shared.createMenu(user)
         }else{
             guard let username = usernameTextField.text , username != "", let password = passwordTextView.text , password != "", let confirmpass = confirmPasswordtextView.text , confirmpass != "" else{
@@ -181,7 +181,7 @@ class AddUserXIB: CommonXIBTransitionVC {
                     }
                 }
                 
-                CoreDataController.shahredInstance.saveChanges()
+                CoreDataController.sharedInstance.saveChanges()
                 DatabaseMenuController.shared.createMenu(user)
                 DatabaseFilterController.shared.createFilters(user)
             }

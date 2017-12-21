@@ -158,7 +158,7 @@ class ConnectionSettingsVC: CommonXIBTransitionVC {
             gateway.gatewayDescription = gatewayName
             gateway.autoReconnectDelay = hb as NSNumber?
             
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             self.dismiss(animated: true, completion: nil)
             delegate?.addEditGatewayFinished()
         }else{
@@ -178,7 +178,7 @@ class ConnectionSettingsVC: CommonXIBTransitionVC {
                 gateway.gatewayId = UUID().uuidString
                 gateway.autoReconnectDelay = NSNumber(value: hb as Int)
                 gateway.gatewayType = NSNumber(value: gatewayType.rawValue)
-                CoreDataController.shahredInstance.saveChanges()
+                CoreDataController.sharedInstance.saveChanges()
                 self.dismiss(animated: true, completion: nil)
                 delegate?.addEditGatewayFinished()
             }
@@ -237,10 +237,10 @@ class ConnectionSettingsVC: CommonXIBTransitionVC {
         UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
-    func keyboardWillHide(_ notification: Notification) {
-        self.centarY.constant = 0
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-    }
+//    func keyboardWillHide(_ notification: Notification) {
+//        self.centarY.constant = 0
+//        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+//    }
 
 }
 

@@ -36,7 +36,7 @@ class SecurityPadVC: CommonXIBTransitionVC {
         super.viewDidLoad()
         address = [security.addressOne.uint8Value, security.addressTwo.uint8Value, security.addressThree.uint8Value]
         if let gatewayId = self.security.gatewayId {
-            if let gateway = CoreDataController.shahredInstance.fetchGatewayWithId(gatewayId){
+            if let gateway = CoreDataController.sharedInstance.fetchGatewayWithId(gatewayId){
                 self.gateway = gateway
             }
         }

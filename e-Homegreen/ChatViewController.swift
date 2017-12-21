@@ -764,22 +764,22 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         
     }
     
-    func keyboardWillHide(_ notification: Notification) {
-        var info = (notification as NSNotification).userInfo!
-        let duration:TimeInterval = (info[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
-        self.bottomConstraint.constant = 0
-        if chatTextView.text.isEmpty{
-            viewHeight.constant = 49
-        }
-        UIView.animate(withDuration: duration,
-            delay: 0,
-            options: UIViewAnimationOptions.curveLinear,
-            animations: { self.view.layoutIfNeeded() },
-            completion: nil)
-        if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
-            self.chatTableView.setContentOffset(CGPoint(x: 0, y: self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: false)
-        }
-    }
+//    func keyboardWillHide(_ notification: Notification) {
+//        var info = (notification as NSNotification).userInfo!
+//        let duration:TimeInterval = (info[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+//        self.bottomConstraint.constant = 0
+//        if chatTextView.text.isEmpty{
+//            viewHeight.constant = 49
+//        }
+//        UIView.animate(withDuration: duration,
+//            delay: 0,
+//            options: UIViewAnimationOptions.curveLinear,
+//            animations: { self.view.layoutIfNeeded() },
+//            completion: nil)
+//        if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
+//            self.chatTableView.setContentOffset(CGPoint(x: 0, y: self.chatTableView.contentSize.height - self.chatTableView.frame.size.height), animated: false)
+//        }
+//    }
     
     func setDefaultFilterFromTimer(){
 //        scrollView.setDefaultFilterItem(Menu.chat)

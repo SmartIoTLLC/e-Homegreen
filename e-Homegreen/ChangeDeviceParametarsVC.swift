@@ -220,7 +220,7 @@ class ChangeDeviceParametarsVC: PopoverVC {
             device.categoryId = NSNumber(value: editedDevice!.categoryId as Int)
             device.controlType = editedDevice!.controlType
             device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             device.resetImages(appDel.managedObjectContext!)
             self.delegate?.saveClicked()
             self.dismiss(animated: true, completion: nil)

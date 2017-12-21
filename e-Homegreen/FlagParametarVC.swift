@@ -64,7 +64,7 @@ class FlagParametarVC: CommonXIBTransitionVC {
         } else {
             flag?.isLocalcast = false
         }
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshTimer), object: self, userInfo: nil)
         self.dismiss(animated: true, completion: nil)
     }

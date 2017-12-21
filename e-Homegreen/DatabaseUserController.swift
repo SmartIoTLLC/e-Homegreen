@@ -116,7 +116,7 @@ class DatabaseUserController: NSObject {
     
     func removeUser(user: User){
         appDel.managedObjectContext?.delete(user)
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
     func logedUserOrAdmin() -> User?{

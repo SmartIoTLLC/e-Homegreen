@@ -211,7 +211,7 @@ class AddLocationXIB: PopoverVC {
                 } else {
                     (zone.id, zone.name, zone.zoneDescription, zone.level, zone.isVisible, zone.location, zone.orderId, zone.allowOption) = (zoneJSON.id as NSNumber?, zoneJSON.name, zoneJSON.description, zoneJSON.level as NSNumber?, NSNumber(value: true as Bool), location, zoneJSON.id as NSNumber?, 1)
                 }
-                CoreDataController.shahredInstance.saveChanges()
+                CoreDataController.sharedInstance.saveChanges()
                 
             }
         }
@@ -223,7 +223,7 @@ class AddLocationXIB: PopoverVC {
                 } else {
                     (category.id, category.name, category.categoryDescription, category.isVisible, category.location, category.orderId, category.allowOption) = (categoryJSON.id as NSNumber?, categoryJSON.name, categoryJSON.description, NSNumber(value: true as Bool), location, categoryJSON.id as NSNumber?, 3)
                 }
-                CoreDataController.shahredInstance.saveChanges()
+                CoreDataController.sharedInstance.saveChanges()
             }
         }
     }
@@ -264,7 +264,7 @@ class AddLocationXIB: PopoverVC {
             location.orderId = id as NSNumber?
             location.radius = radius as NSNumber?
             location.filterOnLocation = setFilterSwitch.isOn as NSNumber?
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             
             delegate?.editAddLocationFinished()
             self.dismiss(animated: true, completion: nil)
@@ -283,7 +283,7 @@ class AddLocationXIB: PopoverVC {
                         newLocation.orderId = DatabaseLocationController.shared.getNextAvailableId(user) as NSNumber?
                     }
                     createZonesAndCategories(newLocation)
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                     
                     DatabaseLocationController.shared.startMonitoringLocation(newLocation)
                     

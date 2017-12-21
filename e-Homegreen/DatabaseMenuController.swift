@@ -28,7 +28,7 @@ class DatabaseMenuController: NSObject {
                     menu.orderId = NSNumber(value: item.rawValue)
                     menu.isVisible = true
                     menu.user = user
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                 }
             }
         }else{
@@ -38,7 +38,7 @@ class DatabaseMenuController: NSObject {
                     menu.orderId = NSNumber(value: item.rawValue)
                     menu.isVisible = true
                     menu.user = user
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                 }
             }
         }
@@ -124,7 +124,7 @@ class DatabaseMenuController: NSObject {
                 tempItem.orderId = NSNumber(value: tempIndex)
             }
         }
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
     func changeState(_ menuItem:MenuItem){
@@ -133,7 +133,7 @@ class DatabaseMenuController: NSObject {
         }else{
             menuItem.isVisible = true
         }        
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
 
 }

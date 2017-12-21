@@ -93,7 +93,7 @@ class CreateUserFromJSONController: NSObject {
                         }
                     }
                 }
-                CoreDataController.shahredInstance.saveChanges()
+                CoreDataController.sharedInstance.saveChanges()
             }
         }
     }

@@ -60,7 +60,7 @@ class DatabaseCardsController: NSObject {
             card.address = NSNumber(value: moduleAddress)
             
             card.gateway = gateway
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
             
         } else {
             
@@ -78,7 +78,7 @@ class DatabaseCardsController: NSObject {
             existingCard!.timerAddress = NSNumber(value: timerAddress)
             existingCard!.timerId = NSNumber(value: timerId)
             
-            CoreDataController.shahredInstance.saveChanges()
+            CoreDataController.sharedInstance.saveChanges()
         }
     }
     

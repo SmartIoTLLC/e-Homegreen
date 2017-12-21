@@ -40,7 +40,7 @@ class DatabaseFilterController: NSObject {
                 }
             }
         }
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
     }
     
     func saveFilter(_ filterItem:FilterItem, menu:Menu){
@@ -59,7 +59,7 @@ class DatabaseFilterController: NSObject {
                     results[0].levelId = filterItem.levelObjectId
                     results[0].zoneId = filterItem.zoneObjectId
                     results[0].categoryId = filterItem.categoryObjectId
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                 }
             } catch {
                 
@@ -85,7 +85,7 @@ class DatabaseFilterController: NSObject {
                     results[0].zoneId = filterItem.zoneObjectId
                     results[0].categoryId = filterItem.categoryObjectId
                     results[0].timerDuration = NSNumber(value: time)
-                    CoreDataController.shahredInstance.saveChanges()
+                    CoreDataController.sharedInstance.saveChanges()
                 }
             } catch {
                 

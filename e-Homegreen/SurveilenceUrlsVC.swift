@@ -125,7 +125,7 @@ class SurveilenceUrlsVC: CommonXIBTransitionVC {
         if txtPresetSequence.text != "" {surv!.urlPresetSequence! = txtPresetSequence.text!}
         if txtStopPresetSequence.text != "" {surv!.urlPresetSequenceStop! = txtStopPresetSequence.text!}
         if txtHome.text != "" {surv!.urlHome! = txtHome.text!}
-        CoreDataController.shahredInstance.saveChanges()
+        CoreDataController.sharedInstance.saveChanges()
         
         resignFirstResponder()
         self.dismiss(animated: true, completion: nil)
@@ -203,10 +203,10 @@ class SurveilenceUrlsVC: CommonXIBTransitionVC {
         
     }
     
-    func keyboardWillHide(_ notification: Notification) {
-        self.centerY.constant = 0
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-    }
+//    func keyboardWillHide(_ notification: Notification) {
+//        self.centerY.constant = 0
+//        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+//    }
     
     func dismissKeyboard(){
         self.view.endEditing(true)
