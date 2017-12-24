@@ -21,15 +21,22 @@ class CoreDataController: NSObject {
     func fetchGatewaysForHost(_ host:String, port:UInt16) -> [Gateway] {
         var gateways: [Gateway] = []
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Gateway.fetchRequest()
+        let compoundPredicate = NSCompoundPredicate(
+            type: NSCompoundPredicate.LogicalType.or,
+            subpredicates: [
+                NSPredicate(format: "remoteIpInUse == %@ AND remotePort == %@", host, NSNumber(value: port as UInt16)),
+                NSPredicate(format: "localIp == %@ AND localPort == %@", host, NSNumber(value: port as UInt16))
+            ]
+        )
+        fetchRequest.predicate = NSCompoundPredicate(
+            type:NSCompoundPredicate.LogicalType.and,
+            subpredicates: [
+                NSPredicate(format: "turnedOn == %@", NSNumber(value: true as Bool)),
+                compoundPredicate
+            ]
+        )
         
-        let predicateOne   = NSPredicate(format: "turnedOn == %@", NSNumber(value: true as Bool))
-        let predicateTwo   = NSPredicate(format: "remoteIpInUse == %@ AND remotePort == %@", host, NSNumber(value: port as UInt16))
-        let predicateThree = NSPredicate(format: "localIp == %@ AND localPort == %@", host, NSNumber(value: port as UInt16))
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.or, subpredicates: [predicateTwo,predicateThree])
-        fetchRequest.predicate = NSCompoundPredicate(type:NSCompoundPredicate.LogicalType.and, subpredicates: [predicateOne,compoundPredicate])
-        
-        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         
         do {
             if let moc = appDel.managedObjectContext {
@@ -64,13 +71,14 @@ class CoreDataController: NSObject {
     
     func fetchDevicesForGateway(_ gateway: Gateway) -> [Device] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
-        let predicate = NSPredicate(format: "gateway == %@", gateway.objectID)
-        let sortDescriptorOne   = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo   = NSSortDescriptor(key: "address", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
-        let sortDescriptorFour  = NSSortDescriptor(key: "channel", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
-        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: "gateway.name", ascending: true),
+            NSSortDescriptor(key: "address", ascending: true),
+            NSSortDescriptor(key: "type", ascending: true),
+            NSSortDescriptor(key: "channel", ascending: true)
+        ]
+        fetchRequest.predicate = NSPredicate(format: "gateway == %@", gateway.objectID)
+        
         do {
             if let moc = appDel.managedObjectContext {
                 if let fetResults = try moc.fetch(fetchRequest) as? [Device] {
@@ -86,16 +94,14 @@ class CoreDataController: NSObject {
     func fetchDevicesByGatewayAndAddress(_ gateway: Gateway, address:NSNumber) -> [Device] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
 
-        let sortDescriptor = NSSortDescriptor(key: "address", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "address", ascending: true)]
         
         let predicateArray = [
             NSPredicate(format: "gateway == %@", gateway),
             NSPredicate(format: "address == %@", address)
         ]
         
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
-        fetchRequest.predicate = compoundPredicate
+        fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
         
         do {
             if let moc = appDel.managedObjectContext {
@@ -110,15 +116,14 @@ class CoreDataController: NSObject {
     }
     func fetchSortedPCRequest (_ gatewayName:String, parentZone:Int, zone:Int, category:Int) -> NSFetchRequest<NSFetchRequestResult> {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
-        let predicateOne = NSPredicate(format: "type == %@", ControlType.PC)
-        let predicateArray = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateOne])
         
-        let sortDescriptorOne   = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo   = NSSortDescriptor(key: "address", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
-        let sortDescriptorFour  = NSSortDescriptor(key: "channel", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
-        fetchRequest.predicate = predicateArray
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: "gateway.name", ascending: true),
+            NSSortDescriptor(key: "address", ascending: true),
+            NSSortDescriptor(key: "type", ascending: true),
+            NSSortDescriptor(key: "channel", ascending: true)
+        ]
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "type == %@", ControlType.PC)])
         return fetchRequest
     }
     

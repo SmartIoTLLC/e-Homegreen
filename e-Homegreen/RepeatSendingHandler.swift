@@ -98,7 +98,7 @@ class RepeatSendingHandler: NSObject {
                     SendingHandler.sendCommand(byteArray: byteArray, gateway: gateway)
                     
                     repeatCounter += 1
-                    didGetResponseTimer.invalidate()
+                    if didGetResponseTimer != nil { didGetResponseTimer.invalidate() }                    
                     didGetResponseTimer = nil
                     didGetResponseTimer = Foundation.Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(sendCommand), userInfo: nil, repeats: false)
                 } else {
@@ -135,7 +135,7 @@ class RepeatSendingHandler: NSObject {
                     
                     SendingHandler.sendCommand(byteArray: byteArray, gateway: gateway)
                     repeatCounter += 1
-                    didGetResponseTimer.invalidate()
+                    if didGetResponseTimer != nil { didGetResponseTimer.invalidate() }
                     didGetResponseTimer = nil
                     didGetResponseTimer = Foundation.Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(sendCommandForSaltoAccess), userInfo: nil, repeats: false)
                     
