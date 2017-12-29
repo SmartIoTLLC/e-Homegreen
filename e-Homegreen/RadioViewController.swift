@@ -73,14 +73,7 @@ extension RadioViewController {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? StationCell {
-            
-            cell.station = radioStations[indexPath.row]
-            
-            return cell
-        }
-        
-        return UITableViewCell()
+        return getCell(at: indexPath, tableView)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -91,9 +84,7 @@ extension RadioViewController {
 // MARK: - Table View Delegate
 extension RadioViewController {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        radioIsPlaying = false
-        currentStation = radioStations[indexPath.row]
-        playRadio()
+        didSelectStation(at: indexPath)
     }
 }
 
@@ -157,10 +148,28 @@ extension RadioViewController {
         player?.pause()
         radioIsPlaying = false
     }
+    
+    fileprivate func didSelectStation(at indexPath: IndexPath) {
+        radioIsPlaying = false
+        currentStation = radioStations[indexPath.row]
+        playRadio()
+    }
 }
 
 // MARK: - Setup views
 extension RadioViewController {
+    
+    fileprivate func getCell(at indexPath: IndexPath, _ tableView: UITableView) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? StationCell {
+            
+            cell.station = radioStations[indexPath.row]
+            
+            return cell
+        }
+        
+        return UITableViewCell()
+    }
+    
     fileprivate func setupRadioPlayerView() {
         radioBar.backgroundColor = UIColor(cgColor: Colors.DarkGray)
         radioTitle.textColor     = UIColor.white

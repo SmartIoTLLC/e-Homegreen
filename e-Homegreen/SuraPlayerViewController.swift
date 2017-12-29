@@ -65,12 +65,27 @@ extension SuraPlayerViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return availableSurasList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+        return getCell(at: indexPath, tableView)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        didSelectSura(at: indexPath)
+    }
+    
+}
+
+// MARK: - View setup
+extension SuraPlayerViewController {
+    
+    fileprivate func getCell(at indexPath: IndexPath, _ tableView: UITableView) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? SuraCell {
             
             cell.sura = availableSurasList[indexPath.row]
@@ -81,19 +96,6 @@ extension SuraPlayerViewController: UITableViewDataSource, UITableViewDelegate {
         return UITableViewCell()
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        suraIsPlaying = false
-        currentSura   = availableSurasList[indexPath.row]
-        playSura()
-    }
-}
-
-// MARK: - View setup
-extension SuraPlayerViewController {
     fileprivate func updateViews() {
         tableView.register(UINib(nibName: String(describing: SuraCell.self), bundle: nil), forCellReuseIdentifier: cellId)
         tableView.delegate        = self
@@ -203,6 +205,12 @@ extension SuraPlayerViewController {
             }
             tableView.reloadData()
         }
+    }
+    
+    fileprivate func didSelectSura(at indexPath: IndexPath) {
+        suraIsPlaying = false
+        currentSura   = availableSurasList[indexPath.row]
+        playSura()
     }
     
     func formattedSuraID(id: NSNumber) -> String {

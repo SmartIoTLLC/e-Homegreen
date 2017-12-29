@@ -121,8 +121,29 @@ class DatabaseUserController: NSObject {
     }
     
     func removeUser(user: User) {
-        appDel.managedObjectContext?.delete(user)
-        CoreDataController.sharedInstance.saveChanges()
+        if let moc = appDel.managedObjectContext {
+            if let locations = user.locations?.allObjects as? [Location] {
+                locations.forEach({ (location) in
+                    if let gateways = location.gateways?.allObjects as? [Gateway] {
+                        gateways.forEach({ (gateway) in
+                            if let devices = gateway.devices.allObjects as? [Device] {
+                                devices.forEach({ (device) in moc.delete(device) })
+                            }
+                            moc.delete(gateway)
+                        })
+                    }
+                    
+                    if let securities = location.security?.allObjects as? [Security] {
+                        securities.forEach({ (security) in moc.delete(security) })
+                    }
+                    moc.delete(location)
+                })
+            }
+            moc.delete(user)
+                        
+            CoreDataController.sharedInstance.saveChanges()
+        }
+        
     }
     
     func loggedUserOrAdmin() -> User? {

@@ -85,7 +85,7 @@ class DatabaseHandler: NSObject {
             
             do {
                 if let moc = appDel.managedObjectContext {
-                    if let fetResults = try (UIApplication.shared.delegate as! AppDelegate).managedObjectContext!.fetch(fetchRequest) as? [Zone] {
+                    if let fetResults = try moc.fetch(fetchRequest) as? [Zone] {
                         if fetResults.count != 0 { return fetResults.first } else { return nil }
                     }
                 }

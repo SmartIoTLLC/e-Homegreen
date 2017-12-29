@@ -33,7 +33,38 @@ class ContactsListViewController: CommonXIBTransitionVC, UITableViewDataSource, 
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: .UIDeviceOrientationDidChange, object: nil)
     }
+    
+}
 
+// MARK: - Table View Data Source
+extension ContactsListViewController {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return contacts.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return getCell(at: indexPath, tableView)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+}
+
+// MARK: - Table View Delegate
+extension ContactsListViewController {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        didSelectContact(at: indexPath)
+    }
+}
+
+// MARK: - Setup views & Logic
+extension ContactsListViewController {
+    
     func callContact(number: String) {
         var formattedNumber = ""
         for c in number.characters {
@@ -50,19 +81,13 @@ class ContactsListViewController: CommonXIBTransitionVC, UITableViewDataSource, 
         }
     }
     
-}
-
-// MARK: - Table View Data Source
-extension ContactsListViewController {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+    fileprivate func didSelectContact(at indexPath: IndexPath) {
+        if let number = contacts[indexPath.row].phoneNumbers.first?.value.stringValue {
+            self.callContact(number: number)
+        }
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return contacts.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    fileprivate func getCell(at indexPath: IndexPath, _ tableView: UITableView) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? ContactCell {
             
             cell.contact = contacts[indexPath.row]
@@ -72,22 +97,6 @@ extension ContactsListViewController {
         return UITableViewCell()
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
-    }
-}
-
-// MARK: - Table View Delegate
-extension ContactsListViewController {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let number = contacts[indexPath.row].phoneNumbers.first?.value.stringValue {
-            self.callContact(number: number)
-        }
-    }
-}
-
-// MARK: - Setup views
-extension ContactsListViewController {
     func dismissOnTap() {
         self.dismiss(animated: true, completion: nil)
     }

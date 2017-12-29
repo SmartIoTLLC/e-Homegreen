@@ -30,6 +30,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+        
     var window: UIWindow?
     let locationManager = CLLocationManager()
     var timer: DispatchSource!
@@ -42,6 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+    
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
@@ -56,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().isTranslucent = false
         UINavigationBar.appearance().tintColor = UIColor.white
         let fontDictionary = [ NSForegroundColorAttributeName:UIColor.white ]
-        UINavigationBar.appearance().titleTextAttributes = fontDictionary        
+        UINavigationBar.appearance().titleTextAttributes = fontDictionary
         
         // Check wheter admin exists, and if it exists - check if user is logged in
         if let _ = AdminController.shared.getAdmin() {
@@ -138,7 +140,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        
         shutDownTimers()
     }
     
@@ -231,15 +232,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     if inOutSockets[0].port != UInt16(Int(gateway.remotePort)) { inOutSockets.append(InOutSocket(port: UInt16(Int(gateway.remotePort)))) }
                 }
             }
+            inOutSockets.append(InOutSocket(port: 5000))
         }
     }
     
-    func refreshGateways(_ timer:Foundation.Timer){
-        let userInfo = timer.userInfo as! Dictionary<String, AnyObject>
-        if let gateway = userInfo["gateway"] as? Gateway{
-            let address = [Byte(Int(gateway.addressOne)), Byte(Int(gateway.addressTwo)), Byte(Int(gateway.addressThree))]
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address) , gateway: gateway)
+    func refreshGateways(_ timer:Foundation.Timer) {
+        if let userInfo = timer.userInfo as? [String: AnyObject] {
+            if let gateway = userInfo["gateway"] as? Gateway {
+                let address = [Byte(Int(gateway.addressOne)), Byte(Int(gateway.addressTwo)), Byte(Int(gateway.addressThree))]
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address) , gateway: gateway)
+            }
         }
+        
     }
     
     func refreshAllConnectionsToEHomeGreenPLC () {

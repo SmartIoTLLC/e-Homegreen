@@ -39,18 +39,16 @@ class SecurityViewController: PopoverVC {
     var filterParametar:FilterItem!
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     
+    var securityItem:SecurityItem = SecurityItem.location
+    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
     @IBOutlet weak var lblAlarmState: UILabel!
     @IBOutlet weak var securityCollectionView: UICollectionView!
     @IBOutlet weak var refreshBtn: UIButton!
-    
-    var securityItem:SecurityItem = SecurityItem.location
-    
     @IBAction func fullScreen(_ sender: AnyObject) {
         (sender as! UIButton).switchFullscreen(viewThatNeedsOffset: scrollView)
     }
-    
     @IBAction func refresh(_ sender: AnyObject) {
         (sender as! UIButton).rotate(1)
         refreshSecurityAlarmStateAndSecurityMode()
@@ -114,6 +112,42 @@ class SecurityViewController: PopoverVC {
 
 // MARK: - View Setup
 extension SecurityViewController {
+    
+    fileprivate func getCell(at indexPath: IndexPath, _ collectionView: UICollectionView) -> UICollectionViewCell {
+        if securityItem == .security {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? SecurityCollectionCell {
+                var name:String = ""
+                if filterParametar.location == "All" { name += securities[indexPath.row].location!.name! + " " }
+                name += securities[indexPath.row].securityName!
+                
+                cell.setCell(name, security: securities[indexPath.row], tag: indexPath.row)
+                
+                let openParametar = UILongPressGestureRecognizer(target: self, action: #selector(openParametar(_:)))
+                openParametar.minimumPressDuration = 0.5
+                cell.securityTitle.addGestureRecognizer(openParametar)
+                cell.securityButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buttonPressed(_:))))
+                
+                return cell
+            }
+            
+            return UICollectionViewCell()
+            
+        } else {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SecurityLocationCell", for: indexPath) as? SecurityLocationCell {
+                
+                cell.setItem(location[indexPath.row], tag: indexPath.row)
+                
+                let longPress = UILongPressGestureRecognizer(target: self, action: #selector(openMode(_:)))
+                longPress.minimumPressDuration = 0.5
+                cell.loactionTitleLabel.addGestureRecognizer(longPress)
+                
+                return cell
+            }
+            
+            return UICollectionViewCell()
+        }
+    }
+    
     func setupScrollView() {
         scrollView.filterDelegate = self
         view.addSubview(scrollView)
@@ -125,7 +159,7 @@ extension SecurityViewController {
     func updateViews() {
         if #available(iOS 11, *) { headerTitleSubtitleView.layoutIfNeeded() }
         
-        UIView.hr_setToastThemeColor(color: UIColor.red)
+        UIView.hr_setToastThemeColor(color: .red)
         
         navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         navigationItem.titleView = headerTitleSubtitleView
@@ -184,7 +218,7 @@ extension SecurityViewController {
                 securityItem = SecurityItem.security
             }
             location     = FilterController.shared.getLocationForFilterByUser()
-            securities   = DatabaseSecurityController.shared.getSecurity(filterParametar)
+            securities   = DatabaseSecurityController.shared.getSecurity(filterParametar) // todo puklo
         } else { view.makeToast(message: "No user database selected.") }
         
     }
@@ -193,7 +227,7 @@ extension SecurityViewController {
         if securities.count > 0 {
             let address:[UInt8] = [getByte(securities[0].addressOne), getByte(securities[0].addressTwo), getByte(securities[0].addressThree)]
             if let id = securities[0].gatewayId {
-                if let gateway = DatabaseGatewayController.shared.getGatewayByid(id)  {
+                if let gateway = DatabaseGatewayController.shared.getGatewayByid(id) {
                     SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurrentAlarmState(address), gateway: gateway)
                     SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurrentSecurityMode(address), gateway: gateway)
                 }
@@ -202,69 +236,82 @@ extension SecurityViewController {
     }
     
     func openParametar (_ gestureRecognizer:UITapGestureRecognizer) {
-        let tag = gestureRecognizer.view!.tag
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
-            let location = gestureRecognizer.location(in: securityCollectionView)
-            if let index = securityCollectionView.indexPathForItem(at: location) {
-                if let cell = securityCollectionView.cellForItem(at: index) {
-                    showSecurityParametar(CGPoint(x: cell.center.x, y: cell.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
+        if let tag = gestureRecognizer.view?.tag {
+            if gestureRecognizer.state == .began {
+                let location = gestureRecognizer.location(in: securityCollectionView)
+                if let index = securityCollectionView.indexPathForItem(at: location) {
+                    if let cell = securityCollectionView.cellForItem(at: index) {
+                        showSecurityParametar(CGPoint(x: cell.center.x, y: cell.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
+                    }
                 }
-                
             }
         }
     }
     
     func openMode(_ gestureRecognizer:UITapGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
+        if gestureRecognizer.state == .began {
             showSecurityLocationParametar()
         }
     }
     
     func buttonPressed (_ gestureRecognizer:UITapGestureRecognizer) {
-        let tag = gestureRecognizer.view!.tag
-        let userDefaults = Foundation.UserDefaults.standard
-        let location = gestureRecognizer.location(in: securityCollectionView)
-        
-        switch securities[tag].securityName! {
+        if let tag = gestureRecognizer.view?.tag {
+            let userDefaults = Foundation.UserDefaults.standard
+            let location = gestureRecognizer.location(in: securityCollectionView)
             
-        case "Away", "Night", "Day", "Vacation":
-            if let index = securityCollectionView.indexPathForItem(at: location) {
-                if let cell = securityCollectionView.cellForItem(at: index) {
-                    if let securityMode = userDefaults.value(forKey: UserDefaults.Security.SecurityMode) as? String {
-                        if securityMode != SecurityControlMode.Disarm {
-                            showSecurityInformation(CGPoint(x: cell.center.x, y: cell.center.y - securityCollectionView.contentOffset.y))
-                        } else {
-                            showSecurityCommand(CGPoint(x: cell.center.x, y: cell.center.y - securityCollectionView.contentOffset.y), text: securities[tag].securityDescription!, security: securities[tag])
+            switch securities[tag].securityName! {
+                
+            case "Away", "Night", "Day", "Vacation":
+                if let index = securityCollectionView.indexPathForItem(at: location) {
+                    if let cell = securityCollectionView.cellForItem(at: index) {
+                        if let securityMode = userDefaults.value(forKey: UserDefaults.Security.SecurityMode) as? String {
+                            if securityMode != SecurityControlMode.Disarm {
+                                showSecurityInformation(CGPoint(x: cell.center.x, y: cell.center.y - securityCollectionView.contentOffset.y))
+                            } else {
+                                showSecurityCommand(CGPoint(x: cell.center.x, y: cell.center.y - securityCollectionView.contentOffset.y), text: securities[tag].securityDescription!, security: securities[tag])
+                            }
                         }
                     }
                 }
-            }
-            
-        case "Disarm":
-            if let index = securityCollectionView.indexPathForItem(at: location) {
-                if let cell = securityCollectionView.cellForItem(at: index) {
-                    showSecurityPad(CGPoint(x: cell.center.x, y: cell.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
-                }
-            }
-            
-        case "Panic":
-            let security = securities[tag]
-            let address = [security.addressOne.uint8Value, security.addressTwo.uint8Value, security.addressThree.uint8Value]
-            if let gateway = CoreDataController.sharedInstance.fetchGatewayWithId(security.gatewayId!) {
-                let notificationName = NotificationKey.Security.ControlModeStartBlinking
                 
-                if userDefaults.bool(forKey: UserDefaults.Security.IsPanic) {
-                    SendingHandler.sendCommand(byteArray: OutgoingHandler.setPanic(address, panic: 0x01), gateway: gateway)
-                    userDefaults.set(false, forKey: UserDefaults.Security.IsPanic)
-                } else {
-                    SendingHandler.sendCommand(byteArray: OutgoingHandler.setPanic(address, panic: 0x00), gateway: gateway)
-                    userDefaults.set(true, forKey: UserDefaults.Security.IsPanic)
+            case "Disarm":
+                if let index = securityCollectionView.indexPathForItem(at: location) {
+                    if let cell = securityCollectionView.cellForItem(at: index) {
+                        showSecurityPad(CGPoint(x: cell.center.x, y: cell.center.y - securityCollectionView.contentOffset.y), security: securities[tag])
+                    }
                 }
-                userDefaults.synchronize()
-                NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: notificationName), object: self, userInfo: ["controlMode": SecurityControlMode.Panic]))
+                
+            case "Panic":
+                let security = securities[tag]
+                let address = [security.addressOne.uint8Value, security.addressTwo.uint8Value, security.addressThree.uint8Value]
+                if let gateway = CoreDataController.sharedInstance.fetchGatewayWithId(security.gatewayId!) {
+                    let notificationName = NotificationKey.Security.ControlModeStartBlinking
+                    
+                    if userDefaults.bool(forKey: UserDefaults.Security.IsPanic) {
+                        SendingHandler.sendCommand(byteArray: OutgoingHandler.setPanic(address, panic: 0x01), gateway: gateway)
+                        userDefaults.set(false, forKey: UserDefaults.Security.IsPanic)
+                    } else {
+                        SendingHandler.sendCommand(byteArray: OutgoingHandler.setPanic(address, panic: 0x00), gateway: gateway)
+                        userDefaults.set(true, forKey: UserDefaults.Security.IsPanic)
+                    }
+                    userDefaults.synchronize()
+                    NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: notificationName), object: self, userInfo: ["controlMode": SecurityControlMode.Panic]))
+                }
+                
+            default: break
             }
+        }
+        
+    }
+    
+    fileprivate func didSelectSecurityLocation(at indexPath: IndexPath, _ collectionView: UICollectionView) {
+        if collectionView.cellForItem(at: indexPath) is SecurityLocationCell {
+            filterParametar.location = location[indexPath.row].name!
+            filterParametar.locationObjectId = location[indexPath.row].objectID.uriRepresentation().absoluteString
+            DatabaseFilterController.shared.saveFilter(filterParametar, menu: Menu.security)
             
-        default: break
+            updateSubtitle(headerTitleSubtitleView, title: "Security", location: filterParametar.location, level: filterParametar.levelName, zone: filterParametar.zoneName)
+            refreshSecurity()
         }
     }
     
@@ -298,27 +345,18 @@ extension SecurityViewController: FilterPullDownDelegate {
 
 extension SecurityViewController: SWRevealViewControllerDelegate {
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition) {
-        if position == FrontViewPosition.left { securityCollectionView.isUserInteractionEnabled = true } else { securityCollectionView.isUserInteractionEnabled = false }
+        if position == .left { securityCollectionView.isUserInteractionEnabled = true } else { securityCollectionView.isUserInteractionEnabled = false }
     }
     
     func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition) {
-        if position == FrontViewPosition.left { securityCollectionView.isUserInteractionEnabled = true } else { securityCollectionView.isUserInteractionEnabled = false }
+        if position == .left { securityCollectionView.isUserInteractionEnabled = true } else { securityCollectionView.isUserInteractionEnabled = false }
     }
 }
 
 extension SecurityViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-        if collectionView.cellForItem(at: indexPath) is SecurityLocationCell {
-            filterParametar.location = location[indexPath.row].name!
-            filterParametar.locationObjectId = location[indexPath.row].objectID.uriRepresentation().absoluteString
-            DatabaseFilterController.shared.saveFilter(filterParametar, menu: Menu.security)
-
-            updateSubtitle(headerTitleSubtitleView, title: "Security", location: filterParametar.location, level: filterParametar.levelName, zone: filterParametar.zoneName)
-            refreshSecurity()
-        }
-        
+        didSelectSecurityLocation(at: indexPath, collectionView)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -345,45 +383,11 @@ extension SecurityViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if securityItem == SecurityItem.security { return securities.count } else { return location.count }
+        if securityItem == .security { return securities.count } else { return location.count }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if securityItem == SecurityItem.security {
-            
-            // MARK: - Security collection cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? SecurityCollectionCell {
-                var name:String = ""
-                if filterParametar.location == "All" { name += securities[indexPath.row].location!.name! + " " }
-                name += securities[indexPath.row].securityName!
-                
-                cell.setCell(name, security: securities[indexPath.row], tag: indexPath.row)
-                
-                let openParametar = UILongPressGestureRecognizer(target: self, action: #selector(openParametar(_:)))
-                openParametar.minimumPressDuration = 0.5
-                cell.securityTitle.addGestureRecognizer(openParametar)
-                cell.securityButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buttonPressed(_:))))
-                
-                return cell
-            }
-            
-            return UICollectionViewCell()
-            
-        } else {
-            
-            // MARK - Security location cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SecurityLocationCell", for: indexPath) as? SecurityLocationCell {
-                
-                cell.setItem(location[indexPath.row], tag: indexPath.row, security: securities[indexPath.row])
-                
-                let longPress = UILongPressGestureRecognizer(target: self, action: #selector(openMode(_:)))
-                longPress.minimumPressDuration = 0.5
-                cell.loactionTitleLabel.addGestureRecognizer(longPress)
-                
-                return cell
-            }
-            
-            return UICollectionViewCell()
-        }
+        return getCell(at: indexPath, collectionView)
     }
+
 }

@@ -29,7 +29,7 @@ class SecurityLocationCell: UICollectionViewCell {
     @IBOutlet weak var locationImageLabel: UIImageView!
     @IBOutlet weak var locationBottomLabel: UILabel!
     
-    func setItem(_ location:Location, tag: Int, security: Security) {
+    func setItem(_ location:Location, tag: Int) {
         loactionTitleLabel.text = location.name
         loactionTitleLabel.tag  = tag
         loactionTitleLabel.isUserInteractionEnabled = true

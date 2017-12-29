@@ -45,6 +45,8 @@ class DevicesViewController: PopoverVC{
     var error:NSError? = nil
     var changeSliderValueOldValue = 0
     
+    var storedIBeaconBarButtonItem: UIBarButtonItem!
+    
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Device)
     
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
@@ -60,6 +62,7 @@ class DevicesViewController: PopoverVC{
     @IBOutlet weak var zoneCategoryControl: UISegmentedControl!
     @IBOutlet weak var zoneAndCategorySlider: UISlider!
     @IBOutlet weak var iBeaconButton: UIButton!
+    @IBOutlet weak var iBeaconBarButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -678,6 +681,7 @@ class DevicesViewController: PopoverVC{
         sender.rotate(1)
     }
     @IBAction func location(_ sender: AnyObject) {
+
         // TODO: Dugme treba da se prikazuje samo ako za zonu postoji vezan iBeacon
         // TODO: ova funkcija (well, duh)
     }
@@ -690,6 +694,8 @@ class DevicesViewController: PopoverVC{
 extension DevicesViewController {
     
     func setupViews() {
+        storedIBeaconBarButtonItem = iBeaconBarButton
+        
         if #available(iOS 11, *) {  headerTitleSubtitleView.layoutIfNeeded() }
         
         UIView.hr_setToastThemeColor(color: UIColor.red)
@@ -749,6 +755,36 @@ extension DevicesViewController {
             else if let cell = cell as? ClimateCell { cell.setCell(device: device, tag: tag); cell.setNeedsDisplay() }
             else if let cell = cell as? ApplianceCollectionCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
             else if let cell = cell as? SaltoAccessCell { cell.setCell(device: device, tag: tag); cell.setNeedsDisplay() }
+        }
+    }
+    
+    fileprivate func toggleIBeaconButtonVisibility() {
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
+            
+            var shouldHide: Bool = true
+            
+            navigationItem.setRightBarButton(storedIBeaconBarButtonItem, animated: true)
+            
+            if let locations = user.locations?.allObjects as? [Location] {
+                var pickedLocation: Location?
+                
+                locations.forEach({ (location) in if location.name == filterParametar.location { pickedLocation = location } })
+                
+                if let location = pickedLocation {
+                    if let zones = location.zones?.allObjects as? [Zone] {
+                        var pickedZone: Zone?
+                        
+                        zones.forEach({ (zone) in if zone.name == filterParametar.zoneName { pickedZone = zone } })
+                        
+                        if let zone = pickedZone {
+                            if let _ = zone.iBeacon {
+                                shouldHide = false
+                            }
+                        }
+                    }
+                }
+            }
+            if shouldHide { navigationItem.setRightBarButton(nil, animated: false) }
         }
     }
     
@@ -1051,6 +1087,8 @@ extension DevicesViewController {
                 })
             }
             
+            
+            
         }
         
         updateCells()
@@ -1295,6 +1333,8 @@ extension DevicesViewController: FilterPullDownDelegate{
             deviceCollectionView.reloadData()
             updateCells()
         }
+        toggleIBeaconButtonVisibility()
+        
         TimerForFilter.shared.counterDevices = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.devices)
         TimerForFilter.shared.startTimer(type: Menu.devices)
         

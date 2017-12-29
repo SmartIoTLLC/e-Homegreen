@@ -57,14 +57,7 @@ class QuranViewController: UIViewController {
 // MARK: - Table View Data Source & Delegate
 extension QuranViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? ReciterCell {
-            
-            cell.reciter = reciters[indexPath.row]
-            
-            return cell
-        }
-        
-        return UITableViewCell()
+        return getCell(at: indexPath, tableView)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -80,13 +73,25 @@ extension QuranViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedReciter = reciters[indexPath.row]
-        self.performSegue(withIdentifier: "toSuraPlayer", sender: self)
+        didSelectReciter(at: indexPath)
     }
+    
 }
 
 // MARK: - View setup
 extension QuranViewController {
+    
+    fileprivate func getCell(at indexPath: IndexPath, _ tableView: UITableView) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? ReciterCell {
+            
+            cell.reciter = reciters[indexPath.row]
+            
+            return cell
+        }
+        
+        return UITableViewCell()
+    }
+    
     fileprivate func updateViews() {
         if #available(iOS 11, *) { titleView.layoutIfNeeded() }
         
@@ -138,6 +143,11 @@ extension QuranViewController {
             print("Error parsing radio stations: ", error, error.userInfo)
         }
         
+    }
+    
+    fileprivate func didSelectReciter(at indexPath: IndexPath) {
+        selectedReciter = reciters[indexPath.row]
+        self.performSegue(withIdentifier: "toSuraPlayer", sender: self)
     }
 }
 

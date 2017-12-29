@@ -98,21 +98,27 @@ class FilterController: NSObject {
     
     func getZoneByLevel(_ location:Location, parentZone:Zone) -> [Zone] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
-        let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
         
-        var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool)))
-        predicateArray.append(NSPredicate(format: "location == %@", location))
-        predicateArray.append(NSPredicate(format: "level != %@", NSNumber(value: 0 as Int)))
-        predicateArray.append(NSPredicate(format: "level == %@", parentZone.id!))
-
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
-        fetchRequest.sortDescriptors = [sortDescriptors]
-        fetchRequest.predicate = compoundPredicate
+        let predicateArray = [
+            NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool)),
+            NSPredicate(format: "location == %@", location),
+            NSPredicate(format: "level != %@", NSNumber(value: 0 as Int)),
+            NSPredicate(format: "level == %@", parentZone.id!)
+        ]
+        
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "orderId", ascending: true)]
+        fetchRequest.predicate = NSCompoundPredicate(
+            type: .and,
+            subpredicates: predicateArray
+        )
         
         do {
-            let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Zone]
-            return results
+            if let moc = appDel.managedObjectContext {
+                if let results = try moc.fetch(fetchRequest) as? [Zone] {
+                    return results
+                }
+            }
+            
         } catch {}
         
         return []
@@ -120,21 +126,28 @@ class FilterController: NSObject {
     }
     
     func getCategoriesByLocation(_ location:Location) -> [Category] {
-            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Category.fetchRequest()
-            let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Category.fetchRequest()
+        let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
         
-            var predicateArray:[NSPredicate] = []
-            predicateArray.append(NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool)))
-            predicateArray.append(NSPredicate(format: "location == %@", location))
+        let predicateArray:[NSPredicate] = [
+            NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool)),
+            NSPredicate(format: "location == %@", location)
+        ]
         
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
-            fetchRequest.sortDescriptors = [sortDescriptors]
-            fetchRequest.predicate = compoundPredicate
+        fetchRequest.sortDescriptors = [sortDescriptors]
+        fetchRequest.predicate = NSCompoundPredicate(
+            type: .and,
+            subpredicates: predicateArray
+        )
         
-            do {
-                let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Category]
-                return results
-            } catch {}
+        do {
+            if let moc = appDel.managedObjectContext {
+                if let results = try moc.fetch(fetchRequest) as? [Category] {
+                    return results
+                }
+            }
+            
+        } catch {}
         
         return []
     }

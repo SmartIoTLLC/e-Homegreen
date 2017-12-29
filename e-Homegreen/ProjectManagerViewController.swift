@@ -87,7 +87,7 @@ class ProjectManagerViewController: UIViewController {
     
     @IBAction func deleteUser(_ sender: UIButton) {
         showAlertView(sender, message: "Delete user?") { (action) in
-            if action == ReturnedValueFromAlertView.delete{
+            if action == ReturnedValueFromAlertView.delete {
                 DatabaseUserController.shared.removeUser(user: self.users[sender.tag])
                 if self.users[sender.tag].username == DatabaseUserController.shared.getOtherUser()?.username {
                     let _ = AdminController.shared.setOtherUser(nil)

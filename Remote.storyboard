@@ -190,11 +190,10 @@
                                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstItem="w7M-oG-3Sw" firstAttribute="centerX" secondItem="aGY-Kc-Sir" secondAttribute="centerX" id="5r1-Zk-5fG"/>
-                                                    <constraint firstAttribute="bottom" secondItem="90R-e4-kUp" secondAttribute="bottom" constant="8" id="dsw-wg-ycM"/>
                                                     <constraint firstAttribute="trailing" secondItem="90R-e4-kUp" secondAttribute="trailing" constant="8" id="eYo-ul-wIA"/>
                                                     <constraint firstItem="w7M-oG-3Sw" firstAttribute="centerY" secondItem="aGY-Kc-Sir" secondAttribute="centerY" id="igG-yU-clw"/>
                                                     <constraint firstAttribute="height" constant="60" id="jte-Ih-GvG"/>
-                                                    <constraint firstItem="90R-e4-kUp" firstAttribute="top" secondItem="aGY-Kc-Sir" secondAttribute="top" constant="8" id="rvY-hm-Ubt"/>
+                                                    <constraint firstItem="90R-e4-kUp" firstAttribute="centerY" secondItem="aGY-Kc-Sir" secondAttribute="centerY" id="rmy-Fn-51P"/>
                                                 </constraints>
                                             </view>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Nt3-jK-Bwd">

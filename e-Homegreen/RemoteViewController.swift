@@ -87,6 +87,47 @@ class RemoteViewController: PopoverVC {
 
 }
 
+// MARK: - UICollectionView DataSource
+extension RemoteViewController: UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return remotesList.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        return getCell(at: indexPath, collectionView)
+    }
+    
+}
+
+// MARK: - UICollectionView Delegate
+extension RemoteViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        didSelectRemote(at: indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return sectionInsets
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionViewCellSize.width, height: collectionViewCellSize.height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 5
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 5
+    }
+}
+
 // MARK: - Logic
 extension RemoteViewController {
     fileprivate func prepareLocation() {
@@ -125,10 +166,25 @@ extension RemoteViewController {
         } else { view.makeToast(message: "No user database selected.") }
     }
     
+    fileprivate func didSelectRemote(at indexPath: IndexPath) {
+        selectedRemote = remotesList[indexPath.row]
+        performSegue(withIdentifier: "toSingleRemote", sender: self)
+    }
 }
 
-// MARK: - Screen setup
+// MARK: - View setup
 extension RemoteViewController {
+    
+    fileprivate func getCell(at indexPath: IndexPath, _ collectionView: UICollectionView) -> UICollectionViewCell {
+        if let cell = remoteCollectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? RemoteCell {
+            
+            cell.setCell(remote: remotesList[indexPath.item])
+            
+            return cell
+        }
+        
+        return UICollectionViewCell()
+    }
     
     fileprivate func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerRemotes), object: nil)
@@ -172,56 +228,6 @@ extension RemoteViewController {
             scrollView.setDefaultFilterItem(Menu.remote)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
-    }
-}
-
-// MARK: - UICollectionView DataSource
-extension RemoteViewController: UICollectionViewDataSource {
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return remotesList.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = remoteCollectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? RemoteCell {
-            
-            cell.setCell(remote: remotesList[indexPath.item])
-            
-            return cell
-        }
-        
-        return UICollectionViewCell()
-    }
-    
-    
-}
-
-// MARK: - UICollectionView Delegate
-extension RemoteViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedRemote = remotesList[indexPath.row]
-        performSegue(withIdentifier: "toSingleRemote", sender: self)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return sectionInsets
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionViewCellSize.width, height: collectionViewCellSize.height)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 5
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 5
     }
 }
 

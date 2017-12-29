@@ -49,9 +49,54 @@ class RepeatSendingHandler: NSObject {
         
         if byteArray[5] == 5 && byteArray[6] == 80{
             sendCommandForSaltoAccess()
+            getDeviceStatus(controlType: device.controlType, gateway: gateway)
         }else{
             sendCommand()
+            getDeviceStatus(controlType: device.controlType, gateway: gateway)
         }
+        
+        
+    }
+    
+    fileprivate func getDeviceStatus(controlType: String, gateway: Gateway) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(Int(self.device.address))]
+            
+            // Light
+            if controlType == ControlType.Dimmer {
+                SendingHandler.sendCommand(
+                    byteArray: OutgoingHandler.getLightRelayStatus(address),
+                    gateway: gateway
+                )
+                SendingHandler.sendCommand(
+                    byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF),
+                    gateway: gateway
+                )
+            }
+            // Appliance?
+            if controlType == ControlType.Relay {
+                SendingHandler.sendCommand(
+                    byteArray: OutgoingHandler.getLightRelayStatus(address),
+                    gateway: gateway
+                )
+                SendingHandler.sendCommand(
+                    byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF),
+                    gateway: gateway
+                )
+            }
+            // Curtain?
+            if controlType == ControlType.Curtain {
+                SendingHandler.sendCommand(
+                    byteArray: OutgoingHandler.getLightRelayStatus(address),
+                    gateway: gateway
+                )
+                SendingHandler.sendCommand(
+                    byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF),
+                    gateway: gateway
+                )
+            }
+        }
+
     }
     
     init(byteArray:[UInt8], gateway: Gateway) {
@@ -72,7 +117,7 @@ class RepeatSendingHandler: NSObject {
             if let deviceInfo = info["deviceDidReceiveSignalFromGateway"] {
                 if device.objectID == deviceInfo.objectID {
                     didGetResponse = true
-                    didGetResponseTimer!.invalidate()
+                    if didGetResponseTimer != nil { didGetResponseTimer.invalidate() }
                     NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: nil)
                 }
             }
@@ -100,7 +145,7 @@ class RepeatSendingHandler: NSObject {
                     repeatCounter += 1
                     if didGetResponseTimer != nil { didGetResponseTimer.invalidate() }                    
                     didGetResponseTimer = nil
-                    didGetResponseTimer = Foundation.Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(sendCommand), userInfo: nil, repeats: false)
+                    didGetResponseTimer = Foundation.Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(sendCommand), userInfo: nil, repeats: false)
                 } else {
                     didGetResponseTimer.invalidate()
                     didGetResponseTimer = nil
@@ -111,7 +156,7 @@ class RepeatSendingHandler: NSObject {
                     NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self)
                 }
             }else{
-                didGetResponseTimer.invalidate()
+                if didGetResponseTimer != nil { didGetResponseTimer.invalidate() }
                 didGetResponseTimer = nil
                 updateRunnableList(deviceID: device.objectID)
                 CoreDataController.sharedInstance.saveChanges()
@@ -119,7 +164,7 @@ class RepeatSendingHandler: NSObject {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self)
             }
         } else {
-            didGetResponseTimer.invalidate()
+            if didGetResponseTimer != nil { didGetResponseTimer.invalidate() }
             didGetResponseTimer = nil
             return
         }
@@ -137,7 +182,7 @@ class RepeatSendingHandler: NSObject {
                     repeatCounter += 1
                     if didGetResponseTimer != nil { didGetResponseTimer.invalidate() }
                     didGetResponseTimer = nil
-                    didGetResponseTimer = Foundation.Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(sendCommandForSaltoAccess), userInfo: nil, repeats: false)
+                    didGetResponseTimer = Foundation.Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(sendCommandForSaltoAccess), userInfo: nil, repeats: false)
                     
                 } else {
                     NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: nil)
@@ -148,7 +193,7 @@ class RepeatSendingHandler: NSObject {
                     
                 }
             }else{
-                didGetResponseTimer.invalidate()
+                if didGetResponseTimer != nil { didGetResponseTimer.invalidate() }
                 didGetResponseTimer = nil
                 NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: nil)
                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self)
@@ -182,7 +227,7 @@ class RepeatSendingHandler: NSObject {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self)
             }
         }else{
-            didGetResponseTimer!.invalidate()
+            if didGetResponseTimer != nil { didGetResponseTimer.invalidate() }
             CoreDataController.sharedInstance.saveChanges()
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: nil)
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self)

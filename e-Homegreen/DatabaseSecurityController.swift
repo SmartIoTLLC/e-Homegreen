@@ -15,26 +15,33 @@ class DatabaseSecurityController: NSObject {
     let appDel: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     func createSecurityForLocation(_ location:Location, gateway:Gateway) {
-        if let securities = location.security?.allObjects as? [Security] {
-            for security in securities { appDel.managedObjectContext?.delete(security) }
+        if let moc = appDel.managedObjectContext {
+            if let securities = location.security?.allObjects as? [Security] {
+                for security in securities { moc.delete(security) }
+            }
+            
+            if let importedData = DataImporter.createSecuritiesFromFile(Bundle.main.path(forResource: "Security", ofType: "json")!) {
+                for securityJSON in importedData {
+                    if let security = NSEntityDescription.insertNewObject(forEntityName: "Security", into: moc) as? Security {
+                        security.securityName        = securityJSON.name
+                        security.securityDescription = securityJSON.modeExplanation
+                        security.addressOne          = gateway.addressOne
+                        security.addressTwo          = gateway.addressTwo
+                        security.addressThree        = 254
+                        security.location            = location
+                        security.gatewayId           = gateway.gatewayId
+                    }
+                }
+            }
         }
-        
-        let importedData = DataImporter.createSecuritiesFromFile(Bundle.main.path(forResource: "Security", ofType: "json")!)
-        for securityJSON in importedData! {
-            let security = NSEntityDescription.insertNewObject(forEntityName: "Security", into: appDel.managedObjectContext!) as! Security
-            security.securityName = securityJSON.name
-            security.securityDescription = securityJSON.modeExplanation
-            security.addressOne = gateway.addressOne
-            security.addressTwo = gateway.addressTwo
-            security.addressThree = 254
-            security.location = location
-            security.gatewayId = gateway.gatewayId
-        }
+
     }
     
     func removeSecurityForLocation(_ location:Location) {
-        if let securities = location.security?.allObjects as? [Security] {
-            for security in securities{ appDel.managedObjectContext?.delete(security) }
+        if let moc = appDel.managedObjectContext {
+            if let securities = location.security?.allObjects as? [Security] {
+                for security in securities{ moc.delete(security) }
+            }
         }
     }
     
@@ -42,16 +49,21 @@ class DatabaseSecurityController: NSObject {
         if let user = DatabaseUserController.shared.loggedUserOrAdmin(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Security.fetchRequest()
             
-            var predicateArray:[NSPredicate] = []
-            predicateArray.append(NSPredicate(format: "location.user == %@", user))
+            var predicateArray = [NSPredicate(format: "location.user == %@", user)]
             if filterParametar.location != "All" { predicateArray.append(NSPredicate(format: "location.name == %@", filterParametar.location)) }
             
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
-            fetchRequest.predicate = compoundPredicate
+            fetchRequest.predicate = NSCompoundPredicate(
+                type: .and,
+                subpredicates: predicateArray
+            )
             
             do {
-                let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Security]
-                return fetResults!
+                if let moc = appDel.managedObjectContext {
+                    if let fetResults = try moc.fetch(fetchRequest) as? [Security] {
+                        return fetResults
+                    }
+                }
+                
             } catch let error as NSError { print("Unresolved error \(error), \(error.userInfo)") }
         }
         return []
@@ -64,8 +76,12 @@ class DatabaseSecurityController: NSObject {
             fetchRequest.sortDescriptors = [sortDescriptor]
             
             do {
-                let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Security]
-                return fetResults!
+                if let moc = appDel.managedObjectContext {
+                    if let fetResults = try moc.fetch(fetchRequest) as? [Security] {
+                        return fetResults
+                    }
+                }
+                
             } catch {}
         }
         
