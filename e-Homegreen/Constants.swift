@@ -115,12 +115,9 @@ struct DigitalInput {
     struct ControlMode {
         static func returnControlModeForId(_ id:Int) -> String {
             switch id {
-            case 2:
-                return "Normally Open"
-            case 4:
-                return "Normally Closed"
-            default:
-                return "Normally Open"
+                case 2  : return "Normally Open"
+                case 4  : return "Normally Closed"
+                default : return "Normally Open"
             }
         }
     }
@@ -138,7 +135,6 @@ struct DigitalInput {
         DigitalInput.ButtonNormallyOpen.description():0x03,
         DigitalInput.ButtonNormallyClosed.description():0x83,
         DigitalInput.MotionSensor.description():0x04]
-//        DigitalInput.MotionSensor.description():0x84]
     
     struct Generic {
         static let Open = 0x00

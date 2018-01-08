@@ -5,11 +5,10 @@
 //  Created by Teodor Stevic on 6/24/15.
 //  Copyright (c) 2015 Teodor Stevic. All rights reserved.
 //
-
 import UIKit
 import CoreLocation
 
-class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, CLLocationManagerDelegate, SWRevealViewControllerDelegate {
+class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate {
     var locationManager = CLLocationManager()
     var weatherDictionary:[String: String] = ["01d":"weather-clear",
                                               "02d":"weather-few",
@@ -32,6 +31,8 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
     var calendar = FSCalendar()
     var clock : SPClockView!
     
+    let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
+    
     @IBOutlet weak var lblPlace: UILabel!
     @IBOutlet weak var lblMinMaxTemp: UILabel!
     @IBOutlet weak var lblTemp: UILabel!
@@ -43,6 +44,28 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        updateViews()
+        setAndUpdateLocation()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.revealViewController().delegate = self
+        setupSWRevealViewController(menuButton: menuButton)
+        
+        changeFullscreenImage(fullscreenButton: fullScreenButton)
+    }
+    
+    @IBAction func fullScreen(_ sender: UIButton) {
+        sender.switchFullscreen()
+    }
+}
+
+// MARK: - View setup
+extension DashboardViewController {
+    fileprivate func updateViews() {
+        if #available(iOS 11, *) { titleView.layoutIfNeeded() }
+        
         let date = Date()
         let calendarUnit = Calendar.current
         let components = (calendarUnit as NSCalendar).components([.hour, .minute], from: date)
@@ -50,11 +73,11 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         
-        if hour! < 20 && hour! > 6{
-            backgroundImage.image = UIImage(named: "dashboardDay")
-        }else{
-            backgroundImage.image = UIImage(named: "dashboardNight")
-        }
+        navigationItem.titleView = titleView
+        titleView.setTitle("Dashboard")
+        
+        if hour! < 20 && hour! > 6 { backgroundImage.image = UIImage(named: "dashboardDay")
+        } else { backgroundImage.image = UIImage(named: "dashboardNight") }
         
         calendar.frame = CGRect(x: 50, y: 50, width: 200, height: 200)
         self.view.addSubview(calendar)
@@ -65,164 +88,104 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         clock.timeZone = TimeZone.autoupdatingCurrent
         self.view.addSubview(clock)
         
-        locationManager.delegate = self
-        locationManager.distanceFilter = kCLDistanceFilterNone
-        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-        locationManager.requestAlwaysAuthorization()
-        locationManager.startUpdatingLocation()
-        
         let panRecognizer = UIPanGestureRecognizer(target:self, action:#selector(DashboardViewController.detectPan(_:)))
         clock.addGestureRecognizer(panRecognizer)
         
         let panRecognizer1 = UIPanGestureRecognizer(target:self, action:#selector(DashboardViewController.detectPan1(_:)))
         calendar.addGestureRecognizer(panRecognizer1)
     }
-    override func viewWillAppear(_ animated: Bool) {
-        self.revealViewController().delegate = self
-        
-        if self.revealViewController() != nil {
-            menuButton.target = self.revealViewController()
-            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            revealViewController().toggleAnimationDuration = 0.5
-            if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft {
-                revealViewController().rearViewRevealWidth = 200
-            }else{
-                revealViewController().rearViewRevealWidth = 200
-            }
-            
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            
-        }
-        changeFullScreeenImage()
-    }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
-    func changeFullScreeenImage(){
-        if UIApplication.shared.isStatusBarHidden {
-            fullScreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        } else {
-            fullScreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
-        }
-    }
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let location = locations.last!
-        let long = NSString(format: "%.15lf", location.coordinate.longitude)
-        let lat = NSString(format: "%.15lf", location.coordinate.latitude)
-        getWeatherData("http://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(long)&appid=bd82977b86bf27fb59a04b61b657fb6f")
-        
-    }
+}
+
+// MARK: - Logic
+extension DashboardViewController {
     func detectPan(_ recognizer:UIPanGestureRecognizer) {
         
         let translation  = recognizer.translation(in: self.view)
         recognizer.view!.center = CGPoint(x: recognizer.view!.center.x + translation.x,
-                                              y: recognizer.view!.center.y + translation.y)
+                                          y: recognizer.view!.center.y + translation.y)
         recognizer.setTranslation(CGPoint(x: 0, y: 0), in: self.view!)
     }
+    
     func detectPan1(_ recognizer:UIPanGestureRecognizer) {
         
         let translation  = recognizer.translation(in: self.view)
-        recognizer.view!.center = CGPoint(x: recognizer.view!.center.x + translation.x,
-                                              y: recognizer.view!.center.y + translation.y)
+        recognizer.view!.center = CGPoint(x: recognizer.view!.center.x + translation.x, y: recognizer.view!.center.y + translation.y)
         recognizer.setTranslation(CGPoint(x: 0, y: 0), in: self.view!)
     }
+    
     func getWeatherData(_ urlString:String){
         let url = URL(string: urlString)
         let task = URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) -> Void in
             
-            if error == nil{
-                DispatchQueue.main.async(execute: {
-                    self.setLabel(data!)
-                })
-            }
-        }) 
+            if error == nil { DispatchQueue.main.async(execute: { self.setLabel(data!) } ) }
+        })
         task.resume()
     }
-    func setLabel(_ weatherData: Data){
+    
+    func setLabel(_ weatherData: Data) {
         let date = Date()
         let calendar = Calendar.current
         let components = (calendar as NSCalendar).components([.hour, .minute], from: date)
         let hour = components.hour
         
-        if hour! < 20 && hour! > 6{
-            backgroundImage.image = UIImage(named: "dashboardDay")
-        }else{
-            backgroundImage.image = UIImage(named: "dashboardNight")
-        }
+        if hour! < 20 && hour! > 6 { backgroundImage.image = UIImage(named: "dashboardDay")
+        } else { backgroundImage.image = UIImage(named: "dashboardNight") }
         
         do {
-            let json = try JSONSerialization.jsonObject(with: weatherData, options:JSONSerialization.ReadingOptions.mutableContainers ) as! NSDictionary
-            
-            if let name = json["name"] as? String{
-                lblPlace.text = name
-            }
-            
-            if let weather = json["weather"] as? NSArray{
+            if let json = try JSONSerialization.jsonObject(with: weatherData, options:JSONSerialization.ReadingOptions.mutableContainers ) as? NSDictionary {
+                if let name = json["name"] as? String { lblPlace.text = name }
                 
-                if let weatherDict = weather[0] as? NSDictionary {
-                    if let main = weatherDict["main"] as? String{
-                        lblWeather.text = main
-                    }
-                    if let icon = weatherDict["icon"] as? String{
-                        imageWeather.image = UIImage(named: weatherDictionary[icon]!)
+                if let weather = json["weather"] as? NSArray {
+                    
+                    if let weatherDict = weather[0] as? NSDictionary {
+                        if let main = weatherDict["main"] as? String { lblWeather.text = main }
+                        if let icon = weatherDict["icon"] as? String { imageWeather.image = UIImage(named: weatherDictionary[icon]!) }
                     }
                     
                 }
                 
-                
-            }
-            
-            if let main = json["main"] as? NSDictionary{
-                if let temp = main["temp"] as? Double {
-                    lblTemp.text =  String(format: "%.1f", temp - 273) + "°C"
-                }
-                var str:String!
-                if let temp_min = main["temp_min"] as? Double{
-                    str = String(format: "%.1f", temp_min - 273) + "°C/"
-                }
-                
-                if let temp_max = main["temp_max"] as? Double{
-                    lblMinMaxTemp.text = str + (String(format: "%.1f", temp_max - 273) + "°C")
+                if let main = json["main"] as? NSDictionary {
+                    if let temp = main["temp"] as? Double { lblTemp.text =  String(format: "%.1f", temp - 273) + "°C" }
+                    var str:String!
+                    if let temp_min = main["temp_min"] as? Double { str = String(format: "%.1f", temp_min - 273) + "°C/" }
+                    
+                    if let temp_max = main["temp_max"] as? Double { lblMinMaxTemp.text = str + (String(format: "%.1f", temp_max - 273) + "°C") }
                 }
             }
             
-        } catch _ {
-            // Error
-        }
+        } catch {}
         
     }
+}
+
+// MARK: - CLLocation Delegate
+extension DashboardViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            let long = NSString(format: "%.15lf", location.coordinate.longitude)
+            let lat = NSString(format: "%.15lf", location.coordinate.latitude)
+            getWeatherData("http://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(long)&appid=bd82977b86bf27fb59a04b61b657fb6f")
+        }
+    }
     
+    fileprivate func setAndUpdateLocation() {
+        locationManager.delegate = self
+        locationManager.distanceFilter = kCLDistanceFilterNone
+        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+}
+
+extension DashboardViewController: SWRevealViewControllerDelegate {
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
-        if(position == FrontViewPosition.left) {
-            calendar.isUserInteractionEnabled = true
-            clock.isUserInteractionEnabled = true
-        } else {
-            calendar.isUserInteractionEnabled = false
-            clock.isUserInteractionEnabled = false
-        }
-    }
-    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
-        if(position == FrontViewPosition.left) {
-            calendar.isUserInteractionEnabled = true
-            clock.isUserInteractionEnabled = true
-        } else {
-            calendar.isUserInteractionEnabled = false
-            clock.isUserInteractionEnabled = false
-        }
+        if position == .left { calendar.isUserInteractionEnabled = true; clock.isUserInteractionEnabled = true
+        } else { calendar.isUserInteractionEnabled = false; clock.isUserInteractionEnabled = false }
     }
     
-    @IBAction func fullScreen(_ sender: UIButton) {
-        sender.collapseInReturnToNormal(1)
-        if UIApplication.shared.isStatusBarHidden {
-            UIApplication.shared.isStatusBarHidden = false
-            sender.setImage(UIImage(named: "full screen"), for: UIControlState())
-        } else {
-            UIApplication.shared.isStatusBarHidden = true
-            sender.setImage(UIImage(named: "full screen exit"), for: UIControlState())
-        }
+    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
+        if position == .left { calendar.isUserInteractionEnabled = true; clock.isUserInteractionEnabled = true
+        } else { calendar.isUserInteractionEnabled = false; clock.isUserInteractionEnabled = false }
     }
 }

@@ -230,6 +230,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     if inOutSockets[0].port != UInt16(Int(gateway.remotePort)) { inOutSockets.append(InOutSocket(port: UInt16(Int(gateway.remotePort)))) }
                 }
             }
+            inOutSockets.append(InOutSocket(port: 5000))
         }
     }
     
