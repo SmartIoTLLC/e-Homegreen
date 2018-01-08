@@ -144,6 +144,7 @@ extension RemoteViewController {
     
     fileprivate func loadRemotes(from location: Location) {
         remotesList = DatabaseRemoteController.sharedInstance.getRemotes(from: location)
+        if remotesList.count != 0 { remotesList.sort(by: { (one, two) -> Bool in one.name! < two.name! }) }
         remoteCollectionView.reloadData()
     }
     

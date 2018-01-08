@@ -149,7 +149,7 @@
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MenuItemCell", for: indexPath) as? MenuItemCell {
                 
                 cell.configureForMenu(menu[indexPath.row])
-                if cell.menuItemName.text == "Remote" { cell.isUserInteractionEnabled = false } else { cell.isUserInteractionEnabled = true }
+//                if cell.menuItemName.text == "Remote" { cell.isUserInteractionEnabled = false } else { cell.isUserInteractionEnabled = true }
                 
                 return cell
             }

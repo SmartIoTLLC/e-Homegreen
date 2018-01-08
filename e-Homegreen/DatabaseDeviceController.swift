@@ -18,15 +18,17 @@ class DatabaseDeviceController: NSObject {
         if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
             
-            let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-            let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
-            let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
-            let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
-            fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
+            fetchRequest.sortDescriptors = [
+                NSSortDescriptor(key: "gateway.name", ascending: true),
+                NSSortDescriptor(key: "address", ascending: true),
+                NSSortDescriptor(key: "type", ascending: true),
+                NSSortDescriptor(key: "channel", ascending: true)
+            ]
             
-            var predicateArray:[NSPredicate] = []
-            predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
-            predicateArray.append(NSPredicate(format: "type == %@", ControlType.PC))
+            var predicateArray = [
+                NSPredicate(format: "gateway.location.user == %@", user),
+                NSPredicate(format: "type == %@", ControlType.PC)
+            ]
             
             if filterParametar.location != "All" { predicateArray.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location)) }
             if filterParametar.levelId != 0 && filterParametar.levelId != 255 { predicateArray.append(NSPredicate(format: "parentZoneId == %@", NSNumber(value: filterParametar.levelId as Int))) }
@@ -37,8 +39,12 @@ class DatabaseDeviceController: NSObject {
             fetchRequest.predicate = compoundPredicate
 
             do {
-                let fetResults = try appDel.managedObjectContext?.fetch(fetchRequest) as? [Device]
-                return fetResults!
+                if let moc = appDel.managedObjectContext {
+                    if let fetResults = try moc.fetch(fetchRequest) as? [Device] {
+                        return fetResults
+                    }
+                }
+                
             } catch let error as NSError { print("Unresolved error \(error), \(error.userInfo)") }
             
         }
@@ -68,8 +74,12 @@ class DatabaseDeviceController: NSObject {
             fetchRequest.predicate = compoundPredicate
             
             do {
-                let fetchResults = try appDel.managedObjectContext?.fetch(fetchRequest) as? [Device]
-                return fetchResults?.first
+                if let moc = appDel.managedObjectContext {
+                    if let fetchResults = try moc.fetch(fetchRequest) as? [Device] {
+                        return fetchResults.first
+                    }                    
+                }
+                
             } catch {}
         }
         

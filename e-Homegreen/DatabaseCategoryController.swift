@@ -16,18 +16,19 @@ class DatabaseCategoryController: NSObject {
     
     func getCategoriesByLocation(_ location:Location) -> [Category]{
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Category.fetchRequest()
-        let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
         
-        var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "location == %@", location))
-        
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
-        fetchRequest.sortDescriptors = [sortDescriptors]
-        fetchRequest.predicate = compoundPredicate
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "orderId", ascending: true)]
+        fetchRequest.predicate = NSCompoundPredicate(
+            type: .and,
+            subpredicates: [NSPredicate(format: "location == %@", location)]
+        )
         
         do {
-            let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Category]
-            return results
+            if let moc = appDel.managedObjectContext {
+                if let results = try moc.fetch(fetchRequest) as? [Category] {
+                    return results
+                }
+            }
         } catch {}
         
         return []
@@ -36,16 +37,19 @@ class DatabaseCategoryController: NSObject {
     func getCategoryById(_ id:Int, location:Location) -> Category? {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Category.fetchRequest()
         
-        var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "location == %@", location))
-        predicateArray.append(NSPredicate(format: "id == %@", NSNumber(value: id as Int)))
+        let predicateArray = [
+            NSPredicate(format: "location == %@", location),
+            NSPredicate(format: "id == %@", NSNumber(value: id as Int))
+        ]
         
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
-        fetchRequest.predicate = compoundPredicate
+        fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
         
         do {
-            let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Category]
-            if results.count != 0 { return results[0] }
+            if let moc = appDel.managedObjectContext {
+                if let results = try moc.fetch(fetchRequest) as? [Category] {
+                    if results.count != 0 { return results[0] }
+                }
+            }
             
         } catch {}
         

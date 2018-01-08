@@ -1032,7 +1032,6 @@ extension DevicesViewController {
         var devicePair: Device? = nil
         for deviceTemp in allDevices {
             if deviceTemp.address == devices[tag].address {
-                
                 if deviceTemp.curtainGroupID == device.curtainGroupID {
                     if deviceTemp.channel.intValue != device.channel.intValue {
                         if deviceTemp.isCurtainModeAllowed.boolValue == true && device.isCurtainModeAllowed.boolValue == true {
@@ -1040,7 +1039,6 @@ extension DevicesViewController {
                         }
                     }
                 }
-                
             }
         }
         
@@ -1086,8 +1084,6 @@ extension DevicesViewController {
                     )
                 })
             }
-            
-            
             
         }
         

@@ -70,13 +70,13 @@ class DatabaseMenuController: NSObject {
     
     func getVisibleMenuItemByUser(_ user:User) -> [MenuItem] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = MenuItem.fetchRequest()
-        let sortDescriptorOne = NSSortDescriptor(key: "orderId", ascending: true)
-        var predicateArray:[NSPredicate] = [NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool))]
-        predicateArray.append(NSPredicate(format: "user == %@", user))
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        let predicateArray:[NSPredicate] = [
+            NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool)),
+            NSPredicate(format: "user == %@", user)
+        ]
         
-        fetchRequest.sortDescriptors = [sortDescriptorOne]
-        fetchRequest.predicate = compoundPredicate
+        fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "orderId", ascending: true)]
         
         if let moc = appDel.managedObjectContext {
             do {
@@ -85,17 +85,16 @@ class DatabaseMenuController: NSObject {
             } catch {}
         }
         
-        
         return []
     }
     
     func getDefaultMenuItemByUser(_ user:User) -> [MenuItem] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = MenuItem.fetchRequest()
-        let sortDescriptorOne = NSSortDescriptor(key: "id", ascending: true)
-        let predicateArray:[NSPredicate] = [NSPredicate(format: "user == %@", user)]
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
-        fetchRequest.sortDescriptors = [sortDescriptorOne]
-        fetchRequest.predicate = compoundPredicate
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
+        fetchRequest.predicate = NSCompoundPredicate(
+            type: .and,
+            subpredicates: [NSPredicate(format: "user == %@", user)]
+        )
         
         if let moc = appDel.managedObjectContext {
             do {
@@ -109,11 +108,11 @@ class DatabaseMenuController: NSObject {
     
     func getMenuItemByUser(_ user:User) -> [MenuItem] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = MenuItem.fetchRequest()
-        let sortDescriptorOne = NSSortDescriptor(key: "orderId", ascending: true)
-        let predicateArray:[NSPredicate] = [NSPredicate(format: "user == %@", user)]
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
-        fetchRequest.sortDescriptors = [sortDescriptorOne]
-        fetchRequest.predicate = compoundPredicate
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "orderId", ascending: true)]
+        fetchRequest.predicate = NSCompoundPredicate(
+            type: .and,
+            subpredicates: [NSPredicate(format: "user == %@", user)]
+        )
         
         if let moc = appDel.managedObjectContext {
             do {

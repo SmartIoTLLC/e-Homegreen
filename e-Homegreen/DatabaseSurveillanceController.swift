@@ -19,11 +19,12 @@ class DatabaseSurveillanceController: NSObject {
             
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Surveillance.fetchRequest()
             
-            let sortDescriptor = NSSortDescriptor(key: "ip", ascending: true)
-            let sortDescriptorTwo = NSSortDescriptor(key: "port", ascending: true)
-            fetchRequest.sortDescriptors = [sortDescriptor, sortDescriptorTwo]
+            fetchRequest.sortDescriptors = [
+                NSSortDescriptor(key: "ip", ascending: true),
+                NSSortDescriptor(key: "port", ascending: true)
+            ]
             
-            var predicateArray:[NSPredicate] = [NSPredicate(format: "location.user == %@", user)]
+            var predicateArray = [NSPredicate(format: "location.user == %@", user)]
             if filterParametar.location != "All" { predicateArray.append(NSPredicate(format: "location.name == %@", filterParametar.location)) }
             if filterParametar.levelName != "All" { predicateArray.append(NSPredicate(format: "surveillanceLevel == %@", filterParametar.levelName)) }
             if filterParametar.zoneName != "All" { predicateArray.append(NSPredicate(format: "surveillanceZone == %@", filterParametar.zoneName)) }
@@ -32,16 +33,21 @@ class DatabaseSurveillanceController: NSObject {
             fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicateArray)
             
             do {
-                let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Surveillance]
-                return fetResults!
+                if let moc = appDel.managedObjectContext {
+                    if let fetResults = try moc.fetch(fetchRequest) as? [Surveillance] {
+                        return fetResults
+                    }
+                }
             } catch {}
             
         }
         return []
     }
     
-    func deleteSurveillance(_ surv:Surveillance){
-        appDel.managedObjectContext?.delete(surv)
+    func deleteSurveillance(_ surv:Surveillance) {
+        if let moc = appDel.managedObjectContext {
+            moc.delete(surv)
+        }        
     }
     
 }

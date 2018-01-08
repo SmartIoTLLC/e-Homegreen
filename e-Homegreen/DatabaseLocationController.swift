@@ -18,15 +18,16 @@ class DatabaseLocationController: NSObject {
     
     func getNextAvailableId(_ user:User) -> Int {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Location.fetchRequest()
-        let sortDescriptorTwo = NSSortDescriptor(key: "orderId", ascending: true)
-        let predicate = NSPredicate(format: "user == %@", user)
-        fetchRequest.sortDescriptors = [sortDescriptorTwo]
-        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "orderId", ascending: true)]
+        fetchRequest.predicate = NSPredicate(format: "user == %@", user)
         
         do {
-            let fetchResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Location]
-            if let last = fetchResults?.last {
-                if let id = last.orderId as? Int { return id + 1 }
+            if let moc = appDel.managedObjectContext {
+                if let fetchResults = try moc.fetch(fetchRequest) as? [Location] {
+                    if let last = fetchResults.last {
+                        if let id = last.orderId as? Int { return id + 1 }
+                    }
+                }
             }
             
         } catch {}
@@ -70,22 +71,28 @@ class DatabaseLocationController: NSObject {
     }
     
     func deleteLocation(_ location:Location) {
-        appDel.managedObjectContext?.delete(location)
-        CoreDataController.sharedInstance.saveChanges()
+        if let moc = appDel.managedObjectContext {
+            moc.delete(location)
+            CoreDataController.sharedInstance.saveChanges()
+        }
     }
     
     func getLocation(_ user:User) -> [Location] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Location.fetchRequest()
-        let sortDescriptorOne = NSSortDescriptor(key: "orderId", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "name", ascending: true)
-        let predicate = NSPredicate(format: "user == %@", user)
         
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo]
-        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: "orderId", ascending: true),
+            NSSortDescriptor(key: "name", ascending: true)
+        ]
+        fetchRequest.predicate = NSPredicate(format: "user == %@", user)
         
         do {
-            let fetchResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Location]
-            return fetchResults!
+            if let moc = appDel.managedObjectContext {
+                if let fetchResults = try moc.fetch(fetchRequest) as? [Location] {
+                    return fetchResults
+                }
+            }
+            
         } catch {}
         
         return []

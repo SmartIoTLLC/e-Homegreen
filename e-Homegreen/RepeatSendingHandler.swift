@@ -59,42 +59,16 @@ class RepeatSendingHandler: NSObject {
     }
     
     fileprivate func getDeviceStatus(controlType: String, gateway: Gateway) {
+        let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(Int(device.address))]
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(Int(self.device.address))]
             
-            // Light
-            if controlType == ControlType.Dimmer {
-                SendingHandler.sendCommand(
-                    byteArray: OutgoingHandler.getLightRelayStatus(address),
-                    gateway: gateway
-                )
-                SendingHandler.sendCommand(
-                    byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF),
-                    gateway: gateway
-                )
-            }
-            // Appliance?
-            if controlType == ControlType.Relay {
-                SendingHandler.sendCommand(
-                    byteArray: OutgoingHandler.getLightRelayStatus(address),
-                    gateway: gateway
-                )
-                SendingHandler.sendCommand(
-                    byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF),
-                    gateway: gateway
-                )
-            }
-            // Curtain?
-            if controlType == ControlType.Curtain {
-                SendingHandler.sendCommand(
-                    byteArray: OutgoingHandler.getLightRelayStatus(address),
-                    gateway: gateway
-                )
-                SendingHandler.sendCommand(
-                    byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF),
-                    gateway: gateway
-                )
-            }
+            if controlType == ControlType.Dimmer ||
+                controlType == ControlType.Relay ||
+                controlType == ControlType.Curtain {
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
+            }            
+            
         }
 
     }

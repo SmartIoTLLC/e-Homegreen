@@ -16,19 +16,21 @@ class DatabaseCardsController: NSObject {
     
     func getCardsByGateway(_ gateway: Gateway) -> [Card] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Card.fetchRequest()
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "id", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo]
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: "gateway.name", ascending: true),
+            NSSortDescriptor(key: "id", ascending: true)
+        ]
         
-        var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "gateway == %@", gateway.objectID))
+        let predicateArray = [NSPredicate(format: "gateway == %@", gateway.objectID)]
         
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
-        fetchRequest.predicate = compoundPredicate
+        fetchRequest.predicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
         
         do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Card]
-            return fetResults!
+            if let moc = appDel.managedObjectContext {
+                if let fetResults = try moc.fetch(fetchRequest) as? [Card] {
+                    return fetResults
+                }
+            }
         } catch {}
         
         return []
@@ -41,18 +43,20 @@ class DatabaseCardsController: NSObject {
         if cardArray.count > 0 { existingCard = cardArray.first; itExists = true }
         
         if !itExists {
-            let card = NSEntityDescription.insertNewObject(forEntityName: "Card", into: appDel.managedObjectContext!) as! Card
-            card.id = NSNumber(value: id)
-            
-            card.cardId = ""
-            card.isEnabled = isEnabled as NSNumber
-            card.timerAddress = NSNumber(value: timerAddress)
-            card.timerId = NSNumber(value: timerId)
-            if let cardName = cardName { card.cardName = cardName } else { card.cardName = "" }
-            card.address = NSNumber(value: moduleAddress)
-            
-            card.gateway = gateway
-            CoreDataController.sharedInstance.saveChanges()
+            if let moc = appDel.managedObjectContext {
+                if let card = NSEntityDescription.insertNewObject(forEntityName: "Card", into: moc) as? Card {
+                    card.id = NSNumber(value: id)
+                    
+                    card.cardId = ""
+                    card.isEnabled = isEnabled as NSNumber
+                    card.timerAddress = NSNumber(value: timerAddress)
+                    card.timerId = NSNumber(value: timerId)
+                    if let cardName = cardName { card.cardName = cardName } else { card.cardName = "" }
+                    card.address = NSNumber(value: moduleAddress)
+                    
+                    card.gateway = gateway
+                }
+            }
             
         } else {
             
@@ -61,23 +65,25 @@ class DatabaseCardsController: NSObject {
             existingCard!.isEnabled = isEnabled as NSNumber
             existingCard!.timerAddress = NSNumber(value: timerAddress)
             existingCard!.timerId = NSNumber(value: timerId)
-            
-            CoreDataController.sharedInstance.saveChanges()
         }
+        CoreDataController.sharedInstance.saveChanges()
     }
     
     func fetchCardWithIdAndAddress(_ cardId: Int, gateway: Gateway, moduleAddress:Int) -> [Card] {
         let fetchRequest:NSFetchRequest<NSFetchRequestResult> = Card.fetchRequest()
-        let predicateLocation = NSPredicate(format: "id == %@", NSNumber(value: cardId as Int))
-        let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
-        let predicateAddress = NSPredicate(format: "address == %@", NSNumber(value: moduleAddress as Int))
-        let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway, predicateAddress])
         
-        fetchRequest.predicate = combinedPredicate
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            NSPredicate(format: "id == %@", NSNumber(value: cardId as Int)), // Location
+            NSPredicate(format: "gateway == %@", gateway),
+            NSPredicate(format: "address == %@", NSNumber(value: moduleAddress as Int))
+            ])
         
         do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Card]
-            return fetResults!
+            if let moc = appDel.managedObjectContext {
+                if let fetResults = try moc.fetch(fetchRequest) as? [Card] {
+                    return fetResults
+                }
+            }
         } catch let error1 as NSError { print("Unresolved error \(error1), \(error1.userInfo)") }
         
         return []

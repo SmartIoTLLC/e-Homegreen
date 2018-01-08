@@ -8,8 +8,6 @@
 import UIKit
 import AudioToolbox
 
-// TODO: Zaseban layer za shadow
-
 class ButtonCell: UICollectionViewCell {
     var width: CGFloat!
     var height: CGFloat!
@@ -20,6 +18,12 @@ class ButtonCell: UICollectionViewCell {
     var irDevice: Device?
     var hex: [Byte]?
     
+    var needsShadow: Bool = true {
+        didSet {
+            setShadow()
+        }
+    }
+    var shadowLayer: CAShapeLayer!
     var shadowColor: UIColor!
     
     var backgroundLayer: CAGradientLayer!
@@ -27,6 +31,11 @@ class ButtonCell: UICollectionViewCell {
     @IBOutlet weak var realButton: RealButton!
     @IBOutlet weak var btnWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnHeightConstraint: NSLayoutConstraint!
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        removeGradient()
+    }
     
     var button: RemoteButton! {
         didSet {
@@ -46,11 +55,9 @@ class ButtonCell: UICollectionViewCell {
                 case ButtonColor.green : shadowColor = .green
                 default                : shadowColor = .black
             }
-            
-            realButton.button = button
-            setButton(button: button)
             layoutIfNeeded()
             setNeedsDisplay()
+            setButton(button: button)
         }
     }
     
@@ -62,9 +69,8 @@ class ButtonCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        setButtonColor()
         setShadows()
+        setButtonColor()        
     }
     
 }
@@ -88,15 +94,15 @@ extension ButtonCell {
         
         var color: UIColor!
         switch button.buttonState! {
-        case ButtonState.visible, ButtonState.disable:
-            switch button.buttonColor! {
+            case ButtonState.visible, ButtonState.disable:
+                switch button.buttonColor! {
                 case ButtonColor.red    : color = .red
                 case ButtonColor.gray   : color = Colors.AndroidGrayColor
                 case ButtonColor.green  : color = .green
                 case ButtonColor.blue   : color = .blue
                 default                 : color = .clear
-            }
-        default: color = .clear
+                }
+            default: color = .clear
         }
         
         addGradient(color: color)
@@ -108,19 +114,15 @@ extension ButtonCell {
         switch button.buttonState! {
             case ButtonState.visible                        :
                 switch button.buttonInternalType! {
-                    case ButtonInternalType.image       : hideBorder()
-                    case ButtonInternalType.imageButton : showBorder()
-                    case ButtonInternalType.regular     : showBorder()
-                    default: break
+                case ButtonInternalType.image       : hideBorder()
+                case ButtonInternalType.imageButton : showBorder()
+                case ButtonInternalType.regular     : showBorder()
+                default: showBorder()
                 }
             case ButtonState.invisible, ButtonState.disable : hideBorder()
-            default: break
+            default: showBorder()
         }
-        //realButton.clipsToBounds = true
 
-        //        realButton.layoutSubviews()
-//        realButton.layoutIfNeeded()
-//        realButton.setNeedsDisplay()
     }
     
     fileprivate func removeGradient() {
@@ -131,21 +133,42 @@ extension ButtonCell {
         switch button.buttonState! {
             case ButtonState.visible:
                 switch button.buttonInternalType! {
-                    case ButtonInternalType.image       : hideShadows()
-                    case ButtonInternalType.imageButton : showShadows()
-                    case ButtonInternalType.regular     : showShadows()
-                    default: break
+                case ButtonInternalType.image       : hideShadows()
+                case ButtonInternalType.imageButton : showShadows()
+                case ButtonInternalType.regular     : showShadows()
+                default: showShadows()
                 }
             case ButtonState.invisible, ButtonState.disable: hideShadows()
-            default: break
+            default: showShadows()
         }
     }
     
     func showShadows() {
-        realButton.needsShadow = true
+        needsShadow = true
     }
     func hideShadows() {
-        realButton.needsShadow = false
+        needsShadow = false
+    }
+    
+    fileprivate func setShadow() {
+        var color: CGColor! = UIColor.clear.cgColor
+        if shadowLayer != nil { shadowLayer.removeFromSuperlayer() }
+        if needsShadow { color = UIColor.black.cgColor }
+        
+        shadowLayer = CAShapeLayer()
+        switch button.buttonShape! {
+            case ButtonShape.rectangle : shadowLayer.path = UIBezierPath(roundedRect: realButton.bounds, cornerRadius: 3).cgPath
+            case ButtonShape.circle    : shadowLayer.path = UIBezierPath(roundedRect: realButton.bounds, cornerRadius: bounds.height / 2).cgPath
+            default: break
+        }
+        shadowLayer.fillColor     = UIColor.clear.cgColor
+        shadowLayer.shadowColor   = color
+        shadowLayer.shadowPath    = shadowLayer.path
+        shadowLayer.shadowOffset  = CGSize(width: 1, height: 2)
+        shadowLayer.shadowOpacity = 0.9
+        shadowLayer.shadowRadius  = 2
+        
+        realButton.layer.insertSublayer(shadowLayer, at: 0)
     }
     
     func showBorder() {
@@ -179,7 +202,6 @@ extension ButtonCell {
     }
     
     fileprivate func setupImage() {
-        //removeGradient()
         setButtonColor()
         setShadows()
         scaleAndSetButtonImage()
@@ -194,17 +216,18 @@ extension ButtonCell {
     func setButton(button: RemoteButton) {
         
         switch button.buttonShape! {
-            case ButtonShape.circle       :
-                realButton.frame.size = CGSize(width: height, height: height)
-                realButton.layer.cornerRadius = height / 2
-                btnWidthConstraint.constant   = height
-                btnHeightConstraint.constant  = height
-            case ButtonShape.rectangle    :
-                realButton.frame.size = CGSize(width: width, height: height)
-                realButton.layer.cornerRadius = 3
-                btnWidthConstraint.constant   = width
-                btnHeightConstraint.constant  = height
-            default: break
+        case ButtonShape.circle       :
+            realButton.layer.cornerRadius = height / 2
+            btnWidthConstraint.constant   = height
+            btnHeightConstraint.constant  = height
+        case ButtonShape.rectangle    :
+            realButton.layer.cornerRadius = 3
+            btnWidthConstraint.constant   = width
+            btnHeightConstraint.constant  = height
+        default:
+            realButton.layer.cornerRadius = height / 2
+            btnWidthConstraint.constant   = height
+            btnHeightConstraint.constant  = height
         }
         
         realButton.layoutIfNeeded()
@@ -213,12 +236,12 @@ extension ButtonCell {
             case ButtonState.visible    : setVisible()
             case ButtonState.invisible  : setInvisible()
             case ButtonState.disable    : setDisabled()
-            default: break
+            default: setVisible()
         }
         
         realButton.setTitle(button.name, for: UIControlState())
         realButton.setTitleColor(.white, for: UIControlState())
-        if let rbLabel = realButton.titleLabel {        
+        if let rbLabel = realButton.titleLabel {
             rbLabel.textAlignment             = .center
             rbLabel.font                      = .tahoma(size: 15)
             rbLabel.adjustsFontSizeToFitWidth = true
@@ -233,18 +256,18 @@ extension ButtonCell {
             case ButtonType.sceneButton : loadScene()
             case ButtonType.irButton    : loadIRDevice()
             case ButtonType.hexButton   : loadHexByteArray()
-            default: break
+            default: loadScene()
         }
         
         switch button.buttonInternalType! {
             case ButtonInternalType.image       : setupImage()
             case ButtonInternalType.imageButton : setupImageButton()
             case ButtonInternalType.regular     : setupRegular()
-            default: break
+            default: setupRegular()
         }
         
-    }        
-
+    }
+    
 }
 
 // MARK: - Setup Views
@@ -274,12 +297,11 @@ extension ButtonCell {
     
     fileprivate func addGradient(color: UIColor) {
         let colors   = [color.withAlphaComponent(0.5).cgColor, color.cgColor]
+        let bounds = CGRect(x: 0, y: 0, width: self.bounds.width + 2000, height: self.bounds.height + 2000)
         let gradient = CAGradientLayer.gradientLayerForBounds(bounds, colors: colors)
         backgroundLayer          = gradient
         backgroundLayer.position = realButton.center
-        var index: UInt32 = 0
-        if realButton.needsShadow { index = 1 }
-        realButton.layer.insertSublayer(backgroundLayer, at: index)
+        realButton.layer.insertSublayer(backgroundLayer, above: shadowLayer)
     }
     
 }

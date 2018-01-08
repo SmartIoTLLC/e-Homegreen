@@ -10,46 +10,6 @@ import Foundation
 
 class RealButton: UIButton {
     
-    var needsShadow: Bool! = true {
-        didSet {
-            setShadow()
-        }
-    }
-    
-    var shadowLayer: CAShapeLayer!
-    
-    var buttonShape: String!
-    var button: RemoteButton? {
-        didSet {
-            buttonShape = button?.buttonShape
-        }
-    }
-    
-    fileprivate func setShadow() {
-        if needsShadow {
-            if shadowLayer == nil {
-                shadowLayer = CAShapeLayer()
-                switch buttonShape {
-                    case ButtonShape.rectangle : shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: 3).cgPath
-                    case ButtonShape.circle    : shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: bounds.height / 2).cgPath
-                    default: break
-                }
-                shadowLayer.fillColor     = UIColor.clear.cgColor
-                shadowLayer.shadowColor   = UIColor.black.cgColor
-                shadowLayer.shadowPath    = shadowLayer.path
-                shadowLayer.shadowOffset  = CGSize(width: 1, height: 2)
-                shadowLayer.shadowOpacity = 0.8
-                shadowLayer.shadowRadius  = 2
-                
-                layer.insertSublayer(shadowLayer, at: 0)
-            }
-        } else {
-            if shadowLayer != nil {
-                shadowLayer.removeFromSuperlayer()
-            }
-        }
-    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         

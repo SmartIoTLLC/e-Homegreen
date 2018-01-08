@@ -16,13 +16,16 @@ class DatabaseFlagsController: NSObject {
     func getFlags(_ filterParametar:FilterItem) -> [Flag] {
         if let user = DatabaseUserController.shared.loggedUserOrAdmin(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Flag.fetchRequest()
-            let sortDescriptorOne = NSSortDescriptor(key: "gateway.location.name", ascending: true)
-            let sortDescriptorTwo = NSSortDescriptor(key: "flagId", ascending: true)
-            let sortDescriptorThree = NSSortDescriptor(key: "flagName", ascending: true)
-            fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
+            fetchRequest.sortDescriptors = [
+                NSSortDescriptor(key: "gateway.location.name", ascending: true),
+                NSSortDescriptor(key: "flagId", ascending: true),
+                NSSortDescriptor(key: "flagName", ascending: true)
+            ]
             
-            var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool))]
-            predicateArray.append(NSPredicate(format: "gateway.location.user == %@", user))
+            var predicateArray = [
+                NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool)),
+                NSPredicate(format: "gateway.location.user == %@", user)
+            ]
             
             if filterParametar.location != "All" { predicateArray.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location)) }
             
@@ -36,11 +39,14 @@ class DatabaseFlagsController: NSObject {
                 if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId) { predicateArray.append(NSPredicate(format: "flagCategoryId == %@", category.id!)) }
             }
             
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
-            fetchRequest.predicate = compoundPredicate
+            fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
             do {
-                let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Flag]
-                return fetResults!
+                if let moc = appDel.managedObjectContext {
+                    if let fetResults = try moc.fetch(fetchRequest) as? [Flag] {
+                        return fetResults
+                    }
+                }
+                
             } catch {}
         }
         return []
@@ -49,12 +55,14 @@ class DatabaseFlagsController: NSObject {
     func getAllFlags() -> [Flag] {
         if let _ = DatabaseUserController.shared.loggedUserOrAdmin(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Flag.fetchRequest()
-            let sortDescriptors = NSSortDescriptor(key: "flagName", ascending: true)
-            fetchRequest.sortDescriptors = [sortDescriptors]
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "flagName", ascending: true)]
             
             do {
-                let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Flag]
-                return fetResults!
+                if let moc = appDel.managedObjectContext {
+                    if let fetResults = try moc.fetch(fetchRequest) as? [Flag] {
+                        return fetResults
+                    }
+                }
             } catch {}
         }
         return []
@@ -62,13 +70,14 @@ class DatabaseFlagsController: NSObject {
     
     func updateFlagList(_ gateway:Gateway, filterParametar:FilterItem) -> [Flag] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Flag.fetchRequest()
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "flagId", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "flagName", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree]
+
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: "gateway.name", ascending: true),
+            NSSortDescriptor(key: "flagId", ascending: true),
+            NSSortDescriptor(key: "flagName", ascending: true)
+        ]
         
-        var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "gateway == %@", gateway))
+        var predicateArray = [NSPredicate(format: "gateway == %@", gateway)]
         
         if filterParametar.levelObjectId != "All" {
             if let level = FilterController.shared.getZoneByObjectId(filterParametar.levelObjectId) { predicateArray.append(NSPredicate(format: "entityLevelId == %@", level.id!)) }
@@ -79,12 +88,15 @@ class DatabaseFlagsController: NSObject {
         if filterParametar.categoryObjectId != "All" {
             if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId) { predicateArray.append(NSPredicate(format: "flagCategoryId == %@", category.id!)) }
         }
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
-        fetchRequest.predicate = compoundPredicate
+
+        fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
         
         do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Flag]
-            return fetResults!
+            if let moc = appDel.managedObjectContext {
+                if let fetResults = try moc.fetch(fetchRequest) as? [Flag] {
+                    return fetResults
+                }
+            }
         } catch {}
         
         return []
@@ -98,124 +110,134 @@ class DatabaseFlagsController: NSObject {
             existingFlag = flagArray.first
             itExists = true
         }
-        if !itExists {
-            let flag = NSEntityDescription.insertNewObject(forEntityName: "Flag", into: appDel.managedObjectContext!) as! Flag
-            flag.flagId = NSNumber(value: flagId)
-            if let flagName = flagName {
-                flag.flagName = flagName
-            } else {
-                flag.flagName = ""
-            }
-            flag.address = NSNumber(value: moduleAddress)
-            
-            if let imageDataOne = imageDataOne{
-                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
-                    image.imageData = imageDataOne
-                    image.imageId = UUID().uuidString
-                    flag.flagImageOneCustom = image.imageId
-                    flag.flagImageOneDefault = nil
-                    gateway.location.user!.addImagesObject(image)
-                }
-            } else {
-                flag.flagImageOneDefault = sceneImageOneDefault
-                flag.flagImageOneCustom = sceneImageOneCustom
-            }
-            
-            if let imageDataTwo = imageDataTwo{
-                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
-                    image.imageData = imageDataTwo
-                    image.imageId = UUID().uuidString
-                    flag.flagImageTwoCustom = image.imageId
-                    flag.flagImageTwoDefault = nil
-                    gateway.location.user!.addImagesObject(image)
+        
+        if let moc = appDel.managedObjectContext {
+            if !itExists {
+                if let flag = NSEntityDescription.insertNewObject(forEntityName: "Flag", into: moc) as? Flag {
+                    flag.flagId = NSNumber(value: flagId)
+                    if let flagName = flagName { flag.flagName = flagName } else { flag.flagName = "" }
+                    flag.address = NSNumber(value: moduleAddress)
                     
-                }
-            } else {
-                flag.flagImageTwoDefault = sceneImageTwoDefault
-                flag.flagImageTwoCustom = sceneImageTwoCustom
-            }
-            
-            flag.entityLevelId = levelId as NSNumber?
-            flag.flagZoneId = selectedZoneId as NSNumber?
-            flag.flagCategoryId = categoryId as NSNumber?
-            
-            flag.isBroadcast = isBroadcast as NSNumber
-            flag.isLocalcast = isLocalcast as NSNumber
-            
-            flag.gateway = gateway
-            CoreDataController.sharedInstance.saveChanges()
-            
-        } else {
-            
-            if let flagName = flagName {
-                existingFlag!.flagName = flagName
-            }
-            
-            if let imageDataOne = imageDataOne{
-                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
-                    image.imageData = imageDataOne
-                    image.imageId = UUID().uuidString
-                    existingFlag!.flagImageOneCustom = image.imageId
-                    existingFlag!.flagImageOneDefault = nil
-                    gateway.location.user!.addImagesObject(image)
-                }
-            } else {
-                existingFlag!.flagImageOneDefault = sceneImageOneDefault
-                existingFlag!.flagImageOneCustom = sceneImageOneCustom
-            }
-            
-            if let imageDataTwo = imageDataTwo{
-                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image{
-                    image.imageData = imageDataTwo
-                    image.imageId = UUID().uuidString
-                    existingFlag!.flagImageTwoCustom = image.imageId
-                    existingFlag!.flagImageTwoDefault = nil
-                    gateway.location.user!.addImagesObject(image)
+                    if let imageDataOne = imageDataOne {
+                        if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: moc) as? Image {
+                            image.imageData = imageDataOne
+                            image.imageId = UUID().uuidString
+                            flag.flagImageOneCustom = image.imageId
+                            flag.flagImageOneDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                        }
+                    } else {
+                        flag.flagImageOneDefault = sceneImageOneDefault
+                        flag.flagImageOneCustom = sceneImageOneCustom
+                    }
                     
+                    if let imageDataTwo = imageDataTwo {
+                        if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: moc) as? Image {
+                            image.imageData = imageDataTwo
+                            image.imageId = UUID().uuidString
+                            flag.flagImageTwoCustom = image.imageId
+                            flag.flagImageTwoDefault = nil
+                            gateway.location.user!.addImagesObject(image)
+                            
+                        }
+                    } else {
+                        flag.flagImageTwoDefault = sceneImageTwoDefault
+                        flag.flagImageTwoCustom = sceneImageTwoCustom
+                    }
+                    
+                    flag.entityLevelId = levelId as NSNumber?
+                    flag.flagZoneId = selectedZoneId as NSNumber?
+                    flag.flagCategoryId = categoryId as NSNumber?
+                    
+                    flag.isBroadcast = isBroadcast as NSNumber
+                    flag.isLocalcast = isLocalcast as NSNumber
+                    
+                    flag.gateway = gateway
                 }
+                
             } else {
-                existingFlag!.flagImageTwoDefault = sceneImageTwoDefault
-                existingFlag!.flagImageTwoCustom = sceneImageTwoCustom
+                
+                if let flagName = flagName {
+                    existingFlag!.flagName = flagName
+                }
+                
+                if let imageDataOne = imageDataOne{
+                    if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: moc) as? Image {
+                        image.imageData = imageDataOne
+                        image.imageId = UUID().uuidString
+                        existingFlag!.flagImageOneCustom = image.imageId
+                        existingFlag!.flagImageOneDefault = nil
+                        gateway.location.user!.addImagesObject(image)
+                    }
+                } else {
+                    existingFlag!.flagImageOneDefault = sceneImageOneDefault
+                    existingFlag!.flagImageOneCustom = sceneImageOneCustom
+                }
+                
+                if let imageDataTwo = imageDataTwo{
+                    if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: moc) as? Image {
+                        image.imageData = imageDataTwo
+                        image.imageId = UUID().uuidString
+                        existingFlag!.flagImageTwoCustom = image.imageId
+                        existingFlag!.flagImageTwoDefault = nil
+                        gateway.location.user!.addImagesObject(image)
+                        
+                    }
+                } else {
+                    existingFlag!.flagImageTwoDefault = sceneImageTwoDefault
+                    existingFlag!.flagImageTwoCustom = sceneImageTwoCustom
+                }
+                
+                existingFlag!.entityLevelId = levelId as NSNumber?
+                existingFlag!.flagZoneId = selectedZoneId as NSNumber?
+                existingFlag!.flagCategoryId = categoryId as NSNumber?
+                
+                existingFlag!.isBroadcast = isBroadcast as NSNumber
+                existingFlag!.isLocalcast = isLocalcast as NSNumber
             }
-            
-            existingFlag!.entityLevelId = levelId as NSNumber?
-            existingFlag!.flagZoneId = selectedZoneId as NSNumber?
-            existingFlag!.flagCategoryId = categoryId as NSNumber?
-            
-            existingFlag!.isBroadcast = isBroadcast as NSNumber
-            existingFlag!.isLocalcast = isLocalcast as NSNumber
             
             CoreDataController.sharedInstance.saveChanges()
         }
+        
     }
     
     func fetchFlagWithIdAndAddress(_ flagId: Int, gateway: Gateway, moduleAddress:Int) -> [Flag]{
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Flag.fetchRequest()
-        let predicateLocation = NSPredicate(format: "flagId == %@", NSNumber(value: flagId as Int))
-        let predicateGateway = NSPredicate(format: "gateway == %@", gateway)
-        let predicateAddress = NSPredicate(format: "address == %@", NSNumber(value: moduleAddress as Int))
-        let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateLocation, predicateGateway, predicateAddress])
         
-        fetchRequest.predicate = combinedPredicate
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            NSPredicate(format: "flagId == %@", NSNumber(value: flagId as Int)), // Location
+            NSPredicate(format: "gateway == %@", gateway),
+            NSPredicate(format: "address == %@", NSNumber(value: moduleAddress as Int))
+            ]
+        )
         
         do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Flag]
-            return fetResults!
+            if let moc = appDel.managedObjectContext {
+                if let fetResults = try moc.fetch(fetchRequest) as? [Flag] {
+                    return fetResults
+                }
+            }
         } catch let error1 as NSError { print("Unresolved error \(error1), \(error1.userInfo)") }
         
         return []
     }
     
     func deleteAllFlags(_ gateway:Gateway) {
-        let flags = gateway.flags.allObjects as! [Flag]
-        for flag in flags { self.appDel.managedObjectContext!.delete(flag) }
-        
-        CoreDataController.sharedInstance.saveChanges()
+        if let moc = appDel.managedObjectContext {
+            if let flags = gateway.flags.allObjects as? [Flag] {
+                flags.forEach({ (flag) in
+                    moc.delete(flag)
+                })
+            }
+            CoreDataController.sharedInstance.saveChanges()
+        }
     }
     
-    func deleteFlag(_ flag:Flag){
-        self.appDel.managedObjectContext!.delete(flag)
-        CoreDataController.sharedInstance.saveChanges()
+    func deleteFlag(_ flag:Flag) {
+        if let moc = appDel.managedObjectContext {
+            moc.delete(flag)
+            CoreDataController.sharedInstance.saveChanges()
+        }
     }
 
 }

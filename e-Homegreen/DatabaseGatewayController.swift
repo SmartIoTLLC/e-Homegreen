@@ -17,15 +17,22 @@ class DatabaseGatewayController: NSObject {
     func getGatewayByLocation(_ location:String) -> [Gateway] {
         if let user = DatabaseUserController.shared.loggedUserOrAdmin(){
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Gateway.fetchRequest()
-            var predicateArray:[NSPredicate] = [NSPredicate(format: "turnedOn == %@", NSNumber(value: true as Bool))]
-            predicateArray.append(NSPredicate(format: "location.user == %@", user))
-            predicateArray.append(NSPredicate(format: "location.name == %@", location))
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
-            fetchRequest.predicate = compoundPredicate
+            
+            let predicateArray = [
+                NSPredicate(format: "turnedOn == %@", NSNumber(value: true as Bool)),
+                NSPredicate(format: "location.user == %@", user),
+                NSPredicate(format: "location.name == %@", location)
+            ]
+            
+            fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
             
             do {
-                let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Gateway]
-                return fetResults!
+                if let moc = appDel.managedObjectContext {
+                    if let fetResults = try moc.fetch(fetchRequest) as? [Gateway] {
+                        return fetResults
+                    }
+                }
+                
             } catch {}
         }
         return []
@@ -33,14 +40,20 @@ class DatabaseGatewayController: NSObject {
     
     func getGatewayByLocationForSecurity(_ location:Location) -> [Gateway] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Gateway.fetchRequest()
-        var predicateArray:[NSPredicate] = [NSPredicate(format: "turnedOn == %@", NSNumber(value: true as Bool))]
-        predicateArray.append(NSPredicate(format: "location.user == %@", location.user!))
-        predicateArray.append(NSPredicate(format: "location == %@", location))
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
-        fetchRequest.predicate = compoundPredicate
+        let predicateArray = [
+            NSPredicate(format: "turnedOn == %@", NSNumber(value: true as Bool)),
+            NSPredicate(format: "location.user == %@", location.user!),
+            NSPredicate(format: "location == %@", location)
+        ]
+        
+        fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
+        
         do {
-            let fetResults = try appDel.managedObjectContext?.fetch(fetchRequest) as? [Gateway]
-            return fetResults!
+            if let moc = appDel.managedObjectContext {
+                if let fetResults = try moc.fetch(fetchRequest) as? [Gateway] {
+                    return fetResults
+                }
+            }
         } catch {}
         
         return []
@@ -48,22 +61,26 @@ class DatabaseGatewayController: NSObject {
     
     func getGatewayByid(_ id:String) -> Gateway? {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Gateway.fetchRequest()
-        let predicateArray:[NSPredicate] = [NSPredicate(format: "gatewayId == %@", id)]
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
-        fetchRequest.predicate = compoundPredicate
+        fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: [NSPredicate(format: "gatewayId == %@", id)])
         
         do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Gateway]
-            if fetResults?.count != 0 {
-                return fetResults?.first
+            if let moc = appDel.managedObjectContext {
+                if let fetResults = try moc.fetch(fetchRequest) as? [Gateway] {
+                    if fetResults.count != 0 { return fetResults.first }
+                }
             }
+
         } catch {}
         
         return nil
     }
     
     func getGatewayByObjectID(_ objectID:NSManagedObjectID) -> Gateway? {
-        if let gateway = appDel.managedObjectContext?.object(with: objectID) as? Gateway { return gateway }
+        if let moc = appDel.managedObjectContext {
+            if let gateway = moc.object(with: objectID) as? Gateway {
+                return gateway
+            }
+        }
         return nil
     }
     
@@ -81,8 +98,10 @@ class DatabaseGatewayController: NSObject {
     }
     
     func deleteGateway(_ gateway:Gateway) {
-        appDel.managedObjectContext?.delete(gateway)
-        CoreDataController.sharedInstance.saveChanges()
+        if let moc = appDel.managedObjectContext {
+            moc.delete(gateway)
+            CoreDataController.sharedInstance.saveChanges()
+        }        
     }
     
 }

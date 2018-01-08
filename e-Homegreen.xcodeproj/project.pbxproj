@@ -197,6 +197,7 @@
 		4E8C21721FCF0979004C0883 /* ButtonImagePickerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C21701FCF0979004C0883 /* ButtonImagePickerVC.xib */; };
 		4E8C21751FCF20F6004C0883 /* ButtonImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8C21731FCF20F6004C0883 /* ButtonImageCell.swift */; };
 		4E8C21761FCF20F6004C0883 /* ButtonImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C21741FCF20F6004C0883 /* ButtonImageCell.xib */; };
+		4E9EEAA5200374E900201E7C /* MediaCollectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9EEAA4200374E900201E7C /* MediaCollectionVC.swift */; };
 		4EA9A7C31FA1D00500C8D6B8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */; };
 		4EC2E1421F7E439700DA494B /* RemoteDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */; };
 		4EDCE6811F6A8D740073736B /* radio_station.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EDCE6801F6A8D740073736B /* radio_station.json */; };
@@ -620,6 +621,7 @@
 		4E8C21701FCF0979004C0883 /* ButtonImagePickerVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonImagePickerVC.xib; sourceTree = "<group>"; };
 		4E8C21731FCF20F6004C0883 /* ButtonImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonImageCell.swift; sourceTree = "<group>"; };
 		4E8C21741FCF20F6004C0883 /* ButtonImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonImageCell.xib; sourceTree = "<group>"; };
+		4E9EEAA4200374E900201E7C /* MediaCollectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCollectionVC.swift; sourceTree = "<group>"; };
 		4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDetailsViewController.swift; sourceTree = "<group>"; };
 		4EDCE6801F6A8D740073736B /* radio_station.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = radio_station.json; sourceTree = "<group>"; };
@@ -1451,6 +1453,14 @@
 			name = "Remote controller";
 			sourceTree = "<group>";
 		};
+		4E9EEAA1200373FC00201E7C /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				4E9EEAA4200374E900201E7C /* MediaCollectionVC.swift */,
+			);
+			name = Media;
+			sourceTree = "<group>";
+		};
 		4EDCE6821F6A90E10073736B /* Radio */ = {
 			isa = PBXGroup;
 			children = (
@@ -1560,6 +1570,7 @@
 				223292241CABCDFB0001422B /* Sequences */,
 				223292231CABCC350001422B /* Events */,
 				4E218F441F7B91E60068CA72 /* Remote */,
+				4E9EEAA1200373FC00201E7C /* Media */,
 				4EDCE6821F6A90E10073736B /* Radio */,
 				4E1AAB171F6C09FC006C59AA /* Quran */,
 				223292221CABCC1F0001422B /* Scenes */,
@@ -2657,6 +2668,7 @@
 				2241E46C1CC612B400BCD763 /* DatabaseZoneController.swift in Sources */,
 				22FF1E621D86D86F00ECB86E /* Card+CoreDataProperties.swift in Sources */,
 				49C059701D91393F0061A544 /* TimerCell.swift in Sources */,
+				4E9EEAA5200374E900201E7C /* MediaCollectionVC.swift in Sources */,
 				7372EB201BC3F7600097806D /* TimerParametarVC.swift in Sources */,
 				E7F57B0F1BA847F8006B0D71 /* ScanEventsViewController.swift in Sources */,
 				73331C181CA029DF009BA1DE /* FilterStruct.swift in Sources */,
