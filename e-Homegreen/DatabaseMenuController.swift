@@ -80,8 +80,9 @@ class DatabaseMenuController: NSObject {
         
         if let moc = appDel.managedObjectContext {
             do {
-                let fetResults = try moc.fetch(fetchRequest) as? [MenuItem]
-                return fetResults ?? []
+                if let fetResults = try moc.fetch(fetchRequest) as? [MenuItem] {
+                    return fetResults
+                }
             } catch {}
         }
         
@@ -98,8 +99,9 @@ class DatabaseMenuController: NSObject {
         
         if let moc = appDel.managedObjectContext {
             do {
-                let fetResults = try moc.fetch(fetchRequest) as? [MenuItem]
-                return fetResults ?? []
+                if let fetResults = try moc.fetch(fetchRequest) as? [MenuItem] {
+                    return fetResults
+                }
             } catch {}
         }
         
@@ -116,8 +118,9 @@ class DatabaseMenuController: NSObject {
         
         if let moc = appDel.managedObjectContext {
             do {
-                let fetResults = try moc.fetch(fetchRequest) as? [MenuItem]
-                return fetResults ?? []
+                if let fetResults = try moc.fetch(fetchRequest) as? [MenuItem] {
+                    return fetResults
+                }                
             } catch {}
         }
         

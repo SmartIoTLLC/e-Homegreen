@@ -63,6 +63,8 @@ class DevicesViewController: PopoverVC{
     @IBOutlet weak var zoneAndCategorySlider: UISlider!
     @IBOutlet weak var iBeaconButton: UIButton!
     @IBOutlet weak var iBeaconBarButton: UIBarButtonItem!
+    @IBOutlet weak var fullscreenBarButton: UIBarButtonItem!
+    @IBOutlet weak var refreshBarButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -185,6 +187,8 @@ class DevicesViewController: PopoverVC{
             devices[index.row].info = true
         }
     }
+        
+    // TODO: Radio i Quran moraju da sviraju u celoj aplikaciji
     
     func handleTap2 (_ gesture:UIGestureRecognizer) {
         let location = gesture.location(in: deviceCollectionView)
@@ -681,8 +685,6 @@ class DevicesViewController: PopoverVC{
         sender.rotate(1)
     }
     @IBAction func location(_ sender: AnyObject) {
-
-        // TODO: Dugme treba da se prikazuje samo ako za zonu postoji vezan iBeacon
         // TODO: ova funkcija (well, duh)
     }
     
@@ -763,7 +765,7 @@ extension DevicesViewController {
             
             var shouldHide: Bool = true
             
-            navigationItem.setRightBarButton(storedIBeaconBarButtonItem, animated: true)
+            navigationItem.setRightBarButtonItems([fullscreenBarButton, refreshBarButton, storedIBeaconBarButtonItem], animated: false)
             
             if let locations = user.locations?.allObjects as? [Location] {
                 var pickedLocation: Location?
@@ -784,7 +786,7 @@ extension DevicesViewController {
                     }
                 }
             }
-            if shouldHide { navigationItem.setRightBarButton(nil, animated: false) }
+            if shouldHide { navigationItem.setRightBarButtonItems([fullscreenBarButton, refreshBarButton], animated: false) }
         }
     }
     
@@ -877,36 +879,18 @@ extension DevicesViewController {
             
             // Light
             if controlType == ControlType.Dimmer {
-                SendingHandler.sendCommand(
-                    byteArray: OutgoingHandler.getLightRelayStatus(address),
-                    gateway: gateway
-                )
-                SendingHandler.sendCommand(
-                    byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF),
-                    gateway: gateway
-                )
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
             }
             // Appliance?
             if controlType == ControlType.Relay {
-                SendingHandler.sendCommand(
-                    byteArray: OutgoingHandler.getLightRelayStatus(address),
-                    gateway: gateway
-                )
-                SendingHandler.sendCommand(
-                    byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF),
-                    gateway: gateway
-                )
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
             }
             // Curtain?
             if controlType == ControlType.Curtain {
-                SendingHandler.sendCommand(
-                    byteArray: OutgoingHandler.getLightRelayStatus(address),
-                    gateway: gateway
-                )
-                SendingHandler.sendCommand(
-                    byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF),
-                    gateway: gateway
-                )
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurtainStatus(address), gateway: gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
             }
         }
     }
@@ -997,22 +981,23 @@ extension DevicesViewController {
     
     // CLIMATE
     func setACPowerStatus(_ gesture:UIGestureRecognizer) {
-        let tag = gesture.view!.tag
-        let device  = devices[tag]
-
-        let address = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
-        if device.currentValue == 0x00 {
-            SendingHandler.sendCommand(
-                byteArray: OutgoingHandler.setACStatus(address, channel: getByte(device.channel), status: 0xFF),
-                gateway: device.gateway
-            )
+        if let tag = gesture.view?.tag {
+            let device  = devices[tag]
+            let address = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
             
-        }
-        if device.currentValue == 0xFF {
-            SendingHandler.sendCommand(
-                byteArray: OutgoingHandler.setACStatus(address, channel: getByte(device.channel), status: 0x00),
-                gateway: device.gateway
-            )
+            if device.currentValue == 0x00 {
+                SendingHandler.sendCommand(
+                    byteArray: OutgoingHandler.setACStatus(address, channel: getByte(device.channel), status: 0xFF),
+                    gateway: device.gateway
+                )
+                
+            }
+            if device.currentValue == 0xFF {
+                SendingHandler.sendCommand(
+                    byteArray: OutgoingHandler.setACStatus(address, channel: getByte(device.channel), status: 0x00),
+                    gateway: device.gateway
+                )
+            }
         }
     }
     

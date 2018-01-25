@@ -67,6 +67,11 @@ extension UIViewController {
         }
     }
     
+    func setScrollViewBottomOffset(scrollView: inout FilterPullDown) {
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        scrollView.setContentOffset(bottomOffset, animated: false)
+    }
+    
     func updateConstraints(item: UIView) {
         view.addConstraint(NSLayoutConstraint(item: item, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: item, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1.0, constant: 0.0))

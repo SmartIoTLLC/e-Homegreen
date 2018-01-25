@@ -134,10 +134,10 @@ extension EventsViewController: UICollectionViewDataSource {
             cell.setItem(events[indexPath.row], filterParametar: filterParametar, tag: indexPath.row)
             cell.getImagesFrom(events[indexPath.row])
             
-            let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(openCellParametar(_:)))
+            let longPress = UILongPressGestureRecognizer(target: self, action: #selector(rotateCell(_:)))
             longPress.minimumPressDuration = 0.5
             cell.eventTitle.addGestureRecognizer(longPress)
-            
+                        
             cell.eventImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(setEvent(_:))))
             
             cell.eventButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapCancel(_:))))
@@ -178,6 +178,16 @@ extension EventsViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEvents), object: nil)
     }
     
+    func rotateCell(_ gesture: UILongPressGestureRecognizer) {
+        let location = gesture.location(in: eventCollectionView)
+        if let indexPath = eventCollectionView.indexPathForItem(at: location) {
+            if let cell = eventCollectionView.cellForItem(at: indexPath) as? EventsCollectionViewCell {
+                UIView.transition(from: cell.frontView, to: cell.backView, duration: 0.5, options: [.transitionFlipFromBottom, .showHideTransitionViews], completion: nil)
+                cell.parametersAreShowing = true
+            }
+        }
+    }
+    
 }
 
 // MARK: - Logic
@@ -192,9 +202,10 @@ extension EventsViewController {
     
     fileprivate func sendEventCommand(from gesture: UIGestureRecognizer, eventType: EventType) {
         if let tag = gesture.view?.tag {
-            let event   = events[tag]
-            let eventID = Int(event.eventId)
-            let gateway = event.gateway
+            let event      = events[tag]
+            let eventID    = Int(event.eventId)
+            let gateway    = event.gateway
+            let useTrigger = event.useTrigger
             
             var address: [Byte] = []
             
@@ -207,8 +218,13 @@ extension EventsViewController {
             }
             
             switch eventType {
-                case .run    : if eventID >= 0 && eventID <= 255 { SendingHandler.sendCommand(byteArray: OutgoingHandler.runEvent(address, id: UInt8(eventID)), gateway: gateway) }
-                case .cancel : SendingHandler.sendCommand(byteArray: OutgoingHandler.cancelEvent(address, id: UInt8(eventID)), gateway: gateway)
+                case .run     :
+                    if useTrigger {
+                        SendingHandler.sendCommand(byteArray: OutgoingHandler.triggerEvent(address, id: UInt8(eventID)), gateway: gateway)
+                    } else {
+                        if eventID >= 0 && eventID <= 255 { SendingHandler.sendCommand(byteArray: OutgoingHandler.runEvent(address, id: UInt8(eventID)), gateway: gateway) }
+                    }
+                case .cancel  : SendingHandler.sendCommand(byteArray: OutgoingHandler.cancelEvent(address, id: UInt8(eventID)), gateway: gateway)
             }
             
             if let originPoint = gesture.view?.bounds.origin {
@@ -227,16 +243,6 @@ extension EventsViewController {
         case cancel
     }
     
-    func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer) {
-        let tag = gestureRecognizer.view!.tag
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
-            let location = gestureRecognizer.location(in: eventCollectionView)
-            if let index = eventCollectionView.indexPathForItem(at: location) {
-                let cell = eventCollectionView.cellForItem(at: index)
-                showEventParametar(CGPoint(x: cell!.center.x, y: cell!.center.y - eventCollectionView.contentOffset.y), event: events[tag])
-            }
-        }
-    }
 }
 
 

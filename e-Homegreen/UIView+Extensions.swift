@@ -50,8 +50,6 @@ extension UIView {
         layer.addSublayer(gradientLayer)
     }
     
-
-    
     func addShadows(opacity: Float = 0.55, isOn: Bool = true) {
         if isOn { layer.shadowColor = UIColor.black.cgColor
         } else { layer.shadowColor = UIColor.clear.cgColor }

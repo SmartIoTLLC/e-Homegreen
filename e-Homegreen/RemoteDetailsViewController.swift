@@ -146,12 +146,9 @@ extension RemoteDetailsViewController {
     }
     
     fileprivate func loadButtons() {
-        if let btns = remote.buttons {
-            var buttons: [RemoteButton] = []
-            
-            for button in btns { buttons.append(button as! RemoteButton) }
-            buttons            = buttons.sorted(by: { Int($0.buttonId!) < Int($1.buttonId!) } )
-            chunksOfButtons    = buttons.chunks(Int(remote.columns!))
+        if var btns = remote.buttons?.allObjects as? [RemoteButton] {
+            btns = btns.sorted(by: { (first, second) -> Bool in Int(first.buttonId!) < Int(second.buttonId!) })
+            chunksOfButtons = btns.chunks(Int(remote.columns!))
             buttonsCollectionView.reloadData()
         }
     }

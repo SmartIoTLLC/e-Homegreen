@@ -25,10 +25,6 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
         socket = GCDAsyncUdpSocket(delegate: self, delegateQueue: DispatchQueue.main)
         socket.setIPv4Enabled(true)
         socket.setIPv6Enabled(false)
-//        let utf8 = "255.255.255.255".toBase64()
-//        let data = Data(base64Encoded: utf8)
-//
-//        do { try socket.bind(toAddress: data!) } catch {}
         
         do { try socket.bind(toPort: port) } catch let error as NSError { print("1 \(String(describing: error))"); print("UDP U pitanju je \(ip) \(port)") }
         do { try socket.beginReceiving() } catch let error as NSError { print("4 \(String(describing: error))"); print("UDP U pitanju je \(ip) \(port)") }
@@ -85,20 +81,5 @@ extension Data {
         var bytesArray = [UInt8](repeating: 0, count: count)
         (self as NSData).getBytes(&bytesArray, length:count * MemoryLayout<UInt8>.size)
         return bytesArray
-    }
-}
-
-extension String {
-    
-    func fromBase64() -> String? {
-        guard let data = Data(base64Encoded: self) else {
-            return nil
-        }
-        
-        return String(data: data, encoding: .utf8)
-    }
-    
-    func toBase64() -> String {
-        return Data(self.utf8).base64EncodedString()
     }
 }

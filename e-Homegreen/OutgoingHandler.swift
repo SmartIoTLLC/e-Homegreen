@@ -352,6 +352,15 @@ extension OutgoingHandler {
         return message
     }
     
+    static func triggerEvent (_ address: [Byte], id: Byte) -> [Byte] {
+        var messageInfo: [Byte] = [id, 0xF1]
+        var message: [Byte] = setupMessage(messageInfo: messageInfo, address: address, CID1: 0x05, CID2: 0x10)
+        for i in 0...messageInfo.count - 1 { message[7+i] = messageInfo[i] }
+        message[message.count-2] = self.getChkByte(byteArray: message)
+        message[message.count-1] = 0x10
+        return message
+    }
+        
     static func cancelEvent (_ address:[Byte], id:Byte) -> [Byte] {
         var messageInfo:[Byte] = [id, 0xEF]
         var message:[Byte] = setupMessage(messageInfo: messageInfo, address: address, CID1: 0x05, CID2: 0x10)
@@ -982,6 +991,47 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
+    
+    // TODO: Set IR Code , Get IR Code, learning
+    static func getIRCode(_ address: [Byte], channel: Byte) -> [Byte] {
+        var messageInfo: [Byte] = [channel]
+        var message: [Byte] = setupMessage(messageInfo: messageInfo, address: address, CID1: 0x09, CID2: 0x01)
+        for i in 0...messageInfo.count - 1 { message[7+i] = messageInfo[i] }
+        message[message.count-2] = getChkByte(byteArray: message)
+        message[message.count-1] = 0x10
+        
+        return message
+    }
+    static func setIRCode(_ address: [Byte], channel: Byte, code: Byte) -> [Byte] {
+        var messageInfo: [Byte] = [channel, code]
+        var message: [Byte] = setupMessage(messageInfo: messageInfo, address: address, CID1: 0x09, CID2: 0x02)
+        for i in 0...messageInfo.count - 1 { message[7+i] = messageInfo[i] }
+        message[message.count-2] = getChkByte(byteArray: message)
+        message[message.count-1] = 0x10
+        
+        return message
+    }
+    
+    static func startLearningIRState(_ address: [Byte], channel: Byte) -> [Byte] {
+        var messageInfo: [Byte] = [channel]
+        var message: [Byte] = setupMessage(messageInfo: messageInfo, address: address, CID1: 0x09, CID2: 0x03)
+        for i in 0...messageInfo.count - 1 { message[7+1] = messageInfo[i] }
+        message[message.count-2] = getChkByte(byteArray: message)
+        message[message.count-1] = 0x10
+        
+        return message
+    }
+    static func endLearningIRState(_ address: [Byte], channel: Byte) -> [Byte] {
+        var messageInfo: [Byte] = [] // 1/0 ?
+        var message: [Byte] = setupMessage(messageInfo: messageInfo, address: address, CID1: 0x09, CID2: 0x04)
+        for i in 0...messageInfo.count - 1 { message[7+i] = messageInfo[i] }
+        message[message.count-2] = getChkByte(byteArray: message)
+        message[message.count-1] = 0x10
+        
+        return message
+    }
+    //
+    
     static func getRunningTime (_ address:[Byte]) -> [Byte] {
         var messageInfo:[Byte] = [0x00]
         var message:[Byte] = setupMessage(messageInfo: messageInfo, address: address, CID1: 0x03, CID2: 0x10)

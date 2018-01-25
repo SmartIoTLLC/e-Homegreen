@@ -119,8 +119,7 @@ class MultiSensorCell: UICollectionViewCell {
             }
         }
         
-        if device.numberOfDevices == 4 { sensorImage.image = device.returnImage(dValue); sensorState.text = returnDigitalInputModeStateinterpreter(device)
-        }
+        if device.numberOfDevices == 4 { sensorImage.image = device.returnImage(dValue); sensorState.text = returnDigitalInputModeStateinterpreter(device) }
         
         if device.numberOfDevices == 3 {
             switch device.channel {

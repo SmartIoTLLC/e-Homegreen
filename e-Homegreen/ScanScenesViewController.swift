@@ -422,8 +422,7 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
             return cell
         }
         
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
-        return cell
+        return UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

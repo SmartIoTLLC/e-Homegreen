@@ -10,8 +10,11 @@ import UIKit
 
 class NavigationTitleView: UIView {
     
+    var clockState: ClockType = .timeAMPM
+    
     let titleView = UILabel()
     let subtitleView = UILabel()
+    let dateFormatter = DateFormatter()
     
     var titleTopConstraint = NSLayoutConstraint()
     var titleLeadingConstraint = NSLayoutConstraint()
@@ -45,11 +48,16 @@ class NavigationTitleView: UIView {
     }
     
     @objc fileprivate func tickTock() {
-        timeLabel.text = DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .short)
+        timeLabel.text = dateFormatter.string(from: Date())
     }
     
     func commonInit() {
-        timeLabel.text = DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .short)
+        setDateFormatter()
+        
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.amSymbol = "AM"
+        dateFormatter.pmSymbol = "PM"
+        timeLabel.text = dateFormatter.string(from: Date())        
         clockTimer     = Foundation.Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(tickTock), userInfo: nil, repeats: true)
         
         self.translatesAutoresizingMaskIntoConstraints = true        
@@ -74,6 +82,10 @@ class NavigationTitleView: UIView {
         timeLabel.font                      = .tahoma(size: 17)
         timeLabel.textColor                 = .white
         timeLabel.adjustsFontSizeToFitWidth = true
+        timeLabel.textAlignment             = .center
+        timeLabel.isUserInteractionEnabled  = true
+        timeLabel.numberOfLines = 2
+        timeLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(setClockType)))
         self.addSubview(timeLabel)
         
         // Clock constraints
@@ -127,6 +139,24 @@ class NavigationTitleView: UIView {
     func setTitleAndSubtitle(_ title:String, subtitle:String){
         titleView.text = title
         subtitleView.text = subtitle
+    }
+    
+    func setDateFormatter() {
+        switch clockState {
+            case .justTime    : dateFormatter.dateFormat = "h:mm"
+            case .timeAMPM    : dateFormatter.dateFormat = "h:mm a"
+            case .dateAndTime : dateFormatter.dateFormat = "dd/MM/yyyy\n h:mm a"
+        }
+    }
+    
+    func setClockType() {
+        switch clockState {
+            case .justTime    : clockState = .timeAMPM
+            case .timeAMPM    : clockState = .dateAndTime
+            case .dateAndTime : clockState = .justTime
+        }
+        setDateFormatter()
+        tickTock()
     }
 
 }

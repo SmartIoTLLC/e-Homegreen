@@ -27,6 +27,7 @@ extension Event {
     @NSManaged var entityLevelId: NSNumber?
     @NSManaged var eventZoneId: NSNumber?
     @NSManaged var eventCategoryId: NSNumber?
+    @NSManaged var useTrigger: Bool
     @NSManaged var gateway: Gateway
 
 }

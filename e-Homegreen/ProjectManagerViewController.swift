@@ -13,12 +13,15 @@ import Zip
 
 class ProjectManagerViewController: UIViewController {
     
-    //let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
+    let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
+    var storedBarButtons: [UIBarButtonItem] = []
     
     @IBOutlet weak var usersTableView: UITableView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
     @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var addBarButton: UIBarButtonItem!
+    @IBOutlet weak var fullscreenBarButton: UIBarButtonItem!
     
     var users:[User] = []
     
@@ -28,8 +31,7 @@ class ProjectManagerViewController: UIViewController {
         
         usersTableView.isUserInteractionEnabled = true
         
-        if !AdminController.shared.isAdminLogged() { addButton.isHidden = true } else { addButton.isHidden = false }
-        
+        toggleAddButtonVisibility()
         reloadData()
         
         changeFullscreenImage(fullscreenButton: fullScreenButton)        
@@ -37,18 +39,23 @@ class ProjectManagerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        //if #available(iOS 11, *) { titleView.layoutIfNeeded() }
-        //titleView.setTitle("Project Manager")
-       // navigationItem.titleView = titleView
-        navigationItem.title = "Project Manager"
+        navigationItem.titleView = titleView
+        titleView.setTitle("Project Manager")
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         
         UIView.hr_setToastThemeColor(color: UIColor.red)
         
-        if !AdminController.shared.isAdminLogged() { addButton.isHidden = true }
-        
+        storedBarButtons = [addBarButton, fullscreenBarButton]
+
         usersTableView.tableFooterView = UIView()
+    }
+    
+    fileprivate func toggleAddButtonVisibility() {
+        if !AdminController.shared.isAdminLogged() {
+            navigationItem.setRightBarButtonItems([fullscreenBarButton], animated: false)
+        } else {
+            navigationItem.setRightBarButtonItems(storedBarButtons, animated: false)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -206,10 +213,8 @@ extension ProjectManagerViewController: UITableViewDelegate, UITableViewDataSour
             cell.setItem(users[indexPath.row], tag: indexPath.row)
             return cell
         }
-        
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
-        cell.textLabel?.text = "dads"
-        return cell
+
+        return UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -22,14 +22,14 @@ class CoreDataController: NSObject {
         var gateways: [Gateway] = []
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Gateway.fetchRequest()
         let compoundPredicate = NSCompoundPredicate(
-            type: NSCompoundPredicate.LogicalType.or,
+            type: .or,
             subpredicates: [
                 NSPredicate(format: "remoteIpInUse == %@ AND remotePort == %@", host, NSNumber(value: port as UInt16)),
                 NSPredicate(format: "localIp == %@ AND localPort == %@", host, NSNumber(value: port as UInt16))
             ]
         )
         fetchRequest.predicate = NSCompoundPredicate(
-            type:NSCompoundPredicate.LogicalType.and,
+            type: .and,
             subpredicates: [
                 NSPredicate(format: "turnedOn == %@", NSNumber(value: true as Bool)),
                 compoundPredicate

@@ -48,10 +48,10 @@ extension EditRemoteViewController {
         
         dismissView.backgroundColor  = .clear
         backView.backgroundColor     = Colors.AndroidGrayColor
-        backView.setGradientBackground()
         let width  = view.frame.width - 32
         let height = CGFloat(46)
         backView.frame.size          = CGSize(width: width, height: height)
+        backView.setGradientBackground()
         backView.center              = view.center
         backView.layer.cornerRadius  = 10
         backView.layer.borderColor   = Colors.MediumGray

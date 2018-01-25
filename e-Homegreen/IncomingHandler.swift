@@ -91,6 +91,11 @@ class IncomingHandler: NSObject {
                 else if messageIsSaltoStatus() { parseMessageSaltoStatus(byteArray) }
                 // MARK: - PC
                 else if messageIsPCStatus(){ parsePCStatus(byteArray) }
+                else if messageIsIRCode() { parseMessageIRCode(byteArray) }
+                else if messageIsSingleIRCode() { parseMessageSingleIRCode(byteArray) }
+                else if messageIsIRLearningState() { parseMessageIRLearningState(byteArray) }
+                else if messageIsIRSerialLibrary() { parseMessageIRSerialLibrary(byteArray) }
+                else if messageIsIRSerialLibraryName() { parseMessageIRSerialLibraryName(byteArray) }
                 else {
                     print("NO IMPLEMENTATION FOR THIS")
                     parseMessageAndPrint(byteArray)
@@ -582,9 +587,7 @@ class IncomingHandler: NSObject {
             device.bateryStatus = Int(bateryStatusByte)
         }
     }
-    
 
-    
     // MARK: - Air Condition functions
     func parseMessageACstatus (_ byteArray:[Byte]) {
         print("AC STATUS - FULL")
@@ -601,14 +604,6 @@ class IncomingHandler: NSObject {
                 if let modeState    = DeviceInfo.modeState[Int(byteArray[10+13*(channel-1)])] { devices[i].modeState = modeState } else { devices[i].modeState = "Off" }
                 if let speed        = DeviceInfo.setSpeed[Int(byteArray[11+13*(channel-1)])] { devices[i].speed = speed } else { devices[i].speed = "Auto" }
                 if let speedState   = DeviceInfo.speedState[Int(byteArray[12+13*(channel-1)])] { devices[i].speedState = speedState } else { devices[i].speedState = "Off" }
-                print("FULL CLIMATE DEVICE STATUS:")
-                print("Device name: ", devices[i].name)
-                print("CurrentValue: ", devices[i].currentValue)
-                print("Fan speed/Speed state :", devices[i].speedState)
-                print("Speed :", devices[i].speed)
-                print("Mode state :", devices[i].modeState)
-                print("Mode: ", devices[i].mode)
-                print("-------------")
 
                 devices[i].coolTemperature   = getNSNumber(for: byteArray[13+13*(channel-1)])
                 devices[i].heatTemperature   = getNSNumber(for: byteArray[14+13*(channel-1)])
@@ -641,15 +636,6 @@ class IncomingHandler: NSObject {
                 if let modeState  = DeviceInfo.modeState[Int(byteArray[10])] { devices[i].modeState = modeState } else { devices[i].modeState = "Off" }
                 if let speed      = DeviceInfo.setSpeed[Int(byteArray[11])] { devices[i].speed = speed } else { devices[i].speed = "Auto" }
                 if let speedState = DeviceInfo.speedState[Int(byteArray[12])] { devices[i].speedState = speedState } else { devices[i].speedState = "Off" }
-                
-                print("SINGLE DEVICE STATUS:")
-                print("Device name: ", devices[i].name)
-                print("CurrentValue: ", devices[i].currentValue)
-                print("Fan speed/Speed state :", devices[i].speedState)
-                print("Speed :", devices[i].speed)
-                print("Mode state :", devices[i].modeState)
-                print("Mode: ", devices[i].mode)
-                print("-------------")
                 
                 devices[i].coolTemperature   = getNSNumber(for: byteArray[13])
                 devices[i].heatTemperature   = getNSNumber(for: byteArray[14])
@@ -703,6 +689,68 @@ class IncomingHandler: NSObject {
             }
             CoreDataController.sharedInstance.saveChanges()
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
+        }
+    }
+    
+    // MARK: - IR
+    func parseMessageSingleIRCode(_ byteArray: [Byte]) {
+        print("IR CODE")
+        parseMessageAndPrint(byteArray)
+        
+        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
+        for i in 0..<devices.count {
+            if isCorrectDeviceAddress(i: i, for: byteArray) && isCorrectDeviceChannel(i: i, byteArray: byteArray) {
+                
+                devices[i].currentValue = getNSNumber(for: byteArray[8])
+                CoreDataController.sharedInstance.saveChanges()
+                // TODO
+            }
+        }
+    }
+    
+    func parseMessageIRCode(_ byteArray: [Byte]) {
+        print("IR CODE")
+        parseMessageAndPrint(byteArray)
+        
+        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
+        for i in 0..<devices.count {
+            if isCorrectDeviceAddress(i: i, for: byteArray) {
+                
+                // TODO
+            }
+        }
+    }
+    
+    func parseMessageIRLearningState(_ byteArray: [Byte]) {
+        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
+        print("IR LEARNING STATE")
+        parseMessageAndPrint(byteArray)
+        for i in 0..<devices.count {
+            if isCorrectDeviceAddress(i: i, for: byteArray) && isCorrectDeviceChannel(i: i, byteArray: byteArray) {
+                // TODO
+            }
+        }
+    }
+    func parseMessageIRSerialLibrary(_ byteArray: [Byte]) {
+        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
+        print("IR SERIAL LIBRARY")
+        parseMessageAndPrint(byteArray)
+        
+        for i in 0..<devices.count {
+            if isCorrectDeviceAddress(i: i, for: byteArray) {
+                // TODO
+            }
+        }
+    }
+    
+    func parseMessageIRSerialLibraryName(_ byteArray: [Byte]) {
+        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
+        print("IR SERIAL LIBRARY NAME")
+        parseMessageAndPrint(byteArray)
+        for i in 0..<devices.count {
+            if isCorrectDeviceAddress(i: i, for: byteArray) {
+                // TODO
+            }
         }
     }
     
@@ -1409,4 +1457,26 @@ extension IncomingHandler {
         if byteArray[5] == 0xFA && byteArray[6] == 0x01 { return true }
         return false
     }
+    // IR
+    func messageIsIRCode() -> Bool {
+        if byteArray[5] == 0xF9 && byteArray[6] == 0x01 { return true }
+        return false
+    }
+    func messageIsSingleIRCode() -> Bool {
+        if byteArray[5] == 0xF9 && byteArray[6] == 0x02 { return true }
+        return false
+    }
+    func messageIsIRLearningState() -> Bool {
+        if byteArray[5] == 0xF9 && (byteArray[6] == 0x03 || byteArray[6] == 0x04) { return true }
+        return false
+    }
+    func messageIsIRSerialLibrary() -> Bool {
+        if byteArray[5] == 0xF9 && (byteArray[6] == 0x0A || byteArray[6] == 0x0B) { return true }
+        return false
+    }
+    func messageIsIRSerialLibraryName() -> Bool {
+        if byteArray[5] == 0xF9 && (byteArray[6] == 0x0C || byteArray[6] == 0x0D) { return true }
+        return false
+    }
+    
 }

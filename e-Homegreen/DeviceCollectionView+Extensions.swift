@@ -84,6 +84,8 @@ extension DevicesViewController: UICollectionViewDataSource {
                     lpgr.minimumPressDuration = 0.5
                     lpgr.delegate = self
                     
+                    cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap2(_:))))
+                    
                     cell.picture.addGestureRecognizer(lpgr)
                     cell.picture.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.oneTap(_:))))
                 }
@@ -241,8 +243,7 @@ extension DevicesViewController {
         
         let address = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
         
-        if controlType == ControlType.Dimmer { SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway) }
-        if controlType == ControlType.Relay { SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway) }
+        if controlType == ControlType.Dimmer || controlType == ControlType.Relay { SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway) }
         if controlType == ControlType.Climate { SendingHandler.sendCommand(byteArray: OutgoingHandler.getACStatus(address), gateway: gateway) }
         
         if controlType == ControlType.Sensor || controlType == ControlType.IntelligentSwitch || controlType == ControlType.Gateway {

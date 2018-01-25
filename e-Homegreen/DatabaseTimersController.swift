@@ -48,8 +48,10 @@ class DatabaseTimersController: NSObject {
 
             let compoundPredicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: predicateArrayOr)
 
-            var predicateArrayAnd:[NSPredicate] = [NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool))]
-            predicateArrayAnd.append(NSPredicate(format: "gateway.location.user == %@", user))
+            var predicateArrayAnd = [
+                NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool)),
+                NSPredicate(format: "gateway.location.user == %@", user)
+            ]
             
             if filterParametar.location != "All" { predicateArrayAnd.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location)) }
             
@@ -118,7 +120,7 @@ class DatabaseTimersController: NSObject {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Timer.fetchRequest()
 
         fetchRequest.predicate = NSCompoundPredicate(
-            type: NSCompoundPredicate.LogicalType.and,
+            type: .and,
             subpredicates: [NSPredicate(format: "id == %@", id)]
         )
         

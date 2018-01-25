@@ -26,6 +26,8 @@ class EventParametarVC: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var isBroadcast: UISwitch!
     @IBOutlet weak var isLocalcast: UISwitch!
+    @IBOutlet weak var useTrigger: UISwitch!
+    
     @IBAction func btnSave(_ sender: AnyObject) {
         save()
     }
@@ -56,12 +58,13 @@ extension EventParametarVC {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissViewController))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        isBroadcast.tag = 100
+        isBroadcast.tag  = 100
         isBroadcast.isOn = event!.isBroadcast.boolValue
         isBroadcast.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
-        isLocalcast.tag = 200
+        isLocalcast.tag  = 200
         isLocalcast.isOn = event!.isLocalcast.boolValue
         isLocalcast.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
+        useTrigger.isOn = event!.useTrigger
     }
     
     func dismissViewController () {
@@ -80,6 +83,7 @@ extension EventParametarVC {
     fileprivate func save() {
         if isBroadcast.isOn { event?.isBroadcast = true } else { event?.isBroadcast = false }
         if isLocalcast.isOn { event?.isLocalcast = true } else { event?.isLocalcast = false }
+        if useTrigger.isOn { event?.useTrigger = true } else { event?.useTrigger = false }
         
         CoreDataController.sharedInstance.saveChanges()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshEvent), object: self, userInfo: nil)

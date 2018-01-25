@@ -454,6 +454,7 @@ enum FilterEnumeration:String {
     case Scenes = "Scenes" //prepravio
     case Events = "Events" //prepravio
     case Remote = "Remote"
+    case Media = "Media"
     case Sequences = "Sequences" //prepravio
     case Timers = "Timers" //prepravio
     case Flags = "Flags" //prepravio
@@ -464,7 +465,7 @@ enum FilterEnumeration:String {
     case PCControl = "PCControl"
     case Users = "Users"
     case Database = "Database"
-    static let allFilters = [Device, Scenes, Events, Remote, Sequences, Timers, Flags, Chat, Security, Surveillance, Energy, PCControl, Users, Database]
+    static let allFilters = [Device, Scenes, Events, Remote, Media, Sequences, Timers, Flags, Chat, Security, Surveillance, Energy, PCControl, Users, Database]
 }
 
 //MARK: Notification constants

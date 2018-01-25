@@ -1464,9 +1464,11 @@
                         <outlet property="bottomView" destination="H0t-8Z-WMG" id="7wb-RF-i3T"/>
                         <outlet property="deviceCollectionView" destination="HnO-ii-vqM" id="7WQ-ad-oK8"/>
                         <outlet property="fullScreenButton" destination="usE-1q-giC" id="rYG-if-ssz"/>
+                        <outlet property="fullscreenBarButton" destination="gdx-Fo-YqH" id="w7d-Bu-kIw"/>
                         <outlet property="iBeaconBarButton" destination="y9w-yv-KYl" id="cX0-vW-H8E"/>
                         <outlet property="iBeaconButton" destination="Pob-z5-wEG" id="fdQ-4h-dyR"/>
                         <outlet property="menuButton" destination="mkr-Hy-meR" id="C6l-cK-dh4"/>
+                        <outlet property="refreshBarButton" destination="EbQ-lT-RIa" id="XIj-27-4Dj"/>
                         <outlet property="selectLabel" destination="DeE-69-Kcm" id="LVb-Ws-IWV"/>
                         <outlet property="zoneAndCategorySlider" destination="3Em-BI-Ix1" id="u7Z-uh-KIu"/>
                         <outlet property="zoneCategoryControl" destination="3An-Xt-4si" id="LER-ft-bvU"/>

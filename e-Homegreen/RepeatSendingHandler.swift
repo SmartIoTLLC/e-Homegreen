@@ -60,15 +60,18 @@ class RepeatSendingHandler: NSObject {
     
     fileprivate func getDeviceStatus(controlType: String, gateway: Gateway) {
         let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(Int(device.address))]
+        let channel = device.channel.intValue
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             
-            if controlType == ControlType.Dimmer ||
-                controlType == ControlType.Relay ||
-                controlType == ControlType.Curtain {
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway)
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
-            }            
+            if controlType == ControlType.Dimmer || controlType == ControlType.Relay { SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway) }
+            if controlType == ControlType.Climate { SendingHandler.sendCommand(byteArray: OutgoingHandler.getACStatus(address), gateway: gateway) }
             
+            if controlType == ControlType.Sensor || controlType == ControlType.IntelligentSwitch || controlType == ControlType.Gateway {
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getSensorState(address), gateway: gateway)
+            }
+            
+            if controlType == ControlType.Curtain { SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurtainStatus(address), gateway: gateway) }
+            if controlType == ControlType.SaltoAccess { SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessState(address, lockId: channel), gateway: gateway) }
         }
 
     }

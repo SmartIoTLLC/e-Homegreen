@@ -64,12 +64,21 @@ class FilterController: NSObject {
         
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         
-        if AdminController.shared.isAdminLogged() { if let user = DatabaseUserController.shared.getOtherUser() { fetchRequest.predicate = NSPredicate(format: "user == %@", user) }
-        } else { if let user = DatabaseUserController.shared.getLoggedUser() { fetchRequest.predicate = NSPredicate(format: "user == %@", user) } }
+        if AdminController.shared.isAdminLogged() {
+            if let user = DatabaseUserController.shared.getOtherUser() {
+                fetchRequest.predicate = NSPredicate(format: "user == %@", user) }
+            
+        } else { if let user = DatabaseUserController.shared.getLoggedUser() {
+            fetchRequest.predicate = NSPredicate(format: "user == %@", user) }
+        }
         
         do {
-            let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Location]
-            return results
+            if let moc = appDel.managedObjectContext {
+                if let results = try moc.fetch(fetchRequest) as? [Location] {
+                    return results
+                }
+            }
+            
         } catch {}
         
         return []
@@ -79,18 +88,22 @@ class FilterController: NSObject {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Zone.fetchRequest()
         let sortDescriptors = NSSortDescriptor(key: "orderId", ascending: true)
         
-        var predicateArray:[NSPredicate] = []
-        predicateArray.append(NSPredicate(format: "level == %@", NSNumber(value: 0 as Int)))
-        predicateArray.append(NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool)))
-        predicateArray.append(NSPredicate(format: "location == %@", location))
+        let predicateArray = [
+            NSPredicate(format: "level == %@", NSNumber(value: 0 as Int)),
+            NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool)),
+            NSPredicate(format: "location == %@", location)
+        ]
         
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
         fetchRequest.sortDescriptors = [sortDescriptors]
         fetchRequest.predicate = compoundPredicate
         
         do {
-            let results = try appDel.managedObjectContext!.fetch(fetchRequest) as! [Zone]
-            return results
+            if let moc = appDel.managedObjectContext {
+                if let results = try moc.fetch(fetchRequest) as? [Zone] {
+                    return results
+                }
+            }            
         } catch {}
         
         return[]

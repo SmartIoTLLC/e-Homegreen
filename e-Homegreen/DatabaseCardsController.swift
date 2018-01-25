@@ -23,7 +23,7 @@ class DatabaseCardsController: NSObject {
         
         let predicateArray = [NSPredicate(format: "gateway == %@", gateway.objectID)]
         
-        fetchRequest.predicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
         
         do {
             if let moc = appDel.managedObjectContext {

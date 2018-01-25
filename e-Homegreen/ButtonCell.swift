@@ -95,13 +95,19 @@ extension ButtonCell {
         var color: UIColor!
         switch button.buttonState! {
             case ButtonState.visible, ButtonState.disable:
-                switch button.buttonColor! {
-                case ButtonColor.red    : color = .red
-                case ButtonColor.gray   : color = Colors.AndroidGrayColor
-                case ButtonColor.green  : color = .green
-                case ButtonColor.blue   : color = .blue
-                default                 : color = .clear
+                switch button.buttonInternalType! {
+                    case ButtonInternalType.image   : color = .clear
+                    case ButtonInternalType.imageButton, ButtonInternalType.regular:
+                        switch button.buttonColor! {
+                            case ButtonColor.red    : color = .red
+                            case ButtonColor.gray   : color = Colors.AndroidGrayColor
+                            case ButtonColor.green  : color = .green
+                            case ButtonColor.blue   : color = .blue
+                            default                 : color = .clear
+                        }
+                    default: color = .clear
                 }
+
             default: color = .clear
         }
         
@@ -196,20 +202,20 @@ extension ButtonCell {
     
     // MARK: - Button Internal Type
     fileprivate func setupImageButton() {
-        setButtonColor()
         setShadows()
+        setButtonColor()
         scaleAndSetButtonImage()
     }
     
     fileprivate func setupImage() {
-        setButtonColor()
         setShadows()
+        setButtonColor()
         scaleAndSetButtonImage()
     }
     
     fileprivate func setupRegular() {
-        setButtonColor()
         setShadows()
+        setButtonColor()
         realButton.setImage(nil, for: UIControlState())
     }
     
@@ -297,10 +303,13 @@ extension ButtonCell {
     
     fileprivate func addGradient(color: UIColor) {
         let colors   = [color.withAlphaComponent(0.5).cgColor, color.cgColor]
-        let bounds = CGRect(x: 0, y: 0, width: self.bounds.width + 2000, height: self.bounds.height + 2000)
+        let bounds = CGRect(x: 0, y: 0, width: self.bounds.width + 2000, height: self.bounds.height)
         let gradient = CAGradientLayer.gradientLayerForBounds(bounds, colors: colors)
         backgroundLayer          = gradient
         backgroundLayer.position = realButton.center
+//        var index: UInt32 = 0
+//        if needsShadow { index = 1 }
+//        realButton.layer.insertSublayer(backgroundLayer, at: index)
         realButton.layer.insertSublayer(backgroundLayer, above: shadowLayer)
     }
     

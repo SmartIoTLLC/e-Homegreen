@@ -656,8 +656,10 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="addBarButton" destination="wNx-TB-0Sy" id="2aV-kl-TVX"/>
                         <outlet property="addButton" destination="Wce-dC-0AE" id="Q7k-cA-x8Y"/>
                         <outlet property="fullScreenButton" destination="bSc-SA-awB" id="yHB-by-Q4G"/>
+                        <outlet property="fullscreenBarButton" destination="ehp-ar-Urw" id="6QV-dD-qGB"/>
                         <outlet property="menuButton" destination="JNt-6f-ErI" id="JWe-jn-NZK"/>
                         <outlet property="usersTableView" destination="ja3-vl-DFp" id="ANF-6s-O6a"/>
                         <segue destination="LmO-Xo-G6j" kind="push" identifier="settings" id="qkw-4w-UJ5"/>

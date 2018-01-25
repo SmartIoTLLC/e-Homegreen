@@ -26,7 +26,7 @@ class DatabaseHandler: NSObject {
                 NSPredicate(format: "id == %@", NSNumber(value: id as Int)) ,
                 NSPredicate(format: "location == %@", location)
             ]
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+            let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
             
             do {
@@ -51,7 +51,7 @@ class DatabaseHandler: NSObject {
             NSPredicate(format: "id == %@", NSNumber(value: id as Int)),
             NSPredicate(format: "location == %@", location)
         ]
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         
         do {
@@ -80,7 +80,7 @@ class DatabaseHandler: NSObject {
                 NSPredicate(format: "id == %@", NSNumber(value: id as Int)),
                 NSPredicate(format: "location == %@", location)
             ]
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+            let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
             
             do {
@@ -103,7 +103,7 @@ class DatabaseHandler: NSObject {
             NSPredicate(format: "id == %@", NSNumber(value: id as Int)),
             NSPredicate(format: "location == %@", location)
         ]
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         
         do {
@@ -124,7 +124,7 @@ class DatabaseHandler: NSObject {
             NSPredicate(format: "id == %@", NSNumber(value: id as Int)),
             NSPredicate(format: "location == %@", location)
         ]
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         
         do {
@@ -146,7 +146,7 @@ class DatabaseHandler: NSObject {
             NSPredicate(format: "name == %@", name),
             NSPredicate(format: "location == %@", location)
         ]
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         
         do {
@@ -168,7 +168,7 @@ class DatabaseHandler: NSObject {
             NSPredicate(format: "name == %@", name),
             NSPredicate(format: "location == %@", location)
         ]
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         
         do {

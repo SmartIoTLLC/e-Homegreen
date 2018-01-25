@@ -53,8 +53,7 @@ class ScenesViewController: PopoverVC {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
-        scrollView.setContentOffset(bottomOffset, animated: false)
+        setScrollViewBottomOffset(scrollView: &scrollView)
     }
     
     override func nameAndId(_ name : String, id:String){

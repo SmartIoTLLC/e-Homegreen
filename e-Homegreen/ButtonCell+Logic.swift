@@ -24,13 +24,19 @@ extension ButtonCell {
         // TODO: ubaciti unetu adresu umesto ove sa gatewaya
         if let scene = self.scene {
             
-            if scene.isBroadcast.boolValue {
-                address = [0xFF, 0xFF, 0xFF]
-            } else if scene.isLocalcast.boolValue {
-                address = [getByte(scene.gateway.addressOne), getByte(scene.gateway.addressTwo), 0xFF]
+            if button.addressOne != nil && button.addressTwo != nil && button.addressThree != nil {
+                address = [getByte(button.addressOne!), getByte(button.addressTwo!), getByte(button.addressThree!)]
             } else {
-                address = [getByte(scene.gateway.addressOne), getByte(scene.gateway.addressTwo), getByte(scene.address)]
+                if scene.isBroadcast.boolValue {
+                    address = [0xFF, 0xFF, 0xFF]
+                } else if scene.isLocalcast.boolValue {
+                    address = [getByte(scene.gateway.addressOne), getByte(scene.gateway.addressTwo), 0xFF]
+                } else {
+                    address = [getByte(scene.gateway.addressOne), getByte(scene.gateway.addressTwo), getByte(scene.address)]
+                }
             }
+            
+            
             
             if let sceneId = button.sceneId as? Int {
                 if sceneId >= 0 && sceneId <= 32767 { SendingHandler.sendCommand(byteArray: OutgoingHandler.setScene(address, id: sceneId), gateway: scene.gateway) }
@@ -48,7 +54,7 @@ extension ButtonCell {
     }
     
     func formatHexStringToByteArray(hex: String?) -> [Byte] {
-        var byteArray: [Byte]     = []
+        var byteArray: [Byte] = []
         if let hex = hex {
             let stringArray: [String] = hex.split(separator: " ").map(String.init)
             for string in stringArray {
@@ -64,9 +70,22 @@ extension ButtonCell {
     
     func sendHexCommand() {
         if let locationName = button.remote?.location?.name {
+            if let sockets = (UIApplication.shared.delegate as? AppDelegate)?.inOutSockets {
+                sockets.forEach({ (socket) in
+                    socket.send("")
+                })
+            }
             let gateways = DatabaseGatewayController.shared.getGatewayByLocation(locationName)
             
             for gateway in gateways { SendingHandler.sendCommand(byteArray: hex!, gateway: gateway) }
+        }
+    }
+    
+    func sendIRCommand() {
+        if let device = irDevice {
+            let gateway = device.gateway
+            let address = [getByte(gateway.addressOne), getByte(gateway.addressTwo), getByte(device.address)]
+           // SendingHandler.sendCommand(byteArray: OutgoingHandler.ir, gateway: <#T##Gateway#>)
         }
     }
     
@@ -74,11 +93,10 @@ extension ButtonCell {
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.SendRemoteCommand), object: nil)
         
         switch button.buttonType! {
-            
-        case ButtonType.sceneButton : sendSceneCommand()
-        case ButtonType.irButton    : break
-        case ButtonType.hexButton   : sendHexCommand()
-        default: break
+            case ButtonType.sceneButton : sendSceneCommand()
+            case ButtonType.irButton    : break
+            case ButtonType.hexButton   : sendHexCommand()
+            default: break
         }
     }
     

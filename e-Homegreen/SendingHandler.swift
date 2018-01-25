@@ -37,7 +37,6 @@ class SendingHandler {
     }
     
     static func sendCommand(byteArray:[UInt8], ip:String, port:UInt16) {
-        //print("Command sent: \(byteArray)")
         let appDel:AppDelegate = UIApplication.shared.delegate as! AppDelegate
        
         for inOutSocket in appDel.inOutSockets {
@@ -49,7 +48,6 @@ class SendingHandler {
         //  Send via local ip
         let io = InOutSocket(port: port)
         io.sendByte(appDel.returnIpAddress(ip), arrayByte:byteArray)
-//        io.socket.close()
     }
     
     static func sendCommand(gateway: Gateway, byteArray: [Byte], isLocal: Bool) {
@@ -57,8 +55,10 @@ class SendingHandler {
         var ipInUse = ""
         if isLocal { port = UInt16(Int(gateway.localPort)); ipInUse = gateway.localIp } else { port = UInt16(Int(gateway.remotePort)); ipInUse = gateway.remoteIpInUse }
         
-        for inOutSocket in (UIApplication.shared.delegate as! AppDelegate).inOutSockets {
-            if inOutSocket.port == port { inOutSocket.sendByte(ipInUse, arrayByte: byteArray); return }
+        if let sockets = (UIApplication.shared.delegate as? AppDelegate)?.inOutSockets {
+            sockets.forEach({ (socket) in
+                if socket.port == port { socket.sendByte(ipInUse, arrayByte: byteArray); return }
+            })
         }
     }
 

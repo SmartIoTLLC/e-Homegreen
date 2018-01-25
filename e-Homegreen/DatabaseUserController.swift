@@ -78,7 +78,7 @@ class DatabaseUserController: NSObject {
             NSPredicate(format: "password == %@", password)
         ]
         
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
             if let moc = managedContext {

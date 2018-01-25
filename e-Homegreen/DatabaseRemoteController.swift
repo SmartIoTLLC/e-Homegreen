@@ -16,9 +16,7 @@ public class DatabaseRemoteController: NSObject {
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     
     func getRemotes(from location: Location) -> [Remote] {
-        if let remotesSet = location.remotes {
-            var remotes: [Remote] = []
-            for remote in remotesSet { remotes.append(remote as! Remote) }
+        if let remotes = location.remotes?.allObjects as? [Remote] {
             return remotes
         }
         return []

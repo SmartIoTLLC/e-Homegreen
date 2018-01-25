@@ -71,6 +71,8 @@ class SurveillenceViewController: PopoverVC {
         scrollView.setContentOffset(bottomOffset, animated: false)
     }
     
+
+    
     override func viewWillLayoutSubviews() {
         if scrollView.contentOffset.y > 0 && scrollView.contentOffset.y < scrollView.bounds.size.height {
             let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)

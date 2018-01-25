@@ -20,9 +20,6 @@ class SuraPlayerViewController: UIViewController {
     var availableSurasList = [Sura]()
     var currentSura: Sura!
     
-    var player: AVPlayer?
-    var suraIsPlaying: Bool = false
-    
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     @IBOutlet weak var radioBar: UIView!
     
@@ -137,33 +134,23 @@ extension SuraPlayerViewController {
 // MARK: - Logic
 extension SuraPlayerViewController {
     func pauseSura() {
-        player?.pause()
+        AudioPlayer.sharedInstance.pauseAudio()
     }
     
     func stopSura() {
-        player?.pause()
-        suraIsPlaying = false
+        AudioPlayer.sharedInstance.stopAudio()
     }
     
     func playSura() {
         suraTitle.text = currentSura.name
-        
-        if !suraIsPlaying {
-            if let server = reciter.server {
-                if let id = currentSura.id {
-                    let urlString = server + "/" + formattedSuraID(id: id) + ".mp3"
-                    print("URL: ", urlString)
-                    if let url = URL(string: urlString) {
-                        player = AVPlayer(url: url)
-                        player?.volume = 1.0
-                        player?.play()
-                        suraIsPlaying  = true
-                    }
+        if let server = reciter.server {
+            if let id = currentSura.id {
+                let urlString = server + "/" + formattedSuraID(id: id) + ".mp3"
+                print("URL: ", urlString)
+                if let url = URL(string: urlString) {
+                    AudioPlayer.sharedInstance.playAudioFrom(url: url)
                 }
             }
-            
-        } else {
-            player?.play()
         }
     }
     
@@ -208,7 +195,6 @@ extension SuraPlayerViewController {
     }
     
     fileprivate func didSelectSura(at indexPath: IndexPath) {
-        suraIsPlaying = false
         currentSura   = availableSurasList[indexPath.row]
         playSura()
     }

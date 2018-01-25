@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-import AVFoundation
 
 class RadioViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -19,9 +18,6 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
     let context = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     var radioStations = [Radio]()
     var currentStation: Radio!
-    var radioIsPlaying: Bool = false
-    
-    var player: AVPlayer?
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullscreenButton: UIButton!
@@ -125,32 +121,22 @@ extension RadioViewController {
     
     @objc fileprivate func playRadio() {
         radioTitle.text = currentStation.stationName
-        
-        if !radioIsPlaying {
-            if let urlString = currentStation.url {
-                if let url = URL(string: urlString) {
-                    player = AVPlayer(url: url)
-                    player?.volume = 1.0
-                    player?.play()
-                    radioIsPlaying = true
-                }
+        if let urlString = currentStation.url {
+            if let url = URL(string: urlString) {
+                AudioPlayer.sharedInstance.playAudioFrom(url: url)
             }
-        } else {
-            player?.play()
         }
     }
     
     @objc fileprivate func pauseRadio() {
-        player?.pause()
+        AudioPlayer.sharedInstance.pauseAudio()
     }
     
     @objc fileprivate func stopRadio() {
-        player?.pause()
-        radioIsPlaying = false
+        AudioPlayer.sharedInstance.stopAudio()
     }
     
     fileprivate func didSelectStation(at indexPath: IndexPath) {
-        radioIsPlaying = false
         currentStation = radioStations[indexPath.row]
         playRadio()
     }

@@ -166,7 +166,7 @@ class DatabaseFilterController: NSObject {
                 NSPredicate(format: "isDefault == %@", NSNumber(value: false as Bool))
             ]
             
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+            let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
             
             do {
@@ -191,7 +191,7 @@ class DatabaseFilterController: NSObject {
                 NSPredicate(format: "isDefault == %@", NSNumber(value: true as Bool))
                 ]
             
-            let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+            let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
             fetchRequest.predicate = compoundPredicate
             
             do {
