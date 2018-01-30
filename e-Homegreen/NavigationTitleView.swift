@@ -11,6 +11,7 @@ class NavigationTitleView: UIView {
     
     let titleView = UILabel()
     let subtitleView = UILabel()
+    let dateFormatter = DateFormatter()
     
     var titleTopConstraint = NSLayoutConstraint()
     var titleLeadingConstraint = NSLayoutConstraint()
@@ -44,11 +45,15 @@ class NavigationTitleView: UIView {
     }
     
     @objc fileprivate func tickTock() {
-        timeLabel.text = DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .short)
+        timeLabel.text = dateFormatter.string(from: Date())
     }
     
     func commonInit() {
-        timeLabel.text = DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .short)
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "h:mm a"
+        dateFormatter.amSymbol = "AM"
+        dateFormatter.pmSymbol = "PM"
+        timeLabel.text = dateFormatter.string(from: Date())
         clockTimer     = Foundation.Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(tickTock), userInfo: nil, repeats: true)
         
         self.translatesAutoresizingMaskIntoConstraints = true

@@ -61,14 +61,15 @@ class DevicesViewController: PopoverVC{
     @IBOutlet weak var zoneCategoryControl: UISegmentedControl!
     @IBOutlet weak var zoneAndCategorySlider: UISlider!
     @IBOutlet weak var iBeaconBarButton: UIBarButtonItem!
-    
+    @IBOutlet weak var fullscreenBarButton: UIBarButtonItem!
+    @IBOutlet weak var refreshBarButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         appDel = UIApplication.shared.delegate as! AppDelegate
         
         setupViews()
-        
+
         NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerDevices), object: nil)
     }
     
@@ -755,22 +756,22 @@ extension DevicesViewController {
     
     fileprivate func toggleIBeaconButtonVisibility() {
         if let user = DatabaseUserController.shared.logedUserOrAdmin() {
-            
+
             var shouldHide: Bool = true
-            
-            navigationItem.setRightBarButton(storedIBeaconBarButtonItem, animated: true)
-            
+
+            navigationItem.setRightBarButtonItems([fullscreenBarButton, refreshBarButton, storedIBeaconBarButtonItem], animated: false)
+
             if let locations = user.locations?.allObjects as? [Location] {
                 var pickedLocation: Location?
-                
+
                 locations.forEach({ (location) in if location.name == filterParametar.location { pickedLocation = location } })
-                
+
                 if let location = pickedLocation {
                     if let zones = location.zones?.allObjects as? [Zone] {
                         var pickedZone: Zone?
-                        
+
                         zones.forEach({ (zone) in if zone.name == filterParametar.zoneName { pickedZone = zone } })
-                        
+
                         if let zone = pickedZone {
                             if let _ = zone.iBeacon {
                                 shouldHide = false
@@ -779,7 +780,7 @@ extension DevicesViewController {
                     }
                 }
             }
-            if shouldHide { navigationItem.setRightBarButton(nil, animated: false) }
+            if shouldHide { navigationItem.setRightBarButtonItems([fullscreenBarButton, refreshBarButton], animated: false) }
         }
     }
     

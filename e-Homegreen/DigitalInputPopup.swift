@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class DigitalInputPopup: PopoverVC {
     
@@ -21,6 +22,7 @@ class DigitalInputPopup: PopoverVC {
     @IBOutlet weak var btnImages: UIButton!
     @IBOutlet weak var changeDeviceInputMode: CustomGradientButton!
     
+    var deviceShouldResetImages: Bool = false
     var button:UIButton!
     var level:Zone?
     var zoneSelected:Zone?
@@ -105,7 +107,20 @@ class DigitalInputPopup: PopoverVC {
         btnCategory.tag = 3
         btnControlType.tag = 4
         changeDeviceInputMode.tag = 5
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleResetImages(_:)), name: .deviceShouldResetImages, object: nil)
     }
+    
+    func handleResetImages(_ notification: Notification) {
+        if let object = notification.object as? [String:NSManagedObjectID] {
+            if let id = object["deviceId"] {
+                if id == device.objectID {
+                    deviceShouldResetImages = true
+                }
+            }
+        }
+    }
+    
     override func nameAndId(_ name: String, id: String) {
         
         switch button.tag{
@@ -235,7 +250,9 @@ class DigitalInputPopup: PopoverVC {
             }else{
                 device.controlType = editedDevice!.controlType
             }
-            device.resetImages(appDel.managedObjectContext!)
+            if deviceShouldResetImages { device.resetImages(appDel.managedObjectContext!) }
+            deviceShouldResetImages = false
+            
             device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
             CoreDataController.sharedInstance.saveChanges()
             self.delegate?.saveClicked()

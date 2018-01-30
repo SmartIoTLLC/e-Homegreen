@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 protocol DevicePropertiesDelegate {
     func saveClicked()
@@ -27,6 +28,7 @@ class RelayParametersCell: PopoverVC {
     @IBOutlet weak var switchAllowCurtainControl: UISwitch!
     @IBOutlet weak var txtCurtainGroupId: UITextField!
     
+    var deviceShouldResetImages: Bool = false
     var button:UIButton!
     var level:Zone?
     var zoneSelected:Zone?
@@ -129,7 +131,19 @@ class RelayParametersCell: PopoverVC {
         NotificationCenter.default.addObserver(self, selector: #selector(RelayParametersCell.keyboardWillShow(_:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(RelayParametersCell.keyboardWillHide(_:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleResetImages(_:)), name: .deviceShouldResetImages, object: nil)
     }
+    
+    func handleResetImages(_ notification: Notification) {
+        if let object = notification.object as? [String:NSManagedObjectID] {
+            if let id = object["deviceId"] {
+                if id == device.objectID {
+                    deviceShouldResetImages = true
+                }
+            }
+        }
+    }
+    
     override func nameAndId(_ name: String, id: String) {
         
         switch button.tag{
@@ -267,7 +281,9 @@ class RelayParametersCell: PopoverVC {
             }
             device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
             
-            device.resetImages(appDel.managedObjectContext!)
+            if deviceShouldResetImages { device.resetImages(appDel.managedObjectContext!) }
+            deviceShouldResetImages = false
+            
             CoreDataController.sharedInstance.saveChanges()
             
             self.dismiss(animated: true, completion: nil)
@@ -294,10 +310,6 @@ class RelayParametersCell: PopoverVC {
         UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
-//    func keyboardWillHide(_ notification: Notification) {
-//        self.centerY.constant = 0
-//        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
-//    }
 }
 
 extension RelayParametersCell : UITextFieldDelegate{

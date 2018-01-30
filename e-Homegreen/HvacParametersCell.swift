@@ -45,6 +45,7 @@ class HvacParametersCell: PopoverVC {
     @IBOutlet weak var switchMed: UISwitch!
     @IBOutlet weak var switchAutoSpeed: UISwitch!
     
+    var deviceShouldResetImages: Bool = false
     var button:UIButton!
     
     var level:Zone?
@@ -179,7 +180,20 @@ class HvacParametersCell: PopoverVC {
         btnZone.tag = 2
         btnCategory.tag = 3
         btnControlType.tag = 4
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleResetImages(_:)), name: .deviceShouldResetImages, object: nil)
     }
+    
+    func handleResetImages(_ notification: Notification) {
+        if let object = notification.object as? [String:NSManagedObjectID] {
+            if let id = object["deviceId"] {
+                if id == device.objectID {
+                    deviceShouldResetImages = true
+                }
+            }
+        }
+    }
+    
     override func nameAndId(_ name: String, id: String) {
         
         switch button.tag{
@@ -286,7 +300,9 @@ class HvacParametersCell: PopoverVC {
             device.medSpeedVisible = switchMed.isOn as NSNumber?
             device.autoSpeedVisible = switchAutoSpeed.isOn as NSNumber?
             
-            device.resetImages(appDel.managedObjectContext!)
+            if deviceShouldResetImages { device.resetImages(appDel.managedObjectContext!) }
+            deviceShouldResetImages = false
+            
             CoreDataController.sharedInstance.saveChanges()
             
             // Why was the next line commented out?

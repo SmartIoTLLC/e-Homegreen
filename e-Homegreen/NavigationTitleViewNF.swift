@@ -10,8 +10,8 @@ import Foundation
 class NavigationTitleViewNF: UIView {
     
     let titleView = UILabel()
-    
     let timeLabel = UILabel()
+    let dateFormatter = DateFormatter()
     
     var clockTimer: Foundation.Timer!
     
@@ -34,11 +34,15 @@ class NavigationTitleViewNF: UIView {
     }
     
     @objc fileprivate func tickTock() {
-        timeLabel.text = DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .short)
+        timeLabel.text = dateFormatter.string(from: Date())
     }
     
     func commonInit() {
-        timeLabel.text = DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .short)
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "h:mm a"
+        dateFormatter.amSymbol = "AM"
+        dateFormatter.pmSymbol = "PM"
+        timeLabel.text = dateFormatter.string(from: Date())
         clockTimer     = Foundation.Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(tickTock), userInfo: nil, repeats: true)
         
         self.translatesAutoresizingMaskIntoConstraints = true

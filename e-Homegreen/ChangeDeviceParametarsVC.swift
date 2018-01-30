@@ -28,6 +28,7 @@ class ChangeDeviceParametarsVC: PopoverVC {
     @IBOutlet weak var btnCategory: UIButton!
     @IBOutlet weak var btnImages: UIButton!
     
+    var deviceShouldResetImages: Bool = false
     var button:UIButton!
     
     var level:Zone?
@@ -99,7 +100,20 @@ class ChangeDeviceParametarsVC: PopoverVC {
         btnZone.tag = 2
         btnCategory.tag = 3
         btnControlType.tag = 4
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleResetImages(_:)), name: .deviceShouldResetImages, object: nil)
     }
+    
+    func handleResetImages(_ notification: Notification) {
+        if let object = notification.object as? [String:NSManagedObjectID] {
+            if let id = object["deviceId"] {
+                if id == device.objectID {
+                    deviceShouldResetImages = true
+                }
+            }
+        }
+    }
+    
     override func nameAndId(_ name: String, id: String) {
         
         switch button.tag{
@@ -221,7 +235,9 @@ class ChangeDeviceParametarsVC: PopoverVC {
             device.controlType = editedDevice!.controlType
             device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
             CoreDataController.sharedInstance.saveChanges()
-            device.resetImages(appDel.managedObjectContext!)
+            if deviceShouldResetImages { device.resetImages(appDel.managedObjectContext!) }
+            deviceShouldResetImages = false
+            
             self.delegate?.saveClicked()
             self.dismiss(animated: true, completion: nil)
         }

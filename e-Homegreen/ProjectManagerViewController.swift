@@ -18,7 +18,13 @@ class ProjectManagerViewController: UIViewController {
     @IBOutlet weak var fullScreenButton: UIButton!
     @IBOutlet weak var addButton: UIButton!
     
+    @IBOutlet weak var fullscreenBarButton: UIBarButtonItem!
+    @IBOutlet weak var addBarButton: UIBarButtonItem!
+    
+    let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
+    
     var users:[User] = []
+    var storedBarButtons: [UIBarButtonItem] = []
     
     override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
@@ -33,27 +39,29 @@ class ProjectManagerViewController: UIViewController {
         }
         
         usersTableView.isUserInteractionEnabled = true
-        
-        if !AdminController.shared.isAdminLogged() {
-            addButton.isHidden = true
-        } else {
-            addButton.isHidden = false
-        }
-        
+
         reloadData()
-        
+        toggleAddButtonVisibility()
         changeFullScreeenImage()
+    }
+    
+    fileprivate func toggleAddButtonVisibility() {
+        if !AdminController.shared.isAdminLogged() {
+            navigationItem.setRightBarButtonItems([fullscreenBarButton], animated: false)
+        } else {
+            navigationItem.setRightBarButtonItems(storedBarButtons, animated: false)
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        storedBarButtons = [addBarButton, fullscreenBarButton]
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         UIView.hr_setToastThemeColor(color: UIColor.red)
         
-        if !AdminController.shared.isAdminLogged() {
-            addButton.isHidden = true
-        }
+        navigationItem.titleView = titleView
+        titleView.setTitle("Project Manager")
         
         usersTableView.tableFooterView = UIView()
         

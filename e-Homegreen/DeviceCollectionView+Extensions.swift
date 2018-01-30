@@ -79,6 +79,8 @@ extension DevicesViewController: UICollectionViewDataSource {
                     cell.lightSlider.addTarget(self, action: #selector(changeSliderValueStarted(_:)), for: .touchDown)
                     cell.lightSlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeSliderValueOnOneTap(_:))))
                     
+                    cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap2(_:))))
+                    
                     let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(longTouch(_:)))
                     lpgr.minimumPressDuration = 0.5
                     lpgr.delegate = self
