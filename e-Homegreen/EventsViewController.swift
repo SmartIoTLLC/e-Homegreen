@@ -130,16 +130,14 @@ extension EventsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? EventsCollectionViewCell {
-            
             cell.setItem(events[indexPath.row], filterParametar: filterParametar, tag: indexPath.row)
             cell.getImagesFrom(events[indexPath.row])
             
             let longPress = UILongPressGestureRecognizer(target: self, action: #selector(rotateCell(_:)))
             longPress.minimumPressDuration = 0.5
-            cell.eventTitle.addGestureRecognizer(longPress)
-                        
-            cell.eventImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(setEvent(_:))))
             
+            cell.eventTitle.addGestureRecognizer(longPress)
+            cell.eventImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(setEvent(_:))))
             cell.eventButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapCancel(_:))))
             
             return cell
@@ -179,11 +177,14 @@ extension EventsViewController {
     }
     
     func rotateCell(_ gesture: UILongPressGestureRecognizer) {
-        let location = gesture.location(in: eventCollectionView)
-        if let indexPath = eventCollectionView.indexPathForItem(at: location) {
-            if let cell = eventCollectionView.cellForItem(at: indexPath) as? EventsCollectionViewCell {
-                UIView.transition(from: cell.frontView, to: cell.backView, duration: 0.5, options: [.transitionFlipFromBottom, .showHideTransitionViews], completion: nil)
-                cell.parametersAreShowing = true
+        if gesture.state == .began {
+            let location = gesture.location(in: eventCollectionView)
+            if let indexPath = eventCollectionView.indexPathForItem(at: location) {
+                if let cell = eventCollectionView.cellForItem(at: indexPath) as? EventsCollectionViewCell {
+                    UIView.transition(from: cell.frontView, to: cell.backView, duration: 0.5, options: [.showHideTransitionViews, .transitionFlipFromBottom, ], completion: nil)
+                    cell.parametersAreShowing = true
+                    print("function called")
+                }
             }
         }
     }

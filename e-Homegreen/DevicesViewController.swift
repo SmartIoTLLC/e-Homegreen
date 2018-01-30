@@ -187,8 +187,6 @@ class DevicesViewController: PopoverVC{
             devices[index.row].info = true
         }
     }
-        
-    // TODO: Radio i Quran moraju da sviraju u celoj aplikaciji
     
     func handleTap2 (_ gesture:UIGestureRecognizer) {
         let location = gesture.location(in: deviceCollectionView)

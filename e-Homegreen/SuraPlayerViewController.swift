@@ -47,11 +47,6 @@ class SuraPlayerViewController: UIViewController {
         fetchSuraInfo()
         setupSuraPlayerView()
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        stopSura()
-    }
 
 }
 
@@ -142,11 +137,11 @@ extension SuraPlayerViewController {
     }
     
     func playSura() {
+        guard currentSura != nil else { return }
         suraTitle.text = currentSura.name
         if let server = reciter.server {
             if let id = currentSura.id {
                 let urlString = server + "/" + formattedSuraID(id: id) + ".mp3"
-                print("URL: ", urlString)
                 if let url = URL(string: urlString) {
                     AudioPlayer.sharedInstance.playAudioFrom(url: url)
                 }

@@ -92,10 +92,10 @@ extension DeviceImagesPickerVC {
     fileprivate func makeRowAction(at indexPath: IndexPath) -> [UITableViewRowAction] {
         let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
             let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            let delete = UIAlertAction(title: "Delete", style: UIAlertActionStyle.destructive){(action) -> Void in
-                self.tableView(self.tableView, commit: UITableViewCellEditingStyle.delete, forRowAt: indexPath)
+            let delete = UIAlertAction(title: "Delete", style: .destructive){(action) -> Void in
+                self.tableView(self.tableView, commit: .delete, forRowAt: indexPath)
             }
-            let cancelDelete = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+            let cancelDelete = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             deleteMenu.addAction(delete)
             deleteMenu.addAction(cancelDelete)
             if let presentationController = deleteMenu.popoverPresentationController {
@@ -111,6 +111,11 @@ extension DeviceImagesPickerVC {
         return [button]
     }
 }
+
+extension Notification.Name {
+    static let deviceShouldResetImages = Notification.Name("deviceShouldResetImages")
+}
+
 // MARK: - Logic
 extension DeviceImagesPickerVC {
     fileprivate func deleteDevices(indexPath: IndexPath) {
@@ -118,6 +123,8 @@ extension DeviceImagesPickerVC {
         if let moc = appDel.managedObjectContext {
             moc.delete(deviceImages[indexPath.row])
             deviceImages.remove(at: indexPath.row)
+            let deviceId: [String: NSManagedObjectID] = ["deviceId": device.objectID]
+            NotificationCenter.default.post(name: .deviceShouldResetImages, object: deviceId)
             appDel.saveContext()
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
             tableView.reloadData()
@@ -126,76 +133,76 @@ extension DeviceImagesPickerVC {
     }
     
     func backString(_ strText: String, imageIndex:Int) {
-        if imageIndex == -1 {
-            let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
-            deviceImage.state = NSNumber(value: (Int(deviceImages[deviceImages.count-1].state!) + 1))
-            deviceImage.defaultImage = strText
-            deviceImage.device = device
-            deviceImage.customImageId = nil
-            deviceImages.append(deviceImage)
-        } else {
-            deviceImages[imageIndex].defaultImage = strText
-            deviceImages[imageIndex].customImageId = nil
+        if let moc = appDel.managedObjectContext {
+            if imageIndex == -1 {
+                let deviceImage = DeviceImage(context: moc)
+                deviceImage.state = NSNumber(value: (Int(deviceImages[deviceImages.count-1].state!) + 1))
+                deviceImage.defaultImage = strText
+                deviceImage.device = device
+                deviceImage.customImageId = nil
+                deviceImages.append(deviceImage)
+            } else {
+                deviceImages[imageIndex].defaultImage = strText
+                deviceImages[imageIndex].customImageId = nil
+            }
+            
+            do { try moc.save() } catch {}
         }
-        
-        do { try appDel.managedObjectContext?.save()
-        } catch {}
         
         tableView.reloadData()
     }
     
     func backImageFromGallery(_ data: Data, imageIndex: Int) {
-        if imageIndex == -1 {
-            // This coudl be a problem because it doesn't have default image. So default image was putt in this case:
-            let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
-            deviceImage.state = NSNumber(value: (Int(deviceImages[deviceImages.count-1].state!) + 1))
-            deviceImage.defaultImage = "12 Appliance - Power - 02"
-            deviceImage.device = device
-            
-            if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image {
-                image.imageData = data
-                image.imageId = UUID().uuidString
-                deviceImage.customImageId = image.imageId
+        if let moc = appDel.managedObjectContext {
+            if imageIndex == -1 {
+                // This coudl be a problem because it doesn't have default image. So default image was putt in this case:
+                let deviceImage = DeviceImage(context: moc)
+                deviceImage.state = NSNumber(value: (Int(deviceImages[deviceImages.count-1].state!) + 1))
+                deviceImage.defaultImage = "12 Appliance - Power - 02"
+                deviceImage.device = device
                 
-                if let user  = deviceImage.device?.gateway.location.user { user.addImagesObject(image) }
+                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: moc) as? Image {
+                    image.imageData = data
+                    image.imageId = UUID().uuidString
+                    deviceImage.customImageId = image.imageId
+                    
+                    if let user  = deviceImage.device?.gateway.location.user { user.addImagesObject(image) }
+                }
+                
+                deviceImages.append(deviceImage)
+            } else {
+                if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: moc) as? Image {
+                    image.imageData = data
+                    image.imageId = UUID().uuidString
+                    deviceImages[imageIndex].customImageId = image.imageId
+                    
+                    if let user  = deviceImages[imageIndex].device?.gateway.location.user { user.addImagesObject(image) }
+                }
             }
             
-            deviceImages.append(deviceImage)
-        } else {
-            if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: appDel.managedObjectContext!) as? Image {
-                image.imageData = data
-                image.imageId = UUID().uuidString
-                deviceImages[imageIndex].customImageId = image.imageId
-                
-                if let user  = deviceImages[imageIndex].device?.gateway.location.user { user.addImagesObject(image) }
-            }
+            do { try moc.save() } catch {}
         }
         
-        do { try appDel.managedObjectContext?.save()
-        } catch {}
-        
         tableView.reloadData()
-        
     }
     
     func backImage(_ image:Image, imageIndex:Int) {
-        if imageIndex == -1 {
-            // This could be a problem because it doesn't have default image. So default image was putt in this case:
-            let deviceImage = DeviceImage(context: appDel.managedObjectContext!)
-            deviceImage.state = NSNumber(value: (Int(deviceImages[deviceImages.count-1].state!) + 1))
-            deviceImage.defaultImage = "12 Appliance - Power - 02"
-            deviceImage.device = device
-            deviceImage.customImageId = image.imageId
-            deviceImages.append(deviceImage)
-        } else {
-            deviceImages[imageIndex].customImageId = image.imageId
-        }
-        
-        do {
-            if let moc = appDel.managedObjectContext {
-                try moc.save()
+        if let moc = appDel.managedObjectContext {
+            if imageIndex == -1 {
+                // This could be a problem because it doesn't have default image. So default image was putt in this case:
+                let deviceImage = DeviceImage(context: moc)
+                deviceImage.state = NSNumber(value: (Int(deviceImages[deviceImages.count-1].state!) + 1))
+                deviceImage.defaultImage = "12 Appliance - Power - 02"
+                deviceImage.device = device
+                deviceImage.customImageId = image.imageId
+                deviceImages.append(deviceImage)
+            } else {
+                deviceImages[imageIndex].customImageId = image.imageId
             }
-        } catch {}
+            
+            do { try moc.save() } catch {}
+        }
+
         
         tableView.reloadData()
     }
@@ -236,7 +243,7 @@ extension UIImage {
         if let id = deviceImage.customImageId {
             if let image = DatabaseImageController.shared.getImageById(id) {
                 
-                if let data =  image.imageData { return UIImage(data: data)!
+                if let data = image.imageData { return UIImage(data: data)!
                 } else { return UIImage(named:deviceImage.defaultImage!)! }
                 
             } else { return UIImage(named:deviceImage.defaultImage!)! }

@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import CoreData
 
 class DigitalInputPopup: PopoverVC {
     
+    var deviceShouldResetImages: Bool = false
     var button:UIButton!
     var level:Zone?
     var zoneSelected:Zone?
@@ -74,6 +76,17 @@ class DigitalInputPopup: PopoverVC {
         super.viewDidLoad()
         
         setupViews()
+        addObservers()
+    }
+    
+    func handleResetImages(_ notification: Notification) {
+        if let object = notification.object as? [String: NSManagedObjectID] {
+            if let id = object["deviceId"] {
+                if id == device.objectID {
+                    deviceShouldResetImages = true
+                }
+            }
+        }
     }
     
     override func nameAndId(_ name: String, id: String) {
@@ -172,6 +185,10 @@ extension DigitalInputPopup {
         btnCategory.tag           = 3
         btnControlType.tag        = 4
         changeDeviceInputMode.tag = 5
+    }
+    
+    fileprivate func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleResetImages(_:)), name: .deviceShouldResetImages, object: nil)
     }
 }
 

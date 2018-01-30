@@ -24,6 +24,7 @@ enum SwitchTag : Int {
 
 class HvacParametersCell: PopoverVC {
     
+    var deviceShouldResetImages: Bool = false
     var button:UIButton!
     
     var level:Zone?
@@ -93,6 +94,7 @@ class HvacParametersCell: PopoverVC {
         super.viewDidLoad()
         
         setupViews()
+        addObservers()
     }
     
     override func nameAndId(_ name: String, id: String) {
@@ -196,6 +198,20 @@ extension HvacParametersCell {
         btnCategory.tag = 3
         btnControlType.tag = 4
     }
+    
+    fileprivate func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleResetImages(_:)), name: .deviceShouldResetImages, object: nil)
+    }
+    
+    func handleResetImages(_ notification: Notification) {
+        if let object = notification.object as? [String: NSManagedObjectID] {
+            if let id = object["deviceId"] {
+                if id == device.objectID {
+                    deviceShouldResetImages = true
+                }
+            }
+        }
+    }
 }
 
 // MARK: - Logic
@@ -219,7 +235,9 @@ extension HvacParametersCell {
             device.medSpeedVisible    = switchMed.isOn as NSNumber?
             device.autoSpeedVisible   = switchAutoSpeed.isOn as NSNumber?
             
-            device.resetImages(appDel.managedObjectContext!)
+            if deviceShouldResetImages { device.resetImages(appDel.managedObjectContext!) }
+            deviceShouldResetImages = false
+            
             CoreDataController.sharedInstance.saveChanges()
             self.delegate?.saveClicked()
             self.dismiss(animated: true, completion: nil)

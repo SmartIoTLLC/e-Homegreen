@@ -19,6 +19,7 @@ struct EditedDevice {
 
 class ChangeDeviceParametarsVC: PopoverVC {
     
+    var deviceShouldResetImages: Bool = false
     var button:UIButton!
     
     var level:Zone?
@@ -81,6 +82,17 @@ class ChangeDeviceParametarsVC: PopoverVC {
         super.viewDidLoad()
         
         setupViews()
+        addObservers()
+    }
+    
+    func handleResetImages(_ notification: Notification) {
+        if let object = notification.object as? [String: NSManagedObjectID] {
+            if let id = object["deviceId"] {
+                if id == device.objectID {
+                    deviceShouldResetImages = true
+                }
+            }
+        }
     }
     
     override func nameAndId(_ name: String, id: String) {
@@ -164,6 +176,10 @@ extension ChangeDeviceParametarsVC {
         btnControlType.tag = 4
     }
     
+    fileprivate func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleResetImages(_:)), name: .deviceShouldResetImages, object: nil)
+    }
+    
     func handleTap(_ gesture:UITapGestureRecognizer){
         self.dismiss(animated: true, completion: nil)
     }
@@ -226,7 +242,9 @@ extension ChangeDeviceParametarsVC {
                 device.controlType      = editedDevice!.controlType
                 device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
                 CoreDataController.sharedInstance.saveChanges()
-                device.resetImages(moc)
+                if deviceShouldResetImages { device.resetImages(moc) }
+                deviceShouldResetImages = false
+                
                 self.delegate?.saveClicked()
                 self.dismiss(animated: true, completion: nil)
             }

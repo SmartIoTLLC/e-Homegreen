@@ -69,7 +69,7 @@ extension DevicesViewController: UICollectionViewDataSource {
                     
                     let longPress = UILongPressGestureRecognizer(target: self, action: #selector(cellParametarLongPress(_:)))
                     longPress.minimumPressDuration = 0.5
-                    cell.typeOfLight.addGestureRecognizer(longPress)
+                    cell.typeOfLight.addGestureRecognizer(longPress)                                        
                     
                     let oneTap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
                     oneTap.numberOfTapsRequired = 2

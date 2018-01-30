@@ -20,8 +20,6 @@ extension ButtonCell {
     
     func sendSceneCommand() {
         var address: [Byte] = []
-        
-        // TODO: ubaciti unetu adresu umesto ove sa gatewaya
         if let scene = self.scene {
             
             if button.addressOne != nil && button.addressTwo != nil && button.addressThree != nil {
@@ -35,9 +33,7 @@ extension ButtonCell {
                     address = [getByte(scene.gateway.addressOne), getByte(scene.gateway.addressTwo), getByte(scene.address)]
                 }
             }
-            
-            
-            
+
             if let sceneId = button.sceneId as? Int {
                 if sceneId >= 0 && sceneId <= 32767 { SendingHandler.sendCommand(byteArray: OutgoingHandler.setScene(address, id: sceneId), gateway: scene.gateway) }
             }
@@ -76,6 +72,16 @@ extension ButtonCell {
                 })
             }
             let gateways = DatabaseGatewayController.shared.getGatewayByLocation(locationName)
+            var chosenGateway: Gateway?
+            gateways.forEach({ (gateway) in
+                if let hex = hex {
+                    if hex[2] == getByte(gateway.addressOne) && hex[3] == getByte(gateway.addressTwo) { chosenGateway = gateway }
+                }
+            })
+            
+            if let chosenGateway = chosenGateway {
+                SendingHandler.sendCommand(byteArray: hex!, gateway: chosenGateway)
+            }
             
             for gateway in gateways { SendingHandler.sendCommand(byteArray: hex!, gateway: gateway) }
         }
@@ -83,8 +89,9 @@ extension ButtonCell {
     
     func sendIRCommand() {
         if let device = irDevice {
-            let gateway = device.gateway
-            let address = [getByte(gateway.addressOne), getByte(gateway.addressTwo), getByte(device.address)]
+            
+//            let gateway = device.gateway
+//            let address = [getByte(gateway.addressOne), getByte(gateway.addressTwo), getByte(device.address)]
            // SendingHandler.sendCommand(byteArray: OutgoingHandler.ir, gateway: <#T##Gateway#>)
         }
     }

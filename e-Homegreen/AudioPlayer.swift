@@ -18,7 +18,6 @@ class AudioPlayer {
     
     init() {
         NotificationCenter.default.addObserver(self, selector: #selector(stopAudio), name: .appIsExiting, object: nil)
-        // TODO: notification for exiting app
     }
     
     func playAudioFrom(url: URL) {
@@ -46,8 +45,6 @@ class AudioPlayer {
         player = nil
         url = nil
     }
-    
-    
     
 }
 

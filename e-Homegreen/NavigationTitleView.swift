@@ -143,17 +143,19 @@ class NavigationTitleView: UIView {
     
     func setDateFormatter() {
         switch clockState {
-            case .justTime    : dateFormatter.dateFormat = "h:mm"
-            case .timeAMPM    : dateFormatter.dateFormat = "h:mm a"
-            case .dateAndTime : dateFormatter.dateFormat = "dd/MM/yyyy\n h:mm a"
+            case .timeAMPM         : dateFormatter.dateFormat = "h:mm a"
+            case .dateAndTimeUpper : dateFormatter.dateFormat = "dd/MM/yyyy\n h:mm a"
+            case .justDate         : dateFormatter.dateFormat = "dd/MM/yyyy"
+            case .dateAndTimeLower : dateFormatter.dateFormat = "h:mm a\ndd/MM/yyyy"
         }
     }
     
     func setClockType() {
         switch clockState {
-            case .justTime    : clockState = .timeAMPM
-            case .timeAMPM    : clockState = .dateAndTime
-            case .dateAndTime : clockState = .justTime
+            case .timeAMPM         : clockState = .dateAndTimeLower
+            case .dateAndTimeLower : clockState = .justDate
+            case .justDate         : clockState = .dateAndTimeUpper
+            case .dateAndTimeUpper : clockState = .timeAMPM
         }
         setDateFormatter()
         tickTock()

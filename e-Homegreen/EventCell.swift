@@ -16,7 +16,6 @@ class EventsCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var frontView: UIView!
     @IBOutlet weak var backView: UIView!
     
-    
     @IBOutlet weak var broadcastLabel: UILabel!
     @IBOutlet weak var broadcastSwitch: UISwitch!
     @IBOutlet weak var localcastLabel: UILabel!

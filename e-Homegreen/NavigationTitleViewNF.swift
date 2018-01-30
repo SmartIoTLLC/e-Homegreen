@@ -9,7 +9,7 @@
 import Foundation
 
 enum ClockType: Int {
-    case justTime = 0, timeAMPM, dateAndTime
+    case timeAMPM = 0, dateAndTimeLower, justDate, dateAndTimeUpper
 }
 
 class NavigationTitleViewNF: UIView {
@@ -68,7 +68,7 @@ class NavigationTitleViewNF: UIView {
         timeLabel.font                      = .tahoma(size: 17)
         timeLabel.textColor                 = .white
         timeLabel.adjustsFontSizeToFitWidth = true
-        timeLabel.textAlignment             = .center
+        timeLabel.textAlignment             = .left
         timeLabel.isUserInteractionEnabled  = true
         timeLabel.numberOfLines = 2
         timeLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(setClockType)))
@@ -93,17 +93,19 @@ class NavigationTitleViewNF: UIView {
     
     func setDateFormatter() {
         switch clockState {
-            case .justTime    : dateFormatter.dateFormat = "h:mm"
-            case .timeAMPM    : dateFormatter.dateFormat = "h:mm a"
-            case .dateAndTime : dateFormatter.dateFormat = "dd/MM/yyyy\n h:mm a"
+            case .timeAMPM         : dateFormatter.dateFormat = "h:mm a"
+            case .dateAndTimeUpper : dateFormatter.dateFormat = "dd/MM/yyyy\n h:mm a"
+            case .justDate         : dateFormatter.dateFormat = "dd/MM/yyyy"
+            case .dateAndTimeLower : dateFormatter.dateFormat = "h:mm a\ndd/MM/yyyy"
         }
     }
     
     func setClockType() {
         switch clockState {
-            case .justTime    : clockState = .timeAMPM
-            case .timeAMPM    : clockState = .dateAndTime
-            case .dateAndTime : clockState = .justTime
+            case .timeAMPM    : clockState = .dateAndTimeLower
+            case .dateAndTimeLower: clockState = .justDate
+            case .justDate         : clockState = .dateAndTimeUpper
+            case .dateAndTimeUpper : clockState = .timeAMPM
         }
         setDateFormatter()
         tickTock()

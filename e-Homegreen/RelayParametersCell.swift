@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 protocol DevicePropertiesDelegate {
     func saveClicked()
@@ -14,6 +15,7 @@ protocol DevicePropertiesDelegate {
 
 class RelayParametersCell: PopoverVC {
     
+    var deviceShouldResetImages: Bool = false
     var button:UIButton!
     var level:Zone?
     var zoneSelected:Zone?
@@ -177,6 +179,18 @@ extension RelayParametersCell {
     fileprivate func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleResetImages(_:)), name: .deviceShouldResetImages, object: nil)
+    }
+    
+    func handleResetImages(_ notification: Notification) {
+        if let object = notification.object as? [String: NSManagedObjectID] {
+            if let id = object["deviceId"] {
+                if id == device.objectID {
+                    deviceShouldResetImages = true
+                }
+            }
+        }
     }
     
     func keyboardWillShow(_ notification: Notification) {
@@ -274,8 +288,9 @@ extension RelayParametersCell {
                 }
                 
                 device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
+                if deviceShouldResetImages { device.resetImages(moc) }
+                deviceShouldResetImages = false
                 
-                device.resetImages(moc)
                 CoreDataController.sharedInstance.saveChanges()
                 
                 self.dismiss(animated: true, completion: nil)

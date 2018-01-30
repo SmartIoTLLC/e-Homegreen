@@ -47,13 +47,6 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
         updateViews()
         fetchRadioStations()
         setupRadioPlayerView()
-
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        stopRadio()
     }
 
 }
@@ -112,14 +105,16 @@ extension RadioViewController {
                     }
                     tableView.reloadData()
                 }
-            }
+            } else { view.makeToast(message: "Failed loading radio stations.") }
         } catch let error as NSError {
+            view.makeToast(message: "Failed loading radio stations.")
             print("Error parsing radio stations: ", error, error.userInfo)
         }
         
     }
     
     @objc fileprivate func playRadio() {
+        guard currentStation != nil else { return }
         radioTitle.text = currentStation.stationName
         if let urlString = currentStation.url {
             if let url = URL(string: urlString) {

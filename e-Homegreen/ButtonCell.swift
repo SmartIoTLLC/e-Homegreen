@@ -92,7 +92,7 @@ extension ButtonCell {
     fileprivate func setButtonColor() {
         removeGradient()
         
-        var color: UIColor!
+        var color: UIColor! = .clear
         switch button.buttonState! {
             case ButtonState.visible, ButtonState.disable:
                 switch button.buttonInternalType! {
@@ -103,32 +103,27 @@ extension ButtonCell {
                             case ButtonColor.gray   : color = Colors.AndroidGrayColor
                             case ButtonColor.green  : color = .green
                             case ButtonColor.blue   : color = .blue
-                            default                 : color = .clear
+                            default                 : break
                         }
-                    default: color = .clear
+                    default: break
                 }
-
-            default: color = .clear
+            case ButtonState.invisible: color = .clear
+            default: break
         }
-        
-        addGradient(color: color)
-        
-        if let imageView = realButton.imageView {
-            realButton.bringSubview(toFront: imageView)
-        }
+        if color != .clear { addGradient(color: color) }
+        if let imageView = realButton.imageView { realButton.bringSubview(toFront: imageView) }
         
         switch button.buttonState! {
             case ButtonState.visible                        :
                 switch button.buttonInternalType! {
-                case ButtonInternalType.image       : hideBorder()
-                case ButtonInternalType.imageButton : showBorder()
-                case ButtonInternalType.regular     : showBorder()
-                default: showBorder()
+                    case ButtonInternalType.image       : hideBorder()
+                    case ButtonInternalType.imageButton : showBorder()
+                    case ButtonInternalType.regular     : showBorder()
+                    default                             : break
                 }
             case ButtonState.invisible, ButtonState.disable : hideBorder()
-            default: showBorder()
+            default                                         : break
         }
-
     }
     
     fileprivate func removeGradient() {
@@ -139,27 +134,20 @@ extension ButtonCell {
         switch button.buttonState! {
             case ButtonState.visible:
                 switch button.buttonInternalType! {
-                case ButtonInternalType.image       : hideShadows()
-                case ButtonInternalType.imageButton : showShadows()
-                case ButtonInternalType.regular     : showShadows()
-                default: showShadows()
+                    case ButtonInternalType.image       : needsShadow = false
+                    case ButtonInternalType.imageButton : needsShadow = true
+                    case ButtonInternalType.regular     : needsShadow = true
+                    default: break
                 }
-            case ButtonState.invisible, ButtonState.disable: hideShadows()
-            default: showShadows()
+            case ButtonState.invisible, ButtonState.disable: needsShadow = false
+            default: break
         }
-    }
-    
-    func showShadows() {
-        needsShadow = true
-    }
-    func hideShadows() {
-        needsShadow = false
     }
     
     fileprivate func setShadow() {
         var color: CGColor! = UIColor.clear.cgColor
         if shadowLayer != nil { shadowLayer.removeFromSuperlayer() }
-        if needsShadow { color = UIColor.black.cgColor }
+        if needsShadow { color = UIColor.black.cgColor } else { color = UIColor.clear.cgColor }
         
         shadowLayer = CAShapeLayer()
         switch button.buttonShape! {
@@ -184,66 +172,56 @@ extension ButtonCell {
         realButton.layer.borderColor = UIColor.clear.cgColor
     }
     
-    // MARK: - Visibility
-    func setVisible() {
-        realButton.isHidden                 = false
-        realButton.isUserInteractionEnabled = true
-    }
     
-    func setInvisible() {
-        realButton.isHidden                 = true
-        realButton.isUserInteractionEnabled = true
-    }
-    
-    func setDisabled() {
-        realButton.isHidden                 = false
-        realButton.isUserInteractionEnabled = false
-    }
-    
-    // MARK: - Button Internal Type
-    fileprivate func setupImageButton() {
-        setShadows()
-        setButtonColor()
-        scaleAndSetButtonImage()
-    }
-    
-    fileprivate func setupImage() {
-        setShadows()
-        setButtonColor()
-        scaleAndSetButtonImage()
-    }
-    
-    fileprivate func setupRegular() {
-        setShadows()
-        setButtonColor()
-        realButton.setImage(nil, for: UIControlState())
-    }
-    
-    func setButton(button: RemoteButton) {
-        
+
+    // MARK: - Button shape
+    func setShape() {
         switch button.buttonShape! {
         case ButtonShape.circle       :
             realButton.layer.cornerRadius = height / 2
             btnWidthConstraint.constant   = height
-            btnHeightConstraint.constant  = height
         case ButtonShape.rectangle    :
             realButton.layer.cornerRadius = 3
             btnWidthConstraint.constant   = width
-            btnHeightConstraint.constant  = height
-        default:
-            realButton.layer.cornerRadius = height / 2
-            btnWidthConstraint.constant   = height
-            btnHeightConstraint.constant  = height
+        default                       : break
         }
-        
+        btnHeightConstraint.constant  = height
         realButton.layoutIfNeeded()
-        
+    }
+    // MARK: - Visibility
+    fileprivate func setState() {
         switch button.buttonState! {
-            case ButtonState.visible    : setVisible()
-            case ButtonState.invisible  : setInvisible()
-            case ButtonState.disable    : setDisabled()
-            default: setVisible()
+            case ButtonState.visible   : realButton.isHidden = false; realButton.isUserInteractionEnabled = true
+            case ButtonState.invisible : realButton.isHidden = true; realButton.isUserInteractionEnabled = true
+            case ButtonState.disable   : realButton.isHidden = false; realButton.isUserInteractionEnabled = false
+            default                    : break
         }
+    }
+    // MARK: - Button type
+    func setType() {
+        switch button.buttonType! {
+            case ButtonType.sceneButton : loadScene()
+            case ButtonType.irButton    : loadIRDevice()
+            case ButtonType.hexButton   : loadHexByteArray()
+            default                     : break
+        }
+    }
+    // MARK: - Button Internal Type
+    fileprivate func setInternalType() {
+        setShadow()
+        setButtonColor()
+        switch button.buttonInternalType! {
+            case ButtonInternalType.image, ButtonInternalType.imageButton : scaleAndSetButtonImage()
+            case ButtonInternalType.regular                               : realButton.setImage(nil, for: UIControlState())
+            default                                                       : break
+        }
+    }
+    
+    func setButton(button: RemoteButton) {
+        setShape()
+        setState()
+        setType()
+        setInternalType()
         
         realButton.setTitle(button.name, for: UIControlState())
         realButton.setTitleColor(.white, for: UIControlState())
@@ -257,21 +235,6 @@ extension ButtonCell {
         let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(openButtonSettings)); lpgr.minimumPressDuration = 1.0
         realButton.addGestureRecognizer(tap)
         addGestureRecognizer(lpgr)
-        
-        switch button.buttonType! {
-            case ButtonType.sceneButton : loadScene()
-            case ButtonType.irButton    : loadIRDevice()
-            case ButtonType.hexButton   : loadHexByteArray()
-            default: loadScene()
-        }
-        
-        switch button.buttonInternalType! {
-            case ButtonInternalType.image       : setupImage()
-            case ButtonInternalType.imageButton : setupImageButton()
-            case ButtonInternalType.regular     : setupRegular()
-            default: setupRegular()
-        }
-        
     }
     
 }
@@ -307,9 +270,6 @@ extension ButtonCell {
         let gradient = CAGradientLayer.gradientLayerForBounds(bounds, colors: colors)
         backgroundLayer          = gradient
         backgroundLayer.position = realButton.center
-//        var index: UInt32 = 0
-//        if needsShadow { index = 1 }
-//        realButton.layer.insertSublayer(backgroundLayer, at: index)
         realButton.layer.insertSublayer(backgroundLayer, above: shadowLayer)
     }
     
