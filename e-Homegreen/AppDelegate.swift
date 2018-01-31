@@ -57,6 +57,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let fontDictionary = [ NSForegroundColorAttributeName:UIColor.white ]
         UINavigationBar.appearance().titleTextAttributes = fontDictionary
         
+        setUserDefaults()
+        
         // Check wheter admin exists, and if it exists - check if user is logged in
         if let _ = AdminController.shared.getAdmin() {
             let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -343,6 +345,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         }
+    }
+    
+    func setUserDefaults() {
+        Foundation.UserDefaults.standard.register(defaults: ["clockType" : ClockType.timeAMPM])
     }
     
     func shutDownTimers() {

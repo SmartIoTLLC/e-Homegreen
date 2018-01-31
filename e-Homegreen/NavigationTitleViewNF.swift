@@ -7,7 +7,13 @@
 //
 import Foundation
 
+enum ClockType: Int {
+    case timeAMPM = 0, dateAndTimeLower, justDate, dateAndTimeUpper
+}
+
 class NavigationTitleViewNF: UIView {
+    
+    var clockState: ClockType = .timeAMPM
     
     let titleView = UILabel()
     let timeLabel = UILabel()
@@ -38,10 +44,12 @@ class NavigationTitleViewNF: UIView {
     }
     
     func commonInit() {
+        loadClockSettings()
+        setDateFormatter()
+        
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = "h:mm a"
-        dateFormatter.amSymbol = "AM"
-        dateFormatter.pmSymbol = "PM"
+        dateFormatter.amSymbol  = "AM"
+        dateFormatter.pmSymbol  = "PM"
         timeLabel.text = dateFormatter.string(from: Date())
         clockTimer     = Foundation.Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(tickTock), userInfo: nil, repeats: true)
         
@@ -60,6 +68,10 @@ class NavigationTitleViewNF: UIView {
         timeLabel.font                      = .tahoma(size: 17)
         timeLabel.textColor                 = .white
         timeLabel.adjustsFontSizeToFitWidth = true
+        timeLabel.textAlignment             = .left
+        timeLabel.isUserInteractionEnabled  = true
+        timeLabel.numberOfLines = 2
+        timeLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(setClockType)))
         self.addSubview(timeLabel)
         
         // Clock constraints
@@ -77,5 +89,34 @@ class NavigationTitleViewNF: UIView {
     
     func setTitle(_ title:String){
         titleView.text = title
+    }
+    
+    func loadClockSettings() {
+        if let clockSettings = Foundation.UserDefaults.standard.value(forKey: "clockType") as? ClockType { clockState = clockSettings }
+    }
+    
+    func setDateFormatter() {
+        switch clockState {
+            case .timeAMPM         : dateFormatter.dateFormat = "h:mm a"
+            case .dateAndTimeUpper : dateFormatter.dateFormat = "dd/MM/yyyy\n h:mm a"
+            case .justDate         : dateFormatter.dateFormat = "dd/MM/yyyy"
+            case .dateAndTimeLower : dateFormatter.dateFormat = "h:mm a\ndd/MM/yyyy"
+        }
+    }
+    
+    func setClockType() {
+        switch clockState {
+            case .timeAMPM         : saveClock(type: .dateAndTimeLower)
+            case .dateAndTimeLower : saveClock(type: .justDate)
+            case .justDate         : saveClock(type: .dateAndTimeUpper)
+            case .dateAndTimeUpper : saveClock(type: .timeAMPM)
+        }
+        setDateFormatter()
+        tickTock()
+    }
+    
+    func saveClock(type: ClockType) {
+        clockState = type
+        Foundation.UserDefaults.standard.set(type, forKey: "clockType")
     }
 }
