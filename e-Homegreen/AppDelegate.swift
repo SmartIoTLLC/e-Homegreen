@@ -237,10 +237,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func refreshGateways(_ timer:Foundation.Timer){
-        let userInfo = timer.userInfo as! Dictionary<String, AnyObject>
-        if let gateway = userInfo["gateway"] as? Gateway{
-            let address = [Byte(Int(gateway.addressOne)), Byte(Int(gateway.addressTwo)), Byte(Int(gateway.addressThree))]
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address) , gateway: gateway)
+        if let userInfo = timer.userInfo as? [String: Any] {
+            if let gateway = userInfo["gateway"] as? Gateway {
+                let address = [Byte(Int(gateway.addressOne)), Byte(Int(gateway.addressTwo)), Byte(Int(gateway.addressThree))]
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address) , gateway: gateway)
+            }
         }
     }
     
@@ -348,7 +349,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func setUserDefaults() {
-        Foundation.UserDefaults.standard.register(defaults: ["clockType" : ClockType.timeAMPM])
+        Foundation.UserDefaults.standard.register(defaults: ["clockType" : 0])
     }
     
     func shutDownTimers() {

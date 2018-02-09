@@ -92,7 +92,7 @@ class NavigationTitleViewNF: UIView {
     }
     
     func loadClockSettings() {
-        if let clockSettings = Foundation.UserDefaults.standard.value(forKey: "clockType") as? ClockType { clockState = clockSettings }
+        if let clockSettings = Foundation.UserDefaults.standard.value(forKey: "clockType") as? Int { clockState = ClockType(rawValue: clockSettings)! }
     }
     
     func setDateFormatter() {
@@ -106,17 +106,17 @@ class NavigationTitleViewNF: UIView {
     
     func setClockType() {
         switch clockState {
-            case .timeAMPM         : saveClock(type: .dateAndTimeLower)
-            case .dateAndTimeLower : saveClock(type: .justDate)
-            case .justDate         : saveClock(type: .dateAndTimeUpper)
-            case .dateAndTimeUpper : saveClock(type: .timeAMPM)
+            case .timeAMPM         : saveClock(type: ClockType.dateAndTimeLower.rawValue)
+            case .dateAndTimeLower : saveClock(type: ClockType.justDate.rawValue)
+            case .justDate         : saveClock(type: ClockType.dateAndTimeUpper.rawValue)
+            case .dateAndTimeUpper : saveClock(type: ClockType.timeAMPM.rawValue)
         }
         setDateFormatter()
         tickTock()
     }
     
-    func saveClock(type: ClockType) {
-        clockState = type
+    func saveClock(type: Int) {
+        clockState = ClockType(rawValue: type)!
         Foundation.UserDefaults.standard.set(type, forKey: "clockType")
     }
 }

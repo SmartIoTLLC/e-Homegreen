@@ -54,10 +54,13 @@ class DatabaseUserController: NSObject {
     }
     
     func getUserForDropDownMenu() -> [User] {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = User.fetchRequest()
+        let userEntity = String(describing: User.self)
+        let request = NSFetchRequest<User>(entityName: userEntity)
+        //let fetchRequest: NSFetchRequest<NSFetchRequestResult> = User.fetchRequest()
+        /* Uz zakomentarisani FetchRequest je pucalo iz nekog razloga nakon ubijanja aplikacije*/
         
         do {
-            let fetResults = try appDel.managedObjectContext?.fetch(fetchRequest) as? [User]
+            let fetResults = try appDel.managedObjectContext?.fetch(request)
             return fetResults ?? []
             
         } catch  {
@@ -72,20 +75,17 @@ class DatabaseUserController: NSObject {
         let predicateTwo = NSPredicate(format: "password == %@", password)
         let predicateArray:[NSPredicate] = [predicateOne, predicateTwo]
         
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
         fetchRequest.predicate = compoundPredicate
         do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [User]
-            if fetResults?.count != 0{
-                return fetResults?[0]
-            }else{
-                return nil
+            if let moc = appDel.managedObjectContext {
+                if let results = try moc.fetch(fetchRequest) as? [User] {
+                    if let user = results.first {
+                        return user
+                    }
+                }
             }
-            
-            
-        } catch  {
-            
-        }
+        } catch  {}
         return nil
     }
     
