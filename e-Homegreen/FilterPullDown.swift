@@ -660,7 +660,8 @@ class FilterPullDown: UIScrollView {
         let filterItem = FilterItem(location: "All", levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
         guard let location = location else { filterDelegate?.filterParametars(filterItem); return }
         
-        filterItem.location = location.name!
+        if let locationName = location.name { filterItem.location = locationName }
+        //filterItem.location = location.name! // nije dobro - puca
         // TODO:
         // BUG:
         /*

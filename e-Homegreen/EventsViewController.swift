@@ -183,7 +183,6 @@ extension EventsViewController {
                 if let cell = eventCollectionView.cellForItem(at: indexPath) as? EventsCollectionViewCell {
                     UIView.transition(from: cell.frontView, to: cell.backView, duration: 0.5, options: [.showHideTransitionViews, .transitionFlipFromBottom, ], completion: nil)
                     cell.parametersAreShowing = true
-                    print("function called")
                 }
             }
         }

@@ -27,7 +27,6 @@ class QuranViewController: UIViewController {
         sender.switchFullscreen()
     }
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
 

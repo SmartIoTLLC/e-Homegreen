@@ -112,7 +112,7 @@ class ButtonSettingsVC: CommonXIBTransitionVC, UITextFieldDelegate {
         addressThreeTF.setEnabled()
         channelTF.setEnabled()
         
-        // if button.nestoNestoZaIR != nil { postaviti buttonTypeIDTF.text }
+        if button.irId != nil { buttonTypeIDTF.text = "\(button.irId!)" }
         buttonTypeIDTF.placeholder = "Enter IR ID"
     }
     
@@ -192,7 +192,7 @@ class ButtonSettingsVC: CommonXIBTransitionVC, UITextFieldDelegate {
         if let info = buttonTypeIDTF.text, info != "" {
             switch button.buttonType! {
                 case ButtonType.hexButton   : button.hexString = info
-                case ButtonType.irButton    : break // Sta ovde??
+                case ButtonType.irButton    : button.irId = getNS(of: info)
                 case ButtonType.sceneButton : button.sceneId = getNS(of: info)
                 default: break
             }
@@ -210,6 +210,9 @@ class ButtonSettingsVC: CommonXIBTransitionVC, UITextFieldDelegate {
         button.buttonType         = buttonType.titleLabel!.text!
         button.buttonInternalType = buttonInternalType.titleLabel!.text!
 
+        if button.buttonType == ButtonType.irButton {
+            guard button.irId != nil else { rollback(alert: "IR button needs an IR ID."); return }
+        }
         DatabaseRemoteButtonController.sharedInstance.editButton(button)
         NotificationCenter.default.post(name: .ButtonUpdated, object: nil)
         dismissModal()

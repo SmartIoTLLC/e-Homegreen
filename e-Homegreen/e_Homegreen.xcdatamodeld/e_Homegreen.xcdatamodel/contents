@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17C205" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17D47" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Card" representedClassName=".Card" syncable="YES">
         <attribute name="address" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="cardId" attributeType="String" syncable="YES"/>
@@ -98,6 +98,7 @@
         <attribute name="eventImageTwoDefault" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eventName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eventZoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="irId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isBroadcast" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isLocalcast" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="report" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -253,6 +254,7 @@
         <attribute name="imageScaleX" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="imageScaleY" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="imageState" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="irId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="marginTop" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sceneId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
@@ -387,7 +389,7 @@
         <element name="Category" positionX="-1089" positionY="-1143" width="128" height="150"/>
         <element name="Device" positionX="-974" positionY="-2091" width="128" height="930"/>
         <element name="DeviceImage" positionX="-605" positionY="-1920" width="128" height="120"/>
-        <element name="Event" positionX="-470" positionY="-1659" width="128" height="270"/>
+        <element name="Event" positionX="-470" positionY="-1659" width="128" height="285"/>
         <element name="FilterParametar" positionX="-1197" positionY="-2304" width="128" height="165"/>
         <element name="Flag" positionX="-578" positionY="-1362" width="128" height="255"/>
         <element name="Gateway" positionX="-1557" positionY="-1971" width="128" height="388"/>
@@ -399,7 +401,7 @@
         <element name="Radio" positionX="-1179" positionY="-1861" width="128" height="148"/>
         <element name="Reciter" positionX="-1575" positionY="-2241" width="128" height="165"/>
         <element name="Remote" positionX="-882" positionY="-909" width="128" height="300"/>
-        <element name="RemoteButton" positionX="-614" positionY="-1026" width="128" height="360"/>
+        <element name="RemoteButton" positionX="-614" positionY="-1026" width="128" height="375"/>
         <element name="Scene" positionX="-468" positionY="-1926" width="128" height="238"/>
         <element name="Security" positionX="-1503" positionY="-1311" width="128" height="150"/>
         <element name="Sequence" positionX="-1190" positionY="-1602" width="128" height="255"/>

@@ -38,7 +38,7 @@ extension ButtonCell {
                 if sceneId >= 0 && sceneId <= 32767 { SendingHandler.sendCommand(byteArray: OutgoingHandler.setScene(address, id: sceneId), gateway: scene.gateway) }
             }
             
-        }
+        } else { makeToast(message: "Scene not found.") }
     }
     
     func loadIRDevice() {
@@ -51,12 +51,7 @@ extension ButtonCell {
     
     func formatHexStringToByteArray(hex: String?) -> [Byte] {
         var byteArray: [Byte] = []
-        if let hex = hex {
-            let stringArray: [String] = hex.split(separator: " ").map(String.init)
-            for string in stringArray {
-                if let byte = Int(string) { byteArray.append(UInt8(byte)) }
-            }
-        }        
+        if let hex = hex?.replacingOccurrences(of: " ", with: "") { byteArray = hex.hexa2Bytes }
         
         return byteArray
     }
@@ -66,33 +61,31 @@ extension ButtonCell {
     
     func sendHexCommand() {
         if let locationName = button.remote?.location?.name {
-            if let sockets = (UIApplication.shared.delegate as? AppDelegate)?.inOutSockets {
-                sockets.forEach({ (socket) in
-                    socket.send("")
-                })
-            }
+
             let gateways = DatabaseGatewayController.shared.getGatewayByLocation(locationName)
             var chosenGateway: Gateway?
             gateways.forEach({ (gateway) in
                 if let hex = hex {
-                    if hex[2] == getByte(gateway.addressOne) && hex[3] == getByte(gateway.addressTwo) { chosenGateway = gateway }
+                    if hex.count > 3 {
+                        if hex[2] == getByte(gateway.addressOne) && hex[3] == getByte(gateway.addressTwo) && hex[4] == getByte(gateway.addressThree) { chosenGateway = gateway }
+                    }
                 }
             })
             
             if let chosenGateway = chosenGateway {
                 SendingHandler.sendCommand(byteArray: hex!, gateway: chosenGateway)
-            }
-            
-            for gateway in gateways { SendingHandler.sendCommand(byteArray: hex!, gateway: gateway) }
+            } else { makeToast(message: "Entered gateway not found.") }
         }
     }
     
     func sendIRCommand() {
         if let device = irDevice {
-            
-//            let gateway = device.gateway
-//            let address = [getByte(gateway.addressOne), getByte(gateway.addressTwo), getByte(device.address)]
-           // SendingHandler.sendCommand(byteArray: OutgoingHandler.ir, gateway: <#T##Gateway#>)
+            let gateway  = device.gateway
+            let address  = [getByte(gateway.addressOne), getByte(gateway.addressTwo), getByte(device.address)]
+            let channel  = getByte(device.channel)
+            let id       = getByte(button.irId!)
+            // TODO: na settings ekranu staviti da je ID obavezan
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.sendIRLibrary(address, channel: channel, ir_id: id), gateway: gateway)
         }
     }
     
@@ -101,10 +94,18 @@ extension ButtonCell {
         
         switch button.buttonType! {
             case ButtonType.sceneButton : sendSceneCommand()
-            case ButtonType.irButton    : break
+            case ButtonType.irButton    : sendIRCommand()
             case ButtonType.hexButton   : sendHexCommand()
             default: break
         }
     }
     
+}
+
+extension String {
+    
+    var hexa2Bytes: [UInt8] {
+        let hexa = Array(self)
+        return stride(from: 0, to: count, by: 2).flatMap { UInt8(String(hexa[$0..<$0.advanced(by: 2)]), radix: 16) }
+    }
 }

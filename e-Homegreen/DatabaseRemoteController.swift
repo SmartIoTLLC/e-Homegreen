@@ -93,6 +93,12 @@ public class DatabaseRemoteController: NSObject {
                     b.imageScaleY        = button.imageScaleY
                     b.marginTop          = button.marginTop
                     
+                    b.hexString          = button.hexString
+                    b.sceneId            = button.sceneId
+                    b.irId               = button.irId
+                    b.channel            = button.channel
+                    b.image              = button.image
+                    
                     clonedRemote.addToButtons(b)
                 }
             }
@@ -147,6 +153,7 @@ public class DatabaseRemoteButtonController: NSObject {
             storedButton.setValue(button.marginTop, forKey: "marginTop")
             storedButton.setValue(button.imageState, forKey: "imageState")
             storedButton.setValue(button.sceneId, forKey: "sceneId")
+            storedButton.setValue(button.irId, forKey: "irId")
             
             CoreDataController.sharedInstance.saveChanges()
         }

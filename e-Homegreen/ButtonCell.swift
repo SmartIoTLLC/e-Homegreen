@@ -70,7 +70,7 @@ class ButtonCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         setShadows()
-        setButtonColor()        
+        setButtonColor()
     }
     
 }
@@ -110,7 +110,7 @@ extension ButtonCell {
             case ButtonState.invisible: color = .clear
             default: break
         }
-        if color != .clear { addGradient(color: color) }
+        if color != .clear { addGradient(color: color) } else { removeGradient() }
         if let imageView = realButton.imageView { realButton.bringSubview(toFront: imageView) }
         
         switch button.buttonState! {
@@ -266,7 +266,7 @@ extension ButtonCell {
     
     fileprivate func addGradient(color: UIColor) {
         let colors   = [color.withAlphaComponent(0.5).cgColor, color.cgColor]
-        let bounds = CGRect(x: 0, y: 0, width: self.bounds.width + 2000, height: self.bounds.height)
+        let bounds = CGRect(x: 0, y: 0, width: realButton.bounds.width + 200, height: realButton.bounds.height + 200)
         let gradient = CAGradientLayer.gradientLayerForBounds(bounds, colors: colors)
         backgroundLayer          = gradient
         backgroundLayer.position = realButton.center

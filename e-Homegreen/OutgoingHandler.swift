@@ -955,19 +955,28 @@ extension OutgoingHandler {
         message[message.count-1] = 0x10
         return message
     }
-    static func sendIRLibrary (_ address:[Byte], channel:Byte, ir_id:Byte, times:Byte, interval:Byte) -> [Byte] {
-        var messageInfo:[Byte] = []
-        var message:[Byte] = []
-        //messageInfo = [channel * 64 + times, interval, Byte(ir_id / 0x100), Byte((ir_id / 0x100) % 0x100)]
-        messageInfo = [0x00] //  resi ovo
-        message = [Byte](repeating: 0, count: messageInfo.count+9)
-        message[0] = 0xAA
-        message[1] = Byte(messageInfo.count % 256)
-        message[2] = address[0]
-        message[3] = address[1]
-        message[4] = address[2]
-        message[5] = 0x09
-        message[6] = 0x05
+//    static func sendIRLibrary (_ address:[Byte], channel:Byte, ir_id:Byte, times:Byte, interval:Byte) -> [Byte] {
+//        var messageInfo:[Byte] = []
+//        var message:[Byte] = []
+//        //messageInfo = [channel * 64 + times, interval, Byte(ir_id / 0x100), Byte((ir_id / 0x100) % 0x100)]
+//        messageInfo = [0x00] //  resi ovo
+//        message = [Byte](repeating: 0, count: messageInfo.count+9)
+//        message[0] = 0xAA
+//        message[1] = Byte(messageInfo.count % 256)
+//        message[2] = address[0]
+//        message[3] = address[1]
+//        message[4] = address[2]
+//        message[5] = 0x09
+//        message[6] = 0x05
+//        for i in 0...messageInfo.count - 1 { message[7+i] = messageInfo[i] }
+//        message[message.count-2] = self.getChkByte(byteArray:message)
+//        message[message.count-1] = 0x10
+//        return message
+//    }
+    
+    static func sendIRLibrary (_ address:[Byte], channel:Byte, ir_id:Byte) -> [Byte] {
+        var messageInfo:[Byte] = [channel, 0x01, ir_id, 0x00]
+        var message:[Byte] = setupMessage(messageInfo: messageInfo, address: address, CID1: 0x09, CID2: 0x05)
         for i in 0...messageInfo.count - 1 { message[7+i] = messageInfo[i] }
         message[message.count-2] = self.getChkByte(byteArray:message)
         message[message.count-1] = 0x10

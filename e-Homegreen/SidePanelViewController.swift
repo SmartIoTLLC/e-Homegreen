@@ -108,7 +108,7 @@
                 self.revealViewController().pushFrontViewController(item.controller, animated: true)
             }
         }
-        if let user = user { user.lastScreenId = menu[indexPath.row].id }
+        if let user = user { user.lastScreenId = menu[indexPath.row].id } // Index out of range posto nema Settings-a
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -149,7 +149,7 @@
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MenuItemCell", for: indexPath) as? MenuItemCell {
                 
                 cell.configureForMenu(menu[indexPath.row])
-               // if cell.menuItemName.text == "Remote" || cell.menuItemName.text == "Media" { cell.isUserInteractionEnabled = false } else { cell.isUserInteractionEnabled = true }
+                if cell.menuItemName.text == "Remote" || cell.menuItemName.text == "Media" { cell.isUserInteractionEnabled = false } else { cell.isUserInteractionEnabled = true }
                 return cell
             }
             

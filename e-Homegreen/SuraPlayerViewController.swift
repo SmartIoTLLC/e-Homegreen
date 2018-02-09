@@ -177,13 +177,13 @@ extension SuraPlayerViewController {
     func getAvailableSuras() {
         if let ids = reciter?.getRecitersSurasAsInt() {
             for suraId in ids {
-                for sura in surasList {
+                surasList.forEach({ (sura) in
                     if Int16(sura.id!) == suraId {
                         if let sura = surasList.filter( { Int16($0.id!) == suraId } ).first {
                             availableSurasList.append(sura)
                         }
                     }
-                }
+                })
             }
             tableView.reloadData()
         }

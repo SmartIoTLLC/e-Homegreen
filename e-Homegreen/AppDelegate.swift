@@ -60,6 +60,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let fontDictionary = [ NSForegroundColorAttributeName:UIColor.white ]
         UINavigationBar.appearance().titleTextAttributes = fontDictionary
         
+        setUserDefaults()
+        
         // Check wheter admin exists, and if it exists - check if user is logged in
         if let _ = AdminController.shared.getAdmin() {
             let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -479,6 +481,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 } else {  NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEnergy), object: nil) }
             }
         }
+    }
+    // TODO
+    func setUserDefaults() {
+        Foundation.UserDefaults.standard.register(defaults: ["clockType" : 0])
     }
 }
 

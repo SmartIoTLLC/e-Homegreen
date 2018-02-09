@@ -35,6 +35,7 @@ extension RemoteButton {
     @NSManaged public var marginTop: NSNumber?
     @NSManaged public var name: String?
     @NSManaged public var sceneId: NSNumber?
+    @NSManaged public var irId: NSNumber?
     @NSManaged public var channel: NSNumber?
     @NSManaged public var buttonInternalType: String?
     @NSManaged public var remote: Remote?
