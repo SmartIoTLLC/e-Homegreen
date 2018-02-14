@@ -56,7 +56,6 @@ class DimmerParametarVC: CommonXIBTransitionVC {
         appDel = UIApplication.shared.delegate as! AppDelegate
         
         setupViews()
-        
         addObservers()
     }
     

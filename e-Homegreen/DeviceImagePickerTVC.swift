@@ -22,12 +22,13 @@ class DeviceImagePickerTVC: UITableViewCell {
         } else {
             let av = Int(100 / (deviceImages.count - 1))
             
-            if indexPathRow == 0 { deviceState.text = "0"
-            } else if indexPathRow == deviceImages.count - 1 { deviceState.text = "\((indexPathRow - 1) * av + 1) - 100"
-            } else { deviceState.text = "\((indexPathRow - 1) * av + 1) - \((indexPathRow - 1) * av + av)" }
-            
+            switch indexPathRow {
+                case 0                      : deviceState.text = "0"
+                case deviceImages.count - 1 : deviceState.text = "\((indexPathRow - 1) * av + 1) - 100"
+                default                     : deviceState.text = "\((indexPathRow - 1) * av + 1) - \((indexPathRow - 1) * av + av)"
+            }
         }
-        
+            
         if let id = deviceImages[indexPathRow].customImageId {
             if let image = DatabaseImageController.shared.getImageById(id) {
                 

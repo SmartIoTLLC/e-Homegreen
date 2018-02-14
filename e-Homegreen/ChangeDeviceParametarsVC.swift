@@ -20,6 +20,7 @@ struct EditedDevice {
 class ChangeDeviceParametarsVC: PopoverVC {
     
     var deviceShouldResetImages: Bool = false
+    var imagesToReset: [DeviceImage] = []
     var button:UIButton!
     
     var level:Zone?
@@ -86,10 +87,13 @@ class ChangeDeviceParametarsVC: PopoverVC {
     }
     
     func handleResetImages(_ notification: Notification) {
-        if let object = notification.object as? [String: NSManagedObjectID] {
-            if let id = object["deviceId"] {
+        if let object = notification.object as? [String: Any] {
+            if let id = object["deviceId"] as? NSManagedObjectID {
                 if id == device.objectID {
                     deviceShouldResetImages = true
+                }
+                if let deviceImage = object["deviceImage"] as? DeviceImage {
+                    imagesToReset.append(deviceImage)
                 }
             }
         }
@@ -190,15 +194,14 @@ extension ChangeDeviceParametarsVC {
     fileprivate func changeControlType(via sender: UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
-        if device.controlType == ControlType.Sensor{
-            popoverList.append(PopOverItem(name: ControlType.Sensor, id: ""))
-        }else if device.controlType == ControlType.Dimmer{
-            popoverList.append(PopOverItem(name: ControlType.Dimmer, id: "")) // TODO: Dodati Id za Dimmer
-            popoverList.append(PopOverItem(name: ControlType.Relay, id: "")) // TODO: Dodati Id za Relay
-        }else if device.controlType == ControlType.SaltoAccess{
-            popoverList.append(PopOverItem(name: ControlType.SaltoAccess, id: ""))
-        }else if device.controlType == ControlType.IntelligentSwitch{
-            popoverList.append(PopOverItem(name: ControlType.IntelligentSwitch, id: ""))
+        switch device.controlType {
+            case ControlType.Sensor            : popoverList.append(PopOverItem(name: ControlType.Sensor, id: ""))
+            case ControlType.Dimmer            :
+                popoverList.append(PopOverItem(name: ControlType.Dimmer, id: "")) // TODO: Dodati Id za Dimmer
+                popoverList.append(PopOverItem(name: ControlType.Relay, id: "")) // TODO: Dodati Id za Relay
+            case ControlType.SaltoAccess       : popoverList.append(PopOverItem(name: ControlType.SaltoAccess, id: ""))
+            case ControlType.IntelligentSwitch : popoverList.append(PopOverItem(name: ControlType.IntelligentSwitch, id: ""))
+            default: break
         }
         openPopover(sender, popOverList:popoverList)
     }
@@ -234,20 +237,21 @@ extension ChangeDeviceParametarsVC {
     
     fileprivate func save() {
         if txtFieldName.text != "" {
-            if let moc = appDel.managedObjectContext {
-                device.name             = txtFieldName.text!
-                device.parentZoneId     = NSNumber(value: editedDevice!.levelId as Int)
-                device.zoneId           = NSNumber(value: editedDevice!.zoneId as Int)
-                device.categoryId       = NSNumber(value: editedDevice!.categoryId as Int)
-                device.controlType      = editedDevice!.controlType
-                device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
-                CoreDataController.sharedInstance.saveChanges()
-                if deviceShouldResetImages { device.resetImages(moc) }
-                deviceShouldResetImages = false
-                
-                self.delegate?.saveClicked()
-                self.dismiss(animated: true, completion: nil)
+            device.name             = txtFieldName.text!
+            device.parentZoneId     = NSNumber(value: editedDevice!.levelId as Int)
+            device.zoneId           = NSNumber(value: editedDevice!.zoneId as Int)
+            device.categoryId       = NSNumber(value: editedDevice!.categoryId as Int)
+            device.controlType      = editedDevice!.controlType
+            device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
+            CoreDataController.sharedInstance.saveChanges()
+            if deviceShouldResetImages {
+                imagesToReset.forEach({ (image) in device.resetSingleImage(image: image) })
+                imagesToReset = []
             }
+            deviceShouldResetImages = false
+            
+            self.delegate?.saveClicked()
+            self.dismiss(animated: true, completion: nil)
         }
     }
     

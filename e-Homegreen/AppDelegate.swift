@@ -484,7 +484,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     // TODO
     func setUserDefaults() {
-        Foundation.UserDefaults.standard.register(defaults: ["clockType" : 0])
+        Foundation.UserDefaults.standard.register(defaults:
+            [
+                "clockType" : 0,
+                UserDefaults.RefreshDelayHours: 0,
+                UserDefaults.RefreshDelayMinutes: 10
+            ]
+        )
     }
 }
 

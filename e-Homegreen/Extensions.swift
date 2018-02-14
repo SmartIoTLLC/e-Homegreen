@@ -46,6 +46,8 @@ extension UICollectionViewCell {
 
 extension UIViewController {
     
+    var defaults: Foundation.UserDefaults { get { return .standard } }
+    
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return paths[0]

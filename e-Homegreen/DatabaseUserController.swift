@@ -58,17 +58,12 @@ class DatabaseUserController: NSObject {
     }
     
     func getUserForDropDownMenu() -> [User]? {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = User.fetchRequest()
         let userEntity = String(describing: User.self)
         let request = NSFetchRequest<User>(entityName: userEntity)
         //let fetchRequest: NSFetchRequest<NSFetchRequestResult> = User.fetchRequest()
         /* Uz zakomentarisani FetchRequest je pucalo iz nekog razloga nakon ubijanja aplikacije*/
         do {
-            if let moc = managedContext {
-                if let fetResults = try moc.fetch(request) as? [User] {
-                    return fetResults
-                }
-            }
+            if let moc = managedContext { return try moc.fetch(request) }
         } catch {}
         
         return []

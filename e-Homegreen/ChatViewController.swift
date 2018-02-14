@@ -17,18 +17,6 @@ struct ChatItem {
 
 class ChatViewController: PopoverVC, ChatDeviceDelegate {
     
-    @IBOutlet weak var chatTableView: UITableView!
-    @IBOutlet weak var sendButton: UIButton!
-    
-    @IBOutlet weak var viewHeight: NSLayoutConstraint!
-    
-    @IBOutlet weak var menuButton: UIBarButtonItem!
-    @IBOutlet weak var fullScreenButton: UIButton!
-    
-    @IBOutlet weak var chatTextView: UITextView!
-    
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-    
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
     var scrollView = FilterPullDown()
@@ -45,10 +33,16 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     let reuseIdentifierAnswer  = "chatAnswerCell"
     
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Chat)
-    
-    @IBOutlet weak var controlValleryVoice: UIButton!    
-    
     let synth = AVSpeechSynthesizer()
+
+    @IBOutlet weak var chatTableView: UITableView!
+    @IBOutlet weak var sendButton: UIButton!
+    @IBOutlet weak var viewHeight: NSLayoutConstraint!
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var fullScreenButton: UIButton!
+    @IBOutlet weak var chatTextView: UITextView!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var controlValleryVoice: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,49 +51,10 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         setupObservers()
     }
     
-    func setupObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name:.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name:.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerChat), object: nil)
-    }
-    
-    func setupViews() {
-        if #available(iOS 11, *) { headerTitleSubtitleView.layoutIfNeeded() }
-        
-        UIView.hr_setToastThemeColor(color: UIColor.red)
-        
-        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
-        
-        chatTextView.delegate = self
-        chatTextView.layer.borderWidth = 1
-        chatTextView.layer.cornerRadius = 5
-        chatTextView.layer.borderColor = UIColor.lightGray.cgColor
-        
-        scrollView.filterDelegate = self
-        view.addSubview(scrollView)
-        updateConstraints(item: scrollView)
-        scrollView.setItem(self.view)
-        
-        calculateHeight()
-        
-        navigationItem.titleView = headerTitleSubtitleView
-        headerTitleSubtitleView.setTitleAndSubtitle("Chat", subtitle: "All All All")
-        
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
-        adjustScrollInsetsPullDownViewAndBackgroudImage()
-        
-        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ChatViewController.defaultFilter(_:)))
-        longPress.minimumPressDuration = 0.5
-        headerTitleSubtitleView.addGestureRecognizer(longPress)
-        
-        scrollView.setFilterItem(Menu.chat)
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         setupSWRevealViewController(menuButton: menuButton)
-        
-        changeFullscreenImage(fullscreenButton: fullScreenButton)        
+        changeFullscreenImage(fullscreenButton: fullScreenButton)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -107,6 +62,11 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         scrollView.setContentOffset(bottomOffset, animated: false)
         refreshLocalParametars()
         addObservers()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        removeObservers()
+        stopTextToSpeech()
     }
     
     override func viewWillLayoutSubviews() {
@@ -132,19 +92,6 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
         chatTableView.reloadData()
-    }
-    
-    func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.refreshLocalParametars), name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
-    }
-    
-    func removeObservers() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        removeObservers()
-        stopTextToSpeech()
     }
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
@@ -276,72 +223,59 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     func commandWasSent(_ command:ChatCommand, deviceType:String) -> String {
         var array = ["Command was sent...", "Your wish is my command.", "As you wish.", "I'll do it.", "It is done.", "Whatever you want.", "Consider it done."]
         switch command {
+            case .TurnOnDevice:
+                if deviceType == ControlType.Dimmer || deviceType == ControlType.Relay { array.append("Device was turned on.") }
+                if deviceType == ControlType.Curtain { array.append("Curtain was turned on.") }
+                if deviceType == ControlType.Climate { array.append("Climate was turned on."); array.append("Hvac was turned on.") }
             
-        case .TurnOnDevice:
-            if deviceType == ControlType.Dimmer || deviceType == ControlType.Relay { array.append("Device was turned on.") }
-            if deviceType == ControlType.Curtain { array.append("Curtain was turned on.") }
-            if deviceType == ControlType.Climate { array.append("Climate was turned on."); array.append("Hvac was turned on.") }
+            case.TurnOffDevice:
+                if deviceType == ControlType.Dimmer || deviceType == ControlType.Relay { array.append("Device was turned off.") }
+                if deviceType == ControlType.Curtain { array.append("Curtain was turned off.") }
+                if deviceType == ControlType.Climate { array.append("Climate was turned off."); array.append("Hvac was turned off.") }
             
-        case.TurnOffDevice:
-            if deviceType == ControlType.Dimmer || deviceType == ControlType.Relay { array.append("Device was turned off.") }
-            if deviceType == ControlType.Curtain { array.append("Curtain was turned off.") }
-            if deviceType == ControlType.Climate { array.append("Climate was turned off."); array.append("Hvac was turned off.") }
+            case .DimDevice:
+                if deviceType == ControlType.Dimmer { array.append("Device was dimmed.") }
             
-        case .DimDevice:
-            if deviceType == ControlType.Dimmer { array.append("Device was dimmed.") }
-            
-        default: break
+            default: break
         }
         
-        let randomIndex = Int(arc4random_uniform(UInt32(array.count)))
-        if randomIndex < array.count {
-            return array[randomIndex]
-        }
-        return "\u{1f601}"
+        return getRandomAnswer(from: array)
     }
     
     func sendCommand(_ command:ChatCommand, forDevice device:Device, withDimming dimValue:Int) {
+        let address = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let controlType = device.controlType
+        
         if command == .TurnOnDevice {
-            let address = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
-            if device.controlType == ControlType.Dimmer {
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
+            switch controlType {
+                case ControlType.Dimmer  : SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
+                case ControlType.Relay   : SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
+                case ControlType.Curtain : SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
+                case ControlType.Climate : SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: getByte(device.channel), status: 0xFF), gateway: device.gateway)
+                default: break
             }
-            if device.controlType == ControlType.Relay {
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
-            }
-            if device.controlType == ControlType.Curtain {
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
-            }
-            if device.controlType == ControlType.Climate {
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: getByte(device.channel), status: 0xFF), gateway: device.gateway)
-            }
+            
             refreshChatListWithAnswer(commandWasSent(command, deviceType: device.controlType), isValeryVoiceOn: isValeryVoiceOn)
         } else if command == .TurnOffDevice {
-            let address = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
-            if device.controlType == ControlType.Dimmer {
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
+            switch controlType {
+                case ControlType.Dimmer  : SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
+                case ControlType.Relay   : SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
+                case ControlType.Curtain : SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
+                case ControlType.Climate : SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: getByte(device.channel), status: 0x00), gateway: device.gateway)
+                default: break
             }
-            if device.controlType == ControlType.Relay {
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
-            }
-            if device.controlType == ControlType.Curtain {
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
-            }
-            if device.controlType == ControlType.Climate {
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: getByte(device.channel), status: 0x00), gateway: device.gateway)
-            }
+
             refreshChatListWithAnswer(commandWasSent(command, deviceType: device.controlType), isValeryVoiceOn: isValeryVoiceOn)
         } else if command == .DimDevice {
-            if dimValue != -1 {
-                let address = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
-                if device.controlType == ControlType.Dimmer {
-                    SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: getIByte(dimValue), delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
-                    refreshChatListWithAnswer(commandWasSent(command, deviceType: device.controlType), isValeryVoiceOn: isValeryVoiceOn)
-                } else {
-                    refreshChatListWithAnswer("Device is not of dimmer type.", isValeryVoiceOn: isValeryVoiceOn)
-                }
-            } else {
-                refreshChatListWithAnswer("Couldn't find value to dim device.", isValeryVoiceOn: isValeryVoiceOn)
+            switch dimValue {
+                case -1 : refreshChatListWithAnswer("Couldn't find value to dim device.", isValeryVoiceOn: isValeryVoiceOn)
+                default :
+                    switch controlType {
+                        case ControlType.Dimmer :
+                            SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: getIByte(dimValue), delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
+                            refreshChatListWithAnswer(commandWasSent(command, deviceType: device.controlType), isValeryVoiceOn: isValeryVoiceOn)
+                        default: refreshChatListWithAnswer("Device is not of dimmer type.", isValeryVoiceOn: isValeryVoiceOn)
+                    }
             }
         }
     }
@@ -555,41 +489,30 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         } else { refreshChatListWithAnswer(questionNotUnderstandable(), isValeryVoiceOn: isValeryVoiceOn) }
     }
     
+    fileprivate func getRandomAnswer(from array: [String]) -> String {
+        let randomIndex = Int(arc4random_uniform(UInt32(array.count)))
+        if randomIndex < array.count { return array[randomIndex] }
+        return "I'm not sure I understand."
+    }
+    
     func questionNotUnderstandable() -> String {
         let array = ["I didn't understand that.", "Please be more specific.", "You were saying...", "Sorry, I didn't get that. ", "I'm not sure I understand.", "I'm afraid I don't know the answer to that.", "I don't know what do you want.", "Command is not clear."]
-        let randomIndex = Int(arc4random_uniform(UInt32(array.count)))
-        if randomIndex < array.count {
-            return array[randomIndex]
-        }
-        return "I'm not sure I understand."
+        return getRandomAnswer(from: array)
     }
     
     func answerOnILoveYou() -> String {
         let array = ["\u{1f60d}", "I love you too \u{1f60d}", "\u{1f618}", "I love myself too \u{2764}", "\u{2764}"]
-        let randomIndex = Int(arc4random_uniform(UInt32(array.count)))
-        if randomIndex < array.count {
-            return array[randomIndex]
-        } else {
-            return ""
-        }
+        return getRandomAnswer(from: array)
     }
     
     func answerOnHowAreYou() -> String {
         let array = ["I'm fine, thank you for asking.", "You are so kind.", "I am happy.", "I have a doubt... I don't know if I am just fine or super fine.", "You are more important!", "I am asking you!", "\u{1f600}", "\u{1f601}", "\u{1f603}", "\u{1f609}", "\u{1f600}", "\u{1f601}", "\u{1f603}", "\u{1f609}"]
-        let randomIndex = Int(arc4random_uniform(UInt32(array.count)))
-        if randomIndex < array.count {
-            return array[randomIndex]
-        }
-        return "\u{1f601}"
+        return getRandomAnswer(from: array)
     }
     
     func nothingFound() -> String {
         let array = ["Couldn't find something to control...", "Nothing found...", "Please be more specific.", "I don't undersrtand."]
-        let randomIndex = Int(arc4random_uniform(UInt32(array.count)))
-        if randomIndex < array.count {
-            return array[randomIndex]
-        }
-        return "\u{1f601}"
+        return getRandomAnswer(from: array)
     }
 
     func calculateHeight(){
@@ -750,6 +673,56 @@ extension ChatViewController: UITableViewDataSource {
         return chatList.count
     }
     
+}
+
+// MARK: - View setup
+extension ChatViewController {
+    
+    func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.refreshLocalParametars), name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
+    }
+    
+    func removeObservers() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
+    }
+    
+    func setupObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name:.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name:.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerChat), object: nil)
+    }
+    
+    func setupViews() {
+        if #available(iOS 11, *) { headerTitleSubtitleView.layoutIfNeeded() }
+        
+        UIView.hr_setToastThemeColor(color: UIColor.red)
+        
+        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
+        
+        chatTextView.delegate = self
+        chatTextView.layer.borderWidth = 1
+        chatTextView.layer.cornerRadius = 5
+        chatTextView.layer.borderColor = UIColor.lightGray.cgColor
+        
+        scrollView.filterDelegate = self
+        view.addSubview(scrollView)
+        updateConstraints(item: scrollView)
+        scrollView.setItem(self.view)
+        
+        calculateHeight()
+        
+        navigationItem.titleView = headerTitleSubtitleView
+        headerTitleSubtitleView.setTitleAndSubtitle("Chat", subtitle: "All All All")
+        
+        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
+        adjustScrollInsetsPullDownViewAndBackgroudImage()
+        
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ChatViewController.defaultFilter(_:)))
+        longPress.minimumPressDuration = 0.5
+        headerTitleSubtitleView.addGestureRecognizer(longPress)
+        
+        scrollView.setFilterItem(Menu.chat)
+    }
 }
 
 class ChatAnswerCell: UITableViewCell {

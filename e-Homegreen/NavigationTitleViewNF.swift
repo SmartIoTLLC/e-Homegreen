@@ -13,7 +13,7 @@ enum ClockType: Int {
 }
 
 class NavigationTitleViewNF: UIView {
-    // todo: save clock state to user
+
     var clockState: ClockType = .timeAMPM
     
     let titleView = UILabel()

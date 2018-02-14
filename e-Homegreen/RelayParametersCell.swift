@@ -16,6 +16,7 @@ protocol DevicePropertiesDelegate {
 class RelayParametersCell: PopoverVC {
     
     var deviceShouldResetImages: Bool = false
+    var imagesToReset: [DeviceImage] = []
     var button:UIButton!
     var level:Zone?
     var zoneSelected:Zone?
@@ -184,10 +185,14 @@ extension RelayParametersCell {
     }
     
     func handleResetImages(_ notification: Notification) {
-        if let object = notification.object as? [String: NSManagedObjectID] {
-            if let id = object["deviceId"] {
+        if let object = notification.object as? [String: Any] {
+            if let id = object["deviceId"] as? NSManagedObjectID {
                 if id == device.objectID {
                     deviceShouldResetImages = true
+                }
+                
+                if let deviceImage = object["deviceImage"] as? DeviceImage {
+                    imagesToReset.append(deviceImage)
                 }
             }
         }
@@ -266,36 +271,37 @@ extension RelayParametersCell {
     
     fileprivate func save() {
         if txtFieldName.text != "" {
-            if let moc = appDel.managedObjectContext {
-                device.name                 = txtFieldName.text!
-                device.isCurtainModeAllowed = switchAllowCurtainControl.isOn as NSNumber
-                if let groupId = txtCurtainGroupId.text {
-                    if let _ = Int(groupId) { device.curtainGroupID = NSNumber(value: Int(groupId)!) }
-                }
-                device.parentZoneId = NSNumber(value: editedDevice!.levelId as Int)
-                device.zoneId       = NSNumber(value: editedDevice!.zoneId as Int)
-                device.categoryId   = NSNumber(value: editedDevice!.categoryId as Int)
-                
-                if editedDevice!.controlType == ControlType.Relay {
-                    if device.isCurtainModeAllowed.boolValue { device.controlType = ControlType.Curtain } else { device.controlType = ControlType.Relay }
-                    
-                } else {
-                    if editedDevice!.controlType == ControlType.Curtain {
-                        if device.isCurtainModeAllowed.boolValue { device.controlType = ControlType.Curtain // Stay curtain
-                        } else { device.controlType = ControlType.Relay } // if isCurtainModeAllowed is disabbled, set it to relay
-                        
-                    } else { device.controlType = editedDevice!.controlType }
-                }
-                
-                device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
-                if deviceShouldResetImages { device.resetImages(moc) }
-                deviceShouldResetImages = false
-                
-                CoreDataController.sharedInstance.saveChanges()
-                
-                self.dismiss(animated: true, completion: nil)
-                self.delegate?.saveClicked()
+            device.name                 = txtFieldName.text!
+            device.isCurtainModeAllowed = switchAllowCurtainControl.isOn as NSNumber
+            if let groupId = txtCurtainGroupId.text {
+                if let _ = Int(groupId) { device.curtainGroupID = NSNumber(value: Int(groupId)!) }
             }
+            device.parentZoneId = NSNumber(value: editedDevice!.levelId as Int)
+            device.zoneId       = NSNumber(value: editedDevice!.zoneId as Int)
+            device.categoryId   = NSNumber(value: editedDevice!.categoryId as Int)
+            
+            if editedDevice!.controlType == ControlType.Relay {
+                if device.isCurtainModeAllowed.boolValue { device.controlType = ControlType.Curtain } else { device.controlType = ControlType.Relay }
+                
+            } else {
+                if editedDevice!.controlType == ControlType.Curtain {
+                    if device.isCurtainModeAllowed.boolValue { device.controlType = ControlType.Curtain // Stay curtain
+                    } else { device.controlType = ControlType.Relay } // if isCurtainModeAllowed is disabbled, set it to relay
+                    
+                } else { device.controlType = editedDevice!.controlType }
+            }
+            
+            device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
+            if deviceShouldResetImages {
+                imagesToReset.forEach({ (image  ) in device.resetSingleImage(image: image) })
+                imagesToReset = []                
+            }
+            deviceShouldResetImages = false
+            
+            CoreDataController.sharedInstance.saveChanges()
+            
+            self.dismiss(animated: true, completion: nil)
+            self.delegate?.saveClicked()
         }
     }
 }

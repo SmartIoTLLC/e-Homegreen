@@ -172,8 +172,6 @@ extension ButtonCell {
         realButton.layer.borderColor = UIColor.clear.cgColor
     }
     
-    
-
     // MARK: - Button shape
     func setShape() {
         switch button.buttonShape! {
@@ -211,8 +209,8 @@ extension ButtonCell {
         setShadow()
         setButtonColor()
         switch button.buttonInternalType! {
-            case ButtonInternalType.image, ButtonInternalType.imageButton : scaleAndSetButtonImage()
-            case ButtonInternalType.regular                               : realButton.setImage(nil, for: UIControlState())
+            case ButtonInternalType.image, ButtonInternalType.imageButton : scaleAndSetButtonImage(); realButton.setTitle(nil, for: UIControlState())
+            case ButtonInternalType.regular                               : realButton.setImage(nil, for: UIControlState()); realButton.setTitle(button.name!, for: UIControlState())
             default                                                       : break
         }
     }
@@ -223,7 +221,6 @@ extension ButtonCell {
         setType()
         setInternalType()
         
-        realButton.setTitle(button.name, for: UIControlState())
         realButton.setTitleColor(.white, for: UIControlState())
         if let rbLabel = realButton.titleLabel {
             rbLabel.textAlignment             = .center
@@ -265,7 +262,7 @@ extension ButtonCell {
     }
     
     fileprivate func addGradient(color: UIColor) {
-        let colors   = [color.withAlphaComponent(0.5).cgColor, color.cgColor]
+        let colors = [color.withAlphaComponent(0.5).cgColor, color.cgColor]
         let bounds = CGRect(x: 0, y: 0, width: realButton.bounds.width + 200, height: realButton.bounds.height + 200)
         let gradient = CAGradientLayer.gradientLayerForBounds(bounds, colors: colors)
         backgroundLayer          = gradient

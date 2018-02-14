@@ -12,7 +12,8 @@ import AVFoundation
 import Crashlytics
 import AudioToolbox
 
-
+// TODO: favorite devices
+// + sort devices by most used
 class DevicesViewController: PopoverVC{
     
     var refreshTimer: Foundation.Timer?
@@ -71,8 +72,13 @@ class DevicesViewController: PopoverVC{
         appDel = UIApplication.shared.delegate as! AppDelegate
 
         setupViews()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerDevices), object: nil)
+        addObserversVDL()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        setContentOffset(for: scrollView)
+        setTitleView(view: headerTitleSubtitleView)
+        collectionViewCellSize = calculateCellSize(completion: { deviceCollectionView.reloadData() })
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -94,12 +100,6 @@ class DevicesViewController: PopoverVC{
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
             self.refreshVisibleDevicesInScrollView()
         }
-    }
-    
-    override func viewWillLayoutSubviews() {
-        setContentOffset(for: scrollView)
-        setTitleView(view: headerTitleSubtitleView)
-        collectionViewCellSize = calculateCellSize(completion: { deviceCollectionView.reloadData() })
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -124,28 +124,27 @@ class DevicesViewController: PopoverVC{
     }
 
     func cellParametarLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
-        let tag = gestureRecognizer.view!.tag
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
-            let location = gestureRecognizer.location(in: deviceCollectionView)
-            if let index = deviceCollectionView.indexPathForItem(at: location) {
-                let controlType = devices[index.row].controlType
-                
-                if controlType == ControlType.Dimmer { showDimmerParametar(tag, devices: devices) }
-                else if controlType == ControlType.Relay { showRelayParametar(tag, devices: devices) }
-                else if controlType == ControlType.Curtain { showRelayParametar(tag, devices: devices) }
-                else { showIntelligentSwitchParameter(tag, devices: devices) }
-                
+        if let tag = gestureRecognizer.view?.tag {
+            if gestureRecognizer.state == .began {
+                let location = gestureRecognizer.location(in: deviceCollectionView)
+                if let index = deviceCollectionView.indexPathForItem(at: location) {
+                    let controlType = devices[index.row].controlType
+                    
+                    switch controlType {
+                        case ControlType.Dimmer  : showDimmerParametar(tag, devices: devices)
+                        case ControlType.Relay   : showRelayParametar(tag, devices: devices)
+                        case ControlType.Curtain : showRelayParametar(tag, devices: devices)
+                        default                  : showIntelligentSwitchParameter(tag, devices: devices)
+                    }
+                }
             }
         }
     }
     
-    func longTouch(_ gestureRecognizer: UILongPressGestureRecognizer) {
-        // Light
-        let tag = gestureRecognizer.view!.tag
-        
-        if devices[tag].controlType == ControlType.Dimmer {
-            if gestureRecognizer.state == UIGestureRecognizerState.began {
-                showBigSlider(devices[tag], index: tag).delegate = self
+    func longTouch(_ gestureRecognizer: UILongPressGestureRecognizer) { // Light
+        if let tag = gestureRecognizer.view?.tag {
+            if devices[tag].controlType == ControlType.Dimmer {
+                if gestureRecognizer.state == .began { showBigSlider(devices[tag], index: tag).delegate = self }
             }
         }
     }
@@ -158,30 +157,15 @@ class DevicesViewController: PopoverVC{
             let controlType = devices[index.row].controlType
             let options: UIViewAnimationOptions = [.transitionFlipFromBottom, .showHideTransitionViews]
             
-            if controlType == ControlType.Dimmer {
-                if let cell = cell as? DeviceCollectionCell {
-                    UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil)
-                }
-                
-            } else if controlType == ControlType.Relay {
-                if let cell = cell as? ApplianceCollectionCell {
-                    UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil)
-                }
-                
-            } else if controlType == ControlType.Sensor || controlType == ControlType.IntelligentSwitch || controlType == ControlType.Gateway {
-                if let cell = cell as? MultiSensorCell {
-                    UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil)
-                }
-                
-            } else if controlType == ControlType.Climate {
-                if let cell = cell as? ClimateCell {
-                    UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil)
-                }
-                
-            } else if controlType == ControlType.Curtain { // TODO: MAKE (REVISE) FUNCTIONALITY
-                if let cell = cell as? CurtainCollectionCell {
-                    UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil)
-                }
+            switch controlType {
+                case ControlType.Dimmer  : if let cell = cell as? DeviceCollectionCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+                case ControlType.Relay   : if let cell = cell as? ApplianceCollectionCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+                case ControlType.Sensor,
+                     ControlType.IntelligentSwitch,
+                     ControlType.Gateway : if let cell = cell as? MultiSensorCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+                case ControlType.Climate : if let cell = cell as? ClimateCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+                case ControlType.Curtain : if let cell = cell as? CurtainCollectionCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+                default: break
             }
             
             devices[index.row].info = true
@@ -196,31 +180,17 @@ class DevicesViewController: PopoverVC{
             let controlType                     = devices[index.row].controlType
             let options: UIViewAnimationOptions = [.transitionFlipFromBottom, .showHideTransitionViews]
             
-            if controlType == ControlType.Dimmer {
-                if let cell = cell as? DeviceCollectionCell {
-                    UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil)
-                }
-                
-            } else if controlType == ControlType.Relay {
-                if let cell = cell as? ApplianceCollectionCell {
-                    UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil)
-                }
-                
-            } else if controlType == ControlType.Sensor || controlType == ControlType.IntelligentSwitch || controlType == ControlType.Gateway {
-                if let cell = cell as? MultiSensorCell {
-                    UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil)
-                }
-                
-            } else if controlType == ControlType.Climate {
-                if let cell = cell as? ClimateCell {
-                    UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil)
-                }
-                
-            } else if controlType == ControlType.Curtain { // TODO: MAKE (REVISE) FUNCTIONALITY
-                if let cell = cell as? CurtainCollectionCell {
-                    UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil)
-                }
+            switch controlType {
+                case ControlType.Dimmer      : if let cell = cell as? DeviceCollectionCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+                case ControlType.Relay       : if let cell = cell as? ApplianceCollectionCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+                    case ControlType.Sensor,
+                         ControlType.IntelligentSwitch,
+                         ControlType.Gateway : if let cell = cell as? MultiSensorCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+                case ControlType.Climate     : if let cell = cell as? ClimateCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+                case ControlType.Curtain     : if let cell = cell as? CurtainCollectionCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+                default: break
             }
+
             devices[index.row].info = false
         }
     }
@@ -260,49 +230,50 @@ class DevicesViewController: PopoverVC{
     func changeSliderValueWithTag(_ tag:Int, withOldValue:Int) {
         let device      = devices[tag]
         let controlType = device.controlType
-        let address     = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let address     = device.getAddress()
 
+        device.increaseUsageCounterValue()
         deviceInControlMode = false
-        //   Dimmer
-        if controlType == ControlType.Dimmer {
-            let setValue = UInt8(Int(device.currentValue.doubleValue*100/255))
+        switch controlType {
+            case ControlType.Dimmer: //   Dimmer
+                let setValue = UInt8(Int(device.currentValue.doubleValue*100/255))
+                
+                DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: {
+                    DispatchQueue.main.async(execute: {
+                        RunnableList.sharedInstance.checkForSameDevice(
+                            device: device.objectID,
+                            newCommand: NSNumber(value: setValue),
+                            oldValue: NSNumber(value: withOldValue)
+                        )
+                        _ = RepeatSendingHandler(
+                            byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setValue, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: self.getByte(device.skipState)),
+                            gateway: device.gateway,
+                            device: device,
+                            oldValue: withOldValue,
+                            command: NSNumber(value: setValue)
+                        )
+                    })
+                })
             
-            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: {
-                DispatchQueue.main.async(execute: {
-                    RunnableList.sharedInstance.checkForSameDevice(
-                        device: device.objectID,
-                        newCommand: NSNumber(value: setValue),
-                        oldValue: NSNumber(value: withOldValue)
-                    )
-                    _ = RepeatSendingHandler(
-                        byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setValue, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: self.getByte(device.skipState)),
-                        gateway: device.gateway,
-                        device: device,
-                        oldValue: withOldValue,
-                        command: NSNumber(value: setValue)
-                    )
-                })
-            })
-        }
-        //  Curtain
-        if controlType == ControlType.Curtain {
-            let deviceGroupId = devices[tag].curtainGroupID.intValue
-            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: {
-                DispatchQueue.main.async(execute: {
-                    RunnableList.sharedInstance.checkForSameDevice(
-                        device: device.objectID,
-                        newCommand: device.currentValue,
-                        oldValue: NSNumber(value: withOldValue)
-                    )
-                    _ = RepeatSendingHandler(
-                        byteArray: OutgoingHandler.setCurtainStatus(address, value: self.getByte(device.currentValue), groupId:  UInt8(deviceGroupId)),
-                        gateway: device.gateway,
-                        device: device,
-                        oldValue: withOldValue,
-                        command: device.currentValue
-                    )
-                })
-            })
+                case ControlType.Curtain: //  Curtain
+                    let deviceGroupId = devices[tag].curtainGroupID.intValue
+                    DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: {
+                        DispatchQueue.main.async(execute: {
+                            RunnableList.sharedInstance.checkForSameDevice(
+                                device: device.objectID,
+                                newCommand: device.currentValue,
+                                oldValue: NSNumber(value: withOldValue)
+                            )
+                            _ = RepeatSendingHandler(
+                                byteArray: OutgoingHandler.setCurtainStatus(address, value: self.getByte(device.currentValue), groupId:  UInt8(deviceGroupId)),
+                                gateway: device.gateway,
+                                device: device,
+                                oldValue: withOldValue,
+                                command: device.currentValue
+                            )
+                        })
+                    })
+            default: break
         }
     }
     func changeSliderValueStarted (_ sender: UISlider) {
@@ -315,49 +286,54 @@ class DevicesViewController: PopoverVC{
         let tag         = sender.tag
         let device      = devices[tag]
         let controlType = device.controlType
-        let address     = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let address     = device.getAddress()
         //   Dimmer
         let v  = device.currentValue.doubleValue
         let v2 = v*100/255
         let v3 = Int(v2)
         let v4 = UInt8(v3)
         
-        if controlType == ControlType.Dimmer {
-            DispatchQueue.main.async(execute: {
-                RunnableList.sharedInstance.checkForSameDevice(
-                    device: device.objectID,
-                    newCommand: NSNumber(value: v4),
-                    oldValue: NSNumber(value: self.changeSliderValueOldValue)
-                )
-                _ = RepeatSendingHandler(
-                    byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: UInt8(v4), delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: self.getByte(device.skipState)),
-                    gateway: device.gateway,
-                    device: device,
-                    oldValue: self.changeSliderValueOldValue,
-                    command: NSNumber(value: v4)
-                )
-            })
+        device.increaseUsageCounterValue()
+
+        switch controlType {
+            case ControlType.Dimmer:
+                DispatchQueue.main.async(execute: {
+                    RunnableList.sharedInstance.checkForSameDevice(
+                        device: device.objectID,
+                        newCommand: NSNumber(value: v4),
+                        oldValue: NSNumber(value: self.changeSliderValueOldValue)
+                    )
+                    _ = RepeatSendingHandler(
+                        byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: UInt8(v4), delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: self.getByte(device.skipState)),
+                        gateway: device.gateway,
+                        device: device,
+                        oldValue: self.changeSliderValueOldValue,
+                        command: NSNumber(value: v4)
+                    )
+                })
+            case ControlType.Curtain:
+                DispatchQueue.main.async(execute: {
+                    RunnableList.sharedInstance.checkForSameDevice(
+                        device: device.objectID,
+                        newCommand: device.currentValue,
+                        oldValue: NSNumber(value: self.changeSliderValueOldValue)
+                    )
+                    _ = RepeatSendingHandler(
+                        byteArray: OutgoingHandler.setCurtainStatus(address, value: self.getByte(device.currentValue), groupId:  0x00),
+                        gateway: device.gateway,
+                        device: device,
+                        oldValue: self.changeSliderValueOldValue,
+                        command: device.currentValue
+                    )
+                })
+            default: break
         }
-        //  Curtain
-        if controlType == ControlType.Curtain {
-            DispatchQueue.main.async(execute: {
-                RunnableList.sharedInstance.checkForSameDevice(
-                    device: device.objectID,
-                    newCommand: device.currentValue,
-                    oldValue: NSNumber(value: self.changeSliderValueOldValue)
-                )
-                _ = RepeatSendingHandler(
-                    byteArray: OutgoingHandler.setCurtainStatus(address, value: self.getByte(device.currentValue), groupId:  0x00),
-                    gateway: device.gateway,
-                    device: device,
-                    oldValue: self.changeSliderValueOldValue,
-                    command: device.currentValue
-                )
-            })
-        }
+        
         changeSliderValueOldValue = 0
         deviceInControlMode = false
     }
+    
+
     
     func changeSliderValue(_ sender: UISlider){
         let tag    = sender.tag
@@ -788,6 +764,10 @@ extension DevicesViewController {
         }
     }
     
+    fileprivate func addObserversVDL() {
+        NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerDevices), object: nil)
+    }
+    
     func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(refreshDeviceList), name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(refreshVisibleDevicesInScrollView), name: NSNotification.Name(rawValue: NotificationKey.DidRefreshDeviceInfo), object: nil)
@@ -816,7 +796,8 @@ extension DevicesViewController {
             NSSortDescriptor(key: "gateway.name", ascending: true),
             NSSortDescriptor(key: "address", ascending: true),
             NSSortDescriptor(key: "type", ascending: true),
-            NSSortDescriptor(key: "channel", ascending: true)
+            NSSortDescriptor(key: "channel", ascending: true),
+            NSSortDescriptor(key: "usageCounter", ascending: false)
         ]
         
         var predicateArray:[NSPredicate] = [
@@ -873,23 +854,21 @@ extension DevicesViewController {
             let tag         = button.tag
             let controlType = devices[tag].controlType
             let gateway     = devices[tag].gateway
-            let address     = [getByte(gateway.addressOne), getByte(gateway.addressTwo), getByte(devices[tag].address)]
+            let address     = devices[tag].getAddress()
             
-            // Light
-            if controlType == ControlType.Dimmer {
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway)
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
+            switch controlType {
+                case ControlType.Dimmer:
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway)
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
+                case ControlType.Relay:
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway)
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
+                case ControlType.Curtain:
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurtainStatus(address), gateway: gateway)
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
+                default: break
             }
-            // Appliance?
-            if controlType == ControlType.Relay {
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway)
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
-            }
-            // Curtain?
-            if controlType == ControlType.Curtain {
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurtainStatus(address), gateway: gateway)
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
-            }
+            
         }
     }
     
@@ -908,72 +887,72 @@ extension DevicesViewController {
     
     func oneTap(_ gestureRecognizer:UITapGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
-        let device      = devices[tag]
-        let controlType = device.controlType
-        
-        let address              = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let device               = devices[tag]
+        let controlType          = device.controlType
+        let address              = device.getAddress()
         var setDeviceValue:UInt8 = 0
         var skipLevel:UInt8      = 0
         let deviceCurrentValue   = device.currentValue
         
-        // Light
-        if controlType == ControlType.Dimmer {
-            
-            if Int(deviceCurrentValue) > 0 {
-                device.oldValue = deviceCurrentValue
-                setDeviceValue = UInt8(0)
-                skipLevel = 0
-            } else {
-                if let oldVal = device.oldValue { setDeviceValue = UInt8(round(oldVal.floatValue*100/255)) } else { setDeviceValue = 100 }
-                skipLevel = getByte(device.skipState)
-            }
-            
-            device.currentValue = NSNumber(value: Int(setDeviceValue)*255/100)
-            print("Device current value: \(deviceCurrentValue)%")
-            DispatchQueue.main.async(execute: {
-                RunnableList.sharedInstance.checkForSameDevice(
-                    device: device.objectID,
-                    newCommand: NSNumber(value: setDeviceValue),
-                    oldValue: NSNumber(value: setDeviceValue)
-                )
-                _ = RepeatSendingHandler(
-                    byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setDeviceValue, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: skipLevel),
-                    gateway: device.gateway,
-                    device: device,
-                    oldValue: Int(deviceCurrentValue),
-                    command: NSNumber(value: setDeviceValue)
-                )
-            })
-        }
+        device.increaseUsageCounterValue()
         
-        // Appliance?
-        if controlType == ControlType.Relay {
+        switch controlType {
+            case ControlType.Dimmer:
+                if Int(deviceCurrentValue) > 0 {
+                    device.oldValue = deviceCurrentValue
+                    setDeviceValue = UInt8(0)
+                    skipLevel = 0
+                } else {
+                    if let oldVal = device.oldValue { setDeviceValue = UInt8(round(oldVal.floatValue*100/255)) } else { setDeviceValue = 100 }
+                    skipLevel = getByte(device.skipState)
+                }
+                
+                device.currentValue = NSNumber(value: Int(setDeviceValue)*255/100)
+                print("Device current value: \(deviceCurrentValue)%")
+                DispatchQueue.main.async(execute: {
+                    RunnableList.sharedInstance.checkForSameDevice(
+                        device: device.objectID,
+                        newCommand: NSNumber(value: setDeviceValue),
+                        oldValue: NSNumber(value: setDeviceValue)
+                    )
+                    _ = RepeatSendingHandler(
+                        byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setDeviceValue, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: skipLevel),
+                        gateway: device.gateway,
+                        device: device,
+                        oldValue: Int(deviceCurrentValue),
+                        command: NSNumber(value: setDeviceValue)
+                    )
+                })
             
-            if Int(deviceCurrentValue) > 0 {
-                setDeviceValue = UInt8(0)
-                device.currentValue = 0
-                skipLevel = 0
-            } else {
-                setDeviceValue = 255
-                skipLevel = getByte(device.skipState)
-            }
+            case ControlType.Relay: // Appliance
+                if Int(deviceCurrentValue) > 0 {
+                    setDeviceValue = UInt8(0)
+                    device.currentValue = 0
+                    skipLevel = 0
+                } else {
+                    setDeviceValue = 255
+                    skipLevel = getByte(device.skipState)
+                }
+                
+                device.currentValue = NSNumber(value: Int(setDeviceValue))
+                DispatchQueue.main.async(execute: {
+                    RunnableList.sharedInstance.checkForSameDevice(
+                        device: device.objectID,
+                        newCommand: NSNumber(value: setDeviceValue),
+                        oldValue: deviceCurrentValue
+                    )
+                    _ = RepeatSendingHandler(
+                        byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setDeviceValue, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: skipLevel),
+                        gateway: device.gateway,
+                        device: device,
+                        oldValue: Int(deviceCurrentValue),
+                        command: NSNumber(value: setDeviceValue)
+                    )
+                })
             
-            device.currentValue = NSNumber(value: Int(setDeviceValue))
-            DispatchQueue.main.async(execute: {
-                RunnableList.sharedInstance.checkForSameDevice(
-                    device: device.objectID,
-                    newCommand: NSNumber(value: setDeviceValue),
-                    oldValue: deviceCurrentValue
-                )
-                _ = RepeatSendingHandler(
-                    byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setDeviceValue, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: skipLevel),
-                    gateway: device.gateway,
-                    device: device,
-                    oldValue: Int(deviceCurrentValue),
-                    command: NSNumber(value: setDeviceValue)
-                )
-            })
+            default: break
         }
+
         updateCells()
     }
     
@@ -981,21 +960,16 @@ extension DevicesViewController {
     func setACPowerStatus(_ gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
             let device  = devices[tag]
-            let address = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+            let address = device.getAddress()
             
-            if device.currentValue == 0x00 {
-                SendingHandler.sendCommand(
-                    byteArray: OutgoingHandler.setACStatus(address, channel: getByte(device.channel), status: 0xFF),
-                    gateway: device.gateway
-                )
-                
+            device.increaseUsageCounterValue()
+            
+            switch device.currentValue {
+                case 0x00 : SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: getByte(device.channel), status: 0xFF), gateway: device.gateway)
+                case 0xFF : SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: getByte(device.channel), status: 0x00), gateway: device.gateway)
+                default   : break
             }
-            if device.currentValue == 0xFF {
-                SendingHandler.sendCommand(
-                    byteArray: OutgoingHandler.setACStatus(address, channel: getByte(device.channel), status: 0x00),
-                    gateway: device.gateway
-                )
-            }
+            
         }
     }
     
@@ -1004,7 +978,7 @@ extension DevicesViewController {
         let tag                  = gestureRecognizer.view!.tag
         let device               = devices[tag]
         let controlType          = device.controlType
-        let address              = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let address              = device.getAddress()
         let setDeviceValue:UInt8 = 0xFF
         let deviceCurrentValue   = Int(device.currentValue)
         let deviceGroupId        = device.curtainGroupID.intValue
@@ -1026,6 +1000,8 @@ extension DevicesViewController {
         }
         
         if controlType == ControlType.Curtain {
+            
+            device.increaseUsageCounterValue()
             
             if devicePair == nil { // then this is new module, which works alone
                 device.currentValue = 0xFF // We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4. And this channel needs to be ON for image to be displayed properly
@@ -1077,7 +1053,7 @@ extension DevicesViewController {
         let tag                  = gestureRecognizer.view!.tag
         let device               = devices[tag]
         let controlType          = device.controlType
-        let address              = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let address              = device.getAddress()
         let setDeviceValue:UInt8 = 0x00
         let deviceCurrentValue   = Int(device.currentValue)
         let deviceGroupId        = device.curtainGroupID.intValue
@@ -1099,6 +1075,9 @@ extension DevicesViewController {
         }
         
         if controlType == ControlType.Curtain {
+            
+            device.increaseUsageCounterValue()
+            
             if devicePair == nil {
                 device.currentValue = 0x00
                 CoreDataController.sharedInstance.saveChanges()
@@ -1149,7 +1128,7 @@ extension DevicesViewController {
         let tag                  = gestureRecognizer.view!.tag
         let device               = devices[tag]
         let controlType          = device.controlType
-        let address              = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let address              = device.getAddress()
         let setDeviceValue:UInt8 = 0xEF
         let deviceCurrentValue   = Int(device.currentValue)
         let deviceGroupId        = device.curtainGroupID.intValue
@@ -1171,6 +1150,8 @@ extension DevicesViewController {
         }
         
         if controlType == ControlType.Curtain {
+            
+            device.increaseUsageCounterValue()
             
             if devicePair == nil {
                 device.currentValue = 0xEF
@@ -1220,11 +1201,13 @@ extension DevicesViewController {
     func lockSalto(_ gestureRecognizer:UITapGestureRecognizer) {
         let tag                   = gestureRecognizer.view!.tag
         let device                = devices[tag]
-        let address               = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let address               = device.getAddress()
         let setDeviceValue:UInt8  = 0xFF
         let deviceCurrentValue    = Int(device.currentValue)
         device.currentValue = 0
         CoreDataController.sharedInstance.saveChanges()
+        
+        device.increaseUsageCounterValue()
         
         DispatchQueue.main.async(execute: {
             RunnableList.sharedInstance.checkForSameDevice(
@@ -1245,11 +1228,13 @@ extension DevicesViewController {
     func unlockSalto(_ gestureRecognizer:UITapGestureRecognizer) {
         let tag                   = gestureRecognizer.view!.tag
         let device                = devices[tag]
-        let address               = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let address               = device.getAddress()
         let setDeviceValue:UInt8  = 0xFF
         let deviceCurrentValue    = Int(device.currentValue)
         device.currentValue = 1
         CoreDataController.sharedInstance.saveChanges()
+        
+        device.increaseUsageCounterValue()
         
         DispatchQueue.main.async(execute: {
             RunnableList.sharedInstance.checkForSameDevice(
@@ -1271,11 +1256,13 @@ extension DevicesViewController {
     func thirdFcnSalto(_ gestureRecognizer:UITapGestureRecognizer) {
         let tag                   = gestureRecognizer.view!.tag
         let device                = devices[tag]
-        let address               = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let address               = device.getAddress()
         let setDeviceValue:UInt8  = 0xFF
         let deviceCurrentValue    = Int(device.currentValue)
         device.currentValue = 0
         CoreDataController.sharedInstance.saveChanges()
+        
+        device.increaseUsageCounterValue()
         
         DispatchQueue.main.async(execute: {
             RunnableList.sharedInstance.checkForSameDevice(
@@ -1349,9 +1336,11 @@ extension DevicesViewController: BigSliderDelegate {
                 skipLevel      = getByte(device.skipState)
             }
             
-            let address            = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+            let address            = device.getAddress()
             let deviceCurrentValue = Int(device.currentValue)
             device.currentValue = NSNumber(value: Int(setDeviceValue)*255/100)
+            
+            device.increaseUsageCounterValue()
             
             DispatchQueue.main.async(execute: {
                 RunnableList.sharedInstance.checkForSameDevice(

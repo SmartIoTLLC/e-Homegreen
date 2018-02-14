@@ -208,7 +208,6 @@ class SceneGalleryVC: CommonXIBTransitionVC {
     var imagePicker = UIImagePickerController()
     var appDel:AppDelegate
     var images:[Image] = []
-    let defaults = Foundation.UserDefaults.standard
     var user:User?
 
     @IBOutlet weak var changeLibrarySC: UISegmentedControl!

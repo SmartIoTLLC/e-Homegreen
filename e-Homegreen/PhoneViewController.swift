@@ -180,10 +180,10 @@ extension PhoneViewController {
     func requestSpeechAuthorization() {
         SFSpeechRecognizer.requestAuthorization { (authStatus) in
             switch authStatus {
-            case .authorized    : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: true); self.requestContactsAuthorization()
-            case .denied        : self.makeToastOnMainThread(message: "Please go to your Privacy Settings and provide us access to Speech Recognition."); self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
-            case .notDetermined : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
-            case .restricted    : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
+                case .authorized    : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: true); self.requestContactsAuthorization()
+                case .denied        : self.makeToastOnMainThread(message: "Please go to your Privacy Settings and provide us access to Speech Recognition."); self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
+                case .notDetermined : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
+                case .restricted    : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
             }
         }
     }
@@ -203,14 +203,13 @@ extension PhoneViewController {
     
     // CONTACTS
     func requestContactsAuthorization() {
-        
         let authStatus = CNContactStore.authorizationStatus(for: .contacts)
         
         switch authStatus {
-        case .authorized    : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: true)
-        case .denied        : self.makeToastOnMainThread(message: "Please go to your Privacy Settings and provide us access to Contacts."); self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
-        case .notDetermined : break //self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
-        case .restricted    : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
+            case .authorized    : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: true)
+            case .denied        : self.makeToastOnMainThread(message: "Please go to your Privacy Settings and provide us access to Contacts."); self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
+            case .notDetermined : break //self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
+            case .restricted    : self.toggleButtonOnMainThread(button: self.makeCallButton, enabled: false)
         }
     }
     
@@ -219,7 +218,7 @@ extension PhoneViewController {
         let keys: [CNKeyDescriptor] = [CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactPhoneNumbersKey as CNKeyDescriptor]
         let request = CNContactFetchRequest(keysToFetch: keys)
         
-        let predicate = CNContact.predicateForContacts(matchingName: recognizedContact)
+        let predicate = CNContact.predicateForContacts(matchingName: recognizedContact.removeUnwantedKeywords())
         
         do {
             let containerResults = try usersContactStorage.unifiedContacts(matching: predicate, keysToFetch: keys)
@@ -260,6 +259,10 @@ extension String {
             if newString.count < 4 { newString.append(c) }
         }
         return newString
+    }
+    
+    fileprivate func removeUnwantedKeywords() -> String {
+        return self.replacingOccurrences(of: "call", with: "").replacingOccurrences(of: "dial", with: "").replacingOccurrences(of: "please", with: "")
     }
     
 }

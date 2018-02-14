@@ -18,6 +18,8 @@ extension Device {
         return NSFetchRequest<Device>(entityName: "Device");
     }
     
+    @NSManaged var usageCounter: NSNumber
+    @NSManaged var isFavorite: Bool
     @NSManaged var deviceImages: NSSet?
     @NSManaged var address: NSNumber
     @NSManaged var allowEnergySaving: NSNumber
@@ -88,4 +90,15 @@ extension Device {
     @NSManaged var notificationDisplayTime: NSNumber?
     
     
+}
+
+extension Device {
+    func increaseUsageCounterValue() {
+        let counterValue = Int(self.usageCounter)
+        self.usageCounter = NSNumber(value: counterValue + 1)
+    }
+    
+    func getAddress() -> [Byte] {
+        return [Byte(gateway.addressOne), Byte(gateway.addressTwo), Byte(address)]
+    }
 }

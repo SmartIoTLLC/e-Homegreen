@@ -57,18 +57,13 @@ class EventsCollectionViewCell: UICollectionViewCell {
                 if let data = image.imageData { eventImageView.image = UIImage(data: data)
                     
                 } else {
-                    if let defaultImage = event.eventImageOneDefault { eventImageView.image = UIImage(named: defaultImage)
-                    } else { eventImageView.image = upDown0 }
+                    if let defaultImage = event.eventImageOneDefault { eventImageView.image = UIImage(named: defaultImage) } else { eventImageView.image = upDown0 }
                 }
-                
             } else {
-                if let defaultImage = event.eventImageOneDefault { eventImageView.image = UIImage(named: defaultImage)
-                } else { eventImageView.image = upDown0 }
+                if let defaultImage = event.eventImageOneDefault { eventImageView.image = UIImage(named: defaultImage) } else { eventImageView.image = upDown0 }
             }
-            
         } else {
-            if let defaultImage = event.eventImageOneDefault { eventImageView.image = UIImage(named: defaultImage)
-            } else { eventImageView.image = upDown0 }
+            if let defaultImage = event.eventImageOneDefault { eventImageView.image = UIImage(named: defaultImage) } else { eventImageView.image = upDown0 }
         }
         
         eventImageView.layer.cornerRadius = 5
@@ -110,37 +105,30 @@ class EventsCollectionViewCell: UICollectionViewCell {
         self.eventId = event.eventId as! Int
         
         if let id = event.eventImageOneCustom {
-            
             if let image = DatabaseImageController.shared.getImageById(id) {
                 if let data =  image.imageData {
                     imageOne = UIImage(data: data)
                 } else {
-                    if let defaultImage = event.eventImageOneDefault{ imageOne = UIImage(named: defaultImage)
-                    } else { imageOne = upDown0 }
+                    if let defaultImage = event.eventImageOneDefault{ imageOne = UIImage(named: defaultImage) } else { imageOne = upDown0 }
                 }
             } else {
-                if let defaultImage = event.eventImageOneDefault { imageOne = UIImage(named: defaultImage)
-                } else { imageOne = upDown0 }
+                if let defaultImage = event.eventImageOneDefault { imageOne = UIImage(named: defaultImage) } else { imageOne = upDown0 }
             }
         } else {
-            if let defaultImage = event.eventImageOneDefault { imageOne = UIImage(named: defaultImage)
-            } else { imageOne = upDown0 }
+            if let defaultImage = event.eventImageOneDefault { imageOne = UIImage(named: defaultImage) } else { imageOne = upDown0 }
         }
         
         if let id = event.eventImageTwoCustom {
             if let image = DatabaseImageController.shared.getImageById(id) {
                 if let data =  image.imageData { imageTwo = UIImage(data: data)
                 } else {
-                    if let defaultImage = event.eventImageTwoDefault { imageTwo = UIImage(named: defaultImage)
-                    } else { imageTwo = upDown1 }
+                    if let defaultImage = event.eventImageTwoDefault { imageTwo = UIImage(named: defaultImage) } else { imageTwo = upDown1 }
                 }
             } else {
-                if let defaultImage = event.eventImageTwoDefault { imageTwo = UIImage(named: defaultImage)
-                } else { imageTwo = upDown1 }
+                if let defaultImage = event.eventImageTwoDefault { imageTwo = UIImage(named: defaultImage) } else { imageTwo = upDown1 }
             }
         } else {
-            if let defaultImage = event.eventImageTwoDefault { imageTwo = UIImage(named: defaultImage)
-            } else { imageTwo = upDown1 }
+            if let defaultImage = event.eventImageTwoDefault { imageTwo = UIImage(named: defaultImage) } else { imageTwo = upDown1 }
         }
         
         eventImageView.image = imageOne

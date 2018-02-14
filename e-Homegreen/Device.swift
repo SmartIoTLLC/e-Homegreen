@@ -174,6 +174,32 @@ class Device: NSManagedObject {
         }
     }
     
+    func resetSingleImage(image: DeviceImage) { // TODO: reset picked images
+        if let appDel = UIApplication.shared.delegate as? AppDelegate {
+            if let moc = appDel.managedObjectContext {
+                let defaultImages = DefaultDeviceImages().getNewImagesForDevice(self)
+                
+                if let deviceImages = deviceImages?.allObjects as? [DeviceImage] {
+                    deviceImages.forEach({ (deviceImage) in
+                        if deviceImage.state == image.state {
+                            moc.delete(deviceImage)
+                        }
+                    })
+                }
+                
+                defaultImages.forEach({ (deviceImageState) in
+                    if deviceImageState.state == Int(image.state!) {
+                        let deviceImage = DeviceImage(context: moc)
+                        deviceImage.defaultImage = deviceImageState.defaultImage
+                        deviceImage.state = NSNumber(value: deviceImageState.state as Int)
+                        deviceImage.device = self
+                        deviceImage.text = deviceImageState.text
+                    }
+                })
+            }
+        }
+    }
+    
     struct Result {
         let stateValue:Double
         let imageData:UIImage?

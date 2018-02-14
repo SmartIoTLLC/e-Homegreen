@@ -203,6 +203,7 @@
 		4EA4DA522004F33700CA8385 /* MediaCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EA4DA502004F33700CA8385 /* MediaCollectionCell.xib */; };
 		4EA9A7C31FA1D00500C8D6B8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */; };
 		4EC2E1421F7E439700DA494B /* RemoteDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */; };
+		4EC728C520349B7D00840DF7 /* Volumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC728C420349B7D00840DF7 /* Volumer.swift */; };
 		4EDCE6811F6A8D740073736B /* radio_station.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EDCE6801F6A8D740073736B /* radio_station.json */; };
 		4EDCE6871F6A9BEA0073736B /* RadioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */; };
 		4EDCE68A1F6A9C090073736B /* StationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6881F6A9C090073736B /* StationCell.swift */; };
@@ -630,6 +631,7 @@
 		4EA4DA502004F33700CA8385 /* MediaCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MediaCollectionCell.xib; sourceTree = "<group>"; };
 		4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDetailsViewController.swift; sourceTree = "<group>"; };
+		4EC728C420349B7D00840DF7 /* Volumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Volumer.swift; sourceTree = "<group>"; };
 		4EDCE6801F6A8D740073736B /* radio_station.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = radio_station.json; sourceTree = "<group>"; };
 		4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioViewController.swift; sourceTree = "<group>"; };
 		4EDCE6881F6A9C090073736B /* StationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationCell.swift; sourceTree = "<group>"; };
@@ -1767,6 +1769,7 @@
 				22495D321CAA868E0034FC94 /* UIGradient + Extension.swift */,
 				4D0D97211CAD4087001A1E89 /* HRToast+UIView.swift */,
 				4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */,
+				4EC728C420349B7D00840DF7 /* Volumer.swift */,
 			);
 			name = "Extensions and Helpers";
 			sourceTree = "<group>";
@@ -2417,6 +2420,7 @@
 				22D7EB9E1D780FB600853051 /* SecurityLocationCell.swift in Sources */,
 				22359C6A1CAE98290054434B /* LocationCell.swift in Sources */,
 				4D0D97221CAD4087001A1E89 /* HRToast+UIView.swift in Sources */,
+				4EC728C520349B7D00840DF7 /* Volumer.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Constants.swift in Sources */,
 				4E5BE4011F7D42E700497335 /* EditRemoteViewController.swift in Sources */,
 				223DC0C61CE2089A00C5E2F6 /* CreateUserFromJSONController.swift in Sources */,
