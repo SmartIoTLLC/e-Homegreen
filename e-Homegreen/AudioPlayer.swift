@@ -13,16 +13,14 @@ class AudioPlayer {
     
     static let sharedInstance = AudioPlayer()
     
-    private var player: AVPlayer!
+    private var player: AVQueuePlayer!
     private var url: URL?
-    
-    init() {
-        NotificationCenter.default.addObserver(self, selector: #selector(stopAudio), name: .appIsExiting, object: nil)
-    }
     
     func playAudioFrom(url: URL) {
         if url != self.url {
-            player = AVPlayer(url: url)
+            let item = AVPlayerItem(url: url)
+            player = AVQueuePlayer(playerItem: item)
+            try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord, with: .defaultToSpeaker)
             player.volume = 1.0
             player.play()
             
@@ -46,8 +44,4 @@ class AudioPlayer {
         url = nil
     }
     
-}
-
-extension Notification.Name {
-    static let appIsExiting = Notification.Name("appIsExiting")
 }

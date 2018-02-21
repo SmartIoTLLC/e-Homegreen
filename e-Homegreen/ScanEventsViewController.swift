@@ -437,9 +437,8 @@ extension ScanEventsViewController: UITableViewDataSource, UITableViewDelegate {
             
             return cell
         }
-        
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
-        return cell
+                
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

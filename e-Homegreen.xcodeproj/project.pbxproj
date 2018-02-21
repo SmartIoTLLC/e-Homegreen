@@ -177,8 +177,6 @@
 		4E2DFB4B1FBDBF7D00F8AC00 /* ButtonSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E2DFB491FBDBF7D00F8AC00 /* ButtonSettingsVC.xib */; };
 		4E2DFB4E1FBDE1B800F8AC00 /* ChooseButtonColorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DFB4C1FBDE1B800F8AC00 /* ChooseButtonColorVC.swift */; };
 		4E2DFB4F1FBDE1B800F8AC00 /* ChooseButtonColorVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E2DFB4D1FBDE1B800F8AC00 /* ChooseButtonColorVC.xib */; };
-		4E2DFB521FBDE5F400F8AC00 /* ChooseButtonShapeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DFB501FBDE5F400F8AC00 /* ChooseButtonShapeVC.swift */; };
-		4E2DFB531FBDE5F400F8AC00 /* ChooseButtonShapeVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E2DFB511FBDE5F400F8AC00 /* ChooseButtonShapeVC.xib */; };
 		4E3CFD7C1F823C2F00E22C92 /* ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3CFD7A1F823C2F00E22C92 /* ButtonCell.swift */; };
 		4E3CFD7D1F823C2F00E22C92 /* ButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E3CFD7B1F823C2F00E22C92 /* ButtonCell.xib */; };
 		4E5BE4011F7D42E700497335 /* EditRemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5BE3FF1F7D42E700497335 /* EditRemoteViewController.swift */; };
@@ -605,8 +603,6 @@
 		4E2DFB491FBDBF7D00F8AC00 /* ButtonSettingsVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonSettingsVC.xib; sourceTree = "<group>"; };
 		4E2DFB4C1FBDE1B800F8AC00 /* ChooseButtonColorVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseButtonColorVC.swift; sourceTree = "<group>"; };
 		4E2DFB4D1FBDE1B800F8AC00 /* ChooseButtonColorVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseButtonColorVC.xib; sourceTree = "<group>"; };
-		4E2DFB501FBDE5F400F8AC00 /* ChooseButtonShapeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseButtonShapeVC.swift; sourceTree = "<group>"; };
-		4E2DFB511FBDE5F400F8AC00 /* ChooseButtonShapeVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseButtonShapeVC.xib; sourceTree = "<group>"; };
 		4E3CFD7A1F823C2F00E22C92 /* ButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCell.swift; sourceTree = "<group>"; };
 		4E3CFD7B1F823C2F00E22C92 /* ButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonCell.xib; sourceTree = "<group>"; };
 		4E5BE3FF1F7D42E700497335 /* EditRemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditRemoteViewController.swift; sourceTree = "<group>"; };
@@ -1380,8 +1376,6 @@
 				4E2DFB491FBDBF7D00F8AC00 /* ButtonSettingsVC.xib */,
 				4E2DFB4C1FBDE1B800F8AC00 /* ChooseButtonColorVC.swift */,
 				4E2DFB4D1FBDE1B800F8AC00 /* ChooseButtonColorVC.xib */,
-				4E2DFB501FBDE5F400F8AC00 /* ChooseButtonShapeVC.swift */,
-				4E2DFB511FBDE5F400F8AC00 /* ChooseButtonShapeVC.xib */,
 			);
 			name = "Remote Button";
 			sourceTree = "<group>";
@@ -2172,7 +2166,7 @@
 						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
@@ -2294,7 +2288,6 @@
 				22495D2C1CAA80F20034FC94 /* Users.storyboard in Resources */,
 				4E8C21721FCF0979004C0883 /* ButtonImagePickerVC.xib in Resources */,
 				4923279D1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.xib in Resources */,
-				4E2DFB531FBDE5F400F8AC00 /* ChooseButtonShapeVC.xib in Resources */,
 				E7DC67B71B457C0E00EA6543 /* weather-clear@2x.png in Resources */,
 				4EFAE02C1F6C183000C85074 /* reciters.json in Resources */,
 				223878A51C919A70001357E0 /* AddLocationXIB.xib in Resources */,
@@ -2517,7 +2510,6 @@
 				737CED2E1C04571E0055DA0E /* CustomGradientButtonWhite.swift in Sources */,
 				223FB5911D64414600DC2627 /* DatabaseImageController.swift in Sources */,
 				73F1ECA81C8978B2007CEEAA /* Location+CoreDataProperties.swift in Sources */,
-				4E2DFB521FBDE5F400F8AC00 /* ChooseButtonShapeVC.swift in Sources */,
 				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,
 				223687151CB4F13E005ACDE4 /* InsertGatewayAddressXIB.swift in Sources */,
 				E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */,

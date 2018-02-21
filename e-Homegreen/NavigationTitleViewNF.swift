@@ -83,7 +83,7 @@ class NavigationTitleViewNF: UIView {
         
         // Title constraints
         let titleCenterY = NSLayoutConstraint(item: titleView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
-        let titleLeading = NSLayoutConstraint(item: titleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 16)
+        let titleLeading = NSLayoutConstraint(item: titleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 8)
         self.addConstraint(titleCenterY)
         self.addConstraint(titleLeading)
     }

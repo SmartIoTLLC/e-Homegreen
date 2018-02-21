@@ -430,6 +430,7 @@ class IncomingHandler: NSObject {
                     }
                     let data = ["deviceAddresInGateway":Int(byteArray[4])]
                     NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDevice), object: self, userInfo: data)
+                    
                 }
             }
         }
@@ -758,14 +759,14 @@ class IncomingHandler: NSObject {
     func parseMessageDimmerGetRunningTime (_ byteArray:[Byte]) {
         print("DIMMER RUNNING TIME")
         parseMessageAndPrint(byteArray)
-        
+
         devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         for i in  0..<devices.count{
             if isCorrectDeviceAddress(i: i, for: byteArray) {
                 if byteArray[7] != 0xFF && byteArray[7] != 0xF0 {
                     devices[i].runningTime = returnRunningTime([byteArray[8], byteArray[9], byteArray[10], byteArray[11]])
                 } else if byteArray[7] == 0xF0 {
-                    
+
                 } else {
                     let channel = Int(devices[i].channel)
                     print(Int(devices[i].channel))

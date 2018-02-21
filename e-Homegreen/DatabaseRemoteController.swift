@@ -53,6 +53,24 @@ public class DatabaseRemoteController: NSObject {
         }
     }
     
+    func updateRemote(remote: Remote, remoteInfo: RemoteInformation) {
+        remote.addressOne   = NSNumber(value: remoteInfo.addressOne)
+        remote.addressTwo   = NSNumber(value: remoteInfo.addressTwo)
+        remote.addressThree = NSNumber(value: remoteInfo.addressThree)
+        remote.buttonColor  = remoteInfo.buttonColor
+        remote.buttonShape  = remoteInfo.buttonShape
+        remote.buttonWidth  = NSNumber(value: remoteInfo.buttonWidth)
+        remote.buttonHeight = NSNumber(value: remoteInfo.buttonHeight)
+        remote.channel      = NSNumber(value: remoteInfo.channel)
+        remote.columns      = NSNumber(value: remoteInfo.columns)
+        remote.marginBottom = NSNumber(value: remoteInfo.marginBottom)
+        remote.marginTop    = NSNumber(value: remoteInfo.marginTop)
+        remote.name         = remoteInfo.name
+        remote.rows         = NSNumber(value: remoteInfo.rows)
+        
+        saveManagedContext()
+    }
+    
     func cloneRemote(remote: Remote, on location: Location) {
         if let moc = managedContext {
             let remoteInfo = RemoteInformation(
@@ -73,8 +91,8 @@ public class DatabaseRemoteController: NSObject {
             )
             
             let clonedRemote = Remote(context: moc, remoteInformation: remoteInfo)
-            for btn in remote.buttons! {
-                if let button = btn as? RemoteButton {
+            if let buttons = remote.buttons?.allObjects as? [RemoteButton] {
+                buttons.forEach({ (button) in
                     let b = RemoteButton(context: managedContext!)
                     b.name               = button.name
                     b.buttonId           = button.buttonId
@@ -100,7 +118,7 @@ public class DatabaseRemoteController: NSObject {
                     b.image              = button.image
                     
                     clonedRemote.addToButtons(b)
-                }
+                })
             }
             
             location.addToRemotes(clonedRemote)

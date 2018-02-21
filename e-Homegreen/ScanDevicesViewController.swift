@@ -5,7 +5,6 @@
 //  Created by Vladimir on 9/15/15.
 //  Copyright (c) 2015 Teodor Stevic. All rights reserved.
 //
-
 import UIKit
 import CoreData
 
@@ -17,7 +16,6 @@ struct SearchParametars {
 }
 
 // TODO: nastaviti odavde
-
 class ScanDevicesViewController: UIViewController, UITextFieldDelegate, ProgressBarDelegate {
     
     var appDel:AppDelegate!
@@ -42,7 +40,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     @IBOutlet weak var findNamesBtn: CustomGradientButton!
     @IBOutlet weak var deviceTableView: UITableView!
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -118,7 +116,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         NotificationCenter.default.addObserver(self, selector: #selector(nameReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidFindDeviceName), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(deviceReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidFindDevice), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(sensorParametarReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidFindSensorParametar), object: nil)
-    }    
+    }
     func removeObservers() {
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningDeviceName)
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningDevice)
@@ -139,7 +137,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             NSSortDescriptor(key: "type", ascending: true),
             NSSortDescriptor(key: "deviceIdForScanningScreen", ascending: true)
         ]
-
+        
         var predicateArray:[NSPredicate] = [NSPredicate(format: "gateway == %@", gateway.objectID)]
         
         if filterParametar.levelName != "All" { predicateArray.append(NSPredicate(format: "parentZoneId == %@", NSNumber(value: filterParametar.levelId as Int))) }
@@ -573,15 +571,15 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         let address = [getByte(gateway.addressOne), getByte(gateway.addressTwo), getByte(device.address)]
         
         switch type {
-            case ControlType.Dimmer, ControlType.AnalogOutput : SendingHandler.sendCommand(byteArray: OutgoingHandler.getChannelName(address, channel: channel), gateway: gateway)
-            case ControlType.Curtain, ControlType.PC          : SendingHandler.sendCommand(byteArray: OutgoingHandler.getModuleName(address), gateway: gateway)
-            case ControlType.Relay, ControlType.DigitalOutput : SendingHandler.sendCommand(byteArray: OutgoingHandler.getChannelName(address, channel: channel), gateway: gateway)
-            case ControlType.Climate                          : SendingHandler.sendCommand(byteArray: OutgoingHandler.getACName(address, channel: channel), gateway: gateway)
-            case ControlType.SaltoAccess                      : SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessInfoWithAddress(address), gateway: gateway)
-            case ControlType.IntelligentSwitch                : SendingHandler.sendCommand(byteArray: OutgoingHandler.getModuleName(address), gateway: gateway)
-            case ControlType.Sensor, ControlType.IntelligentSwitch,
-                 ControlType.Gateway,ControlType.DigitalInput : SendingHandler.sendCommand(byteArray: OutgoingHandler.getSensorName(address, channel: channel), gateway: gateway)
-            default: break
+        case ControlType.Dimmer, ControlType.AnalogOutput : SendingHandler.sendCommand(byteArray: OutgoingHandler.getChannelName(address, channel: channel), gateway: gateway)
+        case ControlType.Curtain, ControlType.PC          : SendingHandler.sendCommand(byteArray: OutgoingHandler.getModuleName(address), gateway: gateway)
+        case ControlType.Relay, ControlType.DigitalOutput : SendingHandler.sendCommand(byteArray: OutgoingHandler.getChannelName(address, channel: channel), gateway: gateway)
+        case ControlType.Climate                          : SendingHandler.sendCommand(byteArray: OutgoingHandler.getACName(address, channel: channel), gateway: gateway)
+        case ControlType.SaltoAccess                      : SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessInfoWithAddress(address), gateway: gateway)
+        case ControlType.IntelligentSwitch                : SendingHandler.sendCommand(byteArray: OutgoingHandler.getModuleName(address), gateway: gateway)
+        case ControlType.Sensor, ControlType.IntelligentSwitch,
+             ControlType.Gateway,ControlType.DigitalInput : SendingHandler.sendCommand(byteArray: OutgoingHandler.getSensorName(address, channel: channel), gateway: gateway)
+        default: break
         }
     }
     
@@ -754,7 +752,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
         deviceTableView.reloadData()
     }
-
+    
     func progressBarDidPressedExit() {
         findSensorParametar = false
         dismissScaningControls()
@@ -763,7 +761,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         timesRepeatedCounter = 0
         //   For finding names
         deviceNameTimer?.invalidate()
-
+        
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningDeviceName)
         Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningSensorParametars)
         pbFN?.dissmissProgressBar()
@@ -814,7 +812,6 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
 }
 
 //MARK:- Table view dlegates and data source
-
 extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "scanCell") as? ScanCell {
@@ -833,7 +830,7 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         showChangeDeviceParametar(at: indexPath)
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return devices.count
     }

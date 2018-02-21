@@ -34,7 +34,7 @@ extension InputError: CustomStringConvertible {
             case .notPositiveNumbers  : return "Numbers must be positive."
             case .inputMissing        : return "Missing input."
             case .idIncorrect         : return "Id is incorrect."
-            case .numbersAreNegative  : return "Numbers cab't be negative."
+            case .numbersAreNegative  : return "Numbers can't be negative."
             case .nothingToSearchFor  : return "There is nothing to search for."
             case .outOfRange          : return "Search range is out of range."
             case .specifyRange        : return "You need to specify range."

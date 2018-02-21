@@ -274,12 +274,12 @@ extension ButtonSettingsVC {
     
     @objc fileprivate func chooseButtonColor() {
         let color = button.remote!.buttonColor!
-        showChooseButtonColorVC(color: color)
+        showChooseButtonColorOrShapeVC(masterValue: color, isRemote: false)
     }
     
     @objc fileprivate func chooseButtonShape() {
         let shape = button.remote!.buttonShape!
-        showChooseButtonShape(masterShape: shape)
+        showChooseButtonColorOrShapeVC(masterValue: shape, isRemote: false, isForColors: false)        
     }
     
     fileprivate func updateViews() {

@@ -274,7 +274,7 @@ extension ButtonCell {
 
 extension UIImage {
     fileprivate func getScaledButtonImage(x: CGFloat, y: CGFloat) -> UIImage? {
-        
+        // TODO: ako su brojevi isti - nece uraditi nista
         let newSize = CGSize(width: size.width * x, height: size.height * y)
         
         UIGraphicsBeginImageContextWithOptions(newSize, false, 0)

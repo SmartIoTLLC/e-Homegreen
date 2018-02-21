@@ -88,24 +88,26 @@ class NavigationTitleView: UIView {
         timeLabel.numberOfLines = 2
         timeLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(setClockType)))
         self.addSubview(timeLabel)
-        
-        // Clock constraints
-        let timeCenterY           = NSLayoutConstraint(item: timeLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
-        let timeTrailing          = NSLayoutConstraint(item: timeLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0)
-        self.addConstraint(timeCenterY)
-        self.addConstraint(timeTrailing)
+
         
         // set portrait constraint
         titleTopConstraint        = NSLayoutConstraint(item: titleView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0)
-        titleLeadingConstraint    = NSLayoutConstraint(item: titleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 16)
+        titleLeadingConstraint    = NSLayoutConstraint(item: titleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 8)
         subtitleTopConstraint     = NSLayoutConstraint(item: subtitleView, attribute: .top, relatedBy: .equal, toItem: titleView, attribute: .bottom, multiplier: 1.0, constant: 0)
-        subtitleLeadingConstraint = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 16)
+        subtitleLeadingConstraint = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 8)
         
         // set landscape constraint
         titleCenterConstraint = NSLayoutConstraint(item: titleView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
         
         subtitleCenterConstraint           = NSLayoutConstraint(item: subtitleView, attribute: .centerY, relatedBy: .equal, toItem: titleView, attribute: .centerY, multiplier: 1.0, constant: 0)
         subtitleLeadingConstraintLandscape = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: titleView, attribute: .trailing, multiplier: 1.0, constant: 10)
+
+        
+        // Clock constraints
+        let timeCenterY           = NSLayoutConstraint(item: timeLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
+        let timeTrailing          = NSLayoutConstraint(item: timeLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0)
+        self.addConstraint(timeCenterY)
+        self.addConstraint(timeTrailing)
         
         self.addConstraint(NSLayoutConstraint(item: subtitleView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0))
 

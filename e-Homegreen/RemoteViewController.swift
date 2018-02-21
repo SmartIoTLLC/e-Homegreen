@@ -81,6 +81,7 @@ class RemoteViewController: PopoverVC {
         if segue.identifier == "toSingleRemote" {
             if let vc: RemoteDetailsViewController = segue.destination as? RemoteDetailsViewController {
                 vc.remote = selectedRemote
+                vc.filterParameter = filterParametar
             }
         }
     }
