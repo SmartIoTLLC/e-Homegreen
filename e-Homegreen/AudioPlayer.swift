@@ -11,23 +11,19 @@ import AVFoundation
 import MediaPlayer
 import UIKit
 
-class AudioPlayer {
+class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
-    struct SmartIoTPlayerItem {
+    private struct SmartIoTPlayerItem {
         let url: URL!
         let title: String!
         let artist: String!
         let genre: String!
     }
-    
+
     static let sharedInstance = AudioPlayer()
 
     private var nowPlayingIndex: Int = 0
-    var nowPlayingItem: SmartIoTPlayerItem! {
-        didSet {
-            NotificationCenter.default.post(name: .nowPlayingItemChanged, object: nowPlayingItem.title)
-        }
-    }
+
     private var playlist: [SmartIoTPlayerItem] = []
     
     private var player: AVQueuePlayer!
@@ -37,17 +33,16 @@ class AudioPlayer {
     
     var isActive: Bool = false
     
-    func handleRemoteControlEvent(_ event: UIEvent?, label: inout UILabel!) {
+    func autoplay() {
         if isActive {
-            if let event = event {
-                switch event.subtype {
-                    case .remoteControlPlay          : play()
-                    case .remoteControlPause         : pauseAudio()
-                    case .remoteControlStop          : stopAudio()
-                    case .remoteControlNextTrack     : playNext()
-                    case .remoteControlPreviousTrack : playPrevious()
-                    default: break
-                }
+            playNext()
+        }
+    }
+    
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if flag {
+            if isActive {
+                playNext()
             }
         }
     }
@@ -55,7 +50,6 @@ class AudioPlayer {
     func play() {
         UIApplication.shared.beginReceivingRemoteControlEvents()
         let playlistItem = playlist[nowPlayingIndex]
-        nowPlayingItem = playlistItem
         
         if playlistItem.url != self.url {
             let item = AVPlayerItem(url: playlistItem.url)
@@ -64,8 +58,10 @@ class AudioPlayer {
                 MPMediaItemPropertyTitle: playlistItem.title,
                 MPMediaItemPropertyGenre: playlistItem.genre
             ]
+            NotificationCenter.default.post(name: .nowPlayingItemChanged, object: playlistItem.title)
+            NotificationCenter.default.addObserver(self, selector: #selector(autoplay), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: item)
             player = AVQueuePlayer(playerItem: item)
-            
+
             try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord, with: .defaultToSpeaker)
             
             player.play()
@@ -122,19 +118,11 @@ class AudioPlayer {
     }
     
     func playNext() {
-        if nowPlayingIndex + 1 == playlist.count {
-            nowPlayingIndex = 0
-        } else {
-            nowPlayingIndex += 1
-        }
+        if nowPlayingIndex + 1 == playlist.count { nowPlayingIndex = 0 } else { nowPlayingIndex += 1 }
         play()
     }
     func playPrevious() {
-        if nowPlayingIndex - 1 < 0 {
-            nowPlayingIndex = playlist.count - 1
-        } else {
-            nowPlayingIndex -= 1
-        }
+        if nowPlayingIndex - 1 < 0 { nowPlayingIndex = playlist.count - 1 } else { nowPlayingIndex -= 1 }
         play()
     }
     
