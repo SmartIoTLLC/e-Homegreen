@@ -109,6 +109,11 @@ class DevicesViewController: PopoverVC{
         stopRefreshTimer()
     }
     
+    fileprivate func loadFavoriteDevices() {        
+        devices = devices.filter({ (device) -> Bool in device.isFavorite == true })
+        deviceCollectionView.reloadData()
+    }
+    
     override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
     }

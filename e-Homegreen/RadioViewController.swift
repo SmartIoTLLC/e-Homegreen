@@ -40,10 +40,10 @@ class RadioViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         changeFullscreenImage(fullscreenButton: fullscreenButton)        
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        addObservers()
         updateViews()
         fetchRadioStations()
         setupRadioPlayerView()
@@ -80,6 +80,12 @@ extension RadioViewController {
 // MARK: - Logic
 extension RadioViewController {
     
+    func handleNewMediaItem(notification: Notification) {
+        if let title = notification.object as? String {
+            radioTitle.text = title
+        }
+    }
+    
     fileprivate func fetchRadioStations() {
         
         do {
@@ -115,12 +121,10 @@ extension RadioViewController {
     
     @objc fileprivate func playRadio() {
         guard currentStation != nil else { return }
-        radioTitle.text = currentStation.stationName
-        if let urlString = currentStation.url {
-            if let url = URL(string: urlString) {
-                AudioPlayer.sharedInstance.playAudioFrom(url: url)
-            }
+        if let index = radioStations.index(of: currentStation) {
+            AudioPlayer.sharedInstance.loadPlaylist(stations: radioStations, currentIndex: index)
         }
+        radioTitle.text = currentStation.stationName
     }
     
     @objc fileprivate func pauseRadio() {
@@ -190,6 +194,10 @@ extension RadioViewController {
         
         navigationItem.titleView = titleView
         titleView.setTitle("Radio")
+    }
+    
+    fileprivate func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNewMediaItem(notification:)), name: .nowPlayingItemChanged, object: nil)
     }
 }
 

@@ -254,7 +254,7 @@ extension ButtonCell {
             } else {
                 realButton.setImage(uiImage, for: UIControlState())
             }
-            realButton.imageView?.contentMode = .scaleAspectFit
+            realButton.imageView?.contentMode = .scaleAspectFill // todo
             realButton.imageEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
         } else {
             realButton.setImage(nil, for: UIControlState())

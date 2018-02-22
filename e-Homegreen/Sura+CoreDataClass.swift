@@ -12,10 +12,11 @@ import CoreData
 
 public class Sura: NSManagedObject {
 
-    convenience init(context: NSManagedObjectContext, id: Int16, name: String) {
+    convenience init(context: NSManagedObjectContext, id: Int16, name: String, reciter: Reciter) {
         self.init(context: context)
         
         self.id = id as NSNumber
         self.name = name
+        self.reciter = reciter
     }
 }

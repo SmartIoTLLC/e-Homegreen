@@ -42,7 +42,7 @@ class SuraPlayerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        addObservers()
         updateViews()
         fetchSuraInfo()
         setupSuraPlayerView()
@@ -124,10 +124,21 @@ extension SuraPlayerViewController {
         playButton.imageView?.contentMode = .scaleAspectFit
         playButton.addTarget(self, action: #selector(playSura), for: .touchUpInside)
     }
+    
+    fileprivate func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNewMediaItem(notification:)), name: .nowPlayingItemChanged, object: nil)
+    }
 }
 
 // MARK: - Logic
+
 extension SuraPlayerViewController {
+    func handleNewMediaItem(notification: Notification) {
+        if let title = notification.object as? String {
+            suraTitle.text = title
+        }
+    }
+    
     func pauseSura() {
         AudioPlayer.sharedInstance.pauseAudio()
     }
@@ -138,15 +149,10 @@ extension SuraPlayerViewController {
     
     func playSura() {
         guard currentSura != nil else { return }
-        suraTitle.text = currentSura.name
-        if let server = reciter.server {
-            if let id = currentSura.id {
-                let urlString = server + "/" + formattedSuraID(id: id) + ".mp3"
-                if let url = URL(string: urlString) {
-                    AudioPlayer.sharedInstance.playAudioFrom(url: url)
-                }
-            }
+        if let index = availableSurasList.index(of: currentSura) {
+            AudioPlayer.sharedInstance.loadPlaylist(suras: availableSurasList, currentIndex: index)
         }
+        suraTitle.text = currentSura.name
     }
     
     func fetchSuraInfo() {
@@ -161,7 +167,8 @@ extension SuraPlayerViewController {
                             let object = Sura(
                                 context : moc,
                                 id      : sura["id"] as! Int16,
-                                name    : sura["name"] as! String
+                                name    : sura["name"] as! String,
+                                reciter : reciter
                             )
                             surasList.append(object)
                         }
