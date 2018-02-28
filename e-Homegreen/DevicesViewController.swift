@@ -13,7 +13,6 @@ import Crashlytics
 import AudioToolbox
 
 // TODO: favorite devices
-// + sort devices by most used
 class DevicesViewController: PopoverVC{
     
     var refreshTimer: Foundation.Timer?
@@ -81,6 +80,9 @@ class DevicesViewController: PopoverVC{
         setContentOffset(for: scrollView)
         setTitleView(view: headerTitleSubtitleView)
         collectionViewCellSize = calculateCellSize(completion: { deviceCollectionView.reloadData() })
+        
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        scrollView.setContentOffset(bottomOffset, animated: false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -96,8 +98,6 @@ class DevicesViewController: PopoverVC{
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
-        scrollView.setContentOffset(bottomOffset, animated: false)
         addObservers()
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
             self.refreshVisibleDevicesInScrollView()
@@ -118,8 +118,8 @@ class DevicesViewController: PopoverVC{
         scrollView.setButtonTitle(name, id: id)
     }
 
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
+    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        if gestureRecognizer.state == .began {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             scrollView.setDefaultFilterItem(Menu.devices)
         }
@@ -357,34 +357,6 @@ class DevicesViewController: PopoverVC{
         if !deviceInControlMode {
             if isScrolling { shouldUpdate = true } else { self.updateCells() }
         }
-    }
-    
-    //MARK: Setting names for devices according to filter
-    func returnNameForDeviceAccordingToFilter (_ device:Device) -> String {
-        if filterParametar.location != "All" {
-            if filterParametar.levelId != 0 && filterParametar.levelId != 255 {
-                if filterParametar.zoneId != 0 && filterParametar.zoneId != 255 { return "\(device.name)"
-                } else {
-                    if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.zoneId), location: device.gateway.location), let name = zone.name { return "\(name) \(device.name)"
-                    } else { return "\(device.name)" } }
-                
-            } else {
-                if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location), let name = zone.name {
-                    if let zone2 = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.zoneId), location: device.gateway.location), let name2 = zone2.name {
-                        return "\(name) \(name2) \(device.name)"
-                    } else { return "\(name) \(device.name)" }
-                    
-                } else { return "\(device.name)" } }
-            
-        } else {
-            var text = "\(device.gateway.location.name!)"
-            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location), let name = zone.name { text += " " + name }
-            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.zoneId), location: device.gateway.location), let name = zone.name { text += " " + name }
-            text += " " + device.name
-            
-            return text
-        }
-
     }
     
     //MARK: Zone and category controll
@@ -665,6 +637,8 @@ class DevicesViewController: PopoverVC{
         sender.rotate(1)
     }
     @IBAction func location(_ sender: AnyObject) {
+        
+        // setujes filter ako si u zoni sa ibeaconom
         // TODO: ova funkcija (well, duh)
     }
     
@@ -847,7 +821,7 @@ extension DevicesViewController {
                             }
                         }
                     }
-                    for device in devices { device.cellTitle = returnNameForDeviceAccordingToFilter(device) }
+                    for device in devices { device.cellTitle = DatabaseDeviceController.shared.returnNameForDeviceAccordingToFilter(filterParameter: filterParametar, device: device) }
                 }
             }
 

@@ -202,6 +202,8 @@ struct UserDefaults {
     static let IsPreloaded = "EHGisPreloaded"
     static let RefreshDelayHours = "hourRefresh"
     static let RefreshDelayMinutes = "minRefresh"
+    static let ClockType = "clockType"
+    static let FavDevicesLabelType = "favDevicesLabelType"
     static let OpenLastScreen = "EHGIsLastScreenOpened"
     static let IsScaningForZones = "EHGIsScanningForZones"
     static let IsScaningForCategories = "EHGIsScanningForCategories"

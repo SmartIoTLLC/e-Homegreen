@@ -86,4 +86,105 @@ class DatabaseDeviceController: NSObject {
         return nil
     }
     
+    func getDevices() -> [Device]? {
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
+            
+            let sortDescriptors = [
+                NSSortDescriptor(key: "gateway.name", ascending: true),
+                NSSortDescriptor(key: "address", ascending: true),
+                NSSortDescriptor(key: "type", ascending: true),
+                NSSortDescriptor(key: "channel", ascending: true)
+            ]
+            fetchRequest.sortDescriptors = sortDescriptors
+            
+            fetchRequest.predicate = NSPredicate(format: "gateway.location.user == %@", user)
+            
+            do {
+                if let moc = appDel.managedObjectContext {
+                    if let fetchResults = try moc.fetch(fetchRequest) as? [Device] {
+                        return fetchResults
+                    }
+                }
+            } catch { }
+        }
+        
+        return nil
+    }
+    
+    func returnNameForDeviceAccordingToFilter (filterParameter: FilterItem, device:Device) -> String {
+        if filterParameter.location != "All" {
+            if filterParameter.levelId != 0 && filterParameter.levelId != 255 {
+                if filterParameter.zoneId != 0 && filterParameter.zoneId != 255 { return "\(device.name)"
+                } else {
+                    if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.zoneId), location: device.gateway.location), let name = zone.name { return "\(name) \(device.name)"
+                    } else { return "\(device.name)" } }
+                
+            } else {
+                if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location), let name = zone.name {
+                    if let zone2 = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.zoneId), location: device.gateway.location), let name2 = zone2.name {
+                        return "\(name) \(name2) \(device.name)"
+                    } else { return "\(name) \(device.name)" }
+                    
+                } else { return "\(device.name)" } }
+            
+        } else {
+            var text = "\(device.gateway.location.name ?? "")"
+            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.parentZoneId), location: device.gateway.location), let name = zone.name { text += " " + name }
+            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(device.zoneId), location: device.gateway.location), let name = zone.name { text += " " + name }
+            text += " " + device.name
+            
+            return text
+        }
+        
+    }
+    
+    func returnNameForFavoriteDevice(filterParameter: FilterItem, nameType: FavDeviceFilterType, device:Device) -> String {
+        var locationName: String?
+        var levelName: String?
+        var zoneName: String?
+        let deviceName: String = device.name
+        
+        var fullName: String = ""
+        
+        if let location = device.gateway.location.name {
+            if location != "All" { locationName = location }
+        }
+        if let levelId = device.parentZoneId as? Int {
+            if let level = DatabaseHandler.sharedInstance.returnZoneWithId(levelId, location: device.gateway.location)?.name { levelName = level }
+        }
+        
+        if let zoneId = device.zoneId as? Int {
+            if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(zoneId, location: device.gateway.location)?.name { zoneName = zone }
+        }
+        
+        switch nameType {
+            case .locationLevelZoneName:
+                if let locationName = locationName { fullName += "\(locationName) " }
+                if let levelName = levelName { fullName += "\(levelName) " }
+                if let zoneName = zoneName { fullName += "\(zoneName) " }
+                fullName += deviceName
+            case .levelZoneName:
+                if let levelName = levelName { fullName += "\(levelName) " }
+                if let zoneName = zoneName { fullName += "\(zoneName) " }
+                fullName += deviceName
+            case .zoneName:
+                if let zoneName = zoneName { fullName += "\(zoneName) " }
+                fullName += deviceName
+            case .deviceName:
+                fullName += deviceName
+        }
+        
+        return fullName
+    }
+    
+    func toggleFavoriteDevice(device: Device, favoriteButton: UIButton) {
+        device.isFavorite = !device.isFavorite
+        switch device.isFavorite {
+            case true: favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: UIControlState())
+            case false: favoriteButton.setImage(#imageLiteral(resourceName: "unfavorite"), for: UIControlState())
+        }
+        CoreDataController.sharedInstance.saveChanges()
+        NotificationCenter.default.post(name: .favoriteDeviceToggled, object: nil)
+    }
 }

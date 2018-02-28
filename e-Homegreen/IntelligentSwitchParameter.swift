@@ -21,6 +21,10 @@ class IntelligentSwitchParameter: CommonXIBTransitionVC {
     var delegate: DevicePropertiesDelegate?
     var device:Device?
     
+    @IBOutlet weak var favoriteButton: UIButton!
+    @IBAction func favoriteButton(_ sender: UIButton) {
+        favButtonTapped()
+    }
     @IBOutlet weak var lblLocation: UILabel!
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblLevel: UILabel!
@@ -46,6 +50,11 @@ class IntelligentSwitchParameter: CommonXIBTransitionVC {
         setupViews()
     }
     
+    fileprivate func favButtonTapped() {
+        let device = devices[indexPathRow]
+        DatabaseDeviceController.shared.toggleFavoriteDevice(device: device, favoriteButton: favoriteButton)
+    }
+    
     func setupViews() {
         let deviceIn = devices[indexPathRow]
         let gateway  = deviceIn.gateway
@@ -65,6 +74,11 @@ class IntelligentSwitchParameter: CommonXIBTransitionVC {
         lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(deviceIn.categoryId), location: location))"
         deviceAddress.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne))):\(returnThreeCharactersForByte(Int(gateway.addressTwo))):\(returnThreeCharactersForByte(Int(deviceIn.address)))"
         deviceChannel.text = "\(deviceIn.channel)"
+        switch deviceIn.isFavorite {
+            case true: favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: UIControlState())
+            case false: favoriteButton.setImage(#imageLiteral(resourceName: "unfavorite"), for: UIControlState())
+        }
+        if let buttonImageView = favoriteButton.imageView { favoriteButton.bringSubview(toFront: buttonImageView) }
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {

@@ -27,6 +27,25 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     @IBOutlet weak var toTextField: UITextField!
     @IBOutlet weak var flagTableView: UITableView!
     
+    var addressOne = 0x00
+    var addressTwo = 0x00
+    var addressThree = 0x00
+    
+    // Flag name
+    var flagNameTimer:Foundation.Timer?
+    var timesRepeatedCounterNames:Int = 0
+    var arrayOfNamesToBeSearched = [Int]()
+    var indexOfNamesToBeSearched = 0
+    // Flag parameter
+    var flagParameterTimer: Foundation.Timer?
+    var timesRepeatedCounterParameters: Int = 0
+    var arrayOfParametersToBeSearched = [Int]()
+    var indexOfParametersToBeSearched = 0
+    
+    var alertController:UIAlertController?
+    var progressBarScreenFlagNames: ProgressBarVC?
+    var shouldFindFlagParameters = false
+    
     var gateway:Gateway!
     var filterParametar:FilterItem!
     var flags:[Flag] = []
@@ -47,43 +66,33 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     var zoneSelected:Zone?
     var category:Category?
 
+    @IBAction func btnLevel(_ sender: UIButton) {
+        openPopover(popOverType: .level, sender: sender)
+    }
+    @IBAction func btnCategoryAction(_ sender: UIButton) {
+        openPopover(popOverType: .category, sender: sender)
+    }
+    @IBAction func btnZoneAction(_ sender: UIButton) {
+        openPopover(popOverType: .zone, sender: sender)
+    }
+    @IBAction func btnAdd(_ sender: AnyObject) {
+        addTapped()
+    }
+    @IBAction func scanFlag(_ sender: AnyObject) {
+        findNames()
+    }
+    @IBAction func clearRangeFields(_ sender: AnyObject) {
+        clearRangeFields()
+    }
+    @IBAction func btnRemove(_ sender: UIButton) {
+        removeTapped(sender: sender)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         refreshFlagList()
         setupViews()
-    }
-    
-    func setupViews() {
-        devAddressThree.inputAccessoryView = CustomToolBar()
-        IDedit.inputAccessoryView = CustomToolBar()
-        fromTextField.inputAccessoryView = CustomToolBar()
-        toTextField.inputAccessoryView = CustomToolBar()
-        
-        nameEdit.delegate = self
-        
-        imageSceneOne.isUserInteractionEnabled = true
-        imageSceneOne.tag = 1
-        imageSceneOne.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(_:))))
-        imageSceneTwo.isUserInteractionEnabled = true
-        imageSceneTwo.tag = 2
-        imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(_:))))
-        
-        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne)))"
-        devAddressOne.isEnabled = false
-        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway.addressTwo)))"
-        devAddressTwo.isEnabled = false
-        
-        broadcastSwitch.tag = 100
-        broadcastSwitch.isOn = false
-        broadcastSwitch.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
-        localcastSwitch.tag = 200
-        localcastSwitch.isOn = false
-        localcastSwitch.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
-        
-        btnLevel.tag = 1
-        btnZone.tag = 2
-        btnCategory.tag = 3
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -94,7 +103,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         removeObservers()
     }
-
+    
     override func sendFilterParametar(_ filterParametar: FilterItem) {
         self.filterParametar = filterParametar
         refreshFlagList()
@@ -107,7 +116,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     
     override func nameAndId(_ name: String, id: String) {
         
-        switch button.tag{
+        switch button.tag {
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
             btnZone.setTitle("All", for: UIControlState())
@@ -128,112 +137,21 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     }
     
     func changeValue (_ sender:UISwitch) {
-        if sender.tag == 100 { localcastSwitch.isOn = false } else if sender.tag == 200 { broadcastSwitch.isOn = false }
-    }
-    
-    func refreshFlagList() {
-        flags = DatabaseFlagsController.shared.updateFlagList(gateway, filterParametar: filterParametar)
-        flagTableView.reloadData()
-    }
-    
-    func handleTap (_ gesture:UITapGestureRecognizer) {
-        if let index = gesture.view?.tag {
-            showGallery(index, user: gateway.location.user).delegate = self
+        switch sender.tag {
+            case 100 : localcastSwitch.isOn = false
+            case 200 : broadcastSwitch.isOn = false
+            default  : break
         }
     }
-    
-    @IBAction func btnLevel(_ sender: UIButton) {
-        button = sender
-        var popoverList:[PopOverItem] = []
-        let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(gateway.location)
-        for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
-        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
-        openPopover(sender, popOverList:popoverList)
-    }
-    
-    @IBAction func btnCategoryAction(_ sender: UIButton) {
-        button = sender
-        var popoverList:[PopOverItem] = []
-        let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(gateway.location)
-        for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
-        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
-        openPopover(sender, popOverList:popoverList)
-    }
-    
-    @IBAction func btnZoneAction(_ sender: UIButton) {
-        button = sender
-        var popoverList:[PopOverItem] = []
-        if let level = level{
-            let list:[Zone] = DatabaseZoneController.shared.getZoneByLevel(gateway.location, parentZone: level)
-            for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
-        }
-        
-        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
-        openPopover(sender, popOverList:popoverList)
-    }
-    
-    @IBAction func btnAdd(_ sender: AnyObject) {
-        if let flagId = Int(IDedit.text!), let flagName = nameEdit.text, let address = Int(devAddressThree.text!) {
-            if flagId <= 32767 && address <= 255 {
-                
-                var levelId:Int?
-                if let levelIdNumber = level?.id { levelId = Int(levelIdNumber) }
-                
-                var zoneId:Int?
-                if let zoneIdNumber = zoneSelected?.id { zoneId = Int(zoneIdNumber) }
-                
-                var categoryId:Int?
-                if let categoryIdNumber = category?.id { categoryId = Int(categoryIdNumber) }
-                
-                DatabaseFlagsController.shared.createFlag(flagId, flagName: flagName, moduleAddress: address, gateway: gateway, levelId: levelId, selectedZoneId: zoneId, categoryId: categoryId, isBroadcast: broadcastSwitch.isOn, isLocalcast: localcastSwitch.isOn, sceneImageOneDefault: defaultImageOne, sceneImageTwoDefault: defaultImageTwo, sceneImageOneCustom: customImageOne, sceneImageTwoCustom: customImageTwo, imageDataOne: imageDataOne, imageDataTwo: imageDataTwo)
-                
-            }
-            refreshFlagList()
-        } else {
-            self.view.makeToast(message: "Please check fields: name, id and address")
-        }
-        dismissEditing()
-    }
-    
-    @IBAction func scanFlag(_ sender: AnyObject) {
-        findNames()
-    }
-    
-    @IBAction func clearRangeFields(_ sender: AnyObject) {
-        fromTextField.text = ""
-        toTextField.text = ""
-    }
-    
-    @IBAction func btnRemove(_ sender: UIButton) {
-        showAlertView(sender, message:  "Are you sure you want to delete all flags?") { (action) in
-            if action == ReturnedValueFromAlertView.delete{
-                DatabaseFlagsController.shared.deleteAllFlags(self.gateway)
-                self.refreshFlagList()
-                self.dismissEditing()
-            }
-        }
-    }
-    
-    // MARK: - FINDING NAMES FOR DEVICE
-    // Info: Add observer for received info from PLC (e.g. nameReceivedFromPLC)
-    var flagNameTimer:Foundation.Timer?
-    var flagParameterTimer: Foundation.Timer?
-    var timesRepeatedCounterNames:Int = 0
-    var timesRepeatedCounterParameters: Int = 0
-    var arrayOfNamesToBeSearched = [Int]()
-    var indexOfNamesToBeSearched = 0
-    var arrayOfParametersToBeSearched = [Int]()
-    var indexOfParametersToBeSearched = 0
-    var alertController:UIAlertController?
-    var progressBarScreenFlagNames: ProgressBarVC?
-    var shouldFindFlagParameters = false
-    var addressOne = 0x00
-    var addressTwo = 0x00
-    var addressThree = 0x00
+
+}
+
+// MARK: - Flag name
+extension ScanFlagViewController {
     
     // Gets all input parameters and prepares everything for scanning, and initiates scanning.
     func findNames() {
-        arrayOfNamesToBeSearched = [Int]()
+        arrayOfNamesToBeSearched = []
         indexOfNamesToBeSearched = 0
         
         guard let address1Text = devAddressOne.text else { self.view.makeToast(message: "Address can't be empty"); return }
@@ -250,82 +168,48 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
         
         guard let rangeFromText = fromTextField.text else { self.view.makeToast(message: "Range can't be empty"); return }
         guard let rangeFrom = Int(rangeFromText) else { self.view.makeToast(message: "Range can be only number"); return }
-        let from = rangeFrom
         
         guard let rangeToText = toTextField.text else { self.view.makeToast(message: "Range can't be empty"); return }
         guard let rangeTo = Int(rangeToText) else { self.view.makeToast(message: "Range can be only number"); return }
-        let to = rangeTo
         
         if rangeTo < rangeFrom { self.view.makeToast(message: "Range \"from\" can't be higher than range \"to\""); return }
-        for i in from...to { arrayOfNamesToBeSearched.append(i) }
+        for i in rangeFrom...rangeTo { arrayOfNamesToBeSearched.append(i) }
         
         shouldFindFlagParameters = true
         
         UIApplication.shared.isIdleTimerDisabled = true
         if arrayOfNamesToBeSearched.count != 0 {
             let firstFlagIndexThatDontHaveName = arrayOfNamesToBeSearched[indexOfNamesToBeSearched]
-            timesRepeatedCounterNames = 0
-            progressBarScreenFlagNames = ProgressBarVC(title: "Finding name", percentage: Float(1)/Float(arrayOfNamesToBeSearched.count), howMuchOf: "1 / \(arrayOfNamesToBeSearched.count)")
-            progressBarScreenFlagNames?.delegate = self
-            self.present(progressBarScreenFlagNames!, animated: true, completion: nil)
-            flagNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(checkIfFlagDidGetName(_:)), userInfo: firstFlagIndexThatDontHaveName, repeats: false)
-            NSLog("func findNames \(firstFlagIndexThatDontHaveName)")
+            
+            startProgressBar(type: .name)
             Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningFlagNames)
-            sendCommandForFindingNameWithFlagAddress(firstFlagIndexThatDontHaveName, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+            checkForFlagName(withId: firstFlagIndexThatDontHaveName)
         }
     }
     // Called from findNames or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingNames for that specific timer id.
     func checkIfFlagDidGetName (_ timer:Foundation.Timer) {
-        // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
-        // Here we just need to see whether we repeated the call to PLC less than 3 times.
-        // If not tree times, send same command again
-        // If three times reached, search for next timer ID if it exists
-        guard let flagIndex = timer.userInfo as? Int else{
-            return
-        }
-        timesRepeatedCounterNames += 1
+        guard let flagIndex = timer.userInfo as? Int else { return }
+        
         if timesRepeatedCounterNames < 3 {
-            flagNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ScanFlagViewController.checkIfFlagDidGetName(_:)), userInfo: flagIndex, repeats: false)
-            NSLog("func checkIfFlagDidGetName \(flagIndex)")
-            sendCommandForFindingNameWithFlagAddress(flagIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+            checkForFlagName(withId: flagIndex, shouldStartOver: false)
         } else {
-            if let indexOfFlagIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: flagIndex) { // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
-                if indexOfFlagIndexInArrayOfNamesToBeSearched + 1 < arrayOfNamesToBeSearched.count { // if next exists
-                    indexOfNamesToBeSearched = indexOfFlagIndexInArrayOfNamesToBeSearched+1
-                    let nextFlagIndexToBeSearched = arrayOfNamesToBeSearched[indexOfFlagIndexInArrayOfNamesToBeSearched+1]
-                    timesRepeatedCounterNames = 0
-                    flagNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(checkIfFlagDidGetName(_:)), userInfo: nextFlagIndexToBeSearched, repeats: false)
-                    NSLog("func checkIfDeviceDidGetName \(nextFlagIndexToBeSearched)")
-                    sendCommandForFindingNameWithFlagAddress(nextFlagIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
-                } else {
-                    dismissScaningControls()
-                }
+            if let nextFlagIndexToBeSearched = indexOfFlagIndexInArrayOfNamesToBeSearch(afterIndex: flagIndex) {
+                checkForFlagName(withId: nextFlagIndexToBeSearched)
             } else {
                 dismissScaningControls()
             }
         }
     }
     
-    // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
     func nameReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningFlagNames) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let flagIndex = info["flagId"] else { return }
-            guard let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: flagIndex) else { return } // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
             
-            if indexOfDeviceIndexInArrayOfNamesToBeSearched + 1 < arrayOfNamesToBeSearched.count { // if next exists
-                indexOfNamesToBeSearched = indexOfDeviceIndexInArrayOfNamesToBeSearched + 1
-                let nextFlagIndexToBeSearched = arrayOfNamesToBeSearched[indexOfDeviceIndexInArrayOfNamesToBeSearched+1]
-                
-                timesRepeatedCounterNames = 0
-                flagNameTimer?.invalidate()
-                flagNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(checkIfFlagDidGetName(_:)), userInfo: nextFlagIndexToBeSearched, repeats: false)
-                NSLog("func nameReceivedFromPLC index:\(index) :flagIndex\(nextFlagIndexToBeSearched)")
-                sendCommandForFindingNameWithFlagAddress(nextFlagIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
-            } else {
-                dismissScaningControls()
+            if let nextFlagIndexToBeSearched = indexOfFlagIndexInArrayOfNamesToBeSearch(afterIndex: flagIndex) {
+                checkForFlagName(withId: nextFlagIndexToBeSearched)
             }
         }
     }
@@ -337,23 +221,33 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getFlagName(address, flagId: UInt8(flagId + 100)) , gateway: self.gateway)
     }
     
-    func setProgressBarParametarsForFindingNames (_ flagId:Int) {
-        if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: flagId) { // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
-            if let _ = progressBarScreenFlagNames?.lblHowMuchOf, let _ = progressBarScreenFlagNames?.lblPercentage, let _ = progressBarScreenFlagNames?.progressView{
-                progressBarScreenFlagNames?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfNamesToBeSearched+1) / \(arrayOfNamesToBeSearched.count)"
-                progressBarScreenFlagNames?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfNamesToBeSearched.count)*100) + " %"
-                progressBarScreenFlagNames?.progressView.progress = Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfNamesToBeSearched.count)
+    fileprivate func indexOfFlagIndexInArrayOfNamesToBeSearch(afterIndex flagIndex: Int) -> Int? {
+        if let indexOfFlagIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: flagIndex) {
+            if indexOfFlagIndexInArrayOfNamesToBeSearched + 1 < arrayOfNamesToBeSearched.count {
+                indexOfNamesToBeSearched = indexOfFlagIndexInArrayOfNamesToBeSearched + 1
+                let nextFlagIndexToBeSearched = arrayOfNamesToBeSearched[indexOfNamesToBeSearched]
+                return nextFlagIndexToBeSearched
+            } else {
+                dismissScaningControls()
             }
         }
+        return nil
     }
-    
-    // MARK: - Timer parameters
-    // Gets all input parameters and prepares everything for scanning, and initiates scanning.
+    fileprivate func checkForFlagName(withId id: Int, shouldStartOver: Bool = true) {
+        if shouldStartOver { timesRepeatedCounterNames = 0 } else { timesRepeatedCounterNames += 1 }
+        flagNameTimer?.invalidate()
+        flagNameTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(checkIfFlagDidGetName(_:)), userInfo: id, repeats: false)
+        sendCommandForFindingNameWithFlagAddress(id, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+    }
+}
+
+// MARK: - Parameter name
+extension ScanFlagViewController {
     func findParametarsForFlag() {
         progressBarScreenFlagNames?.dissmissProgressBar()
         progressBarScreenFlagNames = nil
         
-        arrayOfParametersToBeSearched = [Int]()
+        arrayOfParametersToBeSearched = []
         indexOfParametersToBeSearched = 0
         
         refreshFlagList()
@@ -375,82 +269,87 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
         UIApplication.shared.isIdleTimerDisabled = true
         if arrayOfParametersToBeSearched.count != 0 {
             let parameterIndex = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
-            timesRepeatedCounterParameters = 0
-            progressBarScreenFlagNames = nil
-            progressBarScreenFlagNames = ProgressBarVC(title: "Finding flag parametars", percentage: Float(1)/Float(self.arrayOfParametersToBeSearched.count), howMuchOf: "1 / \(self.arrayOfParametersToBeSearched.count)")
-            progressBarScreenFlagNames?.delegate = self
-            self.present(progressBarScreenFlagNames!, animated: true, completion: nil)
-            flagParameterTimer?.invalidate()
-            flagParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(checkIfFlagDidGetParametar(_:)), userInfo: parameterIndex, repeats: false)
-            NSLog("func findNames \(parameterIndex)")
-            Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningFlagParameters)
-            sendCommandForFindingParameterWithFlagAddress(parameterIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
-            print("Command sent for parameter from FindParameter")
+            
+            startProgressBar(type: .parameters)
+            checkForFlagParameter(withId: parameterIndex)
+            defaults.set(true, forKey: UserDefaults.IsScaningFlagParameters)
         }
-        
     }
+    
     // Called from findParametarsForTimer or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingParameterWithTimerAddress for that specific timer id.
-    
     func checkIfFlagDidGetParametar (_ timer:Foundation.Timer) {
-        // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
-        // Here we just need to see whether we repeated the call to PLC less than 3 times.
-        // If not tree times, send same command again
-        // If three times reached, search for next timer ID if it exists
         guard let flagIndex = timer.userInfo as? Int else { return }
         
-        timesRepeatedCounterParameters += 1
         if timesRepeatedCounterParameters < 3 {
-            flagParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(checkIfFlagDidGetParametar(_:)), userInfo: flagIndex, repeats: false)
-            NSLog("func checkIfDeviceDidGetParameter \(flagIndex)")
-            sendCommandForFindingParameterWithFlagAddress(flagIndex, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+            checkForFlagParameter(withId: flagIndex, shouldStartOver: false)
         } else {
-            if let indexOfFlagIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: flagIndex) { // Get the index of received timerId. Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
-                if indexOfFlagIndexInArrayOfParametersToBeSearched+1 < arrayOfParametersToBeSearched.count { // if next exists
-                    indexOfParametersToBeSearched = indexOfFlagIndexInArrayOfParametersToBeSearched + 1
-                    let nextFlagIndexToBeSearched = arrayOfParametersToBeSearched[indexOfFlagIndexInArrayOfParametersToBeSearched+1]
-                    timesRepeatedCounterParameters = 0
-                    flagParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(checkIfFlagDidGetParametar(_:)), userInfo: nextFlagIndexToBeSearched, repeats: false)
-                    NSLog("func checkIfDeviceDidGetParameter \(nextFlagIndexToBeSearched)")
-                    sendCommandForFindingParameterWithFlagAddress(nextFlagIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
-                    print("Command sent for parameter from checkIfTimerDidGetParametar: next parameter")
-                } else {
-                    shouldFindFlagParameters = false
-                    dismissScaningControls()
-                }
+            if let nextFlagIndexToBeSearched = indexOfDeviceIndexInArrayOfParametersToBeSearched(afterIndex: flagIndex) {
+                checkForFlagParameter(withId: nextFlagIndexToBeSearched)
             }
         }
     }
     
-    // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
     func flagParametarReceivedFromPLC (_ notification:Notification) {
-        if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningFlagParameters) {
+        if defaults.bool(forKey: UserDefaults.IsScaningFlagParameters) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let flagIndex = info["flagId"] else { return }
-            guard let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: flagIndex) else { return } // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
             
-            if indexOfDeviceIndexInArrayOfParametersToBeSearched+1 < arrayOfParametersToBeSearched.count { // if next exists
-                indexOfParametersToBeSearched = indexOfDeviceIndexInArrayOfParametersToBeSearched + 1
-                let nextFlagIndexToBeSearched = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
-                timesRepeatedCounterParameters = 0
-                flagParameterTimer?.invalidate()
-                flagParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(checkIfFlagDidGetParametar(_:)), userInfo: nextFlagIndexToBeSearched, repeats: false)
-                NSLog("func parameterReceivedFromPLC index:\(index) :deviceIndex\(nextFlagIndexToBeSearched)")
-                sendCommandForFindingParameterWithFlagAddress(nextFlagIndexToBeSearched, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
-                print("Command sent for parameter from flagParametarReceivedFromPLC: next parameter")
-            } else {
-                shouldFindFlagParameters = false
-                dismissScaningControls()
+            if let nextFlagIndexToBeSearched = indexOfDeviceIndexInArrayOfParametersToBeSearched(afterIndex: flagIndex) {
+                checkForFlagParameter(withId: nextFlagIndexToBeSearched)
             }
         }
     }
+    
+    fileprivate func indexOfDeviceIndexInArrayOfParametersToBeSearched(afterIndex flagIndex: Int) -> Int? {
+        if let indexOfDeviceIndexInArrayOfParametersToBeSearched = arrayOfParametersToBeSearched.index(of: flagIndex) {
+            if indexOfDeviceIndexInArrayOfParametersToBeSearched + 1 < arrayOfParametersToBeSearched.count {
+                indexOfParametersToBeSearched = indexOfDeviceIndexInArrayOfParametersToBeSearched + 1
+                let nextFlagIndexToBeSearched = arrayOfParametersToBeSearched[indexOfParametersToBeSearched]
+                return nextFlagIndexToBeSearched
+            } else {
+                dismissScanningFlagParameters()
+            }
+        }
+        return nil
+    }
+    
+    fileprivate func checkForFlagParameter(withId id: Int, shouldStartOver: Bool = true) {
+        if shouldStartOver { timesRepeatedCounterParameters = 0 } else { timesRepeatedCounterParameters += 1 }
+        flagParameterTimer?.invalidate()
+        flagParameterTimer = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(checkIfFlagDidGetParametar(_:)), userInfo: id, repeats: false)
+        sendCommandForFindingParameterWithFlagAddress(id, addressOne: addressOne, addressTwo: addressTwo, addressThree: addressThree)
+    }
+    fileprivate func dismissScanningFlagParameters() {
+        shouldFindFlagParameters = false
+        dismissScaningControls()
+    }
+    
+    
     
     // Sends byteArray to PLC
     func sendCommandForFindingParameterWithFlagAddress(_ flagId: Int, addressOne: Int, addressTwo: Int, addressThree: Int) {
-        setProgressBarParametarsForFindingParameters(flagId)
         let address = [UInt8(addressOne), UInt8(addressTwo), UInt8(addressThree)]
+        
+        setProgressBarParametarsForFindingParameters(flagId)
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getFlagParametar(address, flagId: UInt8(flagId+100)) , gateway: self.gateway)
+    }
+}
+
+// MARK: - Progress Bar
+extension ScanFlagViewController {
+    
+    func setProgressBarParametarsForFindingNames (_ flagId:Int) {
+        if let indexOfDeviceIndexInArrayOfNamesToBeSearched = arrayOfNamesToBeSearched.index(of: flagId) { // Array "arrayOfNamesToBeSearched" contains indexes of devices that don't have name
+            if let _ = progressBarScreenFlagNames?.lblHowMuchOf,
+                let _ = progressBarScreenFlagNames?.lblPercentage,
+                let _ = progressBarScreenFlagNames?.progressView {
+                progressBarScreenFlagNames?.lblHowMuchOf.text = "\(indexOfDeviceIndexInArrayOfNamesToBeSearched+1) / \(arrayOfNamesToBeSearched.count)"
+                progressBarScreenFlagNames?.lblPercentage.text = String.localizedStringWithFormat("%.01f", Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfNamesToBeSearched.count)*100) + " %"
+                progressBarScreenFlagNames?.progressView.progress = Float(indexOfDeviceIndexInArrayOfNamesToBeSearched+1)/Float(arrayOfNamesToBeSearched.count)
+            }
+        }
     }
     
     func setProgressBarParametarsForFindingParameters (_ flagId:Int) {
@@ -469,7 +368,29 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
         }
     }
     
-    // Helpers
+    fileprivate func startProgressBar(type: PBType) {
+        var howMuchOf: Int!
+        var title: String!
+        switch type {
+        case .name:
+            howMuchOf = arrayOfNamesToBeSearched.count
+            title = "Finding name"
+        case .parameters:
+            howMuchOf = arrayOfParametersToBeSearched.count
+            title = "Finding flag parameters"
+        }
+        
+        progressBarScreenFlagNames = nil
+        progressBarScreenFlagNames = ProgressBarVC(title: title, percentage: Float(1)/Float(howMuchOf), howMuchOf: "1 / \(howMuchOf)")
+        progressBarScreenFlagNames?.delegate = self
+        self.present(progressBarScreenFlagNames!, animated: true, completion: nil)
+    }
+    
+    fileprivate enum PBType {
+        case name
+        case parameters
+    }
+    
     func progressBarDidPressedExit() {
         shouldFindFlagParameters = false
         dismissScaningControls()
@@ -495,23 +416,9 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
             _ = Foundation.Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(findParametarsForFlag), userInfo: nil, repeats: false)
         }
     }
-    
-    func addObservers(){
-        // Notification that tells us that timer is received and stored
-        NotificationCenter.default.addObserver(self, selector: #selector(ScanFlagViewController.nameReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveFlagFromGateway), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ScanFlagViewController.flagParametarReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveFlagParameterFromGateway), object: nil)
-    }
-    
-    func removeObservers(){
-        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningFlagNames)
-        Foundation.UserDefaults.standard.set(false, forKey: UserDefaults.IsScaningFlagParameters)
-        
-        // Notification that tells us that timer is received and stored
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidReceiveFlagFromGateway), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidReceiveFlagParameterFromGateway), object: nil)
-    }
 }
 
+// MARK: - Gallery Delegate
 extension ScanFlagViewController: SceneGalleryDelegate{
     
     func backImage(_ image: Image, imageIndex: Int) {
@@ -560,6 +467,7 @@ extension ScanFlagViewController: SceneGalleryDelegate{
     }
 }
 
+// MARK: - TextField Delegate
 extension ScanFlagViewController: UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -567,6 +475,7 @@ extension ScanFlagViewController: UITextFieldDelegate{
     }
 }
 
+// MARK: - TableView Data Source & Delegate
 extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -667,6 +576,132 @@ extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
             if let defaultImage = flag.flagImageTwoDefault { imageSceneTwo.image = UIImage(named: defaultImage)
             } else { imageSceneTwo.image = flag1 } }
         
+    }
+}
+
+// MARK: - Logic
+extension ScanFlagViewController {
+    fileprivate func removeTapped(sender: UIButton) {
+        showAlertView(sender, message:  "Are you sure you want to delete all flags?") { (action) in
+            if action == ReturnedValueFromAlertView.delete{
+                DatabaseFlagsController.shared.deleteAllFlags(self.gateway)
+                self.refreshFlagList()
+                self.dismissEditing()
+            }
+        }
+    }
+    
+    fileprivate func addTapped() {
+        if let flagId = Int(IDedit.text!), let flagName = nameEdit.text, let address = Int(devAddressThree.text!) {
+            if flagId <= 32767 && address <= 255 {
+                
+                var levelId:Int?
+                if let levelIdNumber = level?.id { levelId = Int(levelIdNumber) }
+                
+                var zoneId:Int?
+                if let zoneIdNumber = zoneSelected?.id { zoneId = Int(zoneIdNumber) }
+                
+                var categoryId:Int?
+                if let categoryIdNumber = category?.id { categoryId = Int(categoryIdNumber) }
+                
+                DatabaseFlagsController.shared.createFlag(flagId, flagName: flagName, moduleAddress: address, gateway: gateway, levelId: levelId, selectedZoneId: zoneId, categoryId: categoryId, isBroadcast: broadcastSwitch.isOn, isLocalcast: localcastSwitch.isOn, sceneImageOneDefault: defaultImageOne, sceneImageTwoDefault: defaultImageTwo, sceneImageOneCustom: customImageOne, sceneImageTwoCustom: customImageTwo, imageDataOne: imageDataOne, imageDataTwo: imageDataTwo)
+                
+            }
+            refreshFlagList()
+        } else {
+            self.view.makeToast(message: "Please check fields: name, id and address")
+        }
+        dismissEditing()
+    }
+    
+    fileprivate func openPopover(popOverType: PopOverType, sender: UIButton) {
+        button = sender
+        var popoverList:[PopOverItem] = []
+        switch popOverType {
+            case .level:
+                let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(gateway.location)
+                for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
+            case .category:
+                let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(gateway.location)
+                for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
+            case .zone:
+                if let level = level {
+                    let list:[Zone] = DatabaseZoneController.shared.getZoneByLevel(gateway.location, parentZone: level)
+                    for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
+            }
+        }
+        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
+        openPopover(sender, popOverList:popoverList)
+    }
+    fileprivate enum PopOverType {
+        case level
+        case category
+        case zone
+    }
+}
+
+// MARK: - Setup views
+extension ScanFlagViewController {
+    
+    func refreshFlagList() {
+        flags = DatabaseFlagsController.shared.updateFlagList(gateway, filterParametar: filterParametar)
+        flagTableView.reloadData()
+    }
+    
+    func addObservers(){
+        NotificationCenter.default.addObserver(self, selector: #selector(ScanFlagViewController.nameReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveFlagFromGateway), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ScanFlagViewController.flagParametarReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveFlagParameterFromGateway), object: nil)
+    }
+    
+    func removeObservers(){
+        defaults.set(false, forKey: UserDefaults.IsScaningFlagNames)
+        defaults.set(false, forKey: UserDefaults.IsScaningFlagParameters)
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidReceiveFlagFromGateway), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.DidReceiveFlagParameterFromGateway), object: nil)
+    }
+    
+    func setupViews() {
+        devAddressThree.inputAccessoryView = CustomToolBar()
+        IDedit.inputAccessoryView = CustomToolBar()
+        fromTextField.inputAccessoryView = CustomToolBar()
+        toTextField.inputAccessoryView = CustomToolBar()
+        
+        nameEdit.delegate = self
+        
+        imageSceneOne.isUserInteractionEnabled = true
+        imageSceneOne.tag = 1
+        imageSceneOne.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(_:))))
+        imageSceneTwo.isUserInteractionEnabled = true
+        imageSceneTwo.tag = 2
+        imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(_:))))
+        
+        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne)))"
+        devAddressOne.isEnabled = false
+        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway.addressTwo)))"
+        devAddressTwo.isEnabled = false
+        
+        broadcastSwitch.tag = 100
+        broadcastSwitch.isOn = false
+        broadcastSwitch.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
+        localcastSwitch.tag = 200
+        localcastSwitch.isOn = false
+        localcastSwitch.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
+        
+        btnLevel.tag = 1
+        btnZone.tag = 2
+        btnCategory.tag = 3
+    }
+    
+    func handleTap (_ gesture:UITapGestureRecognizer) {
+        if let index = gesture.view?.tag {
+            showGallery(index, user: gateway.location.user).delegate = self
+        }
+    }
+    
+    fileprivate func clearRangeFields() {
+        fromTextField.text = ""
+        toTextField.text = ""
     }
 }
 

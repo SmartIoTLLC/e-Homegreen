@@ -32,10 +32,18 @@ class DimmerParametarVC: CommonXIBTransitionVC {
     @IBOutlet weak var lblCategory: UILabel!
     @IBOutlet weak var deviceAddress: UILabel!
     @IBOutlet weak var deviceChannel: UILabel!
-    
+    @IBOutlet weak var favoriteButton: UIButton!
+    @IBAction func favoriteButton(_ sender: UIButton) {
+        favButtonTapped()
+    }
     @IBOutlet weak var centerY: NSLayoutConstraint!
-    
     @IBOutlet weak var scroll: UIScrollView!
+    @IBAction func btnCancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    @IBAction func btnSave(_ sender: AnyObject) {
+        saveTapped()
+    }
     
     init(){
         super.init(nibName: "DimmerParametarVC", bundle: nil)
@@ -44,19 +52,51 @@ class DimmerParametarVC: CommonXIBTransitionVC {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    fileprivate func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         appDel = UIApplication.shared.delegate as! AppDelegate
-        
         setupViews()
         addObservers()
+    }
+    
+}
+
+// MARK: - Logic
+extension DimmerParametarVC {
+    fileprivate func saveTapped() {
+        if let numberOne = Int(editDelay.text!), let numberTwo = Int(editRunTime.text!), let numberThree = Int(editSkipState.text!) {
+            if numberOne <= 65534 && numberTwo <= 65534 && numberThree <= 100 {
+                getDeviceAndSave(numberOne, numberTwo:numberTwo, numberThree:numberThree)
+                self.delegate?.saveClicked()
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+    
+    fileprivate func favButtonTapped() {
+        let device = devices[indexPathRow]
+        DatabaseDeviceController.shared.toggleFavoriteDevice(device: device, favoriteButton: favoriteButton)
+    }
+    
+    func getDeviceAndSave (_ numberOne:Int, numberTwo:Int, numberThree:Int) {
+        if let moc = appDel.managedObjectContext {
+            if let deviceObject = moc.object(with: devices[indexPathRow].objectID) as? Device {
+                device            = deviceObject
+                device!.delay     = NSNumber(value: numberOne)
+                device!.runtime   = NSNumber(value: numberTwo)
+                device!.skipState = NSNumber(value: numberThree)
+                CoreDataController.sharedInstance.saveChanges()
+            }
+        }
+    }
+}
+
+// MARK: - Setup views
+extension DimmerParametarVC {
+    fileprivate func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
     }
     
     func setupViews() {
@@ -90,42 +130,16 @@ class DimmerParametarVC: CommonXIBTransitionVC {
         lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(deviceIn.categoryId), location: location))"
         deviceAddress.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne))):\(returnThreeCharactersForByte(Int(gateway.addressTwo))):\(returnThreeCharactersForByte(Int(deviceIn.address)))"
         deviceChannel.text = "\(deviceIn.channel)"
+        switch deviceIn.isFavorite {
+            case true: favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: UIControlState())
+            case false: favoriteButton.setImage(#imageLiteral(resourceName: "unfavorite"), for: UIControlState())
+        }
+        if let buttonImageView = favoriteButton.imageView { favoriteButton.bringSubview(toFront: buttonImageView) }
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if touch.view!.isDescendant(of: backView) { dismissEditing(); return false }
         return true
-    }
-
-    @IBAction func btnCancel(_ sender: AnyObject) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func btnSave(_ sender: AnyObject) {
-        if let numberOne = Int(editDelay.text!), let numberTwo = Int(editRunTime.text!), let numberThree = Int(editSkipState.text!) {
-            if numberOne <= 65534 && numberTwo <= 65534 && numberThree <= 100 {
-                getDeviceAndSave(numberOne, numberTwo:numberTwo, numberThree:numberThree)
-                self.delegate?.saveClicked()
-                self.dismiss(animated: true, completion: nil)
-            }
-        }
-    }
-    
-    func dismissViewController () {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    func getDeviceAndSave (_ numberOne:Int, numberTwo:Int, numberThree:Int) {
-        if let moc = appDel.managedObjectContext {
-            if let deviceObject = moc.object(with: devices[indexPathRow].objectID) as? Device {
-                device            = deviceObject
-                device!.delay     = NSNumber(value: numberOne)
-                device!.runtime   = NSNumber(value: numberTwo)
-                device!.skipState = NSNumber(value: numberThree)
-                CoreDataController.sharedInstance.saveChanges()
-            }
-        }
-        
     }
     
     func keyboardWillShow(_ notification: Notification) {
@@ -139,6 +153,9 @@ class DimmerParametarVC: CommonXIBTransitionVC {
         UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
+    func dismissViewController () {
+        self.dismiss(animated: true, completion: nil)
+    }
 }
 
 extension DimmerParametarVC: UITextFieldDelegate{
@@ -156,3 +173,4 @@ extension UIViewController {
         self.present(ad, animated: true, completion: nil)
     }
 }
+

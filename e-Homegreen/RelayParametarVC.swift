@@ -22,6 +22,10 @@ class RelayParametarVC: CommonXIBTransitionVC {
     
     @IBOutlet weak var centerY: NSLayoutConstraint!
     
+    @IBOutlet weak var favoriteButton: UIButton!
+    @IBAction func favoriteButton(_ sender: UIButton) {
+        favButtonTapped()
+    }
     @IBOutlet weak var editDelay: UITextField!
     @IBOutlet weak var overRideID: UILabel!
     @IBOutlet weak var lblLocation: UILabel!
@@ -50,6 +54,11 @@ class RelayParametarVC: CommonXIBTransitionVC {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
     }
     
+    fileprivate func favButtonTapped() {
+        let device = devices[indexPathRow]
+        DatabaseDeviceController.shared.toggleFavoriteDevice(device: device, favoriteButton: favoriteButton)
+    }
+    
     func setupViews() {
         editDelay.delegate = self
         
@@ -74,6 +83,11 @@ class RelayParametarVC: CommonXIBTransitionVC {
         lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(deviceIn.categoryId), location: location))"
         deviceAddress.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne))):\(returnThreeCharactersForByte(Int(gateway.addressTwo))):\(returnThreeCharactersForByte(Int(deviceIn.address)))"
         deviceChannel.text = "\(deviceIn.channel)"
+        switch deviceIn.isFavorite {
+            case true: favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: UIControlState())
+            case false: favoriteButton.setImage(#imageLiteral(resourceName: "unfavorite"), for: UIControlState())
+        }
+        if let buttonImageView = favoriteButton.imageView { favoriteButton.bringSubview(toFront: buttonImageView) }
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {

@@ -486,9 +486,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func setUserDefaults() {
         Foundation.UserDefaults.standard.register(defaults:
             [
-                "clockType" : 0,
+                UserDefaults.ClockType : 0,
                 UserDefaults.RefreshDelayHours: 0,
-                UserDefaults.RefreshDelayMinutes: 10
+                UserDefaults.RefreshDelayMinutes: 10,
+                UserDefaults.FavDevicesLabelType: FavDeviceFilterType.locationLevelZoneName.rawValue
             ]
         )
     }

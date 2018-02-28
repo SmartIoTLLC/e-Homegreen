@@ -191,6 +191,7 @@
 		4E7945521F6FC64F006C3ACA /* Sura+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7945501F6FC64F006C3ACA /* Sura+CoreDataProperties.swift */; };
 		4E7945551F6FCE31006C3ACA /* SuraCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7945531F6FCE31006C3ACA /* SuraCell.swift */; };
 		4E7945561F6FCE31006C3ACA /* SuraCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E7945541F6FCE31006C3ACA /* SuraCell.xib */; };
+		4E7BDC6420457471006500AC /* NavigationViewFavDevices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7BDC6320457471006500AC /* NavigationViewFavDevices.swift */; };
 		4E8515451FE00EC70017AA6D /* NavigationTitleViewNF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8515441FE00EC70017AA6D /* NavigationTitleViewNF.swift */; };
 		4E8C21711FCF0979004C0883 /* ButtonImagePickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8C216F1FCF0979004C0883 /* ButtonImagePickerVC.swift */; };
 		4E8C21721FCF0979004C0883 /* ButtonImagePickerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C21701FCF0979004C0883 /* ButtonImagePickerVC.xib */; };
@@ -202,6 +203,8 @@
 		4EA9A7C31FA1D00500C8D6B8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */; };
 		4EC2E1421F7E439700DA494B /* RemoteDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */; };
 		4EC728C520349B7D00840DF7 /* Volumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC728C420349B7D00840DF7 /* Volumer.swift */; };
+		4EC8446A2044152900AD668E /* FavoriteDevicesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC844692044152900AD668E /* FavoriteDevicesVC.swift */; };
+		4EC8446C204417DA00AD668E /* FavoriteDevices+Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC8446B204417DA00AD668E /* FavoriteDevices+Cells.swift */; };
 		4EDCE6811F6A8D740073736B /* radio_station.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EDCE6801F6A8D740073736B /* radio_station.json */; };
 		4EDCE6871F6A9BEA0073736B /* RadioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */; };
 		4EDCE68A1F6A9C090073736B /* StationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6881F6A9C090073736B /* StationCell.swift */; };
@@ -617,6 +620,7 @@
 		4E7945501F6FC64F006C3ACA /* Sura+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sura+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4E7945531F6FCE31006C3ACA /* SuraCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuraCell.swift; sourceTree = "<group>"; };
 		4E7945541F6FCE31006C3ACA /* SuraCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SuraCell.xib; sourceTree = "<group>"; };
+		4E7BDC6320457471006500AC /* NavigationViewFavDevices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewFavDevices.swift; sourceTree = "<group>"; };
 		4E8515441FE00EC70017AA6D /* NavigationTitleViewNF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationTitleViewNF.swift; sourceTree = "<group>"; };
 		4E8C216F1FCF0979004C0883 /* ButtonImagePickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonImagePickerVC.swift; sourceTree = "<group>"; };
 		4E8C21701FCF0979004C0883 /* ButtonImagePickerVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonImagePickerVC.xib; sourceTree = "<group>"; };
@@ -628,6 +632,8 @@
 		4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDetailsViewController.swift; sourceTree = "<group>"; };
 		4EC728C420349B7D00840DF7 /* Volumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Volumer.swift; sourceTree = "<group>"; };
+		4EC844692044152900AD668E /* FavoriteDevicesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteDevicesVC.swift; sourceTree = "<group>"; };
+		4EC8446B204417DA00AD668E /* FavoriteDevices+Cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteDevices+Cells.swift"; sourceTree = "<group>"; };
 		4EDCE6801F6A8D740073736B /* radio_station.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = radio_station.json; sourceTree = "<group>"; };
 		4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioViewController.swift; sourceTree = "<group>"; };
 		4EDCE6881F6A9C090073736B /* StationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationCell.swift; sourceTree = "<group>"; };
@@ -1465,6 +1471,15 @@
 			name = Media;
 			sourceTree = "<group>";
 		};
+		4EC844682044150300AD668E /* Favorite Devices */ = {
+			isa = PBXGroup;
+			children = (
+				4EC844692044152900AD668E /* FavoriteDevicesVC.swift */,
+				4EC8446B204417DA00AD668E /* FavoriteDevices+Cells.swift */,
+			);
+			name = "Favorite Devices";
+			sourceTree = "<group>";
+		};
 		4EDCE6821F6A90E10073736B /* Radio */ = {
 			isa = PBXGroup;
 			children = (
@@ -1566,6 +1581,7 @@
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				4EC844682044150300AD668E /* Favorite Devices */,
 				223690C51CAD00C00037B54A /* Login */,
 				2232922C1CABE48E0001422B /* PullDown */,
 				223292291CABD3280001422B /* Energy */,
@@ -1899,6 +1915,7 @@
 				E76B57681BBD1EE400A70F69 /* CustomGradientBackground.swift */,
 				22F2C9E41D41058A008A04DE /* NavigationTitleView.swift */,
 				4E8515441FE00EC70017AA6D /* NavigationTitleViewNF.swift */,
+				4E7BDC6320457471006500AC /* NavigationViewFavDevices.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -2448,6 +2465,7 @@
 				4EDCE68A1F6A9C090073736B /* StationCell.swift in Sources */,
 				738DEC9C1BBBC2F000D6B834 /* SecurityPadVC.swift in Sources */,
 				225F59871D74427300156BCD /* BigSliderXIB.swift in Sources */,
+				4EC8446C204417DA00AD668E /* FavoriteDevices+Cells.swift in Sources */,
 				22FF1E651D86D92000ECB86E /* DatabaseCardsController.swift in Sources */,
 				E75B4FC51B42FC0B00E48454 /* FSCalendarHeader.m in Sources */,
 				73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */,
@@ -2656,6 +2674,7 @@
 				73F51A091C9475C6003EE702 /* wol.c in Sources */,
 				4E3CFD7C1F823C2F00E22C92 /* ButtonCell.swift in Sources */,
 				22506E8F1CB7DF25004EB47A /* DatabaseScenesController.swift in Sources */,
+				4E7BDC6420457471006500AC /* NavigationViewFavDevices.swift in Sources */,
 				4E7115C11FD15E9D007DB67C /* ButtonImageEditorVC.swift in Sources */,
 				736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */,
 				7372EB331BC410800097806D /* Timer+CoreDataProperties.swift in Sources */,
@@ -2681,6 +2700,7 @@
 				E7F57B0F1BA847F8006B0D71 /* ScanEventsViewController.swift in Sources */,
 				73331C181CA029DF009BA1DE /* FilterStruct.swift in Sources */,
 				49C0596A1D9138460061A544 /* SequencesCell.swift in Sources */,
+				4EC8446A2044152900AD668E /* FavoriteDevicesVC.swift in Sources */,
 				E75F41671B662ED1005080F1 /* ScanViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

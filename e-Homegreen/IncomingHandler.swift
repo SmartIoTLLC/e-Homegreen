@@ -895,13 +895,31 @@ class IncomingHandler: NSObject {
                     
                     // Problem: If device is dimmer, then value that is received is in range from 0-100. In rest of the cases value is 0x00 or 0xFF (0 or 255)
                     // That is why we must check whether device value is >100. If value is greater than 100 that means that it is not dimmer and the only value greater than 100 can be 255
-                    if Int(byteArray[8+5*(channelNumber-1)]) > 100 { // puklo
-                        devices[i].currentValue = getNSNumber(for: byteArray[8+5*(channelNumber-1)]) // device is NOT dimmer and the value should be saved as received
-                    } else {
-                        devices[i].currentValue = NSNumber(value:  Int(byteArray[8+5*(channelNumber-1)])*255/100) // two cases: the device is dimmer and has some value. the device is not dimmer but the value is 0
-                    }
+   
+                     if 8+5*(channelNumber-1) < byteArray.count {
+                         if Int(byteArray[8+5*(channelNumber-1)]) > 100 { // Ovde je puklo
+                         devices[i].currentValue = getNSNumber(for: byteArray[8+5*(channelNumber-1)]) // device is NOT dimmer and the value should be saved as received
+                         } else {
+                         devices[i].currentValue = NSNumber(value:  Int(byteArray[8+5*(channelNumber-1)])*255/100) // two cases: the device is dimmer and has some value. the device is not dimmer but the value is 0
+                         }
+                     }
                     print("CHANNELS STATE RECEIVED :", devices[i].currentValue)
-                    
+                    /*
+                    // TODO: za novi LCD
+                    let controlType = devices[i].controlType
+                    switch controlType {
+                    case ControlType.IntelligentSwitch: break
+                        
+                        
+                    default:
+                        if Int(byteArray[8+5*(channelNumber-1)]) > 100 { // Ovde je puklo
+                            devices[i].currentValue = getNSNumber(for: byteArray[8+5*(channelNumber-1)]) // device is NOT dimmer and the value should be saved as received
+                        } else {
+                            devices[i].currentValue = NSNumber(value:  Int(byteArray[8+5*(channelNumber-1)])*255/100) // two cases: the device is dimmer and has some value. the device is not dimmer but the value is 0
+                        }
+                    }
+                    */
+
                     // check if number of channel is lower than bytearray
                     if 12+5*(channelNumber-1) < byteArray.count {
                         devices[i].current     = NSNumber(value: Int(UInt16(byteArray[9+5*(channelNumber-1)])*256 + UInt16(byteArray[10+5*(channelNumber-1)]))) // current

@@ -20,6 +20,7 @@ class NavigationTitleView: UIView {
     var titleLeadingConstraint = NSLayoutConstraint()
     var subtitleTopConstraint = NSLayoutConstraint()
     var subtitleLeadingConstraint = NSLayoutConstraint()
+    var subtitleTrailingConstraint = NSLayoutConstraint()
     
     var titleCenterConstraint = NSLayoutConstraint()
     var subtitleCenterConstraint = NSLayoutConstraint()
@@ -92,16 +93,15 @@ class NavigationTitleView: UIView {
         
         // set portrait constraint
         titleTopConstraint        = NSLayoutConstraint(item: titleView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0)
-        titleLeadingConstraint    = NSLayoutConstraint(item: titleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 8)
+        titleLeadingConstraint    = NSLayoutConstraint(item: titleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0)
         subtitleTopConstraint     = NSLayoutConstraint(item: subtitleView, attribute: .top, relatedBy: .equal, toItem: titleView, attribute: .bottom, multiplier: 1.0, constant: 0)
-        subtitleLeadingConstraint = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 8)
-        
+        subtitleLeadingConstraint = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0)
+
         // set landscape constraint
         titleCenterConstraint = NSLayoutConstraint(item: titleView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
         
         subtitleCenterConstraint           = NSLayoutConstraint(item: subtitleView, attribute: .centerY, relatedBy: .equal, toItem: titleView, attribute: .centerY, multiplier: 1.0, constant: 0)
         subtitleLeadingConstraintLandscape = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: titleView, attribute: .trailing, multiplier: 1.0, constant: 10)
-
         
         // Clock constraints
         let timeCenterY           = NSLayoutConstraint(item: timeLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
@@ -145,7 +145,7 @@ class NavigationTitleView: UIView {
     }
     
     func loadClockSettings() {
-        if let clockSettings = Foundation.UserDefaults.standard.value(forKey: "clockType") as? Int { clockState = ClockType(rawValue: clockSettings)! }
+        if let clockSettings = Foundation.UserDefaults.standard.value(forKey: UserDefaults.ClockType) as? Int { clockState = ClockType(rawValue: clockSettings)! }
     }
     
     func setDateFormatter() {
@@ -170,7 +170,7 @@ class NavigationTitleView: UIView {
     
     func saveClock(type: Int) {
         clockState = ClockType(rawValue: type)!
-        Foundation.UserDefaults.standard.set(type, forKey: "clockType")
+        Foundation.UserDefaults.standard.set(type, forKey: UserDefaults.ClockType)
     }
 
 }

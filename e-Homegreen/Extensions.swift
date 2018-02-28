@@ -142,6 +142,11 @@ extension UIViewController {
         CellSize.calculateCellSize(&size, screenWidth: view.frame.size.width)
         return size
     }
+    func calculateCellSizeForFavorites(completion: () -> Void) -> CGSize {
+        var size: CGSize = CGSize()
+        CellSize.calculateCellSize(&size, screenWidth: 240 - 8 - 5)
+        return size
+    }
     
     func setContentOffset(for scrollView: FilterPullDown) {
         if scrollView.contentOffset.y > 0 {

@@ -1,25 +1,18 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="Tahoma.ttf">
+        <array key="Tahoma.ttf">
             <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-            <string>Tahoma</string>
-        </mutableArray>
+        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DimmerParametarVC" customModule="e_Homegreen" customModuleProvider="target">
@@ -31,6 +24,7 @@
                 <outlet property="editDelay" destination="z6c-Yp-0zU" id="v52-ZI-skH"/>
                 <outlet property="editRunTime" destination="eaP-sb-DQg" id="alU-Zs-BAE"/>
                 <outlet property="editSkipState" destination="0fP-bf-0PB" id="Xk2-uH-Chv"/>
+                <outlet property="favoriteButton" destination="3yK-Om-8WC" id="yuG-hx-6mE"/>
                 <outlet property="lblCategory" destination="3i4-jS-Fv7" id="l77-gn-odN"/>
                 <outlet property="lblLevel" destination="kv6-Zm-I9c" id="T0w-rA-N2h"/>
                 <outlet property="lblLocation" destination="46a-ob-erc" id="YH1-u0-bdw"/>
@@ -42,233 +36,181 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n94-Di-g1g" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
-                    <rect key="frame" x="145" y="113" width="310" height="375"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n94-Di-g1g" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                    <rect key="frame" x="10" y="146.5" width="355" height="375"/>
                     <subviews>
-                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" delaysContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5U0-1G-45n">
-                            <rect key="frame" x="0.0" y="0.0" width="310" height="375"/>
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5U0-1G-45n">
+                            <rect key="frame" x="0.0" y="0.0" width="355" height="375"/>
                             <subviews>
-                                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M0B-IT-5nF">
-                                    <rect key="frame" x="0.0" y="0.0" width="310" height="375"/>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M0B-IT-5nF">
+                                    <rect key="frame" x="0.0" y="0.0" width="355" height="375"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EvC-A8-XDA" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                            <rect key="frame" x="158" y="330" width="144" height="40"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EvC-A8-XDA" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                            <rect key="frame" x="180" y="330" width="167" height="40"/>
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                             <state key="normal" title="SET PARAMETAR">
-                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </state>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="178" y="324" width="164" height="40"/>
-                                            </variation>
                                             <connections>
                                                 <action selector="btnSave:" destination="-1" eventType="touchUpInside" id="AiD-aC-vIv"/>
                                             </connections>
                                         </button>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Delay" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4yB-gN-tXw">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delay" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4yB-gN-tXw">
                                             <rect key="frame" x="8" y="232" width="100" height="21"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="8" y="228" width="100" height="20"/>
-                                            </variation>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Running time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="adc-e2-Phf">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Running time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="adc-e2-Phf">
                                             <rect key="frame" x="8" y="294" width="100" height="21"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="8" y="288" width="100" height="20"/>
-                                            </variation>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Level:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xLm-2L-qp2">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xLm-2L-qp2">
                                             <rect key="frame" x="8" y="138" width="100" height="21"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="8" y="137" width="100" height="20"/>
-                                            </variation>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jG2-v4-n51">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jG2-v4-n51">
                                             <rect key="frame" x="8" y="15" width="100" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="100" id="Z5h-xC-2TY"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="8" y="15" width="100" height="20"/>
-                                            </variation>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Zone:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BYW-zj-XV5">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zone:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BYW-zj-XV5">
                                             <rect key="frame" x="8" y="167" width="100" height="21"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="8" y="165" width="100" height="20"/>
-                                            </variation>
                                         </label>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="z6c-Yp-0zU" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
-                                            <rect key="frame" x="116" y="228" width="186" height="30"/>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="z6c-Yp-0zU" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                                            <rect key="frame" x="116" y="228" width="231" height="30"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="116" y="224" width="226" height="30"/>
-                                            </variation>
                                         </textField>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eaP-sb-DQg" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
-                                            <rect key="frame" x="116" y="290" width="186" height="30"/>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eaP-sb-DQg" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                                            <rect key="frame" x="116" y="290" width="231" height="30"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="116" y="284" width="226" height="30"/>
-                                            </variation>
                                         </textField>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="3" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Njt-bS-XcX" customClass="MarqueeLabel">
-                                            <rect key="frame" x="116" y="167" width="186" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Njt-bS-XcX" customClass="MarqueeLabel">
+                                            <rect key="frame" x="116" y="167" width="231" height="21"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="116" y="165" width="226" height="20"/>
-                                            </variation>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="3" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kv6-Zm-I9c" customClass="MarqueeLabel">
-                                            <rect key="frame" x="116" y="138" width="186" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kv6-Zm-I9c" customClass="MarqueeLabel">
+                                            <rect key="frame" x="116" y="138" width="231" height="21"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="116" y="137" width="226" height="20"/>
-                                            </variation>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="3" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gvP-qk-BrT" customClass="MarqueeLabel">
-                                            <rect key="frame" x="116" y="15" width="186" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gvP-qk-BrT" customClass="MarqueeLabel">
+                                            <rect key="frame" x="116" y="15" width="148" height="21"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="116" y="15" width="226" height="20"/>
-                                            </variation>
                                         </label>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0fP-bf-0PB" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
-                                            <rect key="frame" x="116" y="259" width="186" height="30"/>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0fP-bf-0PB" customClass="EditTextField" customModule="e_Homegreen" customModuleProvider="target">
+                                            <rect key="frame" x="116" y="259" width="231" height="30"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="116" y="254" width="226" height="30"/>
-                                            </variation>
                                         </textField>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="3" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3i4-jS-Fv7" customClass="MarqueeLabel">
-                                            <rect key="frame" x="116" y="196" width="186" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3i4-jS-Fv7" customClass="MarqueeLabel">
+                                            <rect key="frame" x="116" y="196" width="231" height="21"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="116" y="193" width="226" height="20"/>
-                                            </variation>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Address:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gqi-4E-QhC">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gqi-4E-QhC">
                                             <rect key="frame" x="8" y="44" width="100" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="8" y="43" width="100" height="21"/>
-                                            </variation>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Channel:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nh4-ug-iV5">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Channel:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nh4-ug-iV5">
                                             <rect key="frame" x="8" y="73" width="100" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="8" y="72" width="100" height="21"/>
-                                            </variation>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2P8-io-Kub">
-                                            <rect key="frame" x="116" y="73" width="186" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2P8-io-Kub">
+                                            <rect key="frame" x="116" y="73" width="148" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="116" y="72" width="226" height="21"/>
-                                            </variation>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="000:000:000" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jyD-5Y-6pr">
-                                            <rect key="frame" x="116" y="44" width="186" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="000:000:000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jyD-5Y-6pr">
+                                            <rect key="frame" x="116" y="44" width="148" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="116" y="43" width="226" height="21"/>
-                                            </variation>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Skip level" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vxm-Z8-2fY">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Skip level" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vxm-Z8-2fY">
                                             <rect key="frame" x="8" y="263" width="100" height="21"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="8" y="258" width="100" height="20"/>
-                                            </variation>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="46a-ob-erc">
-                                            <rect key="frame" x="116" y="109" width="186" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="46a-ob-erc">
+                                            <rect key="frame" x="116" y="109" width="231" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="116" y="108" width="226" height="21"/>
-                                            </variation>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Category:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LFv-Ip-4Bc">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LFv-Ip-4Bc">
                                             <rect key="frame" x="8" y="196" width="100" height="21"/>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="8" y="193" width="100" height="20"/>
-                                            </variation>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Location:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tt5-No-L5k">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tt5-No-L5k">
                                             <rect key="frame" x="8" y="109" width="100" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="8" y="108" width="100" height="21"/>
-                                            </variation>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cTT-DK-0Td" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                            <rect key="frame" x="8" y="330" width="145" height="40"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cTT-DK-0Td" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                            <rect key="frame" x="8" y="330" width="167" height="40"/>
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="40" id="wCH-sS-R1W"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
                                             <state key="normal" title="CANCEL">
-                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                <color key="titleShadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="titleShadowColor" red="0.3333333432674408" green="0.3333333432674408" blue="0.3333333432674408" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </state>
-                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                                <rect key="frame" x="8" y="324" width="165" height="40"/>
-                                            </variation>
                                             <connections>
                                                 <action selector="btnCancel:" destination="-1" eventType="touchUpInside" id="3iO-u4-Thh"/>
                                             </connections>
                                         </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3yK-Om-8WC">
+                                            <rect key="frame" x="268" y="15" width="79" height="79"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="79" id="P8h-Pn-jbg"/>
+                                                <constraint firstAttribute="height" constant="79" id="mJl-bz-FXI"/>
+                                            </constraints>
+                                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <state key="normal">
+                                                <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="favoriteButton:" destination="-1" eventType="touchUpInside" id="sbl-uu-kwO"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstItem="EvC-A8-XDA" firstAttribute="centerY" secondItem="cTT-DK-0Td" secondAttribute="centerY" id="15y-3B-VI9"/>
                                         <constraint firstItem="z6c-Yp-0zU" firstAttribute="trailing" secondItem="3i4-jS-Fv7" secondAttribute="trailing" id="1gp-Wi-NoW"/>
@@ -276,7 +218,8 @@
                                         <constraint firstItem="Vxm-Z8-2fY" firstAttribute="top" secondItem="4yB-gN-tXw" secondAttribute="bottom" constant="10" id="27O-Lw-YEO"/>
                                         <constraint firstItem="Nh4-ug-iV5" firstAttribute="leading" secondItem="Gqi-4E-QhC" secondAttribute="leading" id="685-Uj-ne6"/>
                                         <constraint firstItem="Tt5-No-L5k" firstAttribute="top" secondItem="Nh4-ug-iV5" secondAttribute="bottom" constant="15" id="6TI-bv-gL8"/>
-                                        <constraint firstAttribute="trailing" secondItem="gvP-qk-BrT" secondAttribute="trailing" constant="8" id="8XJ-UY-RbC"/>
+                                        <constraint firstItem="46a-ob-erc" firstAttribute="trailing" secondItem="3yK-Om-8WC" secondAttribute="trailing" id="8Qv-wY-Gfx"/>
+                                        <constraint firstAttribute="trailing" secondItem="3yK-Om-8WC" secondAttribute="trailing" constant="8" id="9Jo-8A-fvf"/>
                                         <constraint firstItem="jG2-v4-n51" firstAttribute="top" secondItem="M0B-IT-5nF" secondAttribute="top" constant="15" id="9R9-29-Gwt"/>
                                         <constraint firstItem="jyD-5Y-6pr" firstAttribute="leading" secondItem="gvP-qk-BrT" secondAttribute="leading" id="9Wz-3V-aT3"/>
                                         <constraint firstItem="EvC-A8-XDA" firstAttribute="height" secondItem="cTT-DK-0Td" secondAttribute="height" id="BsZ-57-2PF"/>
@@ -289,6 +232,7 @@
                                         <constraint firstItem="EvC-A8-XDA" firstAttribute="leading" secondItem="cTT-DK-0Td" secondAttribute="trailing" constant="5" id="LIA-G6-OmS"/>
                                         <constraint firstItem="3i4-jS-Fv7" firstAttribute="centerY" secondItem="LFv-Ip-4Bc" secondAttribute="centerY" id="Lae-xg-6dl"/>
                                         <constraint firstItem="LFv-Ip-4Bc" firstAttribute="width" secondItem="BYW-zj-XV5" secondAttribute="width" id="MG5-mU-GL8"/>
+                                        <constraint firstItem="3yK-Om-8WC" firstAttribute="top" secondItem="M0B-IT-5nF" secondAttribute="top" constant="15" id="MZc-Be-S1J"/>
                                         <constraint firstItem="Nh4-ug-iV5" firstAttribute="top" secondItem="Gqi-4E-QhC" secondAttribute="bottom" constant="8" id="Mfc-B9-BoZ"/>
                                         <constraint firstItem="4yB-gN-tXw" firstAttribute="top" secondItem="LFv-Ip-4Bc" secondAttribute="bottom" constant="15" id="O1h-JR-pAe"/>
                                         <constraint firstItem="adc-e2-Phf" firstAttribute="top" secondItem="Vxm-Z8-2fY" secondAttribute="bottom" constant="10" id="Pbc-w5-ZK1"/>
@@ -298,7 +242,6 @@
                                         <constraint firstItem="xLm-2L-qp2" firstAttribute="top" secondItem="Tt5-No-L5k" secondAttribute="bottom" constant="8" id="SUi-2i-Dhy"/>
                                         <constraint firstItem="z6c-Yp-0zU" firstAttribute="centerY" secondItem="4yB-gN-tXw" secondAttribute="centerY" id="Sco-Of-WRm"/>
                                         <constraint firstItem="Njt-bS-XcX" firstAttribute="trailing" secondItem="kv6-Zm-I9c" secondAttribute="trailing" id="SdL-Xr-E9R"/>
-                                        <constraint firstItem="46a-ob-erc" firstAttribute="trailing" secondItem="2P8-io-Kub" secondAttribute="trailing" id="Sey-3F-6Ne"/>
                                         <constraint firstItem="cTT-DK-0Td" firstAttribute="leading" secondItem="adc-e2-Phf" secondAttribute="leading" id="TrC-QI-ov3"/>
                                         <constraint firstItem="Vxm-Z8-2fY" firstAttribute="width" secondItem="4yB-gN-tXw" secondAttribute="width" id="TsS-ug-V8d"/>
                                         <constraint firstItem="EvC-A8-XDA" firstAttribute="width" secondItem="cTT-DK-0Td" secondAttribute="width" id="W2k-n2-bIQ"/>
@@ -333,14 +276,12 @@
                                         <constraint firstItem="jG2-v4-n51" firstAttribute="leading" secondItem="M0B-IT-5nF" secondAttribute="leading" constant="8" id="vWm-a4-y6D"/>
                                         <constraint firstItem="BYW-zj-XV5" firstAttribute="width" secondItem="xLm-2L-qp2" secondAttribute="width" id="vc8-ed-Kbt"/>
                                         <constraint firstItem="gvP-qk-BrT" firstAttribute="centerY" secondItem="jG2-v4-n51" secondAttribute="centerY" id="wcy-E8-I17"/>
+                                        <constraint firstItem="3yK-Om-8WC" firstAttribute="leading" secondItem="gvP-qk-BrT" secondAttribute="trailing" constant="4" id="xQZ-eF-Rmg"/>
                                         <constraint firstItem="2P8-io-Kub" firstAttribute="centerY" secondItem="Nh4-ug-iV5" secondAttribute="centerY" id="xej-NH-KGy"/>
                                         <constraint firstAttribute="bottom" secondItem="EvC-A8-XDA" secondAttribute="bottom" constant="5" id="xhu-nD-wQb"/>
                                         <constraint firstItem="3i4-jS-Fv7" firstAttribute="leading" secondItem="Njt-bS-XcX" secondAttribute="leading" id="y8M-gk-eOe"/>
                                         <constraint firstItem="Gqi-4E-QhC" firstAttribute="width" secondItem="jG2-v4-n51" secondAttribute="width" id="ycd-6B-wqd"/>
                                     </constraints>
-                                    <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
-                                        <rect key="frame" x="0.0" y="0.0" width="350" height="369"/>
-                                    </variation>
                                 </view>
                             </subviews>
                             <constraints>
@@ -351,7 +292,7 @@
                             </constraints>
                         </scrollView>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="5U0-1G-45n" firstAttribute="leading" secondItem="n94-Di-g1g" secondAttribute="leading" id="1Jt-uV-znS"/>
                         <constraint firstAttribute="trailing" secondItem="5U0-1G-45n" secondAttribute="trailing" id="DKZ-Gi-CV0"/>
@@ -386,7 +327,7 @@
                     </variation>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="n94-Di-g1g" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="0.95" id="1PU-1O-2B2"/>
                 <constraint firstItem="n94-Di-g1g" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="CGo-65-2HS"/>
@@ -424,7 +365,7 @@
                     <include reference="CGo-65-2HS"/>
                 </mask>
             </variation>
-            <point key="canvasLocation" x="265" y="396"/>
+            <point key="canvasLocation" x="264.5" y="395.5"/>
         </view>
     </objects>
 </document>
