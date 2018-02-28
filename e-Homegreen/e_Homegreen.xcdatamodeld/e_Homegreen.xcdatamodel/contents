@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17D47" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17D102" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Card" representedClassName=".Card" syncable="YES">
         <attribute name="address" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="cardId" attributeType="String" syncable="YES"/>
@@ -111,6 +111,7 @@
         <attribute name="categoryId" attributeType="String" syncable="YES"/>
         <attribute name="filterId" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isDefault" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isDefaultForAllTabs" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="levelId" attributeType="String" syncable="YES"/>
         <attribute name="locationId" attributeType="String" syncable="YES"/>
         <attribute name="timerDuration" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
@@ -369,6 +370,8 @@
         <attribute name="lastScreenId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="openLastScreen" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sortDevicesByUsage" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="useDefaultFilterForAllTabs" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="filters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FilterParametar" inverseName="user" inverseEntity="FilterParametar" syncable="YES"/>
         <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="user" inverseEntity="Image" syncable="YES"/>
@@ -392,7 +395,7 @@
         <element name="Device" positionX="-974" positionY="-2091" width="128" height="960"/>
         <element name="DeviceImage" positionX="-605" positionY="-1920" width="128" height="120"/>
         <element name="Event" positionX="-470" positionY="-1659" width="128" height="285"/>
-        <element name="FilterParametar" positionX="-1197" positionY="-2304" width="128" height="165"/>
+        <element name="FilterParametar" positionX="-1197" positionY="-2304" width="128" height="180"/>
         <element name="Flag" positionX="-578" positionY="-1362" width="128" height="255"/>
         <element name="Gateway" positionX="-1557" positionY="-1971" width="128" height="388"/>
         <element name="IBeacon" positionX="-1053" positionY="-517" width="128" height="58"/>
@@ -411,7 +414,7 @@
         <element name="Sura" positionX="-1845" positionY="-2178" width="128" height="88"/>
         <element name="Surveillance" positionX="-1503" positionY="-999" width="128" height="480"/>
         <element name="Timer" positionX="-1712" positionY="-1638" width="128" height="300"/>
-        <element name="User" positionX="-1422" positionY="-2322" width="128" height="225"/>
+        <element name="User" positionX="-1422" positionY="-2322" width="128" height="255"/>
         <element name="Zone" positionX="-1242" positionY="-765" width="128" height="180"/>
     </elements>
 </model>

@@ -274,7 +274,7 @@ class FilterPullDown: UIScrollView {
         
     }
     
-    //MARK: Seetup constraint
+    //MARK: Setup constraint
     
     func setItem(_ view: UIView){
         

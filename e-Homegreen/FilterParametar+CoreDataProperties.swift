@@ -16,6 +16,7 @@ extension FilterParametar {
 
     @NSManaged var filterId: NSNumber
     @NSManaged var isDefault: NSNumber
+    @NSManaged var isDefaultForAllTabs: Bool
     @NSManaged var locationId: String
     @NSManaged var levelId: String
     @NSManaged var zoneId: String

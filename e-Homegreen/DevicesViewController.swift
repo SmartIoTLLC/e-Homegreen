@@ -80,9 +80,6 @@ class DevicesViewController: PopoverVC{
         setContentOffset(for: scrollView)
         setTitleView(view: headerTitleSubtitleView)
         collectionViewCellSize = calculateCellSize(completion: { deviceCollectionView.reloadData() })
-        
-        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
-        scrollView.setContentOffset(bottomOffset, animated: false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -98,6 +95,8 @@ class DevicesViewController: PopoverVC{
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        scrollView.setContentOffset(bottomOffset, animated: false)
         addObservers()
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
             self.refreshVisibleDevicesInScrollView()
@@ -746,6 +745,7 @@ extension DevicesViewController {
     
     fileprivate func addObserversVDL() {
         NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerDevices), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleDefaultFilterForAllTabs), name: .defaultFilterForAllTabsSet, object: nil)
     }
     
     func addObservers() {
@@ -770,15 +770,18 @@ extension DevicesViewController {
     
     // GENERAL
     func updateDeviceList (_ user:User) {
+        
+        handleDefaultFilterForAllTabs()
+        
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
 
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(key: "gateway.name", ascending: true),
             NSSortDescriptor(key: "address", ascending: true),
             NSSortDescriptor(key: "type", ascending: true),
-            NSSortDescriptor(key: "channel", ascending: true),
-            NSSortDescriptor(key: "usageCounter", ascending: false)
+            NSSortDescriptor(key: "channel", ascending: true)
         ]
+        if user.sortDevicesByUsage { fetchRequest.sortDescriptors?.append(NSSortDescriptor(key: "usageCounter", ascending: false)) }
         
         var predicateArray:[NSPredicate] = [
             NSPredicate(format: "gateway.location.user == %@", user),
@@ -1153,12 +1156,30 @@ extension DevicesViewController: FilterPullDownDelegate{
         
         TimerForFilter.shared.counterDevices = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.devices)
         TimerForFilter.shared.startTimer(type: Menu.devices)
-        
     }
     
     func saveDefaultFilter(){
         self.view.makeToast(message: "Default filter parametar saved!")
     }
+    
+    @objc func handleDefaultFilterForAllTabs() {
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
+            if user.useDefaultFilterForAllTabs {
+                if let filterItem = DatabaseFilterController.shared.getDefaultFilterItemForAllTabs() {
+                    checkZoneAndCategoryFromFilter(filterItem)
+                    
+                    if let user = userLogged {
+                        updateDeviceList(user)
+                        deviceCollectionView.reloadData()
+                        updateCells()
+                    }
+                    toggleIBeaconButtonVisibility()
+                }
+            }
+        }
+        // todo: get default time
+    }
+
 }
 
 // MARK: - Big Slider Delegate

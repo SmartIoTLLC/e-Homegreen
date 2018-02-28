@@ -101,6 +101,10 @@ class ScanViewController: PopoverVC {
 
 // MARK: - Filter PullDown Delegate
 extension ScanViewController: ScanFilterPullDownDelegate{
+    func scanFilterDefaultForAllTabsSaved() {
+        view.makeToast(message: "Default Filter for all tabs saved.")
+    }
+    
     func scanFilterParametars(_ filterItem: FilterItem) {
         toViewController.sendFilterParametar(filterItem)
         updateSubtitle(headerTitleSubtitleView, title: "Scan", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)

@@ -9,13 +9,15 @@
 import UIKit
 
 enum SettingsItem{
-    case mainMenu, interfaces, refreshStatusDelay, openLastScreen, broadcast, refreshConnection, lockProfile, resetPassword
+    case mainMenu, interfaces, refreshStatusDelay, openLastScreen, useDefaultFilter, sortingDevices, broadcast, refreshConnection, lockProfile, resetPassword
     var description:String{
         switch self{
             case .mainMenu           : return "Main Menu"
             case .interfaces         : return "Locations"
             case .refreshStatusDelay : return "Refresh Status Delay"
             case .openLastScreen     : return "Open Last Screen"
+            case .useDefaultFilter   : return "Use default filter for all tabs"
+            case .sortingDevices     : return "Sorting devices"
             case .broadcast          : return "Broadcast"
             case .refreshConnection  : return "Refresh Connection"
             case .lockProfile        : return "Lock Profile"
@@ -109,6 +111,17 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
                     
                     return cell
                 }
+            
+            case SettingsItem.sortingDevices:
+                if let cell = tableView.dequeueReusableCell(withIdentifier: "sortingDevicesCell") as? SortingDevicesTableViewCell {
+                    return cell
+                }
+            
+            case SettingsItem.useDefaultFilter:
+                if let cell = tableView.dequeueReusableCell(withIdentifier: "defaultFilterCell") as? DefaultFilterAllTabsCell {
+                    return cell
+                }
+            
             case SettingsItem.openLastScreen:
                 if let cell = tableView.dequeueReusableCell(withIdentifier: "openLastScreen") as? SettingsLastScreenTableViewCell {
                     cell.setCell(user: user, tag: indexPath.section)
@@ -191,7 +204,7 @@ extension SettingsViewController {
         titleView.setTitle("Settings")
         navigationItem.titleView = titleView
         
-        settingArray = [.mainMenu, .interfaces, .refreshStatusDelay, .openLastScreen, .broadcast]
+        settingArray = [.mainMenu, .interfaces, .refreshStatusDelay, .openLastScreen, .useDefaultFilter, .sortingDevices, .broadcast]
         
         if !AdminController.shared.isAdminLogged() { settingArray.append(.lockProfile) }
         
@@ -347,6 +360,60 @@ class SettingsRefreshDelayTableViewCell: UITableViewCell {
         minLabel.text = "\(min)"
     }
 
+}
+
+// MARK: - Default Filter Cell
+class DefaultFilterAllTabsCell: UITableViewCell {
+    
+    @IBOutlet weak var filterLabel: UILabel!
+    @IBOutlet weak var filterSwitch: UISwitch!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        setupViews()
+    }
+    
+    private func setupViews() {
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
+            filterSwitch.isOn = user.useDefaultFilterForAllTabs
+        }
+        filterSwitch.addTarget(self, action: #selector(setFilterPreferences), for: .touchUpInside)
+    }
+    
+    @objc private func setFilterPreferences() {
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
+            user.useDefaultFilterForAllTabs = !user.useDefaultFilterForAllTabs
+            filterSwitch.isOn = user.useDefaultFilterForAllTabs
+            CoreDataController.sharedInstance.saveChanges()
+        }
+    }
+}
+
+// MARK: - Sorting Devices Cell
+class SortingDevicesTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var sortingLabel: UIView!
+    @IBOutlet weak var sortingSwitch: UISwitch!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        setupViews()
+    }
+    
+    private func setupViews() {
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
+            sortingSwitch.isOn = user.sortDevicesByUsage
+        }
+        sortingSwitch.addTarget(self, action: #selector(setSortingPreferences), for: .touchUpInside)
+    }
+    
+    @objc private func setSortingPreferences() {
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
+            user.sortDevicesByUsage = !user.sortDevicesByUsage
+            sortingSwitch.isOn = user.sortDevicesByUsage
+            CoreDataController.sharedInstance.saveChanges()
+        }
+    }
 }
 
 // MARK: - Last screen TableView Cell

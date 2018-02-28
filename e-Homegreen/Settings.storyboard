@@ -177,8 +177,41 @@
                                             <outlet property="minLabel" destination="Gjr-e7-0O5" id="ADE-xX-1rg"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="openLastScreen" id="r4f-JN-iHw" customClass="SettingsLastScreenTableViewCell" customModule="e_Homegreen" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="defaultFilterCell" id="o6L-G3-lqr" customClass="DefaultFilterAllTabsCell" customModule="e_Homegreen" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="156" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="o6L-G3-lqr" id="zRs-zr-929">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use default filter for all tabs:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hLt-R5-1gJ">
+                                                    <rect key="frame" x="15" y="11.5" width="132" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="132" id="imC-9j-QdB"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mW9-SY-DvX">
+                                                    <rect key="frame" x="191" y="6.5" width="51" height="31"/>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="centerY" secondItem="hLt-R5-1gJ" secondAttribute="centerY" id="4YZ-wr-HaC"/>
+                                                <constraint firstItem="mW9-SY-DvX" firstAttribute="leading" secondItem="hLt-R5-1gJ" secondAttribute="trailing" constant="44" id="BCU-qC-Nlj"/>
+                                                <constraint firstItem="hLt-R5-1gJ" firstAttribute="centerY" secondItem="mW9-SY-DvX" secondAttribute="centerY" id="ne4-Fh-LBd"/>
+                                                <constraint firstItem="hLt-R5-1gJ" firstAttribute="leading" secondItem="zRs-zr-929" secondAttribute="leadingMargin" id="zzD-pF-PF6"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <outlet property="filterLabel" destination="hLt-R5-1gJ" id="u5p-4o-jPb"/>
+                                            <outlet property="filterSwitch" destination="mW9-SY-DvX" id="eix-JD-RcP"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="openLastScreen" id="r4f-JN-iHw" customClass="SettingsLastScreenTableViewCell" customModule="e_Homegreen" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="200" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="r4f-JN-iHw" id="Xmm-Pz-RUT">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -210,8 +243,41 @@
                                             <outlet property="openLastScreen" destination="Q3V-Xa-TJn" id="Vxf-gh-S9m"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="sortingDevicesCell" id="fgR-9k-jwt" customClass="SortingDevicesTableViewCell" customModule="e_Homegreen" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="244" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fgR-9k-jwt" id="TbI-Q3-7mx">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sorting devices:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CPb-YD-xUF">
+                                                    <rect key="frame" x="15" y="11.5" width="132" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="132" id="Qfh-Al-5GQ"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7lA-yp-g5n">
+                                                    <rect key="frame" x="191" y="6.5" width="51" height="31"/>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="centerY" secondItem="CPb-YD-xUF" secondAttribute="centerY" id="83O-Dk-hgW"/>
+                                                <constraint firstItem="CPb-YD-xUF" firstAttribute="centerY" secondItem="7lA-yp-g5n" secondAttribute="centerY" id="MZP-xP-yyW"/>
+                                                <constraint firstItem="7lA-yp-g5n" firstAttribute="leading" secondItem="CPb-YD-xUF" secondAttribute="trailing" constant="44" id="Wnj-OJ-a4n"/>
+                                                <constraint firstItem="CPb-YD-xUF" firstAttribute="leading" secondItem="TbI-Q3-7mx" secondAttribute="leadingMargin" id="skb-7s-yt2"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <outlet property="sortingLabel" destination="CPb-YD-xUF" id="wwr-AQ-jBQ"/>
+                                            <outlet property="sortingSwitch" destination="7lA-yp-g5n" id="mbE-ME-p2w"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="idBroadcastCurrentAppTimeAndDate" rowHeight="192" id="w4Z-kY-jSm" customClass="BroadcastTimeAndDateTVC" customModule="e_Homegreen" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="200" width="375" height="192"/>
+                                        <rect key="frame" x="0.0" y="288" width="375" height="192"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="w4Z-kY-jSm" id="Bpg-NN-u73">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="191.5"/>
@@ -388,7 +454,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="idRefreshGatewayTimerCell" rowHeight="44" id="8f3-HC-ti1" customClass="SettingsRefreshConnectionEvery" customModule="e_Homegreen" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="392" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="480" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8f3-HC-ti1" id="PpV-Y1-C51">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>

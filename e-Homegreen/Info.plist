@@ -38,7 +38,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>23</string>
+	<string>24</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -71,7 +71,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need your location so you can automatically trigger actions when you enter/leave the property</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Your speech will be detected after tapping the &quot;Make a call&quot; button</string>
+	<string>Your speech will be detected after tapping the "Make a call" button</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Allow photo library in order to select images</string>
 	<key>NSSpeechRecognitionUsageDescription</key>

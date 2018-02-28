@@ -108,6 +108,49 @@ class DatabaseFilterController: NSObject {
         }
     }
     
+    func saveDefaultFilterForAllTabs(_ filterItem:FilterItem, time: Int) {
+        if let moc = (UIApplication.shared.delegate as? AppDelegate)?.managedObjectContext {
+            if let user = DatabaseUserController.shared.getLoggedUser() {
+                
+                let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FilterParametar.fetchRequest()
+                
+                let predicateArray = [
+                    NSPredicate(format: "user == %@", user),
+                    NSPredicate(format: "isDefaultForAllTabs == true")
+                ]
+                
+                let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
+                fetchRequest.predicate = compoundPredicate
+                
+                do {
+                    if let results = try moc.fetch(fetchRequest) as? [FilterParametar] {
+                        if let existingFilter = results.first {
+                            if results.count != 0 {
+                                existingFilter.locationId    = filterItem.locationObjectId
+                                existingFilter.levelId       = filterItem.levelObjectId
+                                existingFilter.zoneId        = filterItem.zoneObjectId
+                                existingFilter.categoryId    = filterItem.categoryObjectId
+                                existingFilter.timerDuration = NSNumber(value: time)
+                            }
+                        } else {
+                            let newDefaultFilter = FilterParametar(context: moc)
+                            newDefaultFilter.locationId          = filterItem.locationObjectId
+                            newDefaultFilter.levelId             = filterItem.levelObjectId
+                            newDefaultFilter.zoneId              = filterItem.zoneObjectId
+                            newDefaultFilter.categoryId          = filterItem.categoryObjectId
+                            newDefaultFilter.timerDuration       = NSNumber(value: time)
+                            newDefaultFilter.isDefaultForAllTabs = true
+                            newDefaultFilter.isDefault           = NSNumber(value: true as Bool)
+                        }
+                        CoreDataController.sharedInstance.saveChanges()
+                    }
+                } catch {}
+                
+            }
+        }
+
+    }
+    
     func getDeafultFilterTimeDuration(menu:Menu) -> Int {
         if let user = DatabaseUserController.shared.getLoggedUser() {
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FilterParametar.fetchRequest()
@@ -130,6 +173,64 @@ class DatabaseFilterController: NSObject {
             } catch {}
         }
         return 0
+    }
+    
+    func getDefaultFilterParameterForAllTabs() -> FilterParametar? {
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FilterParametar.fetchRequest()
+            
+            let predicateArray = [
+                NSPredicate(format: "user == %@", user),
+                NSPredicate(format: "isDefaultForAllTabs == true")
+            ]
+            
+            fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
+            
+            do {
+                if let moc = appDel.managedObjectContext {
+                    if let results = try moc.fetch(fetchRequest) as? [FilterParametar] {
+                        if let filter = results.first { return filter }
+                    }
+                }
+                
+            } catch {}
+        }
+        return nil
+    }
+    
+    func getDefaultFilterItemForAllTabs() -> FilterItem? {
+        if let filterParameter = getDefaultFilterParameterForAllTabs() {
+            
+            let filterItem = FilterItem(location: "All", levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
+            if filterParameter.locationId != "All" {
+                if let location = FilterController.shared.getLocationByObjectId(filterParameter.locationId)?.name { filterItem.location = location }
+            }
+            
+            if filterParameter.levelId != "All" {
+                if let level = FilterController.shared.getZoneByObjectId(filterParameter.levelId) {
+                    filterItem.levelName = level.name ?? "All"
+                    filterItem.levelId = Int(level.id ?? 0)
+                }
+                
+            }
+            
+            if filterParameter.zoneId != "All" {
+                if let zone = FilterController.shared.getZoneByObjectId(filterParameter.zoneId) {
+                    filterItem.zoneName = zone.name ?? "All"
+                    filterItem.zoneId = Int(zone.id ?? 0)
+                }
+            }
+            
+            if filterParameter.categoryId != "All" {
+                if let category = FilterController.shared.getCategoryByObjectId(filterParameter.categoryId) {
+                    filterItem.categoryName = category.name ?? "All"
+                    filterItem.categoryId = Int(category.id ?? 0)
+                }
+            }
+            
+            return filterItem
+        }
+        return nil
     }
     
     func getFilterByMenu(_ menu:Menu) -> FilterParametar? {

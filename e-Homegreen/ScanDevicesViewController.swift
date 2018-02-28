@@ -52,8 +52,9 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     
     fileprivate func loadDevices() {
-        for device in gateway.devices { devices.append(device as! Device) }
+        if let devices = gateway.devices.allObjects as? [Device] { self.devices = devices }
     }
+    
     
     func setupViews() {
         rangeFrom.text = "\(Int(gateway.addressThree)+1)"
