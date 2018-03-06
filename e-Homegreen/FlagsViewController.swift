@@ -74,7 +74,7 @@ extension FlagsViewController: FilterPullDownDelegate{
         view.makeToast(message: "Default filter parametar saved!")
     }
     
-    func setDefaultFilterFromTimer(){
+    @objc func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.flags)
     }
     
@@ -83,7 +83,7 @@ extension FlagsViewController: FilterPullDownDelegate{
         flagsCollectionView.reloadData()
     }
     
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             scrollView.setDefaultFilterItem(Menu.flags)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -132,7 +132,7 @@ extension FlagsViewController: UICollectionViewDataSource {
         return flags.count
     }
     
-    func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer){
+    @objc func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer){
         if let tag = gestureRecognizer.view?.tag {
             if gestureRecognizer.state == UIGestureRecognizerState.began { showFlagParametar(flags[tag]) }
         }
@@ -190,7 +190,7 @@ extension FlagsViewController {
 extension FlagsViewController {
     fileprivate func setFlagState(of flag: Flag) {
 
-        let flagId = Int(flag.flagId)
+        let flagId = flag.flagId.intValue
         var address:[UInt8] = []
         
         if flag.isBroadcast.boolValue {
@@ -214,7 +214,7 @@ extension FlagsViewController {
         }
     }
     
-    func setFlag (_ gesture:UIGestureRecognizer) {
+    @objc func setFlag (_ gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
             let flag   = flags[tag]
             
@@ -222,10 +222,10 @@ extension FlagsViewController {
         }
     }
     
-    func buttonPressed (_ gestureRecognizer:UITapGestureRecognizer) {
+    @objc func buttonPressed (_ gestureRecognizer:UITapGestureRecognizer) {
         if let tag = gestureRecognizer.view?.tag {
             let flag   = flags[tag]
-            let flagId = Int(flag.flagId)
+            let flagId = flag.flagId.intValue
             var address:[UInt8] = []
             
             if flag.isBroadcast.boolValue { address = [0xFF, 0xFF, 0xFF]

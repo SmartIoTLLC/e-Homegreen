@@ -197,9 +197,9 @@ class DatabaseEventsController: NSObject {
         
         let combinedPredicate = NSCompoundPredicate(
             andPredicateWithSubpredicates: [
-                NSPredicate(format: "eventId == %@", NSNumber(value: eventId as Int)),
+                NSPredicate(format: "eventId == %@", NSNumber(value: eventId)),
                 NSPredicate(format: "gateway == %@", gateway),
-                NSPredicate(format: "address == %@", NSNumber(value: moduleAddress as Int))
+                NSPredicate(format: "address == %@", NSNumber(value: moduleAddress))
             ]
         )
         fetchRequest.predicate = combinedPredicate

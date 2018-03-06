@@ -141,10 +141,10 @@ class MenuSettingsCell:UITableViewCell {
     
     func setItem(_ menuItem:MenuItem) {
         self.menuItem = menuItem
-        if let item = Menu(rawValue: Int(menuItem.id)) {
+        if let item = Menu(rawValue: menuItem.id.intValue) {
             menuImage.image = UIImage(named: item.description)
             menuLabel.text  = item.description
-            menuSwitch.isOn = Bool(menuItem.isVisible)
+            menuSwitch.isOn = menuItem.isVisible.boolValue
             
             if item == Menu.settings { menuSwitch.isEnabled = false } else { menuSwitch.isEnabled = true }
         }

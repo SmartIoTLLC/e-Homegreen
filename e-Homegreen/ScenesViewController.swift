@@ -86,11 +86,11 @@ extension ScenesViewController: FilterPullDownDelegate{
         scenesCollectionView.reloadData()
     }
     
-    func setDefaultFilterFromTimer(){
+    @objc func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.scenes)
     }
     
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             scrollView.setDefaultFilterItem(Menu.scenes)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -150,7 +150,7 @@ extension ScenesViewController: UICollectionViewDataSource {
 
 // MARK: - Logic
 extension ScenesViewController {
-    func setScene (_ gesture:UIGestureRecognizer) {
+    @objc func setScene (_ gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
             let scene = scenes[tag]
             var address:[UInt8] = []
@@ -162,8 +162,8 @@ extension ScenesViewController {
             } else {
                 address = [getByte(scene.gateway.addressOne), getByte(scene.gateway.addressTwo), getByte(scene.address)]
             }
-            let sceneId = Int(scene.sceneId)
-            if sceneId >= 0 && sceneId <= 32767 { SendingHandler.sendCommand(byteArray: OutgoingHandler.setScene(address, id: Int(scene.sceneId)), gateway: scene.gateway) }
+            let sceneId = scene.sceneId.intValue
+            if sceneId >= 0 && sceneId <= 32767 { SendingHandler.sendCommand(byteArray: OutgoingHandler.setScene(address, id: scene.sceneId.intValue), gateway: scene.gateway) }
             
             let location = gesture.location(in: scenesCollectionView)
             if let index = scenesCollectionView.indexPathForItem(at: location) {
@@ -174,7 +174,7 @@ extension ScenesViewController {
         }
     }
     
-    func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer) {
+    @objc func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer) {
         if let tag = gestureRecognizer.view?.tag {
             if gestureRecognizer.state == UIGestureRecognizerState.began {
                 let location = gestureRecognizer.location(in: scenesCollectionView)

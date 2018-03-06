@@ -63,16 +63,16 @@ class IntelligentSwitchParameter: CommonXIBTransitionVC {
         lblLocation.text = "\(devices[indexPathRow].gateway.name)"
         lblName.text = "\(devices[indexPathRow].name)"
         
-        if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(deviceIn.parentZoneId), location: location), let name = zone.name {
+        if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(deviceIn.parentZoneId.intValue, location: location), let name = zone.name {
             lblLevel.text = "\(name)"
         } else { lblLevel.text = "" }
         
-        if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(Int(deviceIn.zoneId), location: location), let name = zone.name {
+        if let zone = DatabaseHandler.sharedInstance.returnZoneWithId(deviceIn.zoneId.intValue, location: location), let name = zone.name {
             lblZone.text = "\(name)"
         } else { lblZone.text = "" }
         
-        lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(deviceIn.categoryId), location: location))"
-        deviceAddress.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne))):\(returnThreeCharactersForByte(Int(gateway.addressTwo))):\(returnThreeCharactersForByte(Int(deviceIn.address)))"
+        lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(deviceIn.categoryId.intValue, location: location))"
+        deviceAddress.text = "\(returnThreeCharactersForByte(gateway.addressOne.intValue)):\(returnThreeCharactersForByte(gateway.addressTwo.intValue)):\(returnThreeCharactersForByte(deviceIn.address.intValue))"
         deviceChannel.text = "\(deviceIn.channel)"
         switch deviceIn.isFavorite!.boolValue {
             case true: favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: UIControlState())

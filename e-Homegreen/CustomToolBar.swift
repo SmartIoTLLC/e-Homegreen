@@ -27,7 +27,7 @@ class CustomToolBar: UIToolbar {
         self.setItems(toolbarButtons, animated: false)
     }
     
-    func endEditingNow(){
+    @objc func endEditingNow(){
         self.parentViewController?.view.endEditing(true)
     }
     

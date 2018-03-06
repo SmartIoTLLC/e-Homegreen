@@ -167,7 +167,7 @@ class DatabaseFilterController: NSObject {
             do {
                 if let moc = appDel.managedObjectContext {
                     if let results = try moc.fetch(fetchRequest) as? [FilterParametar] {
-                        if results.count != 0 { return Int(results[0].timerDuration) }
+                        if results.count != 0 { return results[0].timerDuration.intValue }
                     }
                 }
             } catch {}
@@ -209,7 +209,7 @@ class DatabaseFilterController: NSObject {
             if filterParameter.levelId != "All" {
                 if let level = FilterController.shared.getZoneByObjectId(filterParameter.levelId) {
                     filterItem.levelName = level.name ?? "All"
-                    filterItem.levelId = Int(level.id ?? 0)
+                    filterItem.levelId = level.id?.intValue ?? 0
                 }
                 
             }
@@ -217,14 +217,14 @@ class DatabaseFilterController: NSObject {
             if filterParameter.zoneId != "All" {
                 if let zone = FilterController.shared.getZoneByObjectId(filterParameter.zoneId) {
                     filterItem.zoneName = zone.name ?? "All"
-                    filterItem.zoneId = Int(zone.id ?? 0)
+                    filterItem.zoneId = zone.id?.intValue ?? 0
                 }
             }
             
             if filterParameter.categoryId != "All" {
                 if let category = FilterController.shared.getCategoryByObjectId(filterParameter.categoryId) {
                     filterItem.categoryName = category.name ?? "All"
-                    filterItem.categoryId = Int(category.id ?? 0)
+                    filterItem.categoryId = category.id?.intValue ?? 0
                 }
             }
             

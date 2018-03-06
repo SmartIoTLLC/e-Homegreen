@@ -144,7 +144,7 @@ class EventsCollectionViewCell: UICollectionViewCell {
             Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(changeImageToNormal), userInfo: nil, repeats: false)
         }
     }
-    func changeImage(_ notification:Notification) {
+    @objc func changeImage(_ notification:Notification) {
         if let info = notification.userInfo! as? [String:Int] {
             
             if info["value"] == 1 { eventImageView.image = imageTwo; setNeedsDisplay() }
@@ -152,12 +152,12 @@ class EventsCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func changeImageToNormal () {
+    @objc func changeImageToNormal () {
         eventImageView.image = imageOne
         setNeedsDisplay()
     }
     
-    func saveParameters() {
+    @objc func saveParameters() {
         if broadcastSwitch.isOn { event.isBroadcast = true } else { event.isBroadcast = false }
         if localcastSwitch.isOn { event.isLocalcast = true } else { event.isLocalcast = false }
         if triggerSwitch.isOn { event.useTrigger = true } else { event.useTrigger = false }

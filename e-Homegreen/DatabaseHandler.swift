@@ -191,7 +191,7 @@ class DatabaseHandler: NSObject {
         do {
             if let moc = appDel.managedObjectContext {
                 if let fetResults = try moc.fetch(fetchRequest) as? [Zone] {
-                    if fetResults.count != 0 { return Int(fetResults[0].id!) } else { return 255 }
+                    if fetResults.count != 0 { return fetResults[0].id!.intValue } else { return 255 }
                 }
             }
         } catch { print("Unresolved error") }

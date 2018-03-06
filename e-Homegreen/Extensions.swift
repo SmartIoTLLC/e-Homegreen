@@ -40,7 +40,7 @@ extension UIButton {
 
 extension UICollectionViewCell {
     func getByte(_ value: NSNumber) -> UInt8 {
-        return UInt8(Int(value))
+        return UInt8(value.intValue)
     }
 }
 
@@ -69,7 +69,7 @@ extension UIViewController {
     }
     
     func getByte(_ value: NSNumber) -> UInt8 {
-        return UInt8(Int(value))
+        return UInt8(value.intValue)
     }
     
     func getIByte(_ value: Int) -> UInt8 {
@@ -115,11 +115,11 @@ extension UIViewController {
         }
     }
     
-    func dismissEditing() {
+    @objc func dismissEditing() {
         view.endEditing(true)
     }
     
-    func dismissModal() {
+    @objc func dismissModal() {
         dismiss(animated: true, completion: nil)
     }
     
@@ -172,7 +172,7 @@ extension UIViewController {
         }
     }
     
-    func keyboardWillHide(_ notification: Notification) {
+    @objc func keyboardWillHide(_ notification: Notification) {
         view.frame.origin.y = 0
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }

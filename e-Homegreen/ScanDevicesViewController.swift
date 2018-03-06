@@ -57,8 +57,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     
     
     func setupViews() {
-        rangeFrom.text = "\(Int(gateway.addressThree)+1)"
-        rangeTo.text = "\(Int(gateway.addressThree)+1)"
+        rangeFrom.text = "\(gateway.addressThree.intValue+1)"
+        rangeTo.text = "\(gateway.addressThree.intValue+1)"
         
         rangeFrom.inputAccessoryView = CustomToolBar()
         rangeTo.inputAccessoryView = CustomToolBar()
@@ -189,7 +189,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     var arrayOfDevicesToBeSearched = [Int]()
     var indexOfDevicesToBeSearched = 0
     
-    func findDevice() {
+    @objc func findDevice() {
         arrayOfDevicesToBeSearched = [Int]()
         indexOfDevicesToBeSearched = 0
         UIApplication.shared.isIdleTimerDisabled = true
@@ -235,7 +235,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
     }
     
-    func findDevicesLongPress(_ sender: UILongPressGestureRecognizer) {
+    @objc func findDevicesLongPress(_ sender: UILongPressGestureRecognizer) {
         if sender.state == UIGestureRecognizerState.began {
             arrayOfDevicesToBeSearched = [Int]()
             indexOfDevicesToBeSearched = 0
@@ -273,7 +273,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             
         }
     }
-    func deviceReceivedFromPLC (_ notification:Notification) {
+    @objc func deviceReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDevice) {
             if let info = notification.userInfo! as? [String:Int] {
                 if let deviceIndex = info["deviceAddresInGateway"] {
@@ -295,7 +295,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             }
         }
     }
-    func checkIfGatewayDidGetDevice (_ timer:Foundation.Timer) {
+    @objc func checkIfGatewayDidGetDevice (_ timer:Foundation.Timer) {
         if let index = timer.userInfo as? Int {
             updateDeviceList()
             
@@ -304,7 +304,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             
             var deviceFound = false
             if devices.count > 0 {
-                for i in 0...devices.count-1 { if Int(devices[i].address) == deviceIdToBeSearched { deviceFound = true; break } }
+                for i in 0...devices.count-1 { if devices[i].address.intValue == deviceIdToBeSearched { deviceFound = true; break } }
             }
             
             let address = [getByte(gateway.addressOne), getByte(gateway.addressTwo), getIByte(arrayOfDevicesToBeSearched[indexOfDevicesToBeSearched])]
@@ -359,7 +359,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     
     // MARK: - DELETING DEVICES FOR GATEWAY
-    func changeValueEnable (_ sender:UISwitch) {
+    @objc func changeValueEnable (_ sender:UISwitch) {
         
         if sender.isOn { devices[sender.tag].isEnabled = NSNumber(value: true as Bool)
         } else { devices[sender.tag].isEnabled = NSNumber(value: false as Bool) }
@@ -367,7 +367,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         CoreDataController.sharedInstance.saveChanges()
     }
     
-    func changeValueVisible (_ sender:UISwitch) {
+    @objc func changeValueVisible (_ sender:UISwitch) {
         
         if sender.isOn { devices[sender.tag].isVisible = NSNumber(value: true as Bool)
         } else { devices[sender.tag].isVisible = NSNumber(value: false as Bool) }
@@ -383,7 +383,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     var indexOfNamesToBeSearched = 0
     var longPressScannParameters = false
     
-    func findNames() {
+    @objc func findNames() {
         arrayOfNamesToBeSearched = [Int]()
         indexOfNamesToBeSearched = 0
         
@@ -432,7 +432,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
     }
     
-    func findNamesLongPress(_ sender: UILongPressGestureRecognizer) {
+    @objc func findNamesLongPress(_ sender: UILongPressGestureRecognizer) {
         if sender.state == UIGestureRecognizerState.began {
             arrayOfNamesToBeSearched = [Int]()
             indexOfNamesToBeSearched = 0
@@ -480,7 +480,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             }
         }
     }
-    func nameReceivedFromPLC (_ notification:Notification) {
+    @objc func nameReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
             
             guard let info = notification.userInfo! as? [String:Int] else { return }
@@ -523,7 +523,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             
         }
     }
-    func checkIfDeviceDidGetName (_ timer:Foundation.Timer) {
+    @objc func checkIfDeviceDidGetName (_ timer:Foundation.Timer) {
         if let deviceIndex = timer.userInfo as? Int {
             // if name not found search again
             if devices[deviceIndex].name == "Unknown" {
@@ -660,7 +660,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
     }
     
-    func checkIfSensorDidGotParametar (_ timer:Foundation.Timer) {
+    @objc func checkIfSensorDidGotParametar (_ timer:Foundation.Timer) {
         if let deviceIndex = timer.userInfo as? Int {
             // if name not found search again
             if devices[deviceIndex].zoneId == 0 {
@@ -708,7 +708,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
     }
     
-    func sensorParametarReceivedFromPLC (_ notification:Notification) {
+    @objc func sensorParametarReceivedFromPLC (_ notification:Notification) {
         let parameter = Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningSensorParametars)
         if parameter {
             if let info = notification.userInfo! as? [String:Int] {
@@ -743,7 +743,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     
     // MARK: - Other
-    func refreshDeviceList() {
+    @objc func refreshDeviceList() {
         updateDeviceList()
         if !searchBarText.isEmpty{
             devices = self.devices.filter() {

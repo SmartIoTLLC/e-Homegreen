@@ -28,16 +28,16 @@ class DeviceCollectionViewCell: UICollectionViewCell {
         lightSlider.isContinuous = true
         lightSlider.tag          = tag
         
-        let deviceValue:Double = { return Double(device.currentValue) }() ///255
+        let deviceValue:Double = { return device.currentValue.doubleValue }() ///255
         
-        picture.image                    = device.returnImage(Double(device.currentValue))
+        picture.image                    = device.returnImage(device.currentValue.doubleValue)
         lightSlider.value                = Float(deviceValue)/255 // Slider accepts values 0-1
         picture.isUserInteractionEnabled = true
         picture.tag                      = tag
         
-        lblElectricity.text   = "\(Float(device.current) * 0.01) A"
-        lblVoltage.text       = "\(Float(device.voltage)) V"
-        labelPowrUsege.text   = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
+        lblElectricity.text   = "\(device.current.floatValue * 0.01) A"
+        lblVoltage.text       = "\(device.voltage.floatValue) V"
+        labelPowrUsege.text   = "\(device.current.floatValue * device.voltage.floatValue * 0.01)" + " W"
         labelRunningTime.text = device.runningTime
         
         switch device.info {
@@ -72,14 +72,14 @@ class DeviceCollectionViewCell: UICollectionViewCell {
     }
     
     func refreshDevice(_ device:Device) {
-        let deviceValue:Double = { return Double(device.currentValue) }() ///255
+        let deviceValue:Double = { return device.currentValue.doubleValue }() ///255
         
-        picture.image = device.returnImage(Double(device.currentValue))
+        picture.image = device.returnImage(device.currentValue.doubleValue)
         lightSlider.value = Float(deviceValue/255)  // Slider accepts values from 0 to 1
         
-        lblElectricity.text   = "\(Float(device.current) * 0.01) A"
-        lblVoltage.text       = "\(Float(device.voltage)) V"
-        labelPowrUsege.text   = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
+        lblElectricity.text   = "\(device.current.floatValue * 0.01) A"
+        lblVoltage.text       = "\(device.voltage.floatValue) V"
+        labelPowrUsege.text   = "\(device.current.floatValue * device.voltage.floatValue * 0.01)" + " W"
         labelRunningTime.text = device.runningTime
         
         switch device.info {
@@ -113,7 +113,7 @@ class DeviceCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var labelRunningTime: UILabel!
     
     @IBAction func btnRefresh(_ sender: AnyObject) {
-        let address = [UInt8(Int(device!.gateway.addressOne)),UInt8(Int(device!.gateway.addressTwo)),UInt8(Int(device!.address))]
+        let address = device!.getAddress()        
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: device!.gateway)
         SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: device!.gateway)
     }

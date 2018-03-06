@@ -208,7 +208,7 @@ extension LocationViewController {
             }
             if let gateway = device.device as? Gateway {
                 DispatchQueue.main.async(execute: {
-                    if let type = TypeOfLocationDevice(rawValue: Int(gateway.gatewayType)) { self.showConnectionSettings(gateway, location: nil, gatewayType: type).delegate = self }
+                    if let type = TypeOfLocationDevice(rawValue: gateway.gatewayType.intValue) { self.showConnectionSettings(gateway, location: nil, gatewayType: type).delegate = self }
                 })
             }
         }
@@ -222,7 +222,7 @@ extension LocationViewController {
         var listOfChildrenDevice:[LocationDevice] = []
         if let listOfGateway = locationEdit.gateways?.allObjects as? [Gateway] {
             for gateway in listOfGateway {
-                if Int(gateway.gatewayType) == TypeOfLocationDevice.Ehomegreen.rawValue { listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomegreen))
+                if gateway.gatewayType.intValue == TypeOfLocationDevice.Ehomegreen.rawValue { listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomegreen))
                 } else { listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomeblue)) }
             }
         }
@@ -270,7 +270,7 @@ extension LocationViewController {
             if let listOfGateway = item.gateways?.allObjects as? [Gateway] {
                 
                 for gateway in listOfGateway {
-                    if Int(gateway.gatewayType) == TypeOfLocationDevice.Ehomegreen.rawValue { listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomegreen))
+                    if gateway.gatewayType.intValue == TypeOfLocationDevice.Ehomegreen.rawValue { listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomegreen))
                     } else { listOfChildrenDevice.append(LocationDevice(device: gateway, typeOfLocationDevice: .Ehomeblue)) }
                 }
             }

@@ -20,7 +20,7 @@ class SequencesCell: UITableViewCell{
         backgroundColor = .clear
         labelID.text    = "\(sequence.sequenceId)"
         labelName.text  = "\(sequence.sequenceName)"
-        address.text    = "\(returnThreeCharactersForByte(Int(sequence.gateway.addressOne))):\(returnThreeCharactersForByte(Int(sequence.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(sequence.address)))"
+        address.text    = "\(returnThreeCharactersForByte(sequence.gateway.addressOne.intValue)):\(returnThreeCharactersForByte(sequence.gateway.addressTwo.intValue)):\(returnThreeCharactersForByte(sequence.address.intValue))"
         
         if let id = sequence.sequenceImageOneCustom {
             if let image = DatabaseImageController.shared.getImageById(id) {

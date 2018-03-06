@@ -22,7 +22,7 @@ class EventsCell: UITableViewCell{
         backgroundColor = UIColor.clear
         labelID.text    = "\(event.eventId)"
         labelName.text  = "\(event.eventName)"
-        address.text    = "\(returnThreeCharactersForByte(Int(event.gateway.addressOne))):\(returnThreeCharactersForByte(Int(event.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(event.address)))"
+        address.text    = "\(returnThreeCharactersForByte(event.gateway.addressOne.intValue)):\(returnThreeCharactersForByte(event.gateway.addressTwo.intValue)):\(returnThreeCharactersForByte(event.address.intValue))"
         
         if let id = event.eventImageOneCustom {
             if let image = DatabaseImageController.shared.getImageById(id) {

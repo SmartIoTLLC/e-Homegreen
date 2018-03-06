@@ -19,9 +19,9 @@ class ApplianceCollectionViewCell: UICollectionViewCell {
         name.text = device.cellTitle
         name.tag = tag
         
-        let deviceValue:Double = { return Double(device.currentValue) }()
+        let deviceValue:Double = { return device.currentValue.doubleValue }()
         
-        image.image = device.returnImage(Double(device.currentValue))
+        image.image = device.returnImage(device.currentValue.doubleValue)
         
         if deviceValue == 255 { onOff.setTitle("ON", for: UIControlState()) } else if device.currentValue == 0 { onOff.setTitle("OFF", for: UIControlState()) }
         
@@ -30,9 +30,9 @@ class ApplianceCollectionViewCell: UICollectionViewCell {
         if device.info { infoView.isHidden = false; backView.isHidden = true } else { infoView.isHidden = true; backView.isHidden = false }
         
         labelRunningTime.text = "\(device.runningTime)"
-        lblElectricity.text   = "\(Float(device.current) * 0.01) A"
-        lblVoltage.text       = "\(Float(device.voltage)) V"
-        labelPowrUsege.text   = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
+        lblElectricity.text   = "\(device.current.floatValue * 0.01) A"
+        lblVoltage.text       = "\(device.voltage.floatValue) V"
+        labelPowrUsege.text   = "\(device.current.floatValue * device.voltage.floatValue * 0.01)" + " W"
         
         disabledCellView.layer.cornerRadius = 5
         
@@ -49,18 +49,18 @@ class ApplianceCollectionViewCell: UICollectionViewCell {
     }
     
     func refreshDevice(_ device:Device) {
-        let deviceValue:Double = { return Double(device.currentValue) }()
+        let deviceValue:Double = { return device.currentValue.doubleValue }()
         
-        image.image = device.returnImage(Double(device.currentValue))
+        image.image = device.returnImage(device.currentValue.doubleValue)
         
         if deviceValue == 255 { onOff.setTitle("ON", for: UIControlState()) } else if device.currentValue == 0 { onOff.setTitle("OFF", for: UIControlState()) }
         
         if device.info { infoView.isHidden = false; backView.isHidden = true } else { infoView.isHidden = true; backView.isHidden = false }
         
         labelRunningTime.text = "\(device.runningTime)"
-        lblElectricity.text   = "\(Float(device.current) * 0.01) A"
-        lblVoltage.text       = "\(Float(device.voltage)) V"
-        labelPowrUsege.text   = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
+        lblElectricity.text   = "\(device.current.floatValue * 0.01) A"
+        lblVoltage.text       = "\(device.voltage.floatValue) V"
+        labelPowrUsege.text   = "\(device.current.floatValue * device.voltage.floatValue * 0.01)" + " W"
         
         // If device is enabled add all interactions
         if device.isEnabled.boolValue { disabledCellView.isHidden = true } else { disabledCellView.isHidden = false }

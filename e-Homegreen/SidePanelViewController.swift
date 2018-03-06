@@ -104,7 +104,7 @@
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row != menu.count {
-            if let item = Menu(rawValue: Int(menu[indexPath.row].id)) {
+            if let item = Menu(rawValue: menu[indexPath.row].id.intValue) {
                 self.revealViewController().pushFrontViewController(item.controller, animated: true)
             }
         }
@@ -191,7 +191,7 @@
     func configureForMenu (_ menuItem:MenuItem) {
         layer.cornerRadius = 5
         
-        if let item = Menu(rawValue: Int(menuItem.id)){
+        if let item = Menu(rawValue: menuItem.id.intValue) {
             menuItemImageView.image = UIImage(named: item.description)
             menuItemName.text = item.description
         }

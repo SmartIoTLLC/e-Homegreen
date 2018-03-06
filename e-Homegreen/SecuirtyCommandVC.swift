@@ -66,7 +66,7 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    func handleTap(_ gesture:UITapGestureRecognizer){
+    @objc func handleTap(_ gesture:UITapGestureRecognizer){
         self.dismiss(animated: true, completion: nil)
     }
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {

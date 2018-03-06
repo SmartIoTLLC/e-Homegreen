@@ -32,7 +32,7 @@ class SurveillanceSettingsVC: PopoverVC {
     @IBOutlet weak var editPassword: UITextField!
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var btnSave: UIButton!
-    func dismissViewController () {
+    @objc func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
     @IBAction func btnCancel(_ sender: AnyObject) {
@@ -155,7 +155,7 @@ extension SurveillanceSettingsVC {
         }
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         

@@ -70,9 +70,9 @@ class GatewayCell: UITableViewCell {
         
         self.lblGatewayDescription.text = gateway.gatewayDescription
         self.lblGatewayDeviceNumber.text = "\(gateway.devices.count) device(s)"
-        self.add1.text = returnThreeCharactersForByte(Int(gateway.addressOne))
-        self.add2.text = returnThreeCharactersForByte(Int(gateway.addressTwo))
-        self.add3.text = returnThreeCharactersForByte(Int(gateway.addressThree))
+        self.add1.text = returnThreeCharactersForByte(gateway.addressOne.intValue)
+        self.add2.text = returnThreeCharactersForByte(gateway.addressTwo.intValue)
+        self.add3.text = returnThreeCharactersForByte(gateway.addressThree.intValue)
         self.switchGatewayState.isOn = gateway.turnedOn.boolValue
         if gateway.turnedOn.boolValue { self.buttonGatewayScan.isEnabled = true } else { self.buttonGatewayScan.isEnabled = false }
     }

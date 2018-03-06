@@ -82,8 +82,8 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
         localcastSwitch.isOn = false
         localcastSwitch.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
         
-        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne)))"
-        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway.addressTwo)))"
+        devAddressOne.text = "\(returnThreeCharactersForByte(gateway.addressOne.intValue))"
+        devAddressTwo.text = "\(returnThreeCharactersForByte(gateway.addressTwo.intValue))"
         
         btnLevel.tag = 1
         btnZone.tag = 2
@@ -121,7 +121,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
         button.setTitle(name, for: UIControlState())
     }
     
-    func changeValue (_ sender:UISwitch) {
+    @objc func changeValue (_ sender:UISwitch) {
         if sender.tag == 100 { localcastSwitch.isOn = false } else if sender.tag == 200 { broadcastSwitch.isOn = false }
     }
     
@@ -136,7 +136,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
         sceneTableView.reloadData()
     }
     
-    func handleTap (_ gesture:UITapGestureRecognizer) {
+    @objc func handleTap (_ gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
             showGallery(index, user: gateway.location.user).delegate = self
         }
@@ -178,13 +178,13 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
             if sceneId <= 32767 && address <= 255 {
                 
                 var levelId:Int?
-                if let levelIdNumber = level?.id { levelId = Int(levelIdNumber) }
+                if let levelIdNumber = level?.id { levelId = levelIdNumber.intValue }
                 
                 var zoneId:Int?
-                if let zoneIdNumber = zoneSelected?.id { zoneId = Int(zoneIdNumber) }
+                if let zoneIdNumber = zoneSelected?.id { zoneId = zoneIdNumber.intValue }
                 
                 var categoryId:Int?
-                if let categoryIdNumber = category?.id { categoryId = Int(categoryIdNumber) }
+                if let categoryIdNumber = category?.id { categoryId = categoryIdNumber.intValue }
                 
                 DatabaseScenesController.shared.createScene(sceneId, sceneName: sceneName, moduleAddress: address, gateway: gateway, levelId: levelId, zoneId: zoneId, categoryId: categoryId, isBroadcast: broadcastSwitch.isOn, isLocalcast: localcastSwitch.isOn, sceneImageOneDefault: defaultImageOne, sceneImageTwoDefault: defaultImageTwo, sceneImageOneCustom: customImageOne, sceneImageTwoCustom: customImageTwo, imageDataOne: imageDataOne, imageDataTwo: imageDataTwo)
 
@@ -270,7 +270,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     }
     // Called from findScenes or from it self.
     // Checks which scene ID should be searched for and calls sendCommandWithSceneAddress for that specific scene id.
-    func checkIfSceneDidGetName (_ timer:Foundation.Timer) {
+    @objc func checkIfSceneDidGetName (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -301,7 +301,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     }
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next scene ID to search for. If there is not, dismiss progres bar and end the search.
-    func nameReceivedFromPLC (_ notification:Notification) {
+    @objc func nameReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningSceneNameAndParameters) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let sceneIndex = info["sceneId"] else { return }
@@ -453,7 +453,7 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
     func didSelect(scene: Scene) {
         IDedit.text = "\(scene.sceneId)"
         nameEdit.text = "\(scene.sceneName)"
-        devAddressThree.text = "\(returnThreeCharactersForByte(Int(scene.address)))"
+        devAddressThree.text = "\(returnThreeCharactersForByte(scene.address.intValue))"
         broadcastSwitch.isOn = scene.isBroadcast.boolValue
         localcastSwitch.isOn = scene.isLocalcast.boolValue
         

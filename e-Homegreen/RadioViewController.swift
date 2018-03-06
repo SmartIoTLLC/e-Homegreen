@@ -80,7 +80,7 @@ extension RadioViewController {
 // MARK: - Logic
 extension RadioViewController {
     
-    func handleNewMediaItem(notification: Notification) {
+    @objc func handleNewMediaItem(notification: Notification) {
         if let title = notification.object as? String {
             radioTitle.text = title
         }

@@ -84,16 +84,16 @@ extension EnergyViewController: FilterPullDownDelegate{
         self.view.makeToast(message: "Default filter parametar saved!")
     }
     
-    func setDefaultFilterFromTimer(){
+    @objc func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.energy)
     }
     
-    func refreshLocalParametars() {
+    @objc func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
         updateDeviceList()
     }
     
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             scrollView.setDefaultFilterItem(Menu.energy)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -185,8 +185,8 @@ extension EnergyViewController {
         } catch let error1 as NSError { error = error1; print("Unresolved error: \(String(describing: error!.userInfo))") }
         
         for item in devices {
-            sumAmp += Float(item.current)
-            sumPow += Float(item.current) * Float(item.voltage) * 0.01
+            sumAmp += item.current.floatValue
+            sumPow += item.current.floatValue * item.voltage.floatValue * 0.01
         }
         current.text = "\(sumAmp * 0.01) A"
         powerUsage.text = "\(sumPow) W"

@@ -67,7 +67,7 @@ class DatabaseZoneController: NSObject {
         
         let predicateArray = [
             NSPredicate(format: "location == %@", location),
-            NSPredicate(format: "id == %@", NSNumber(value: id as Int))
+            NSPredicate(format: "id == %@", NSNumber(value: id))
         ]
         
         fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)

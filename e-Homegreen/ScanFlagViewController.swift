@@ -136,7 +136,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
         button.setTitle(name, for: UIControlState())
     }
     
-    func changeValue (_ sender:UISwitch) {
+    @objc func changeValue (_ sender:UISwitch) {
         switch sender.tag {
             case 100 : localcastSwitch.isOn = false
             case 200 : broadcastSwitch.isOn = false
@@ -188,7 +188,7 @@ extension ScanFlagViewController {
     }
     // Called from findNames or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingNames for that specific timer id.
-    func checkIfFlagDidGetName (_ timer:Foundation.Timer) {
+    @objc func checkIfFlagDidGetName (_ timer:Foundation.Timer) {
         guard let flagIndex = timer.userInfo as? Int else { return }
         
         if timesRepeatedCounterNames < 3 {
@@ -203,7 +203,7 @@ extension ScanFlagViewController {
     }
     
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
-    func nameReceivedFromPLC (_ notification:Notification) {
+    @objc func nameReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningFlagNames) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let flagIndex = info["flagId"] else { return }
@@ -243,7 +243,7 @@ extension ScanFlagViewController {
 
 // MARK: - Parameter name
 extension ScanFlagViewController {
-    func findParametarsForFlag() {
+    @objc func findParametarsForFlag() {
         progressBarScreenFlagNames?.dissmissProgressBar()
         progressBarScreenFlagNames = nil
         
@@ -278,7 +278,7 @@ extension ScanFlagViewController {
     
     // Called from findParametarsForTimer or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingParameterWithTimerAddress for that specific timer id.
-    func checkIfFlagDidGetParametar (_ timer:Foundation.Timer) {
+    @objc func checkIfFlagDidGetParametar (_ timer:Foundation.Timer) {
         guard let flagIndex = timer.userInfo as? Int else { return }
         
         if timesRepeatedCounterParameters < 3 {
@@ -291,7 +291,7 @@ extension ScanFlagViewController {
     }
     
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
-    func flagParametarReceivedFromPLC (_ notification:Notification) {
+    @objc func flagParametarReceivedFromPLC (_ notification:Notification) {
         if defaults.bool(forKey: UserDefaults.IsScaningFlagParameters) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let flagIndex = info["flagId"] else { return }
@@ -522,7 +522,7 @@ extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
         
         IDedit.text = "\(flag.flagId)"
         nameEdit.text = "\(flag.flagName)"
-        devAddressThree.text = "\(returnThreeCharactersForByte(Int(flag.address)))"
+        devAddressThree.text = "\(returnThreeCharactersForByte(flag.address.intValue))"
         broadcastSwitch.isOn = flag.isBroadcast.boolValue
         localcastSwitch.isOn = flag.isLocalcast.boolValue
         
@@ -596,13 +596,13 @@ extension ScanFlagViewController {
             if flagId <= 32767 && address <= 255 {
                 
                 var levelId:Int?
-                if let levelIdNumber = level?.id { levelId = Int(levelIdNumber) }
+                if let levelIdNumber = level?.id { levelId = levelIdNumber.intValue }
                 
                 var zoneId:Int?
-                if let zoneIdNumber = zoneSelected?.id { zoneId = Int(zoneIdNumber) }
+                if let zoneIdNumber = zoneSelected?.id { zoneId = zoneIdNumber.intValue }
                 
                 var categoryId:Int?
-                if let categoryIdNumber = category?.id { categoryId = Int(categoryIdNumber) }
+                if let categoryIdNumber = category?.id { categoryId = categoryIdNumber.intValue }
                 
                 DatabaseFlagsController.shared.createFlag(flagId, flagName: flagName, moduleAddress: address, gateway: gateway, levelId: levelId, selectedZoneId: zoneId, categoryId: categoryId, isBroadcast: broadcastSwitch.isOn, isLocalcast: localcastSwitch.isOn, sceneImageOneDefault: defaultImageOne, sceneImageTwoDefault: defaultImageTwo, sceneImageOneCustom: customImageOne, sceneImageTwoCustom: customImageTwo, imageDataOne: imageDataOne, imageDataTwo: imageDataTwo)
                 
@@ -676,9 +676,9 @@ extension ScanFlagViewController {
         imageSceneTwo.tag = 2
         imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(_:))))
         
-        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne)))"
+        devAddressOne.text = "\(returnThreeCharactersForByte(gateway.addressOne.intValue))"
         devAddressOne.isEnabled = false
-        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway.addressTwo)))"
+        devAddressTwo.text = "\(returnThreeCharactersForByte(gateway.addressTwo.intValue))"
         devAddressTwo.isEnabled = false
         
         broadcastSwitch.tag = 100
@@ -693,7 +693,7 @@ extension ScanFlagViewController {
         btnCategory.tag = 3
     }
     
-    func handleTap (_ gesture:UITapGestureRecognizer) {
+    @objc func handleTap (_ gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
             showGallery(index, user: gateway.location.user).delegate = self
         }

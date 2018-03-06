@@ -158,13 +158,13 @@ extension AddLocationXIB {
             locationNameTextField.text = location.name
             if let longitude = location.longitude, let latitude = location.latitude,let radius = location.radius {
                 
-                let locationCoordinate = CLLocation(latitude: Double(latitude), longitude: Double(longitude))
+                let locationCoordinate = CLLocation(latitude: latitude.doubleValue, longitude: longitude.doubleValue)
                 
                 annotation.coordinate = locationCoordinate.coordinate
                 locationMap.addAnnotation(annotation)
-                self.radius = Double(radius)
-                radiusLabel.text = "Radius: \(Int(radius))m"
-                radiusSlider.value = Float(radius)
+                self.radius = radius.doubleValue
+                radiusLabel.text = "Radius: \(radius.intValue)m"
+                radiusSlider.value = radius.floatValue
                 addRadiusCircle(locationCoordinate)
                 if let orderId = location.orderId { idTextField.text = "\(orderId)" }
                 if let id = location.timerId {
@@ -312,7 +312,7 @@ extension AddLocationXIB {
     }
     
     // tap on map and find coordinate
-    func handleLongPress(_ gestureReconizer: UILongPressGestureRecognizer) {
+    @objc func handleLongPress(_ gestureReconizer: UILongPressGestureRecognizer) {
         if gestureReconizer.state != UIGestureRecognizerState.began { return }
         if gestureReconizer.state != UIGestureRecognizerState.ended {
             let touchLocation = gestureReconizer.location(in: locationMap)
@@ -366,7 +366,7 @@ extension AddLocationXIB {
         self.locationMap.add(circle)
     }
     
-    func dismissViewController () {
+    @objc func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
     

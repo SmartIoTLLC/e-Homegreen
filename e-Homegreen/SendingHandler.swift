@@ -53,7 +53,7 @@ class SendingHandler {
     static func sendCommand(gateway: Gateway, byteArray: [Byte], isLocal: Bool) {
         var port: UInt16 = 0
         var ipInUse = ""
-        if isLocal { port = UInt16(Int(gateway.localPort)); ipInUse = gateway.localIp } else { port = UInt16(Int(gateway.remotePort)); ipInUse = gateway.remoteIpInUse }
+        if isLocal { port = UInt16(gateway.localPort.intValue); ipInUse = gateway.localIp } else { port = UInt16(gateway.remotePort.intValue); ipInUse = gateway.remoteIpInUse }
         
         if let sockets = (UIApplication.shared.delegate as? AppDelegate)?.inOutSockets {
             sockets.forEach({ (socket) in

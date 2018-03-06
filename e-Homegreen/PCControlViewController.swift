@@ -85,11 +85,11 @@ class PCControlViewController: PopoverVC {
         scrollView.setButtonTitle(name, id: id)
     }
     
-    func setDefaultFilterFromTimer() {
+    @objc func setDefaultFilterFromTimer() {
         scrollView.setDefaultFilterItem(Menu.pcControl)
     }
     
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             scrollView.setDefaultFilterItem(Menu.pcControl)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -115,12 +115,12 @@ class PCControlViewController: PopoverVC {
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getPCState(address), gateway: pcs[indexPathRow].gateway)
     }
     
-    func updatePCList(){
+    @objc func updatePCList(){
         pcs = DatabaseDeviceController.shared.getPCs(filterParametar)
         pccontrolCollectionView.reloadData()
     }
     
-    func changeSliderValueOnOneTap(_ gesture: UIGestureRecognizer) {
+    @objc func changeSliderValueOnOneTap(_ gesture: UIGestureRecognizer) {
         
         let s = gesture.view as! UISlider
         if s.isHighlighted { return }
@@ -184,7 +184,7 @@ extension PCControlViewController: SWRevealViewControllerDelegate {
         if position == FrontViewPosition.left { pccontrolCollectionView.isUserInteractionEnabled = true } else { pccontrolCollectionView.isUserInteractionEnabled = false }
     }
     
-    func openNotificationSettings(_ gestureRecognizer: UILongPressGestureRecognizer) {
+    @objc func openNotificationSettings(_ gestureRecognizer: UILongPressGestureRecognizer) {
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             if let index = gestureRecognizer.view?.tag {
                 print("DUGO DRZANJE LABELE TAG: \(index)")

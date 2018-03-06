@@ -57,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //navigation setup
         UINavigationBar.appearance().isTranslucent = false
         UINavigationBar.appearance().tintColor = UIColor.white
-        let fontDictionary = [ NSForegroundColorAttributeName:UIColor.white ]
+        let fontDictionary = [ NSAttributedStringKey.foregroundColor:UIColor.white ]
         UINavigationBar.appearance().titleTextAttributes = fontDictionary
         
         setUserDefaults()
@@ -218,31 +218,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         fetchGateways()
         if gateways != [] {
             for gateway in gateways {
-                timers.append(Foundation.Timer.scheduledTimer(timeInterval: Double(gateway.autoReconnectDelay!) * 60, target: self, selector: #selector(AppDelegate.refreshGateways(_:)) , userInfo: ["gateway" :gateway], repeats: true))
+                timers.append(Foundation.Timer.scheduledTimer(timeInterval: gateway.autoReconnectDelay!.doubleValue * 60, target: self, selector: #selector(AppDelegate.refreshGateways(_:)) , userInfo: ["gateway" :gateway], repeats: true))
                 if inOutSockets != [] {
                     var foundRemote:Bool = false
                     var foundLocal:Bool = false
                     for inOutSocket in inOutSockets {
-                        if inOutSocket.port == UInt16(Int(gateway.localPort)) { foundLocal = true }
-                        if inOutSocket.port == UInt16(Int(gateway.remotePort)) { foundRemote = true }
+                        if inOutSocket.port == UInt16(gateway.localPort.intValue) { foundLocal = true }
+                        if inOutSocket.port == UInt16(gateway.remotePort.intValue) { foundRemote = true }
                     }
                     
-                    if !foundLocal { inOutSockets.append(InOutSocket(port: UInt16(Int(gateway.localPort)))) }
-                    if !foundRemote { inOutSockets.append(InOutSocket(port: UInt16(Int(gateway.remotePort)))) }
+                    if !foundLocal { inOutSockets.append(InOutSocket(port: UInt16(gateway.localPort.intValue))) }
+                    if !foundRemote { inOutSockets.append(InOutSocket(port: UInt16(gateway.remotePort.intValue))) }
                     
                 } else {
-                    inOutSockets.append(InOutSocket(port: UInt16(Int(gateway.localPort))))
-                    if inOutSockets[0].port != UInt16(Int(gateway.remotePort)) { inOutSockets.append(InOutSocket(port: UInt16(Int(gateway.remotePort)))) }
+                    inOutSockets.append(InOutSocket(port: UInt16(gateway.localPort.intValue)))
+                    if inOutSockets[0].port != UInt16(gateway.remotePort.intValue) { inOutSockets.append(InOutSocket(port: UInt16(gateway.remotePort.intValue))) }
                 }
             }
             inOutSockets.append(InOutSocket(port: 5000))
         }
     }
     
-    func refreshGateways(_ timer:Foundation.Timer) {
+    @objc func refreshGateways(_ timer:Foundation.Timer) {
         if let userInfo = timer.userInfo as? [String: AnyObject] {
             if let gateway = userInfo["gateway"] as? Gateway {
-                let address = [Byte(Int(gateway.addressOne)), Byte(Int(gateway.addressTwo)), Byte(Int(gateway.addressThree))]
+                let address = [Byte(gateway.addressOne.intValue), Byte(gateway.addressTwo.intValue), Byte(gateway.addressThree.intValue)]
                 SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address) , gateway: gateway)
             }
         }
@@ -255,7 +255,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             for gateway in gateways {
                 if let minutes = gateway.autoReconnectDelay as? Int, let date = gateway.autoReconnectDelayLast {
                     if Date().timeIntervalSince(date.addingTimeInterval(TimeInterval(minutes)) as Date) >= 0 {
-                        let address = [Byte(Int(gateway.addressOne)), Byte(Int(gateway.addressTwo)), Byte(Int(gateway.addressThree))]
+                        let address = [Byte(gateway.addressOne.intValue), Byte(gateway.addressTwo.intValue), Byte(gateway.addressThree.intValue)]
                         SendingHandler.sendCommand(byteArray: OutgoingHandler.refreshGatewayConnection(address), gateway: gateway)
                     }
                 }

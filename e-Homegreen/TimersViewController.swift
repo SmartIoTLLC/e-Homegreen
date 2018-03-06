@@ -85,19 +85,19 @@ extension TimersViewController: FilterPullDownDelegate{
         view.makeToast(message: "Default filter parametar saved!")
     }
     
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             scrollView.setDefaultFilterItem(Menu.timers)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
     
-    func refreshTimerList() {
+    @objc func refreshTimerList() {
         timers = DatabaseTimersController.shared.getTimers(filterParametar)
         timersCollectionView.reloadData()
     }
     
-    func setDefaultFilterFromTimer(){
+    @objc func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.timers)
     }
 }
@@ -134,25 +134,25 @@ extension TimersViewController {
 
 // MARK: - Logic
 extension TimersViewController {
-    func pressedPause (_ button:UIButton) {
+    @objc func pressedPause (_ button:UIButton) {
         let tag = button.tag
         
         sendTimerCommand(.pause, timerTag: tag)
         changeImageInCell(button)
     }
-    func pressedStart (_ button:UIButton) {
+    @objc func pressedStart (_ button:UIButton) {
         let tag = button.tag
         
         sendTimerCommand(.start, timerTag: tag)
         changeImageInCell(button)
     }
-    func pressedResume (_ button:UIButton) {
+    @objc func pressedResume (_ button:UIButton) {
         let tag = button.tag
         
         sendTimerCommand(.resume, timerTag: tag)
         changeImageInCell(button)
     }
-    func pressedCancel (_ button:UIButton) {
+    @objc func pressedCancel (_ button:UIButton) {
         let tag = button.tag
         
         sendTimerCommand(.cancel, timerTag: tag)
@@ -238,7 +238,7 @@ extension TimersViewController: UICollectionViewDataSource {
         return timers.count
     }
     
-    func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer) {
+    @objc func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer) {
         if let tag = gestureRecognizer.view?.tag {
             if gestureRecognizer.state == UIGestureRecognizerState.began {
                 let location = gestureRecognizer.location(in: timersCollectionView)
@@ -260,30 +260,27 @@ extension TimersViewController: UICollectionViewDataSource {
             longPress.minimumPressDuration = 0.5
             cell.timerTitle.addGestureRecognizer(longPress)
             
-            if Int(timer.type) == TimerType.timer.rawValue || Int(timer.type) == TimerType.stopwatch.rawValue {
+            if timer.type.intValue == TimerType.timer.rawValue || timer.type.intValue == TimerType.stopwatch.rawValue {
                 //   ===   Default   ===
                 cell.timerButton.addTarget(self, action: #selector(pressedStart(_:)), for: .touchUpInside)
                 
-                if timer.timerState == 1 {
-                    cell.timerButtonRight.addTarget(self, action: #selector(pressedPause(_:)), for: .touchUpInside)
-                    cell.timerButtonLeft.addTarget(self, action: #selector(pressedCancel(_:)), for: .touchUpInside)
-                }
-                
-                if timer.timerState == 240 {
-                    cell.timerButton.addTarget(self, action: #selector(pressedStart(_:)), for: .touchUpInside)
-                }
-                
-                if timer.timerState == 238 {
-                    cell.timerButtonRight.addTarget(self, action: #selector(pressedResume(_:)), for: .touchUpInside)
-                    cell.timerButtonLeft.addTarget(self, action: #selector(pressedCancel(_:)), for: .touchUpInside)
+                switch timer.timerState {
+                    case 1:
+                        cell.timerButtonRight.addTarget(self, action: #selector(pressedPause(_:)), for: .touchUpInside)
+                        cell.timerButtonLeft.addTarget(self, action: #selector(pressedCancel(_:)), for: .touchUpInside)
+                    case 240:
+                        cell.timerButton.addTarget(self, action: #selector(pressedStart(_:)), for: .touchUpInside)
+                    case 238:
+                        cell.timerButtonRight.addTarget(self, action: #selector(pressedResume(_:)), for: .touchUpInside)
+                        cell.timerButtonLeft.addTarget(self, action: #selector(pressedCancel(_:)), for: .touchUpInside)
+                    default: break
                 }
                 
             } else {
-                
-                if timer.timerState == 240 {
-                    cell.timerButton.addTarget(self, action: #selector(pressedCancel(_:)), for: .touchUpInside)
-                } else {
-                    cell.timerButton.addTarget(self, action: #selector(pressedCancel(_:)), for: .touchUpInside)
+                switch timer.timerState {
+                    case 240 : cell.timerButton.addTarget(self, action: #selector(pressedCancel(_:)), for: .touchUpInside)
+                    default  : cell.timerButton.addTarget(self, action: #selector(pressedCancel(_:)), for: .touchUpInside)
+                    
                 }
             }
             

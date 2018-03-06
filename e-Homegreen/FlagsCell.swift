@@ -21,7 +21,7 @@ class FlagsCell:UITableViewCell{
         
         labelID.text   = "\(flag.flagId)"
         labelName.text = "\(flag.flagName)"
-        address.text   = "\(returnThreeCharactersForByte(Int(flag.gateway.addressOne))):\(returnThreeCharactersForByte(Int(flag.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(flag.address)))"
+        address.text   = "\(returnThreeCharactersForByte(flag.gateway.addressOne.intValue)):\(returnThreeCharactersForByte(flag.gateway.addressTwo.intValue)):\(returnThreeCharactersForByte(flag.address.intValue))"
         
         if let id = flag.flagImageOneCustom{
             if let image = DatabaseImageController.shared.getImageById(id) {

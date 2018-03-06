@@ -474,7 +474,7 @@ class ScanFilterPullDown: UIScrollView {
         contentView.addConstraint(NSLayoutConstraint(item: goButon, attribute: .width, relatedBy: .equal, toItem: chooseCategoryButon, attribute: .width, multiplier: 0.5, constant: 0))
     }
     
-    func openLevels(_ sender : UIButton) {
+    @objc func openLevels(_ sender : UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(location)
@@ -484,14 +484,14 @@ class ScanFilterPullDown: UIScrollView {
         if let vc = self.parentViewController as? PopoverVC { vc.openPopover(sender, popOverList:popoverList) }
     }
     
-    func resetLevel(_ sender : UIButton) {
+    @objc func resetLevel(_ sender : UIButton) {
         level = nil
         zoneSelected = nil
         chooseZoneButon.setTitle("All", for: UIControlState())
         chooseLevelButon.setTitle("All", for: UIControlState())
     }
     
-    func openZones(_ sender : UIButton) {
+    @objc func openZones(_ sender : UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         if let level = level {
@@ -503,12 +503,12 @@ class ScanFilterPullDown: UIScrollView {
         if let vc = self.parentViewController as? PopoverVC { vc.openPopover(sender, popOverList:popoverList) }
     }
     
-    func resetZone(_ sender : UIButton) {
+    @objc func resetZone(_ sender : UIButton) {
         zoneSelected = nil
         chooseZoneButon.setTitle("All", for: UIControlState())
     }
     
-    func openCategories(_ sender : UIButton) {
+    @objc func openCategories(_ sender : UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(location)
@@ -518,7 +518,7 @@ class ScanFilterPullDown: UIScrollView {
         if let vc = self.parentViewController as? PopoverVC { vc.openPopover(sender, popOverList:popoverList) }
     }
     
-    func resetCategory(_ sender : UIButton) {
+    @objc func resetCategory(_ sender : UIButton) {
         category = nil
         chooseCategoryButon.setTitle("All", for: UIControlState())
     }
@@ -544,7 +544,7 @@ class ScanFilterPullDown: UIScrollView {
         }
     }
     
-    func setDefaultParametar(){
+    @objc func setDefaultParametar(){
         guard let h = hoursTextField.text else { return }
         guard let m = minTextField.text else { return }
         guard let s = secundsTextField.text else { return }
@@ -582,7 +582,7 @@ class ScanFilterPullDown: UIScrollView {
         NotificationCenter.default.post(name: .defaultFilterForAllTabsSet, object: nil)
     }
     
-    func go() {
+    @objc func go() {
         returnFilter()
         
         let bottomOffset = CGPoint(x: 0, y: self.contentSize.height - self.bounds.size.height + self.contentInset.bottom)
@@ -619,7 +619,7 @@ class ScanFilterPullDown: UIScrollView {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.IndicatorLamp), object: nil)
     }
     
-    func updateIndicator(_ notification:Notification) {
+    @objc func updateIndicator(_ notification:Notification) {
         if let info = notification.userInfo as? [String:String] {
             
             if let lamp = info["lamp"] {

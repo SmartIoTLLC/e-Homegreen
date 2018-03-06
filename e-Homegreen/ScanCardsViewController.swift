@@ -40,9 +40,9 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
         toTextField.delegate = self
         fromTextField.delegate = self
         
-        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne)))"
+        devAddressOne.text = "\(returnThreeCharactersForByte(gateway.addressOne.intValue))"
         devAddressOne.isEnabled = false
-        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway.addressTwo)))"
+        devAddressTwo.text = "\(returnThreeCharactersForByte(gateway.addressTwo.intValue))"
         devAddressTwo.isEnabled = false
     }
     
@@ -126,7 +126,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     
     // Called from findNames or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingNames for that specific timer id.
-    func checkIfCardDidGetName (_ timer:Foundation.Timer) {
+    @objc func checkIfCardDidGetName (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -158,7 +158,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
-    func cardNameReceivedFromPLC (_ notification:Notification) {
+    @objc func cardNameReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningCardNames) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let timerIndex = info["cardId"] else { return }
@@ -199,7 +199,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     
     // MARK: - Card parameters
     // Gets all input parameters and prepares everything for scanning, and initiates scanning.
-    func findParametarsForCard() {
+    @objc func findParametarsForCard() {
         progressBarScreenTimerNames?.dissmissProgressBar()
         progressBarScreenTimerNames = nil
         arrayOfParametersToBeSearched = [Int]()
@@ -241,7 +241,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     
     // Called from findParametarsForTimer or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingParameterWithCardAddress for that specific timer id.
-    func checkIfCardDidGetParametar (_ timer:Foundation.Timer) {
+    @objc func checkIfCardDidGetParametar (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -274,7 +274,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
-    func cardParametarReceivedFromPLC (_ notification:Notification) {
+    @objc func cardParametarReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningCardParameters) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let cardIndex = info["cardId"] else { return }
@@ -326,7 +326,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     var arrayTimerAddresses = [Int]()
 
     // Gets all input parameters and prepares everything for scanning, and initiates scanning.
-    func findTimerNames() {
+    @objc func findTimerNames() {
             arrayOfNamesToBeSearched = [Int]()
             arrayTimerAddresses = [Int]()
             indexOfNamesToBeSearched = 0
@@ -397,7 +397,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
-    func timerNameReceivedFromPLC (_ notification:Notification) {
+    @objc func timerNameReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningTimerNames) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let timerIndex = info["timerId"] else { return }
@@ -429,7 +429,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     
     // MARK: - Timer parameters
     // Gets all input parameters and prepares everything for scanning, and initiates scanning.
-    func findParametarsForTimer() {
+    @objc func findParametarsForTimer() {
         progressBarScreenTimerNames?.dissmissProgressBar()
         progressBarScreenTimerNames = nil
         arrayOfParametersToBeSearched = [Int]()
@@ -499,7 +499,7 @@ class ScanCardsViewController: UIViewController, ProgressBarDelegate {
     
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
-    func timerParametarReceivedFromPLC (_ notification:Notification) {
+    @objc func timerParametarReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningTimerParameters) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let timerIndex = info["timerId"] else { return }

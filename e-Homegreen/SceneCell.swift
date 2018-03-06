@@ -20,7 +20,7 @@ class ScenesCell: UITableViewCell{
         backgroundColor = .clear
         labelID.text    = "\(scene.sceneId)"
         labelName.text  = "\(scene.sceneName)"
-        address.text    = "\(returnThreeCharactersForByte(Int(scene.gateway.addressOne))):\(returnThreeCharactersForByte(Int(scene.gateway.addressTwo))):\(Int(scene.address))"
+        address.text    = "\(returnThreeCharactersForByte(scene.gateway.addressOne.intValue)):\(returnThreeCharactersForByte(scene.gateway.addressTwo.intValue)):\(scene.address.intValue)"
         
         if let id = scene.sceneImageOneCustom {
             if let image = DatabaseImageController.shared.getImageById(id) {

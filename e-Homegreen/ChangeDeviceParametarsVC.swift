@@ -69,7 +69,7 @@ class ChangeDeviceParametarsVC: PopoverVC {
     
     init(device: Device){
         self.device = device
-        editedDevice = EditedDevice(levelId: Int(device.parentZoneId), zoneId: Int(device.zoneId), categoryId: Int(device.categoryId), controlType: device.controlType, digitalInputMode: Int(device.digitalInputMode!))
+        editedDevice = EditedDevice(levelId: device.parentZoneId.intValue, zoneId: device.zoneId.intValue, categoryId: device.categoryId.intValue, controlType: device.controlType, digitalInputMode: device.digitalInputMode!.intValue)
         super.init(nibName: "ChangeDeviceParametarsVC", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.custom
@@ -86,7 +86,7 @@ class ChangeDeviceParametarsVC: PopoverVC {
         addObservers()
     }
     
-    func handleResetImages(_ notification: Notification) {
+    @objc func handleResetImages(_ notification: Notification) {
         if let object = notification.object as? [String: Any] {
             if let id = object["deviceId"] as? NSManagedObjectID {
                 if id == device.objectID {
@@ -157,16 +157,16 @@ extension ChangeDeviceParametarsVC {
         self.title = "Device Parameters"
         
         txtFieldName.text = device.name
-        lblAddress.text = "\(returnThreeCharactersForByte(Int(device.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device.address)))"
+        lblAddress.text = "\(returnThreeCharactersForByte(device.gateway.addressOne.intValue)):\(returnThreeCharactersForByte(device.gateway.addressTwo.intValue)):\(returnThreeCharactersForByte(device.address.intValue))"
         lblChannel.text = "\(device.channel)"
         
-        level = DatabaseZoneController.shared.getZoneById(Int(device.parentZoneId), location: device.gateway.location)
+        level = DatabaseZoneController.shared.getZoneById(device.parentZoneId.intValue, location: device.gateway.location)
         if let level = level, level.name != "Default" { btnLevel.setTitle(level.name, for: UIControlState()) } else { btnLevel.setTitle("All", for: UIControlState()) }
         
-        zoneSelected = DatabaseZoneController.shared.getZoneById(Int(device.zoneId), location: device.gateway.location)
+        zoneSelected = DatabaseZoneController.shared.getZoneById(device.zoneId.intValue, location: device.gateway.location)
         if zoneSelected != nil { btnZone.setTitle(zoneSelected!.name, for: UIControlState()) } else { btnZone.setTitle("All", for: UIControlState()) }
         
-        let category = DatabaseCategoryController.shared.getCategoryById(Int(device.categoryId), location: device.gateway.location)
+        let category = DatabaseCategoryController.shared.getCategoryById(device.categoryId.intValue, location: device.gateway.location)
         if category != nil { btnCategory.setTitle(category?.name, for: UIControlState()) } else { btnCategory.setTitle("All", for: UIControlState()) }
         
         btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", for: UIControlState())
@@ -184,7 +184,7 @@ extension ChangeDeviceParametarsVC {
         NotificationCenter.default.addObserver(self, selector: #selector(handleResetImages(_:)), name: .deviceShouldResetImages, object: nil)
     }
     
-    func handleTap(_ gesture:UITapGestureRecognizer){
+    @objc func handleTap(_ gesture:UITapGestureRecognizer){
         self.dismiss(animated: true, completion: nil)
     }
 }
@@ -305,7 +305,7 @@ extension ChangeDeviceParametarsVC : UIViewControllerTransitioningDelegate {
 
 extension UIViewController {
     func showChangeDeviceParametar(device:Device, scanDevicesViewController: DevicePropertiesDelegate) {
-        let chn = Int(device.channel)
+        let chn = device.channel.intValue
         // If any kind of relay
         if device.controlType == ControlType.Relay || device.controlType == ControlType.Curtain{
             let cdp = RelayParametersCell(device: device)

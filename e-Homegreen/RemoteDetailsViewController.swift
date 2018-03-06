@@ -33,12 +33,12 @@ class RemoteDetailsViewController: UIViewController {
     
     var remote: Remote! {
         didSet {
-            rows          = Int(remote.rows!)
-            columns       = Int(remote.columns!)
-            buttonHeight  = CGFloat(remote.buttonHeight!)
-            buttonWidth   = CGFloat(remote.buttonWidth!)
-            marginTop     = CGFloat(remote.marginTop!)
-            marginBottom  = CGFloat(remote.marginBottom!)
+            rows          = remote.rows!.intValue
+            columns       = remote.columns!.intValue
+            buttonHeight  = CGFloat(truncating: remote.buttonHeight!)
+            buttonWidth   = CGFloat(truncating: remote.buttonWidth!)
+            marginTop     = CGFloat(truncating: remote.marginTop!)
+            marginBottom  = CGFloat(truncating: remote.marginBottom!)
             sectionInsets = UIEdgeInsets(top: marginTop, left: 8, bottom: 0, right: 8)
         }
     }
@@ -150,8 +150,8 @@ extension RemoteDetailsViewController {
         let biggestButtons       = getBiggestButtons()
         
         var height: CGFloat      = 0
-        var collectionViewHeight = CGFloat(remote.marginTop!) + CGFloat(remote.marginBottom!)
-        for button in biggestButtons { collectionViewHeight += (CGFloat(button.buttonHeight!) + CGFloat(button.marginTop!)) + 4 }
+        var collectionViewHeight = CGFloat(truncating: remote.marginTop!) + CGFloat(truncating: remote.marginBottom!)
+        for button in biggestButtons { collectionViewHeight += (CGFloat(truncating: button.buttonHeight!) + CGFloat(truncating: button.marginTop!)) + 4 }
         height = collectionViewHeight + (2 * 60) + (2 * 8)
         
         remoteHeightConstraint.constant           = buttonsCollectionView.collectionViewLayout.collectionViewContentSize.height
@@ -164,8 +164,8 @@ extension RemoteDetailsViewController {
     
     fileprivate func loadButtons() {
         if var btns = remote.buttons?.allObjects as? [RemoteButton] {
-            btns = btns.sorted(by: { (first, second) -> Bool in Int(first.buttonId!) < Int(second.buttonId!) })
-            chunksOfButtons = btns.chunks(Int(remote.columns!))
+            btns = btns.sorted(by: { (first, second) -> Bool in first.buttonId!.intValue < second.buttonId!.intValue })
+            chunksOfButtons = btns.chunks(remote.columns!.intValue)
             buttonsCollectionView.reloadData()
         }
     }
@@ -176,7 +176,7 @@ extension RemoteDetailsViewController {
         for group in chunksOfButtons {
             var biggestButton = group[0]
             group.forEach({ (button) in
-                if Int(button.buttonHeight!) > Int(biggestButton.buttonHeight!) || (Int(button.buttonHeight!) == Int(biggestButton.buttonHeight!) && Int(button.marginTop!) > Int(biggestButton.marginTop!)) {
+                if button.buttonHeight!.intValue > biggestButton.buttonHeight!.intValue || (button.buttonHeight!.intValue == biggestButton.buttonHeight!.intValue && button.marginTop!.intValue > biggestButton.marginTop!.intValue) {
                     biggestButton = button
                 }
             })
@@ -190,7 +190,7 @@ extension RemoteDetailsViewController {
         let biggestButtons = getBiggestButtons()
         for i in 0..<biggestButtons.count {
             var si = sectionInsets
-            si.top = CGFloat(biggestButtons[i].marginTop!)
+            si.top = CGFloat(truncating: biggestButtons[i].marginTop!)
             if i == 0 { si.top += marginTop }
             if i == chunksOfButtons.count - 1 { si.bottom = marginBottom }
             sectionInsetsDict[i] = si

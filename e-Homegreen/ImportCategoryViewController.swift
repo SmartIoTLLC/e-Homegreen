@@ -227,7 +227,7 @@ extension ImportCategoryViewController {
     }
     
     //move tableview cell on hold and swipe
-    func longPressGestureRecognized(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func longPressGestureRecognized(_ gestureRecognizer: UIGestureRecognizer) {
         
         if let longPress = gestureRecognizer as? UILongPressGestureRecognizer {
             let state = longPress.state
@@ -374,7 +374,7 @@ extension ImportCategoryViewController {
         }
     }
     
-    func isVisibleValueChanged (_ sender:UISwitch) {
+    @objc func isVisibleValueChanged (_ sender:UISwitch) {
         if sender.isOn == true { categories[sender.tag].isVisible = true } else { categories[sender.tag].isVisible = false }
         CoreDataController.sharedInstance.saveChanges()
         importCategoryTableView.reloadData()
@@ -425,7 +425,7 @@ extension ImportCategoryViewController {
             if let location = location {
                 if let gateways = location.gateways?.allObjects as? [Gateway] {
                     for gate in gateways {
-                        if Int(gate.addressOne) == address.firstByte && Int(gate.addressTwo) == address.secondByte && Int(gate.addressThree) == address.thirdByte { gatewayForScan = gate }
+                        if gate.addressOne.intValue == address.firstByte && gate.addressTwo.intValue == address.secondByte && gate.addressThree.intValue == address.thirdByte { gatewayForScan = gate }
                     }
                 }
             }
@@ -445,7 +445,7 @@ extension ImportCategoryViewController {
         } catch {}
     }
     
-    func categoryReceivedFromGateway (_ notification:Notification) {
+    @objc func categoryReceivedFromGateway (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningForZones) {
             guard var categoryId = notification.userInfo as? [String:Int] else { return }
             timesRepeatedCounter = 0
@@ -466,7 +466,7 @@ extension ImportCategoryViewController {
         }
     }
     
-    func checkIfGatewayDidGetCategory (_ timer:Foundation.Timer) {
+    @objc func checkIfGatewayDidGetCategory (_ timer:Foundation.Timer) {
         guard var categoryId = timer.userInfo as? Int else { return }
         timesRepeatedCounter += 1
         if timesRepeatedCounter < 4 {  // sve dok ne pokusa tri puta, treba da pokusava
@@ -517,7 +517,7 @@ class ImportCategoryTableViewCell: UITableViewCell {
         lblNo.text = "\(category.id!)"
         lblDescription.text = category.categoryDescription
         switchVisible.tag = tag
-        switchVisible.isOn = Bool(category.isVisible)
+        switchVisible.isOn = category.isVisible.boolValue
         
         self.category = category
         if let type = TypeOfControl(rawValue: (category.allowOption.intValue)) { controlTypeButton.setTitle(type.description, for: UIControlState()) }

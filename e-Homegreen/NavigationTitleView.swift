@@ -69,7 +69,7 @@ class NavigationTitleView: UIView {
         titleView.backgroundColor = .clear
         titleView.font            = .tahoma(size: 17)
         titleView.textColor       = .white
-        titleView.setContentHuggingPriority(1000, for: .horizontal)
+        titleView.setContentHuggingPriority(UILayoutPriority(rawValue: 1000), for: .horizontal)
         self.addSubview(titleView)
         
         subtitleView.translatesAutoresizingMaskIntoConstraints = false
@@ -169,7 +169,7 @@ class NavigationTitleView: UIView {
         }
     }
     
-    func setClockType() {
+    @objc func setClockType() {
         switch clockState {
             case .timeAMPM         : saveClock(type: ClockType.dateAndTimeLower.rawValue)
             case .dateAndTimeLower : saveClock(type: ClockType.justDate.rawValue)

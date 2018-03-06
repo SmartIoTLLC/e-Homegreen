@@ -96,7 +96,7 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         getWeatherData("http://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(long)&appid=bd82977b86bf27fb59a04b61b657fb6f")
     }
     
-    func detectPan(_ recognizer:UIPanGestureRecognizer) {
+    @objc func detectPan(_ recognizer:UIPanGestureRecognizer) {
         
         let translation  = recognizer.translation(in: self.view)
         recognizer.view!.center = CGPoint(x: recognizer.view!.center.x + translation.x,
@@ -104,7 +104,7 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         recognizer.setTranslation(CGPoint(x: 0, y: 0), in: self.view!)
     }
     
-    func detectPan1(_ recognizer:UIPanGestureRecognizer) {
+    @objc func detectPan1(_ recognizer:UIPanGestureRecognizer) {
         
         let translation  = recognizer.translation(in: self.view)
         recognizer.view!.center = CGPoint(x: recognizer.view!.center.x + translation.x, y: recognizer.view!.center.y + translation.y)

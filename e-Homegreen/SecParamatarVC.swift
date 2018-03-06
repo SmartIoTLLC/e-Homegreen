@@ -99,7 +99,7 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
         
     }
     
-    func handleTap(_ gesture:UITapGestureRecognizer){
+    @objc func handleTap(_ gesture:UITapGestureRecognizer){
         self.dismiss(animated: true, completion: nil)
     }
     

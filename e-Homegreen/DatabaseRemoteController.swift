@@ -26,7 +26,7 @@ public class DatabaseRemoteController: NSObject {
         if let moc = managedContext {
             let rmt = remote
             
-            for i in 1...(Int(rmt.rows!) * Int(rmt.columns!)) {
+            for i in 1...(rmt.rows!.intValue * rmt.columns!.intValue) {
                 let button = RemoteButton(context: moc)
                 button.name               = String(i)
                 button.buttonId           = NSNumber(value: i)
@@ -74,19 +74,19 @@ public class DatabaseRemoteController: NSObject {
     func cloneRemote(remote: Remote, on location: Location) {
         if let moc = managedContext {
             let remoteInfo = RemoteInformation(
-                addressOne   : Int(remote.addressOne!),
-                addressTwo   : Int(remote.addressTwo!),
-                addressThree : Int(remote.addressThree!),
+                addressOne   : remote.addressOne!.intValue,
+                addressTwo   : remote.addressTwo!.intValue,
+                addressThree : remote.addressThree!.intValue,
                 buttonColor  : remote.buttonColor!,
                 buttonShape  : remote.buttonShape!,
-                buttonWidth  : Int(remote.buttonWidth!),
-                buttonHeight : Int(remote.buttonHeight!),
-                channel      : Int(remote.channel!),
-                columns      : Int(remote.columns!),
-                marginBottom : Int(remote.marginBottom!),
-                marginTop    : Int(remote.marginTop!),
+                buttonWidth  : remote.buttonWidth!.intValue,
+                buttonHeight : remote.buttonHeight!.intValue,
+                channel      : remote.channel!.intValue,
+                columns      : remote.columns!.intValue,
+                marginBottom : remote.marginBottom!.intValue,
+                marginTop    : remote.marginTop!.intValue,
                 name         : remote.name! + " Clone",
-                rows         : Int(remote.rows!),
+                rows         : remote.rows!.intValue,
                 location     : location
             )
             

@@ -76,12 +76,6 @@ class CoreDataController: NSObject {
     
     func fetchDevicesForGateway(_ gateway: Gateway) -> [Device] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
-        fetchRequest.sortDescriptors = [
-            NSSortDescriptor(key: "gateway.name", ascending: true),
-            NSSortDescriptor(key: "address", ascending: true),
-            NSSortDescriptor(key: "type", ascending: true),
-            NSSortDescriptor(key: "channel", ascending: true)
-        ]
 
         fetchRequest.predicate = NSPredicate(format: "gateway == %@", gateway.objectID)
 

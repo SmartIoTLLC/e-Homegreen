@@ -289,11 +289,11 @@ extension UIView {
         }
     }
     
-    func toastTimerDidFinish(_ timer: Foundation.Timer) {
+    @objc func toastTimerDidFinish(_ timer: Foundation.Timer) {
         self.hideToast(toast: timer.userInfo as! UIView)
     }
     
-    func handleToastTapped(_ recognizer: UITapGestureRecognizer) {
+    @objc func handleToastTapped(_ recognizer: UITapGestureRecognizer) {
         let timer = objc_getAssociatedObject(self, &HRToastTimer) as! Foundation.Timer
         timer.invalidate()
         
@@ -439,8 +439,8 @@ extension String {
         let size = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byWordWrapping;
-        let attributes = [NSFontAttributeName:font!,
-            NSParagraphStyleAttributeName:paragraphStyle.copy()]
+        let attributes = [NSAttributedStringKey.font:font!,
+            NSAttributedStringKey.paragraphStyle:paragraphStyle.copy()]
         
         let text = self as NSString
         let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: attributes, context:nil)

@@ -88,7 +88,7 @@ class TimerUserCell:UICollectionViewCell{
         time?.invalidate()
     }
     
-    func countUp(_ timer:Foundation.Timer) {
+    @objc func countUp(_ timer:Foundation.Timer) {
         cellTimer.timerCount += 1
         let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
         timeLabel.text = "\(h):\(m):\(s)"

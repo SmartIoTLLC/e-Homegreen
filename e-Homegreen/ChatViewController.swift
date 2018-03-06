@@ -78,7 +78,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         scrollView.setButtonTitle(name, id: id)
     }
     
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             scrollView.setDefaultFilterItem(Menu.chat)
@@ -89,7 +89,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         sender.switchFullscreen(viewThatNeedsOffset: scrollView)        
     }
     
-    func refreshLocalParametars() {
+    @objc func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
         chatTableView.reloadData()
     }
@@ -182,7 +182,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         if command == .SetScene {
             if let scene = object as? Scene {
                 let address = [getByte(scene.gateway.addressOne), getByte(scene.gateway.addressTwo), getByte(scene.address)]
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.setScene(address, id: Int(scene.sceneId)), gateway: scene.gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setScene(address, id: scene.sceneId.intValue), gateway: scene.gateway)
                 refreshChatListWithAnswer("scene was set", isValeryVoiceOn: isValeryVoiceOn)
             }
         }
@@ -206,7 +206,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         if command == .StartSequence {
             if let sequence = object as? Sequence {
                 let address = [getByte(sequence.gateway.addressOne), getByte(sequence.gateway.addressTwo), getByte(sequence.address)]
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.setSequence(address, id: Int(sequence.sequenceId), cycle: getByte(sequence.sequenceCycles)), gateway: sequence.gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setSequence(address, id: sequence.sequenceId.intValue, cycle: getByte(sequence.sequenceCycles)), gateway: sequence.gateway)
                 refreshChatListWithAnswer("sequence was started", isValeryVoiceOn: isValeryVoiceOn)
             }
         }
@@ -214,7 +214,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         if command == .StopSequence {
             if let sequence = object as? Sequence {
                 let address = [getByte(sequence.gateway.addressOne), getByte(sequence.gateway.addressTwo), getByte(sequence.address)]
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.setSequence(address, id: Int(sequence.sequenceId), cycle: 0xEF), gateway: sequence.gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.setSequence(address, id: sequence.sequenceId.intValue, cycle: 0xEF), gateway: sequence.gateway)
                 refreshChatListWithAnswer("sequence was stopped", isValeryVoiceOn: isValeryVoiceOn)
             }
         }
@@ -248,9 +248,9 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         
         if command == .TurnOnDevice {
             switch controlType {
-                case ControlType.Dimmer  : SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
-                case ControlType.Relay   : SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
-                case ControlType.Curtain : SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0xFF, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
+                case ControlType.Dimmer  : SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0xFF, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: getByte(device.skipState)), gateway: device.gateway)
+                case ControlType.Relay   : SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0xFF, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: getByte(device.skipState)), gateway: device.gateway)
+                case ControlType.Curtain : SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0xFF, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: getByte(device.skipState)), gateway: device.gateway)
                 case ControlType.Climate : SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: getByte(device.channel), status: 0xFF), gateway: device.gateway)
                 default: break
             }
@@ -258,9 +258,9 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
             refreshChatListWithAnswer(commandWasSent(command, deviceType: device.controlType), isValeryVoiceOn: isValeryVoiceOn)
         } else if command == .TurnOffDevice {
             switch controlType {
-                case ControlType.Dimmer  : SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
-                case ControlType.Relay   : SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
-                case ControlType.Curtain : SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0x00, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
+                case ControlType.Dimmer  : SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0x00, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: getByte(device.skipState)), gateway: device.gateway)
+                case ControlType.Relay   : SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0x00, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: getByte(device.skipState)), gateway: device.gateway)
+                case ControlType.Curtain : SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: 0x00, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: getByte(device.skipState)), gateway: device.gateway)
                 case ControlType.Climate : SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: getByte(device.channel), status: 0x00), gateway: device.gateway)
                 default: break
             }
@@ -272,7 +272,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
                 default :
                     switch controlType {
                         case ControlType.Dimmer :
-                            SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: getIByte(dimValue), delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: getByte(device.skipState)), gateway: device.gateway)
+                            SendingHandler.sendCommand(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: getByte(device.channel), value: getIByte(dimValue), delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: getByte(device.skipState)), gateway: device.gateway)
                             refreshChatListWithAnswer(commandWasSent(command, deviceType: device.controlType), isValeryVoiceOn: isValeryVoiceOn)
                         default: refreshChatListWithAnswer("Device is not of dimmer type.", isValeryVoiceOn: isValeryVoiceOn)
                     }
@@ -359,7 +359,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
                 
             } else if command == .SetZone {
                 if let zone = helper.getZone(message, isLevel: false) {
-                    if let level = DatabaseHandler.sharedInstance.returnLevelWithId(Int(zone.level!), location: zone.location!) {
+                    if let level = DatabaseHandler.sharedInstance.returnLevelWithId(zone.level!.intValue, location: zone.location!) {
                     LocalSearchParametar.setLocalParametar("Chat", parametar: [zone.location!.name!, "\(level.id!)", "\(zone.id!)", "All","\(level.name!)", "\(zone.name!)", "All"])
                         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
                         refreshChatListWithAnswer("Zone was set.", isValeryVoiceOn: isValeryVoiceOn)
@@ -524,7 +524,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         }
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         let duration:TimeInterval = (info[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
@@ -557,7 +557,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         }
     }
     
-    func setDefaultFilterFromTimer(){
+    @objc func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.chat)
     }
 }
@@ -650,12 +650,12 @@ extension ChatViewController: UITableViewDataSource {
         cell.contentView.addSubview(chatBubbleMine)
         return cell
     }
-    func oneTap (_ gesture:UIGestureRecognizer) {
+    @objc func oneTap (_ gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
             self.chatTextView.text = chatList[tag].text
         }
     }
-    func longPress (_ gesture:UIGestureRecognizer) {
+    @objc func longPress (_ gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
             if gesture.state == UIGestureRecognizerState.began {
                 chatList.append(ChatItem(text: chatList[tag].text, type: .mine))

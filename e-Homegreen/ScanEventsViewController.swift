@@ -72,8 +72,8 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         imageSceneTwo.tag = 2
         imageSceneTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(_:))))
         
-        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne)))"
-        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway.addressTwo)))"
+        devAddressOne.text = "\(returnThreeCharactersForByte(gateway.addressOne.intValue))"
+        devAddressTwo.text = "\(returnThreeCharactersForByte(gateway.addressTwo.intValue))"
         
         broadcastSwitch.tag = 100
         broadcastSwitch.isOn = false
@@ -128,7 +128,7 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         button.setTitle(name, for: UIControlState())
     }
     
-    func changeValue (_ sender:UISwitch) {
+    @objc func changeValue (_ sender:UISwitch) {
         if sender.tag == 100 { localcastSwitch.isOn = false } else if sender.tag == 200 { broadcastSwitch.isOn = false }
     }
     
@@ -143,7 +143,7 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
         eventTableView.reloadData()
     }
     
-    func handleTap (_ gesture:UITapGestureRecognizer) {
+    @objc func handleTap (_ gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
             showGallery(index, user: gateway.location.user).delegate = self
         }
@@ -194,13 +194,13 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
             if eventId <= 32767 && address <= 255 {
                 
                 var levelId:Int?
-                if let levelIdNumber = level?.id { levelId = Int(levelIdNumber) }
+                if let levelIdNumber = level?.id { levelId = levelIdNumber.intValue }
                 
                 var zoneId:Int?
-                if let zoneIdNumber = zoneSelected?.id { zoneId = Int(zoneIdNumber) }
+                if let zoneIdNumber = zoneSelected?.id { zoneId = zoneIdNumber.intValue }
                 
                 var categoryId:Int?
-                if let categoryIdNumber = category?.id { categoryId = Int(categoryIdNumber) }
+                if let categoryIdNumber = category?.id { categoryId = categoryIdNumber.intValue }
                 
                 DatabaseEventsController.shared.createEvent(eventId, eventName: eventName, moduleAddress: address, gateway: gateway, levelId: levelId, zoneId: zoneId, categoryId: categoryId, isBroadcast: broadcastSwitch.isOn, isLocalcast: localcastSwitch.isOn, sceneImageOneDefault: defaultImageOne, sceneImageTwoDefault: defaultImageTwo, sceneImageOneCustom: customImageOne, sceneImageTwoCustom: customImageTwo, imageDataOne: imageDataOne, imageDataTwo: imageDataTwo, report: reportSwitch.isOn)
             }
@@ -286,7 +286,7 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     
     // Called from findEvents or from it self.
     // Checks which sequence ID should be searched for and calls sendCommandWithEventAddress for that specific sequence id.
-    func checkIfEventDidGetName (_ timer:Foundation.Timer) {
+    @objc func checkIfEventDidGetName (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -472,7 +472,7 @@ extension ScanEventsViewController: UITableViewDataSource, UITableViewDelegate {
     func didSelect(event: Event) {
         IDedit.text = "\(event.eventId)"
         nameEdit.text = "\(event.eventName)"
-        devAddressThree.text = "\(returnThreeCharactersForByte(Int(event.address)))"
+        devAddressThree.text = "\(returnThreeCharactersForByte(event.address.intValue))"
         broadcastSwitch.isOn = event.isBroadcast.boolValue
         localcastSwitch.isOn = event.isLocalcast.boolValue
         reportSwitch.isOn = event.report.boolValue

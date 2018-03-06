@@ -17,11 +17,11 @@ enum ReturnedValueFromAlertView {
 
 extension UIViewController {
 
-    func sendFilterParametar(_ filterParametar:FilterItem){
+    @objc func sendFilterParametar(_ filterParametar:FilterItem){
         
     }
     
-    func sendSearchBarText(_ text:String){
+    @objc func sendSearchBarText(_ text:String){
         
     }
     

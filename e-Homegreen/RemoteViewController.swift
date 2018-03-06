@@ -221,11 +221,11 @@ extension RemoteViewController {
         if filterParametar.location != "All" { addButton.isEnabled = true } else { addButton.isEnabled = false }
     }
     
-    func setDefaultFilterFromTimer() {
+    @objc func setDefaultFilterFromTimer() {
         scrollView.setDefaultFilterItem(Menu.remote)
     }
     
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer) {
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer) {
         if gestureRecognizer.state == .began {
             scrollView.setDefaultFilterItem(Menu.remote)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))

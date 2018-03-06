@@ -42,7 +42,7 @@ class RepeatSendingHandler: NSObject {
         self.gateway = gateway
         self.device = device
         self.deviceOldValue = oldValue
-        self.delay = Double(device.delay) + 1
+        self.delay = device.delay.doubleValue + 1
         
         NotificationCenter.default.addObserver(self, selector: #selector(RepeatSendingHandler.didGetResponseNotification(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(sameDevice(_:)), name: Notification.Name(rawValue: NotificationKey.SameDeviceDifferentCommand), object: nil)
@@ -59,7 +59,7 @@ class RepeatSendingHandler: NSObject {
     }
     
     fileprivate func getDeviceStatus(controlType: String, gateway: Gateway) {
-        let address = [UInt8(Int(gateway.addressOne)), UInt8(Int(gateway.addressTwo)), UInt8(Int(device.address))]
+        let address = device.getAddress()
         let channel = device.channel.intValue
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             switch controlType {
@@ -96,7 +96,7 @@ class RepeatSendingHandler: NSObject {
     }
     
     //   Did get response from gateway
-    func didGetResponseNotification (_ notification:Notification) {
+    @objc func didGetResponseNotification (_ notification:Notification) {
         if let info = notification.userInfo! as? [String:Device] {
             if let deviceInfo = info["deviceDidReceiveSignalFromGateway"] {
                 if device.objectID == deviceInfo.objectID {
@@ -108,7 +108,7 @@ class RepeatSendingHandler: NSObject {
         }
     }
     
-    func sameDevice(_ notification: Notification) {
+    @objc func sameDevice(_ notification: Notification) {
         if let info = notification.userInfo as? [NSManagedObjectID: NSNumber] {
             sameDeviceKey = info
         }
@@ -118,7 +118,7 @@ class RepeatSendingHandler: NSObject {
         RunnableList.sharedInstance.removeDeviceFromRunnableList(device: deviceID)
     }
     
-    func sendCommand () {
+    @objc func sendCommand () {
         if sameDeviceKey != currentDeviceKey {
             if !didGetResponse {
                 if repeatCounter < 4 {
@@ -155,7 +155,7 @@ class RepeatSendingHandler: NSObject {
         
 
     }
-    func sendCommandForSaltoAccess() {
+    @objc func sendCommandForSaltoAccess() {
         
         if sameDeviceKey != currentDeviceKey {
             if !didGetResponse {
@@ -219,21 +219,21 @@ class RepeatSendingHandler: NSObject {
     }
 
     
-    func refreshSaltoAccessAfter8Sec(){
+    @objc func refreshSaltoAccessAfter8Sec(){
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessState([byteArray[2], byteArray[3], byteArray[4]], lockId: device.channel.intValue), gateway: device.gateway)
         timerForSaltoAccessRefresh.invalidate()
         timerForSaltoAccessRefresh = nil
         timerForSaltoAccessRefresh = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(RepeatSendingHandler.refreshSaltoAccessAfter1Sec), userInfo: nil, repeats: false)
     }
     
-    func refreshSaltoAccessAfter1Sec(){
+    @objc func refreshSaltoAccessAfter1Sec(){
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessState([byteArray[2], byteArray[3], byteArray[4]], lockId: device.channel.intValue), gateway: device.gateway)
         timerForSaltoAccessRefresh.invalidate()
         timerForSaltoAccessRefresh = nil
         timerForSaltoAccessRefresh = Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(RepeatSendingHandler.refreshSaltoAccessOneMoreTimeAfter1Sec), userInfo: nil, repeats: false)
     }
     
-    func refreshSaltoAccessOneMoreTimeAfter1Sec(){
+    @objc func refreshSaltoAccessOneMoreTimeAfter1Sec(){
         SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessState([byteArray[2], byteArray[3], byteArray[4]], lockId: device.channel.intValue), gateway: device.gateway)
         timerForSaltoAccessRefresh.invalidate()
         timerForSaltoAccessRefresh = nil

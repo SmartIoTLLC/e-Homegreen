@@ -39,7 +39,7 @@ class Device: NSManagedObject {
     var saltoMode: Int = -1
     
     lazy var moduleAddress:[Byte] = {
-        return [Byte(Int(self.gateway.addressOne)), Byte(Int(self.gateway.addressTwo)), Byte(Int(self.address))]
+        return [Byte(self.gateway.addressOne.intValue), Byte(self.gateway.addressTwo.intValue), Byte(self.address.intValue)]
     }()
     
     convenience init(context: NSManagedObjectContext, specificDeviceInformation information:DeviceInformation) {
@@ -194,7 +194,7 @@ class Device: NSManagedObject {
                 }
                 
                 defaultImages.forEach({ (deviceImageState) in
-                    if deviceImageState.state == Int(image.state!) {
+                    if deviceImageState.state == image.state!.intValue {
                         let deviceImage = DeviceImage(context: moc)
                         deviceImage.defaultImage = deviceImageState.defaultImage
                         deviceImage.state = NSNumber(value: deviceImageState.state as Int)

@@ -39,10 +39,10 @@ class ButtonCell: UICollectionViewCell {
     
     var button: RemoteButton! {
         didSet {
-            width  = CGFloat(button.buttonWidth!)
-            height = CGFloat(button.buttonHeight!)
-            imageScaleX = CGFloat(button.imageScaleX!)
-            imageScaleY = CGFloat(button.imageScaleY!)
+            width  = CGFloat(truncating: button.buttonWidth!)
+            height = CGFloat(truncating: button.buttonHeight!)
+            imageScaleX = CGFloat(truncating: button.imageScaleX!)
+            imageScaleY = CGFloat(truncating: button.imageScaleY!)
             btnWidthConstraint.constant = width
             btnHeightConstraint.constant = height
             realButton.center = contentView.center

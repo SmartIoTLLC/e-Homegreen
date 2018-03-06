@@ -52,7 +52,7 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
         return true
     }
     
-    func handleTap(_ gesture:UITapGestureRecognizer){
+    @objc func handleTap(_ gesture:UITapGestureRecognizer){
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -120,25 +120,25 @@ extension UIViewController {
         suggVC.objects = objects
         if let anyObjects = objects as? [Device] {
             for anyObject in anyObjects {
-                let address = "\(returnThreeCharactersForByte(Int(anyObject.gateway.addressOne))):\(returnThreeCharactersForByte(Int(anyObject.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(anyObject.address)))"
+                let address = "\(returnThreeCharactersForByte(anyObject.gateway.addressOne.intValue)):\(returnThreeCharactersForByte(anyObject.gateway.addressTwo.intValue)):\(returnThreeCharactersForByte(anyObject.address.intValue))"
                 suggVC.listOfDevice.append("Device: \(anyObject.name) Location: \(anyObject.gateway.name) Address: \(address) Channel:\(anyObject.channel)")
             }
         }
         if let anyObjects = objects as? [Scene] {
             for anyObject in anyObjects {
-                let address = "\(returnThreeCharactersForByte(Int(anyObject.gateway.addressOne))):\(returnThreeCharactersForByte(Int(anyObject.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(anyObject.address)))"
+                let address = "\(returnThreeCharactersForByte(anyObject.gateway.addressOne.intValue)):\(returnThreeCharactersForByte(anyObject.gateway.addressTwo.intValue)):\(returnThreeCharactersForByte(anyObject.address.intValue))"
                 suggVC.listOfDevice.append("Scene: \(anyObject.sceneName) Location: \(anyObject.gateway.name) Address: \(address)")
             }
         }
         if let anyObjects = objects as? [Sequence] {
             for anyObject in anyObjects {
-                let address = "\(returnThreeCharactersForByte(Int(anyObject.gateway.addressOne))):\(returnThreeCharactersForByte(Int(anyObject.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(anyObject.address)))"
+                let address = "\(returnThreeCharactersForByte(anyObject.gateway.addressOne.intValue)):\(returnThreeCharactersForByte(anyObject.gateway.addressTwo.intValue)):\(returnThreeCharactersForByte(anyObject.address.intValue))"
                 suggVC.listOfDevice.append("Sequence: \(anyObject.sequenceName) Location: \(anyObject.gateway.name) Address: \(address)")
             }
         }
         if let anyObjects = objects as? [Event] {
             for anyObject in anyObjects {
-                let address = "\(returnThreeCharactersForByte(Int(anyObject.gateway.addressOne))):\(returnThreeCharactersForByte(Int(anyObject.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(anyObject.address)))"
+                let address = "\(returnThreeCharactersForByte(anyObject.gateway.addressOne.intValue)):\(returnThreeCharactersForByte(anyObject.gateway.addressTwo.intValue)):\(returnThreeCharactersForByte(anyObject.address.intValue))"
                 suggVC.listOfDevice.append("Event: \(anyObject.eventName) Location: \(anyObject.gateway.name) Address: \(address)")
             }
         }

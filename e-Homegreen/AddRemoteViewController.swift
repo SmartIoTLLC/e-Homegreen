@@ -173,7 +173,7 @@ extension AddRemoteViewController {
         button.backgroundColor  = .clear
     }
     
-    func dismissVC() {
+    @objc func dismissVC() {
         dismiss(animated: true, completion: nil)
     }
     

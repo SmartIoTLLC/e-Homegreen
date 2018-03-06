@@ -77,7 +77,7 @@ class SecurityCollectionCell: UICollectionViewCell {
         }
     }
 
-    func startBlinking(_ notification: Notification) {
+    @objc func startBlinking(_ notification: Notification) {
         guard let notificationControlMode = notification.userInfo?["controlMode"] as? String else { return }
         guard let securityCellName = securityTitle.text else { return }
         
@@ -94,14 +94,14 @@ class SecurityCollectionCell: UICollectionViewCell {
     }
     
     // Indicates cell to stop blinking (new state has occured)
-    func stopBlinking() {
+    @objc func stopBlinking() {
         
         guard let timer = self.timer else { return }
         timer.invalidate()
     }
     
     // Function used to toggle images on-off until App receives new state
-    func toggleBtnImage(_ timer: Foundation.Timer) {
+    @objc func toggleBtnImage(_ timer: Foundation.Timer) {
         if let info = timer.userInfo as? [String:AnyObject] {
             if let i = info["controlMode"] as? String {
                 let image = securityImageView.image

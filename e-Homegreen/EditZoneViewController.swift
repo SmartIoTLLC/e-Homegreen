@@ -98,7 +98,7 @@ class EditZoneViewController: PopoverVC {
         
     }
     
-    func dismissViewController () {
+    @objc func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
     

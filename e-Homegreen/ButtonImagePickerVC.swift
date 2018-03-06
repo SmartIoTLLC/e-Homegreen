@@ -102,8 +102,8 @@ extension ButtonImagePickerVC {
         segmentedControl.setTitle("DEFAULT LIBRARY", forSegmentAt: 0)
         segmentedControl.setTitle("CUSTOM LIBRARY", forSegmentAt: 1)
         let attributes: [String: AnyObject] = [
-            NSForegroundColorAttributeName: UIColor.white,
-            NSFontAttributeName: UIFont(name: "Tahoma", size: 15.0)!
+            NSAttributedStringKey.foregroundColor.rawValue: UIColor.white,
+            NSAttributedStringKey.font.rawValue: UIFont(name: "Tahoma", size: 15.0)!
         ]
         segmentedControl.setTitleTextAttributes(attributes, for: UIControlState())
         

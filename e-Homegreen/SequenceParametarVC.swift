@@ -72,7 +72,7 @@ extension SequenceParametarVC: UITextFieldDelegate, UIGestureRecognizerDelegate 
         return true
     }
     
-    func dismissViewController () {
+    @objc func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -96,12 +96,12 @@ extension SequenceParametarVC {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func changeValue (_ sender:UISwitch) {
-        if sender.tag == 100 {
-            if sender.isOn == true { isLocalcast.isOn = false } else { isLocalcast.isOn = false }
-        } else if sender.tag == 200 {
-            if sender.isOn == true { isBroadcast.isOn = false } else { isBroadcast.isOn = false }
-        }
+    @objc func changeValue (_ sender:UISwitch) {
+        switch sender.tag {
+            case 100: if sender.isOn == true { isLocalcast.isOn = false } else { isLocalcast.isOn = false }
+            case 200: if sender.isOn == true { isBroadcast.isOn = false } else { isBroadcast.isOn = false }
+            default: break
+        }        
     }
 }
 

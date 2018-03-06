@@ -334,7 +334,7 @@ extension ImportZoneViewController {
     }
     
     //move tableview cell on hold and swipe
-    func longPressGestureRecognized(_ gestureRecognizer: UIGestureRecognizer){
+    @objc func longPressGestureRecognized(_ gestureRecognizer: UIGestureRecognizer){
         
         if let longPress = gestureRecognizer as? UILongPressGestureRecognizer {
             let state = longPress.state
@@ -421,13 +421,13 @@ extension ImportZoneViewController {
         }
     }
     
-    func isVisibleValueChanged (_ sender:UISwitch) {
+    @objc func isVisibleValueChanged (_ sender:UISwitch) {
         if sender.isOn == true { zones[sender.tag].isVisible = true } else { zones[sender.tag].isVisible = false }
         CoreDataController.sharedInstance.saveChanges()
         importZoneTableView.reloadData()
     }
     
-    func chooseGateway (_ gestureRecognizer:UIGestureRecognizer) {
+    @objc func chooseGateway (_ gestureRecognizer:UIGestureRecognizer) {
         if let tag = gestureRecognizer.view?.tag {
             choosedIndex = tag
             var popoverList:[PopOverItem] = []
@@ -459,7 +459,7 @@ extension ImportZoneViewController {
             guard let gateways = location.gateways?.allObjects as? [Gateway] else { return }
             
             for gate in gateways {
-                if Int(gate.addressOne) == address.firstByte && Int(gate.addressTwo) == address.secondByte && Int(gate.addressThree) == address.thirdByte { gatewayForScan = gate }
+                if gate.addressOne.intValue == address.firstByte && gate.addressTwo.intValue == address.secondByte && gate.addressThree.intValue == address.thirdByte { gatewayForScan = gate }
             }
             
             guard let gateway = gatewayForScan else { self.view.makeToast(message: "No gateway with address"); return }
@@ -481,7 +481,7 @@ extension ImportZoneViewController {
             self.view.makeToast(message: "Something went wrong.")
         }
     }
-    func checkIfGatewayDidGetZones (_ timer:Foundation.Timer) {
+    @objc func checkIfGatewayDidGetZones (_ timer:Foundation.Timer) {
         guard var zoneId = timer.userInfo as? Int else { return }
         
         timesRepeatedCounter += 1
@@ -505,7 +505,7 @@ extension ImportZoneViewController {
             }
         }
     }
-    func zoneReceivedFromGateway (_ notification:Notification) {
+    @objc func zoneReceivedFromGateway (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningForZones) {
             guard var zoneId = notification.userInfo as? [String:Int] else { return }
             
@@ -607,7 +607,7 @@ class ImportZoneTableViewCell: UITableViewCell {
         lblName.text = name + "\(zone.name!)"
         lblLevel.text = zone.zoneDescription
         lblNo.text = "\(zone.id!)"
-        switchVisible.isOn = Bool(zone.isVisible)
+        switchVisible.isOn = zone.isVisible.boolValue
         switchVisible.tag = tag
         btnZonePicker.setTitle("Add iBeacon", for: [])
         tagsButton.setTitle("Tags", for: [])

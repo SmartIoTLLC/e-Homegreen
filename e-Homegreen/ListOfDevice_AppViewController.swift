@@ -36,12 +36,12 @@ class ListOfDevice_AppViewController: UIViewController, UITableViewDelegate, UIT
             if let commandArray = Array(list) as? [PCCommand] {
                 if typeOfFile == FileType.app {
                     filteredArray = commandArray.filter({ (pccommand) -> Bool in
-                        if Int(pccommand.commandType!) == CommandType.application.rawValue { return true }
+                        if pccommand.commandType!.intValue == CommandType.application.rawValue { return true }
                         return false
                     })
                 } else {
                     filteredArray = commandArray.filter({ (pccommand) -> Bool in
-                        if Int(pccommand.commandType!) == CommandType.media.rawValue { return true }
+                        if pccommand.commandType!.intValue == CommandType.media.rawValue { return true }
                         return false
                     })
                 }

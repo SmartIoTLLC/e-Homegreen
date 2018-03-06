@@ -159,10 +159,10 @@ class IncomingHandler: NSObject {
         // For loop in data frame INFO block
         for i in 1...16 {
             for item in timers {
-                if  Int(item.gateway.addressOne) == Int(dataFrame.ADR1) &&
-                    Int(item.gateway.addressTwo) == Int(dataFrame.ADR2) &&
-                    Int(item.address) == Int(dataFrame.ADR3) &&
-                    Int(item.timerId) == Int(i) {
+                if  item.gateway.addressOne.intValue == Int(dataFrame.ADR1) &&
+                    item.gateway.addressTwo.intValue == Int(dataFrame.ADR2) &&
+                    item.address.intValue == Int(dataFrame.ADR3) &&
+                    item.timerId.intValue == Int(i) {
                     
                     let position = (i - 1)*4
                     let fourBytes = [dataFrame.INFO[1+position], dataFrame.INFO[2+position], dataFrame.INFO[3+position], dataFrame.INFO[4+position]]
@@ -393,7 +393,7 @@ class IncomingHandler: NSObject {
                 
                 let MAC:[Byte] = Array(byteArray[9...14])
                 if devices != [] {
-                    for device in devices { if Int(device.address) == Int(byteArray[4]) {deviceExists = true} }
+                    for device in devices { if device.address.intValue == Int(byteArray[4]) {deviceExists = true} }
                 } else { deviceExists = false }
                 
                 if !deviceExists {
@@ -444,7 +444,7 @@ class IncomingHandler: NSObject {
             if let controlType = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name {
                 let MAC:[Byte] = Array(byteArray[9...14])
                 if devices != [] {
-                    for device in devices { if Int(device.address) == Int(byteArray[4]) {deviceExists = true} }
+                    for device in devices { if device.address.intValue == Int(byteArray[4]) {deviceExists = true} }
                 } else {deviceExists = false}
                 
                 if !deviceExists {
@@ -596,7 +596,7 @@ class IncomingHandler: NSObject {
         
         for i in 0..<devices.count {
             if isCorrectDeviceAddress(i: i, for: byteArray) {
-                let channel = Int(devices[i].channel)
+                let channel = devices[i].channel.intValue
                 if 20+13*(channel-1) < byteArray.count {                    
                     devices[i].currentValue = getNSNumber(for: byteArray[8+13*(channel-1)])
                     
@@ -761,11 +761,8 @@ class IncomingHandler: NSObject {
                 } else if byteArray[7] == 0xF0 {
 
                 } else {
-                    let channel = Int(devices[i].channel)
-                    print(Int(devices[i].channel))
+                    let channel = devices[i].channel.intValue
                     devices[i].runningTime = returnRunningTime([byteArray[8+4*(channel-1)], byteArray[9+4*(channel-1)], byteArray[10+4*(channel-1)], byteArray[11+4*(channel-1)]])
-                    print(devices[i].controlType )
-                    print(devices[i].runningTime)
                 }
             }
         }
@@ -862,7 +859,7 @@ class IncomingHandler: NSObject {
         for i in 0..<self.devices.count{
             
             if isCorrectDeviceAddress(i: i, for: byteArray) {
-                let channel = Int(devices[i].channel)
+                let channel = devices[i].channel.intValue
                 devices[i].currentValue = getNSNumber(for: byteArray[7+channel])
                 print("INTERFACE STATUS: ", devices[i].currentValue)
             }
@@ -880,7 +877,7 @@ class IncomingHandler: NSObject {
         if devices.count != 0 {
             for i in 0..<devices.count {
                 if isCorrectDeviceAddress(i: i, for: byteArray) {
-                    let channelNumber = Int(devices[i].channel)
+                    let channelNumber = devices[i].channel.intValue
                     
                     // Problem: If device is dimmer, then value that is received is in range from 0-100. In rest of the cases value is 0x00 or 0xFF (0 or 255)
                     // That is why we must check whether device value is >100. If value is greater than 100 that means that it is not dimmer and the only value greater than 100 can be 255
@@ -990,7 +987,7 @@ class IncomingHandler: NSObject {
         parseMessageAndPrint(byteArray)
         
         for device in devices {
-            if isCorrectDeviceAddress(device: device, for: byteArray) { device.warningState = Int(byteArray[6+5+6*(Int(device.channel)-1)]); print("CHANNEL WARNING")}
+            if isCorrectDeviceAddress(device: device, for: byteArray) { device.warningState = Int(byteArray[6+5+6*(device.channel.intValue-1)]) }
         }
         CoreDataController.sharedInstance.saveChanges()
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
@@ -1186,32 +1183,32 @@ class IncomingHandler: NSObject {
 extension IncomingHandler {
     
     func isCorrectDeviceAddress(i: Int, for byteArray: [Byte]) -> Bool {
-        if Int(devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(devices[i].address) == Int(byteArray[4]) { return true }
+        if devices[i].gateway.addressOne.intValue == Int(byteArray[2]) && devices[i].gateway.addressTwo.intValue == Int(byteArray[3]) && devices[i].address.intValue == Int(byteArray[4]) { return true }
         return false
     }
     func isCorrectDeviceAddress(device: Device, for byteArray: [Byte]) -> Bool {
-        if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) { return true }
+        if device.gateway.addressOne.intValue == Int(byteArray[2]) && device.gateway.addressTwo.intValue == Int(byteArray[3]) && device.address.intValue == Int(byteArray[4]) { return true }
         return false
     }
     func isCorrectSecurityAddress(security: Security, byteArray: [Byte]) -> Bool {
-        if byteArray[2] == Byte(Int(security.addressOne)) && byteArray[3] == Byte(Int(security.addressTwo)) && byteArray[4] == Byte(Int(security.addressThree)) { return true }
+        if byteArray[2] == Byte(security.addressOne.intValue) && byteArray[3] == Byte(security.addressTwo.intValue) && byteArray[4] == Byte(security.addressThree.intValue) { return true }
         return false
     }
     func isCorrectTimerAddress(i: Int, timer: Timer, byteArray: [Byte]) -> Bool {
-        if Int(timer.gateway.addressOne) == byteArray[2] && Int(timer.gateway.addressTwo) == byteArray[3] && Int(timer.address) == byteArray[4] && Int(timer.timerId) == Int(i) { return true }
+        if timer.gateway.addressOne.intValue == byteArray[2] && timer.gateway.addressTwo.intValue == byteArray[3] && timer.address.intValue == byteArray[4] && timer.timerId.intValue == Int(i) { return true }
         return false
     }
     func isCorrectFlagAddress(i: Int, flag: Flag, byteArray: [Byte]) -> Bool {
-        if Int(flag.gateway.addressOne) == Int(byteArray[2]) && Int(flag.gateway.addressTwo) == Int(byteArray[3]) && Int(flag.address) == Int(byteArray[4]) && Int(flag.flagId) == Int(i) { return true }
+        if flag.gateway.addressOne.intValue == Int(byteArray[2]) && flag.gateway.addressTwo.intValue == Int(byteArray[3]) && flag.address.intValue == Int(byteArray[4]) && flag.flagId.intValue == Int(i) { return true }
         return false
     }
     
     func isCorrectDeviceChannel(i: Int, byteArray: [Byte]) -> Bool {
-        if Int(devices[i].channel) == Int(byteArray[7]) { return true }
+        if devices[i].channel.intValue == Int(byteArray[7]) { return true }
         return false
     }
     func isCorrectDeviceChannel(device: Device, byteArray: [Byte]) -> Bool {
-        if Int(device.channel) == Int(byteArray[7]) { return true }
+        if device.channel.intValue == Int(byteArray[7]) { return true }
         return false
     }
     

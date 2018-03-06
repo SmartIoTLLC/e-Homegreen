@@ -113,7 +113,7 @@ class PCControlInterfaceXIB: PopoverVC {
         for option in PowerOption.allValues { powerCommandList.append(PopOverItem(name: option.description, id: "")) }
         if powerCommandList.count != 0 { powerLabel.text = powerCommandList.first?.name }
         
-        commandTextField.attributedPlaceholder = NSAttributedString(string:"Enter Command", attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+        commandTextField.attributedPlaceholder = NSAttributedString(string:"Enter Command", attributes:[NSAttributedStringKey.foregroundColor: UIColor.lightGray])
         commandTextField.delegate = self
         
         titleLabel.text = pc.name
@@ -149,8 +149,8 @@ class PCControlInterfaceXIB: PopoverVC {
         if let list = pc.pcCommands {
             if let commandArray = Array(list) as? [PCCommand] {
                 for item in commandArray {
-                    if Int(item.commandType!) == CommandType.application.rawValue { runCommandList.append(PopOverItem(name: item.name!, id: item.comand!)) }
-                    if Int(item.commandType!) == CommandType.media.rawValue { playCommandList.append(PopOverItem(name: item.name!, id: item.comand!)) }
+                    if item.commandType!.intValue == CommandType.application.rawValue { runCommandList.append(PopOverItem(name: item.name!, id: item.comand!)) }
+                    if item.commandType!.intValue == CommandType.media.rawValue { playCommandList.append(PopOverItem(name: item.name!, id: item.comand!)) }
                 }
             }
         }
@@ -165,7 +165,7 @@ class PCControlInterfaceXIB: PopoverVC {
         
     }
     
-    func dismissViewController () {
+    @objc func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -246,7 +246,7 @@ class PCControlInterfaceXIB: PopoverVC {
         print("Send voice command!")
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         

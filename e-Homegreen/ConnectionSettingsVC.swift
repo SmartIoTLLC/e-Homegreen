@@ -73,7 +73,7 @@ class ConnectionSettingsVC: CommonXIBTransitionVC {
 
 // MARK: - Setup views
 extension ConnectionSettingsVC {
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
@@ -119,9 +119,9 @@ extension ConnectionSettingsVC {
             port.text                   = "\(gateway.remotePort)"
             localIP.text                = gateway.localIp
             localPort.text              = "\(gateway.localPort)"
-            addressFirst.text           = returnThreeCharactersForByte(Int(gateway.addressOne))
-            addressSecond.text          = returnThreeCharactersForByte(Int(gateway.addressTwo))
-            addressThird.text           = returnThreeCharactersForByte(Int(gateway.addressThree))
+            addressFirst.text           = returnThreeCharactersForByte(gateway.addressOne.intValue)
+            addressSecond.text          = returnThreeCharactersForByte(gateway.addressTwo.intValue)
+            addressThird.text           = returnThreeCharactersForByte(gateway.addressThree.intValue)
             txtDescription.text         = gateway.gatewayDescription
             txtAutoReconnectDelay.text  = "\(gateway.autoReconnectDelay!)"
         } else {

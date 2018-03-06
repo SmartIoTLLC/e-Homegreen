@@ -83,8 +83,8 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
         localcastSwitch.isOn = false
         localcastSwitch.addTarget(self, action: #selector(ScanSequencesesViewController.changeValue(_:)), for: UIControlEvents.valueChanged)
         
-        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne)))"
-        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway.addressTwo)))"
+        devAddressOne.text = "\(returnThreeCharactersForByte(gateway.addressOne.intValue))"
+        devAddressTwo.text = "\(returnThreeCharactersForByte(gateway.addressTwo.intValue))"
         
         btnLevel.tag = 1
         btnZone.tag = 2
@@ -122,7 +122,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
         button.setTitle(name, for: UIControlState())
     }
     
-    func changeValue (_ sender:UISwitch){
+    @objc func changeValue (_ sender:UISwitch){
         if sender.tag == 100 { localcastSwitch.isOn = false } else if sender.tag == 200 { broadcastSwitch.isOn = false }
     }
     
@@ -137,7 +137,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
         sequencesTableView.reloadData()
     }
     
-    func handleTap (_ gesture:UITapGestureRecognizer) {
+    @objc func handleTap (_ gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
             showGallery(index, user: gateway.location.user).delegate = self
         }
@@ -179,13 +179,13 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
             if sequenceId <= 32767 && address <= 255 {
                 
                 var levelId:Int?
-                if let levelIdNumber = level?.id { levelId = Int(levelIdNumber) }
+                if let levelIdNumber = level?.id { levelId = levelIdNumber.intValue }
                 
                 var zoneId:Int?
-                if let zoneIdNumber = zoneSelected?.id { zoneId = Int(zoneIdNumber) }
+                if let zoneIdNumber = zoneSelected?.id { zoneId = zoneIdNumber.intValue }
                 
                 var categoryId:Int?
-                if let categoryIdNumber = category?.id { categoryId = Int(categoryIdNumber) }
+                if let categoryIdNumber = category?.id { categoryId = categoryIdNumber.intValue }
                 
                 DatabaseSequencesController.shared.createSequence(sequenceId, sequenceName: sequenceName, moduleAddress: address, gateway: gateway, levelId: levelId, zoneId: zoneId, categoryId: categoryId, isBroadcast: broadcastSwitch.isOn, isLocalcast: localcastSwitch.isOn, sceneImageOneDefault: defaultImageOne, sceneImageTwoDefault: defaultImageTwo, sceneImageOneCustom: customImageOne, sceneImageTwoCustom: customImageTwo, imageDataOne: imageDataOne, imageDataTwo: imageDataTwo, sequenceCycles: cycles)
             }
@@ -272,7 +272,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     }
     // Called from findSequences or from it self.
     // Checks which sequence ID should be searched for and calls sendCommandWithSequenceAddress for that specific sequence id.
-    func checkIfSequenceDidGetName (_ timer:Foundation.Timer) {
+    @objc func checkIfSequenceDidGetName (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -303,7 +303,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     }
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next sequence ID to search for. If there is not, dismiss progres bar and end the search.
-    func nameReceivedFromPLC (_ notification:Notification) {
+    @objc func nameReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningSequencesNameAndParameters) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let timerIndex = info["sequenceId"] else { return }
@@ -454,7 +454,7 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
     func didSelect(sequence: Sequence) {
         IDedit.text = "\(sequence.sequenceId)"
         nameEdit.text = "\(sequence.sequenceName)"
-        devAddressThree.text = "\(returnThreeCharactersForByte(Int(sequence.address)))"
+        devAddressThree.text = "\(returnThreeCharactersForByte(sequence.address.intValue))"
         editCycle.text = "\(sequence.sequenceCycles)"
         broadcastSwitch.isOn = sequence.isBroadcast.boolValue
         localcastSwitch.isOn = sequence.isLocalcast.boolValue

@@ -27,7 +27,7 @@ class SurveillenceCell:UICollectionViewCell{
         backgroundColor = UIColor.gray.withAlphaComponent(0.3)
     }
     
-    func update() {
+    @objc func update() {
         let _ = SurveillanceHandler(surv: camera)
         
             if let data = self.camera.imageData { self.setImageForSurveillance(UIImage(data: data as Data))

@@ -133,21 +133,21 @@ extension SuraPlayerViewController {
 // MARK: - Logic
 
 extension SuraPlayerViewController {
-    func handleNewMediaItem(notification: Notification) {
+    @objc func handleNewMediaItem(notification: Notification) {
         if let title = notification.object as? String {
             suraTitle.text = title
         }
     }
     
-    func pauseSura() {
+    @objc func pauseSura() {
         AudioPlayer.sharedInstance.pauseAudio()
     }
     
-    func stopSura() {
+    @objc func stopSura() {
         AudioPlayer.sharedInstance.stopAudio()
     }
     
-    func playSura() {
+    @objc func playSura() {
         guard currentSura != nil else { return }
         if let index = availableSurasList.index(of: currentSura) {
             AudioPlayer.sharedInstance.loadPlaylist(suras: availableSurasList, currentIndex: index)
@@ -185,8 +185,8 @@ extension SuraPlayerViewController {
         if let ids = reciter?.getRecitersSurasAsInt() {
             for suraId in ids {
                 surasList.forEach({ (sura) in
-                    if Int16(sura.id!) == suraId {
-                        if let sura = surasList.filter( { Int16($0.id!) == suraId } ).first {
+                    if sura.id!.int16Value == suraId {
+                        if let sura = surasList.filter( { $0.id!.int16Value == suraId } ).first {
                             availableSurasList.append(sura)
                         }
                     }

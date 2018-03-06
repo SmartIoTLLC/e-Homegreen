@@ -134,7 +134,7 @@ extension DeviceImagesPickerVC {
         if let moc = appDel.managedObjectContext {
             if imageIndex == -1 {
                 let deviceImage = DeviceImage(context: moc)
-                deviceImage.state = NSNumber(value: (Int(deviceImages[deviceImages.count-1].state!) + 1))
+                deviceImage.state = NSNumber(value: (deviceImages[deviceImages.count-1].state!.intValue + 1))
                 deviceImage.defaultImage = strText
                 deviceImage.device = device
                 deviceImage.customImageId = nil
@@ -155,7 +155,7 @@ extension DeviceImagesPickerVC {
             if imageIndex == -1 {
                 // This coudl be a problem because it doesn't have default image. So default image was putt in this case:
                 let deviceImage = DeviceImage(context: moc)
-                deviceImage.state = NSNumber(value: (Int(deviceImages[deviceImages.count-1].state!) + 1))
+                deviceImage.state = NSNumber(value: (deviceImages[deviceImages.count-1].state!.intValue + 1))
                 deviceImage.defaultImage = "12 Appliance - Power - 02"
                 deviceImage.device = device
                 
@@ -189,7 +189,7 @@ extension DeviceImagesPickerVC {
             if imageIndex == -1 {
                 // This could be a problem because it doesn't have default image. So default image was putt in this case:
                 let deviceImage = DeviceImage(context: moc)
-                deviceImage.state = NSNumber(value: (Int(deviceImages[deviceImages.count-1].state!) + 1))
+                deviceImage.state = NSNumber(value: (deviceImages[deviceImages.count-1].state!.intValue + 1))
                 deviceImage.defaultImage = "12 Appliance - Power - 02"
                 deviceImage.device = device
                 deviceImage.customImageId = image.imageId

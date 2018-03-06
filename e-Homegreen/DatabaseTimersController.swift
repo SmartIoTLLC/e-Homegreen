@@ -192,9 +192,9 @@ class DatabaseTimersController: NSObject {
     func startTImerOnLocation(_ timer:Timer) {
         var address:[UInt8] = []
         if timer.isBroadcast.boolValue { address = [0xFF, 0xFF, 0xFF]
-        } else if timer.isLocalcast.boolValue { address = [UInt8(Int(timer.gateway.addressOne)), UInt8(Int(timer.gateway.addressTwo)), 0xFF]
-        } else { address = [UInt8(Int(timer.gateway.addressOne)), UInt8(Int(timer.gateway.addressTwo)), UInt8(Int(timer.address))] }
-        SendingHandler.sendCommand(byteArray: OutgoingHandler.getCancelTimerStatus(address, id: UInt8(Int(timer.timerId)), command: 0x01), gateway: timer.gateway)
+        } else if timer.isLocalcast.boolValue { address = [UInt8(timer.gateway.addressOne.intValue), UInt8(timer.gateway.addressTwo.intValue), 0xFF]
+        } else { address = [UInt8(timer.gateway.addressOne.intValue), UInt8(timer.gateway.addressTwo.intValue), UInt8(timer.address.intValue)] }
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.getCancelTimerStatus(address, id: UInt8(timer.timerId.intValue), command: 0x01), gateway: timer.gateway)
     }
 
     func addTimer(_ timerId: Int, timerName: String?, moduleAddress: Int, gateway: Gateway, type: Int?, levelId: Int?, selectedZoneId: Int?, categoryId: Int?, isBroadcast:Bool = true, isLocalcast:Bool = true, sceneImageOneDefault:String? = "15 Timer - CLock - 00", sceneImageTwoDefault:String? = "15 Timer - CLock - 01", sceneImageOneCustom:String? = nil, sceneImageTwoCustom:String? = nil, imageDataOne:Data? = nil, imageDataTwo:Data? = nil){
@@ -306,9 +306,9 @@ class DatabaseTimersController: NSObject {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Timer.fetchRequest()
         
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            NSPredicate(format: "timerId == %@", NSNumber(value: timerId as Int)),
+            NSPredicate(format: "timerId == %@", NSNumber(value: timerId)),
             NSPredicate(format: "gateway == %@", gateway),
-            NSPredicate(format: "address == %@", NSNumber(value: moduleAddress as Int))
+            NSPredicate(format: "address == %@", NSNumber(value: moduleAddress))
             ]
         )
         

@@ -84,7 +84,7 @@ extension PhoneViewController {
         DispatchQueue.main.async { button.isEnabled = enabled }
     }
     
-    func micBackgroundTapped(_ gestureRecognizer: UITapGestureRecognizer) {
+    @objc func micBackgroundTapped(_ gestureRecognizer: UITapGestureRecognizer) {
         toggleMic(off: true)
         stopRecording()
     }
@@ -99,7 +99,7 @@ extension PhoneViewController {
         view.removeGestureRecognizer(dismissGesture)
     }
     
-    func timedOut() {
+    @objc func timedOut() {
         stopRecording()
     }
     
@@ -113,12 +113,14 @@ extension PhoneViewController {
     
     func recordAndRecognizeSpeech() {
         
-        guard let node = audioEngine.inputNode else {
-            hideToastActivityOnMainThread()
-            self.forceRemoveMic()
-            self.makeToastOnMainThread(message: "Audio engine failed.")
-            return
-        }
+        //guard
+            let node = audioEngine.inputNode
+//            else {
+//            hideToastActivityOnMainThread()
+//            self.forceRemoveMic()
+//            self.makeToastOnMainThread(message: "Audio engine failed.")
+//            return
+//        }
         
         let recordingFormat = node.inputFormat(forBus: 0)
         node.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer, tamper) in

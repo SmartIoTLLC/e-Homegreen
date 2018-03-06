@@ -79,7 +79,7 @@ extension EditRemoteViewController {
         copyButton.layoutIfNeeded()
     }
     
-    func dismissVC() {
+    @objc func dismissVC() {
         dismiss(animated: true, completion: nil)
     }
 }

@@ -97,7 +97,7 @@ extension ContactsListViewController {
         return UITableViewCell()
     }
     
-    func dismissOnTap() {
+    @objc func dismissOnTap() {
         self.dismiss(animated: true, completion: nil)
     }
     

@@ -106,7 +106,7 @@ class SurveilenceUrlsVC: CommonXIBTransitionVC {
         return true
     }
     
-    func dismissViewController () {
+    @objc func dismissViewController () {
         dismiss(animated: true, completion: nil)
     }
     
@@ -131,7 +131,7 @@ class SurveilenceUrlsVC: CommonXIBTransitionVC {
         self.dismiss(animated: true, completion: nil)
     }
 
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         

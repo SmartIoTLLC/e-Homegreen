@@ -91,9 +91,9 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         imageTimerTwo.tag = 2
         imageTimerTwo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(_:))))
         
-        devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne)))"
+        devAddressOne.text = "\(returnThreeCharactersForByte(gateway.addressOne.intValue))"
         devAddressOne.isEnabled = false
-        devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway.addressTwo)))"
+        devAddressTwo.text = "\(returnThreeCharactersForByte(gateway.addressTwo.intValue))"
         devAddressTwo.isEnabled = false
         
         broadcastSwitch.tag = 100
@@ -153,7 +153,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         button.setTitle(name, for: UIControlState())
     }
     
-    func changeValue (_ sender:UISwitch){
+    @objc func changeValue (_ sender:UISwitch){
         if sender.tag == 100 { localcastSwitch.isOn = false } else if sender.tag == 200 { broadcastSwitch.isOn = false }
     }
     func refreshTimerList() {
@@ -167,7 +167,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         timerTableView.reloadData()
     }
     
-    func handleTap (_ gesture:UITapGestureRecognizer) {
+    @objc func handleTap (_ gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
             showGallery(index, user: gateway.location.user).delegate = self
         }
@@ -191,13 +191,13 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             if timerId <= 32767 && address <= 255 && type != "--" {
                 
                 var levelId:Int?
-                if let levelIdNumber = level?.id { levelId = Int(levelIdNumber) }
+                if let levelIdNumber = level?.id { levelId = levelIdNumber.intValue }
                 
                 var zoneId:Int?
-                if let zoneIdNumber = zoneSelected?.id { zoneId = Int(zoneIdNumber) }
+                if let zoneIdNumber = zoneSelected?.id { zoneId = zoneIdNumber.intValue }
                 
                 var categoryId:Int?
-                if let categoryIdNumber = category?.id { categoryId = Int(categoryIdNumber) }
+                if let categoryIdNumber = category?.id { categoryId = categoryIdNumber.intValue }
                 
                 DatabaseTimersController.shared.addTimer(timerId, timerName: timerName, moduleAddress: address, gateway: gateway, type: timerTypeId, levelId: levelId, selectedZoneId: zoneId, categoryId: categoryId, isBroadcast: broadcastSwitch.isOn, isLocalcast: localcastSwitch.isOn, sceneImageOneDefault: defaultImageOne, sceneImageTwoDefault: defaultImageTwo, sceneImageOneCustom: customImageOne, sceneImageTwoCustom: customImageTwo, imageDataOne: imageDataOne, imageDataTwo: imageDataTwo)
             }
@@ -321,7 +321,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     
     // Called from findNames or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingNames for that specific timer id.
-    func checkIfTimerDidGetName (_ timer:Foundation.Timer) {
+    @objc func checkIfTimerDidGetName (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated. 
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -353,7 +353,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
-    func nameReceivedFromPLC (_ notification:Notification) {
+    @objc func nameReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningTimerNames) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let timerIndex = info["timerId"] else { return }
@@ -394,7 +394,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     
     // MARK: - Timer parameters
     // Gets all input parameters and prepares everything for scanning, and initiates scanning.
-    func findParametarsForTimer() {
+    @objc func findParametarsForTimer() {
         progressBarScreenTimerNames?.dissmissProgressBar()
         progressBarScreenTimerNames = nil
         arrayOfParametersToBeSearched = [Int]()
@@ -436,7 +436,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     
     // Called from findParametarsForTimer or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingParameterWithTimerAddress for that specific timer id.
-    func checkIfTimerDidGetParametar (_ timer:Foundation.Timer) {
+    @objc func checkIfTimerDidGetParametar (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -469,7 +469,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
-    func timerParametarReceivedFromPLC (_ notification:Notification) {
+    @objc func timerParametarReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningTimerParameters) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let timerIndex = info["timerId"] else { return }
@@ -639,9 +639,9 @@ extension ScanTimerViewController: UITableViewDataSource, UITableViewDelegate {
     func didSelect(timer: Timer) {
         IDedit.text = "\(timer.timerId)"
         nameEdit.text = "\(timer.timerName)"
-        devAddressThree.text = "\(returnThreeCharactersForByte(Int(timer.address)))"
+        devAddressThree.text = "\(returnThreeCharactersForByte(timer.address.intValue))"
         
-        if let type = TimerType(rawValue: Int(timer.type)) { btnType.setTitle(type.description, for: UIControlState()); timerTypeId = type.rawValue
+        if let type = TimerType(rawValue: timer.type.intValue) { btnType.setTitle(type.description, for: UIControlState()); timerTypeId = type.rawValue
         } else { btnType.setTitle("--", for: UIControlState()); timerTypeId = nil }
         
         broadcastSwitch.isOn = timer.isBroadcast.boolValue

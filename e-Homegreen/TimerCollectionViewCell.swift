@@ -32,7 +32,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
         
         timerTitle.isUserInteractionEnabled = true
         timerTitle.text = getName(timer, filterParametar: filterParametar)
-        if Int(cellTimer.type) == TimerType.timer.rawValue || Int(cellTimer.type) == TimerType.stopwatch.rawValue{
+        if cellTimer.type.intValue == TimerType.timer.rawValue || cellTimer.type.intValue == TimerType.stopwatch.rawValue{
             let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
             timerCOuntingLabel.text = String(format: "%02d", h) + ":" + String(format: "%02d", m) + ":" + String(format: "%02d", s)
         }else{
@@ -44,7 +44,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
         timerButtonRight.tag = tag
         
         //   ===   Default   ===
-        if Int(timer.type) == TimerType.timer.rawValue || Int(timer.type) == TimerType.stopwatch.rawValue {
+        if timer.type.intValue == TimerType.timer.rawValue || timer.type.intValue == TimerType.stopwatch.rawValue {
             timerButton.isHidden = false
             timerButtonLeft.isHidden = true
             timerButtonRight.isHidden = true
@@ -106,12 +106,12 @@ class TimerCollectionViewCell: UICollectionViewCell {
     }
     
     func startTimer(){
-        if Int(cellTimer.type) == TimerType.timer.rawValue{
+        if cellTimer.type.intValue == TimerType.timer.rawValue{
             time?.invalidate()
             time = Foundation.Timer.scheduledTimer(timeInterval: 1, target:self, selector: #selector(countDown(_:)), userInfo:nil, repeats: true)
             
         }
-        if Int(cellTimer.type) == TimerType.stopwatch.rawValue{
+        if cellTimer.type.intValue == TimerType.stopwatch.rawValue{
             time?.invalidate()
             time = Foundation.Timer.scheduledTimer(timeInterval: 1, target:self, selector: #selector(countUp(_:)), userInfo:nil, repeats: true)
             
@@ -122,7 +122,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
         time?.invalidate()
     }
     
-    func countUp(_ timer:Foundation.Timer){
+    @objc func countUp(_ timer:Foundation.Timer){
         cellTimer.timerCount += 1
         let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
         timerCOuntingLabel.text = String(format: "%02d", h) + ":" + String(format: "%02d", m) + ":" + String(format: "%02d", s)
@@ -132,7 +132,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
         time?.invalidate()
     }
     
-    func countDown(_ timer:Foundation.Timer){
+    @objc func countDown(_ timer:Foundation.Timer){
         if cellTimer.timerCount > 0 {
             cellTimer.timerCount -= 1
             let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
@@ -203,7 +203,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
         Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
     }
     
-    func changeImageToNormal () {
+    @objc func changeImageToNormal () {
         timerImageView.image = imageOne
         setNeedsDisplay()
     }

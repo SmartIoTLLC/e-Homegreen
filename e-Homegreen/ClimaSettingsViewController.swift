@@ -137,11 +137,11 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         dismiss(animated: true, completion: nil)
     }
     
-    func setACSetPoint () {
+    @objc func setACSetPoint () {
         SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSetPoint(address, channel: channel, coolingSetPoint: getIByte(hvacCommand.coolTemperature), heatingSetPoint: getIByte(hvacCommand.heatTemperature)), gateway: gateway)
     }
     
-    func setACSpeed () {
+    @objc func setACSpeed () {
         switch hvacCommand.fan {
             case .low   : setACSpeedWith(value: 0x01)
             case .med   : setACSpeedWith(value: 0x02)
@@ -154,7 +154,7 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSpeed(address, channel: channel, value: value), gateway: gateway)
     }
     
-    func setACmode () {
+    @objc func setACmode () {
         switch hvacCommand.mode {
             case .cool  : setACModeWith(value: 0x01)
             case .heat  : setACModeWith(value: 0x02)
@@ -168,13 +168,13 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
     }
     
     func setupViews() {
-        hvacCommand.coolTemperature = Int(device.coolTemperature)
-        hvacCommand.heatTemperature = Int(device.heatTemperature)
+        hvacCommand.coolTemperature = device.coolTemperature.intValue
+        hvacCommand.heatTemperature = device.heatTemperature.intValue
         
         lblCool.text = "\(device.coolTemperature)"
         lblHeat.text = "\(device.heatTemperature)"
-        coolNumber = Int(device.coolTemperature)
-        heatNumber = Int(device.heatTemperature)
+        coolNumber = device.coolTemperature.intValue
+        heatNumber = device.heatTemperature.intValue
         
         view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
         
@@ -382,7 +382,7 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
     func heatTemeperatureUpdate (_ timer:Foundation.Timer) {
         if let number = timer.userInfo as? Int {
             temperatureNumber = 0
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSetPoint(address, channel: channel, coolingSetPoint: getByte(device.coolTemperature), heatingSetPoint: getIByte(Int(device.heatTemperature)+number)), gateway: gateway)
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSetPoint(address, channel: channel, coolingSetPoint: getByte(device.coolTemperature), heatingSetPoint: getIByte(device.heatTemperature.intValue+number)), gateway: gateway)
         }
     }
 

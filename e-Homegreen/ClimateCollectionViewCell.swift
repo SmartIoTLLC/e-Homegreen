@@ -40,10 +40,10 @@ class ClimateCollectionViewCell: UICollectionViewCell {
     @IBAction func switchAllowEnergySaving(_ sender: AnyObject) {
         guard let switchAES = sender as? UISwitch else { return }
         device?.allowEnergySaving = NSNumber(value: switchAES.isOn as Bool)
-        let address = [UInt8(Int(device!.gateway.addressOne)),UInt8(Int(device!.gateway.addressTwo)),UInt8(Int(device!.address))]
+        let address = device!.getAddress()
         let status:Byte = switchAES.isOn ? 0x01 : 0x00
         SendingHandler.sendCommand(
-            byteArray: OutgoingHandler.setACEnergySaving(address, channel: Byte(Int(device!.channel)), status: status),
+            byteArray: OutgoingHandler.setACEnergySaving(address, channel: Byte(device!.channel.intValue), status: status),
             gateway: device!.gateway
         )
     }

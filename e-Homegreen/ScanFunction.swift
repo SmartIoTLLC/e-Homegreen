@@ -29,7 +29,7 @@ class ScanFunction {
         self.sum       = to - from + 1
         self.counter   = 0
         self.gateway   = gateway
-        gatewayAddress = [Byte(Int(gateway.addressOne)), Byte(Int(gateway.addressTwo)), Byte(Int(gateway.addressThree))]
+        gatewayAddress = [Byte(gateway.addressOne.intValue), Byte(gateway.addressTwo.intValue), Byte(gateway.addressThree.intValue)]
         
         switch scanForWhat {
             case .zone     : scanWhat = ScanZone()

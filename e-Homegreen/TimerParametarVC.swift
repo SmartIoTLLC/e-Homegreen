@@ -67,7 +67,7 @@ extension TimerParametarVC {
 
 // MARK: - Logic
 extension TimerParametarVC {
-    func changeValue (_ sender:UISwitch){
+    @objc func changeValue (_ sender:UISwitch){
         if sender.tag == 100 {
             if sender.isOn == true { isLocalcast.isOn = false } else { isLocalcast.isOn = false }
         } else if sender.tag == 200 {
@@ -84,7 +84,7 @@ extension TimerParametarVC {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func dismissViewController () {
+    @objc func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
     

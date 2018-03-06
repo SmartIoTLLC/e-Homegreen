@@ -472,7 +472,7 @@ class FilterPullDown: UIScrollView {
         contentView.addConstraint(NSLayoutConstraint(item: goButon, attribute: .width, relatedBy: .equal, toItem: chooseCategoryButon, attribute: .width, multiplier: 0.5, constant: 0))
     }
     
-    func openLocations(_ sender : UIButton) {
+    @objc func openLocations(_ sender : UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Location] = FilterController.shared.getLocationForFilterByUser()
@@ -481,7 +481,7 @@ class FilterPullDown: UIScrollView {
         if let vc = self.parentViewController as? PopoverVC { vc.openPopover(sender, popOverList:popoverList) }
     }
     
-    func resetLocations(_ sender : UIButton) {
+    @objc func resetLocations(_ sender : UIButton) {
         location = nil
         level = nil
         zoneSelected = nil
@@ -492,7 +492,7 @@ class FilterPullDown: UIScrollView {
         chooseCategoryButon.setTitle("All", for: UIControlState())
     }
     
-    func openLevels(_ sender : UIButton) {
+    @objc func openLevels(_ sender : UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         if let location = location {
@@ -504,14 +504,14 @@ class FilterPullDown: UIScrollView {
         if let vc = self.parentViewController as? PopoverVC { vc.openPopover(sender, popOverList:popoverList) }
     }
     
-    func resetLevel(_ sender : UIButton) {
+    @objc func resetLevel(_ sender : UIButton) {
         level = nil
         zoneSelected = nil
         chooseZoneButon.setTitle("All", for: UIControlState())
         chooseLevelButon.setTitle("All", for: UIControlState())
     }
     
-    func openZones(_ sender : UIButton) {
+    @objc func openZones(_ sender : UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         if let location = location, let level = level {
@@ -523,12 +523,12 @@ class FilterPullDown: UIScrollView {
         if let vc = self.parentViewController as? PopoverVC { vc.openPopover(sender, popOverList:popoverList) }
     }
     
-    func resetZone(_ sender : UIButton) {
+    @objc func resetZone(_ sender : UIButton) {
         zoneSelected = nil
         chooseZoneButon.setTitle("All", for: UIControlState())
     }
     
-    func openCategories(_ sender : UIButton) {
+    @objc func openCategories(_ sender : UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         if let location = location{
@@ -540,7 +540,7 @@ class FilterPullDown: UIScrollView {
         if let vc = self.parentViewController as? PopoverVC {  vc.openPopover(sender, popOverList:popoverList) }
     }
     
-    func resetCategory(_ sender : UIButton) {
+    @objc func resetCategory(_ sender : UIButton) {
         category = nil
         chooseCategoryButon.setTitle("All", for: UIControlState())
     }
@@ -618,7 +618,7 @@ class FilterPullDown: UIScrollView {
         returnFilter()
     }
     
-    func setDefaultParametar(){
+    @objc func setDefaultParametar(){
         guard let h = hoursTextField.text else { return }
         guard let m = minTextField.text else { return }
         guard let s = secundsTextField.text else { return }
@@ -656,7 +656,7 @@ class FilterPullDown: UIScrollView {
         filterDelegate?.saveDefaultFilter()
     }
     
-    func go() {
+    @objc func go() {
         returnFilter()
         
         let bottomOffset = CGPoint(x: 0, y: self.contentSize.height - self.bounds.size.height + self.contentInset.bottom)
@@ -694,7 +694,7 @@ class FilterPullDown: UIScrollView {
         filterDelegate?.filterParametars(filterItem)
     }
     
-    func updateIndicator(_ notification:Notification) {
+    @objc func updateIndicator(_ notification:Notification) {
         if let info = notification.userInfo as? [String:String] {
             
             if let lamp = info["lamp"] {

@@ -90,13 +90,13 @@ extension IBeaconSettingsVC {
         editMinor.layer.borderColor = UIColor.lightGray.cgColor
         
         editName.attributedPlaceholder  = NSAttributedString(string:"Name",
-                                                            attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+                                                            attributes:[NSAttributedStringKey.foregroundColor: UIColor.lightGray])
         editUUID.attributedPlaceholder  = NSAttributedString(string:"UUID",
-                                                            attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+                                                            attributes:[NSAttributedStringKey.foregroundColor: UIColor.lightGray])
         editMajor.attributedPlaceholder = NSAttributedString(string:"Major",
-                                                             attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+                                                             attributes:[NSAttributedStringKey.foregroundColor: UIColor.lightGray])
         editMinor.attributedPlaceholder = NSAttributedString(string:"Minor",
-                                                             attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+                                                             attributes:[NSAttributedStringKey.foregroundColor: UIColor.lightGray])
         
         btnCancel.layer.cornerRadius = 2
         btnSave.layer.cornerRadius   = 2
@@ -122,7 +122,7 @@ extension IBeaconSettingsVC {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
@@ -150,7 +150,7 @@ extension IBeaconSettingsVC {
         return true
     }
     
-    func dismissViewController () {
+    @objc func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
 }

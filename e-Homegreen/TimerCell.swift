@@ -20,7 +20,7 @@ class TimersCell: UITableViewCell{
         
         labelID.text   = "\(timer.timerId)"
         labelName.text = timer.timerName
-        address.text   = "\(returnThreeCharactersForByte(Int(timer.gateway.addressOne))):\(returnThreeCharactersForByte(Int(timer.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(timer.address)))"
+        address.text   = "\(returnThreeCharactersForByte(timer.gateway.addressOne.intValue)):\(returnThreeCharactersForByte(timer.gateway.addressTwo.intValue)):\(returnThreeCharactersForByte(timer.address.intValue))"
         
         if let id = timer.timerImageOneCustom {
             if let image = DatabaseImageController.shared.getImageById(id) {

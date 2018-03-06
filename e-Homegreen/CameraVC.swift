@@ -102,7 +102,7 @@ class CameraVC: UIViewController {
         return UIInterfaceOrientationMask.landscapeLeft
     }
     
-    func update(){
+    @objc func update(){
         if surv.imageData != nil { image.image = UIImage(data: surv.imageData! as Data) } else { image.image = UIImage(named: "loading") }
     }
     

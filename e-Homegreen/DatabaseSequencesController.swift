@@ -194,9 +194,9 @@ class DatabaseSequencesController: NSObject {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Sequence.fetchRequest()
 
         let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            NSPredicate(format: "sequenceId == %@", NSNumber(value: sceneId as Int)), // Location
+            NSPredicate(format: "sequenceId == %@", NSNumber(value: sceneId)), // Location
             NSPredicate(format: "gateway == %@", gateway),
-            NSPredicate(format: "address == %@", NSNumber(value: moduleAddress as Int))
+            NSPredicate(format: "address == %@", NSNumber(value: moduleAddress))
             ]
         )
         

@@ -94,14 +94,14 @@ class SurveillenceViewController: PopoverVC {
         removeObservers()
     }
     
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             scrollView.setDefaultFilterItem(Menu.surveillance)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
 
-    func refreshLocalParametars() {
+    @objc func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
         fetchSurveillance()
     }
@@ -122,7 +122,7 @@ class SurveillenceViewController: PopoverVC {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
     }
     
-    func cameraParametar(_ gestureRecognizer: UILongPressGestureRecognizer){
+    @objc func cameraParametar(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             let location = gestureRecognizer.location(in: cameraCollectionView)
             if let index = cameraCollectionView.indexPathForItem(at: location){
@@ -131,7 +131,7 @@ class SurveillenceViewController: PopoverVC {
             }
         }
     }
-    func setDefaultFilterFromTimer(){
+    @objc func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.surveillance)
     }
     

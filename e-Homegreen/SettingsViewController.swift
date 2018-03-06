@@ -220,7 +220,7 @@ extension SettingsViewController {
         self.view.makeToast(message: "Passwords was changed successfully")
     }
     
-    func btnAddHourPressed(_ sender:UIButton) {
+    @objc func btnAddHourPressed(_ sender:UIButton) {
         switch sender.tag {
             case 1  : if hourRefresh < 23 { hourRefresh += 1 } else { hourRefresh = 0 }
             default : if minRefresh < 59 { minRefresh += 1 } else { minRefresh = 0 }
@@ -228,7 +228,7 @@ extension SettingsViewController {
         settingsTableView.reloadData()
     }
     
-    func btnDecHourPressed(_ sender:UIButton) {
+    @objc func btnDecHourPressed(_ sender:UIButton) {
         switch sender.tag {
             case 1  : if hourRefresh > 0 { hourRefresh -= 1 } else { hourRefresh = 23 }
             default : if minRefresh > 0 { minRefresh -= 1 } else { minRefresh = 59 }
@@ -236,18 +236,18 @@ extension SettingsViewController {
         settingsTableView.reloadData()
     }
     
-    func changeValue(_ sender:UISwitch) {
+    @objc func changeValue(_ sender:UISwitch) {
         if let user = user { user.openLastScreen = sender.isOn as NSNumber!
         } else { if let tempUser = DatabaseUserController.shared.getLoggedUser() { tempUser.openLastScreen = sender.isOn as NSNumber! } }
     }
     
-    func lockProfile(_ sender:UISwitch) {
+    @objc func lockProfile(_ sender:UISwitch) {
         if let user = user { user.isLocked = sender.isOn as NSNumber
         } else if let user = DatabaseUserController.shared.getLoggedUser() { user.isLocked = sender.isOn as NSNumber }
         CoreDataController.sharedInstance.saveChanges()
     }
     
-    func didTouchSettingButton (_ sender:AnyObject) {
+    @objc func didTouchSettingButton (_ sender:AnyObject) {
         if let view = sender as? UIButton {
             let tag = view.tag
             
@@ -290,7 +290,7 @@ extension SettingsViewController: UITextFieldDelegate {
         }
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         if let userInfo = notification.userInfo {
             let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
             let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0

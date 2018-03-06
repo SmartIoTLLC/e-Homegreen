@@ -68,13 +68,13 @@ class ButtonSettingsVC: CommonXIBTransitionVC, UITextFieldDelegate {
     }
     
     // MARK: - Button look
-    func receivedButtonColor(_ notification: Notification) {
+    @objc func receivedButtonColor(_ notification: Notification) {
         if let color = notification.object as? String {
             buttonColor.setTitle(color, for: UIControlState())
         }
     }
     
-    func receivedButtonShape(_ notification: Notification) {
+    @objc func receivedButtonShape(_ notification: Notification) {
         if let shape = notification.object as? String {
             buttonShape.setTitle(shape, for: UIControlState())
         }
@@ -378,7 +378,7 @@ extension ButtonSettingsVC {
         topMarginTF.delegate    = self
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         

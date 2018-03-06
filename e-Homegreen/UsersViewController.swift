@@ -86,7 +86,7 @@ extension UsersViewController: FilterPullDownDelegate{
         self.view.makeToast(message: "Default filter parametar saved!")
     }
     
-    func setDefaultFilterFromTimer(){
+    @objc func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.users)
     }
     
@@ -95,7 +95,7 @@ extension UsersViewController: FilterPullDownDelegate{
         usersCollectionView.reloadData()
     }
     
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             scrollView.setDefaultFilterItem(Menu.users)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -234,7 +234,7 @@ extension UsersViewController: UICollectionViewDataSource {
         return timers.count
     }
     
-    func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer){
+    @objc func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer){
         let tag = gestureRecognizer.view!.tag
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             let location = gestureRecognizer.location(in: usersCollectionView)

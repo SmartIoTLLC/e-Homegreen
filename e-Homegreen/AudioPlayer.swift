@@ -33,7 +33,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     var isActive: Bool = false
     
-    func autoplay() {
+    @objc func autoplay() {
         if isActive {
             playNext()
         }
@@ -139,6 +139,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         url = nil
         UIApplication.shared.endReceivingRemoteControlEvents()
         isActive = false
+        NotificationCenter.default.removeObserver(self)
     }
     
     func getFormattedSuraID(id: NSNumber) -> String {

@@ -40,20 +40,19 @@ class MultisensorCollectionViewCell: UICollectionViewCell {
     
     func returnDigitalInputModeStateinterpreter (_ device:Device) -> String {
         var digitalInputCurrentValue = " "
-        let inputMode = device.digitalInputMode
         
-        if inputMode == NSNumber(value: DigitalInput.DigitalInputMode.NormallyOpen) { digitalInputCurrentValue = DigitalInput.NormallyOpen.description(Int(device.currentValue))
-            
-        } else if inputMode == NSNumber(value: DigitalInput.DigitalInputMode.NormallyClosed) { digitalInputCurrentValue = DigitalInput.NormallyClosed.description(Int(device.currentValue))
-            
-        } else if inputMode == NSNumber(value: DigitalInput.DigitalInputMode.Generic) { digitalInputCurrentValue = DigitalInput.Generic.description(Int(device.currentValue))
-            
-        } else if inputMode == NSNumber(value: DigitalInput.DigitalInputMode.ButtonNormallyOpen) { digitalInputCurrentValue = DigitalInput.ButtonNormallyOpen.description(Int(device.currentValue))
-            
-        } else if inputMode == NSNumber(value: DigitalInput.DigitalInputMode.ButtonNormallyClosed) { digitalInputCurrentValue = DigitalInput.ButtonNormallyClosed.description(Int(device.currentValue))
-            
-        } else if inputMode == NSNumber(value: DigitalInput.DigitalInputMode.MotionSensor) { digitalInputCurrentValue = DigitalInput.MotionSensor.description(Int(device.currentValue)) }
-        
+        if let inputMode = device.digitalInputMode {
+            switch inputMode {
+                case NSNumber(value: DigitalInput.DigitalInputMode.NormallyOpen)         : digitalInputCurrentValue = DigitalInput.NormallyOpen.description(device.currentValue.intValue)
+                case NSNumber(value: DigitalInput.DigitalInputMode.NormallyClosed)       : digitalInputCurrentValue = DigitalInput.NormallyClosed.description(device.currentValue.intValue)
+                case NSNumber(value: DigitalInput.DigitalInputMode.Generic)              : digitalInputCurrentValue = DigitalInput.Generic.description(device.currentValue.intValue)
+                case NSNumber(value: DigitalInput.DigitalInputMode.ButtonNormallyOpen)   : digitalInputCurrentValue = DigitalInput.ButtonNormallyOpen.description(device.currentValue.intValue)
+                case NSNumber(value: DigitalInput.DigitalInputMode.ButtonNormallyClosed) : digitalInputCurrentValue = DigitalInput.ButtonNormallyClosed.description(device.currentValue.intValue)
+                case NSNumber(value: DigitalInput.DigitalInputMode.MotionSensor)         : digitalInputCurrentValue = DigitalInput.MotionSensor.description(device.currentValue.intValue)
+                default: break
+            }
+        }
+
         return digitalInputCurrentValue
     }
     
@@ -70,7 +69,7 @@ class MultisensorCollectionViewCell: UICollectionViewCell {
     }
     
     func populateCell(_ device:Device) {
-        let dValue = Double(device.currentValue)
+        let dValue = device.currentValue.doubleValue
         let value  = device.currentValue
         
         if device.numberOfDevices == 10 {
@@ -80,7 +79,7 @@ class MultisensorCollectionViewCell: UICollectionViewCell {
             case 9    : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value)%"
             case 5    : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value) LUX"
             case 6    :
-                switch Int(value) {
+                switch value.intValue {
                 case DeviceValue.MotionSensor.Idle        : sensorImage.image = sensorIdleImage; sensorState.text = "Idle"
                 case DeviceValue.MotionSensor.Motion      : sensorImage.image = sensorMotionImage; sensorState.text = "Motion"
                 case DeviceValue.MotionSensor.IdleWarning : sensorImage.image = sensorThirdImage; sensorState.text = "Idle Warning"
@@ -97,7 +96,7 @@ class MultisensorCollectionViewCell: UICollectionViewCell {
             case 1, 4  : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value) °C"
             case 2, 3 : sensorImage.image = device.returnImage(dValue); sensorState.text = returnDigitalInputModeStateinterpreter(device)
             case 5    :
-                switch Int(value) {
+                switch value.intValue {
                 case DeviceValue.MotionSensor.Idle          : sensorImage.image = sensorIdleImage; sensorState.text = "Idle"
                 case DeviceValue.MotionSensor.Motion        : sensorImage.image = sensorMotionImage; sensorState.text = "Motion"
                 case DeviceValue.MotionSensor.IdleWarning   : sensorImage.image = sensorThirdImage; sensorState.text = "Idle Warning"

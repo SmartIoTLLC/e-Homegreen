@@ -28,7 +28,7 @@ class LogInTextField: UITextField {
         self.layer.cornerRadius = 5
         if let place = self.placeholder{
             self.attributedPlaceholder = NSAttributedString(string: place,
-                attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+                attributes:[NSAttributedStringKey.foregroundColor: UIColor.lightGray])
         }
     }
 

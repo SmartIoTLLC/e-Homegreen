@@ -104,7 +104,7 @@ class FlagCollectionViewCell: UICollectionViewCell {
         Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(changeImageToNormal), userInfo: nil, repeats: false)
     }
     
-    func changeImageToNormal () {
+    @objc func changeImageToNormal () {
         flagImageView.image = imageOne
         setNeedsDisplay()
     }

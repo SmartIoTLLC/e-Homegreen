@@ -55,10 +55,10 @@ extension RemoteDetailsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let button = chunksOfButtons[indexPath.section][indexPath.item]
-        let columns = CGFloat(remote.columns!)
+        let columns = CGFloat(truncating: remote.columns!)
         
         let width = ( buttonsCollectionView.frame.width - (2 * 8) - ((columns - 1) * 5) ) / columns
-        let height = CGFloat(button.buttonHeight!) + 4
+        let height = CGFloat(truncating: button.buttonHeight!) + 4
  
         return CGSize(width: width, height: height)
     }

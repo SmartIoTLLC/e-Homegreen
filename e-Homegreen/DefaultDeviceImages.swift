@@ -35,7 +35,7 @@ class DefaultDeviceImages: NSObject {
                 }
             
             case ControlType.Curtain :
-                switch Int(categoryId) {
+                switch categoryId.intValue {
                     case CategoryId.Blind : return blindImagesThreeStateNO
                     default               : return curtainImagesTwoStateNO
                 }
@@ -58,7 +58,7 @@ class DefaultDeviceImages: NSObject {
     }
     
     func returnImagesArrayDependingOnCategoryId(_ categoryId: NSNumber, controlMode: Int?) -> [DeviceImageState] {
-        switch Int(categoryId) {
+        switch categoryId.intValue {
         case CategoryId.GatewayControl:
             guard let controlModeTemp = controlMode else { return lightningImagesTwoStateNO }
             if DigitalInput.modeInfo[controlModeTemp] == DigitalInput.ButtonNormallyClosed.description() || DigitalInput.modeInfo[controlModeTemp] == DigitalInput.NormallyClosed.description() { return lightningImagesTwoStateNC } else { return lightningImagesTwoStateNO }

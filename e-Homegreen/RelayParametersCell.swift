@@ -71,7 +71,7 @@ class RelayParametersCell: PopoverVC {
     
     init(device: Device){
         self.device = device
-        editedDevice = EditedDevice(levelId: Int(device.parentZoneId), zoneId: Int(device.zoneId), categoryId: Int(device.categoryId), controlType: device.controlType, digitalInputMode: Int(device.digitalInputMode!))
+        editedDevice = EditedDevice(levelId: device.parentZoneId.intValue, zoneId: device.zoneId.intValue, categoryId: device.categoryId.intValue, controlType: device.controlType, digitalInputMode: device.digitalInputMode!.intValue)
         super.init(nibName: "RelayParametersCell", bundle: nil)
         transitioningDelegate = self
         modalPresentationStyle = UIModalPresentationStyle.custom
@@ -138,16 +138,16 @@ extension RelayParametersCell {
         txtCurtainGroupId.inputAccessoryView = CustomToolBar()
         
         txtFieldName.text = device.name
-        lblAddress.text   = "\(returnThreeCharactersForByte(Int(device.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device.address)))"
+        lblAddress.text   = "\(returnThreeCharactersForByte(device.gateway.addressOne.intValue)):\(returnThreeCharactersForByte(device.gateway.addressTwo.intValue)):\(returnThreeCharactersForByte(device.address.intValue))"
         lblChannel.text   = "\(device.channel)"
         
-        level = DatabaseZoneController.shared.getZoneById(Int(device.parentZoneId), location: device.gateway.location)
+        level = DatabaseZoneController.shared.getZoneById(device.parentZoneId.intValue, location: device.gateway.location)
         if let level = level { btnLevel.setTitle(level.name, for: UIControlState()) } else { btnLevel.setTitle("All", for: UIControlState()) }
         
-        zoneSelected = DatabaseZoneController.shared.getZoneById(Int(device.zoneId), location: device.gateway.location)
+        zoneSelected = DatabaseZoneController.shared.getZoneById(device.zoneId.intValue, location: device.gateway.location)
         if let zoneSelected = zoneSelected { btnZone.setTitle(zoneSelected.name, for: UIControlState()) } else { btnZone.setTitle("All", for: UIControlState()) }
         
-        let category = DatabaseCategoryController.shared.getCategoryById(Int(device.categoryId), location: device.gateway.location)
+        let category = DatabaseCategoryController.shared.getCategoryById(device.categoryId.intValue, location: device.gateway.location)
         if category != nil { btnCategory.setTitle(category?.name, for: UIControlState()) } else { btnCategory.setTitle("All", for: UIControlState()) }
         
         if var digInputMode = device.digitalInputMode?.intValue {
@@ -184,7 +184,7 @@ extension RelayParametersCell {
         NotificationCenter.default.addObserver(self, selector: #selector(handleResetImages(_:)), name: .deviceShouldResetImages, object: nil)
     }
     
-    func handleResetImages(_ notification: Notification) {
+    @objc func handleResetImages(_ notification: Notification) {
         if let object = notification.object as? [String: Any] {
             if let id = object["deviceId"] as? NSManagedObjectID {
                 if id == device.objectID {
@@ -198,7 +198,7 @@ extension RelayParametersCell {
         }
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
@@ -207,7 +207,7 @@ extension RelayParametersCell {
         UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
-    func handleTap(_ gesture:UITapGestureRecognizer){
+    @objc func handleTap(_ gesture:UITapGestureRecognizer){
         self.dismiss(animated: true, completion: nil)
     }
 }

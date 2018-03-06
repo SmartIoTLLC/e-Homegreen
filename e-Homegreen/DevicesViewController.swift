@@ -113,19 +113,19 @@ class DevicesViewController: PopoverVC{
         scrollView.setButtonTitle(name, id: id)
     }
 
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer) {
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer) {
         if gestureRecognizer.state == .began {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             scrollView.setDefaultFilterItem(Menu.devices)
         }
     }
     
-    func refreshLocalParametars () {
+    @objc func refreshLocalParametars () {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
         deviceCollectionView.reloadData()
     }
 
-    func cellParametarLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
+    @objc func cellParametarLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
         if let tag = gestureRecognizer.view?.tag {
             if gestureRecognizer.state == .began {
                 let location = gestureRecognizer.location(in: deviceCollectionView)
@@ -143,7 +143,7 @@ class DevicesViewController: PopoverVC{
         }
     }
     
-    func longTouch(_ gestureRecognizer: UILongPressGestureRecognizer) { // Light
+    @objc func longTouch(_ gestureRecognizer: UILongPressGestureRecognizer) { // Light
         if let tag = gestureRecognizer.view?.tag {
             if devices[tag].controlType == ControlType.Dimmer {
                 if gestureRecognizer.state == .began { showBigSlider(devices[tag], index: tag).delegate = self }
@@ -151,7 +151,7 @@ class DevicesViewController: PopoverVC{
         }
     }
     
-    func handleTap (_ gesture:UIGestureRecognizer) {
+    @objc func handleTap (_ gesture:UIGestureRecognizer) {
         let location = gesture.location(in: deviceCollectionView)
         if let index = deviceCollectionView.indexPathForItem(at: location) {
             
@@ -174,7 +174,7 @@ class DevicesViewController: PopoverVC{
         }
     }
     
-    func handleTap2 (_ gesture:UIGestureRecognizer) {
+    @objc func handleTap2 (_ gesture:UIGestureRecognizer) {
         let location = gesture.location(in: deviceCollectionView)
         if let index = deviceCollectionView.indexPathForItem(at: location) {
             
@@ -197,7 +197,7 @@ class DevicesViewController: PopoverVC{
         }
     }
     
-    func changeSliderValueOnOneTap (_ gesture:UIGestureRecognizer) {
+    @objc func changeSliderValueOnOneTap (_ gesture:UIGestureRecognizer) {
         if let slider = gesture.view as? UISlider {
             deviceInControlMode = false
             if slider.isHighlighted { changeSliderValueEnded(slider); return }
@@ -249,7 +249,7 @@ class DevicesViewController: PopoverVC{
                             oldValue: NSNumber(value: withOldValue)
                         )
                         _ = RepeatSendingHandler(
-                            byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setValue, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: self.getByte(device.skipState)),
+                            byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setValue, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: self.getByte(device.skipState)),
                             gateway: device.gateway,
                             device: device,
                             oldValue: withOldValue,
@@ -279,13 +279,13 @@ class DevicesViewController: PopoverVC{
             default: break
         }
     }
-    func changeSliderValueStarted (_ sender: UISlider) {
+    @objc func changeSliderValueStarted (_ sender: UISlider) {
         let tag = sender.tag
         deviceInControlMode       = true
-        changeSliderValueOldValue = Int(devices[tag].currentValue)
+        changeSliderValueOldValue = devices[tag].currentValue.intValue
     }
     
-    func changeSliderValueEnded (_ sender:UISlider) {
+    @objc func changeSliderValueEnded (_ sender:UISlider) {
         let tag         = sender.tag
         let device      = devices[tag]
         let controlType = device.controlType
@@ -303,7 +303,7 @@ class DevicesViewController: PopoverVC{
         
         switch controlType {
             case ControlType.Dimmer:
-                byteArray = OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: UInt8(v4), delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: self.getByte(device.skipState))
+                byteArray = OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: UInt8(v4), delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: self.getByte(device.skipState))
                 newCommand = NSNumber(value: v4)
             case ControlType.Curtain:
                 byteArray = OutgoingHandler.setCurtainStatus(address, value: self.getByte(device.currentValue), groupId:  0x00)
@@ -332,14 +332,14 @@ class DevicesViewController: PopoverVC{
     
 
     
-    func changeSliderValue(_ sender: UISlider){
+    @objc func changeSliderValue(_ sender: UISlider){
         let tag    = sender.tag
         let device = devices[tag]
         device.currentValue = NSNumber(value: Int(sender.value * 255))   // device values is Int, 0 to 255 (0x00 to 0xFF)
         
         let indexPath = IndexPath(item: tag, section: 0)
         if let cell = deviceCollectionView.cellForItem(at: indexPath) as? DeviceCollectionViewCell {
-            let deviceValue:Double = { return Double(device.currentValue) }()
+            let deviceValue:Double = { return device.currentValue.doubleValue }()
             cell.picture.image     = device.returnImage(Double(deviceValue))
             cell.lightSlider.value = Float(deviceValue/255) // Slider value accepts values from 0 to 1
             cell.setNeedsDisplay()
@@ -348,7 +348,7 @@ class DevicesViewController: PopoverVC{
         }
     }
     
-    func refreshDeviceList() {
+    @objc func refreshDeviceList() {
         if !deviceInControlMode {
             if isScrolling { shouldUpdate = true } else { self.updateCells() }
         }
@@ -357,7 +357,7 @@ class DevicesViewController: PopoverVC{
     //MARK: Zone and category controll
     
     //gesture delegate function
-    func panView(_ gesture:UIPanGestureRecognizer){
+    @objc func panView(_ gesture:UIPanGestureRecognizer){
         switch (gesture.state) {
         case .began:
             self.panStartPoint = gesture.location(in: self.bottomView)
@@ -447,7 +447,7 @@ class DevicesViewController: PopoverVC{
         
     }
     
-    func changeGroupSliderValueOnOneTap (_ gesture:UIGestureRecognizer) {
+    @objc func changeGroupSliderValueOnOneTap (_ gesture:UIGestureRecognizer) {
         let s = gesture.view as! UISlider
         if s.isHighlighted { return } // tap on thumb, let slider deal with it
         let pt:CGPoint         = gesture.location(in: s)
@@ -493,7 +493,7 @@ class DevicesViewController: PopoverVC{
     
     
     // Helper functions
-    func setDefaultFilterFromTimer(){
+    @objc func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.devices)
     }
     
@@ -783,7 +783,7 @@ extension DevicesViewController {
         }
     }
     
-    func refreshDevice(_ sender:AnyObject) {
+    @objc func refreshDevice(_ sender:AnyObject) {
         if let button = sender as? UIButton {
             let tag         = button.tag
             let controlType = devices[tag].controlType
@@ -837,7 +837,7 @@ extension DevicesViewController {
     
     
     
-    func oneTap(_ gestureRecognizer:UITapGestureRecognizer) {
+    @objc func oneTap(_ gestureRecognizer:UITapGestureRecognizer) {
         let tag = gestureRecognizer.view!.tag
         let device               = devices[tag]
         let controlType          = device.controlType
@@ -848,7 +848,7 @@ extension DevicesViewController {
 
         device.increaseUsageCounterValue()
         print("device address:", device.getAddress())
-        print("device usage counter:", device.usageCounter?.intValue)
+      //  print("device usage counter:", device.usageCounter?.intValue)
 
         switch controlType {
             case ControlType.Dimmer:
@@ -870,16 +870,16 @@ extension DevicesViewController {
                     oldValue: NSNumber(value: setDeviceValue)
                 )
                 _ = RepeatSendingHandler(
-                    byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setDeviceValue, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: skipLevel),
+                    byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setDeviceValue, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: skipLevel),
                     gateway: device.gateway,
                     device: device,
-                    oldValue: Int(deviceCurrentValue),
+                    oldValue: deviceCurrentValue.intValue,
                     command: NSNumber(value: setDeviceValue)
                 )
                 print("poslato")
 
             case ControlType.Relay: // Appliance
-                if Int(deviceCurrentValue) > 0 {
+                if deviceCurrentValue.intValue > 0 {
                     setDeviceValue = UInt8(0)
                     device.currentValue = 0
                     skipLevel = 0
@@ -896,22 +896,22 @@ extension DevicesViewController {
                         oldValue: deviceCurrentValue
                     )
                     _ = RepeatSendingHandler(
-                        byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setDeviceValue, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: skipLevel),
+                        byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setDeviceValue, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: skipLevel),
                         gateway: device.gateway,
                         device: device,
-                        oldValue: Int(deviceCurrentValue),
+                        oldValue: deviceCurrentValue.intValue,
                         command: NSNumber(value: setDeviceValue)
                     )
                 })
 
             default: break
         }
-        print("preskocio")
+        
         updateCells()
     }
     
     // CLIMATE
-    func setACPowerStatus(_ gesture:UIGestureRecognizer) {
+    @objc func setACPowerStatus(_ gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
             let device  = devices[tag]
             var command: Byte!
@@ -928,13 +928,13 @@ extension DevicesViewController {
     }
     
     // CURTAINS
-    func openCurtain(_ gestureRecognizer:UITapGestureRecognizer){
+    @objc func openCurtain(_ gestureRecognizer:UITapGestureRecognizer){
         moveCurtain(command: .open, gestureRecognizer: gestureRecognizer)
     }
-    func closeCurtain(_ gestureRecognizer:UITapGestureRecognizer) {
+    @objc func closeCurtain(_ gestureRecognizer:UITapGestureRecognizer) {
         moveCurtain(command: .close, gestureRecognizer: gestureRecognizer)
     }
-    func stopCurtain(_ gestureRecognizer:UITapGestureRecognizer) {
+    @objc func stopCurtain(_ gestureRecognizer:UITapGestureRecognizer) {
         moveCurtain(command: .stop, gestureRecognizer: gestureRecognizer)
     }
     
@@ -964,7 +964,7 @@ extension DevicesViewController {
         let controlType          = device.controlType
         let address              = device.getAddress()
         let setDeviceValue:UInt8 = commandValue
-        let deviceCurrentValue   = Int(device.currentValue)
+        let deviceCurrentValue   = device.currentValue.intValue
         let deviceGroupId        = device.curtainGroupID.intValue
         
         // Find the device that is the pair of this device for reley control
@@ -1030,13 +1030,13 @@ extension DevicesViewController {
     }
     
     // SALTO
-    func lockSalto(_ gestureRecognizer:UITapGestureRecognizer) {
+    @objc func lockSalto(_ gestureRecognizer:UITapGestureRecognizer) {
         engageSalto(command: .lock, gestureRecognizer: gestureRecognizer)
     }
-    func unlockSalto(_ gestureRecognizer:UITapGestureRecognizer) {
+    @objc func unlockSalto(_ gestureRecognizer:UITapGestureRecognizer) {
         engageSalto(command: .unlock, gestureRecognizer: gestureRecognizer)
     }
-    func thirdFcnSalto(_ gestureRecognizer:UITapGestureRecognizer) {
+    @objc func thirdFcnSalto(_ gestureRecognizer:UITapGestureRecognizer) {
         engageSalto(command: .third, gestureRecognizer: gestureRecognizer)
     }
     
@@ -1064,7 +1064,7 @@ extension DevicesViewController {
         let device                = devices[tag]
         let address               = device.getAddress()
         let setDeviceValue:UInt8  = 0xFF
-        let deviceCurrentValue    = Int(device.currentValue)
+        let deviceCurrentValue    = device.currentValue.intValue
         device.currentValue = commandValue
         CoreDataController.sharedInstance.saveChanges()
         
@@ -1161,7 +1161,7 @@ extension DevicesViewController: BigSliderDelegate {
             }
             
             let address            = device.getAddress()
-            let deviceCurrentValue = Int(device.currentValue)
+            let deviceCurrentValue = device.currentValue.intValue
             device.currentValue = NSNumber(value: Int(setDeviceValue)*255/100)
             
             device.increaseUsageCounterValue()
@@ -1173,7 +1173,7 @@ extension DevicesViewController: BigSliderDelegate {
                     oldValue: NSNumber(value: deviceCurrentValue)
                 )
                 _ = RepeatSendingHandler(
-                    byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setDeviceValue, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: skipLevel),
+                    byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setDeviceValue, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: skipLevel),
                     gateway: device.gateway,
                     device: device,
                     oldValue: deviceCurrentValue,

@@ -22,11 +22,11 @@ class ScanCell:UITableViewCell {
         self.backgroundColor = .clear
         lblRow.text     = "\(tag + 1)"
         lblDesc.text    = device.name
-        lblAddress.text = "Address: \(returnThreeCharactersForByte(Int(device.gateway.addressOne))):\(returnThreeCharactersForByte(Int(device.gateway.addressTwo))):\(returnThreeCharactersForByte(Int(device.address))), Channel: \(device.channel)"
+        lblAddress.text = "Address: \(returnThreeCharactersForByte(device.gateway.addressOne.intValue)):\(returnThreeCharactersForByte(device.gateway.addressTwo.intValue)):\(returnThreeCharactersForByte(device.address.intValue)), Channel: \(device.channel)"
         if device.controlType == ControlType.Curtain { lblType.text = "Control type: \(ControlType.Relay)" } else { lblType.text = "Control type: \(device.controlType)" }
         
-        let zone = "Level: \(DatabaseHandler.sharedInstance.returnZoneWithIdForScanDevicesCell(Int(device.parentZoneId), location: device.gateway.location)) Zone: \(DatabaseHandler.sharedInstance.returnZoneWithIdForScanDevicesCell(Int(device.zoneId), location: device.gateway.location))"
-        let category = "Category: \(DatabaseHandler.sharedInstance.returnCategoryWithIdForScanDevicesCell(Int(device.categoryId), location: device.gateway.location))"
+        let zone = "Level: \(DatabaseHandler.sharedInstance.returnZoneWithIdForScanDevicesCell(device.parentZoneId.intValue, location: device.gateway.location)) Zone: \(DatabaseHandler.sharedInstance.returnZoneWithIdForScanDevicesCell(device.zoneId.intValue, location: device.gateway.location))"
+        let category = "Category: \(DatabaseHandler.sharedInstance.returnCategoryWithIdForScanDevicesCell(device.categoryId.intValue, location: device.gateway.location))"
         
         isEnabledSwitch.tag  = tag
         isVisibleSwitch.tag  = tag

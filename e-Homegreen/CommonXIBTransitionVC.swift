@@ -32,7 +32,7 @@ class CommonXIBTransitionVC: UIViewController {
         self.view.addGestureRecognizer(tapGesture)
     }
     
-    func tapOnView(_ gesture:UITapGestureRecognizer){
+    @objc func tapOnView(_ gesture:UITapGestureRecognizer){
         self.dismiss(animated: true, completion: nil)
     }
 

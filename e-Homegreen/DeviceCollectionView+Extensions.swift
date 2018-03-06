@@ -65,7 +65,6 @@ extension DevicesViewController: UICollectionViewDataSource {
                     
                     // If device is enabled add all interactions
                     if device.isEnabled.boolValue {
-                        
                         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(cellParametarLongPress(_:)))
                         longPress.minimumPressDuration = 0.5
                         cell.typeOfLight.addGestureRecognizer(longPress)
@@ -223,12 +222,12 @@ extension DevicesViewController {
         CoreDataController.sharedInstance.saveChanges()
     }
     
-    func refreshVisibleDevicesInScrollView () {
+    @objc func refreshVisibleDevicesInScrollView () {
         let indexPaths = deviceCollectionView.indexPathsForVisibleItems
         for indexPath in indexPaths { updateDeviceStatus (indexPathRow: indexPath.row) }
     }
     
-    func refreshCollectionView() {
+    @objc func refreshCollectionView() {
         deviceCollectionView.reloadData()
     }
 }
@@ -244,7 +243,7 @@ extension DevicesViewController {
                     if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as Date? {
                         if let hourValue = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayHours) as? Int, let minuteValue = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayMinutes) as? Int {
                             let minutes = (hourValue * 60 + minuteValue) * 60
-                            if Date().timeIntervalSince(stateUpdatedAt.addingTimeInterval(TimeInterval(NSNumber(value: minutes as Int)))) >= 0 { updateDeviceStatus (indexPathRow: indexPath.row) }
+                            if Date().timeIntervalSince(stateUpdatedAt.addingTimeInterval(TimeInterval(truncating: NSNumber(value: minutes as Int)))) >= 0 { updateDeviceStatus (indexPathRow: indexPath.row) }
                         }
                     } else { updateDeviceStatus (indexPathRow: indexPath.row) }
                 }
@@ -262,7 +261,7 @@ extension DevicesViewController {
                 if let stateUpdatedAt = devices[indexPath.row].stateUpdatedAt as Date? {
                     if let hourValue = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayHours) as? Int, let minuteValue = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayMinutes) as? Int {
                         let minutes = (hourValue * 60 + minuteValue) * 60
-                        if Date().timeIntervalSince(stateUpdatedAt.addingTimeInterval(TimeInterval(NSNumber(value: minutes as Int)))) >= 0 { updateDeviceStatus (indexPathRow: indexPath.row) }
+                        if Date().timeIntervalSince(stateUpdatedAt.addingTimeInterval(TimeInterval(truncating: NSNumber(value: minutes as Int)))) >= 0 { updateDeviceStatus (indexPathRow: indexPath.row) }
                     }
                 } else { updateDeviceStatus (indexPathRow: indexPath.row) }
             }
