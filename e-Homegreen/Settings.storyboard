@@ -184,22 +184,22 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mW9-SY-DvX">
+                                                    <rect key="frame" x="306" y="6.5" width="51" height="31"/>
+                                                </switch>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use default filter for all tabs:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hLt-R5-1gJ">
-                                                    <rect key="frame" x="15" y="11.5" width="132" height="21"/>
+                                                    <rect key="frame" x="15" y="11" width="230" height="21"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="132" id="imC-9j-QdB"/>
+                                                        <constraint firstAttribute="width" constant="230" id="imC-9j-QdB"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mW9-SY-DvX">
-                                                    <rect key="frame" x="191" y="6.5" width="51" height="31"/>
-                                                </switch>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="centerY" secondItem="hLt-R5-1gJ" secondAttribute="centerY" id="4YZ-wr-HaC"/>
-                                                <constraint firstItem="mW9-SY-DvX" firstAttribute="leading" secondItem="hLt-R5-1gJ" secondAttribute="trailing" constant="44" id="BCU-qC-Nlj"/>
+                                                <constraint firstAttribute="trailing" secondItem="mW9-SY-DvX" secondAttribute="trailing" constant="20" id="QsL-RT-HQI"/>
                                                 <constraint firstItem="hLt-R5-1gJ" firstAttribute="centerY" secondItem="mW9-SY-DvX" secondAttribute="centerY" id="ne4-Fh-LBd"/>
                                                 <constraint firstItem="hLt-R5-1gJ" firstAttribute="leading" secondItem="zRs-zr-929" secondAttribute="leadingMargin" id="zzD-pF-PF6"/>
                                             </constraints>
@@ -227,14 +227,14 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q3V-Xa-TJn">
-                                                    <rect key="frame" x="191" y="6.5" width="51" height="31"/>
+                                                    <rect key="frame" x="306" y="6.5" width="51" height="31"/>
                                                 </switch>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="centerY" secondItem="cod-RH-0LH" secondAttribute="centerY" id="DzQ-6Z-JGf"/>
+                                                <constraint firstAttribute="trailing" secondItem="Q3V-Xa-TJn" secondAttribute="trailing" constant="20" id="bLJ-zy-0X4"/>
                                                 <constraint firstItem="cod-RH-0LH" firstAttribute="leading" secondItem="Xmm-Pz-RUT" secondAttribute="leadingMargin" id="oWf-6C-Jxf"/>
                                                 <constraint firstItem="cod-RH-0LH" firstAttribute="centerY" secondItem="Q3V-Xa-TJn" secondAttribute="centerY" id="qH6-x0-doT"/>
-                                                <constraint firstItem="Q3V-Xa-TJn" firstAttribute="leading" secondItem="cod-RH-0LH" secondAttribute="trailing" constant="44" id="w1v-6C-Bun"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -260,13 +260,13 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7lA-yp-g5n">
-                                                    <rect key="frame" x="191" y="6.5" width="51" height="31"/>
+                                                    <rect key="frame" x="306" y="6.5" width="51" height="31"/>
                                                 </switch>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="centerY" secondItem="CPb-YD-xUF" secondAttribute="centerY" id="83O-Dk-hgW"/>
                                                 <constraint firstItem="CPb-YD-xUF" firstAttribute="centerY" secondItem="7lA-yp-g5n" secondAttribute="centerY" id="MZP-xP-yyW"/>
-                                                <constraint firstItem="7lA-yp-g5n" firstAttribute="leading" secondItem="CPb-YD-xUF" secondAttribute="trailing" constant="44" id="Wnj-OJ-a4n"/>
+                                                <constraint firstAttribute="trailing" secondItem="7lA-yp-g5n" secondAttribute="trailing" constant="20" id="cvX-fB-edM"/>
                                                 <constraint firstItem="CPb-YD-xUF" firstAttribute="leading" secondItem="TbI-Q3-7mx" secondAttribute="leadingMargin" id="skb-7s-yt2"/>
                                             </constraints>
                                         </tableViewCellContentView>

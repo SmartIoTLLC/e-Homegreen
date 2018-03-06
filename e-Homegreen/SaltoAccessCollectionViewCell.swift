@@ -1,14 +1,15 @@
 //
-//  SaltoAccessCell.swift
+//  SaltoAccessCollectionViewCell.swift
 //  e-Homegreen
 //
-//  Created by Damir Djozic on 9/27/16.
-//  Copyright © 2016 Teodor Stevic. All rights reserved.
+//  Created by Vladimir Tuchek on 3/5/18.
+//  Copyright © 2018 Teodor Stevic. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-class SaltoAccessCell: UICollectionViewCell {
+class SaltoAccessCollectionViewCell: UICollectionViewCell {
+    
     @IBOutlet weak var backView: CustomGradientBackground!
     @IBOutlet weak var saltoName: UILabel!
     @IBOutlet weak var saltoImage: UIImageView!
@@ -44,4 +45,5 @@ class SaltoAccessCell: UICollectionViewCell {
     @IBOutlet weak var lblLevel: UILabel!
     @IBOutlet weak var lblZone: UILabel!
     @IBOutlet weak var lblCategory: UILabel!
+
 }

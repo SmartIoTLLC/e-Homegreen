@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Tahoma.ttf">
+            <string>Tahoma</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="deviceCollectionViewCell" id="gTV-IL-0wX" customClass="DeviceCollectionViewCell" customModule="e_Homegreen" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view hidden="YES" alpha="0.40000000596046448" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hqB-O3-3rz">
+                        <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tNt-ob-705" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Running Time:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XVo-wF-EYx">
+                                <rect key="frame" x="0.0" y="10" width="150" height="14"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="12"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WVA-UD-FBT">
+                                <rect key="frame" x="0.0" y="29" width="150" height="12"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RX9-DV-9B8" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
+                                <rect key="frame" x="29" y="142" width="92" height="30"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="92" id="qY0-2R-N7N"/>
+                                    <constraint firstAttribute="height" constant="30" id="yrG-d2-ycd"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
+                                <inset key="contentEdgeInsets" minX="-20" minY="-20" maxX="-20" maxY="-20"/>
+                                <state key="normal" title="Refresh">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnRefresh:" destination="gTV-IL-0wX" eventType="touchUpInside" id="q7c-62-YM4"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Power Usage:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2wG-cD-oeV">
+                                <rect key="frame" x="0.0" y="58" width="150" height="14"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="12"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 W" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lio-Xn-7wh">
+                                <rect key="frame" x="0.0" y="105" width="150" height="12"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 A" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8aB-mX-xwe">
+                                <rect key="frame" x="0.0" y="75" width="150" height="12"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 V" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EF7-AS-Ufc">
+                                <rect key="frame" x="0.0" y="90" width="150" height="12"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="10"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="8aB-mX-xwe" firstAttribute="leading" secondItem="tNt-ob-705" secondAttribute="leading" id="1CK-QE-Yig"/>
+                            <constraint firstAttribute="trailing" secondItem="2wG-cD-oeV" secondAttribute="trailing" id="1wn-R0-hyb"/>
+                            <constraint firstAttribute="trailing" secondItem="8aB-mX-xwe" secondAttribute="trailing" id="6Oq-7z-vYW"/>
+                            <constraint firstItem="WVA-UD-FBT" firstAttribute="leading" secondItem="tNt-ob-705" secondAttribute="leading" id="6qh-dC-d0r"/>
+                            <constraint firstItem="WVA-UD-FBT" firstAttribute="top" secondItem="XVo-wF-EYx" secondAttribute="bottom" constant="5" id="6yI-tR-87m"/>
+                            <constraint firstItem="2wG-cD-oeV" firstAttribute="top" secondItem="WVA-UD-FBT" secondAttribute="bottom" constant="17" id="AQJ-Rm-abi"/>
+                            <constraint firstAttribute="trailing" secondItem="XVo-wF-EYx" secondAttribute="trailing" id="ApL-0i-74b"/>
+                            <constraint firstItem="2wG-cD-oeV" firstAttribute="leading" secondItem="tNt-ob-705" secondAttribute="leading" id="CcW-SR-KhO"/>
+                            <constraint firstAttribute="trailing" secondItem="WVA-UD-FBT" secondAttribute="trailing" id="GHL-ex-IDE"/>
+                            <constraint firstAttribute="bottom" secondItem="RX9-DV-9B8" secondAttribute="bottom" constant="8" id="KPQ-jb-giQ"/>
+                            <constraint firstItem="8aB-mX-xwe" firstAttribute="top" secondItem="2wG-cD-oeV" secondAttribute="bottom" constant="3" id="L5q-Pf-mAc"/>
+                            <constraint firstItem="EF7-AS-Ufc" firstAttribute="leading" secondItem="tNt-ob-705" secondAttribute="leading" id="MxC-Qn-wmZ"/>
+                            <constraint firstItem="XVo-wF-EYx" firstAttribute="leading" secondItem="tNt-ob-705" secondAttribute="leading" id="PyC-Rg-jQd"/>
+                            <constraint firstItem="EF7-AS-Ufc" firstAttribute="top" secondItem="8aB-mX-xwe" secondAttribute="bottom" constant="3" id="R4h-7a-n5e"/>
+                            <constraint firstItem="Lio-Xn-7wh" firstAttribute="top" secondItem="EF7-AS-Ufc" secondAttribute="bottom" constant="3" id="SWs-jm-nZt"/>
+                            <constraint firstItem="Lio-Xn-7wh" firstAttribute="leading" secondItem="tNt-ob-705" secondAttribute="leading" id="X7Z-kz-sGC"/>
+                            <constraint firstItem="XVo-wF-EYx" firstAttribute="top" secondItem="tNt-ob-705" secondAttribute="top" constant="10" id="cRh-0X-cZM"/>
+                            <constraint firstAttribute="trailing" secondItem="Lio-Xn-7wh" secondAttribute="trailing" id="mpM-uq-XUz"/>
+                            <constraint firstAttribute="trailing" secondItem="EF7-AS-Ufc" secondAttribute="trailing" id="nmR-F6-XYI"/>
+                            <constraint firstItem="RX9-DV-9B8" firstAttribute="centerX" secondItem="tNt-ob-705" secondAttribute="centerX" id="tgK-b4-GlT"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2fg-oT-Asd" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ru-cr-N4G" customClass="MarqueeLabel">
+                                <rect key="frame" x="0.0" y="8" width="150" height="18.5"/>
+                                <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="rate">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="leadingBuffer">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="trailingBuffer">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="fadeLength">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="holdScrolling" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="tapToScroll" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <slider opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="M8Z-fo-fSQ">
+                                <rect key="frame" x="18" y="145" width="114" height="31"/>
+                                <color key="tintColor" red="0.33333333329999998" green="0.33333333329999998" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </slider>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="lightBulb" translatesAutoresizingMaskIntoConstraints="NO" id="v2T-cG-S7N">
+                                <rect key="frame" x="20" y="35" width="110" height="110"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="v2T-cG-S7N" secondAttribute="height" multiplier="1:1" id="pfv-gX-J2X"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="v2T-cG-S7N" firstAttribute="centerY" secondItem="2fg-oT-Asd" secondAttribute="centerY" id="3Cd-d6-Ca4"/>
+                            <constraint firstAttribute="bottom" secondItem="M8Z-fo-fSQ" secondAttribute="bottom" constant="5" id="5oS-np-iDJ"/>
+                            <constraint firstAttribute="trailing" secondItem="M8Z-fo-fSQ" secondAttribute="trailing" constant="20" id="Amy-3t-t81"/>
+                            <constraint firstItem="4Ru-cr-N4G" firstAttribute="top" secondItem="2fg-oT-Asd" secondAttribute="top" constant="8" id="TJ3-no-yy1"/>
+                            <constraint firstItem="v2T-cG-S7N" firstAttribute="leading" secondItem="2fg-oT-Asd" secondAttribute="leading" constant="20" id="Wet-dP-fkg"/>
+                            <constraint firstAttribute="trailing" secondItem="4Ru-cr-N4G" secondAttribute="trailing" id="Y6E-m0-xre"/>
+                            <constraint firstItem="4Ru-cr-N4G" firstAttribute="leading" secondItem="2fg-oT-Asd" secondAttribute="leading" id="dnp-9P-imb"/>
+                            <constraint firstItem="M8Z-fo-fSQ" firstAttribute="leading" secondItem="2fg-oT-Asd" secondAttribute="leading" constant="20" id="hs6-T4-mQa"/>
+                            <constraint firstAttribute="trailing" secondItem="v2T-cG-S7N" secondAttribute="trailing" constant="20" id="jb6-iJ-Iop"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="tNt-ob-705" firstAttribute="leading" secondItem="ZTg-uK-7eu" secondAttribute="leading" id="2O4-GY-5nO"/>
+                <constraint firstItem="tNt-ob-705" firstAttribute="top" secondItem="ZTg-uK-7eu" secondAttribute="top" id="IYW-7B-d5Q"/>
+                <constraint firstItem="ZTg-uK-7eu" firstAttribute="trailing" secondItem="tNt-ob-705" secondAttribute="trailing" id="Q4f-6F-gnn"/>
+                <constraint firstItem="2fg-oT-Asd" firstAttribute="top" secondItem="ZTg-uK-7eu" secondAttribute="top" id="UP9-5b-LvV"/>
+                <constraint firstItem="ZTg-uK-7eu" firstAttribute="trailing" secondItem="2fg-oT-Asd" secondAttribute="trailing" id="WL6-j9-0Y2"/>
+                <constraint firstItem="ZTg-uK-7eu" firstAttribute="bottom" secondItem="2fg-oT-Asd" secondAttribute="bottom" id="aJx-WQ-dkb"/>
+                <constraint firstItem="ZTg-uK-7eu" firstAttribute="bottom" secondItem="tNt-ob-705" secondAttribute="bottom" id="bXV-nJ-xHt"/>
+                <constraint firstItem="2fg-oT-Asd" firstAttribute="leading" secondItem="ZTg-uK-7eu" secondAttribute="leading" id="frT-0X-wKE"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <size key="customSize" width="150" height="177"/>
+            <connections>
+                <outlet property="backView" destination="2fg-oT-Asd" id="Avw-QE-XqM"/>
+                <outlet property="disabledCellView" destination="hqB-O3-3rz" id="H2x-NJ-4l1"/>
+                <outlet property="infoView" destination="tNt-ob-705" id="el4-Ki-TsL"/>
+                <outlet property="labelPowrUsege" destination="Lio-Xn-7wh" id="bcD-JR-NWp"/>
+                <outlet property="labelRunningTime" destination="WVA-UD-FBT" id="qSo-nU-Hp1"/>
+                <outlet property="lblElectricity" destination="8aB-mX-xwe" id="m6J-gg-qDg"/>
+                <outlet property="lblVoltage" destination="EF7-AS-Ufc" id="PZs-NR-sXa"/>
+                <outlet property="lightSlider" destination="M8Z-fo-fSQ" id="KKE-cv-MB8"/>
+                <outlet property="picture" destination="v2T-cG-S7N" id="h9m-O5-HSo"/>
+                <outlet property="typeOfLight" destination="4Ru-cr-N4G" id="nhl-ub-ZUk"/>
+            </connections>
+            <point key="canvasLocation" x="32" y="60.5"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="lightBulb" width="100" height="100"/>
+    </resources>
+</document>

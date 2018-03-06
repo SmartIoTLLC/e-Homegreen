@@ -12,7 +12,6 @@ import AVFoundation
 import Crashlytics
 import AudioToolbox
 
-// TODO: favorite devices
 class DevicesViewController: PopoverVC{
     
     var refreshTimer: Foundation.Timer?
@@ -71,10 +70,12 @@ class DevicesViewController: PopoverVC{
     override func viewDidLoad() {
         super.viewDidLoad()
         appDel = UIApplication.shared.delegate as! AppDelegate
-
+        registerDeviceCells()
         setupViews()
         addObserversVDL()
     }
+    
+
     
     override func viewWillLayoutSubviews() {
         setContentOffset(for: scrollView)
@@ -106,11 +107,6 @@ class DevicesViewController: PopoverVC{
     override func viewWillDisappear(_ animated: Bool) {
         removeObservers()
         stopRefreshTimer()
-    }
-    
-    fileprivate func loadFavoriteDevices() {        
-        devices = devices.filter({ (device) -> Bool in device.isFavorite == true })
-        deviceCollectionView.reloadData()
     }
     
     override func nameAndId(_ name : String, id:String){
@@ -164,13 +160,13 @@ class DevicesViewController: PopoverVC{
             let options: UIViewAnimationOptions = [.transitionFlipFromBottom, .showHideTransitionViews]
             
             switch controlType {
-                case ControlType.Dimmer  : if let cell = cell as? DeviceCollectionCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
-                case ControlType.Relay   : if let cell = cell as? ApplianceCollectionCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+                case ControlType.Dimmer  : if let cell = cell as? DeviceCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+                case ControlType.Relay   : if let cell = cell as? ApplianceCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
                 case ControlType.Sensor,
                      ControlType.IntelligentSwitch,
-                     ControlType.Gateway : if let cell = cell as? MultiSensorCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
-                case ControlType.Climate : if let cell = cell as? ClimateCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
-                case ControlType.Curtain : if let cell = cell as? CurtainCollectionCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+                     ControlType.Gateway : if let cell = cell as? MultisensorCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+                case ControlType.Climate : if let cell = cell as? ClimateCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+                case ControlType.Curtain : if let cell = cell as? CurtainCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
                 default: break
             }
             
@@ -187,13 +183,13 @@ class DevicesViewController: PopoverVC{
             let options: UIViewAnimationOptions = [.transitionFlipFromBottom, .showHideTransitionViews]
             
             switch controlType {
-                case ControlType.Dimmer      : if let cell = cell as? DeviceCollectionCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
-                case ControlType.Relay       : if let cell = cell as? ApplianceCollectionCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+                case ControlType.Dimmer      : if let cell = cell as? DeviceCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+                case ControlType.Relay       : if let cell = cell as? ApplianceCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
                     case ControlType.Sensor,
                          ControlType.IntelligentSwitch,
-                         ControlType.Gateway : if let cell = cell as? MultiSensorCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
-                case ControlType.Climate     : if let cell = cell as? ClimateCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
-                case ControlType.Curtain     : if let cell = cell as? CurtainCollectionCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+                         ControlType.Gateway : if let cell = cell as? MultisensorCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+                case ControlType.Climate     : if let cell = cell as? ClimateCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+                case ControlType.Curtain     : if let cell = cell as? CurtainCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
                 default: break
             }
 
@@ -223,11 +219,11 @@ class DevicesViewController: PopoverVC{
             device.oldValue     = device.currentValue
             device.currentValue = NSNumber(value: Int(value))
             
-            if let cell = deviceCollectionView.cellForItem(at: indexPath) as? DeviceCollectionCell {
+            if let cell = deviceCollectionView.cellForItem(at: indexPath) as? DeviceCollectionViewCell {
                 cell.picture.image     = device.returnImage(Double(value))
                 cell.lightSlider.value = slider.value
                 cell.setNeedsDisplay()
-            } else if let cell = deviceCollectionView.cellForItem(at: indexPath) as? CurtainCollectionCell {
+            } else if let cell = deviceCollectionView.cellForItem(at: indexPath) as? CurtainCollectionViewCell {
                 cell.setImageForDevice(device); cell.setNeedsDisplay()
             }
             changeSliderValueWithTag(tag, withOldValue: Int(sliderOldValue))
@@ -342,12 +338,12 @@ class DevicesViewController: PopoverVC{
         device.currentValue = NSNumber(value: Int(sender.value * 255))   // device values is Int, 0 to 255 (0x00 to 0xFF)
         
         let indexPath = IndexPath(item: tag, section: 0)
-        if let cell = deviceCollectionView.cellForItem(at: indexPath) as? DeviceCollectionCell {
+        if let cell = deviceCollectionView.cellForItem(at: indexPath) as? DeviceCollectionViewCell {
             let deviceValue:Double = { return Double(device.currentValue) }()
             cell.picture.image     = device.returnImage(Double(deviceValue))
             cell.lightSlider.value = Float(deviceValue/255) // Slider value accepts values from 0 to 1
             cell.setNeedsDisplay()
-        } else if let cell = self.deviceCollectionView.cellForItem(at: indexPath) as? CurtainCollectionCell {
+        } else if let cell = self.deviceCollectionView.cellForItem(at: indexPath) as? CurtainCollectionViewCell {
             cell.setImageForDevice(device); cell.setNeedsDisplay()
         }
     }
@@ -648,6 +644,16 @@ class DevicesViewController: PopoverVC{
 // MARK: - View setup
 extension DevicesViewController {
     
+    fileprivate func registerDeviceCells() {
+        deviceCollectionView.register(UINib(nibName: String(describing: DeviceCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "deviceCollectionViewCell")
+        deviceCollectionView.register(UINib(nibName: String(describing: ApplianceCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "applianceCollectionViewCell")
+        deviceCollectionView.register(UINib(nibName: String(describing: CurtainCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "curtainCollectionViewCell")
+        deviceCollectionView.register(UINib(nibName: String(describing: ClimateCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "climateCollectionViewCell")
+        deviceCollectionView.register(UINib(nibName: String(describing: MultisensorCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "multisensorCollectionViewCell")
+        deviceCollectionView.register(UINib(nibName: String(describing: SaltoAccessCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "saltoAccessCollectionViewCell")
+        deviceCollectionView.register(UINib(nibName: String(describing: DefaultDeviceCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "defaultDeviceCollectionViewCell")
+    }
+    
     func setupViews() {
         storedIBeaconBarButtonItem = iBeaconBarButton
         
@@ -704,12 +710,12 @@ extension DevicesViewController {
             let device = devices[indexPath.row]
             let tag    = indexPath.row
             
-            if let cell = cell as? DeviceCollectionCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
-            else if let cell = cell as? CurtainCollectionCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
-            else if let cell = cell as? MultiSensorCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
-            else if let cell = cell as? ClimateCell { cell.setCell(device: device, tag: tag); cell.setNeedsDisplay() }
-            else if let cell = cell as? ApplianceCollectionCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
-            else if let cell = cell as? SaltoAccessCell { cell.setCell(device: device, tag: tag); cell.setNeedsDisplay() }
+            if let cell = cell as? DeviceCollectionViewCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
+            else if let cell = cell as? CurtainCollectionViewCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
+            else if let cell = cell as? MultisensorCollectionViewCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
+            else if let cell = cell as? ClimateCollectionViewCell { cell.setCell(device: device, tag: tag); cell.setNeedsDisplay() }
+            else if let cell = cell as? ApplianceCollectionViewCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
+            else if let cell = cell as? SaltoAccessCollectionViewCell { cell.setCell(device: device, tag: tag); cell.setNeedsDisplay() }
         }
     }
     
@@ -770,66 +776,11 @@ extension DevicesViewController {
     
     // GENERAL
     func updateDeviceList (_ user:User) {
+       // handleDefaultFilterForAllTabs()
         
-        handleDefaultFilterForAllTabs()
-        
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
-
-        fetchRequest.sortDescriptors = [
-            NSSortDescriptor(key: "gateway.name", ascending: true),
-            NSSortDescriptor(key: "address", ascending: true),
-            NSSortDescriptor(key: "type", ascending: true),
-            NSSortDescriptor(key: "channel", ascending: true)
-        ]
-        if user.sortDevicesByUsage { fetchRequest.sortDescriptors?.append(NSSortDescriptor(key: "usageCounter", ascending: false)) }
-        
-        var predicateArray:[NSPredicate] = [
-            NSPredicate(format: "gateway.location.user == %@", user),
-            NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool)),
-            NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool)),
-            NSPredicate(format: "type != %@", ControlType.PC)         // Filtering out PC devices
-        ]
-        
-        // Filtering by parametars from filter
-        if filterParametar.location != "All" { predicateArray.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location)) }
-        if filterParametar.levelId != 0 && filterParametar.levelId != 255 { predicateArray.append(NSPredicate(format: "parentZoneId == %@", NSNumber(value: filterParametar.levelId as Int))) }
-        if filterParametar.zoneId != 0 && filterParametar.zoneId != 255 { predicateArray.append(NSPredicate(format: "zoneId == %@", NSNumber(value: filterParametar.zoneId as Int))) }
-        if filterParametar.categoryId != 0 && filterParametar.categoryId != 255 { predicateArray.append(NSPredicate(format: "categoryId == %@", NSNumber(value: filterParametar.categoryId as Int))) }
-        
-        let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
-        fetchRequest.predicate = compoundPredicate
-        
-        do {
-            if let moc = appDel.managedObjectContext {
-                if let fetResults = try moc.fetch(fetchRequest) as? [Device] {
-                    devices = fetResults.map({$0})
-                    
-                    // filter Curtain devices that are, actually, one device
-                    
-                    // All curtains
-                    let curtainDevices = devices.filter({$0.controlType == ControlType.Curtain})
-                    if curtainDevices.count > 0 {
-                        for i in 0...curtainDevices.count - 1 {
-                            if i+1 < curtainDevices.count { // if next exist
-                                for j in i+1...curtainDevices.count - 1 {
-                                    if (curtainDevices[i].address == curtainDevices[j].address
-                                        && curtainDevices[i].controlType == curtainDevices[j].controlType
-                                        && curtainDevices[i].isCurtainModeAllowed.boolValue
-                                        && curtainDevices[j].isCurtainModeAllowed.boolValue
-                                        && curtainDevices[i].curtainGroupID == curtainDevices[j].curtainGroupID) {
-                                        
-                                        if let indexOfDeviceToBeNotShown = devices.index(of: curtainDevices[j]) { devices.remove(at: indexOfDeviceToBeNotShown) }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    for device in devices { device.cellTitle = DatabaseDeviceController.shared.returnNameForDeviceAccordingToFilter(filterParameter: filterParametar, device: device) }
-                }
-            }
-
-            
-        } catch let error1 as NSError { error = error1; print("Unresolved error \(String(describing: error)), \(error!.userInfo)") }
+        if let devices = DatabaseDeviceController.shared.getDevicesOnDevicesScreen(filterParametar: filterParametar, user: user) {
+            self.devices = devices
+        }
     }
     
     func refreshDevice(_ sender:AnyObject) {
@@ -894,37 +845,39 @@ extension DevicesViewController {
         var setDeviceValue:UInt8 = 0
         var skipLevel:UInt8      = 0
         let deviceCurrentValue   = device.currentValue
-        
+
         device.increaseUsageCounterValue()
-        
+        print("device address:", device.getAddress())
+        print("device usage counter:", device.usageCounter?.intValue)
+
         switch controlType {
             case ControlType.Dimmer:
-                if Int(deviceCurrentValue) > 0 {
-                    device.oldValue = deviceCurrentValue
-                    setDeviceValue = UInt8(0)
-                    skipLevel = 0
-                } else {
-                    if let oldVal = device.oldValue { setDeviceValue = UInt8(round(oldVal.floatValue*100/255)) } else { setDeviceValue = 100 }
-                    skipLevel = getByte(device.skipState)
+                switch deviceCurrentValue.intValue {
+                    case 0:
+                        device.oldValue = deviceCurrentValue
+                        setDeviceValue = UInt8(0)
+                        skipLevel = 0
+                    default:
+                        if let oldVal = device.oldValue { setDeviceValue = UInt8(round(oldVal.floatValue*100/255)) } else { setDeviceValue = 100 }
+                        skipLevel = getByte(device.skipState)
                 }
-                
+
                 device.currentValue = NSNumber(value: Int(setDeviceValue)*255/100)
                 print("Device current value: \(deviceCurrentValue)%")
-                DispatchQueue.main.async(execute: {
-                    RunnableList.sharedInstance.checkForSameDevice(
-                        device: device.objectID,
-                        newCommand: NSNumber(value: setDeviceValue),
-                        oldValue: NSNumber(value: setDeviceValue)
-                    )
-                    _ = RepeatSendingHandler(
-                        byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setDeviceValue, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: skipLevel),
-                        gateway: device.gateway,
-                        device: device,
-                        oldValue: Int(deviceCurrentValue),
-                        command: NSNumber(value: setDeviceValue)
-                    )
-                })
-            
+                RunnableList.sharedInstance.checkForSameDevice(
+                    device: device.objectID,
+                    newCommand: NSNumber(value: setDeviceValue),
+                    oldValue: NSNumber(value: setDeviceValue)
+                )
+                _ = RepeatSendingHandler(
+                    byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setDeviceValue, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: skipLevel),
+                    gateway: device.gateway,
+                    device: device,
+                    oldValue: Int(deviceCurrentValue),
+                    command: NSNumber(value: setDeviceValue)
+                )
+                print("poslato")
+
             case ControlType.Relay: // Appliance
                 if Int(deviceCurrentValue) > 0 {
                     setDeviceValue = UInt8(0)
@@ -934,7 +887,7 @@ extension DevicesViewController {
                     setDeviceValue = 255
                     skipLevel = getByte(device.skipState)
                 }
-                
+
                 device.currentValue = NSNumber(value: Int(setDeviceValue))
                 DispatchQueue.main.async(execute: {
                     RunnableList.sharedInstance.checkForSameDevice(
@@ -950,10 +903,10 @@ extension DevicesViewController {
                         command: NSNumber(value: setDeviceValue)
                     )
                 })
-            
+
             default: break
         }
-
+        print("preskocio")
         updateCells()
     }
     

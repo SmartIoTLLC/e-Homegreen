@@ -1,15 +1,15 @@
 //
-//  MultiSensorCell.swift
+//  MultisensorCollectionViewCell.swift
 //  e-Homegreen
 //
-//  Created by Damir Djozic on 8/1/16.
-//  Copyright © 2016 Teodor Stevic. All rights reserved.
+//  Created by Vladimir Tuchek on 3/5/18.
+//  Copyright © 2018 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
 
-// Multisensor 10 in 1 and 6 in 1
-class MultiSensorCell: UICollectionViewCell {
+class MultisensorCollectionViewCell: UICollectionViewCell {
+
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var sensorImage: UIImageView!
     @IBOutlet weak var sensorTitle: UILabel!
@@ -59,7 +59,7 @@ class MultiSensorCell: UICollectionViewCell {
     
     func refreshDevice(_ device:Device) {
         sensorState.font = .tahoma(size: 15)
-
+        
         sensorState.text = " "
         populateCell(device)
         
@@ -94,28 +94,28 @@ class MultiSensorCell: UICollectionViewCell {
         
         if device.numberOfDevices == 6 {
             switch device.channel {
-                case 1, 4  : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value) °C"
-                case 2, 3 : sensorImage.image = device.returnImage(dValue); sensorState.text = returnDigitalInputModeStateinterpreter(device)
-                case 5    :
-                    switch Int(value) {
-                        case DeviceValue.MotionSensor.Idle          : sensorImage.image = sensorIdleImage; sensorState.text = "Idle"
-                        case DeviceValue.MotionSensor.Motion        : sensorImage.image = sensorMotionImage; sensorState.text = "Motion"
-                        case DeviceValue.MotionSensor.IdleWarning   : sensorImage.image = sensorThirdImage; sensorState.text = "Idle Warning"
-                        case DeviceValue.MotionSensor.ResetTimer    : sensorImage.image = sensorThirdImage; sensorState.text = "Reset Timer"
-                        default: break
-                    }
-                case 6   : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value)"
-                default  : sensorState.text = "..."
+            case 1, 4  : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value) °C"
+            case 2, 3 : sensorImage.image = device.returnImage(dValue); sensorState.text = returnDigitalInputModeStateinterpreter(device)
+            case 5    :
+                switch Int(value) {
+                case DeviceValue.MotionSensor.Idle          : sensorImage.image = sensorIdleImage; sensorState.text = "Idle"
+                case DeviceValue.MotionSensor.Motion        : sensorImage.image = sensorMotionImage; sensorState.text = "Motion"
+                case DeviceValue.MotionSensor.IdleWarning   : sensorImage.image = sensorThirdImage; sensorState.text = "Idle Warning"
+                case DeviceValue.MotionSensor.ResetTimer    : sensorImage.image = sensorThirdImage; sensorState.text = "Reset Timer"
+                default: break
+                }
+            case 6   : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value)"
+            default  : sensorState.text = "..."
             }
         }
         
         if device.numberOfDevices == 5 {
             switch device.channel {
-                case 1    : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value) °C"
-                case 2, 3 : sensorImage.image = device.returnImage(dValue); sensorState.text = returnDigitalInputModeStateinterpreter(device)
-                case 4    : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value) \u{00B0}c"
-                case 5    : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value)"
-                default   : sensorState.text  = "..."
+            case 1    : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value) °C"
+            case 2, 3 : sensorImage.image = device.returnImage(dValue); sensorState.text = returnDigitalInputModeStateinterpreter(device)
+            case 4    : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value) \u{00B0}c"
+            case 5    : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value)"
+            default   : sensorState.text  = "..."
             }
         }
         
@@ -123,9 +123,9 @@ class MultiSensorCell: UICollectionViewCell {
         
         if device.numberOfDevices == 3 {
             switch device.channel {
-                case 1    : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value) °C"
-                case 2, 3 : sensorImage.image = device.returnImage(dValue); sensorState.text = returnDigitalInputModeStateinterpreter(device)
-                default   : sensorState.text  = "..."
+            case 1    : sensorImage.image = device.returnImage(dValue); sensorState.text = "\(value) °C"
+            case 2, 3 : sensorImage.image = device.returnImage(dValue); sensorState.text = returnDigitalInputModeStateinterpreter(device)
+            default   : sensorState.text  = "..."
             }
         }
         
@@ -143,4 +143,5 @@ class MultiSensorCell: UICollectionViewCell {
     @IBOutlet weak var labelCategory: UILabel!
     @IBOutlet weak var labelLevel: UILabel!
     @IBOutlet weak var labelZone: UILabel!
+
 }

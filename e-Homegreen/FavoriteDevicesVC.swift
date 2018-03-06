@@ -26,6 +26,7 @@ class FavoriteDevicesVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerDeviceCells()
         addObservers()
         setupViews()
     }
@@ -63,11 +64,11 @@ extension FavoriteDevicesVC {
             device.oldValue     = device.currentValue
             device.currentValue = NSNumber(value: Int(value))
             
-            if let cell = deviceCollectionView.cellForItem(at: indexPath) as? DeviceCollectionCell {
+            if let cell = deviceCollectionView.cellForItem(at: indexPath) as? DeviceCollectionViewCell {
                 cell.picture.image     = device.returnImage(Double(value))
                 cell.lightSlider.value = slider.value
                 cell.setNeedsDisplay()
-            } else if let cell = deviceCollectionView.cellForItem(at: indexPath) as? CurtainCollectionCell {
+            } else if let cell = deviceCollectionView.cellForItem(at: indexPath) as? CurtainCollectionViewCell {
                 cell.setImageForDevice(device); cell.setNeedsDisplay()
             }
             changeSliderValueWithTag(tag, withOldValue: Int(sliderOldValue))
@@ -182,12 +183,12 @@ extension FavoriteDevicesVC {
         device.currentValue = NSNumber(value: Int(sender.value * 255))   // device values is Int, 0 to 255 (0x00 to 0xFF)
         
         let indexPath = IndexPath(item: tag, section: 0)
-        if let cell = deviceCollectionView.cellForItem(at: indexPath) as? DeviceCollectionCell {
+        if let cell = deviceCollectionView.cellForItem(at: indexPath) as? DeviceCollectionViewCell {
             let deviceValue:Double = { return Double(device.currentValue) }()
             cell.picture.image     = device.returnImage(Double(deviceValue))
             cell.lightSlider.value = Float(deviceValue/255) // Slider value accepts values from 0 to 1
             cell.setNeedsDisplay()
-        } else if let cell = self.deviceCollectionView.cellForItem(at: indexPath) as? CurtainCollectionCell {
+        } else if let cell = self.deviceCollectionView.cellForItem(at: indexPath) as? CurtainCollectionViewCell {
             cell.setImageForDevice(device); cell.setNeedsDisplay()
         }
     }
@@ -227,13 +228,13 @@ extension FavoriteDevicesVC {
             let options: UIViewAnimationOptions = [.transitionFlipFromBottom, .showHideTransitionViews]
             
             switch controlType {
-            case ControlType.Dimmer  : if let cell = cell as? DeviceCollectionCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
-            case ControlType.Relay   : if let cell = cell as? ApplianceCollectionCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+            case ControlType.Dimmer  : if let cell = cell as? DeviceCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+            case ControlType.Relay   : if let cell = cell as? ApplianceCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
             case ControlType.Sensor,
                  ControlType.IntelligentSwitch,
-                 ControlType.Gateway : if let cell = cell as? MultiSensorCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
-            case ControlType.Climate : if let cell = cell as? ClimateCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
-            case ControlType.Curtain : if let cell = cell as? CurtainCollectionCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+                 ControlType.Gateway : if let cell = cell as? MultisensorCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+            case ControlType.Climate : if let cell = cell as? ClimateCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+            case ControlType.Curtain : if let cell = cell as? CurtainCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
             default: break
             }
             
@@ -250,13 +251,13 @@ extension FavoriteDevicesVC {
             let options: UIViewAnimationOptions = [.transitionFlipFromBottom, .showHideTransitionViews]
             
             switch controlType {
-            case ControlType.Dimmer      : if let cell = cell as? DeviceCollectionCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
-            case ControlType.Relay       : if let cell = cell as? ApplianceCollectionCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+            case ControlType.Dimmer      : if let cell = cell as? DeviceCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+            case ControlType.Relay       : if let cell = cell as? ApplianceCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
             case ControlType.Sensor,
                  ControlType.IntelligentSwitch,
-                 ControlType.Gateway : if let cell = cell as? MultiSensorCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
-            case ControlType.Climate     : if let cell = cell as? ClimateCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
-            case ControlType.Curtain     : if let cell = cell as? CurtainCollectionCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+                 ControlType.Gateway : if let cell = cell as? MultisensorCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+            case ControlType.Climate     : if let cell = cell as? ClimateCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+            case ControlType.Curtain     : if let cell = cell as? CurtainCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
             default: break
             }
             
@@ -305,16 +306,16 @@ extension FavoriteDevicesVC {
             let address     = devices[tag].getAddress()
             
             switch controlType {
-            case ControlType.Dimmer:
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway)
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
-            case ControlType.Relay:
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway)
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
-            case ControlType.Curtain:
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurtainStatus(address), gateway: gateway)
-                SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
-            default: break
+                case ControlType.Dimmer:
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway)
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
+                case ControlType.Relay:
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway)
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
+                case ControlType.Curtain:
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurtainStatus(address), gateway: gateway)
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
+                default: break
             }
             
         }
@@ -589,6 +590,16 @@ extension FavoriteDevicesVC {
 
 // MARK: - Setup views
 extension FavoriteDevicesVC {
+    fileprivate func registerDeviceCells() {
+        deviceCollectionView.register(UINib(nibName: String(describing: DeviceCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "deviceCollectionViewCell")
+        deviceCollectionView.register(UINib(nibName: String(describing: ApplianceCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "applianceCollectionViewCell")
+        deviceCollectionView.register(UINib(nibName: String(describing: CurtainCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "curtainCollectionViewCell")
+        deviceCollectionView.register(UINib(nibName: String(describing: ClimateCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "climateCollectionViewCell")
+        deviceCollectionView.register(UINib(nibName: String(describing: MultisensorCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "multisensorCollectionViewCell")
+        deviceCollectionView.register(UINib(nibName: String(describing: SaltoAccessCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "saltoAccessCollectionViewCell")
+        deviceCollectionView.register(UINib(nibName: String(describing: DefaultDeviceCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "defaultDeviceCollectionViewCell")
+    }
+    
     fileprivate func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(loadFavDevices), name: .favoriteDeviceToggled, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateDeviceNamesAccordingToFilter), name: .favDeviceFilterTypeChanged, object: nil)
@@ -608,7 +619,7 @@ extension FavoriteDevicesVC {
     
     @objc fileprivate func loadFavDevices() {
         if let devices = DatabaseDeviceController.shared.getDevices() {
-            self.devices = devices.filter({ (device) -> Bool in device.isFavorite == true })
+            self.devices = devices.filter({ (device) -> Bool in device.isFavorite!.boolValue == true })
             updateDeviceNamesAccordingToFilter()
             deviceCollectionView.reloadData()
         }
@@ -626,12 +637,12 @@ extension FavoriteDevicesVC {
             let device = devices[indexPath.row]
             let tag    = indexPath.row
             
-            if let cell = cell as? DeviceCollectionCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
-            else if let cell = cell as? CurtainCollectionCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
-            else if let cell = cell as? MultiSensorCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
-            else if let cell = cell as? ClimateCell { cell.setCell(device: device, tag: tag); cell.setNeedsDisplay() }
-            else if let cell = cell as? ApplianceCollectionCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
-            else if let cell = cell as? SaltoAccessCell { cell.setCell(device: device, tag: tag); cell.setNeedsDisplay() }
+            if let cell = cell as? DeviceCollectionViewCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
+            else if let cell = cell as? CurtainCollectionViewCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
+            else if let cell = cell as? MultisensorCollectionViewCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
+            else if let cell = cell as? ClimateCollectionViewCell { cell.setCell(device: device, tag: tag); cell.setNeedsDisplay() }
+            else if let cell = cell as? ApplianceCollectionViewCell { cell.refreshDevice(device); cell.setNeedsDisplay() }
+            else if let cell = cell as? SaltoAccessCollectionViewCell { cell.setCell(device: device, tag: tag); cell.setNeedsDisplay() }
         }
     }
 }

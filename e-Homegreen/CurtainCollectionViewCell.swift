@@ -1,27 +1,26 @@
 //
-//  CurtainCollectionCell.swift
+//  CurtainCollectionViewCell.swift
 //  e-Homegreen
 //
-//  Created by Damir Djozic on 8/1/16.
-//  Copyright © 2016 Teodor Stevic. All rights reserved.
+//  Created by Vladimir Tuchek on 3/5/18.
+//  Copyright © 2018 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
-import CoreData
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l < r
+    case (nil, _?):
+        return true
+    default:
+        return false
+    }
 }
 
+class CurtainCollectionViewCell: UICollectionViewCell {
 
-//curtain
-class CurtainCollectionCell: UICollectionViewCell {
     @IBOutlet weak var backView: CustomGradientBackground!
     @IBOutlet weak var curtainName: UILabel!
     @IBOutlet weak var curtainImage: UIImageView!
@@ -70,11 +69,11 @@ class CurtainCollectionCell: UICollectionViewCell {
     @IBOutlet weak var lblLevel: UILabel!
     @IBOutlet weak var lblZone: UILabel!
     @IBOutlet weak var lblCategory: UILabel!
-
-// Other. Helper
+    
+    // Other. Helper
     
     func setImageForDevice(_ device: Device){
-
+        
         // Find the device that is the pair of this device for reley control
         // First or second channel will always be presented (not 3 and 4), so we are looking for 3 and 4 channels
         let devices = CoreDataController.sharedInstance.fetchDevicesByGatewayAndAddress(device.gateway, address: device.address)
@@ -85,7 +84,7 @@ class CurtainCollectionCell: UICollectionViewCell {
                     if deviceTemp.channel.intValue != device.channel.intValue {
                         if deviceTemp.isCurtainModeAllowed.boolValue == true && device.isCurtainModeAllowed.boolValue == true {
                             devicePair = deviceTemp
-                        }                        
+                        }
                     }
                 }
             }
@@ -102,7 +101,7 @@ class CurtainCollectionCell: UICollectionViewCell {
             if device.currentValue.intValue == 255 { curtainImage.image = UIImage(named: preSort[2].defaultImage!)
             } else if device.currentValue.intValue == 0 { curtainImage.image = UIImage(named: preSort[0].defaultImage!)
             } else { curtainImage.image = UIImage(named: preSort[1].defaultImage!) }
-        
+            
             // Old relay for curtain control
         } else {
             guard let devImages = Array(device.deviceImages!) as? [DeviceImage] else { return }
@@ -127,5 +126,5 @@ class CurtainCollectionCell: UICollectionViewCell {
             
         }
     }
-}
 
+}

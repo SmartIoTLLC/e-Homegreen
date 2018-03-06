@@ -402,15 +402,15 @@ class SortingDevicesTableViewCell: UITableViewCell {
     
     private func setupViews() {
         if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
-            sortingSwitch.isOn = user.sortDevicesByUsage
+            sortingSwitch.isOn = user.sortDevicesByUsage.boolValue
         }
         sortingSwitch.addTarget(self, action: #selector(setSortingPreferences), for: .touchUpInside)
     }
     
     @objc private func setSortingPreferences() {
         if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
-            user.sortDevicesByUsage = !user.sortDevicesByUsage
-            sortingSwitch.isOn = user.sortDevicesByUsage
+            user.sortDevicesByUsage = NSNumber(value: !user.sortDevicesByUsage.boolValue)
+            sortingSwitch.isOn = user.sortDevicesByUsage.boolValue
             CoreDataController.sharedInstance.saveChanges()
         }
     }

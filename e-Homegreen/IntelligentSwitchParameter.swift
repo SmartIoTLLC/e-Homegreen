@@ -74,10 +74,11 @@ class IntelligentSwitchParameter: CommonXIBTransitionVC {
         lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(deviceIn.categoryId), location: location))"
         deviceAddress.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne))):\(returnThreeCharactersForByte(Int(gateway.addressTwo))):\(returnThreeCharactersForByte(Int(deviceIn.address)))"
         deviceChannel.text = "\(deviceIn.channel)"
-        switch deviceIn.isFavorite {
+        switch deviceIn.isFavorite!.boolValue {
             case true: favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: UIControlState())
             case false: favoriteButton.setImage(#imageLiteral(resourceName: "unfavorite"), for: UIControlState())
         }
+        
         if let buttonImageView = favoriteButton.imageView { favoriteButton.bringSubview(toFront: buttonImageView) }
     }
     

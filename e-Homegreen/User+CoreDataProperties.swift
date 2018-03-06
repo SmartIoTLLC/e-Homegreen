@@ -23,7 +23,7 @@ extension User {
     @NSManaged public var isSuperUser: NSNumber
     @NSManaged public var lastScreenId: NSNumber?
     @NSManaged public var openLastScreen: NSNumber!
-    @NSManaged public var sortDevicesByUsage: Bool
+    @NSManaged public var sortDevicesByUsage: NSNumber
     @NSManaged public var useDefaultFilterForAllTabs: Bool
     @NSManaged public var password: String?
     @NSManaged public var username: String?

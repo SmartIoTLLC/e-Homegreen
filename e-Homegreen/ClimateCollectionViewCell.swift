@@ -1,15 +1,15 @@
 //
-//  ClimateCell.swift
+//  ClimateCollectionViewCell.swift
 //  e-Homegreen
 //
-//  Created by Damir Djozic on 8/1/16.
-//  Copyright © 2016 Teodor Stevic. All rights reserved.
+//  Created by Vladimir Tuchek on 3/5/18.
+//  Copyright © 2018 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
 
-//Clima
-class ClimateCell: UICollectionViewCell {
+class ClimateCollectionViewCell: UICollectionViewCell {
+
     @IBOutlet weak var backView: CustomGradientBackground!
     @IBOutlet weak var imageOnOff: UIImageView!
     @IBOutlet weak var climateName: UILabel!
@@ -64,7 +64,7 @@ class ClimateCell: UICollectionViewCell {
         climateMode.text  = device.mode
         climateSpeed.text = device.speed
         climateName.isUserInteractionEnabled = true
-
+        
         modeImage.animationImages = animationImages
         modeImage.animationRepeatCount = 0
         
@@ -92,15 +92,15 @@ class ClimateCell: UICollectionViewCell {
             case "Cool" : modeImage.stopAnimating(); modeImage.image = fanCoolImage; temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
             case "Heat" : modeImage.stopAnimating(); modeImage.image = fanHeatImage; temperatureSetPoint.text = "\(device.heatTemperature) \(degrees)"
             case "Fan"  : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
-                if fanSpeed == 0 { modeImage.image = fanAutoImage; modeImage.stopAnimating() }
-                else { modeImage.image = animationImages.first; modeImage.animationDuration = TimeInterval(fanSpeed); modeImage.startAnimating() }
+            if fanSpeed == 0 { modeImage.image = fanAutoImage; modeImage.stopAnimating() }
+            else { modeImage.image = animationImages.first; modeImage.animationDuration = TimeInterval(fanSpeed); modeImage.startAnimating() }
             case "Off"  : modeImage.stopAnimating(); modeImage.image = nil
-                switch mode {
-                case "Cool" : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
-                case "Heat" : temperatureSetPoint.text = "\(device.heatTemperature) \(degrees)"
-                case "Fan"  : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
-                case "Auto" : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
-                default     : break
+            switch mode {
+            case "Cool" : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
+            case "Heat" : temperatureSetPoint.text = "\(device.heatTemperature) \(degrees)"
+            case "Fan"  : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
+            case "Auto" : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
+            default     : break
                 }
                 
             default: break
@@ -132,7 +132,7 @@ class ClimateCell: UICollectionViewCell {
         let speedState = device.speedState
         let modeState  = device.modeState
         let mode       = device.mode
-
+        
         if device.currentValue == 255 {
             switch speedState {
             case "Low"  : fanSpeedImage.image = fanLowImage; fanSpeed = 1.0
@@ -149,11 +149,11 @@ class ClimateCell: UICollectionViewCell {
             else { modeImage.image = animationImages.first; modeImage.animationDuration = TimeInterval(fanSpeed); modeImage.startAnimating() }
                 
             default : modeImage.stopAnimating(); modeImage.image = nil
-                switch mode {
-                case "Cool" : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
-                case "Heat" : temperatureSetPoint.text = "\(device.heatTemperature) \(degrees)"
-                case "Fan"  : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
-                default     : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
+            switch mode {
+            case "Cool" : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
+            case "Heat" : temperatureSetPoint.text = "\(device.heatTemperature) \(degrees)"
+            case "Fan"  : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
+            default     : temperatureSetPoint.text = "\(device.coolTemperature) \(degrees)"
                 }
             }
             
@@ -173,4 +173,5 @@ class ClimateCell: UICollectionViewCell {
     @IBOutlet weak var lblVoltage: UILabel!
     @IBOutlet weak var lblElectricity: UILabel!
     @IBOutlet weak var btnRefresh: UIButton!
+
 }

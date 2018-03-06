@@ -302,7 +302,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             var options: [AnyHashable: Any] = [NSMigratePersistentStoresAutomaticallyOption:true,
                 NSInferMappingModelAutomaticallyOption:true,
                 NSSQLitePragmasOption: ["journal_mode": "DELETE"]]
-//            var options: [NSObject : AnyObject] = [NSSQLitePragmasOption: ["journal_mode": "DELETE"]]
             try coordinator!.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: options)
         } catch var error1 as NSError {
             error = error1
@@ -347,7 +346,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     // Replace this implementation with code to handle the error appropriately.
                     // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                     NSLog("Unresolved error \(String(describing: error)), \(error!.userInfo)")
-                    abort()
+                  //  abort()
                 }
             }
         }

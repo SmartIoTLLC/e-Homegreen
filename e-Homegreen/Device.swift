@@ -61,6 +61,8 @@ class Device: NSManagedObject {
         self.gateway = information.gateway
         self.isVisible = false
         self.isEnabled = false
+        self.isFavorite = NSNumber(value: false)
+        self.usageCounter = NSNumber(value: 0)
         self.mac = information.mac
         self.zoneId = -1
         self.parentZoneId = -1
@@ -123,6 +125,8 @@ class Device: NSManagedObject {
         self.gateway = information.gateway
         self.isVisible = false
         self.isEnabled = false
+        self.isFavorite = NSNumber(value: false)
+        self.usageCounter = NSNumber(value: 0)
         self.mac = information.mac
         self.zoneId = -1
         self.parentZoneId = -1
@@ -249,5 +253,21 @@ class Device: NSManagedObject {
         }
         
         return UIImage(named: "optionsss")!
+    }
+}
+
+extension Device {
+    func increaseUsageCounterValue() {
+        if let counterValue = self.usageCounter?.intValue {
+            let newValue = counterValue + 1
+            let newNS = NSNumber(value: newValue)
+            self.usageCounter = newNS
+            CoreDataController.sharedInstance.saveChanges()
+        }
+
+    }
+    
+    func getAddress() -> [Byte] {
+        return moduleAddress
     }
 }

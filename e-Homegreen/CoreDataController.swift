@@ -20,32 +20,37 @@ class CoreDataController: NSObject {
     
     func fetchGatewaysForHost(_ host:String, port:UInt16) -> [Gateway] {
         var gateways: [Gateway] = []
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Gateway.fetchRequest()
-        let compoundPredicate = NSCompoundPredicate(
-            type: .or,
-            subpredicates: [
-                NSPredicate(format: "remoteIpInUse == %@ AND remotePort == %@", host, NSNumber(value: port as UInt16)),
-                NSPredicate(format: "localIp == %@ AND localPort == %@", host, NSNumber(value: port as UInt16))
-            ]
-        )
-        fetchRequest.predicate = NSCompoundPredicate(
-            type: .and,
-            subpredicates: [
-                NSPredicate(format: "turnedOn == %@", NSNumber(value: true as Bool)),
-                compoundPredicate
-            ]
-        )
-        
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-        
-        do {
-            if let moc = appDel.managedObjectContext {
-                if let fetResults = try moc.fetch(fetchRequest) as? [Gateway] {
-                    gateways = fetResults
-                }
-            }
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Gateway.fetchRequest()
+            let compoundPredicate = NSCompoundPredicate(
+                type: .or,
+                subpredicates: [
+                    NSPredicate(format: "remoteIpInUse == %@ AND remotePort == %@", host, NSNumber(value: port as UInt16)),
+                    NSPredicate(format: "localIp == %@ AND localPort == %@", host, NSNumber(value: port as UInt16)),
+                    NSPredicate(format: "location.user == %@", user)
+                    
+                ]
+            )
+            fetchRequest.predicate = NSCompoundPredicate(
+                type: .and,
+                subpredicates: [
+                    NSPredicate(format: "turnedOn == %@", NSNumber(value: true as Bool)),
+                    compoundPredicate
+                ]
+            )
             
-        } catch let error1 as NSError { print("Unresolved error \(error1), \(error1.userInfo)") }
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+            
+            do {
+                if let moc = appDel.managedObjectContext {
+                    if let fetResults = try moc.fetch(fetchRequest) as? [Gateway] {
+                        gateways = fetResults
+                    }
+                }
+                
+            } catch let error1 as NSError { print("Unresolved error \(error1), \(error1.userInfo)") }
+        }
+
         
         return gateways
     }
@@ -77,17 +82,22 @@ class CoreDataController: NSObject {
             NSSortDescriptor(key: "type", ascending: true),
             NSSortDescriptor(key: "channel", ascending: true)
         ]
+
         fetchRequest.predicate = NSPredicate(format: "gateway == %@", gateway.objectID)
-        
+
         do {
-            if let moc = appDel.managedObjectContext {
-                if let fetResults = try moc.fetch(fetchRequest) as? [Device] {
-                    return fetResults
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                                
+                if let moc = appDelegate.managedObjectContext {
+
+                    if let fetResults = try moc.fetch(fetchRequest) as? [Device] {
+                        return fetResults
+                    }
                 }
             }
-            
+
         } catch let error as NSError { print("Unresolved error \(error), \(error.userInfo)") }
-        
+
         return []
     }
     

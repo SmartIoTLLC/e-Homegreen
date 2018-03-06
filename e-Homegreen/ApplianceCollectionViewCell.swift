@@ -1,14 +1,15 @@
 //
-//  ApplianceCollectionCell.swift
+//  ApplianceCollectionViewCell.swift
 //  e-Homegreen
 //
-//  Created by Damir Djozic on 8/1/16.
-//  Copyright © 2016 Teodor Stevic. All rights reserved.
+//  Created by Vladimir Tuchek on 3/5/18.
+//  Copyright © 2018 Teodor Stevic. All rights reserved.
 //
 
 import UIKit
 
-class ApplianceCollectionCell: UICollectionViewCell {
+class ApplianceCollectionViewCell: UICollectionViewCell {
+
     @IBOutlet weak var backView: CustomGradientBackground!
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var image: UIImageView!
@@ -34,7 +35,7 @@ class ApplianceCollectionCell: UICollectionViewCell {
         labelPowrUsege.text   = "\(Float(device.current) * Float(device.voltage) * 0.01)" + " W"
         
         disabledCellView.layer.cornerRadius = 5
-
+        
         if device.isEnabled.boolValue {
             name.isUserInteractionEnabled = true
             image.tag = tag
@@ -73,5 +74,5 @@ class ApplianceCollectionCell: UICollectionViewCell {
     @IBOutlet weak var lblVoltage: UILabel!
     @IBOutlet weak var labelRunningTime: UILabel!
     @IBOutlet weak var btnRefresh: UIButton!
-}
 
+}

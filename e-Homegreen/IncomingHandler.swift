@@ -471,7 +471,7 @@ class IncomingHandler: NSObject {
         parseMessageAndPrint(byteArray)
         
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
-            devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
+
             for device in devices {
                 if isCorrectDeviceAddress(device: device, for: byteArray) {
                     if let moc = appDel.managedObjectContext {
@@ -504,7 +504,7 @@ class IncomingHandler: NSObject {
         // Lock 3: chaneel 0
         // Lock 4: channel 0
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
-            devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
+
             // Get two bytes that carry info
             var first8Devices = byteArray[8]
             var second8Devices = byteArray[7]
@@ -594,27 +594,27 @@ class IncomingHandler: NSObject {
         print("AC STATUS - FULL")
         parseMessageAndPrint(byteArray)
         
-        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         for i in 0..<devices.count {
             if isCorrectDeviceAddress(i: i, for: byteArray) {
-                
                 let channel = Int(devices[i].channel)
-                devices[i].currentValue = getNSNumber(for: byteArray[8+13*(channel-1)])
-                
-                if let mode         = DeviceInfo.setMode[Int(byteArray[9+13*(channel-1)])] { devices[i].mode = mode } else { devices[i].mode = "Auto" }
-                if let modeState    = DeviceInfo.modeState[Int(byteArray[10+13*(channel-1)])] { devices[i].modeState = modeState } else { devices[i].modeState = "Off" }
-                if let speed        = DeviceInfo.setSpeed[Int(byteArray[11+13*(channel-1)])] { devices[i].speed = speed } else { devices[i].speed = "Auto" }
-                if let speedState   = DeviceInfo.speedState[Int(byteArray[12+13*(channel-1)])] { devices[i].speedState = speedState } else { devices[i].speedState = "Off" }
-
-                devices[i].coolTemperature   = getNSNumber(for: byteArray[13+13*(channel-1)])
-                devices[i].heatTemperature   = getNSNumber(for: byteArray[14+13*(channel-1)])
-                devices[i].roomTemperature   = getNSNumber(for: byteArray[15+13*(channel-1)])
-                devices[i].humidity          = getNSNumber(for: byteArray[16+13*(channel-1)])
-                devices[i].filterWarning     = byteArray[17+13*(channel-1)] == 0x00 ? false : true
-                devices[i].allowEnergySaving = byteArray[18+13*(channel-1)] == 0x00 ? getNSNumber(from: false) : getNSNumber(from: true)
-                devices[i].current           = getNSNumber(for: byteArray[19+13*(channel-1)] + byteArray[20+13*(channel-1)])
-                let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
-                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
+                if 20+13*(channel-1) < byteArray.count {                    
+                    devices[i].currentValue = getNSNumber(for: byteArray[8+13*(channel-1)])
+                    
+                    if let mode         = DeviceInfo.setMode[Int(byteArray[9+13*(channel-1)])] { devices[i].mode = mode } else { devices[i].mode = "Auto" }
+                    if let modeState    = DeviceInfo.modeState[Int(byteArray[10+13*(channel-1)])] { devices[i].modeState = modeState } else { devices[i].modeState = "Off" }
+                    if let speed        = DeviceInfo.setSpeed[Int(byteArray[11+13*(channel-1)])] { devices[i].speed = speed } else { devices[i].speed = "Auto" }
+                    if let speedState   = DeviceInfo.speedState[Int(byteArray[12+13*(channel-1)])] { devices[i].speedState = speedState } else { devices[i].speedState = "Off" }
+                    
+                    devices[i].coolTemperature   = getNSNumber(for: byteArray[13+13*(channel-1)])
+                    devices[i].heatTemperature   = getNSNumber(for: byteArray[14+13*(channel-1)])
+                    devices[i].roomTemperature   = getNSNumber(for: byteArray[15+13*(channel-1)])
+                    devices[i].humidity          = getNSNumber(for: byteArray[16+13*(channel-1)])
+                    devices[i].filterWarning     = byteArray[17+13*(channel-1)] == 0x00 ? false : true
+                    devices[i].allowEnergySaving = byteArray[18+13*(channel-1)] == 0x00 ? getNSNumber(from: false) : getNSNumber(from: true)
+                    devices[i].current           = getNSNumber(for: byteArray[19+13*(channel-1)] + byteArray[20+13*(channel-1)])
+                    let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
+                }
             }
         }
         CoreDataController.sharedInstance.saveChanges()
@@ -627,7 +627,6 @@ class IncomingHandler: NSObject {
         print("AC STATUS - SINGLE")
         parseMessageAndPrint(byteArray)
         
-        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         for i in 0..<devices.count {
             if isCorrectDeviceAddress(i: i, for: byteArray) && isCorrectDeviceChannel(i: i, byteArray: byteArray) {
                 
@@ -661,7 +660,7 @@ class IncomingHandler: NSObject {
         
         print(Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName))
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
-            devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
+
             for i in 0..<devices.count {
                 if isCorrectDeviceAddress(i: i, for: byteArray) && isCorrectDeviceChannel(i: i, byteArray: byteArray) {
                     
@@ -698,7 +697,6 @@ class IncomingHandler: NSObject {
         print("IR CODE")
         parseMessageAndPrint(byteArray)
         
-        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         for i in 0..<devices.count {
             if isCorrectDeviceAddress(i: i, for: byteArray) && isCorrectDeviceChannel(i: i, byteArray: byteArray) {
                 
@@ -713,7 +711,6 @@ class IncomingHandler: NSObject {
         print("IR CODE")
         parseMessageAndPrint(byteArray)
         
-        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         for i in 0..<devices.count {
             if isCorrectDeviceAddress(i: i, for: byteArray) {
                 
@@ -723,7 +720,6 @@ class IncomingHandler: NSObject {
     }
     
     func parseMessageIRLearningState(_ byteArray: [Byte]) {
-        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         print("IR LEARNING STATE")
         parseMessageAndPrint(byteArray)
         for i in 0..<devices.count {
@@ -733,7 +729,6 @@ class IncomingHandler: NSObject {
         }
     }
     func parseMessageIRSerialLibrary(_ byteArray: [Byte]) {
-        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         print("IR SERIAL LIBRARY")
         parseMessageAndPrint(byteArray)
         
@@ -745,7 +740,6 @@ class IncomingHandler: NSObject {
     }
     
     func parseMessageIRSerialLibraryName(_ byteArray: [Byte]) {
-        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         print("IR SERIAL LIBRARY NAME")
         parseMessageAndPrint(byteArray)
         for i in 0..<devices.count {
@@ -760,7 +754,6 @@ class IncomingHandler: NSObject {
         print("DIMMER RUNNING TIME")
         parseMessageAndPrint(byteArray)
 
-        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         for i in  0..<devices.count{
             if isCorrectDeviceAddress(i: i, for: byteArray) {
                 if byteArray[7] != 0xFF && byteArray[7] != 0xF0 {
@@ -787,7 +780,7 @@ class IncomingHandler: NSObject {
         
         print(Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName))
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
-            devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
+
             for i in  0..<devices.count {
                 
                 if isCorrectDeviceAddress(i: i, for: byteArray) && isCorrectDeviceChannel(i: i, byteArray: byteArray) {
@@ -809,7 +802,6 @@ class IncomingHandler: NSObject {
         print("INTERFACE ENABLE STATUS")
         parseMessageAndPrint(byteArray)
         
-        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         for device in devices {
             
             if isCorrectDeviceAddress(device: device, for: byteArray) && isCorrectDeviceChannel(device: device, byteArray: byteArray) {
@@ -825,7 +817,6 @@ class IncomingHandler: NSObject {
         print("INTERFACE PARAMETAR")
         parseMessageAndPrint(byteArray)
         
-        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         var counter = 0
         
         for device in devices {
@@ -868,7 +859,6 @@ class IncomingHandler: NSObject {
         print("INTERFACE STATUS")
         parseMessageAndPrint(byteArray)
         
-        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         for i in 0..<self.devices.count{
             
             if isCorrectDeviceAddress(i: i, for: byteArray) {
@@ -887,7 +877,6 @@ class IncomingHandler: NSObject {
         print("CHANNEL'S STATE")
         parseMessageAndPrint(byteArray)
         
-        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         if devices.count != 0 {
             for i in 0..<devices.count {
                 if isCorrectDeviceAddress(i: i, for: byteArray) {
@@ -941,7 +930,7 @@ class IncomingHandler: NSObject {
         print("CHANNEL'S PARAMETER")
         
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
-            devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
+
             for i in 0..<devices.count {
                 if  isCorrectDeviceAddress(i: i, for: byteArray) && isCorrectDeviceChannel(i: i, byteArray: byteArray) {
                     if let moc = appDel.managedObjectContext {
@@ -1000,7 +989,6 @@ class IncomingHandler: NSObject {
         print("CHANNEL WARNINGS")
         parseMessageAndPrint(byteArray)
         
-        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         for device in devices {
             if isCorrectDeviceAddress(device: device, for: byteArray) { device.warningState = Int(byteArray[6+5+6*(Int(device.channel)-1)]); print("CHANNEL WARNING")}
         }
@@ -1013,7 +1001,6 @@ class IncomingHandler: NSObject {
         print("CURTAIN STATE")
         parseMessageAndPrint(byteArray)
         
-        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         for device in devices {
             
             if isCorrectDeviceAddress(device: device, for: byteArray) {
@@ -1184,9 +1171,7 @@ class IncomingHandler: NSObject {
     func parsePCStatus(_ byteArray: [Byte]) {
         print("PC STATUS")
         parseMessageAndPrint(byteArray)
-        
-        devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
-        
+                
         for device in devices {
             if isCorrectDeviceAddress(device: device, for: byteArray) { device.currentValue = getNSNumber(for: byteArray[8]); print("PC STATUS RECEIVED") }
         }
@@ -1271,9 +1256,10 @@ extension IncomingHandler {
     }
     
     func parseMessageAndPrint(_ byteArray: [UInt8]){
+        guard byteArray.count >= 9 else { print("Byte array shorter than 9"); return }
         let byteLength = byteArray.count
         let SOI        = byteArray[0]
-        let LEN        = byteArray[1]
+        let LEN        = byteArray[1] // todo: check
         let ADDR       = [byteArray[2], byteArray[3], byteArray[4]]
         let CID1       = byteArray[5]
         let CID2       = byteArray[6]

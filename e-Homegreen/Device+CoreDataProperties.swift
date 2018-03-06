@@ -2,24 +2,23 @@
 //  Device+CoreDataProperties.swift
 //  e-Homegreen
 //
-//  Created by Marko Stajic on 8/11/16.
-//  Copyright © 2016 Teodor Stevic. All rights reserved.
+//  Created by Vladimir Tuchek on 3/5/18.
+//  Copyright © 2018 NS Web Development. All rights reserved.
 //
-//  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
-//  to delete and recreate this implementation file for your updated model.
 //
 
 import Foundation
 import CoreData
+import e_Homegreen
 
 extension Device {
-    
+
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Device> {
-        return NSFetchRequest<Device>(entityName: "Device");
+        return NSFetchRequest<Device>(entityName: "Device")
     }
-    
-    @NSManaged var usageCounter: NSNumber
-    @NSManaged var isFavorite: Bool
+    @NSManaged public var usageCounter: NSNumber?
+    @NSManaged public var isFavorite: NSNumber?
+
     @NSManaged var deviceImages: NSSet?
     @NSManaged var address: NSNumber
     @NSManaged var allowEnergySaving: NSNumber
@@ -32,10 +31,10 @@ extension Device {
     @NSManaged var deviceIdForScanningScreen: NSNumber  // This parameter is used for sorting devices in ScanDeviceViewController. Problem is with SaltoAccess bcause Channels could change. In other devices channels are scanned and written while scanning (adding) device. Salto Access channels chang depending which one is selected (from 1 to 16). This parameter is now channel, and has values that are collected from PLC (i.e. channel parameter for all devices except saltoAccess), and by this parameter we sort Devices in ScannDeviceViewController. In saltoAccess channels are later changed but this parameter stays as it was when scanned (1 to 4).
     
     // Current value is the current value of the device. In app it always ranges from - to 255. When sending it and receveing it from PLC range can be 0-100 or 0-255, depending on device type.100
-// If device is dimmer then value is in range from 0-100
-// If device is something else, then device has only two states and value can be 0 or 255
+    // If device is dimmer then value is in range from 0-100
+    // If device is something else, then device has only two states and value can be 0 or 255
     @NSManaged var currentValue: NSNumber
-// OldValue must be stored because of Khalifa's request. When in Device menu, light can be changed with slider and ON/OFF. If value is set to be X, and OFF is pressed, and again ON, value must return to the value that was before OFF is pressed. That is why we must store old value.
+    // OldValue must be stored because of Khalifa's request. When in Device menu, light can be changed with slider and ON/OFF. If value is set to be X, and OFF is pressed, and again ON, value must return to the value that was before OFF is pressed. That is why we must store old value.
     @NSManaged var oldValue: NSNumber?
     @NSManaged var delay: NSNumber              // Number of seconds after which device will be turned on
     @NSManaged var heatTemperature: NSNumber
@@ -59,11 +58,11 @@ extension Device {
     @NSManaged var speedState: String
     @NSManaged var stateUpdatedAt: Date?
     @NSManaged var temperature: NSNumber
-// Original type of the device
-// This is important because Dimmer can behave as Relay, but dimmer can't change Cotrol mode. Relay (original Relay) can change Control mode (NO or NC)
+    // Original type of the device
+    // This is important because Dimmer can behave as Relay, but dimmer can't change Cotrol mode. Relay (original Relay) can change Control mode (NO or NC)
     @NSManaged var type: String
-// Local type of the device
-// This is the type that user can change. If he wants to change control type (e.g. change Dimmer to be Relay) then this field changes.
+    // Local type of the device
+    // This is the type that user can change. If he wants to change control type (e.g. change Dimmer to be Relay) then this field changes.
     @NSManaged var controlType: String
     @NSManaged var voltage: NSNumber
     @NSManaged var zoneId: NSNumber
@@ -88,17 +87,39 @@ extension Device {
     @NSManaged var notificationPosition: NSNumber?
     @NSManaged var notificationDelay: NSNumber?
     @NSManaged var notificationDisplayTime: NSNumber?
-    
-    
+
 }
 
+// MARK: Generated accessors for deviceImages
 extension Device {
-    func increaseUsageCounterValue() {
-        let counterValue = Int(self.usageCounter)
-        self.usageCounter = NSNumber(value: counterValue + 1)
-    }
-    
-    func getAddress() -> [Byte] {
-        return [Byte(gateway.addressOne), Byte(gateway.addressTwo), Byte(address)]
-    }
+
+    @objc(addDeviceImagesObject:)
+    @NSManaged public func addToDeviceImages(_ value: DeviceImage)
+
+    @objc(removeDeviceImagesObject:)
+    @NSManaged public func removeFromDeviceImages(_ value: DeviceImage)
+
+    @objc(addDeviceImages:)
+    @NSManaged public func addToDeviceImages(_ values: NSSet)
+
+    @objc(removeDeviceImages:)
+    @NSManaged public func removeFromDeviceImages(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for pcCommands
+extension Device {
+
+    @objc(addPcCommandsObject:)
+    @NSManaged public func addToPcCommands(_ value: PCCommand)
+
+    @objc(removePcCommandsObject:)
+    @NSManaged public func removeFromPcCommands(_ value: PCCommand)
+
+    @objc(addPcCommands:)
+    @NSManaged public func addToPcCommands(_ values: NSSet)
+
+    @objc(removePcCommands:)
+    @NSManaged public func removeFromPcCommands(_ values: NSSet)
+
 }

@@ -40,7 +40,6 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
         GCDAsyncUdpSocket.getHost(&host, port: &hostPort, fromAddress: address)
         if let hostHost = host as String? {
             print("INOUT SOCKET INCOMING MESSAGE: \nAddress:", address.convertToBytes(),"\n Host:", hostHost, hostPort,"\n Byte Array:", data.convertToBytes(),"\n")
-            print("UDP incoming :\(data.convertToBytes())")
             _ = IncomingHandler(byteArrayToHandle: data.convertToBytes(), host: hostHost, port: hostPort)
         }
     }

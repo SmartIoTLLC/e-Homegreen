@@ -96,6 +96,7 @@ class NavigationTitleView: UIView {
         titleLeadingConstraint    = NSLayoutConstraint(item: titleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0)
         subtitleTopConstraint     = NSLayoutConstraint(item: subtitleView, attribute: .top, relatedBy: .equal, toItem: titleView, attribute: .bottom, multiplier: 1.0, constant: 0)
         subtitleLeadingConstraint = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0)
+        subtitleTrailingConstraint = NSLayoutConstraint(item: subtitleView, attribute: .rightMargin, relatedBy: .equal, toItem: timeLabel, attribute: .leftMargin, multiplier: 1.0, constant: 0)
 
         // set landscape constraint
         titleCenterConstraint = NSLayoutConstraint(item: titleView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
@@ -104,39 +105,50 @@ class NavigationTitleView: UIView {
         subtitleLeadingConstraintLandscape = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: titleView, attribute: .trailing, multiplier: 1.0, constant: 10)
         
         // Clock constraints
-        let timeCenterY           = NSLayoutConstraint(item: timeLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
-        let timeTrailing          = NSLayoutConstraint(item: timeLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0)
+        let timeCenterY  = NSLayoutConstraint(item: timeLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
+        let timeTrailing = NSLayoutConstraint(item: timeLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0)
+
         self.addConstraint(timeCenterY)
         self.addConstraint(timeTrailing)
         
-        self.addConstraint(NSLayoutConstraint(item: subtitleView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: subtitleView, attribute: .trailing, relatedBy: .equal, toItem: timeLabel, attribute: .leadingMargin, multiplier: 1.0, constant: -8))
 
         setPortraitTitle()
         
     }
     
     func setPortraitTitle(){
-        self.removeConstraint(titleLeadingConstraint)
-        self.removeConstraint(titleCenterConstraint)
-        self.removeConstraint(subtitleCenterConstraint)
-        self.removeConstraint(subtitleLeadingConstraintLandscape)
+        self.removeConstraints(
+            [titleLeadingConstraint,
+             titleCenterConstraint,
+             subtitleCenterConstraint,
+             subtitleLeadingConstraintLandscape]
+        )
         
-        self.addConstraint(titleTopConstraint)
-        self.addConstraint(titleLeadingConstraint)
-        self.addConstraint(subtitleTopConstraint)
-        self.addConstraint(subtitleLeadingConstraint)
+        self.addConstraints(
+            [titleTopConstraint,
+             titleLeadingConstraint,
+             subtitleTopConstraint,
+             subtitleLeadingConstraint,
+             subtitleTrailingConstraint]
+        )
+
     }
     
     func setLandscapeTitle(){
-        self.removeConstraint(titleLeadingConstraint)
-        self.removeConstraint(titleTopConstraint)
-        self.removeConstraint(subtitleTopConstraint)
-        self.removeConstraint(subtitleLeadingConstraint)
-        
-        self.addConstraint(titleCenterConstraint)
-        self.addConstraint(titleLeadingConstraint)
-        self.addConstraint(subtitleCenterConstraint)
-        self.addConstraint(subtitleLeadingConstraintLandscape)
+        self.removeConstraints(
+            [titleLeadingConstraint,
+             titleTopConstraint,
+             subtitleTopConstraint,
+             subtitleLeadingConstraint]
+        )
+        self.addConstraints(
+            [titleCenterConstraint,
+             titleLeadingConstraint,
+             subtitleCenterConstraint,
+             subtitleLeadingConstraintLandscape]
+        )
+
     }
     
     func setTitleAndSubtitle(_ title:String, subtitle:String){

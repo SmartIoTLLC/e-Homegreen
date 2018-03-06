@@ -20,78 +20,78 @@ extension FavoriteDevicesVC: UICollectionViewDataSource {
         
         switch controlType {
         case ControlType.Dimmer : // MARK: - Device cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "deviceCell", for: indexPath) as? DeviceCollectionCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "deviceCollectionViewCell", for: indexPath) as? DeviceCollectionViewCell {
                 
                 cell.setCell(device: device, tag: tag)
                 
                 // If device is enabled add all interactions
                 if device.isEnabled.boolValue {
                     
-                    let longPress = UILongPressGestureRecognizer(target: self, action: #selector(cellParametarLongPress(_:)))
+                    let longPress = UILongPressGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.cellParametarLongPress(_:)))
                     longPress.minimumPressDuration = 0.5
                     cell.typeOfLight.addGestureRecognizer(longPress)
                     
-                    let oneTap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+                    let oneTap = UITapGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.handleTap(_:)))
                     oneTap.numberOfTapsRequired = 2
                     cell.typeOfLight.addGestureRecognizer(oneTap)
                     
-                    cell.lightSlider.addTarget(self, action: #selector(changeSliderValue(_:)), for: .valueChanged)
-                    cell.lightSlider.addTarget(self, action: #selector(changeSliderValueEnded(_:)), for: .touchUpInside)
-                    cell.lightSlider.addTarget(self, action: #selector(changeSliderValueStarted(_:)), for: .touchDown)
-                    cell.lightSlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeSliderValueOnOneTap(_:))))
+                    cell.lightSlider.addTarget(self, action: #selector(FavoriteDevicesVC.changeSliderValue(_:)), for: .valueChanged)
+                    cell.lightSlider.addTarget(self, action: #selector(FavoriteDevicesVC.changeSliderValueEnded(_:)), for: .touchUpInside)
+                    cell.lightSlider.addTarget(self, action: #selector(FavoriteDevicesVC.changeSliderValueStarted(_:)), for: .touchDown)
+                    cell.lightSlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.changeSliderValueOnOneTap(_:))))
                     
                     let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(longTouch(_:)))
                     lpgr.minimumPressDuration = 0.5
                     lpgr.delegate = self
                     
-                    cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap2(_:))))
+                    cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.handleTap2(_:))))
                     
                     cell.picture.addGestureRecognizer(lpgr)
-                    cell.picture.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.oneTap(_:))))
+                    cell.picture.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.oneTap(_:))))
                 }
                 
                 return cell
             }
         case ControlType.Curtain: // MARK: - Curtain cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "curtainCell", for: indexPath) as? CurtainCollectionCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "curtainCollectionViewCell", for: indexPath) as? CurtainCollectionViewCell {
                 cell.setCell(device: device, tag: tag)
                 
                 // If device is enabled add all interactions
                 if device.isEnabled.boolValue {
                     
-                    cell.openButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openCurtain(_:))))
-                    cell.closeButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeCurtain(_:))))
-                    cell.curtainImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(stopCurtain(_:))))
+                    cell.openButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.openCurtain(_:))))
+                    cell.closeButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.closeCurtain(_:))))
+                    cell.curtainImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.stopCurtain(_:))))
                     
-                    let curtainNameLongPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DevicesViewController.cellParametarLongPress(_:)))
+                    let curtainNameLongPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.cellParametarLongPress(_:)))
                     curtainNameLongPress.minimumPressDuration = 0.5
                     cell.curtainName.addGestureRecognizer(curtainNameLongPress)
                     
-                    cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap2(_:))))
+                    cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.handleTap2(_:))))
                 }
                 
                 return cell
             }
         case ControlType.SaltoAccess: // MARK: Salto Access cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "saltoAccessCell", for: indexPath) as? SaltoAccessCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "saltoAccessCollectionViewCell", for: indexPath) as? SaltoAccessCollectionViewCell {
                 cell.setCell(device: device, tag: tag)
                 
                 // If device is enabled add all interactions
                 if device.isEnabled.boolValue {
-                    cell.unlockButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(unlockSalto(_:))))
-                    cell.lockButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(lockSalto(_:))))
-                    cell.saltoImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(thirdFcnSalto(_:))))
+                    cell.unlockButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.unlockSalto(_:))))
+                    cell.lockButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.lockSalto(_:))))
+                    cell.saltoImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.thirdFcnSalto(_:))))
                     
-                    let curtainNameLongPress = UILongPressGestureRecognizer(target: self, action: #selector(cellParametarLongPress(_:)))
+                    let curtainNameLongPress = UILongPressGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.cellParametarLongPress(_:)))
                     curtainNameLongPress.minimumPressDuration = 0.5
                     cell.saltoName.addGestureRecognizer(curtainNameLongPress)
-                    cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap2(_:))))
+                    cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.handleTap2(_:))))
                 }
                 
                 return cell
             }
         case ControlType.Relay, ControlType.DigitalOutput: // MARK: - Appliance cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "applianceCell", for: indexPath) as? ApplianceCollectionCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "applianceCollectionViewCell", for: indexPath) as? ApplianceCollectionViewCell {
                 cell.setCell(device: device, tag: tag)
                 
                 // If device is enabled add all interactions
@@ -106,39 +106,39 @@ extension FavoriteDevicesVC: UICollectionViewDataSource {
                     oneTap.numberOfTapsRequired = 2
                     cell.name.addGestureRecognizer(oneTap)
                     
-                    cell.image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(oneTap(_:))))
-                    cell.onOff.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(oneTap(_:))))
-                    cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap2(_:))))
-                    cell.btnRefresh.addTarget(self, action: #selector(refreshDevice(_:)), for: .touchUpInside)
+                    cell.image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.oneTap(_:))))
+                    cell.onOff.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.oneTap(_:))))
+                    cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.handleTap2(_:))))
+                    cell.btnRefresh.addTarget(self, action: #selector(FavoriteDevicesVC.refreshDevice(_:)), for: .touchUpInside)
                 }
                 
                 return cell
             }
         case ControlType.Climate: // MARK: - Climate cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "climaCell", for: indexPath) as? ClimateCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "climateCollectionViewCell", for: indexPath) as? ClimateCollectionViewCell {
                 
                 cell.setCell(device: device, tag: tag)
                 
-                cell.imageOnOff.addGestureRecognizer(UITapGestureRecognizer(target:self, action: #selector(setACPowerStatus(_:))))
+                cell.imageOnOff.addGestureRecognizer(UITapGestureRecognizer(target:self, action: #selector(FavoriteDevicesVC.setACPowerStatus(_:))))
                 
-                let doublePress = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+                let doublePress = UITapGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.handleTap(_:)))
                 doublePress.numberOfTapsRequired = 2
                 cell.climateName.addGestureRecognizer(doublePress)
                 
-                cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap2(_:))))
+                cell.infoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.handleTap2(_:))))
                 
-                let longPress = UILongPressGestureRecognizer(target: self, action: #selector(cellParametarLongPress(_:)))
+                let longPress = UILongPressGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.cellParametarLongPress(_:)))
                 longPress.minimumPressDuration = 0.5
                 cell.climateName.addGestureRecognizer(longPress)
                 
                 return cell
             }
         case ControlType.Sensor, ControlType.IntelligentSwitch, ControlType.Gateway, ControlType.DigitalInput: // MARK: - MultiSensor cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "multiSensorCell", for: indexPath) as? MultiSensorCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "multisensorCollectionViewCell", for: indexPath) as? MultisensorCollectionViewCell {
                 
                 cell.setCell(device: device, tag: tag)
                 
-                let longPress = UILongPressGestureRecognizer(target: self, action: #selector(cellParametarLongPress(_:)))
+                let longPress = UILongPressGestureRecognizer(target: self, action: #selector(FavoriteDevicesVC.cellParametarLongPress(_:)))
                 longPress.minimumPressDuration = 0.5
                 
                 cell.sensorTitle.addGestureRecognizer(longPress)
@@ -148,7 +148,7 @@ extension FavoriteDevicesVC: UICollectionViewDataSource {
             }
             
         default:
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dafaultCell", for: indexPath) as? DefaultCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultDeviceCollectionViewCell", for: indexPath) as? DefaultDeviceCollectionViewCell {
                 cell.defaultLabel.text = ""
                 return cell
             }

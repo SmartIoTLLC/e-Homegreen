@@ -123,12 +123,6 @@
 		490DC22E1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.xib in Resources */ = {isa = PBXBuildFile; fileRef = 490DC22C1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.xib */; };
 		4923279C1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4923279A1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.swift */; };
 		4923279D1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4923279B1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.xib */; };
-		495726B11D4F4842004F2A3D /* ApplianceCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B01D4F4842004F2A3D /* ApplianceCollectionCell.swift */; };
-		495726B31D4F48F1004F2A3D /* DeviceCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B21D4F48F1004F2A3D /* DeviceCollectionCell.swift */; };
-		495726B51D4F491D004F2A3D /* CurtainCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B41D4F491D004F2A3D /* CurtainCollectionCell.swift */; };
-		495726B71D4F493C004F2A3D /* ClimateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B61D4F493C004F2A3D /* ClimateCell.swift */; };
-		495726B91D4F4966004F2A3D /* MultiSensorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495726B81D4F4966004F2A3D /* MultiSensorCell.swift */; };
-		495D63721D9A49B300D9DC26 /* SaltoAccessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495D63711D9A49B300D9DC26 /* SaltoAccessCell.swift */; };
 		4983C7E51D4B5F2D00C8E865 /* RelayParametersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4983C7E31D4B5F2D00C8E865 /* RelayParametersCell.swift */; };
 		4983C7E61D4B5F2D00C8E865 /* RelayParametersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4983C7E41D4B5F2D00C8E865 /* RelayParametersCell.xib */; };
 		49C059641D9136E50061A544 /* PopoverVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C059631D9136E50061A544 /* PopoverVC.swift */; };
@@ -201,10 +195,20 @@
 		4EA4DA512004F33700CA8385 /* MediaCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA4DA4F2004F33700CA8385 /* MediaCollectionCell.swift */; };
 		4EA4DA522004F33700CA8385 /* MediaCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EA4DA502004F33700CA8385 /* MediaCollectionCell.xib */; };
 		4EA9A7C31FA1D00500C8D6B8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */; };
+		4EB88A12204E9F5300489FDC /* TestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB88A10204E9F5300489FDC /* TestCell.swift */; };
+		4EB88A13204E9F5300489FDC /* TestCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EB88A11204E9F5300489FDC /* TestCell.xib */; };
 		4EC2E1421F7E439700DA494B /* RemoteDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */; };
 		4EC728C520349B7D00840DF7 /* Volumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC728C420349B7D00840DF7 /* Volumer.swift */; };
 		4EC8446A2044152900AD668E /* FavoriteDevicesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC844692044152900AD668E /* FavoriteDevicesVC.swift */; };
 		4EC8446C204417DA00AD668E /* FavoriteDevices+Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC8446B204417DA00AD668E /* FavoriteDevices+Cells.swift */; };
+		4ED1FF63204D3F40003E3D43 /* ClimateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED1FF61204D3F40003E3D43 /* ClimateCollectionViewCell.swift */; };
+		4ED1FF64204D3F40003E3D43 /* ClimateCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4ED1FF62204D3F40003E3D43 /* ClimateCollectionViewCell.xib */; };
+		4ED1FF67204D41A9003E3D43 /* MultisensorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED1FF65204D41A9003E3D43 /* MultisensorCollectionViewCell.swift */; };
+		4ED1FF68204D41A9003E3D43 /* MultisensorCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4ED1FF66204D41A9003E3D43 /* MultisensorCollectionViewCell.xib */; };
+		4ED1FF6B204D42F7003E3D43 /* SaltoAccessCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED1FF69204D42F7003E3D43 /* SaltoAccessCollectionViewCell.swift */; };
+		4ED1FF6C204D42F7003E3D43 /* SaltoAccessCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4ED1FF6A204D42F7003E3D43 /* SaltoAccessCollectionViewCell.xib */; };
+		4ED1FF6F204D43C4003E3D43 /* DefaultDeviceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED1FF6D204D43C4003E3D43 /* DefaultDeviceCollectionViewCell.swift */; };
+		4ED1FF70204D43C4003E3D43 /* DefaultDeviceCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4ED1FF6E204D43C4003E3D43 /* DefaultDeviceCollectionViewCell.xib */; };
 		4EDCE6811F6A8D740073736B /* radio_station.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EDCE6801F6A8D740073736B /* radio_station.json */; };
 		4EDCE6871F6A9BEA0073736B /* RadioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */; };
 		4EDCE68A1F6A9C090073736B /* StationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6881F6A9C090073736B /* StationCell.swift */; };
@@ -212,6 +216,12 @@
 		4EDCE6961F6AA76F0073736B /* Radio+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */; };
 		4EDCE6971F6AA76F0073736B /* Radio+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */; };
 		4EEEA4891FA0AB5600AC4AD6 /* RunnableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEEA4881FA0AB5600AC4AD6 /* RunnableList.swift */; };
+		4EF0FC9B204D3128009426FC /* DeviceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF0FC99204D3128009426FC /* DeviceCollectionViewCell.swift */; };
+		4EF0FC9C204D3128009426FC /* DeviceCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EF0FC9A204D3128009426FC /* DeviceCollectionViewCell.xib */; };
+		4EF0FC9F204D3A00009426FC /* ApplianceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF0FC9D204D3A00009426FC /* ApplianceCollectionViewCell.swift */; };
+		4EF0FCA0204D3A00009426FC /* ApplianceCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EF0FC9E204D3A00009426FC /* ApplianceCollectionViewCell.xib */; };
+		4EF0FCA3204D3C1D009426FC /* CurtainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF0FCA1204D3C1D009426FC /* CurtainCollectionViewCell.swift */; };
+		4EF0FCA4204D3C1D009426FC /* CurtainCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EF0FCA2204D3C1D009426FC /* CurtainCollectionViewCell.xib */; };
 		4EF41B971F7BAD88007FBF64 /* RemoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF41B961F7BAD88007FBF64 /* RemoteCell.swift */; };
 		4EF41B9C1F7BE813007FBF64 /* AddRemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF41B9A1F7BE813007FBF64 /* AddRemoteViewController.swift */; };
 		4EF41B9D1F7BE813007FBF64 /* AddRemoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EF41B9B1F7BE813007FBF64 /* AddRemoteViewController.xib */; };
@@ -301,7 +311,6 @@
 		73E758F11B4EBE0300ECE061 /* LocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E758F01B4EBE0300ECE061 /* LocationsViewController.swift */; };
 		73E82D0D1BECA97D00C1C621 /* Categories List.json in Resources */ = {isa = PBXBuildFile; fileRef = 73E82D0B1BECA97D00C1C621 /* Categories List.json */; };
 		73E82D0E1BECA97D00C1C621 /* Zones List.json in Resources */ = {isa = PBXBuildFile; fileRef = 73E82D0C1BECA97D00C1C621 /* Zones List.json */; };
-		73EBE28C1C1043990095F372 /* DeviceCollectionViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EBE28B1C1043990095F372 /* DeviceCollectionViewCells.swift */; };
 		73EBE28E1C1043D70095F372 /* DeviceCollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EBE28D1C1043D70095F372 /* DeviceCollectionView+Extensions.swift */; };
 		73ECD4A31B332A6F00767740 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A21B332A6F00767740 /* Constants.swift */; };
 		73ED6AFD1BA0249800E6CE06 /* RepeatSendingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */; };
@@ -552,12 +561,6 @@
 		490DC22C1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecurityNeedDisarmInformation.xib; sourceTree = "<group>"; };
 		4923279A1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntelligentSwitchParameter.swift; sourceTree = "<group>"; };
 		4923279B1D6EEC5A00B9BC05 /* IntelligentSwitchParameter.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IntelligentSwitchParameter.xib; sourceTree = "<group>"; };
-		495726B01D4F4842004F2A3D /* ApplianceCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplianceCollectionCell.swift; sourceTree = "<group>"; };
-		495726B21D4F48F1004F2A3D /* DeviceCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = DeviceCollectionCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		495726B41D4F491D004F2A3D /* CurtainCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurtainCollectionCell.swift; sourceTree = "<group>"; };
-		495726B61D4F493C004F2A3D /* ClimateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ClimateCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		495726B81D4F4966004F2A3D /* MultiSensorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiSensorCell.swift; sourceTree = "<group>"; };
-		495D63711D9A49B300D9DC26 /* SaltoAccessCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaltoAccessCell.swift; sourceTree = "<group>"; };
 		4983C7E31D4B5F2D00C8E865 /* RelayParametersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelayParametersCell.swift; sourceTree = "<group>"; };
 		4983C7E41D4B5F2D00C8E865 /* RelayParametersCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RelayParametersCell.xib; sourceTree = "<group>"; };
 		49C059631D9136E50061A544 /* PopoverVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverVC.swift; sourceTree = "<group>"; };
@@ -630,10 +633,21 @@
 		4EA4DA4F2004F33700CA8385 /* MediaCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCollectionCell.swift; sourceTree = "<group>"; };
 		4EA4DA502004F33700CA8385 /* MediaCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MediaCollectionCell.xib; sourceTree = "<group>"; };
 		4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		4EB88A10204E9F5300489FDC /* TestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCell.swift; sourceTree = "<group>"; };
+		4EB88A11204E9F5300489FDC /* TestCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TestCell.xib; sourceTree = "<group>"; };
+		4EBE9CA8204D99AB0069DF1D /* e_Homegreen_2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = e_Homegreen_2.xcdatamodel; sourceTree = "<group>"; };
 		4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDetailsViewController.swift; sourceTree = "<group>"; };
 		4EC728C420349B7D00840DF7 /* Volumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Volumer.swift; sourceTree = "<group>"; };
 		4EC844692044152900AD668E /* FavoriteDevicesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteDevicesVC.swift; sourceTree = "<group>"; };
 		4EC8446B204417DA00AD668E /* FavoriteDevices+Cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteDevices+Cells.swift"; sourceTree = "<group>"; };
+		4ED1FF61204D3F40003E3D43 /* ClimateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimateCollectionViewCell.swift; sourceTree = "<group>"; };
+		4ED1FF62204D3F40003E3D43 /* ClimateCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClimateCollectionViewCell.xib; sourceTree = "<group>"; };
+		4ED1FF65204D41A9003E3D43 /* MultisensorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisensorCollectionViewCell.swift; sourceTree = "<group>"; };
+		4ED1FF66204D41A9003E3D43 /* MultisensorCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultisensorCollectionViewCell.xib; sourceTree = "<group>"; };
+		4ED1FF69204D42F7003E3D43 /* SaltoAccessCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaltoAccessCollectionViewCell.swift; sourceTree = "<group>"; };
+		4ED1FF6A204D42F7003E3D43 /* SaltoAccessCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SaltoAccessCollectionViewCell.xib; sourceTree = "<group>"; };
+		4ED1FF6D204D43C4003E3D43 /* DefaultDeviceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultDeviceCollectionViewCell.swift; sourceTree = "<group>"; };
+		4ED1FF6E204D43C4003E3D43 /* DefaultDeviceCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DefaultDeviceCollectionViewCell.xib; sourceTree = "<group>"; };
 		4EDCE6801F6A8D740073736B /* radio_station.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = radio_station.json; sourceTree = "<group>"; };
 		4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioViewController.swift; sourceTree = "<group>"; };
 		4EDCE6881F6A9C090073736B /* StationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationCell.swift; sourceTree = "<group>"; };
@@ -641,6 +655,12 @@
 		4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Radio+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Radio+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4EEEA4881FA0AB5600AC4AD6 /* RunnableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnableList.swift; sourceTree = "<group>"; };
+		4EF0FC99204D3128009426FC /* DeviceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCollectionViewCell.swift; sourceTree = "<group>"; };
+		4EF0FC9A204D3128009426FC /* DeviceCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeviceCollectionViewCell.xib; sourceTree = "<group>"; };
+		4EF0FC9D204D3A00009426FC /* ApplianceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplianceCollectionViewCell.swift; sourceTree = "<group>"; };
+		4EF0FC9E204D3A00009426FC /* ApplianceCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ApplianceCollectionViewCell.xib; sourceTree = "<group>"; };
+		4EF0FCA1204D3C1D009426FC /* CurtainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurtainCollectionViewCell.swift; sourceTree = "<group>"; };
+		4EF0FCA2204D3C1D009426FC /* CurtainCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurtainCollectionViewCell.xib; sourceTree = "<group>"; };
 		4EF41B961F7BAD88007FBF64 /* RemoteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCell.swift; sourceTree = "<group>"; };
 		4EF41B9A1F7BE813007FBF64 /* AddRemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRemoteViewController.swift; sourceTree = "<group>"; };
 		4EF41B9B1F7BE813007FBF64 /* AddRemoteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddRemoteViewController.xib; sourceTree = "<group>"; };
@@ -735,7 +755,6 @@
 		73E758F01B4EBE0300ECE061 /* LocationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationsViewController.swift; sourceTree = "<group>"; };
 		73E82D0B1BECA97D00C1C621 /* Categories List.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Categories List.json"; sourceTree = "<group>"; };
 		73E82D0C1BECA97D00C1C621 /* Zones List.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Zones List.json"; sourceTree = "<group>"; };
-		73EBE28B1C1043990095F372 /* DeviceCollectionViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceCollectionViewCells.swift; sourceTree = "<group>"; };
 		73EBE28D1C1043D70095F372 /* DeviceCollectionView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "DeviceCollectionView+Extensions.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		73ECD4A21B332A6F00767740 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatSendingHandler.swift; sourceTree = "<group>"; };
@@ -1317,20 +1336,6 @@
 			name = HVAC;
 			sourceTree = "<group>";
 		};
-		495726AF1D4F4827004F2A3D /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				73EBE28B1C1043990095F372 /* DeviceCollectionViewCells.swift */,
-				495726B01D4F4842004F2A3D /* ApplianceCollectionCell.swift */,
-				495726B21D4F48F1004F2A3D /* DeviceCollectionCell.swift */,
-				495726B41D4F491D004F2A3D /* CurtainCollectionCell.swift */,
-				495726B61D4F493C004F2A3D /* ClimateCell.swift */,
-				495726B81D4F4966004F2A3D /* MultiSensorCell.swift */,
-				495D63711D9A49B300D9DC26 /* SaltoAccessCell.swift */,
-			);
-			name = Cells;
-			sourceTree = "<group>";
-		};
 		4983C7E21D4B4C7A00C8E865 /* Relay */ = {
 			isa = PBXGroup;
 			children = (
@@ -1490,6 +1495,29 @@
 				4EDCE6891F6A9C090073736B /* StationCell.xib */,
 			);
 			name = Radio;
+			sourceTree = "<group>";
+		};
+		4EF0FC98204D30E0009426FC /* Device cells */ = {
+			isa = PBXGroup;
+			children = (
+				4EF0FC99204D3128009426FC /* DeviceCollectionViewCell.swift */,
+				4EF0FC9A204D3128009426FC /* DeviceCollectionViewCell.xib */,
+				4EF0FC9D204D3A00009426FC /* ApplianceCollectionViewCell.swift */,
+				4EF0FC9E204D3A00009426FC /* ApplianceCollectionViewCell.xib */,
+				4EF0FCA1204D3C1D009426FC /* CurtainCollectionViewCell.swift */,
+				4EF0FCA2204D3C1D009426FC /* CurtainCollectionViewCell.xib */,
+				4ED1FF61204D3F40003E3D43 /* ClimateCollectionViewCell.swift */,
+				4ED1FF62204D3F40003E3D43 /* ClimateCollectionViewCell.xib */,
+				4ED1FF65204D41A9003E3D43 /* MultisensorCollectionViewCell.swift */,
+				4ED1FF66204D41A9003E3D43 /* MultisensorCollectionViewCell.xib */,
+				4ED1FF69204D42F7003E3D43 /* SaltoAccessCollectionViewCell.swift */,
+				4ED1FF6A204D42F7003E3D43 /* SaltoAccessCollectionViewCell.xib */,
+				4ED1FF6D204D43C4003E3D43 /* DefaultDeviceCollectionViewCell.swift */,
+				4ED1FF6E204D43C4003E3D43 /* DefaultDeviceCollectionViewCell.xib */,
+				4EB88A10204E9F5300489FDC /* TestCell.swift */,
+				4EB88A11204E9F5300489FDC /* TestCell.xib */,
+			);
+			name = "Device cells";
 			sourceTree = "<group>";
 		};
 		4EF908231F70142500897A3C /* Phone */ = {
@@ -2070,10 +2098,10 @@
 		E7E08E011B4E4D5400153E9A /* Devices */ = {
 			isa = PBXGroup;
 			children = (
+				4EF0FC98204D30E0009426FC /* Device cells */,
 				E7AAF7611BBE875100992A18 /* ClimaXIB */,
 				4923279E1D6EEC7300B9BC05 /* Parameters XIB */,
 				225F59821D743FE500156BCD /* Big Dimmer Slider XIB */,
-				495726AF1D4F4827004F2A3D /* Cells */,
 				22495D0F1CAA72020034FC94 /* Device.storyboard */,
 				73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */,
 				73E206D81B2F16720008B002 /* DevicesViewController.swift */,
@@ -2175,7 +2203,7 @@
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0800;
-				ORGANIZATIONNAME = "Teodor Stevic";
+				ORGANIZATIONNAME = "NS Web Development";
 				TargetAttributes = {
 					73E206A51B2EEFFE0008B002 = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -2219,9 +2247,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				2249A3331C90693C0019C6FB /* PCControlInterfaceXIB.xib in Resources */,
+				4ED1FF70204D43C4003E3D43 /* DefaultDeviceCollectionViewCell.xib in Resources */,
 				E7DC67C91B457C0E00EA6543 /* weather-snow@2x.png in Resources */,
 				73ED6B011BA068B900E6CE06 /* ProgressBarVC.xib in Resources */,
 				E7DC67C11B457C0E00EA6543 /* weather-rain-night@2x.png in Resources */,
+				4EB88A13204E9F5300489FDC /* TestCell.xib in Resources */,
 				E7DC67C51B457C0E00EA6543 /* weather-scattered@2x.png in Resources */,
 				E7DC67B51B457C0E00EA6543 /* weather-broken@2x.png in Resources */,
 				E7DC67B41B457C0E00EA6543 /* weather-broken.png in Resources */,
@@ -2249,6 +2279,7 @@
 				734DBFC01BEF7950002FE77E /* ChangeDeviceParametarsVC.xib in Resources */,
 				E7DC67CB1B457C0E00EA6543 /* weather-tstorm@2x.png in Resources */,
 				4E04DB7B1F750DAC00DC1E58 /* Phone.storyboard in Resources */,
+				4EF0FC9C204D3128009426FC /* DeviceCollectionViewCell.xib in Resources */,
 				73E2311E1BA6E2C4003E41EC /* SceneParametarVC.xib in Resources */,
 				223362921CA2E4EC006C80C4 /* AddUserXIB.xib in Resources */,
 				73E82D0D1BECA97D00C1C621 /* Categories List.json in Resources */,
@@ -2277,6 +2308,7 @@
 				E7E1A8251B3804F1008D8713 /* AcousticModelSpanish.bundle in Resources */,
 				4EFAE02A1F6C0F5600C85074 /* sura_english.json in Resources */,
 				22495D311CAA83260034FC94 /* Popover.storyboard in Resources */,
+				4EF0FCA0204D3A00009426FC /* ApplianceCollectionViewCell.xib in Resources */,
 				73F4D6B71C805DEF00FE0514 /* DeviceImagesPickerVC.xib in Resources */,
 				4E8C21761FCF20F6004C0883 /* ButtonImageCell.xib in Resources */,
 				223878A11C917A96001357E0 /* AddVideo_AppXIB.xib in Resources */,
@@ -2291,16 +2323,20 @@
 				738DEC9D1BBBC2F000D6B834 /* SecurityPadVC.xib in Resources */,
 				E7DC67CF1B457CD400EA6543 /* night.png in Resources */,
 				733E5E861C666F840039B7A8 /* Config.plist in Resources */,
+				4ED1FF68204D41A9003E3D43 /* MultisensorCollectionViewCell.xib in Resources */,
+				4EF0FCA4204D3C1D009426FC /* CurtainCollectionViewCell.xib in Resources */,
 				22495D111CAA72020034FC94 /* Device.storyboard in Resources */,
 				E7E1A8241B3804F1008D8713 /* AcousticModelEnglish.bundle in Resources */,
 				22E7B2111CC4FC9A00F813AC /* ResetPasswordXIB.xib in Resources */,
 				4D14B0D21D59E50B0004E10A /* PCControlNotificationsXIB.xib in Resources */,
 				E7DC67CE1B457CD400EA6543 /* day.png in Resources */,
+				4ED1FF6C204D42F7003E3D43 /* SaltoAccessCollectionViewCell.xib in Resources */,
 				738DECA31BBBC39F00D6B834 /* SecuirtyCommandVC.xib in Resources */,
 				E7FB6A221B9D95D50016246B /* CameraVC.xib in Resources */,
 				73E206B91B2EEFFE0008B002 /* LaunchScreen.xib in Resources */,
 				7372EB211BC3F7600097806D /* TimerParametarVC.xib in Resources */,
 				73E206B61B2EEFFE0008B002 /* Images.xcassets in Resources */,
+				4ED1FF64204D3F40003E3D43 /* ClimateCollectionViewCell.xib in Resources */,
 				73E6CDBA1BC56454003A5F55 /* FlagParametarVC.xib in Resources */,
 				22495D2C1CAA80F20034FC94 /* Users.storyboard in Resources */,
 				4E8C21721FCF0979004C0883 /* ButtonImagePickerVC.xib in Resources */,
@@ -2418,7 +2454,7 @@
 				4E605AA61FD81DEF00747EDC /* RealButton.swift in Sources */,
 				22F2C9E51D41058A008A04DE /* NavigationTitleView.swift in Sources */,
 				739866801C0DEE1600CEBDB4 /* DatabaseHandler.swift in Sources */,
-				495726B11D4F4842004F2A3D /* ApplianceCollectionCell.swift in Sources */,
+				4EF0FC9B204D3128009426FC /* DeviceCollectionViewCell.swift in Sources */,
 				22AF883B1D49E9E700048A33 /* ScanFilterPullDown.swift in Sources */,
 				2241E4721CC63FA200BCD763 /* DatabaseSurveillanceController.swift in Sources */,
 				4E7945511F6FC64F006C3ACA /* Sura+CoreDataClass.swift in Sources */,
@@ -2443,6 +2479,7 @@
 				7372EB381BC410800097806D /* Flag.swift in Sources */,
 				E79A89261BAD6D6000714C64 /* ScanTimerViewController.swift in Sources */,
 				E75B4FC41B42FC0B00E48454 /* FSCalendarCell.m in Sources */,
+				4ED1FF6B204D42F7003E3D43 /* SaltoAccessCollectionViewCell.swift in Sources */,
 				736F17DA1B3AE87E003A6A02 /* ChatViewController.swift in Sources */,
 				4E1AAB191F6C0A29006C59AA /* QuranViewController.swift in Sources */,
 				738BFD061B9EF79F005D183F /* DataImporter.swift in Sources */,
@@ -2451,7 +2488,6 @@
 				22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */,
 				223690C91CAD02530037B54A /* CreateAdminViewController.swift in Sources */,
 				49C059781D913DB90061A544 /* ScanCategory.swift in Sources */,
-				495726B31D4F48F1004F2A3D /* DeviceCollectionCell.swift in Sources */,
 				22FD298F1CBBC62400BCE823 /* EventCell.swift in Sources */,
 				73E206D91B2F16720008B002 /* DevicesViewController.swift in Sources */,
 				22402A811CBF72A600CBB6E4 /* DatabaseGatewayController.swift in Sources */,
@@ -2480,7 +2516,7 @@
 				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
 				49C059721D91398F0061A544 /* FlagsCell.swift in Sources */,
 				49C059641D9136E50061A544 /* PopoverVC.swift in Sources */,
-				73EBE28C1C1043990095F372 /* DeviceCollectionViewCells.swift in Sources */,
+				4ED1FF63204D3F40003E3D43 /* ClimateCollectionViewCell.swift in Sources */,
 				223BAD471D3E5395003E9365 /* FilterController.swift in Sources */,
 				223690CB1CAD04270037B54A /* LogInTextField.swift in Sources */,
 				490C352D1D6D848400C9B851 /* DeleteConfirmation.swift in Sources */,
@@ -2551,6 +2587,7 @@
 				738DECAC1BBBEA6300D6B834 /* Security+CoreDataProperties.swift in Sources */,
 				22D7EBA11D78418F00853051 /* SecurityLocationXIB.swift in Sources */,
 				22506E8D1CB7DB37004EB47A /* ScenesCell.swift in Sources */,
+				4EF0FC9F204D3A00009426FC /* ApplianceCollectionViewCell.swift in Sources */,
 				22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */,
 				4D14B0D11D59E50B0004E10A /* PCControlNotificationsXIB.swift in Sources */,
 				731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */,
@@ -2582,7 +2619,6 @@
 				222889B41CBBD5E0004EBADD /* FlagCollectionViewCell.swift in Sources */,
 				734DBFBF1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift in Sources */,
 				7372EB411BC410800097806D /* Sequence+CoreDataProperties.swift in Sources */,
-				495D63721D9A49B300D9DC26 /* SaltoAccessCell.swift in Sources */,
 				E7F57B091BA7FE5D006B0D71 /* ScanScenesViewController.swift in Sources */,
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
 				4E7945551F6FCE31006C3ACA /* SuraCell.swift in Sources */,
@@ -2604,6 +2640,7 @@
 				E7AA26121BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift in Sources */,
 				E79309B81BC50E8E0009EFB1 /* ScanFlagViewController.swift in Sources */,
 				223362941CA2E518006C80C4 /* ProjectManagerViewController.swift in Sources */,
+				4EF0FCA3204D3C1D009426FC /* CurtainCollectionViewCell.swift in Sources */,
 				223887121CB3F6A3003864B8 /* Zone.swift in Sources */,
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
 				E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */,
@@ -2611,7 +2648,6 @@
 				2237BC861D75AEC300E94D4B /* HVACButton.swift in Sources */,
 				223687191CB51834005ACDE4 /* Category+CoreDataProperties.swift in Sources */,
 				222889B21CBBCFD1004EBADD /* DatabaseTimersController.swift in Sources */,
-				495726B71D4F493C004F2A3D /* ClimateCell.swift in Sources */,
 				223887111CB3F6A3003864B8 /* Zone+CoreDataProperties.swift in Sources */,
 				4E8C21751FCF20F6004C0883 /* ButtonImageCell.swift in Sources */,
 				223FB5941D645AB500DC2627 /* Image+CoreDataProperties.swift in Sources */,
@@ -2625,11 +2661,10 @@
 				4E2DFB4E1FBDE1B800F8AC00 /* ChooseButtonColorVC.swift in Sources */,
 				73EF277B1C07583F003A3A0A /* SurveilenceUrlsVC.swift in Sources */,
 				738E4E781C340A6F0017A7B0 /* IncomingHandler+Extensions.swift in Sources */,
-				495726B91D4F4966004F2A3D /* MultiSensorCell.swift in Sources */,
 				E7FE70CF1BB526040098EF65 /* SurveillanceHandler.swift in Sources */,
-				495726B51D4F491D004F2A3D /* CurtainCollectionCell.swift in Sources */,
 				73F1ECAA1C8978B2007CEEAA /* SSID+CoreDataProperties.swift in Sources */,
 				73F04EC91C92C74C009696EF /* Int+Extensions.swift in Sources */,
+				4ED1FF67204D41A9003E3D43 /* MultisensorCollectionViewCell.swift in Sources */,
 				4D411C9C1D5C982F000A3598 /* Device.swift in Sources */,
 				733F65451BCFABA8001BE004 /* ChatHandler.swift in Sources */,
 				73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */,
@@ -2669,6 +2704,7 @@
 				73E2311D1BA6E2C4003E41EC /* SceneParametarVC.swift in Sources */,
 				22495D331CAA868E0034FC94 /* UIGradient + Extension.swift in Sources */,
 				2260FBA11D2CF5EC00576513 /* CustomToolBar.swift in Sources */,
+				4EB88A12204E9F5300489FDC /* TestCell.swift in Sources */,
 				4EF6C8831FD197C80009E985 /* ImagePickerHandler.swift in Sources */,
 				2252B4081CA58A4F005E84AA /* ImportSSIDViewController.swift in Sources */,
 				73F51A091C9475C6003EE702 /* wol.c in Sources */,
@@ -2678,6 +2714,7 @@
 				4E7115C11FD15E9D007DB67C /* ButtonImageEditorVC.swift in Sources */,
 				736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */,
 				7372EB331BC410800097806D /* Timer+CoreDataProperties.swift in Sources */,
+				4ED1FF6F204D43C4003E3D43 /* DefaultDeviceCollectionViewCell.swift in Sources */,
 				223878991C916645001357E0 /* ListOfDevice_AppViewController.swift in Sources */,
 				49C059761D913D7D0061A544 /* ScanZone.swift in Sources */,
 				E79AEBB81B70C43300410E2D /* RelayParametarVC.swift in Sources */,
@@ -3034,9 +3071,10 @@
 		73E28EDD1B6657A80016CD77 /* e_Homegreen.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				4EBE9CA8204D99AB0069DF1D /* e_Homegreen_2.xcdatamodel */,
 				73E28EDE1B6657A80016CD77 /* e_Homegreen.xcdatamodel */,
 			);
-			currentVersion = 73E28EDE1B6657A80016CD77 /* e_Homegreen.xcdatamodel */;
+			currentVersion = 4EBE9CA8204D99AB0069DF1D /* e_Homegreen_2.xcdatamodel */;
 			path = e_Homegreen.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
