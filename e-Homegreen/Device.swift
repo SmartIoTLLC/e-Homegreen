@@ -262,7 +262,6 @@ extension Device {
             let newValue = counterValue + 1
             let newNS = NSNumber(value: newValue)
             self.usageCounter = newNS
-            CoreDataController.sharedInstance.saveChanges()
         }
 
     }

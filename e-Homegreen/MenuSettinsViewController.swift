@@ -68,7 +68,7 @@ enum Menu:Int{
 
 class MenuViewController{
     static let dushboardVC      = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Dashboard") as! UINavigationController)
-    static let devicesVC        = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Devices") as! UINavigationController)
+    static let devicesVC        = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "DevicesNC") as! UINavigationController)
     static let scenesVC         = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Scenes") as! UINavigationController)
     static let eventsVC         = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Events") as! UINavigationController)
     static let remoteVC         = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Remote") as! UINavigationController)

@@ -65,7 +65,6 @@
 		2241E4721CC63FA200BCD763 /* DatabaseSurveillanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2241E4711CC63FA200BCD763 /* DatabaseSurveillanceController.swift */; };
 		22453A9F1D391E33009DCB07 /* FilterPullDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22453A9E1D391E33009DCB07 /* FilterPullDown.swift */; };
 		22495D0E1CAA63EA0034FC94 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22495D0D1CAA63EA0034FC94 /* SWRevealViewController.m */; };
-		22495D111CAA72020034FC94 /* Device.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22495D0F1CAA72020034FC94 /* Device.storyboard */; };
 		22495D131CAA74880034FC94 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22495D121CAA74880034FC94 /* Dashboard.storyboard */; };
 		22495D161CAA75100034FC94 /* Scenes.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22495D141CAA75100034FC94 /* Scenes.storyboard */; };
 		22495D181CAA75DC0034FC94 /* Events.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22495D171CAA75DC0034FC94 /* Events.storyboard */; };
@@ -167,6 +166,7 @@
 		4E1AAB1D1F6C0A8C006C59AA /* ReciterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E1AAB1B1F6C0A8C006C59AA /* ReciterCell.xib */; };
 		4E218F491F7B92960068CA72 /* Remote.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E218F481F7B92960068CA72 /* Remote.storyboard */; };
 		4E218F4B1F7B92FC0068CA72 /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E218F4A1F7B92FC0068CA72 /* RemoteViewController.swift */; };
+		4E233AF9205444A600D2449A /* DeviceCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E233AF8205444A600D2449A /* DeviceCVCell.swift */; };
 		4E2DFB4A1FBDBF7D00F8AC00 /* ButtonSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DFB481FBDBF7D00F8AC00 /* ButtonSettingsVC.swift */; };
 		4E2DFB4B1FBDBF7D00F8AC00 /* ButtonSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E2DFB491FBDBF7D00F8AC00 /* ButtonSettingsVC.xib */; };
 		4E2DFB4E1FBDE1B800F8AC00 /* ChooseButtonColorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DFB4C1FBDE1B800F8AC00 /* ChooseButtonColorVC.swift */; };
@@ -215,6 +215,9 @@
 		4EDCE68B1F6A9C090073736B /* StationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EDCE6891F6A9C090073736B /* StationCell.xib */; };
 		4EDCE6961F6AA76F0073736B /* Radio+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */; };
 		4EDCE6971F6AA76F0073736B /* Radio+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */; };
+		4EE1BA78205027B9004B23C8 /* DevicesNew.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4EE1BA77205027B9004B23C8 /* DevicesNew.storyboard */; };
+		4EECC83D204FDC60006E30AA /* DevicesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECC83C204FDC60006E30AA /* DevicesVC.swift */; };
+		4EECC83F204FDC9F006E30AA /* DevicesVC+Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECC83E204FDC9F006E30AA /* DevicesVC+Cells.swift */; };
 		4EEEA4891FA0AB5600AC4AD6 /* RunnableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEEA4881FA0AB5600AC4AD6 /* RunnableList.swift */; };
 		4EF0FC9B204D3128009426FC /* DeviceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF0FC99204D3128009426FC /* DeviceCollectionViewCell.swift */; };
 		4EF0FC9C204D3128009426FC /* DeviceCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EF0FC9A204D3128009426FC /* DeviceCollectionViewCell.xib */; };
@@ -294,7 +297,6 @@
 		73E206B61B2EEFFE0008B002 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73E206B51B2EEFFE0008B002 /* Images.xcassets */; };
 		73E206B91B2EEFFE0008B002 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73E206B71B2EEFFE0008B002 /* LaunchScreen.xib */; };
 		73E206C51B2EEFFE0008B002 /* e_HomegreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E206C41B2EEFFE0008B002 /* e_HomegreenTests.swift */; };
-		73E206D91B2F16720008B002 /* DevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E206D81B2F16720008B002 /* DevicesViewController.swift */; };
 		73E2311B1BA6E2C4003E41EC /* EventParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E231151BA6E2C4003E41EC /* EventParametarVC.swift */; };
 		73E2311C1BA6E2C4003E41EC /* EventParametarVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73E231161BA6E2C4003E41EC /* EventParametarVC.xib */; };
 		73E2311D1BA6E2C4003E41EC /* SceneParametarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E231171BA6E2C4003E41EC /* SceneParametarVC.swift */; };
@@ -311,7 +313,6 @@
 		73E758F11B4EBE0300ECE061 /* LocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E758F01B4EBE0300ECE061 /* LocationsViewController.swift */; };
 		73E82D0D1BECA97D00C1C621 /* Categories List.json in Resources */ = {isa = PBXBuildFile; fileRef = 73E82D0B1BECA97D00C1C621 /* Categories List.json */; };
 		73E82D0E1BECA97D00C1C621 /* Zones List.json in Resources */ = {isa = PBXBuildFile; fileRef = 73E82D0C1BECA97D00C1C621 /* Zones List.json */; };
-		73EBE28E1C1043D70095F372 /* DeviceCollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EBE28D1C1043D70095F372 /* DeviceCollectionView+Extensions.swift */; };
 		73ECD4A31B332A6F00767740 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A21B332A6F00767740 /* Constants.swift */; };
 		73ED6AFD1BA0249800E6CE06 /* RepeatSendingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */; };
 		73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ED6AFE1BA068B900E6CE06 /* ProgressBarVC.swift */; };
@@ -502,7 +503,6 @@
 		22453A9E1D391E33009DCB07 /* FilterPullDown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterPullDown.swift; sourceTree = "<group>"; };
 		22495D0C1CAA63EA0034FC94 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		22495D0D1CAA63EA0034FC94 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
-		22495D101CAA72020034FC94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Device.storyboard; sourceTree = "<group>"; };
 		22495D121CAA74880034FC94 /* Dashboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
 		22495D151CAA75100034FC94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Scenes.storyboard; sourceTree = "<group>"; };
 		22495D171CAA75DC0034FC94 /* Events.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Events.storyboard; sourceTree = "<group>"; };
@@ -605,6 +605,7 @@
 		4E1AAB1B1F6C0A8C006C59AA /* ReciterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReciterCell.xib; sourceTree = "<group>"; };
 		4E218F481F7B92960068CA72 /* Remote.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Remote.storyboard; path = ../Remote.storyboard; sourceTree = "<group>"; };
 		4E218F4A1F7B92FC0068CA72 /* RemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteViewController.swift; sourceTree = "<group>"; };
+		4E233AF8205444A600D2449A /* DeviceCVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCVCell.swift; sourceTree = "<group>"; };
 		4E2DFB481FBDBF7D00F8AC00 /* ButtonSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonSettingsVC.swift; sourceTree = "<group>"; };
 		4E2DFB491FBDBF7D00F8AC00 /* ButtonSettingsVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonSettingsVC.xib; sourceTree = "<group>"; };
 		4E2DFB4C1FBDE1B800F8AC00 /* ChooseButtonColorVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseButtonColorVC.swift; sourceTree = "<group>"; };
@@ -654,6 +655,9 @@
 		4EDCE6891F6A9C090073736B /* StationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StationCell.xib; sourceTree = "<group>"; };
 		4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Radio+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Radio+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4EE1BA77205027B9004B23C8 /* DevicesNew.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DevicesNew.storyboard; sourceTree = "<group>"; };
+		4EECC83C204FDC60006E30AA /* DevicesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesVC.swift; sourceTree = "<group>"; };
+		4EECC83E204FDC9F006E30AA /* DevicesVC+Cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DevicesVC+Cells.swift"; sourceTree = "<group>"; };
 		4EEEA4881FA0AB5600AC4AD6 /* RunnableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnableList.swift; sourceTree = "<group>"; };
 		4EF0FC99204D3128009426FC /* DeviceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCollectionViewCell.swift; sourceTree = "<group>"; };
 		4EF0FC9A204D3128009426FC /* DeviceCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeviceCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -738,7 +742,6 @@
 		73E206BE1B2EEFFE0008B002 /* e-HomegreenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "e-HomegreenTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		73E206C31B2EEFFE0008B002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		73E206C41B2EEFFE0008B002 /* e_HomegreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = e_HomegreenTests.swift; sourceTree = "<group>"; };
-		73E206D81B2F16720008B002 /* DevicesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = DevicesViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		73E231151BA6E2C4003E41EC /* EventParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventParametarVC.swift; sourceTree = "<group>"; };
 		73E231161BA6E2C4003E41EC /* EventParametarVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventParametarVC.xib; sourceTree = "<group>"; };
 		73E231171BA6E2C4003E41EC /* SceneParametarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneParametarVC.swift; sourceTree = "<group>"; };
@@ -755,7 +758,6 @@
 		73E758F01B4EBE0300ECE061 /* LocationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationsViewController.swift; sourceTree = "<group>"; };
 		73E82D0B1BECA97D00C1C621 /* Categories List.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Categories List.json"; sourceTree = "<group>"; };
 		73E82D0C1BECA97D00C1C621 /* Zones List.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Zones List.json"; sourceTree = "<group>"; };
-		73EBE28D1C1043D70095F372 /* DeviceCollectionView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "DeviceCollectionView+Extensions.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		73ECD4A21B332A6F00767740 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatSendingHandler.swift; sourceTree = "<group>"; };
 		73ED6AFE1BA068B900E6CE06 /* ProgressBarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressBarVC.swift; sourceTree = "<group>"; };
@@ -1516,6 +1518,7 @@
 				4ED1FF6E204D43C4003E3D43 /* DefaultDeviceCollectionViewCell.xib */,
 				4EB88A10204E9F5300489FDC /* TestCell.swift */,
 				4EB88A11204E9F5300489FDC /* TestCell.xib */,
+				4E233AF8205444A600D2449A /* DeviceCVCell.swift */,
 			);
 			name = "Device cells";
 			sourceTree = "<group>";
@@ -2102,11 +2105,11 @@
 				E7AAF7611BBE875100992A18 /* ClimaXIB */,
 				4923279E1D6EEC7300B9BC05 /* Parameters XIB */,
 				225F59821D743FE500156BCD /* Big Dimmer Slider XIB */,
-				22495D0F1CAA72020034FC94 /* Device.storyboard */,
+				4EE1BA77205027B9004B23C8 /* DevicesNew.storyboard */,
 				73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */,
-				73E206D81B2F16720008B002 /* DevicesViewController.swift */,
-				73EBE28D1C1043D70095F372 /* DeviceCollectionView+Extensions.swift */,
 				73F1ECAC1C8993E8007CEEAA /* DefaultDeviceImages.swift */,
+				4EECC83C204FDC60006E30AA /* DevicesVC.swift */,
+				4EECC83E204FDC9F006E30AA /* DevicesVC+Cells.swift */,
 			);
 			name = Devices;
 			sourceTree = "<group>";
@@ -2251,6 +2254,7 @@
 				E7DC67C91B457C0E00EA6543 /* weather-snow@2x.png in Resources */,
 				73ED6B011BA068B900E6CE06 /* ProgressBarVC.xib in Resources */,
 				E7DC67C11B457C0E00EA6543 /* weather-rain-night@2x.png in Resources */,
+				4EE1BA78205027B9004B23C8 /* DevicesNew.storyboard in Resources */,
 				4EB88A13204E9F5300489FDC /* TestCell.xib in Resources */,
 				E7DC67C51B457C0E00EA6543 /* weather-scattered@2x.png in Resources */,
 				E7DC67B51B457C0E00EA6543 /* weather-broken@2x.png in Resources */,
@@ -2325,7 +2329,6 @@
 				733E5E861C666F840039B7A8 /* Config.plist in Resources */,
 				4ED1FF68204D41A9003E3D43 /* MultisensorCollectionViewCell.xib in Resources */,
 				4EF0FCA4204D3C1D009426FC /* CurtainCollectionViewCell.xib in Resources */,
-				22495D111CAA72020034FC94 /* Device.storyboard in Resources */,
 				E7E1A8241B3804F1008D8713 /* AcousticModelEnglish.bundle in Resources */,
 				22E7B2111CC4FC9A00F813AC /* ResetPasswordXIB.xib in Resources */,
 				4D14B0D21D59E50B0004E10A /* PCControlNotificationsXIB.xib in Resources */,
@@ -2450,6 +2453,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E233AF9205444A600D2449A /* DeviceCVCell.swift in Sources */,
 				E7D9FFE81B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout.m in Sources */,
 				4E605AA61FD81DEF00747EDC /* RealButton.swift in Sources */,
 				22F2C9E51D41058A008A04DE /* NavigationTitleView.swift in Sources */,
@@ -2462,6 +2466,7 @@
 				223878A01C917A96001357E0 /* AddVideo_AppXIB.swift in Sources */,
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
 				22D867671CBE832400A6575A /* ZoneAndCategoryControl.swift in Sources */,
+				4EECC83D204FDC60006E30AA /* DevicesVC.swift in Sources */,
 				738DECA21BBBC39F00D6B834 /* SecuirtyCommandVC.swift in Sources */,
 				22D7EB9E1D780FB600853051 /* SecurityLocationCell.swift in Sources */,
 				22359C6A1CAE98290054434B /* LocationCell.swift in Sources */,
@@ -2489,7 +2494,6 @@
 				223690C91CAD02530037B54A /* CreateAdminViewController.swift in Sources */,
 				49C059781D913DB90061A544 /* ScanCategory.swift in Sources */,
 				22FD298F1CBBC62400BCE823 /* EventCell.swift in Sources */,
-				73E206D91B2F16720008B002 /* DevicesViewController.swift in Sources */,
 				22402A811CBF72A600CBB6E4 /* DatabaseGatewayController.swift in Sources */,
 				225469001CBD142500473BC7 /* DatabaseUserTimerController.swift in Sources */,
 				E79AEBB41B70BFD500410E2D /* DimmerParametarVC.swift in Sources */,
@@ -2507,7 +2511,6 @@
 				73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */,
 				739D57161C809B30004CC50E /* DeviceImage+CoreDataProperties.swift in Sources */,
 				4E19613B1FD5385500F48272 /* ButtonCell+Logic.swift in Sources */,
-				73EBE28E1C1043D70095F372 /* DeviceCollectionView+Extensions.swift in Sources */,
 				E7AAF76A1BBEA34000992A18 /* CameraParametarXIBViewController.swift in Sources */,
 				73B42ACA1BCBBB0500D28621 /* LocalSearchParametar.swift in Sources */,
 				73F1ECA91C8978B2007CEEAA /* Location.swift in Sources */,
@@ -2566,6 +2569,7 @@
 				73F1ECA81C8978B2007CEEAA /* Location+CoreDataProperties.swift in Sources */,
 				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,
 				223687151CB4F13E005ACDE4 /* InsertGatewayAddressXIB.swift in Sources */,
+				4EECC83F204FDC9F006E30AA /* DevicesVC+Cells.swift in Sources */,
 				E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */,
 				49C059681D9137990061A544 /* SceneCell.swift in Sources */,
 				736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */,
@@ -2761,14 +2765,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		22495D0F1CAA72020034FC94 /* Device.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				22495D101CAA72020034FC94 /* Base */,
-			);
-			name = Device.storyboard;
-			sourceTree = "<group>";
-		};
 		22495D141CAA75100034FC94 /* Scenes.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

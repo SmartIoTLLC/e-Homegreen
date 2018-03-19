@@ -22,7 +22,7 @@ class IncomingHandler: NSObject {
     init (byteArrayToHandle: [Byte], host:String, port:UInt16) {
         super.init()
         CLSLogv("Log awesomeness %@", getVaList(["\(byteArrayToHandle)"]))
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.Gateway.DidReceiveData), object: self, userInfo: nil)
+
         appDel = UIApplication.shared.delegate as! AppDelegate
         self.host = host
         self.port = port

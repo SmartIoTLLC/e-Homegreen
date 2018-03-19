@@ -10,12 +10,14 @@ import Foundation
 import CoreData
 
 class CoreDataController: NSObject {
-    //var context:NSManagedObjectContext
+    var context:NSManagedObjectContext?
     static let sharedInstance = CoreDataController()
     let appDel = UIApplication.shared.delegate as! AppDelegate
     
     override init() {
-        //context = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext!
+        context = appDel.managedObjectContext
+//        context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+//        context!.persistentStoreCoordinator = (UIApplication.shared.delegate as! AppDelegate).persistentStoreCoordinator
     }
     
     func fetchGatewaysForHost(_ host:String, port:UInt16) -> [Gateway] {
@@ -42,7 +44,7 @@ class CoreDataController: NSObject {
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
             
             do {
-                if let moc = appDel.managedObjectContext {
+                if let moc = context {
                     if let fetResults = try moc.fetch(fetchRequest) as? [Gateway] {
                         gateways = fetResults
                     }
@@ -61,7 +63,7 @@ class CoreDataController: NSObject {
         fetchRequest.predicate = predicateTwo
         
         do {
-            if let moc = appDel.managedObjectContext {
+            if let moc = context {
                 if let fetResults = try moc.fetch(fetchRequest) as? [Gateway] {
                     if let gateway = fetResults.first {
                         return gateway
@@ -76,19 +78,23 @@ class CoreDataController: NSObject {
     
     func fetchDevicesForGateway(_ gateway: Gateway) -> [Device] {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
-
+        
+        let sortDescriptorOne   = NSSortDescriptor(key: "gateway.name", ascending: true)
+        let sortDescriptorTwo   = NSSortDescriptor(key: "address", ascending: true)
+        let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
+        let sortDescriptorFour  = NSSortDescriptor(key: "channel", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
+        
         fetchRequest.predicate = NSPredicate(format: "gateway == %@", gateway.objectID)
 
         do {
-            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                                
-                if let moc = appDelegate.managedObjectContext {
+                if let moc = context {
 
                     if let fetResults = try moc.fetch(fetchRequest) as? [Device] {
                         return fetResults
                     }
                 }
-            }
+            
 
         } catch let error as NSError { print("Unresolved error \(error), \(error.userInfo)") }
 
@@ -108,7 +114,7 @@ class CoreDataController: NSObject {
         fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: predicateArray)
         
         do {
-            if let moc = appDel.managedObjectContext {
+            if let moc = context {
                 if let fetResults = try moc.fetch(fetchRequest) as? [Device] {
                     return fetResults
                 }
@@ -147,11 +153,11 @@ class CoreDataController: NSObject {
     
     func saveChanges() {
         do {
-            if let moc = appDel.managedObjectContext {
+            if let moc = context {
                 try moc.save()
             }            
         } catch let error1 as NSError { let error = error1; print("Unresolved error \(error), \(error.userInfo)")
-            if let moc = appDel.managedObjectContext {
+            if let moc = context {
                 moc.rollback()
             }
         }

@@ -139,7 +139,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="tapToScroll" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </label>
-                            <slider opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="M8Z-fo-fSQ">
+                            <slider opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="M8Z-fo-fSQ">
                                 <rect key="frame" x="18" y="145" width="114" height="31"/>
                                 <color key="tintColor" red="0.33333333329999998" green="0.33333333329999998" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </slider>

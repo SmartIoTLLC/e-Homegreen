@@ -32,7 +32,7 @@
                     </view>
                     <connections>
                         <segue destination="tid-St-yaC" kind="custom" identifier="sw_rear" customClass="SWRevealViewControllerSegueSetController" id="RzG-2e-KpW"/>
-                        <segue destination="Ifs-rO-cYb" kind="custom" identifier="sw_right" customClass="SWRevealViewControllerSegueSetController" id="A1n-Sm-VzF"/>
+                        <segue destination="Ifs-rO-cYb" kind="custom" identifier="sw_right" customClass="SWRevealViewControllerSegueSetController" id="WWW-x4-soW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dwx-Jy-f6d" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -236,7 +236,6 @@
                     <connections>
                         <outlet property="logoImageView" destination="dBy-un-k0R" id="xM2-OJ-WPo"/>
                         <outlet property="menuCollectionView" destination="VwH-0j-wOZ" id="VrP-O5-7rg"/>
-                        <segue destination="uQN-u9-JqS" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="8zo-MZ-dnY"/>
                         <segue destination="X3e-9w-vdD" kind="custom" identifier="" customClass="SWRevealViewControllerSeguePushController" id="eTR-ld-Vug"/>
                         <segue destination="rVI-Hx-Fff" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="85J-mA-tTU"/>
                         <segue destination="axL-Uc-con" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="j4p-7H-9BR"/>
@@ -255,39 +254,12 @@
                         <segue destination="LTd-tK-Iyx" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="heh-TF-gVm"/>
                         <segue destination="qwi-Vy-FE7" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="Y1F-iZ-NRJ"/>
                         <segue destination="6ia-pk-N9N" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="957-Q9-t39"/>
+                        <segue destination="uD8-VM-5ej" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="wwi-yG-7DY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Afh-dM-bhn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="230" y="-438"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="8NX-jr-csK">
-            <objects>
-                <navigationController storyboardIdentifier="Devices" automaticallyAdjustsScrollViewInsets="NO" id="uQN-u9-JqS" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="eY7-mQ-8aK">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="XCz-DF-A2S" kind="relationship" relationship="rootViewController" id="bA8-wU-rWU"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="uMv-MF-vzc" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="892" y="-1562"/>
-        </scene>
-        <!--DevicesViewController-->
-        <scene sceneID="3DB-rp-4n5">
-            <objects>
-                <viewControllerPlaceholder storyboardIdentifier="DevicesViewController" storyboardName="Device" referencedIdentifier="DevicesViewController" id="XCz-DF-A2S" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="Jud-Y9-Jd6"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="NtW-AU-egd" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1284" y="-2188"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="a3U-JU-FKN">
@@ -922,6 +894,34 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YWG-0K-qtO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="113" y="-1561"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="5Hv-KO-4v3">
+            <objects>
+                <navigationController storyboardIdentifier="DevicesNC" automaticallyAdjustsScrollViewInsets="NO" id="uD8-VM-5ej" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="2mg-EQ-7NO">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="qFa-uV-OYv" kind="relationship" relationship="rootViewController" id="cqj-fT-1RB"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gHe-0y-SWH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1160" y="-2790"/>
+        </scene>
+        <!--DevicesVC-->
+        <scene sceneID="fk8-9j-XEI">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="DevicesVC" storyboardName="DevicesNew" referencedIdentifier="DevicesVC" id="qFa-uV-OYv" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="dvo-bY-lfk"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Y9N-tT-8GD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1561" y="-2789"/>
         </scene>
     </scenes>
     <resources>

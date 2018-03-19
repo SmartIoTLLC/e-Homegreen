@@ -2,45 +2,43 @@
 //  Gateway+CoreDataProperties.swift
 //  e-Homegreen
 //
-//  Created by Vladimir Tuchek on 11/13/17.
-//  Copyright © 2017 Teodor Stevic. All rights reserved.
+//  Created by Vladimir Tuchek on 3/11/18.
+//  Copyright © 2018 NS Web Development. All rights reserved.
 //
 //
 
 import Foundation
 import CoreData
-//import e_Homegreen
 
 extension Gateway {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Gateway> {
         return NSFetchRequest<Gateway>(entityName: "Gateway")
     }
-    
-    @NSManaged var addressOne: NSNumber
-    @NSManaged var addressThree: NSNumber
-    @NSManaged var addressTwo: NSNumber
-    @NSManaged var autoReconnectDelay: NSNumber?
-    @NSManaged var autoReconnectDelayLast: NSDate?
-    @NSManaged var gatewayDescription: String
-    @NSManaged var gatewayId: String?
-    @NSManaged var gatewayType: NSNumber
-    @NSManaged var localIp: String
-    @NSManaged var localPort: NSNumber
-    @NSManaged var name: String
-    @NSManaged var remoteIp: String
-    @NSManaged var remoteIpInUse: String
-    @NSManaged var remotePort: NSNumber
-    @NSManaged var turnedOn: NSNumber
-    @NSManaged var cards: NSSet
-    @NSManaged var devices: NSSet
-    @NSManaged var events: NSSet
-    @NSManaged var flags: NSSet
-    @NSManaged var scenes: NSSet
-    @NSManaged var sequences: NSSet
-    @NSManaged var timers: NSSet
-    @NSManaged var location: Location
 
+    @NSManaged public var addressOne: NSNumber
+    @NSManaged public var addressThree: NSNumber
+    @NSManaged public var addressTwo: NSNumber
+    @NSManaged public var autoReconnectDelay: NSNumber?
+    @NSManaged public var autoReconnectDelayLast: NSDate?
+    @NSManaged public var gatewayDescription: String
+    @NSManaged public var gatewayId: String?
+    @NSManaged public var gatewayType: NSNumber
+    @NSManaged public var localIp: String
+    @NSManaged public var localPort: NSNumber
+    @NSManaged public var name: String
+    @NSManaged public var remoteIp: String
+    @NSManaged public var remoteIpInUse: String
+    @NSManaged public var remotePort: NSNumber
+    @NSManaged public var turnedOn: NSNumber
+    @NSManaged public var cards: NSSet
+    @NSManaged public var devices: NSSet
+    @NSManaged public var events: NSSet
+    @NSManaged public var flags: NSSet
+    @NSManaged public var location: Location
+    @NSManaged public var scenes: NSSet
+    @NSManaged public var sequences: NSSet
+    @NSManaged public var timers: NSSet
 
 }
 

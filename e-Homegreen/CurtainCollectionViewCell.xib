@@ -207,17 +207,17 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <connections>
-                <outlet property="backView" destination="lgc-iA-oeu" id="ZPB-X9-nic"/>
-                <outlet property="closeButton" destination="qNp-6n-3MB" id="cdl-lK-f1g"/>
-                <outlet property="curtainImage" destination="uIa-2c-CNn" id="wih-bw-b51"/>
-                <outlet property="curtainName" destination="lpt-lN-ofN" id="NPe-Hf-iY5"/>
-                <outlet property="disabledCellView" destination="qd9-ca-LB5" id="YPa-xb-6Yi"/>
-                <outlet property="infoView" destination="BS8-OK-xIx" id="oUv-S5-Oca"/>
-                <outlet property="lblAddress" destination="bXx-zO-0OR" id="XKA-A6-TmX"/>
-                <outlet property="lblCategory" destination="tT9-ZK-VEZ" id="Y70-SK-QyE"/>
-                <outlet property="lblLevel" destination="XWd-4y-b81" id="3Fr-09-EAi"/>
-                <outlet property="lblZone" destination="DQZ-au-WUW" id="Mqm-UX-y37"/>
-                <outlet property="openButton" destination="ycY-F8-UeQ" id="HKz-N3-AIB"/>
+                <outlet property="backView" destination="lgc-iA-oeu" id="8Dz-ul-c2f"/>
+                <outlet property="closeButton" destination="qNp-6n-3MB" id="FXk-oe-ySU"/>
+                <outlet property="curtainImage" destination="uIa-2c-CNn" id="eOd-He-Sud"/>
+                <outlet property="curtainName" destination="lpt-lN-ofN" id="hdy-wI-6wX"/>
+                <outlet property="disabledCellView" destination="qd9-ca-LB5" id="vCg-fL-MVm"/>
+                <outlet property="infoView" destination="BS8-OK-xIx" id="wLu-H6-4B8"/>
+                <outlet property="lblAddress" destination="bXx-zO-0OR" id="2A3-O7-Cz3"/>
+                <outlet property="lblCategory" destination="tT9-ZK-VEZ" id="eFe-fI-8Pc"/>
+                <outlet property="lblLevel" destination="XWd-4y-b81" id="WTQ-vW-n7e"/>
+                <outlet property="lblZone" destination="DQZ-au-WUW" id="yzr-2m-vbm"/>
+                <outlet property="openButton" destination="ycY-F8-UeQ" id="mFE-vc-lkO"/>
             </connections>
         </collectionViewCell>
     </objects>

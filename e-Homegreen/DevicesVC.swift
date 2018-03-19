@@ -1,9 +1,9 @@
 //
-//  DevicesViewController.swift
+//  DevicesVC.swift
 //  e-Homegreen
 //
-//  Created by Teodor Stevic on 6/15/15.
-//  Copyright (c) 2015 Teodor Stevic. All rights reserved.
+//  Created by Vladimir Tuchek on 3/7/18.
+//  Copyright © 2018 NS Web Development. All rights reserved.
 //
 
 import UIKit
@@ -12,8 +12,8 @@ import AVFoundation
 import Crashlytics
 import AudioToolbox
 
-class DevicesViewController: PopoverVC{
-    
+class DevicesVC: PopoverVC {
+
     var refreshTimer: Foundation.Timer?
     
     fileprivate func startRefreshTimer() {
@@ -52,7 +52,7 @@ class DevicesViewController: PopoverVC{
     
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
-    @IBOutlet weak var deviceCollectionView: UICollectionView!
+    @IBOutlet weak var deviceCollection: UICollectionView!
     
     //Zone and category control
     @IBOutlet weak var bottomView: UIView!
@@ -71,23 +71,23 @@ class DevicesViewController: PopoverVC{
         super.viewDidLoad()
         appDel = UIApplication.shared.delegate as! AppDelegate
         registerDeviceCells()
-        setupViews()
         addObserversVDL()
+        setupViews()        
     }
     
-
+    
     
     override func viewWillLayoutSubviews() {
         setContentOffset(for: scrollView)
         setTitleView(view: headerTitleSubtitleView)
-        collectionViewCellSize = calculateCellSize(completion: { deviceCollectionView.reloadData() })
+        collectionViewCellSize = calculateCellSize(completion: { deviceCollection.reloadData() })
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         setupSWRevealViewController(menuButton: menuButton)
         
-        deviceCollectionView.isUserInteractionEnabled = true
+        deviceCollection.isUserInteractionEnabled = true
         
         getUserAndUpdateDeviceList()
         refreshRunningTimes()
@@ -112,7 +112,7 @@ class DevicesViewController: PopoverVC{
     override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
     }
-
+    
     @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer) {
         if gestureRecognizer.state == .began {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -122,14 +122,14 @@ class DevicesViewController: PopoverVC{
     
     @objc func refreshLocalParametars () {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
-        deviceCollectionView.reloadData()
+        deviceCollection.reloadData()
     }
-
+    
     @objc func cellParametarLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
         if let tag = gestureRecognizer.view?.tag {
             if gestureRecognizer.state == .began {
-                let location = gestureRecognizer.location(in: deviceCollectionView)
-                if let index = deviceCollectionView.indexPathForItem(at: location) {
+                let location = gestureRecognizer.location(in: deviceCollection)
+                if let index = deviceCollection.indexPathForItem(at: location) {
                     let controlType = devices[index.row].controlType
                     
                     switch controlType {
@@ -152,22 +152,22 @@ class DevicesViewController: PopoverVC{
     }
     
     @objc func handleTap (_ gesture:UIGestureRecognizer) {
-        let location = gesture.location(in: deviceCollectionView)
-        if let index = deviceCollectionView.indexPathForItem(at: location) {
+        let location = gesture.location(in: deviceCollection)
+        if let index = deviceCollection.indexPathForItem(at: location) {
             
-            let cell        = deviceCollectionView.cellForItem(at: index)
+            let cell        = deviceCollection.cellForItem(at: index)
             let controlType = devices[index.row].controlType
             let options: UIViewAnimationOptions = [.transitionFlipFromBottom, .showHideTransitionViews]
             
             switch controlType {
-                case ControlType.Dimmer  : if let cell = cell as? DeviceCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
-                case ControlType.Relay   : if let cell = cell as? ApplianceCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
-                case ControlType.Sensor,
-                     ControlType.IntelligentSwitch,
-                     ControlType.Gateway : if let cell = cell as? MultisensorCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
-                case ControlType.Climate : if let cell = cell as? ClimateCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
-                case ControlType.Curtain : if let cell = cell as? CurtainCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
-                default: break
+            case ControlType.Dimmer  : if let cell = cell as? DeviceCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+            case ControlType.Relay   : if let cell = cell as? ApplianceCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+            case ControlType.Sensor,
+                 ControlType.IntelligentSwitch,
+                 ControlType.Gateway : if let cell = cell as? MultisensorCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+            case ControlType.Climate : if let cell = cell as? ClimateCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+            case ControlType.Curtain : if let cell = cell as? CurtainCollectionViewCell { UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil) }
+            default: break
             }
             
             devices[index.row].info = true
@@ -175,24 +175,24 @@ class DevicesViewController: PopoverVC{
     }
     
     @objc func handleTap2 (_ gesture:UIGestureRecognizer) {
-        let location = gesture.location(in: deviceCollectionView)
-        if let index = deviceCollectionView.indexPathForItem(at: location) {
+        let location = gesture.location(in: deviceCollection)
+        if let index = deviceCollection.indexPathForItem(at: location) {
             
-            let cell                            = deviceCollectionView.cellForItem(at: index)
+            let cell                            = deviceCollection.cellForItem(at: index)
             let controlType                     = devices[index.row].controlType
             let options: UIViewAnimationOptions = [.transitionFlipFromBottom, .showHideTransitionViews]
             
             switch controlType {
-                case ControlType.Dimmer      : if let cell = cell as? DeviceCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
-                case ControlType.Relay       : if let cell = cell as? ApplianceCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
-                    case ControlType.Sensor,
-                         ControlType.IntelligentSwitch,
-                         ControlType.Gateway : if let cell = cell as? MultisensorCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
-                case ControlType.Climate     : if let cell = cell as? ClimateCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
-                case ControlType.Curtain     : if let cell = cell as? CurtainCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
-                default: break
+            case ControlType.Dimmer      : if let cell = cell as? DeviceCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+            case ControlType.Relay       : if let cell = cell as? ApplianceCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+            case ControlType.Sensor,
+                 ControlType.IntelligentSwitch,
+                 ControlType.Gateway : if let cell = cell as? MultisensorCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+            case ControlType.Climate     : if let cell = cell as? ClimateCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+            case ControlType.Curtain     : if let cell = cell as? CurtainCollectionViewCell { UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil) }
+            default: break
             }
-
+            
             devices[index.row].info = false
         }
     }
@@ -219,11 +219,11 @@ class DevicesViewController: PopoverVC{
             device.oldValue     = device.currentValue
             device.currentValue = NSNumber(value: Int(value))
             
-            if let cell = deviceCollectionView.cellForItem(at: indexPath) as? DeviceCollectionViewCell {
+            if let cell = deviceCollection.cellForItem(at: indexPath) as? DeviceCollectionViewCell {
                 cell.picture.image     = device.returnImage(Double(value))
                 cell.lightSlider.value = slider.value
                 cell.setNeedsDisplay()
-            } else if let cell = deviceCollectionView.cellForItem(at: indexPath) as? CurtainCollectionViewCell {
+            } else if let cell = deviceCollection.cellForItem(at: indexPath) as? CurtainCollectionViewCell {
                 cell.setImageForDevice(device); cell.setNeedsDisplay()
             }
             changeSliderValueWithTag(tag, withOldValue: Int(sliderOldValue))
@@ -233,50 +233,50 @@ class DevicesViewController: PopoverVC{
         let device      = devices[tag]
         let controlType = device.controlType
         let address     = device.getAddress()
-
+        
         device.increaseUsageCounterValue()
         deviceInControlMode = false
         
         switch controlType {
-            case ControlType.Dimmer: //   Dimmer
-                let setValue = UInt8(Int(device.currentValue.doubleValue*100/255))
-                
-                DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: {
-                    DispatchQueue.main.async(execute: {
-                        RunnableList.sharedInstance.checkForSameDevice(
-                            device: device.objectID,
-                            newCommand: NSNumber(value: setValue),
-                            oldValue: NSNumber(value: withOldValue)
-                        )
-                        _ = RepeatSendingHandler(
-                            byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setValue, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: self.getByte(device.skipState)),
-                            gateway: device.gateway,
-                            device: device,
-                            oldValue: withOldValue,
-                            command: NSNumber(value: setValue)
-                        )
-                    })
-                })
+        case ControlType.Dimmer: //   Dimmer
+            let setValue = UInt8(Int(device.currentValue.doubleValue*100/255))
             
-                case ControlType.Curtain: //  Curtain
-                    let deviceGroupId = devices[tag].curtainGroupID.intValue
-                    DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: {
-                        DispatchQueue.main.async(execute: {
-                            RunnableList.sharedInstance.checkForSameDevice(
-                                device: device.objectID,
-                                newCommand: device.currentValue,
-                                oldValue: NSNumber(value: withOldValue)
-                            )
-                            _ = RepeatSendingHandler(
-                                byteArray: OutgoingHandler.setCurtainStatus(address, value: self.getByte(device.currentValue), groupId:  UInt8(deviceGroupId)),
-                                gateway: device.gateway,
-                                device: device,
-                                oldValue: withOldValue,
-                                command: device.currentValue
-                            )
-                        })
-                    })
-            default: break
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: {
+                DispatchQueue.main.async(execute: {
+                    RunnableList.sharedInstance.checkForSameDevice(
+                        device: device.objectID,
+                        newCommand: NSNumber(value: setValue),
+                        oldValue: NSNumber(value: withOldValue)
+                    )
+                    _ = RepeatSendingHandler(
+                        byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setValue, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: self.getByte(device.skipState)),
+                        gateway: device.gateway,
+                        device: device,
+                        oldValue: withOldValue,
+                        command: NSNumber(value: setValue)
+                    )
+                })
+            })
+            
+        case ControlType.Curtain: //  Curtain
+            let deviceGroupId = devices[tag].curtainGroupID.intValue
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: {
+                DispatchQueue.main.async(execute: {
+                    RunnableList.sharedInstance.checkForSameDevice(
+                        device: device.objectID,
+                        newCommand: device.currentValue,
+                        oldValue: NSNumber(value: withOldValue)
+                    )
+                    _ = RepeatSendingHandler(
+                        byteArray: OutgoingHandler.setCurtainStatus(address, value: self.getByte(device.currentValue), groupId:  UInt8(deviceGroupId)),
+                        gateway: device.gateway,
+                        device: device,
+                        oldValue: withOldValue,
+                        command: device.currentValue
+                    )
+                })
+            })
+        default: break
         }
     }
     @objc func changeSliderValueStarted (_ sender: UISlider) {
@@ -297,18 +297,18 @@ class DevicesViewController: PopoverVC{
         let v4 = UInt8(v3)
         
         device.increaseUsageCounterValue()
-
+        
         var newCommand: NSNumber!
         var byteArray: [Byte]!
         
         switch controlType {
-            case ControlType.Dimmer:
-                byteArray = OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: UInt8(v4), delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: self.getByte(device.skipState))
-                newCommand = NSNumber(value: v4)
-            case ControlType.Curtain:
-                byteArray = OutgoingHandler.setCurtainStatus(address, value: self.getByte(device.currentValue), groupId:  0x00)
-                newCommand = device.currentValue
-            default: break
+        case ControlType.Dimmer:
+            byteArray = OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: UInt8(v4), delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: self.getByte(device.skipState))
+            newCommand = NSNumber(value: v4)
+        case ControlType.Curtain:
+            byteArray = OutgoingHandler.setCurtainStatus(address, value: self.getByte(device.currentValue), groupId:  0x00)
+            newCommand = device.currentValue
+        default: break
         }
         
         DispatchQueue.main.async(execute: {
@@ -330,7 +330,7 @@ class DevicesViewController: PopoverVC{
         deviceInControlMode = false
     }
     
-
+    
     
     @objc func changeSliderValue(_ sender: UISlider){
         let tag    = sender.tag
@@ -338,12 +338,12 @@ class DevicesViewController: PopoverVC{
         device.currentValue = NSNumber(value: Int(sender.value * 255))   // device values is Int, 0 to 255 (0x00 to 0xFF)
         
         let indexPath = IndexPath(item: tag, section: 0)
-        if let cell = deviceCollectionView.cellForItem(at: indexPath) as? DeviceCollectionViewCell {
+        if let cell = deviceCollection.cellForItem(at: indexPath) as? DeviceCollectionViewCell {
             let deviceValue:Double = { return device.currentValue.doubleValue }()
             cell.picture.image     = device.returnImage(Double(deviceValue))
             cell.lightSlider.value = Float(deviceValue/255) // Slider value accepts values from 0 to 1
             cell.setNeedsDisplay()
-        } else if let cell = self.deviceCollectionView.cellForItem(at: indexPath) as? CurtainCollectionViewCell {
+        } else if let cell = self.deviceCollection.cellForItem(at: indexPath) as? CurtainCollectionViewCell {
             cell.setImageForDevice(device); cell.setNeedsDisplay()
         }
     }
@@ -368,7 +368,7 @@ class DevicesViewController: PopoverVC{
             let deltaX = currentPoint.y - self.panStartPoint.y
             var panningUp = false
             if currentPoint.y < self.panStartPoint.y { panningUp = true }
-
+            
             if self.startingBottomConstraint == -154 {
                 
                 if !panningUp { if deltaX == 0 { self.resetConstraintContstants(true, endEditing: true) } }
@@ -395,11 +395,11 @@ class DevicesViewController: PopoverVC{
             } else {
                 if bottomConstraint.constant <= -30 { self.resetConstraintContstants(true, endEditing: true) } else { self.setConstraintsToShowBottomView(true, notifyDelegate: true) }
             }
-
+            
             break
             
         case .cancelled:
-
+            
             if self.startingBottomConstraint == -154 { self.resetConstraintContstants(true, endEditing: true) } else { self.setConstraintsToShowBottomView(true, notifyDelegate: true) }
             break
             
@@ -615,11 +615,11 @@ class DevicesViewController: PopoverVC{
     @IBAction func changeZoneCategory(_ sender: UISegmentedControl) {
         if let title = zoneCategoryControl.titleForSegment(at: zoneCategoryControl.selectedSegmentIndex) {
             switch title {
-                case "Zone"     : selectLabel.text = "Selected Zone:" + filterParametar.zoneName
-                case "Category" : selectLabel.text = "Selected Category:" + filterParametar.categoryName
-                default: break
+            case "Zone"     : selectLabel.text = "Selected Zone:" + filterParametar.zoneName
+            case "Category" : selectLabel.text = "Selected Category:" + filterParametar.categoryName
+            default: break
             }
-                
+            
         }
     }
     
@@ -632,26 +632,25 @@ class DevicesViewController: PopoverVC{
         sender.rotate(1)
     }
     @IBAction func location(_ sender: AnyObject) {
-        
+        //
         // setujes filter ako si u zoni sa ibeaconom
         // TODO: ova funkcija (well, duh)
     }
-    
 
-    
 }
 
 // MARK: - View setup
-extension DevicesViewController {
-    
+extension DevicesVC {
     fileprivate func registerDeviceCells() {
-        deviceCollectionView.register(UINib(nibName: String(describing: DeviceCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "deviceCollectionViewCell")
-        deviceCollectionView.register(UINib(nibName: String(describing: ApplianceCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "applianceCollectionViewCell")
-        deviceCollectionView.register(UINib(nibName: String(describing: CurtainCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "curtainCollectionViewCell")
-        deviceCollectionView.register(UINib(nibName: String(describing: ClimateCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "climateCollectionViewCell")
-        deviceCollectionView.register(UINib(nibName: String(describing: MultisensorCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "multisensorCollectionViewCell")
-        deviceCollectionView.register(UINib(nibName: String(describing: SaltoAccessCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "saltoAccessCollectionViewCell")
-        deviceCollectionView.register(UINib(nibName: String(describing: DefaultDeviceCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "defaultDeviceCollectionViewCell")
+        deviceCollection.register(UINib(nibName: String(describing: DeviceCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "deviceCollectionViewCell")
+        deviceCollection.register(UINib(nibName: String(describing: ApplianceCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "applianceCollectionViewCell")
+        deviceCollection.register(UINib(nibName: String(describing: CurtainCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "curtainCollectionViewCell")
+        deviceCollection.register(UINib(nibName: String(describing: ClimateCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "climateCollectionViewCell")
+        deviceCollection.register(UINib(nibName: String(describing: MultisensorCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "multisensorCollectionViewCell")
+        deviceCollection.register(UINib(nibName: String(describing: SaltoAccessCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "saltoAccessCollectionViewCell")
+        deviceCollection.register(UINib(nibName: String(describing: DefaultDeviceCollectionViewCell.self), bundle: nil), forCellWithReuseIdentifier: "defaultDeviceCollectionViewCell")
+//        deviceCollection.register(DeviceCVCell.self, forCellWithReuseIdentifier: "deviceCVCell")
+        deviceCollection.dataSource = self
     }
     
     func setupViews() {
@@ -667,8 +666,8 @@ extension DevicesViewController {
         updateConstraints(item: scrollView)
         scrollView.setItem(self.view)
         
-        deviceCollectionView.delaysContentTouches = false
-        deviceCollectionView.delegate = self
+        deviceCollection.delaysContentTouches = false
+        deviceCollection.delegate = self
         
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
         
@@ -678,13 +677,13 @@ extension DevicesViewController {
         headerTitleSubtitleView.setTitleAndSubtitle("Devices", subtitle: "All All All")
         
         bottomView.isHidden = true
-        panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(DevicesViewController.panView(_:)))
+        panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(DevicesVC.panView(_:)))
         panRecognizer.delegate = self
         bottomView.addGestureRecognizer(panRecognizer)
         
-        zoneAndCategorySlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.changeGroupSliderValueOnOneTap(_:))))
+        zoneAndCategorySlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DevicesVC.changeGroupSliderValueOnOneTap(_:))))
         
-        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DevicesViewController.defaultFilter(_:)))
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DevicesVC.defaultFilter(_:)))
         longPress.minimumPressDuration = 0.5
         headerTitleSubtitleView.addGestureRecognizer(longPress)
         
@@ -704,9 +703,9 @@ extension DevicesViewController {
     
     //    This has to be done, because we dont receive updates immmediately from gateway
     func updateCells() {
-        let indexPaths = deviceCollectionView.indexPathsForVisibleItems
+        let indexPaths = deviceCollection.indexPathsForVisibleItems
         for indexPath in indexPaths {
-            let cell   = deviceCollectionView.cellForItem(at: indexPath)
+            let cell   = deviceCollection.cellForItem(at: indexPath)
             let device = devices[indexPath.row]
             let tag    = indexPath.row
             
@@ -750,7 +749,7 @@ extension DevicesViewController {
     }
     
     fileprivate func addObserversVDL() {
-        NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerDevices), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DevicesVC.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerDevices), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleDefaultFilterForAllTabs), name: .defaultFilterForAllTabsSet, object: nil)
     }
     
@@ -772,12 +771,11 @@ extension DevicesViewController {
 }
 
 // MARK: - Logic
-extension DevicesViewController {
+extension DevicesVC {
     
     // GENERAL
     func updateDeviceList (_ user:User) {
-       // handleDefaultFilterForAllTabs()
-        
+        // handleDefaultFilterForAllTabs()
         if let devices = DatabaseDeviceController.shared.getDevicesOnDevicesScreen(filterParametar: filterParametar, user: user) {
             self.devices = devices
         }
@@ -791,16 +789,16 @@ extension DevicesViewController {
             let address     = devices[tag].getAddress()
             
             switch controlType {
-                case ControlType.Dimmer:
-                    SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway)
-                    SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
-                case ControlType.Relay:
-                    SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway)
-                    SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
-                case ControlType.Curtain:
-                    SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurtainStatus(address), gateway: gateway)
-                    SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
-                default: break
+            case ControlType.Dimmer:
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
+            case ControlType.Relay:
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
+            case ControlType.Curtain:
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurtainStatus(address), gateway: gateway)
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
+            default: break
             }
             
         }
@@ -832,7 +830,7 @@ extension DevicesViewController {
             } else { devices = [] }
             
         }
-        deviceCollectionView.reloadData()
+        deviceCollection.reloadData()
     }
     
     
@@ -845,29 +843,55 @@ extension DevicesViewController {
         var setDeviceValue:UInt8 = 0
         var skipLevel:UInt8      = 0
         let deviceCurrentValue   = device.currentValue
-
+        
         device.increaseUsageCounterValue()
         print("device address:", device.getAddress())
-      //  print("device usage counter:", device.usageCounter?.intValue)
-
+        //  print("device usage counter:", device.usageCounter?.intValue)
+        
         switch controlType {
-            case ControlType.Dimmer:
-                switch deviceCurrentValue.intValue {
-                    case 0:
-                        device.oldValue = deviceCurrentValue
-                        setDeviceValue = UInt8(0)
-                        skipLevel = 0
-                    default:
-                        if let oldVal = device.oldValue { setDeviceValue = UInt8(round(oldVal.floatValue*100/255)) } else { setDeviceValue = 100 }
-                        skipLevel = getByte(device.skipState)
-                }
-
-                device.currentValue = NSNumber(value: Int(setDeviceValue)*255/100)
-                print("Device current value: \(deviceCurrentValue)%")
+        case ControlType.Dimmer:
+            switch deviceCurrentValue.intValue {
+            case 0:
+                device.oldValue = deviceCurrentValue
+                setDeviceValue = UInt8(0)
+                skipLevel = 0
+            default:
+                if let oldVal = device.oldValue { setDeviceValue = UInt8(round(oldVal.floatValue*100/255)) } else { setDeviceValue = 100 }
+                skipLevel = getByte(device.skipState)
+            }
+            
+            device.currentValue = NSNumber(value: Int(setDeviceValue)*255/100)
+            print("Device current value: \(deviceCurrentValue)%")
+            RunnableList.sharedInstance.checkForSameDevice(
+                device: device.objectID,
+                newCommand: NSNumber(value: setDeviceValue),
+                oldValue: NSNumber(value: setDeviceValue)
+            )
+            _ = RepeatSendingHandler(
+                byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setDeviceValue, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: skipLevel),
+                gateway: device.gateway,
+                device: device,
+                oldValue: deviceCurrentValue.intValue,
+                command: NSNumber(value: setDeviceValue)
+            )
+            print("poslato")
+            
+        case ControlType.Relay: // Appliance
+            if deviceCurrentValue.intValue > 0 {
+                setDeviceValue = UInt8(0)
+                device.currentValue = 0
+                skipLevel = 0
+            } else {
+                setDeviceValue = 255
+                skipLevel = getByte(device.skipState)
+            }
+            
+            device.currentValue = NSNumber(value: Int(setDeviceValue))
+            DispatchQueue.main.async(execute: {
                 RunnableList.sharedInstance.checkForSameDevice(
                     device: device.objectID,
                     newCommand: NSNumber(value: setDeviceValue),
-                    oldValue: NSNumber(value: setDeviceValue)
+                    oldValue: deviceCurrentValue
                 )
                 _ = RepeatSendingHandler(
                     byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setDeviceValue, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: skipLevel),
@@ -876,35 +900,9 @@ extension DevicesViewController {
                     oldValue: deviceCurrentValue.intValue,
                     command: NSNumber(value: setDeviceValue)
                 )
-                print("poslato")
-
-            case ControlType.Relay: // Appliance
-                if deviceCurrentValue.intValue > 0 {
-                    setDeviceValue = UInt8(0)
-                    device.currentValue = 0
-                    skipLevel = 0
-                } else {
-                    setDeviceValue = 255
-                    skipLevel = getByte(device.skipState)
-                }
-
-                device.currentValue = NSNumber(value: Int(setDeviceValue))
-                DispatchQueue.main.async(execute: {
-                    RunnableList.sharedInstance.checkForSameDevice(
-                        device: device.objectID,
-                        newCommand: NSNumber(value: setDeviceValue),
-                        oldValue: deviceCurrentValue
-                    )
-                    _ = RepeatSendingHandler(
-                        byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setDeviceValue, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: skipLevel),
-                        gateway: device.gateway,
-                        device: device,
-                        oldValue: deviceCurrentValue.intValue,
-                        command: NSNumber(value: setDeviceValue)
-                    )
-                })
-
-            default: break
+            })
+            
+        default: break
         }
         
         updateCells()
@@ -917,9 +915,9 @@ extension DevicesViewController {
             var command: Byte!
             
             switch device.currentValue {
-                case 0x00 : command = 0xFF
-                case 0xFF : command = 0x00
-                default   : break
+            case 0x00 : command = 0xFF
+            case 0xFF : command = 0x00
+            default   : break
             }
             
             device.increaseUsageCounterValue()
@@ -948,15 +946,15 @@ extension DevicesViewController {
         var commandValue: Byte!
         var commandsForPair: [Byte]
         switch command {
-            case .open:
-                commandValue = 0xFF
-                commandsForPair = [0xFF, 0xFF]
-            case .close:
-                commandValue = 0x00
-                commandsForPair = [0xFF, 0x00]
-            case .stop:
-                commandValue = 0xEF
-                commandsForPair = [0x00, 0x00]
+        case .open:
+            commandValue = 0xFF
+            commandsForPair = [0xFF, 0xFF]
+        case .close:
+            commandValue = 0x00
+            commandsForPair = [0xFF, 0x00]
+        case .stop:
+            commandValue = 0xEF
+            commandsForPair = [0x00, 0x00]
         }
         
         let tag                  = gestureRecognizer.view!.tag
@@ -1049,15 +1047,15 @@ extension DevicesViewController {
         var commandValue: NSNumber!
         var mode: Int!
         switch command {
-            case .lock:
-                commandValue = 0
-                mode = 3
-            case .unlock:
-                commandValue = 1
-                mode = 2
-            case .third:
-                commandValue = 0
-                mode = 1
+        case .lock:
+            commandValue = 0
+            mode = 3
+        case .unlock:
+            commandValue = 1
+            mode = 2
+        case .third:
+            commandValue = 0
+            mode = 1
         }
         
         let tag                   = gestureRecognizer.view!.tag
@@ -1086,12 +1084,10 @@ extension DevicesViewController {
         })
         updateCells()
     }
-    
 }
 
 // MARK: - Filter PullDown Delegate || Parametar from filter and relaod data
-extension DevicesViewController: FilterPullDownDelegate{
-    
+extension DevicesVC: FilterPullDownDelegate {
     // Function is called when filter is defined
     func filterParametars(_ filterItem: FilterItem) {
         filterParametar = filterItem
@@ -1102,7 +1098,7 @@ extension DevicesViewController: FilterPullDownDelegate{
         
         if let user = userLogged {
             updateDeviceList(user)
-            deviceCollectionView.reloadData()
+            deviceCollection.reloadData()
             updateCells()
         }
         toggleIBeaconButtonVisibility()
@@ -1123,7 +1119,7 @@ extension DevicesViewController: FilterPullDownDelegate{
                     
                     if let user = userLogged {
                         updateDeviceList(user)
-                        deviceCollectionView.reloadData()
+                        deviceCollection.reloadData()
                         updateCells()
                     }
                     toggleIBeaconButtonVisibility()
@@ -1132,11 +1128,10 @@ extension DevicesViewController: FilterPullDownDelegate{
         }
         // todo: get default time
     }
-
 }
 
 // MARK: - Big Slider Delegate
-extension DevicesViewController: BigSliderDelegate {
+extension DevicesVC: BigSliderDelegate {
     func valueChanged(_ sender: UISlider) {
         changeSliderValue(sender)
     }
@@ -1184,24 +1179,23 @@ extension DevicesViewController: BigSliderDelegate {
     }
 }
 
-extension DevicesViewController: SWRevealViewControllerDelegate{
+extension DevicesVC: SWRevealViewControllerDelegate{
     
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
-        if position == .left { deviceCollectionView.isUserInteractionEnabled = true } else { deviceCollectionView.isUserInteractionEnabled = false }
+        if position == .left { deviceCollection.isUserInteractionEnabled = true } else { deviceCollection.isUserInteractionEnabled = false }
     }
     
     func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
-        if position == .left { deviceCollectionView.isUserInteractionEnabled = true } else { deviceCollectionView.isUserInteractionEnabled = false }
+        if position == .left { deviceCollection.isUserInteractionEnabled = true } else { deviceCollection.isUserInteractionEnabled = false }
     }
     
 }
 
 // MARK: - Gesture Recognizer Delegate
-extension DevicesViewController: UIGestureRecognizerDelegate{
+extension DevicesVC: UIGestureRecognizerDelegate{
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if touch.view! is UISlider { return false }
         return true
     }
 }
-

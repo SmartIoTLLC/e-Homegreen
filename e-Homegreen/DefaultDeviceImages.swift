@@ -23,12 +23,12 @@ class DefaultDeviceImages: NSObject {
         let controlType = device.controlType
         var controlMode = 1
         if let mode = device.digitalInputMode{
-            controlMode = Int(mode)
+            controlMode = mode.intValue
         }
         
         switch controlType {
             case ControlType.Dimmer  :
-                switch Int(categoryId) {
+                switch categoryId.intValue {
                     case CategoryId.Blind   : return blindImagesMultistate
                     case CategoryId.Curtain : return curtainImagesMultistate
                     default                 : return lightningImagesMultistate
