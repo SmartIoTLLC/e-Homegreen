@@ -17,10 +17,15 @@ class MacrosViewController: UIViewController {
     @IBOutlet weak var backgroundImage: UIImageView!
     
     let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
-
-
+    let cellId = "MacrosCell"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //fetch all macros from core data
+        //call a func collectionViewCell(type: macro.type, name: macro.name, image: macro.image)
+        
+        
         
         updateViews()
     }
@@ -47,6 +52,10 @@ extension MacrosViewController {
         
         //Collection View
         collectionView.backgroundColor = .clear
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(MacrosCell.self, forCellWithReuseIdentifier: cellId)
+        
 
         //Navigation controller
         navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
@@ -57,9 +66,41 @@ extension MacrosViewController {
     
 }
 
-//extension MacrosViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-//
-//}
+extension MacrosViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? MacrosCell {
+            
+            cell.cellHeight = 150
+            cell.cellWidth = 180
+            cell.layer.borderColor = UIColor.lightGray.cgColor
+            cell.layer.borderWidth = 0.5
+            cell.layer.cornerRadius = 12
+            cell.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_macro"))
+            
+            return cell
+        }
+        return UICollectionViewCell()
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 3
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 150, height: 180)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
+    }
+    
+  
+}
 
 
 

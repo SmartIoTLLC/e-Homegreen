@@ -235,6 +235,7 @@
 		4EFAE02A1F6C0F5600C85074 /* sura_english.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EFAE0291F6C0F5600C85074 /* sura_english.json */; };
 		4EFAE02C1F6C183000C85074 /* reciters.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EFAE02B1F6C183000C85074 /* reciters.json */; };
 		4EFAE02E1F6C27B700C85074 /* SuraPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFAE02D1F6C27B700C85074 /* SuraPlayerViewController.swift */; };
+		6E533AE12062527D00B2A9E6 /* MacrosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E533ADF2062527D00B2A9E6 /* MacrosCell.swift */; };
 		6EF4869320610ACF006EF2D9 /* MacrosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF4869220610ACF006EF2D9 /* MacrosViewController.swift */; };
 		6EF48695206127F3006EF2D9 /* Macros.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6EF48694206127F3006EF2D9 /* Macros.storyboard */; };
 		731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */; };
@@ -678,6 +679,7 @@
 		4EFAE02B1F6C183000C85074 /* reciters.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = reciters.json; sourceTree = "<group>"; };
 		4EFAE02D1F6C27B700C85074 /* SuraPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuraPlayerViewController.swift; sourceTree = "<group>"; };
 		60177B146AC24AC775D3907A /* Pods-e-Homegreen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-e-Homegreen.debug.xcconfig"; path = "Pods/Target Support Files/Pods-e-Homegreen/Pods-e-Homegreen.debug.xcconfig"; sourceTree = "<group>"; };
+		6E533ADF2062527D00B2A9E6 /* MacrosCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacrosCell.swift; sourceTree = "<group>"; };
 		6EF4869220610ACF006EF2D9 /* MacrosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacrosViewController.swift; sourceTree = "<group>"; };
 		6EF48694206127F3006EF2D9 /* Macros.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Macros.storyboard; sourceTree = "<group>"; };
 		731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "AppDelegate+BroadcastTimeAndDate.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -1543,6 +1545,7 @@
 		6EF4868B2061048E006EF2D9 /* Macros */ = {
 			isa = PBXGroup;
 			children = (
+				6E533ADF2062527D00B2A9E6 /* MacrosCell.swift */,
 				6EF48694206127F3006EF2D9 /* Macros.storyboard */,
 				6EF4869220610ACF006EF2D9 /* MacrosViewController.swift */,
 			);
@@ -2752,6 +2755,7 @@
 				2241E46C1CC612B400BCD763 /* DatabaseZoneController.swift in Sources */,
 				22FF1E621D86D86F00ECB86E /* Card+CoreDataProperties.swift in Sources */,
 				49C059701D91393F0061A544 /* TimerCell.swift in Sources */,
+				6E533AE12062527D00B2A9E6 /* MacrosCell.swift in Sources */,
 				4E9EEAA5200374E900201E7C /* MediaCollectionVC.swift in Sources */,
 				7372EB201BC3F7600097806D /* TimerParametarVC.swift in Sources */,
 				E7F57B0F1BA847F8006B0D71 /* ScanEventsViewController.swift in Sources */,
