@@ -236,6 +236,7 @@
 		4EFAE02C1F6C183000C85074 /* reciters.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EFAE02B1F6C183000C85074 /* reciters.json */; };
 		4EFAE02E1F6C27B700C85074 /* SuraPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFAE02D1F6C27B700C85074 /* SuraPlayerViewController.swift */; };
 		6E533AE12062527D00B2A9E6 /* MacrosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E533ADF2062527D00B2A9E6 /* MacrosCell.swift */; };
+		6E5A7F372063D1FE002F98D9 /* AddNewMacroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5A7F362063D1FE002F98D9 /* AddNewMacroViewController.swift */; };
 		6EF4869320610ACF006EF2D9 /* MacrosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF4869220610ACF006EF2D9 /* MacrosViewController.swift */; };
 		6EF48695206127F3006EF2D9 /* Macros.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6EF48694206127F3006EF2D9 /* Macros.storyboard */; };
 		731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */; };
@@ -680,6 +681,7 @@
 		4EFAE02D1F6C27B700C85074 /* SuraPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuraPlayerViewController.swift; sourceTree = "<group>"; };
 		60177B146AC24AC775D3907A /* Pods-e-Homegreen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-e-Homegreen.debug.xcconfig"; path = "Pods/Target Support Files/Pods-e-Homegreen/Pods-e-Homegreen.debug.xcconfig"; sourceTree = "<group>"; };
 		6E533ADF2062527D00B2A9E6 /* MacrosCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacrosCell.swift; sourceTree = "<group>"; };
+		6E5A7F362063D1FE002F98D9 /* AddNewMacroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewMacroViewController.swift; sourceTree = "<group>"; };
 		6EF4869220610ACF006EF2D9 /* MacrosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacrosViewController.swift; sourceTree = "<group>"; };
 		6EF48694206127F3006EF2D9 /* Macros.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Macros.storyboard; sourceTree = "<group>"; };
 		731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "AppDelegate+BroadcastTimeAndDate.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -1548,6 +1550,7 @@
 				6E533ADF2062527D00B2A9E6 /* MacrosCell.swift */,
 				6EF48694206127F3006EF2D9 /* Macros.storyboard */,
 				6EF4869220610ACF006EF2D9 /* MacrosViewController.swift */,
+				6E5A7F362063D1FE002F98D9 /* AddNewMacroViewController.swift */,
 			);
 			name = Macros;
 			sourceTree = "<group>";
@@ -2643,6 +2646,7 @@
 				7372EB411BC410800097806D /* Sequence+CoreDataProperties.swift in Sources */,
 				E7F57B091BA7FE5D006B0D71 /* ScanScenesViewController.swift in Sources */,
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
+				6E5A7F372063D1FE002F98D9 /* AddNewMacroViewController.swift in Sources */,
 				4E7945551F6FCE31006C3ACA /* SuraCell.swift in Sources */,
 				E79FD4EE1BCE43D600CA17DB /* Util.swift in Sources */,
 				E7F5FC1E1BB9744200071982 /* LeftCustomButtom.swift in Sources */,

@@ -9,12 +9,13 @@
 import UIKit
 
 class MacrosViewController: UIViewController {
-
+    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIBarButtonItem!
     @IBOutlet weak var addNewButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var backgroundImage: UIImageView!
+    
     
     let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     let cellId = "MacrosCell"
@@ -25,8 +26,6 @@ class MacrosViewController: UIViewController {
         //fetch all macros from core data
         //call a func collectionViewCell(type: macro.type, name: macro.name, image: macro.image)
         
-        
-        
         updateViews()
     }
     
@@ -36,11 +35,14 @@ class MacrosViewController: UIViewController {
         setupSWRevealViewController(menuButton: menuButton)
     }
     
- 
+    @IBAction func addNewButton_Action(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "addNewMacroPopUp", sender: nil)
+    }
     
-
-   
-
+    @IBAction func fullScreenButton_Action(_ sender: UIBarButtonItem) {
+        
+    }
+    
 }
 
 extension MacrosViewController {
@@ -56,7 +58,7 @@ extension MacrosViewController {
         collectionView.dataSource = self
         collectionView.register(MacrosCell.self, forCellWithReuseIdentifier: cellId)
         
-
+        
         //Navigation controller
         navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         titleView.setTitle("Macros")
@@ -99,7 +101,7 @@ extension MacrosViewController: UICollectionViewDataSource, UICollectionViewDele
         return UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
     }
     
-  
+    
 }
 
 

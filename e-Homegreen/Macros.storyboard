@@ -61,7 +61,11 @@
                     <navigationItem key="navigationItem" title="Title" id="aOj-r9-sJu">
                         <barButtonItem key="leftBarButtonItem" image="Menu button" id="pbm-9U-szZ"/>
                         <rightBarButtonItems>
-                            <barButtonItem image="add sign" id="f9p-sH-9Ax"/>
+                            <barButtonItem image="add sign" id="f9p-sH-9Ax">
+                                <connections>
+                                    <segue destination="GUx-hT-wgk" kind="modal" identifier="addNewMacroPopUp" id="vlC-BX-PQC"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem image="full screen" id="wLD-1B-JUf"/>
                         </rightBarButtonItems>
                     </navigationItem>
@@ -76,6 +80,34 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g1Q-vA-0sV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1283.5" y="2444.5"/>
+        </scene>
+        <!--Add New Macro View Controller-->
+        <scene sceneID="04Z-Ez-N4p">
+            <objects>
+                <viewController modalPresentationStyle="overCurrentContext" id="GUx-hT-wgk" customClass="AddNewMacroViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="YF4-3M-Rz7"/>
+                        <viewControllerLayoutGuide type="bottom" id="3Uh-1t-Lv6"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0ct-xX-Mwk">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GK3-9y-rxL">
+                                <rect key="frame" x="67" y="233" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.44563633419689119" green="0.44563633419689119" blue="0.44563633419689119" alpha="0.51433208626760563" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <connections>
+                        <outlet property="popUpView" destination="GK3-9y-rxL" id="tHs-Pf-RcA"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dUP-ps-aZ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1856" y="2446"/>
         </scene>
     </scenes>
     <resources>
