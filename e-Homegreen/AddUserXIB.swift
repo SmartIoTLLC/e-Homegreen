@@ -166,6 +166,8 @@ class AddUserXIB: CommonXIBTransitionVC {
 
 extension AddUserXIB : SceneGalleryDelegate {
     
+    
+    
     func backImageFromGallery(_ data: Data, imageIndex: Int) {
         defaultImage = nil
         customImage  = nil

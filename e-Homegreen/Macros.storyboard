@@ -73,7 +73,6 @@
                         <outlet property="addNewButton" destination="f9p-sH-9Ax" id="Q8x-9J-mK9"/>
                         <outlet property="backgroundImage" destination="ShT-0U-QOI" id="C09-Od-MiW"/>
                         <outlet property="collectionView" destination="eLM-h7-T3u" id="mTu-YD-7qG"/>
-                        <outlet property="fullScreenButton" destination="wLD-1B-JUf" id="Ykl-9o-VOb"/>
                         <outlet property="menuButton" destination="pbm-9U-szZ" id="BBp-wv-dth"/>
                     </connections>
                 </viewController>

@@ -16,7 +16,10 @@ class AddNewMacroViewController: PopoverVC {
     var nameTextField: EditTextField!
     var typeLabel: UILabel!
     var typeDropDown: CustomGradientButton!
-    //TODO add two image views and two labels here
+    var leftImageButton: UIButton!
+    //var leftLabelImage: UILabel!
+    var rightImageButton: UIButton!
+ //   var rightLabelImage: UILabel!
     var cancelButton: CustomGradientButton!
     var submitButton: CustomGradientButton!
     
@@ -25,6 +28,7 @@ class AddNewMacroViewController: PopoverVC {
     var popUpWidth: CGFloat!
     var popUpHeight: CGFloat!
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,8 +46,8 @@ class AddNewMacroViewController: PopoverVC {
         popUpView.frame = CGRect(x: 6, y: 0, width: screenWidth - 12, height: screenHeight/3)
         popUpView.center.y = self.view.center.y
         popUpView.layer.cornerRadius = 9
-        popUpView.backgroundColor = UIColor.lightGray
-        
+        popUpView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+
         popUpHeight = popUpView.frame.height
         popUpWidth = popUpView.frame.width
         
@@ -73,6 +77,16 @@ class AddNewMacroViewController: PopoverVC {
         typeDropDown.setTitle("Select macro type", for: UIControlState())
         typeDropDown.addTarget(self, action: #selector(openMacroDropDown(_:)), for: .touchUpInside)
         
+        leftImageButton = UIButton()
+        leftImageButton.frame = CGRect(x: typeDropDown.frame.minX, y: typeDropDown.frame.maxY + 10, width: popUpWidth/3, height: 60)
+        leftImageButton.setImage(UIImage(named:"applianceon"), for: UIControlState())
+        leftImageButton.addTarget(self, action: #selector(editImageLeft(_:)), for: .touchUpInside)
+        
+        rightImageButton = UIButton()
+        rightImageButton.frame = CGRect(x: leftImageButton.frame.maxX + 30, y: typeDropDown.frame.maxY + 10, width: popUpWidth/3, height: 60)
+        rightImageButton.setImage(UIImage(named:"applianceoff"), for: UIControlState())
+        rightImageButton.addTarget(self, action: #selector(editImageRight(_:)), for: .touchUpInside)
+        
         cancelButton = CustomGradientButton()
         cancelButton.frame = CGRect(x: 8, y: popUpHeight - 31 - 6, width: (popUpWidth/2) - 8 - 4, height: 31)
         cancelButton.setTitle("CANCEL", for: UIControlState())
@@ -89,6 +103,8 @@ class AddNewMacroViewController: PopoverVC {
         popUpView.addSubview(nameTextField)
         popUpView.addSubview(typeLabel)
         popUpView.addSubview(typeDropDown)
+        popUpView.addSubview(leftImageButton)
+        popUpView.addSubview(rightImageButton)
         popUpView.addSubview(cancelButton)
         popUpView.addSubview(submitButton)
     }
@@ -111,8 +127,37 @@ class AddNewMacroViewController: PopoverVC {
         
     }
     
+    @objc func editImageLeft(_ sender: UIButton) {
+        showGallery(1, user: nil).delegate = self
+    }
+    
+    @objc func editImageRight(_ sender: UIButton) {
+        showGallery(2, user: nil).delegate = self
+    }
+    
     
 }
+extension AddNewMacroViewController : SceneGalleryDelegate {
+    
+    func backImageFromGallery(_ data: Data, imageIndex: Int) {
+       
+    }
+    
+    func backString(_ strText: String, imageIndex: Int) {
+        if imageIndex == 1 {
+            leftImageButton.setImage(UIImage(named: strText), for: UIControlState())
+        } else if imageIndex == 2 {
+            rightImageButton.setImage(UIImage(named: strText), for: UIControlState())
+        }
+    }
+    
+    func backImage(_ image: Image, imageIndex: Int) {
+        
+    }
+    
+}
+
+
 
 
 

@@ -11,12 +11,17 @@ import UIKit
 class MacrosViewController: UIViewController {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
-    @IBOutlet weak var fullScreenButton: UIBarButtonItem!
     @IBOutlet weak var addNewButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var backgroundImage: UIImageView!
+
     
-    
+//    @IBOutlet weak var fullScreenBtn: UIButton!
+//    @IBAction func fullScreenBtn(_ sender: UIButton) {
+//      //  sender.switchFullscreen()
+//
+//    }
+   
     let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     let cellId = "MacrosCell"
     
@@ -33,15 +38,14 @@ class MacrosViewController: UIViewController {
         super.viewWillAppear(animated)
         revealViewController().delegate = self
         setupSWRevealViewController(menuButton: menuButton)
+        
+       // changeFullscreenImage(fullscreenButton: fullScreenBtn)
     }
     
     @IBAction func addNewButton_Action(_ sender: UIBarButtonItem) {
         performSegue(withIdentifier: "addNewMacroPopUp", sender: nil)
     }
-    
-    @IBAction func fullScreenButton_Action(_ sender: UIBarButtonItem) {
-        
-    }
+   
     
 }
 
