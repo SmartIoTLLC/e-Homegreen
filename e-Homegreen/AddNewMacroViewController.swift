@@ -75,6 +75,7 @@ class AddNewMacroViewController: PopoverVC {
         typeDropDown = CustomGradientButton()
         typeDropDown.frame = CGRect(x: typeLabel.frame.maxX + 10, y: nameTextField.frame.maxY + 3, width: popUpWidth - typeLabel.frame.width - 10 - 8 - 8, height: 30)
         typeDropDown.setTitle("Select macro type", for: UIControlState())
+        typeDropDown.titleLabel?.font = UIFont(name: "Tahoma", size: 14)
         typeDropDown.addTarget(self, action: #selector(openMacroDropDown(_:)), for: .touchUpInside)
         
         leftImageButton = UIButton()
@@ -90,11 +91,13 @@ class AddNewMacroViewController: PopoverVC {
         cancelButton = CustomGradientButton()
         cancelButton.frame = CGRect(x: 8, y: popUpHeight - 31 - 6, width: (popUpWidth/2) - 8 - 4, height: 31)
         cancelButton.setTitle("CANCEL", for: UIControlState())
+        cancelButton.titleLabel?.font = UIFont(name: "Tahoma", size: 14)
         cancelButton.addTarget(self, action: #selector(cancelButton(_:)), for: .touchUpInside)
         
         submitButton = CustomGradientButton()
         submitButton.frame = CGRect(x: cancelButton.frame.maxX + 8, y: popUpHeight - 31 - 6, width: (popUpWidth/2) - 8 - 4, height: 31)
         submitButton.setTitle("CREATE NEW MACRO", for: UIControlState())
+        submitButton.titleLabel?.font = UIFont(name: "Tahoma", size: 14)
         submitButton.addTarget(self, action: #selector(submitButton(_:)), for: .touchUpInside)
 
         
@@ -117,6 +120,11 @@ class AddNewMacroViewController: PopoverVC {
         popOverList.append(PopOverItem(name: "Queue", id: "Queue"))
 
         if let vc = popUpView.parentViewController as? PopoverVC { vc.openPopover(sender, popOverList: popOverList) } else { print ("unable to present pop up in AddNewMacroVC") }
+    }
+    
+    //return name and id of item selected in dropdown
+    override func nameAndId(_ name: String, id: String) {
+        typeDropDown.setTitle(name, for: UIControlState())
     }
     
     @objc func cancelButton(_ sender: UIButton) {
@@ -156,6 +164,7 @@ extension AddNewMacroViewController : SceneGalleryDelegate {
     }
     
 }
+
 
 
 
