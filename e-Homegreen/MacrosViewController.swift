@@ -42,8 +42,14 @@ class MacrosViewController: UIViewController {
         revealViewController().delegate = self
         setupSWRevealViewController(menuButton: menuButton)
         
-        collectionView.reloadData()
        // changeFullscreenImage(fullscreenButton: fullScreenBtn)
+    }
+    
+    func reloadCollectionView() {
+        if let macroList = DatabaseMacrosController.sharedInstance.fetchAllMacrosFromCD() {
+            self.macroList = macroList
+            collectionView.reloadData()
+        }
     }
     
     @IBAction func addNewButton_Action(_ sender: UIBarButtonItem) {

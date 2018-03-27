@@ -39,13 +39,7 @@ class AddNewMacroViewController: PopoverVC {
         screenWidth = self.view.frame.size.width
         screenHeight = self.view.frame.size.height
         setUpPopUpView()
-    }
-    
-    
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view!.isDescendant(of: popUpView) { dismissEditing(); return false }
-        return true
+        self.hideKeyboardWhenTappedAround()
     }
     
     override func viewWillAppear(_ animated: Bool) {
