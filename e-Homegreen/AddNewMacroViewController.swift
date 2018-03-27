@@ -17,8 +17,10 @@ class AddNewMacroViewController: PopoverVC {
     var typeLabel: UILabel!
     var typeDropDown: CustomGradientButton!
     var leftImageButton: UIButton!
+    var leftImageString: String = "library_event_movie_00" //default image
     //var leftLabelImage: UILabel!
     var rightImageButton: UIButton!
+    var rightImageString: String = "library_event_movie_01" //default image
  //   var rightLabelImage: UILabel!
     var cancelButton: CustomGradientButton!
     var submitButton: CustomGradientButton!
@@ -28,6 +30,8 @@ class AddNewMacroViewController: PopoverVC {
     var popUpWidth: CGFloat!
     var popUpHeight: CGFloat!
     
+    var macroType: String = "block" //default macro type
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +39,13 @@ class AddNewMacroViewController: PopoverVC {
         screenWidth = self.view.frame.size.width
         screenHeight = self.view.frame.size.height
         setUpPopUpView()
+    }
+    
+    
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view!.isDescendant(of: popUpView) { dismissEditing(); return false }
+        return true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -80,12 +91,12 @@ class AddNewMacroViewController: PopoverVC {
         
         leftImageButton = UIButton()
         leftImageButton.frame = CGRect(x: typeDropDown.frame.minX, y: typeDropDown.frame.maxY + 10, width: popUpWidth/3, height: 60)
-        leftImageButton.setImage(UIImage(named:"applianceon"), for: UIControlState())
+        leftImageButton.setImage(UIImage(named:"library_event_movie_00"), for: UIControlState())
         leftImageButton.addTarget(self, action: #selector(editImageLeft(_:)), for: .touchUpInside)
         
         rightImageButton = UIButton()
         rightImageButton.frame = CGRect(x: leftImageButton.frame.maxX + 30, y: typeDropDown.frame.maxY + 10, width: popUpWidth/3, height: 60)
-        rightImageButton.setImage(UIImage(named:"applianceoff"), for: UIControlState())
+        rightImageButton.setImage(UIImage(named:"library_event_movie_01"), for: UIControlState())
         rightImageButton.addTarget(self, action: #selector(editImageRight(_:)), for: .touchUpInside)
         
         cancelButton = CustomGradientButton()
@@ -125,6 +136,16 @@ class AddNewMacroViewController: PopoverVC {
     //return name and id of item selected in dropdown
     override func nameAndId(_ name: String, id: String) {
         typeDropDown.setTitle(name, for: UIControlState())
+        switch name {
+        case "Block":
+            macroType = MacroTypes.block
+        case "Restart":
+            macroType = MacroTypes.restart
+        case "Queue":
+            macroType = MacroTypes.queue
+        default:
+            macroType = MacroTypes.block
+        }
     }
     
     @objc func cancelButton(_ sender: UIButton) {
@@ -132,7 +153,13 @@ class AddNewMacroViewController: PopoverVC {
     }
     
     @objc func submitButton(_ sender: UIButton) {
+       let result = DatabaseMacrosController.sharedInstance.saveMacroToCD(name: nameTextField.text!, type: macroType, leftImage: leftImageString, rightImage: rightImageString)
+        if result {
         
+        } else {
+            
+        }
+        self.dismiss(animated: true, completion: nil)
     }
     
     @objc func editImageLeft(_ sender: UIButton) {
@@ -143,7 +170,6 @@ class AddNewMacroViewController: PopoverVC {
         showGallery(2, user: nil).delegate = self
     }
     
-    
 }
 extension AddNewMacroViewController : SceneGalleryDelegate {
     
@@ -153,8 +179,10 @@ extension AddNewMacroViewController : SceneGalleryDelegate {
     
     func backString(_ strText: String, imageIndex: Int) {
         if imageIndex == 1 {
+            leftImageString = strText
             leftImageButton.setImage(UIImage(named: strText), for: UIControlState())
         } else if imageIndex == 2 {
+            rightImageString = strText
             rightImageButton.setImage(UIImage(named: strText), for: UIControlState())
         }
     }
@@ -164,6 +192,7 @@ extension AddNewMacroViewController : SceneGalleryDelegate {
     }
     
 }
+
 
 
 

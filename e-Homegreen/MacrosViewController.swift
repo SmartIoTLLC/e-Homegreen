@@ -14,6 +14,8 @@ class MacrosViewController: UIViewController {
     @IBOutlet weak var addNewButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var backgroundImage: UIImageView!
+    
+    var macroList = [Macro]()
 
     
 //    @IBOutlet weak var fullScreenBtn: UIButton!
@@ -29,8 +31,9 @@ class MacrosViewController: UIViewController {
         super.viewDidLoad()
         
         //fetch all macros from core data
-        //call a func collectionViewCell(type: macro.type, name: macro.name, image: macro.image)
-        
+        if let macroList = DatabaseMacrosController.sharedInstance.fetchAllMacrosFromCD() {
+            self.macroList = macroList
+        }
         updateViews()
     }
     
@@ -39,6 +42,7 @@ class MacrosViewController: UIViewController {
         revealViewController().delegate = self
         setupSWRevealViewController(menuButton: menuButton)
         
+        collectionView.reloadData()
        // changeFullscreenImage(fullscreenButton: fullScreenBtn)
     }
     
@@ -84,17 +88,22 @@ extension MacrosViewController: UICollectionViewDataSource, UICollectionViewDele
             cell.layer.cornerRadius = 12
             cell.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_macro"))
             
+            if macroList.count != 0 {
+                cell.nameLabel.text = macroList[indexPath.row].name
+                cell.logoImageView.image = UIImage(named: macroList[indexPath.row].negative_image!)
+                cell.startButton.setTitle("Start", for: UIControlState())
+            }
             return cell
         }
         return UICollectionViewCell()
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 3
+        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return (macroList.count)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
