@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MacrosViewController: UIViewController {
+class MacrosViewController: PopoverVC {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var addNewButton: UIBarButtonItem!
@@ -51,6 +51,10 @@ class MacrosViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         setContentOffset(for: filterScrollView)
+    }
+    
+    override func nameAndId(_ name: String, id: String) {
+        filterScrollView.setButtonTitle(name, id: id)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -106,7 +110,9 @@ extension MacrosViewController: UICollectionViewDataSource, UICollectionViewDele
             cell.layer.borderColor = UIColor.lightGray.cgColor
             cell.layer.borderWidth = 0.5
             cell.layer.cornerRadius = 12
-            cell.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_macro"))
+            cell.layer.backgroundColor = UIColor.blue.withAlphaComponent(0.400000005960464).cgColor
+            //cell.isOpaque = false
+            //cell.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_macro"))
             
             if macroList.count != 0 {
                 cell.nameLabel.text = macroList[indexPath.row].name
@@ -151,7 +157,7 @@ extension MacrosViewController: SuccessfullyAddedMacroDelegate {
 extension MacrosViewController: FilterPullDownDelegate {
     
     func filterParametars(_ filterItem: FilterItem) {
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.macros) // Saves filter to database for later
+        //DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.macros) // Saves filter to database for later
     
     }
     

@@ -42,7 +42,6 @@ class MacrosCell: UICollectionViewCell {
         contentView.addSubview(logoImageView)
         
         setUpButtons()
-        test()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -57,16 +56,12 @@ class MacrosCell: UICollectionViewCell {
         
         startButton.frame = CGRect(x: 6, y: cellHeight - 5 - 31, width: cellWidth - 12, height: 31)
         startButton.backgroundColor = .blue
+        startButton.layer.cornerRadius = 12
         
         //add to view
         contentView.addSubview(startButton)
+    }
 
-    }
-    
-    func test() {
-        nameLabel.text = "First Macro"
-        logoImageView.image = #imageLiteral(resourceName: "lightBulb")
-    }
     
     
     
