@@ -16,6 +16,7 @@ class MacrosViewController: UIViewController {
     @IBOutlet weak var backgroundImage: UIImageView!
     
     var macroList = [Macro]()
+    var filterScrollView = FilterPullDown()
 
     
 //    @IBOutlet weak var fullScreenBtn: UIButton!
@@ -42,6 +43,14 @@ class MacrosViewController: UIViewController {
         setupSWRevealViewController(menuButton: menuButton)
         
        // changeFullscreenImage(fullscreenButton: fullScreenBtn)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        setScrollViewBottomOffset(scrollView: &filterScrollView)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        setContentOffset(for: filterScrollView)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -75,6 +84,11 @@ extension MacrosViewController {
         collectionView.dataSource = self
         collectionView.register(MacrosCell.self, forCellWithReuseIdentifier: cellId)
         
+        //Scroll  VIew
+        filterScrollView.delegate = self
+        view.addSubview(filterScrollView)
+        updateConstraints(item: filterScrollView)
+        filterScrollView.setItem(self.view)
         
         //Navigation controller
         navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
@@ -121,11 +135,28 @@ extension MacrosViewController: UICollectionViewDataSource, UICollectionViewDele
     }
 }
 extension MacrosViewController: SWRevealViewControllerDelegate {
+    func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
+        if position == .left { collectionView.isUserInteractionEnabled = true } else { collectionView.isUserInteractionEnabled = false }
+    }
     
+    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
+        if position == .left { collectionView.isUserInteractionEnabled = true } else { collectionView.isUserInteractionEnabled = false }
+    }
 }
 extension MacrosViewController: SuccessfullyAddedMacroDelegate {
     func refreshMacroVC() {
         reloadCollectionView()
+    }
+}
+extension MacrosViewController: FilterPullDownDelegate {
+    
+    func filterParametars(_ filterItem: FilterItem) {
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.macros) // Saves filter to database for later
+    
+    }
+    
+    func saveDefaultFilter() {
+        self.view.makeToast(message: "Default filter parametar saved!")
     }
 }
 

@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -60,14 +59,11 @@
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="aOj-r9-sJu">
                         <barButtonItem key="leftBarButtonItem" image="Menu button" id="pbm-9U-szZ"/>
-                        <rightBarButtonItems>
-                            <barButtonItem image="add sign" id="f9p-sH-9Ax">
-                                <connections>
-                                    <segue destination="GUx-hT-wgk" kind="modal" identifier="addNewMacroPopUp" id="vlC-BX-PQC"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem image="full screen" id="wLD-1B-JUf"/>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" image="add sign" id="f9p-sH-9Ax">
+                            <connections>
+                                <segue destination="GUx-hT-wgk" kind="modal" identifier="addNewMacroPopUp" id="vlC-BX-PQC"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="addNewButton" destination="f9p-sH-9Ax" id="Q8x-9J-mK9"/>
@@ -83,7 +79,7 @@
         <!--Add New Macro View Controller-->
         <scene sceneID="04Z-Ez-N4p">
             <objects>
-                <viewController restorationIdentifier="AddNewMacroViewController" storyboardIdentifier="AddNewMacroViewController" modalPresentationStyle="overCurrentContext" id="GUx-hT-wgk" customClass="AddNewMacroViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="overCurrentContext" id="GUx-hT-wgk" customClass="AddNewMacroViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="YF4-3M-Rz7"/>
                         <viewControllerLayoutGuide type="bottom" id="3Uh-1t-Lv6"/>
@@ -92,7 +88,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GK3-9y-rxL">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GK3-9y-rxL" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
                                 <rect key="frame" x="67" y="233" width="240" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -113,6 +109,5 @@
         <image name="04 Climate Control - Air Freshener - 01" width="150" height="150"/>
         <image name="Menu button" width="22" height="22"/>
         <image name="add sign" width="30" height="30"/>
-        <image name="full screen" width="30" height="30"/>
     </resources>
 </document>

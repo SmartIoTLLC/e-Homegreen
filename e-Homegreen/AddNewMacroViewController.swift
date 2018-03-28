@@ -14,7 +14,7 @@ protocol SuccessfullyAddedMacroDelegate {
 
 class AddNewMacroViewController: PopoverVC {
     
-    @IBOutlet weak var popUpView: UIView!
+    @IBOutlet weak var popUpView: CustomGradientBackground!
     
     var nameLabel: UILabel!
     var nameTextField: EditTextField!
