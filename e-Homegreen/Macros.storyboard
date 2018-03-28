@@ -83,7 +83,7 @@
         <!--Add New Macro View Controller-->
         <scene sceneID="04Z-Ez-N4p">
             <objects>
-                <viewController modalPresentationStyle="overCurrentContext" id="GUx-hT-wgk" customClass="AddNewMacroViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="AddNewMacroViewController" storyboardIdentifier="AddNewMacroViewController" modalPresentationStyle="overCurrentContext" id="GUx-hT-wgk" customClass="AddNewMacroViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="YF4-3M-Rz7"/>
                         <viewControllerLayoutGuide type="bottom" id="3Uh-1t-Lv6"/>

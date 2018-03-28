@@ -30,7 +30,6 @@ class MacrosViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //fetch all macros from core data
         if let macroList = DatabaseMacrosController.sharedInstance.fetchAllMacrosFromCD() {
             self.macroList = macroList
         }
@@ -45,6 +44,12 @@ class MacrosViewController: UIViewController {
        // changeFullscreenImage(fullscreenButton: fullScreenBtn)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let addNewMacroVC = segue.destination as? AddNewMacroViewController {
+            addNewMacroVC.macroDelegate = self as SuccessfullyAddedMacroDelegate
+        }
+    }
+    
     func reloadCollectionView() {
         if let macroList = DatabaseMacrosController.sharedInstance.fetchAllMacrosFromCD() {
             self.macroList = macroList
@@ -55,10 +60,8 @@ class MacrosViewController: UIViewController {
     @IBAction func addNewButton_Action(_ sender: UIBarButtonItem) {
         performSegue(withIdentifier: "addNewMacroPopUp", sender: nil)
     }
-   
-    
-}
 
+}
 extension MacrosViewController {
     
     fileprivate func updateViews() {
@@ -78,10 +81,7 @@ extension MacrosViewController {
         titleView.setTitle("Macros")
         navigationItem.titleView = titleView
     }
-    
-    
 }
-
 extension MacrosViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -119,15 +119,14 @@ extension MacrosViewController: UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
     }
-    
-    
 }
-
-
-
-
 extension MacrosViewController: SWRevealViewControllerDelegate {
     
+}
+extension MacrosViewController: SuccessfullyAddedMacroDelegate {
+    func refreshMacroVC() {
+        reloadCollectionView()
+    }
 }
 
 

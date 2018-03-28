@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol SuccessfullyAddedMacroDelegate {
+    func refreshMacroVC()
+}
+
 class AddNewMacroViewController: PopoverVC {
     
     @IBOutlet weak var popUpView: UIView!
@@ -16,12 +20,14 @@ class AddNewMacroViewController: PopoverVC {
     var nameTextField: EditTextField!
     var typeLabel: UILabel!
     var typeDropDown: CustomGradientButton!
+    
     var leftImageButton: UIButton!
     var leftImageString: String = "library_event_movie_00" //default image
     //var leftLabelImage: UILabel!
     var rightImageButton: UIButton!
     var rightImageString: String = "library_event_movie_01" //default image
- //   var rightLabelImage: UILabel!
+    //var rightLabelImage: UILabel!
+    
     var cancelButton: CustomGradientButton!
     var submitButton: CustomGradientButton!
     
@@ -31,7 +37,7 @@ class AddNewMacroViewController: PopoverVC {
     var popUpHeight: CGFloat!
     
     var macroType: String = "block" //default macro type
-    
+    var macroDelegate: SuccessfullyAddedMacroDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -148,12 +154,12 @@ class AddNewMacroViewController: PopoverVC {
     
     @objc func submitButton(_ sender: UIButton) {
        let result = DatabaseMacrosController.sharedInstance.saveMacroToCD(name: nameTextField.text!, type: macroType, leftImage: leftImageString, rightImage: rightImageString)
-        if result {
-        
-        } else {
-            
+        switch result {
+        case true:
+            self.dismiss(animated: true) { self.macroDelegate?.refreshMacroVC() }
+        case false:
+            self.dismiss(animated: true, completion: nil)
         }
-        self.dismiss(animated: true, completion: nil)
     }
     
     @objc func editImageLeft(_ sender: UIButton) {
