@@ -578,6 +578,12 @@ struct SegueIdentifier {
     static let some = ""
 }
 
+struct MacroTypes {
+    static let block = "block"
+    static let restart = "restart"
+    static let queue = "queue"
+}
+
 struct Colors {
     static let DarkGray = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).cgColor    //   #262626
     static let MediumGray = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).cgColor

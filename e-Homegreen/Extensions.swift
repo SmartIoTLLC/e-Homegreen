@@ -73,6 +73,11 @@ extension UIViewController {
         view.addConstraint(NSLayoutConstraint(item: item, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1.0, constant: 0.0))
     }
     
+    func setScrollViewBottomOffset(scrollView: inout FilterPullDown) {
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        scrollView.setContentOffset(bottomOffset, animated: false)
+    }
+    
     func setupSWRevealViewController(menuButton: UIBarButtonItem) {
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()

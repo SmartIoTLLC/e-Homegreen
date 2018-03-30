@@ -157,6 +157,16 @@
 		4E97034D1FEBBE4F000D272A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E97034C1FEBBE4F000D272A /* Extensions.swift */; };
 		4E9EEAA020035A4600201E7C /* NavigationTitleViewNF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9EEA9F20035A4600201E7C /* NavigationTitleViewNF.swift */; };
 		4EE13AD61F95F47A008650FC /* RunnableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE13AD51F95F47A008650FC /* RunnableList.swift */; };
+		6EC4E0F8206E320D00300E32 /* Macros.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6EC4E0F4206E320C00300E32 /* Macros.storyboard */; };
+		6EC4E0F9206E320D00300E32 /* MacrosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4E0F5206E320C00300E32 /* MacrosCell.swift */; };
+		6EC4E0FA206E320D00300E32 /* MacrosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4E0F6206E320C00300E32 /* MacrosViewController.swift */; };
+		6EC4E0FB206E320D00300E32 /* AddNewMacroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4E0F7206E320C00300E32 /* AddNewMacroViewController.swift */; };
+		6EC4E0FD206E327700300E32 /* DatabaseMacrosController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4E0FC206E327700300E32 /* DatabaseMacrosController.swift */; };
+		6EC4E0FF206E32B700300E32 /* MenuSettinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4E0FE206E32B700300E32 /* MenuSettinsViewController.swift */; };
+		6EC4E140206E3F4A00300E32 /* Macro_action+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4E13C206E3F4A00300E32 /* Macro_action+CoreDataClass.swift */; };
+		6EC4E141206E3F4A00300E32 /* Macro_action+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4E13D206E3F4A00300E32 /* Macro_action+CoreDataProperties.swift */; };
+		6EC4E142206E3F4A00300E32 /* Macro+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4E13E206E3F4A00300E32 /* Macro+CoreDataClass.swift */; };
+		6EC4E143206E3F4A00300E32 /* Macro+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4E13F206E3F4A00300E32 /* Macro+CoreDataProperties.swift */; };
 		731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */; };
 		731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */; };
 		73331C181CA029DF009BA1DE /* FilterStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73331C171CA029DF009BA1DE /* FilterStruct.swift */; };
@@ -267,7 +277,6 @@
 		E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */; };
 		E70515A31BB3E147009FDA0D /* SurveillanceSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */; };
 		E70A6ED31BCFE86900EBB53D /* TellMeAJokeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70A6ED21BCFE86900EBB53D /* TellMeAJokeHandler.swift */; };
-		E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */; };
 		E73993121BCE753400C74486 /* VoiceControllerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73993101BCE753300C74486 /* VoiceControllerTableViewCell.swift */; };
 		E73993131BCE753400C74486 /* VoiceControllerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E73993111BCE753400C74486 /* VoiceControllerTableViewCell.xib */; };
 		E73993181BCEA05100C74486 /* AnswersHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73993171BCEA05100C74486 /* AnswersHandler.swift */; };
@@ -522,6 +531,16 @@
 		4E9EEA9F20035A4600201E7C /* NavigationTitleViewNF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationTitleViewNF.swift; sourceTree = "<group>"; };
 		4EE13AD51F95F47A008650FC /* RunnableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnableList.swift; sourceTree = "<group>"; };
 		60177B146AC24AC775D3907A /* Pods-e-Homegreen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-e-Homegreen.debug.xcconfig"; path = "Pods/Target Support Files/Pods-e-Homegreen/Pods-e-Homegreen.debug.xcconfig"; sourceTree = "<group>"; };
+		6EC4E0F4206E320C00300E32 /* Macros.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Macros.storyboard; sourceTree = "<group>"; };
+		6EC4E0F5206E320C00300E32 /* MacrosCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacrosCell.swift; sourceTree = "<group>"; };
+		6EC4E0F6206E320C00300E32 /* MacrosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacrosViewController.swift; sourceTree = "<group>"; };
+		6EC4E0F7206E320C00300E32 /* AddNewMacroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddNewMacroViewController.swift; sourceTree = "<group>"; };
+		6EC4E0FC206E327700300E32 /* DatabaseMacrosController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseMacrosController.swift; sourceTree = "<group>"; };
+		6EC4E0FE206E32B700300E32 /* MenuSettinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSettinsViewController.swift; sourceTree = "<group>"; };
+		6EC4E13C206E3F4A00300E32 /* Macro_action+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Macro_action+CoreDataClass.swift"; sourceTree = "<group>"; };
+		6EC4E13D206E3F4A00300E32 /* Macro_action+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Macro_action+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		6EC4E13E206E3F4A00300E32 /* Macro+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Macro+CoreDataClass.swift"; sourceTree = "<group>"; };
+		6EC4E13F206E3F4A00300E32 /* Macro+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Macro+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "AppDelegate+BroadcastTimeAndDate.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Location.swift"; sourceTree = "<group>"; };
 		73331C171CA029DF009BA1DE /* FilterStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterStruct.swift; sourceTree = "<group>"; };
@@ -641,7 +660,6 @@
 		E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceSettingsVC.swift; sourceTree = "<group>"; };
 		E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveillanceSettingsVC.xib; sourceTree = "<group>"; };
 		E70A6ED21BCFE86900EBB53D /* TellMeAJokeHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TellMeAJokeHandler.swift; sourceTree = "<group>"; };
-		E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSettinsViewController.swift; sourceTree = "<group>"; };
 		E73993101BCE753300C74486 /* VoiceControllerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoiceControllerTableViewCell.swift; sourceTree = "<group>"; };
 		E73993111BCE753400C74486 /* VoiceControllerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VoiceControllerTableViewCell.xib; sourceTree = "<group>"; };
 		E73993171BCEA05100C74486 /* AnswersHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnswersHandler.swift; sourceTree = "<group>"; };
@@ -1151,7 +1169,7 @@
 		22E7B2121CC5044200F813AC /* Menu */ = {
 			isa = PBXGroup;
 			children = (
-				E739739F1B43E65F0077E984 /* MenuSettinsViewController.swift */,
+				6EC4E0FE206E32B700300E32 /* MenuSettinsViewController.swift */,
 			);
 			name = Menu;
 			sourceTree = "<group>";
@@ -1243,6 +1261,17 @@
 			name = "PC Control Notifications";
 			sourceTree = "<group>";
 		};
+		6EC4E0F3206E31F400300E32 /* Macros */ = {
+			isa = PBXGroup;
+			children = (
+				6EC4E0F7206E320C00300E32 /* AddNewMacroViewController.swift */,
+				6EC4E0F4206E320C00300E32 /* Macros.storyboard */,
+				6EC4E0F5206E320C00300E32 /* MacrosCell.swift */,
+				6EC4E0F6206E320C00300E32 /* MacrosViewController.swift */,
+			);
+			name = Macros;
+			sourceTree = "<group>";
+		};
 		736265DD1B4A47FE0078C11D /* Business Logic */ = {
 			isa = PBXGroup;
 			children = (
@@ -1317,6 +1346,7 @@
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				6EC4E0F3206E31F400300E32 /* Macros */,
 				223690C51CAD00C00037B54A /* Login */,
 				2232922C1CABE48E0001422B /* PullDown */,
 				223292291CABD3280001422B /* Energy */,
@@ -1406,6 +1436,10 @@
 		73E2390E1B97145D00CB38ED /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				6EC4E13C206E3F4A00300E32 /* Macro_action+CoreDataClass.swift */,
+				6EC4E13D206E3F4A00300E32 /* Macro_action+CoreDataProperties.swift */,
+				6EC4E13E206E3F4A00300E32 /* Macro+CoreDataClass.swift */,
+				6EC4E13F206E3F4A00300E32 /* Macro+CoreDataProperties.swift */,
 				22FF1E601D86D86F00ECB86E /* Card+CoreDataProperties.swift */,
 				22FF1E611D86D86F00ECB86E /* Card.swift */,
 				4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */,
@@ -1506,6 +1540,7 @@
 		73F04ECC1C92CD95009696EF /* Database Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				6EC4E0FC206E327700300E32 /* DatabaseMacrosController.swift */,
 				7398667F1C0DEE1600CEBDB4 /* DatabaseHandler.swift */,
 				73F04ECD1C92CDA9009696EF /* CoreDataController.swift */,
 				223690CC1CAD5A500037B54A /* DatabaseUserController.swift */,
@@ -1896,7 +1931,7 @@
 				TargetAttributes = {
 					73E206A51B2EEFFE0008B002 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = 2VJ3RF77SN;
+						DevelopmentTeam = 2JR589G8SK;
 						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -1978,6 +2013,7 @@
 				E7DC67C81B457C0E00EA6543 /* weather-snow.png in Resources */,
 				4D16A1291D51CB8D00817477 /* HvacParametersCell.xib in Resources */,
 				22D7EBA21D78418F00853051 /* SecurityLocationXIB.xib in Resources */,
+				6EC4E0F8206E320D00300E32 /* Macros.storyboard in Resources */,
 				738DECB11BBBFC1100D6B834 /* Security.json in Resources */,
 				22495D271CAA7F510034FC94 /* Surveillance.storyboard in Resources */,
 				E70515A31BB3E147009FDA0D /* SurveillanceSettingsVC.xib in Resources */,
@@ -2169,6 +2205,7 @@
 				490C352D1D6D848400C9B851 /* DeleteConfirmation.swift in Sources */,
 				490DC22D1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift in Sources */,
 				73F1ECAD1C8993E8007CEEAA /* DefaultDeviceImages.swift in Sources */,
+				6EC4E0F9206E320D00300E32 /* MacrosCell.swift in Sources */,
 				7372EB371BC410800097806D /* Flag+CoreDataProperties.swift in Sources */,
 				E7AA26131BCD116800D5C3F0 /* IBeacon.swift in Sources */,
 				223878A41C919A70001357E0 /* AddLocationXIB.swift in Sources */,
@@ -2182,7 +2219,6 @@
 				223362911CA2E4EC006C80C4 /* AddUserXIB.swift in Sources */,
 				E79FD4EC1BCE43B600CA17DB /* ChatBubble.swift in Sources */,
 				225F59841D74402F00156BCD /* CommonXIBTransitionVC.swift in Sources */,
-				E73973A01B43E65F0077E984 /* MenuSettinsViewController.swift in Sources */,
 				73F1F08F1BAD5BD7005C63AB /* ImportZoneViewController.swift in Sources */,
 				223E25DD1CC77DBB00BC3905 /* Surveillance.swift in Sources */,
 				E7AA260C1BCD01F500D5C3F0 /* IBeaconSettingsVC.swift in Sources */,
@@ -2210,9 +2246,12 @@
 				49C059681D9137990061A544 /* SceneCell.swift in Sources */,
 				736F17E01B3AF3E9003A6A02 /* DashboardViewController.swift in Sources */,
 				7372EB341BC410800097806D /* Timer.swift in Sources */,
+				6EC4E0FB206E320D00300E32 /* AddNewMacroViewController.swift in Sources */,
+				6EC4E0FA206E320D00300E32 /* MacrosViewController.swift in Sources */,
 				2240EAC91D46084E0062AC2F /* FilterParametar.swift in Sources */,
 				2240EACB1D4609720062AC2F /* DatabaseFilterController.swift in Sources */,
 				73E6CDB91BC56454003A5F55 /* FlagParametarVC.swift in Sources */,
+				6EC4E143206E3F4A00300E32 /* Macro+CoreDataProperties.swift in Sources */,
 				22FF1E5F1D86BF5700ECB86E /* ScanCardsViewController.swift in Sources */,
 				7372EB3D1BC410800097806D /* Event+CoreDataProperties.swift in Sources */,
 				73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */,
@@ -2295,6 +2334,7 @@
 				73F04EC91C92C74C009696EF /* Int+Extensions.swift in Sources */,
 				4D411C9C1D5C982F000A3598 /* Device.swift in Sources */,
 				733F65451BCFABA8001BE004 /* ChatHandler.swift in Sources */,
+				6EC4E0FD206E327700300E32 /* DatabaseMacrosController.swift in Sources */,
 				73E206AC1B2EEFFE0008B002 /* AppDelegate.swift in Sources */,
 				2240DCB21CBBC20400F1F886 /* DatabaseEventsController.swift in Sources */,
 				2201763A1CD0FED400A1470A /* MenuItem.swift in Sources */,
@@ -2308,6 +2348,7 @@
 				49C059661D91373C0061A544 /* ScanCell.swift in Sources */,
 				7372EB3F1BC410800097806D /* Gateway+CoreDataProperties.swift in Sources */,
 				E7F5FC221BB985E600071982 /* MoveCameraHandler.swift in Sources */,
+				6EC4E140206E3F4A00300E32 /* Macro_action+CoreDataClass.swift in Sources */,
 				E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */,
 				E7F0A6061BBBF06000B6648F /* CustomGradientButton.swift in Sources */,
 				49C059741D913ACA0061A544 /* CardsCell.swift in Sources */,
@@ -2329,14 +2370,17 @@
 				2260FBA11D2CF5EC00576513 /* CustomToolBar.swift in Sources */,
 				2252B4081CA58A4F005E84AA /* ImportSSIDViewController.swift in Sources */,
 				73F51A091C9475C6003EE702 /* wol.c in Sources */,
+				6EC4E141206E3F4A00300E32 /* Macro_action+CoreDataProperties.swift in Sources */,
 				22506E8F1CB7DF25004EB47A /* DatabaseScenesController.swift in Sources */,
 				736F17D21B3AE840003A6A02 /* EventsViewController.swift in Sources */,
 				7372EB331BC410800097806D /* Timer+CoreDataProperties.swift in Sources */,
+				6EC4E0FF206E32B700300E32 /* MenuSettinsViewController.swift in Sources */,
 				223878991C916645001357E0 /* ListOfDevice_AppViewController.swift in Sources */,
 				49C059761D913D7D0061A544 /* ScanZone.swift in Sources */,
 				E79AEBB81B70C43300410E2D /* RelayParametarVC.swift in Sources */,
 				49C0596C1D91386A0061A544 /* EventsCell.swift in Sources */,
 				22402A851CBFC54C00CBB6E4 /* SecurityCollectionCell.swift in Sources */,
+				6EC4E142206E3F4A00300E32 /* Macro+CoreDataClass.swift in Sources */,
 				E73993181BCEA05100C74486 /* AnswersHandler.swift in Sources */,
 				4E9EEAA020035A4600201E7C /* NavigationTitleViewNF.swift in Sources */,
 				22402A831CBFACF400CBB6E4 /* DatabaseDeviceController.swift in Sources */,
@@ -2549,6 +2593,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 2JR589G8SK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2575,6 +2620,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 2JR589G8SK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
