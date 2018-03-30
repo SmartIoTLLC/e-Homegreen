@@ -54,7 +54,7 @@ class AddNewMacroViewController: PopoverVC {
     
     func setUpPopUpView() {
         
-        popUpView.frame = CGRect(x: 6, y: 0, width: screenWidth - 12, height: screenHeight/3)
+        popUpView.frame = CGRect(x: 6, y: 0, width: screenWidth - 12, height: screenHeight/2.6) //3
         popUpView.center.y = self.view.center.y
         popUpView.layer.cornerRadius = 9
         popUpView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -90,12 +90,12 @@ class AddNewMacroViewController: PopoverVC {
         typeDropDown.addTarget(self, action: #selector(openMacroDropDown(_:)), for: .touchUpInside)
         
         leftImageButton = UIButton()
-        leftImageButton.frame = CGRect(x: typeDropDown.frame.minX, y: typeDropDown.frame.maxY + 10, width: popUpWidth/3, height: 60)
+        leftImageButton.frame = CGRect(x: typeDropDown.frame.minX, y: typeDropDown.frame.maxY + 10, width: popUpWidth/3, height: 75)
         leftImageButton.setImage(UIImage(named:"library_event_movie_00"), for: UIControlState())
         leftImageButton.addTarget(self, action: #selector(editImageLeft(_:)), for: .touchUpInside)
         
         rightImageButton = UIButton()
-        rightImageButton.frame = CGRect(x: leftImageButton.frame.maxX + 30, y: typeDropDown.frame.maxY + 10, width: popUpWidth/3, height: 60)
+        rightImageButton.frame = CGRect(x: leftImageButton.frame.maxX + 30, y: typeDropDown.frame.maxY + 10, width: popUpWidth/3, height: 75)
         rightImageButton.setImage(UIImage(named:"library_event_movie_01"), for: UIControlState())
         rightImageButton.addTarget(self, action: #selector(editImageRight(_:)), for: .touchUpInside)
         

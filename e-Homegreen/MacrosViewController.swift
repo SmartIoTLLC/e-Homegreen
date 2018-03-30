@@ -18,13 +18,6 @@ class MacrosViewController: PopoverVC {
     var macroList = [Macro]()
     var filterScrollView = FilterPullDown()
 
-    
-//    @IBOutlet weak var fullScreenBtn: UIButton!
-//    @IBAction func fullScreenBtn(_ sender: UIButton) {
-//      //  sender.switchFullscreen()
-//
-//    }
-   
     let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     let cellId = "MacrosCell"
     
@@ -41,8 +34,6 @@ class MacrosViewController: PopoverVC {
         super.viewWillAppear(animated)
         revealViewController().delegate = self
         setupSWRevealViewController(menuButton: menuButton)
-        
-       // changeFullscreenImage(fullscreenButton: fullScreenBtn)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -104,16 +95,20 @@ extension MacrosViewController: UICollectionViewDataSource, UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? MacrosCell {
-            
+        
             cell.cellHeight = 150
             cell.cellWidth = 180
             cell.layer.borderColor = UIColor.lightGray.cgColor
             cell.layer.borderWidth = 0.5
             cell.layer.cornerRadius = 12
-            cell.layer.backgroundColor = UIColor.blue.withAlphaComponent(0.400000005960464).cgColor
-            //cell.isOpaque = false
-            //cell.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_macro"))
             
+//            gradient.frame = cell.bounds
+//            gradient.colors = [Colors.DirtyBlueColor, UIColor.blue.cgColor]
+//            gradient.cornerRadius = 12
+//            cell.layer.insertSublayer(gradient, at: 0)
+            //cell.layer.backgroundColor = UIColor.blue.withAlphaComponent(0.400000005960464).cgColor
+            //cell.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_macro"))
+
             if macroList.count != 0 {
                 cell.nameLabel.text = macroList[indexPath.row].name
                 cell.logoImageView.image = UIImage(named: macroList[indexPath.row].negative_image!)

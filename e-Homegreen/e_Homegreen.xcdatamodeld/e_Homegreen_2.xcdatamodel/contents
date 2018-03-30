@@ -80,7 +80,6 @@
         <attribute name="zoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="deviceImages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DeviceImage" inverseName="device" inverseEntity="DeviceImage" syncable="YES"/>
         <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="devices" inverseEntity="Gateway" syncable="YES"/>
-        <relationship name="macro_actions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Macro_action" inverseName="device" inverseEntity="Macro_action" syncable="YES"/>
         <relationship name="pcCommands" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PCCommand" inverseName="device" inverseEntity="PCCommand" syncable="YES"/>
     </entity>
     <entity name="DeviceImage" representedClassName=".DeviceImage" syncable="YES">
@@ -156,7 +155,6 @@
         <relationship name="events" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Event" inverseName="gateway" inverseEntity="Event" syncable="YES"/>
         <relationship name="flags" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Flag" inverseName="gateway" inverseEntity="Flag" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="gateways" inverseEntity="Location" syncable="YES"/>
-        <relationship name="macro_actions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Macro_action" inverseName="gateway" inverseEntity="Macro_action" syncable="YES"/>
         <relationship name="scenes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Scene" inverseName="gateway" inverseEntity="Scene" syncable="YES"/>
         <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Sequence" inverseName="gateway" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="timers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Timer" inverseName="gateway" inverseEntity="Timer" syncable="YES"/>
@@ -201,14 +199,14 @@
         <attribute name="positive_image" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="macro_actions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Macro_action" inverseName="macro" inverseEntity="Macro_action" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="macros" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Macro_action" representedClassName=".Macro_action" syncable="YES">
         <attribute name="command" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="control_type" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="delay" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="gatewayId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="device" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Device" inverseName="macro_actions" inverseEntity="Device" syncable="YES"/>
-        <relationship name="gateway" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gateway" inverseName="macro_actions" inverseEntity="Gateway" syncable="YES"/>
         <relationship name="macro" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Macro" inverseName="macro_actions" inverseEntity="Macro" syncable="YES"/>
     </entity>
     <entity name="MenuItem" representedClassName=".MenuItem" syncable="YES">
@@ -398,6 +396,7 @@
         <relationship name="filters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FilterParametar" inverseName="user" inverseEntity="FilterParametar" syncable="YES"/>
         <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="user" inverseEntity="Image" syncable="YES"/>
         <relationship name="locations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Location" inverseName="user" inverseEntity="Location" syncable="YES"/>
+        <relationship name="macros" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Macro" inverseName="user" inverseEntity="Macro" syncable="YES"/>
         <relationship name="menu" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MenuItem" inverseName="user" inverseEntity="MenuItem" syncable="YES"/>
     </entity>
     <entity name="Zone" representedClassName="e_Homegreen.Zone" syncable="YES">
@@ -414,17 +413,17 @@
     <elements>
         <element name="Card" positionX="-1413" positionY="-1899" width="128" height="165"/>
         <element name="Category" positionX="-1089" positionY="-1143" width="128" height="150"/>
-        <element name="Device" positionX="-974" positionY="-2091" width="128" height="975"/>
+        <element name="Device" positionX="-974" positionY="-2091" width="128" height="958"/>
         <element name="DeviceImage" positionX="-605" positionY="-1920" width="128" height="120"/>
         <element name="Event" positionX="-470" positionY="-1659" width="128" height="285"/>
         <element name="FilterParametar" positionX="-1197" positionY="-2304" width="128" height="180"/>
         <element name="Flag" positionX="-578" positionY="-1362" width="128" height="255"/>
-        <element name="Gateway" positionX="-1557" positionY="-1971" width="128" height="405"/>
+        <element name="Gateway" positionX="-1557" positionY="-1971" width="128" height="388"/>
         <element name="IBeacon" positionX="-1053" positionY="-517" width="128" height="58"/>
         <element name="Image" positionX="-252" positionY="-2043" width="128" height="90"/>
         <element name="Location" positionX="-1244" positionY="-1143" width="128" height="283"/>
-        <element name="Macro" positionX="-1926" positionY="-1735" width="128" height="178"/>
-        <element name="Macro_action" positionX="-1953" positionY="-2007" width="128" height="150"/>
+        <element name="Macro" positionX="-1926" positionY="-1708" width="128" height="193"/>
+        <element name="Macro_action" positionX="-1953" positionY="-2007" width="128" height="133"/>
         <element name="MenuItem" positionX="-1217" positionY="-2025" width="128" height="105"/>
         <element name="PCCommand" positionX="-684" positionY="-2250" width="128" height="105"/>
         <element name="Radio" positionX="-1179" positionY="-1861" width="128" height="148"/>
@@ -438,7 +437,7 @@
         <element name="Sura" positionX="-1890" positionY="-2304" width="128" height="88"/>
         <element name="Surveillance" positionX="-1503" positionY="-999" width="128" height="480"/>
         <element name="Timer" positionX="-1712" positionY="-1638" width="128" height="300"/>
-        <element name="User" positionX="-1422" positionY="-2322" width="128" height="255"/>
+        <element name="User" positionX="-1422" positionY="-2322" width="128" height="268"/>
         <element name="Zone" positionX="-1242" positionY="-765" width="128" height="180"/>
     </elements>
 </model>

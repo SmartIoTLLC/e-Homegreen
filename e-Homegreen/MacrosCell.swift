@@ -12,9 +12,9 @@ class MacrosCell: UICollectionViewCell {
     
     var nameLabel: UILabel!
     var logoImageView: UIImageView!
-    var startButton: UIButton!
-    var stopButton: UIButton!
-    var thirdStateButton: UIButton! //for queue and restart functions
+    var startButton: CustomGradientButton!
+    var stopButton: CustomGradientButton!
+    var thirdStateButton: CustomGradientButton! //for queue and restart functions
     
     var cellHeight: CGFloat!
     var cellWidth: CGFloat!
@@ -50,12 +50,12 @@ class MacrosCell: UICollectionViewCell {
         
     
     func setUpButtons() {
-        startButton = UIButton()
-        stopButton = UIButton()
-        thirdStateButton = UIButton()
+        startButton = CustomGradientButton()
+        stopButton = CustomGradientButton()
+        thirdStateButton = CustomGradientButton()
         
         startButton.frame = CGRect(x: 6, y: cellHeight - 5 - 31, width: cellWidth - 12, height: 31)
-        startButton.backgroundColor = .blue
+        startButton.backgroundColor = .clear
         startButton.layer.cornerRadius = 12
         
         //add to view

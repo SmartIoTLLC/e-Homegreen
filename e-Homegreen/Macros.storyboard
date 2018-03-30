@@ -94,7 +94,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.44563633419689119" green="0.44563633419689119" blue="0.44563633419689119" alpha="0.51433208626760563" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.39971259715025909" green="0.39971259715025909" blue="0.39971259715025909" alpha="0.64101012323943662" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <connections>
                         <outlet property="popUpView" destination="GK3-9y-rxL" id="tHs-Pf-RcA"/>
