@@ -73,6 +73,9 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         longGestureFindNames.minimumPressDuration = 1
         findNamesBtn.addGestureRecognizer(tapGestureFindNames)
         findNamesBtn.addGestureRecognizer(longGestureFindNames)
+        
+        longPressGestureSetupForMacros()
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         refreshDeviceList()
@@ -976,3 +979,50 @@ extension ScanDevicesViewController: DevicePropertiesDelegate{
         deviceTableView.reloadData()
     }
 }
+
+//MARK: ADD DEVICE ACTION TO MACROS
+extension ScanDevicesViewController {
+    
+    func longPressGestureSetupForMacros() {
+        let longGestureAddToMacros = UILongPressGestureRecognizer(target: self, action: #selector(ScanDevicesViewController.addToMacrosOnLongPress(_:))) //Long function will call when user long press on tableview cell.
+        longGestureAddToMacros.minimumPressDuration = 1
+        self.deviceTableView.addGestureRecognizer(longGestureAddToMacros)
+    }
+    
+    func addToMacrosOnLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        if longPressGestureRecognizer.state == .began {
+            let touchPoint = longPressGestureRecognizer.location(in: self.deviceTableView)
+            if let indexPath = deviceTableView.indexPathForRow(at: touchPoint) {
+                print("long press\(indexPath.row)")
+            }
+        }
+    }
+    
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
