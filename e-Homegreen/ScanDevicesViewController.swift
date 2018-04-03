@@ -993,9 +993,22 @@ extension ScanDevicesViewController {
         if longPressGestureRecognizer.state == .began {
             let touchPoint = longPressGestureRecognizer.location(in: self.deviceTableView)
             if let indexPath = deviceTableView.indexPathForRow(at: touchPoint) {
-                print("long press\(indexPath.row)")
+                DispatchQueue.main.async {
+                    self.presentChooseMacroVC(indexPath: indexPath.row)
+                }
             }
         }
+    }
+    
+    private func presentChooseMacroVC(indexPath: Int) {
+        let storyBoard = UIStoryboard(name: "Macros", bundle: nil)
+        let viewController = storyBoard.instantiateViewController(withIdentifier: "chooseMacroPopUp")
+        //viewController.modalPresentationStyle = .overCurrentContext
+        
+//        let viewController = ChooseMacroPopupVC()
+//        //viewController.modalPresentationStyle = .overCurrentContext
+        
+        self.present(viewController, animated: true, completion: nil)
     }
     
     

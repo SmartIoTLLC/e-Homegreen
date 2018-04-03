@@ -76,10 +76,10 @@
             </objects>
             <point key="canvasLocation" x="1283.5" y="2444.5"/>
         </scene>
-        <!--Choose MacroVC-->
+        <!--Choose Macro PopupVC-->
         <scene sceneID="5nX-yN-Q97">
             <objects>
-                <viewController storyboardIdentifier="chooseMacroPopUp" id="6FW-YA-w8j" customClass="ChooseMacroVC" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="chooseMacroPopUp" modalPresentationStyle="overCurrentContext" id="6FW-YA-w8j" customClass="ChooseMacroPopupVC" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3x6-9E-mdy"/>
                         <viewControllerLayoutGuide type="bottom" id="15B-Lt-5d6"/>
@@ -97,7 +97,7 @@
                         <color key="backgroundColor" red="0.46164588730569944" green="0.46164588730569944" blue="0.46164588730569944" alpha="0.61253851232394363" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <connections>
-                        <outlet property="popUpView" destination="g8Q-4k-o1b" id="Jvy-nf-ifo"/>
+                        <outlet property="popUpView" destination="g8Q-4k-o1b" id="f8R-7A-Fa4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GE5-yj-ksB" userLabel="First Responder" sceneMemberID="firstResponder"/>
