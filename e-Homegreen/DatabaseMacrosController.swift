@@ -29,7 +29,7 @@ class DatabaseMacrosController {
             macroInstance.setValue("", forKey: "macro_level")
             macroInstance.setValue("", forKey: "macro_category")
             
-            if saveChanges() {
+            if saveChanges() == true {
                 return true
             } else {
                 return false
@@ -38,6 +38,31 @@ class DatabaseMacrosController {
             return false
         }
     }
+    
+    func addActionToMacros(action: Macro_action, macro: Macro) -> Bool { //TODO: macro: [Macro] must be array
+         let macroActionInstance = NSEntityDescription.insertNewObject(forEntityName: "Macro_action", into: managedContext!)
+            
+            macroActionInstance.setValue(100, forKey: "command")
+            macroActionInstance.setValue(1, forKey: "control_type")
+            macroActionInstance.setValue("asdasd", forKey: "gatewayId")
+            macroActionInstance.setValue("ads", forKey: "name")
+            macroActionInstance.setValue(123, forKey: "delay")
+            macroActionInstance.setValue(0, forKey: "deviceAddress")
+            
+        
+            do {
+                //macro.addToMacro_actions(macroActionInstance)
+                try managedContext?.save()
+            } catch let error as NSError {
+                print("Unable to save to core data from DatabaseMacrosController, because of \(error), \(error.userInfo)")
+                managedContext?.rollback()
+                return false
+            }
+       
+            return true
+        }
+    
+    
     
     func fetchAllMacrosFromCD() -> [Macro]? {
         let fetchRequest = NSFetchRequest<Macro>(entityName: "Macro")
