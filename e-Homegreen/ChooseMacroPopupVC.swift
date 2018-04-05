@@ -23,7 +23,11 @@ class ChooseMacroPopupVC: PopoverVC {
     var firstTwoDotsLabel: UILabel!
     var secondTwoDotsLabel: UILabel!
     
+    var stateOfDeviceLabel: UILabel!
+    var stateOfDeviceDropDown: CustomGradientButton!
+    
     var macroTableView: UITableView!
+    var cancelButton: CustomGradientButton!
     var confirmButton: CustomGradientButton!
     
     var screenWidth: CGFloat!
@@ -34,16 +38,19 @@ class ChooseMacroPopupVC: PopoverVC {
     var device: Device?
     var macroList = [Macro]()
     var selectedIndexPaths = [Int]()
+    var stateOfDevice: NSNumber?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.screenWidth = UIScreen.main.bounds.width
         self.screenHeight = UIScreen.main.bounds.height
+        
         if let macroList = DatabaseMacrosController.sharedInstance.fetchAllMacrosFromCD() {
             self.macroList = macroList
         }
         setUpPopUpView()
+        self.hideKeyboardWhenTappedAround()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,11 +59,10 @@ class ChooseMacroPopupVC: PopoverVC {
     
     func setUpPopUpView() {
         
-        popUpView.frame = CGRect(x: 6, y: 0, width: screenWidth - 12, height: screenHeight/2.1) //3
+        popUpView.frame = CGRect(x: 6, y: 0, width: screenWidth - 12, height: screenHeight/1.7)
         popUpView.center.y = self.view.center.y
         popUpView.layer.cornerRadius = 9
         popUpView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        
         popUpHeight = popUpView.frame.height
         popUpWidth = popUpView.frame.width
         
@@ -90,19 +96,38 @@ class ChooseMacroPopupVC: PopoverVC {
         delaySeconds = EditTextField()
         delaySeconds.frame = CGRect(x: secondTwoDotsLabel.frame.maxX + 2, y: 10, width: 30, height: 30)
         
+        stateOfDeviceLabel = UILabel()
+        stateOfDeviceLabel.frame = CGRect(x: 8, y: delayHours.frame.maxY + 16, width: 150, height: 16)
+        stateOfDeviceLabel.text = "Set device state:"
+        stateOfDeviceLabel.textColor = .white
+        stateOfDeviceLabel.font = .tahoma(size: 14)
+        
+        stateOfDeviceDropDown = CustomGradientButton()
+        stateOfDeviceDropDown.frame = CGRect(x: delayHours.frame.minX, y: delayHours.frame.maxY + 9, width: 105, height: 30)
+        stateOfDeviceDropDown.setTitle("State", for: UIControlState())
+        stateOfDeviceDropDown.titleLabel?.font = UIFont(name: "Tahoma", size: 14)
+        stateOfDeviceDropDown.addTarget(self, action: #selector(openStateDropDown(_:)), for: .touchUpInside)
+        
         macroTableView = UITableView()
-        macroTableView.frame = CGRect(x: 8, y: delayHours.frame.maxY + 8, width: popUpWidth - 16, height: popUpHeight/1.7)
+        macroTableView.frame = CGRect(x: 8, y: stateOfDeviceDropDown.frame.maxY + 6, width: popUpWidth - 16, height: popUpHeight/1.7)
         macroTableView.delegate = self
         macroTableView.dataSource = self
         macroTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         macroTableView.backgroundColor = .clear
         macroTableView.separatorStyle = .singleLine
 
+        cancelButton = CustomGradientButton()
+        cancelButton.frame = CGRect(x: 8, y: popUpHeight - 31 - 8, width: (popUpWidth/2) - 8 - 4, height: 31)
+        cancelButton.setTitle("CANCEL", for: UIControlState())
+        cancelButton.titleLabel?.font = UIFont(name: "Tahoma", size: 11)
+        cancelButton.addTarget(self, action: #selector(cancel(_:)), for: .touchUpInside)
+        
         confirmButton = CustomGradientButton()
-        confirmButton.frame = CGRect(x: 8, y: popUpHeight - 31 - 8, width: popUpWidth - 16, height: 31)
+        confirmButton.frame = CGRect(x: cancelButton.frame.maxX + 8, y: popUpHeight - 31 - 8, width:  (popUpWidth/2) - 8 - 4, height: 31)
         confirmButton.setTitle("ADD ACTION TO MACROS", for: UIControlState())
-        confirmButton.titleLabel?.font = UIFont(name: "Tahoma", size: 14)
+        confirmButton.titleLabel?.font = UIFont(name: "Tahoma", size: 11)
         confirmButton.addTarget(self, action: #selector(submit(_:)), for: .touchUpInside)
+        
         
         //add to popup view
         popUpView.addSubview(delayLabel)
@@ -111,23 +136,58 @@ class ChooseMacroPopupVC: PopoverVC {
         popUpView.addSubview(delayMinutes)
         popUpView.addSubview(secondTwoDotsLabel)
         popUpView.addSubview(delaySeconds)
+        popUpView.addSubview(stateOfDeviceLabel)
+        popUpView.addSubview(stateOfDeviceDropDown)
         popUpView.addSubview(macroTableView)
+        popUpView.addSubview(cancelButton)
         popUpView.addSubview(confirmButton)
     }
     
     @objc func submit(_ sender: UIButton) {
-        let action = Macro_action()
-        action.command = 100
-        action.control_type = 1
-        action.gatewayId = "gejtvej"
-       
-        if DatabaseMacrosController.sharedInstance.addActionToMacros(action: action, macro: macroList.first!) == true {
-            print("uspeh")
+        
+        var macroListForAction = [Macro]()
+        for index in selectedIndexPaths {
+            macroListForAction.append(macroList[index])
+            print(macroList[index].name)
         }
+        
+        if stateOfDevice == nil || macroListForAction.count == 0 {
+            return
+        }
+        
+        for oneMacro in macroListForAction {
+             DatabaseMacrosController.sharedInstance.addActionToMacros(command: stateOfDevice!, control_type: (device?.controlType)!, delay: 0, deviceAddress: (device?.address)!, gatewayAddressOne: (device?.gateway.addressOne)!, gatewayAddressTwo: (device?.gateway.addressTwo)!, deviceChannel: (device?.channel)!, macro: oneMacro)
+        }
+       
+        
+        DatabaseMacrosController.sharedInstance.fetchMacroActionsFor(macro: macroList[0])
+        DatabaseMacrosController.sharedInstance.fetchMacroActionsFor(macro: macroList[1])
+        DatabaseMacrosController.sharedInstance.fetchMacroActionsFor(macro: macroList[2])
+
+        
+        self.dismiss(animated: true, completion: nil)
     }
     
+    @objc func cancel(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
+    }
     
+    @objc func openStateDropDown(_ sender: UIButton) {
+        var popOverList: [PopOverItem] = []
+        
+        popOverList.append(PopOverItem(name: "Turn on", id: "1"))
+        popOverList.append(PopOverItem(name: "Turn off", id: "0"))
+        popOverList.append(PopOverItem(name: "Toggle", id: "2"))
+        
+        if let vc = popUpView.parentViewController as? PopoverVC { vc.openPopover(sender, popOverList: popOverList) } else { print ("unable to present pop up in ChooseMacroPopUpVC") }
+    }
     
+    override func nameAndId(_ name: String, id: String) {
+        stateOfDevice = Int16(id) as! NSNumber
+        stateOfDeviceDropDown.setTitle(name, for: UIControlState())
+    }
+    
+
 }
 
 extension ChooseMacroPopupVC: UITableViewDelegate, UITableViewDataSource {

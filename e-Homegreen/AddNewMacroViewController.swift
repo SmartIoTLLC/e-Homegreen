@@ -42,8 +42,8 @@ class AddNewMacroViewController: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        screenWidth = self.view.frame.size.width // UIScreen.main.bounds.
-        screenHeight = self.view.frame.size.height
+        screenWidth = UIScreen.main.bounds.width
+        screenHeight = UIScreen.main.bounds.height
         setUpPopUpView()
         self.hideKeyboardWhenTappedAround()
     }

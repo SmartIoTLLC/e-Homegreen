@@ -39,29 +39,54 @@ class DatabaseMacrosController {
         }
     }
     
-    func addActionToMacros(action: Macro_action, macro: Macro) -> Bool { //TODO: macro: [Macro] must be array
-         let macroActionInstance = NSEntityDescription.insertNewObject(forEntityName: "Macro_action", into: managedContext!)
+    func addActionToMacros(command: NSNumber, control_type: String, delay: NSNumber, deviceAddress: NSNumber, gatewayAddressOne: NSNumber, gatewayAddressTwo: NSNumber, deviceChannel: NSNumber, macro: Macro) -> Bool { //TODO: macro: [Macro] must be array
+      
+        if let macroActionInstance = NSEntityDescription.insertNewObject(forEntityName: "Macro_action", into: managedContext!) as? Macro_action {
             
-            macroActionInstance.setValue(100, forKey: "command")
-            macroActionInstance.setValue(1, forKey: "control_type")
-            macroActionInstance.setValue("asdasd", forKey: "gatewayId")
-            macroActionInstance.setValue("ads", forKey: "name")
-            macroActionInstance.setValue(123, forKey: "delay")
-            macroActionInstance.setValue(0, forKey: "deviceAddress")
-            
+            macroActionInstance.command = command
+            macroActionInstance.control_type = control_type
+            macroActionInstance.delay = delay
+            macroActionInstance.deviceAddress = deviceAddress
+            macroActionInstance.gatewayAddressOne = gatewayAddressOne
+            macroActionInstance.gatewayAddressTwo = gatewayAddressTwo
+            macroActionInstance.deviceChannel = deviceChannel
         
             do {
-                //macro.addToMacro_actions(macroActionInstance)
+                macro.addToMacro_actions(macroActionInstance)
                 try managedContext?.save()
             } catch let error as NSError {
                 print("Unable to save to core data from DatabaseMacrosController, because of \(error), \(error.userInfo)")
                 managedContext?.rollback()
                 return false
             }
+        } else {
+            print("nisam uspeo")
+            return false
+        }
        
             return true
         }
     
+    func fetchMacroActionsFor(macro: Macro) {
+        var macroAction = [Macro_action]()
+        print("MACRO: \(macro.name)")
+        for action in macro.macro_actions! {
+            macroAction.append(action as! Macro_action)
+        }
+        
+        for action in macroAction {
+            print("NEW")
+            print(action.command)
+            print(action.control_type)
+            print(action.deviceAddress)
+            print(action.gatewayAddressOne)
+            print(action.gatewayAddressTwo)
+            print(action.deviceChannel)
+        }
+      
+
+
+    }
     
     
     func fetchAllMacrosFromCD() -> [Macro]? {
