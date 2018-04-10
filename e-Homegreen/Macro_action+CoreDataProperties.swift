@@ -2,7 +2,7 @@
 //  Macro_action+CoreDataProperties.swift
 //  e-Homegreen
 //
-//  Created by Bratislav Baljak on 4/5/18.
+//  Created by Bratislav Baljak on 4/10/18.
 //  Copyright © 2018 Teodor Stevic. All rights reserved.
 //
 //
@@ -20,10 +20,11 @@ extension Macro_action {
     @NSManaged public var command: NSNumber?
     @NSManaged public var control_type: String?
     @NSManaged public var delay: NSNumber?
-    @NSManaged public var gatewayAddressOne: NSNumber?
-    @NSManaged public var gatewayAddressTwo: NSNumber?
     @NSManaged public var deviceAddress: NSNumber?
     @NSManaged public var deviceChannel: NSNumber?
+    @NSManaged public var gatewayAddressOne: NSNumber?
+    @NSManaged public var gatewayAddressTwo: NSNumber?
+    @NSManaged public var gatewayId: String?
     @NSManaged public var macro: Macro?
 
 }

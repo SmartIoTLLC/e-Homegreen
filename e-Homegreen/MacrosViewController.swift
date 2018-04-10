@@ -64,6 +64,27 @@ class MacrosViewController: PopoverVC {
     @IBAction func addNewButton_Action(_ sender: UIBarButtonItem) {
         performSegue(withIdentifier: "addNewMacroPopUp", sender: nil)
     }
+    
+    func startMacro(_ gestureRecognizer:UITapGestureRecognizer) {
+        let tag = gestureRecognizer.view!.tag
+        let macro = macroList[tag]
+        let macroActions = DatabaseMacrosController.sharedInstance.fetchMacroActionsFor(macro: macro)
+        
+        if macroActions.count != 0 {
+            for oneAction in macroActions {
+                let gateway = CoreDataController.sharedInstance.fetchGatewayWithId(oneAction.gatewayId!)
+                let device = CoreDataController.sharedInstance.fetchDeviceByGatewayAndAddressAndChannel(gateway!, address: oneAction.deviceAddress!, channel: oneAction.deviceChannel!)
+                print("current value of device\(device?.currentValue)")
+            
+                //send command
+            }
+        }
+        
+    }
+    
+    func stopMacro(_ gestureRecognizer:UITapGestureRecognizer) {
+        print(gestureRecognizer.view!.tag)
+    }
 
 }
 extension MacrosViewController {
@@ -101,6 +122,9 @@ extension MacrosViewController: UICollectionViewDataSource, UICollectionViewDele
             cell.layer.borderColor = UIColor.lightGray.cgColor
             cell.layer.borderWidth = 0.5
             cell.layer.cornerRadius = 12
+            cell.setCell(tag: indexPath.row)
+            cell.startButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(startMacro(_:))))
+            cell.stopButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(stopMacro(_:))))
             
 //            gradient.frame = cell.bounds
 //            gradient.colors = [Colors.DirtyBlueColor, UIColor.blue.cgColor]
@@ -112,7 +136,6 @@ extension MacrosViewController: UICollectionViewDataSource, UICollectionViewDele
             if macroList.count != 0 {
                 cell.nameLabel.text = macroList[indexPath.row].name
                 cell.logoImageView.image = UIImage(named: macroList[indexPath.row].negative_image!)
-                cell.startButton.setTitle("Start", for: UIControlState())
             }
             return cell
         }
@@ -134,6 +157,10 @@ extension MacrosViewController: UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
     }
+    
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        <#code#>
+//    }
 }
 extension MacrosViewController: SWRevealViewControllerDelegate {
     func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){

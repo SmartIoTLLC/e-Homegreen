@@ -19,6 +19,10 @@ class MacrosCell: UICollectionViewCell {
     var cellHeight: CGFloat!
     var cellWidth: CGFloat!
   
+    func setCell(tag: Int) {
+        startButton.tag = tag
+        stopButton.tag = tag
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -52,14 +56,21 @@ class MacrosCell: UICollectionViewCell {
     func setUpButtons() {
         startButton = CustomGradientButton()
         stopButton = CustomGradientButton()
-        thirdStateButton = CustomGradientButton()
+        //thirdStateButton = CustomGradientButton() -> TODO: Put block, queue button separatelly
         
         startButton.frame = CGRect(x: 6, y: cellHeight - 5 - 31, width: cellWidth - 12, height: 31)
         startButton.backgroundColor = .clear
         startButton.layer.cornerRadius = 12
+        startButton.setTitle("Start", for: UIControlState())
+        startButton.titleLabel?.font = UIFont(name: "Tahoma", size: 14)
+        startButton.addTarget(self, action: #selector(startMacro(_:)), for: .touchUpInside)
         
         //add to view
         contentView.addSubview(startButton)
+    }
+    
+    @objc func startMacro(_ sender: UIButton) {
+        print("stisnut sam")
     }
 
     

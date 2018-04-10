@@ -203,6 +203,7 @@
         <attribute name="deviceChannel" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="gatewayAddressOne" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="gatewayAddressTwo" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="gatewayId" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="macro" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Macro" inverseName="macro_actions" inverseEntity="Macro" syncable="YES"/>
     </entity>
     <entity name="MenuItem" representedClassName=".MenuItem" syncable="YES">
@@ -350,7 +351,7 @@
         <element name="Image" positionX="-252" positionY="-2043" width="128" height="90"/>
         <element name="Location" positionX="-1181" positionY="-1504" width="128" height="270"/>
         <element name="Macro" positionX="-1379" positionY="-1896" width="128" height="193"/>
-        <element name="Macro_action" positionX="-1467" positionY="-1572" width="128" height="165"/>
+        <element name="Macro_action" positionX="-1467" positionY="-1572" width="128" height="180"/>
         <element name="MenuItem" positionX="-954" positionY="-1935" width="128" height="105"/>
         <element name="PCCommand" positionX="-470" positionY="-2104" width="128" height="105"/>
         <element name="Scene" positionX="-639" positionY="-1879" width="128" height="240"/>

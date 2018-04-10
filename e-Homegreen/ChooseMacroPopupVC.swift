@@ -152,11 +152,12 @@ class ChooseMacroPopupVC: PopoverVC {
         }
         
         if stateOfDevice == nil || macroListForAction.count == 0 {
+            //TODO: add msg box to inform user
             return
         }
         
         for oneMacro in macroListForAction {
-             DatabaseMacrosController.sharedInstance.addActionToMacros(command: stateOfDevice!, control_type: (device?.controlType)!, delay: 0, deviceAddress: (device?.address)!, gatewayAddressOne: (device?.gateway.addressOne)!, gatewayAddressTwo: (device?.gateway.addressTwo)!, deviceChannel: (device?.channel)!, macro: oneMacro)
+            DatabaseMacrosController.sharedInstance.addActionToMacros(command: stateOfDevice!, control_type: (device?.controlType)!, delay: 0, deviceAddress: (device?.address)!, gatewayAddressOne: (device?.gateway.addressOne)!, gatewayAddressTwo: (device?.gateway.addressTwo)!, gatewayId: device?.gateway.gatewayId, deviceChannel: (device?.channel)!, macro: oneMacro)
         }
        
         

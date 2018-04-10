@@ -39,7 +39,7 @@ class DatabaseMacrosController {
         }
     }
     
-    func addActionToMacros(command: NSNumber, control_type: String, delay: NSNumber, deviceAddress: NSNumber, gatewayAddressOne: NSNumber, gatewayAddressTwo: NSNumber, deviceChannel: NSNumber, macro: Macro) -> Bool { //TODO: macro: [Macro] must be array
+    func addActionToMacros(command: NSNumber, control_type: String, delay: NSNumber, deviceAddress: NSNumber, gatewayAddressOne: NSNumber, gatewayAddressTwo: NSNumber, gatewayId: String?, deviceChannel: NSNumber, macro: Macro) -> Bool { //TODO: macro: [Macro] must be array
       
         if let macroActionInstance = NSEntityDescription.insertNewObject(forEntityName: "Macro_action", into: managedContext!) as? Macro_action {
             
@@ -50,6 +50,7 @@ class DatabaseMacrosController {
             macroActionInstance.gatewayAddressOne = gatewayAddressOne
             macroActionInstance.gatewayAddressTwo = gatewayAddressTwo
             macroActionInstance.deviceChannel = deviceChannel
+            macroActionInstance.gatewayId = gatewayId
         
             do {
                 macro.addToMacro_actions(macroActionInstance)
@@ -67,25 +68,14 @@ class DatabaseMacrosController {
             return true
         }
     
-    func fetchMacroActionsFor(macro: Macro) {
+    func fetchMacroActionsFor(macro: Macro) -> [Macro_action] {
         var macroAction = [Macro_action]()
-        print("MACRO: \(macro.name)")
+        
         for action in macro.macro_actions! {
             macroAction.append(action as! Macro_action)
         }
-        
-        for action in macroAction {
-            print("NEW")
-            print(action.command)
-            print(action.control_type)
-            print(action.deviceAddress)
-            print(action.gatewayAddressOne)
-            print(action.gatewayAddressTwo)
-            print(action.deviceChannel)
-        }
-      
-
-
+    
+        return macroAction
     }
     
     
