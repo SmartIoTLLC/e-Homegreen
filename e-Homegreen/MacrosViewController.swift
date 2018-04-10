@@ -74,7 +74,9 @@ class MacrosViewController: PopoverVC {
             for oneAction in macroActions {
                 let gateway = CoreDataController.sharedInstance.fetchGatewayWithId(oneAction.gatewayId!)
                 let device = CoreDataController.sharedInstance.fetchDeviceByGatewayAndAddressAndChannel(gateway!, address: oneAction.deviceAddress!, channel: oneAction.deviceChannel!)
-                print("current value of device\(device?.currentValue)")
+                //send command
+                sendingHandler(device: device!, oneAction: oneAction, gateway: gateway!)
+               
             
                 //send command
             }
@@ -85,6 +87,53 @@ class MacrosViewController: PopoverVC {
     func stopMacro(_ gestureRecognizer:UITapGestureRecognizer) {
         print(gestureRecognizer.view!.tag)
     }
+    
+    private func sendingHandler(device: Device, oneAction: Macro_action, gateway: Gateway) {
+        let controlType = device.controlType
+        let address = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        var setDeviceValue: UInt8 = 0
+        let deviceCurrentValue = device.currentValue
+        var skipLevel: UInt8 = 0
+        
+        //oneAction.command == 0 - off, 1 - on, 2 - toggle
+        
+        if Int(deviceCurrentValue) > 0 {
+            setDeviceValue = UInt8(0)
+            skipLevel = 0
+        } else {
+            setDeviceValue = UInt8(255)
+            skipLevel = getByte(device.skipState)
+        }
+        device.currentValue = NSNumber(value: Int(setDeviceValue))
+        print("old value \(deviceCurrentValue), new value \(setDeviceValue)")
+        RunnableList.sharedInstance.checkForSameDevice(
+            device: (device.objectID),
+            newCommand: NSNumber(value: setDeviceValue),
+            oldValue: (deviceCurrentValue)
+        )
+        
+        switch controlType {
+        case ControlType.Dimmer:
+           print("Dimmer")
+        case ControlType.Relay:
+            _ = RepeatSendingHandler(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setDeviceValue, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: skipLevel),
+                gateway: device.gateway,
+                device: device,
+                oldValue: Int(deviceCurrentValue),
+                command: NSNumber(value: setDeviceValue)
+            )
+        case ControlType.Climate:
+            print("Climate")
+        case ControlType.Curtain:
+            print("Curtain")
+        case ControlType.SaltoAccess:
+            print("SaltoAccess")
+        default:
+            print("did not found device control type")
+        }
+        
+    }
+    
 
 }
 extension MacrosViewController {
