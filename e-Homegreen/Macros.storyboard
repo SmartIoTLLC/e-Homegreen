@@ -70,6 +70,7 @@
                         <outlet property="backgroundImage" destination="ShT-0U-QOI" id="C09-Od-MiW"/>
                         <outlet property="collectionView" destination="eLM-h7-T3u" id="mTu-YD-7qG"/>
                         <outlet property="menuButton" destination="pbm-9U-szZ" id="BBp-wv-dth"/>
+                        <segue destination="fa7-J4-LTk" kind="push" identifier="goToDetails" id="82I-2l-U3O"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g1Q-vA-0sV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -103,6 +104,35 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GE5-yj-ksB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1279" y="3314"/>
+        </scene>
+        <!--Macro DetailsTVC-->
+        <scene sceneID="oJd-Vb-HmF">
+            <objects>
+                <tableViewController storyboardIdentifier="MacroDetails" id="fa7-J4-LTk" customClass="MacroDetailsTVC" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="wZS-fA-gc9">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="macroActionCell" id="1c6-1q-I61">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1c6-1q-I61" id="T9o-ky-yCa">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="fa7-J4-LTk" id="G8u-AA-Geg"/>
+                            <outlet property="delegate" destination="fa7-J4-LTk" id="sXs-fb-ac7"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="seD-0F-oWV"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ks3-RE-XhJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1845" y="3322"/>
         </scene>
         <!--Add New Macro View Controller-->
         <scene sceneID="04Z-Ez-N4p">

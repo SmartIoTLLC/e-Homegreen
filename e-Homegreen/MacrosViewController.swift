@@ -17,6 +17,7 @@ class MacrosViewController: PopoverVC {
     
     var macroList = [Macro]()
     var filterScrollView = FilterPullDown()
+    var selectedMacroIndex: Int = 0
 
     let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     let cellId = "MacrosCell"
@@ -28,6 +29,7 @@ class MacrosViewController: PopoverVC {
             self.macroList = macroList
         }
         updateViews()
+        longPressGestureSetupForMacros()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,6 +54,9 @@ class MacrosViewController: PopoverVC {
         if let addNewMacroVC = segue.destination as? AddNewMacroViewController {
             addNewMacroVC.macroDelegate = self as SuccessfullyAddedMacroDelegate
         }
+        if let macroDetails = segue.destination as? MacroDetailsTVC {
+            macroDetails.macroActions = DatabaseMacrosController.sharedInstance.fetchMacroActionsFor(macro: macroList[selectedMacroIndex])
+        }
     }
     
     func reloadCollectionView() {
@@ -60,6 +65,24 @@ class MacrosViewController: PopoverVC {
             collectionView.reloadData()
         }
     }
+    
+    //Long press on macro cell, redirect to Macro details
+    func longPressGestureSetupForMacros() {
+        let longGestureAddToMacros = UILongPressGestureRecognizer(target: self, action: #selector(MacrosViewController.goToMacroDetails(_:))) //Long function will call when user long press on collection cell.
+        longGestureAddToMacros.minimumPressDuration = 1
+        self.collectionView.addGestureRecognizer(longGestureAddToMacros)
+    }
+    
+    @objc private func goToMacroDetails(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        if longPressGestureRecognizer.state == .began {
+            let touchPoint = longPressGestureRecognizer.location(in: self.collectionView)
+            if let indexPath = collectionView.indexPathForItem(at: touchPoint) {
+                self.selectedMacroIndex = indexPath.row
+                performSegue(withIdentifier: "goToDetails", sender: nil)
+            }
+        }
+    }
+
     
     @IBAction func addNewButton_Action(_ sender: UIBarButtonItem) {
         performSegue(withIdentifier: "addNewMacroPopUp", sender: nil)
@@ -71,17 +94,15 @@ class MacrosViewController: PopoverVC {
         let macroActions = DatabaseMacrosController.sharedInstance.fetchMacroActionsFor(macro: macro)
         
         if macroActions.count != 0 {
-            for oneAction in macroActions {
-                let gateway = CoreDataController.sharedInstance.fetchGatewayWithId(oneAction.gatewayId!)
-                let device = CoreDataController.sharedInstance.fetchDeviceByGatewayAndAddressAndChannel(gateway!, address: oneAction.deviceAddress!, channel: oneAction.deviceChannel!)
-                //send command
-                sendingHandler(device: device!, oneAction: oneAction, gateway: gateway!)
-               
-            
-                //send command
-            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                for oneAction in macroActions {
+                    let gateway = CoreDataController.sharedInstance.fetchGatewayWithId(oneAction.gatewayId!)
+                    let device = CoreDataController.sharedInstance.fetchDeviceByGatewayAndAddressAndChannel(gateway!, address: oneAction.deviceAddress!, channel: oneAction.deviceChannel!)
+                    //send command
+                    self.sendingHandler(device: device!, oneAction: oneAction, gateway: gateway!)
+                }
+            })
         }
-        
     }
     
     func stopMacro(_ gestureRecognizer:UITapGestureRecognizer) {
@@ -140,11 +161,10 @@ class MacrosViewController: PopoverVC {
             SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: self.getByte(device.channel), status: setDeviceValue),
                 gateway: device.gateway
             )
-            
         case ControlType.Curtain:
-            print("Curtain")
+            print("Curtain in Macro not implemented yet")
         case ControlType.SaltoAccess:
-            print("SaltoAccess")
+            print("SaltoAccess in Macro not implemented yet")
         default:
             print("Did not found predefined Device control type in Macro View Controller")
         }
