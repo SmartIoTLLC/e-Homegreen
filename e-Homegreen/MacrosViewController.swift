@@ -89,33 +89,42 @@ class MacrosViewController: PopoverVC {
     }
     
     private func sendingHandler(device: Device, oneAction: Macro_action, gateway: Gateway) {
-        let controlType = device.controlType
-        let address = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
-        var setDeviceValue: UInt8 = 0
-        let deviceCurrentValue = device.currentValue
+        let controlType = device.controlType //e.g. dimmer, relay
+        let command = Int(oneAction.command!) //e.g. turn on, turn off
         var skipLevel: UInt8 = 0
-        
-        //oneAction.command == 0 - off, 1 - on, 2 - toggle
-        
-        if Int(deviceCurrentValue) > 0 {
+
+        let address = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let deviceCurrentValue = device.currentValue //old value
+        var setDeviceValue: UInt8 = 0 //new value
+
+        switch command {
+        case MacroActionCommands.turnOff:
             setDeviceValue = UInt8(0)
             skipLevel = 0
-        } else {
+        case MacroActionCommands.turnOn:
             setDeviceValue = UInt8(255)
             skipLevel = getByte(device.skipState)
+        case MacroActionCommands.toggle:
+            if Int(deviceCurrentValue) > 0 {
+                setDeviceValue = UInt8(0)
+                skipLevel = 0
+            } else {
+                setDeviceValue = UInt8(255)
+                skipLevel = getByte(device.skipState)
+            }
+        default:
+            print("Unrecognized Macro Action command")
         }
-        device.currentValue = NSNumber(value: Int(setDeviceValue))
-        print("old value \(deviceCurrentValue), new value \(setDeviceValue)")
-        RunnableList.sharedInstance.checkForSameDevice(
-            device: (device.objectID),
-            newCommand: NSNumber(value: setDeviceValue),
-            oldValue: (deviceCurrentValue)
-        )
         
+        device.currentValue = NSNumber(value: Int(setDeviceValue))
+
         switch controlType {
-        case ControlType.Dimmer:
-           print("Dimmer")
-        case ControlType.Relay:
+        case ControlType.Dimmer, ControlType.Relay:
+            RunnableList.sharedInstance.checkForSameDevice(
+                device: (device.objectID),
+                newCommand: NSNumber(value: setDeviceValue),
+                oldValue: (deviceCurrentValue)
+            )
             _ = RepeatSendingHandler(byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setDeviceValue, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: skipLevel),
                 gateway: device.gateway,
                 device: device,
@@ -123,13 +132,21 @@ class MacrosViewController: PopoverVC {
                 command: NSNumber(value: setDeviceValue)
             )
         case ControlType.Climate:
-            print("Climate")
+            if Int(setDeviceValue) == 0 {
+                setDeviceValue = 0x00 //turn off
+            } else {
+                setDeviceValue = 0xFF //turn on
+            }
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: self.getByte(device.channel), status: setDeviceValue),
+                gateway: device.gateway
+            )
+            
         case ControlType.Curtain:
             print("Curtain")
         case ControlType.SaltoAccess:
             print("SaltoAccess")
         default:
-            print("did not found device control type")
+            print("Did not found predefined Device control type in Macro View Controller")
         }
         
     }

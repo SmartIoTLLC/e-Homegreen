@@ -584,6 +584,12 @@ struct MacroTypes {
     static let queue = "queue"
 }
 
+struct MacroActionCommands {
+    static let turnOff: Int = 0
+    static let turnOn: Int = 1
+    static let toggle: Int = 2
+}
+
 struct Colors {
     static let DarkGray = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1).cgColor    //   #262626
     static let MediumGray = UIColor(red: 81/255, green: 82/255, blue: 83/255, alpha: 1).cgColor
