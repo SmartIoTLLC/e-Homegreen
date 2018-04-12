@@ -192,7 +192,7 @@
         <attribute name="negative_image" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="positive_image" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="macro_actions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Macro_action" inverseName="macro" inverseEntity="Macro_action" syncable="YES"/>
+        <relationship name="macro_actions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Macro_action" inverseName="macro" inverseEntity="Macro_action" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="macros" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Macro_action" representedClassName=".Macro_action" syncable="YES">
@@ -350,7 +350,7 @@
         <element name="IBeacon" positionX="-279" positionY="-1503" width="128" height="58"/>
         <element name="Image" positionX="-252" positionY="-2043" width="128" height="90"/>
         <element name="Location" positionX="-1181" positionY="-1504" width="128" height="270"/>
-        <element name="Macro" positionX="-1379" positionY="-1896" width="128" height="193"/>
+        <element name="Macro" positionX="-1379" positionY="-1896" width="128" height="195"/>
         <element name="Macro_action" positionX="-1467" positionY="-1572" width="128" height="180"/>
         <element name="MenuItem" positionX="-954" positionY="-1935" width="128" height="105"/>
         <element name="PCCommand" positionX="-470" positionY="-2104" width="128" height="105"/>

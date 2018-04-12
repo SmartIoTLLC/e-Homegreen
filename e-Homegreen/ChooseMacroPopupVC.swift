@@ -159,13 +159,6 @@ class ChooseMacroPopupVC: PopoverVC {
         for oneMacro in macroListForAction {
             DatabaseMacrosController.sharedInstance.addActionToMacros(command: stateOfDevice!, control_type: (device?.controlType)!, delay: 0, deviceAddress: (device?.address)!, gatewayAddressOne: (device?.gateway.addressOne)!, gatewayAddressTwo: (device?.gateway.addressTwo)!, gatewayId: device?.gateway.gatewayId, deviceChannel: (device?.channel)!, macro: oneMacro)
         }
-       
-        
-        DatabaseMacrosController.sharedInstance.fetchMacroActionsFor(macro: macroList[0])
-        DatabaseMacrosController.sharedInstance.fetchMacroActionsFor(macro: macroList[1])
-        DatabaseMacrosController.sharedInstance.fetchMacroActionsFor(macro: macroList[2])
-
-        
         self.dismiss(animated: true, completion: nil)
     }
     

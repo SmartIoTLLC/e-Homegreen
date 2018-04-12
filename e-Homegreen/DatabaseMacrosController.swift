@@ -14,6 +14,8 @@ class DatabaseMacrosController {
     open static let sharedInstance = DatabaseMacrosController()
     
      let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
+    var screenWidth: CGFloat?
+    var screenHeight: CGFloat?
     
     func saveMacroToCD(name: String, type: String, leftImage: String, rightImage: String) -> Bool {
         if let macroEntity = NSEntityDescription.entity(forEntityName: "Macro", in: managedContext!) {
@@ -88,6 +90,16 @@ class DatabaseMacrosController {
             print("Error during fetching Macros, \(error), \(error.userInfo)")
         }
         return nil
+    }
+    
+    func removeFromCD(macroAction: Macro_action) -> Bool {
+        managedContext?.delete(macroAction)
+        return saveChanges()
+    }
+    
+    func removeFromCD(macro: Macro) -> Bool {
+        managedContext?.delete(macro)
+        return saveChanges()
     }
     
     private func saveChanges() -> Bool {

@@ -36,6 +36,7 @@ class MacrosViewController: PopoverVC {
         super.viewWillAppear(animated)
         revealViewController().delegate = self
         setupSWRevealViewController(menuButton: menuButton)
+        reloadCollectionView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -55,7 +56,12 @@ class MacrosViewController: PopoverVC {
             addNewMacroVC.macroDelegate = self as SuccessfullyAddedMacroDelegate
         }
         if let macroDetails = segue.destination as? MacroDetailsTVC {
+            let backButton = UIBarButtonItem()
+            backButton.title = "Macros"
+            navigationItem.backBarButtonItem = backButton
+            
             macroDetails.macroActions = DatabaseMacrosController.sharedInstance.fetchMacroActionsFor(macro: macroList[selectedMacroIndex])
+            macroDetails.macro = macroList[selectedMacroIndex]
         }
     }
     
