@@ -168,7 +168,69 @@ class MacrosViewController: PopoverVC {
                 gateway: device.gateway
             )
         case ControlType.Curtain:
-            print("Curtain in Macro not implemented yet")
+            
+            if Int(setDeviceValue) == 0 {
+                setDeviceValue = 0x00 //turn off
+            } else {
+                setDeviceValue = 0xFF //turn on
+            }
+            // Find the device that is the pair of this device for reley control
+            // First or second channel will always be presented (not 3 and 4), so we are looking for 3 and 4 channels
+            let allDevices = CoreDataController.sharedInstance.fetchDevicesForGateway(device.gateway)
+            var devicePair: Device? = nil
+            let deviceGroupId = device.curtainGroupID.intValue
+            
+            for deviceTemp in allDevices {
+                if deviceTemp.address == device.address {
+                    
+                    if deviceTemp.curtainGroupID == device.curtainGroupID {
+                        if deviceTemp.channel.intValue != device.channel.intValue {
+                            if deviceTemp.isCurtainModeAllowed.boolValue == true && device.isCurtainModeAllowed.boolValue == true {
+                                devicePair = deviceTemp
+                            }
+                        }
+                    }
+                }
+            }
+            if devicePair == nil { // then this is new module, which works alone
+                device.currentValue = 0xFF // We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4. And this channel needs to be ON for image to be displayed properly
+                CoreDataController.sharedInstance.saveChanges()
+                
+        
+                RunnableList.sharedInstance.checkForSameDevice(
+                    device: device.objectID,
+                    newCommand: NSNumber(value: setDeviceValue),
+                    oldValue: deviceCurrentValue
+                )
+                _ = RepeatSendingHandler(
+                    byteArray: OutgoingHandler.setCurtainStatus(
+                        address,
+                        value: setDeviceValue,
+                        groupId:  UInt8(deviceGroupId)),
+                    gateway: device.gateway,
+                    device: device,
+                    oldValue: Int(deviceCurrentValue),
+                    command: NSNumber(value: setDeviceValue)
+                )
+              
+            } else {
+                device.currentValue      = 0xFF // We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4. And this channel needs to be ON for image to be displayed properly
+                devicePair!.currentValue = 0xFF
+                CoreDataController.sharedInstance.saveChanges()
+                
+                RunnableList.sharedInstance.checkForSameDevice(
+                    device: device.objectID,
+                    newCommand: NSNumber(value: setDeviceValue),
+                    oldValue: deviceCurrentValue
+                )
+                _ = RepeatSendingHandler(
+                    byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)),
+                    gateway: device.gateway,
+                    device: device,
+                    oldValue: Int(deviceCurrentValue),
+                    command: NSNumber(value: setDeviceValue)
+                )
+            }
         case ControlType.SaltoAccess:
             print("SaltoAccess in Macro not implemented yet")
         default:
@@ -218,7 +280,7 @@ extension MacrosViewController: UICollectionViewDataSource, UICollectionViewDele
             cell.startButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(startMacro(_:))))
             cell.stopButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(stopMacro(_:))))
             
-//            gradient.frame = cell.bounds
+//           gradient.frame = cell.bounds
 //            gradient.colors = [Colors.DirtyBlueColor, UIColor.blue.cgColor]
 //            gradient.cornerRadius = 12
 //            cell.layer.insertSublayer(gradient, at: 0)
