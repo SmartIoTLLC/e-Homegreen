@@ -25,6 +25,8 @@ class DevicesViewController: PopoverVC{
         refreshTimer = nil
     }
     
+    var gotRunningTimes: Bool = false
+    
     var sectionInsets = UIEdgeInsets(top: 25, left: 0, bottom: 20, right: 0)
     let reuseIdentifier = "deviceCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
@@ -82,6 +84,7 @@ class DevicesViewController: PopoverVC{
         deviceCollectionView.isUserInteractionEnabled = true
         
         getUserAndUpdateDeviceList()
+        refreshRunningTimes()
         changeFullscreenImage(fullscreenButton: fullScreenButton)
         startRefreshTimer()
     }
@@ -105,6 +108,22 @@ class DevicesViewController: PopoverVC{
     override func viewWillDisappear(_ animated: Bool) {
         removeObservers()
         stopRefreshTimer()
+    }
+    
+    fileprivate func refreshRunningTimes() {
+        if !gotRunningTimes {
+            devices.forEach { (device) in
+                switch device.controlType {
+                case ControlType.Dimmer,
+                     ControlType.Relay,
+                     ControlType.Curtain:
+                    
+                    SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(device.moduleAddress, channel: 0xFF), gateway: device.gateway)
+                default: break
+                }
+            }
+            gotRunningTimes = true
+        }
     }
     
     override func nameAndId(_ name : String, id:String){

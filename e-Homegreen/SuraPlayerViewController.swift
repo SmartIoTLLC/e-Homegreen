@@ -5,12 +5,11 @@
 //  Created by Vladimir Tuchek on 9/15/17.
 //  Copyright © 2017 Teodor Stevic. All rights reserved.
 //
-
 import UIKit
 import AVFoundation
 
 class SuraPlayerViewController: UIViewController {
-
+    
     let cellId = "suraCell"
     
     let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
@@ -42,12 +41,12 @@ class SuraPlayerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        addObservers()
         updateViews()
         fetchSuraInfo()
         setupSuraPlayerView()
     }
-
+    
 }
 
 // MARK: - Table View Data Source & Delegate
@@ -94,7 +93,7 @@ extension SuraPlayerViewController {
         tableView.dataSource      = self
         tableView.backgroundColor = .clear
         tableView.separatorInset  = .zero
-                
+        
         navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: .default)
         if #available(iOS 11, *) { titleView.layoutIfNeeded() }
         navigationItem.titleView  = titleView
@@ -124,29 +123,34 @@ extension SuraPlayerViewController {
         playButton.imageView?.contentMode = .scaleAspectFit
         playButton.addTarget(self, action: #selector(playSura), for: .touchUpInside)
     }
+    
+    fileprivate func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNewMediaItem(notification:)), name: .nowPlayingItemChanged, object: nil)
+    }
 }
 
 // MARK: - Logic
 extension SuraPlayerViewController {
-    func pauseSura() {
+    @objc func handleNewMediaItem(notification: Notification) {
+        if let title = notification.object as? String {
+            suraTitle.text = title
+        }
+    }
+    
+    @objc func pauseSura() {
         AudioPlayer.sharedInstance.pauseAudio()
     }
     
-    func stopSura() {
+    @objc func stopSura() {
         AudioPlayer.sharedInstance.stopAudio()
     }
     
-    func playSura() {
+    @objc func playSura() {
         guard currentSura != nil else { return }
-        suraTitle.text = currentSura.name
-        if let server = reciter.server {
-            if let id = currentSura.id {
-                let urlString = server + "/" + formattedSuraID(id: id) + ".mp3"
-                if let url = URL(string: urlString) {
-                    AudioPlayer.sharedInstance.playAudioFrom(url: url)
-                }
-            }
+        if let index = availableSurasList.index(of: currentSura) {
+            AudioPlayer.sharedInstance.loadPlaylist(suras: availableSurasList, currentIndex: index)
         }
+        suraTitle.text = currentSura.name
     }
     
     func fetchSuraInfo() {
@@ -161,7 +165,8 @@ extension SuraPlayerViewController {
                             let object = Sura(
                                 context : moc,
                                 id      : sura["id"] as! Int16,
-                                name    : sura["name"] as! String
+                                name    : sura["name"] as! String,
+                                reciter : reciter
                             )
                             surasList.append(object)
                         }
@@ -178,8 +183,8 @@ extension SuraPlayerViewController {
         if let ids = reciter?.getRecitersSurasAsInt() {
             for suraId in ids {
                 surasList.forEach({ (sura) in
-                    if Int16(sura.id!) == suraId {
-                        if let sura = surasList.filter( { Int16($0.id!) == suraId } ).first {
+                    if sura.id!.int16Value == suraId {
+                        if let sura = surasList.filter( { $0.id!.int16Value == suraId } ).first {
                             availableSurasList.append(sura)
                         }
                     }

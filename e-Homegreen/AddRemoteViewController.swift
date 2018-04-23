@@ -21,6 +21,9 @@ class AddRemoteViewController: CommonXIBTransitionVC {
     
     var usedButton: CustomGradientButton!
     
+    var existingRemote: Remote?
+    var isNew: Bool = true
+    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var nameTF: EditTextField!
     @IBOutlet weak var columnsTF: EditTextField!
@@ -53,6 +56,12 @@ class AddRemoteViewController: CommonXIBTransitionVC {
     }
     @IBAction func saveButton(_ sender: CustomGradientButton) {
         saveRemoteController()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        prepareTextfields()
     }
     
     override func viewDidLoad() {
@@ -134,6 +143,36 @@ extension AddRemoteViewController {
         shapeButton.addTarget(self, action: #selector(chooseShape), for: .touchUpInside)
     }
     
+    fileprivate func prepareTextfields() {
+        if isNew {
+            nameTF.text = "Remote Controller"
+            columnsTF.set(value: "3")
+            rowsTF.set(value: "3")
+            addressOneTF.set(value: "0")
+            addressTwoTF.set(value: "0")
+            addressThreeTF.set(value: "0")
+            channelTF.set(value: "0")
+            heightTF.set(value: "60")
+            widthTF.set(value: "100")
+            topTF.set(value: "5")
+            bottomTF.set(value: "5")
+        } else {
+            if let remote = existingRemote {
+                nameTF.text = remote.name
+                columnsTF.set(value: "\(remote.columns!)")
+                rowsTF.set(value: "\(remote.rows!)")
+                addressOneTF.set(value: "\(remote.addressOne!)")
+                addressTwoTF.set(value: "\(remote.addressTwo!)")
+                addressThreeTF.set(value: "\(remote.addressThree!)")
+                channelTF.set(value: "\(remote.channel!)")
+                heightTF.set(value: "\(remote.buttonHeight!)")
+                widthTF.set(value: "\(remote.buttonWidth!)")
+                topTF.set(value: "\(remote.marginTop!)")
+                bottomTF.set(value: "\(remote.marginBottom!)")
+            }
+        }
+    }
+    
     func prepareButtons() {
         setButton(button: locationButton, title: filterParameter.location)
         setButton(button: levelButton, title: filterParameter.levelName)
@@ -169,7 +208,7 @@ extension AddRemoteViewController {
     }
     
     @objc fileprivate func chooseColor() {
-        showChooseButtonColorVC(color: ButtonColor.gray)
+        showChooseButtonColorOrShapeVC(masterValue: ButtonColor.gray)
     }
     
     @objc fileprivate func colorRecieved(_ notification: Notification) {
@@ -179,7 +218,7 @@ extension AddRemoteViewController {
     }
     
     @objc fileprivate func chooseShape() {
-        showChooseButtonShape(masterShape: ButtonShape.rectangle)
+        showChooseButtonColorOrShapeVC(masterValue: ButtonShape.rectangle, isForColors: false)
     }
     
     @objc fileprivate func shapeRecieved(_ notification: Notification) {
@@ -284,11 +323,19 @@ extension AddRemoteViewController {
                 rows         : Int(rows)!,
                 location     : location
             )
-            let remote = Remote(context: moc, remoteInformation: remoteInfo)
-            if selectedLevel != nil { remote.parentZoneId = selectedLevel?.id } else { remote.parentZoneId = 255 }
-            if selectedZone != nil { remote.zoneId = selectedZone?.id } else { remote.zoneId = 255 }
             
-            DatabaseRemoteController.sharedInstance.saveRemote(remote: remote, to: location)
+            if isNew {
+                let remote = Remote(context: moc, remoteInformation: remoteInfo)
+                if selectedLevel != nil { remote.parentZoneId = selectedLevel?.id } else { remote.parentZoneId = 255 }
+                if selectedZone != nil { remote.zoneId = selectedZone?.id } else { remote.zoneId = 255 }
+                
+                DatabaseRemoteController.sharedInstance.saveRemote(remote: remote, to: location)
+            } else {
+                if let remote = existingRemote {
+                    DatabaseRemoteController.sharedInstance.updateRemote(remote: remote, remoteInfo: remoteInfo)
+                }
+            }
+            
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.RefreshRemotes), object: nil)
             dismissVC()
         }
@@ -362,8 +409,10 @@ extension AddRemoteViewController: UITextFieldDelegate {
 }
 
 extension UIViewController {
-    func showAddRemoteVC(filter: FilterItem, location: Location) {
+    func showAddRemoteVC(filter: FilterItem, location: Location, remote: Remote? = nil) {
         let vc = AddRemoteViewController()
+        if remote == nil { vc.isNew = true } else { vc.isNew = false }
+        vc.existingRemote  = remote
         vc.filterParameter = filter
         vc.location        = location
         self.present(vc, animated: true, completion: nil)

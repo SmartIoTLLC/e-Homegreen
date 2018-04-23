@@ -102,6 +102,7 @@ class Device: NSManagedObject {
             deviceImage.device = self
             deviceImage.text = defaultDeviceImage.text
         }
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(moduleAddress, channel: 0xFF), gateway: gateway)
     }
     
     // Used only for creating SaltoAccess Device
@@ -164,6 +165,7 @@ class Device: NSManagedObject {
             deviceImage.device = self
             deviceImage.text = defaultDeviceImage.text
         }
+        SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(moduleAddress, channel: 0xFF), gateway: gateway)
     }
     
     func resetImages(_ context:NSManagedObjectContext) {

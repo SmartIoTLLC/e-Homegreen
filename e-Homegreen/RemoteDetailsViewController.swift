@@ -20,6 +20,8 @@ class RemoteDetailsViewController: UIViewController {
     var marginBottom: CGFloat!
     var buttonWidth : CGFloat!
     
+    var filterParameter: FilterItem!
+    
     var sectionInsets = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
     var sectionInsetsDict: [Int: UIEdgeInsets] = [:]
 
@@ -45,6 +47,7 @@ class RemoteDetailsViewController: UIViewController {
     @IBOutlet weak var remoteBackground: UIView!
     @IBOutlet weak var remoteHeader: UIView!
     @IBOutlet weak var remoteFooter: UIView!
+    @IBOutlet weak var remoteBottomLabel: UILabel!
     
     @IBOutlet weak var remoteHeightConstraint: NSLayoutConstraint!
     
@@ -85,8 +88,16 @@ class RemoteDetailsViewController: UIViewController {
     
 }
 
+
+
 // MARK: - View setup & Logic
 extension RemoteDetailsViewController {
+    
+    @objc fileprivate func goToEditRemote() {
+        if let _ = DatabaseUserController.shared.loggedUserOrAdmin() {
+            showAddRemoteVC(filter: filterParameter, location: remote.location!, remote: remote)
+        } else { view.makeToast(message: "No user database selected.") }
+    }
     
     fileprivate func setupViews() {
         buttonsCollectionView.register(UINib(nibName: String(describing: ButtonCell.self), bundle: nil), forCellWithReuseIdentifier: cellId)
@@ -124,6 +135,11 @@ extension RemoteDetailsViewController {
         buttonsCollectionView.backgroundColor   = Colors.AndroidGrayColor
         buttonsCollectionView.layer.borderWidth = 2
         buttonsCollectionView.layer.borderColor = Colors.DarkGray
+        
+        remoteBottomLabel.isUserInteractionEnabled = true
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(goToEditRemote))
+        longPress.minimumPressDuration = 0.5
+        remoteBottomLabel.addGestureRecognizer(longPress)
         
         calculateRemoteHeight(remote: remote)
     }
@@ -220,6 +236,7 @@ extension RemoteDetailsViewController {
     @objc fileprivate func refreshRemote() {
         loadButtons()
         calculateRemoteHeight(remote: remote)
+        remoteTitleLabel.text = remote.name
         buttonsCollectionView.reloadData()
     }
  
@@ -236,6 +253,7 @@ extension RemoteDetailsViewController {
     fileprivate func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(signalRedIndicator), name: Notification.Name(rawValue: NotificationKey.SendRemoteCommand), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(refreshRemote), name: .ButtonUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshRemote), name: Notification.Name(rawValue: NotificationKey.RefreshRemotes), object: nil)
     }
     
 }

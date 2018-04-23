@@ -17,6 +17,21 @@ enum ReturnedValueFromAlertView {
 
 extension UIViewController {
     
+    override open func remoteControlReceived(with event: UIEvent?) {
+        if AudioPlayer.sharedInstance.isActive {
+            if let event = event {
+                switch event.subtype {
+                case .remoteControlPlay          : AudioPlayer.sharedInstance.play()
+                case .remoteControlPause         : AudioPlayer.sharedInstance.pauseAudio()
+                case .remoteControlStop          : AudioPlayer.sharedInstance.stopAudio()
+                case .remoteControlNextTrack     : AudioPlayer.sharedInstance.playNext()
+                case .remoteControlPreviousTrack : AudioPlayer.sharedInstance.playPrevious()
+                default: break
+                }
+            }
+        }
+    }
+    
     var defaults: Foundation.UserDefaults { get { return .standard } }
 
     func sendFilterParametar(_ filterParametar:FilterItem){

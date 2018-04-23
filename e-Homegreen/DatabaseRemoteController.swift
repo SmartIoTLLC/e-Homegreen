@@ -109,6 +109,24 @@ public class DatabaseRemoteController: NSObject {
 
     }
     
+    func updateRemote(remote: Remote, remoteInfo: RemoteInformation) {
+        remote.addressOne   = NSNumber(value: remoteInfo.addressOne)
+        remote.addressTwo   = NSNumber(value: remoteInfo.addressTwo)
+        remote.addressThree = NSNumber(value: remoteInfo.addressThree)
+        remote.buttonColor  = remoteInfo.buttonColor
+        remote.buttonShape  = remoteInfo.buttonShape
+        remote.buttonWidth  = NSNumber(value: remoteInfo.buttonWidth)
+        remote.buttonHeight = NSNumber(value: remoteInfo.buttonHeight)
+        remote.channel      = NSNumber(value: remoteInfo.channel)
+        remote.columns      = NSNumber(value: remoteInfo.columns)
+        remote.marginBottom = NSNumber(value: remoteInfo.marginBottom)
+        remote.marginTop    = NSNumber(value: remoteInfo.marginTop)
+        remote.name         = remoteInfo.name
+        remote.rows         = NSNumber(value: remoteInfo.rows)
+        
+        saveManagedContext()
+    }
+    
     func deleteRemote(remote: Remote, from location: Location) {
         location.removeFromRemotes(remote)
         saveManagedContext()

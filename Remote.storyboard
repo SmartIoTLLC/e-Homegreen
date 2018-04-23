@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="OFc-pz-4je">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="OFc-pz-4je">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -222,11 +222,11 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pJg-kw-4vi">
                                                 <rect key="frame" x="8" y="152" width="327" height="60"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="e-Home Controls" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v61-0j-Umn">
-                                                        <rect key="frame" x="97" y="15" width="132" height="30"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Smart IoT CONTROLS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v61-0j-Umn">
+                                                        <rect key="frame" x="38" y="15" width="250" height="30"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="30" id="1Li-BD-lV2"/>
-                                                            <constraint firstAttribute="width" constant="132" id="oJR-Sf-dXM"/>
+                                                            <constraint firstAttribute="width" constant="250" id="oJR-Sf-dXM"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="17"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -299,6 +299,7 @@
                         <outlet property="fullScreenButton" destination="vfE-j2-Y4T" id="UYb-Tm-DKb"/>
                         <outlet property="remoteBackground" destination="ldr-FK-mir" id="NJg-n6-ssm"/>
                         <outlet property="remoteBackgroundHeightConstraint" destination="J0P-p3-qDJ" id="qHD-0B-h0l"/>
+                        <outlet property="remoteBottomLabel" destination="v61-0j-Umn" id="zx9-o3-xV5"/>
                         <outlet property="remoteFooter" destination="pJg-kw-4vi" id="Veu-uz-JZm"/>
                         <outlet property="remoteHeader" destination="aGY-Kc-Sir" id="yeb-hl-8Wx"/>
                         <outlet property="remoteHeightConstraint" destination="HFL-nA-G8M" id="a1G-NC-XhM"/>
