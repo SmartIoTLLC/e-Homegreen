@@ -120,16 +120,14 @@ extension Notification.Name {
 extension DeviceImagesPickerVC {
     fileprivate func deleteDevices(indexPath: IndexPath) {
         // Here needs to be deleted even devices that are from gateway that is going to be deleted
-        if let moc = appDel.managedObjectContext {
-            moc.delete(deviceImages[indexPath.row])
-            deviceImages.remove(at: indexPath.row)
-            let deviceId: [String: NSManagedObjectID] = ["deviceId": device.objectID]
-            NotificationCenter.default.post(name: .deviceShouldResetImages, object: deviceId)
-            appDel.saveContext()
-            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
-            tableView.reloadData()
-        }
-        
+        let deviceId: [String:Any] = [
+            "deviceId": device.objectID,
+            "deviceImage": deviceImages[indexPath.row]
+        ]
+        deviceImages.remove(at: indexPath.row)
+        NotificationCenter.default.post(name: .deviceShouldResetImages, object: deviceId)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self)
+        tableView.reloadData()
     }
     
     func backString(_ strText: String, imageIndex:Int) {

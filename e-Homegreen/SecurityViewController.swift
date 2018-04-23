@@ -31,9 +31,7 @@ class SecurityViewController: PopoverVC {
     
     var securities:[Security] = []
     var location:[Location] = []
-    
-    let defaults = Foundation.UserDefaults.standard
-    
+        
     var scrollView = FilterPullDown()
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     var filterParametar:FilterItem!

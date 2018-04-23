@@ -38,9 +38,11 @@ class Device: NSManagedObject {
     var bateryStatus: Int = 0
     var saltoMode: Int = -1
     
-    lazy var moduleAddress:[Byte] = {
-        return [Byte(Int(self.gateway.addressOne)), Byte(Int(self.gateway.addressTwo)), Byte(Int(self.address))]
-    }()
+    var moduleAddress: [Byte] {
+        get {
+            return [Byte(gateway.addressOne), Byte(gateway.addressTwo), Byte(address)]
+        }
+    }
     
     convenience init(context: NSManagedObjectContext, specificDeviceInformation information:DeviceInformation) {
         self.init(context: context)
@@ -66,6 +68,7 @@ class Device: NSManagedObject {
         self.parentZoneId = -1
         self.categoryId = -1
         self.bateryStatus = -1
+        self.usageCounter = 0
         
         if information.isClimate {
             self.mode = "AUTO"
@@ -127,6 +130,8 @@ class Device: NSManagedObject {
         self.parentZoneId = -1
         self.categoryId = -1
         self.bateryStatus = -1
+        self.usageCounter = 0
+        
         if information.isClimate {
             self.mode = "AUTO"
             self.modeState = "Off"
@@ -171,6 +176,30 @@ class Device: NSManagedObject {
             deviceImage.state = NSNumber(value: defaultDeviceImage.state as Int)
             deviceImage.device = self
             deviceImage.text = defaultDeviceImage.text
+        }
+    }
+    
+    func resetSingleImage(image: DeviceImage) { // TODO: reset picked images
+        if let appDel = UIApplication.shared.delegate as? AppDelegate {
+            if let moc = appDel.managedObjectContext {
+                let defaultImages = DefaultDeviceImages().getNewImagesForDevice(self)
+                if let deviceImages = deviceImages?.allObjects as? [DeviceImage] {
+                    deviceImages.forEach({ (deviceImage) in
+                        if deviceImage.state == image.state {
+                            moc.delete(deviceImage)
+                        }
+                    })
+                }
+                defaultImages.forEach({ (deviceImageState) in
+                    if deviceImageState.state == Int(image.state!) {
+                        let deviceImage = DeviceImage(context: moc)
+                        deviceImage.defaultImage = deviceImageState.defaultImage
+                        deviceImage.state = NSNumber(value: deviceImageState.state as Int)
+                        deviceImage.device = self
+                        deviceImage.text = deviceImageState.text
+                    }
+                })
+            }
         }
     }
     
@@ -221,5 +250,11 @@ class Device: NSManagedObject {
         }
         
         return UIImage(named: "optionsss")!
+    }
+    
+    func increaseUsageCounterValue() {
+        if let counterValue = self.usageCounter?.intValue {
+            self.usageCounter = NSNumber(value: counterValue + 1)
+        }
     }
 }

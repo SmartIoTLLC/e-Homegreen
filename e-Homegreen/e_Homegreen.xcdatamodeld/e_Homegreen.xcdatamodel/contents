@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17D47" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14133" systemVersion="17E199" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Card" representedClassName=".Card" syncable="YES">
         <attribute name="address" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="cardId" attributeType="String" syncable="YES"/>
@@ -47,6 +47,7 @@
         <attribute name="isCurtainModeAllowed" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isDimmerModeAllowed" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isEnabled" optional="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isFavorite" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="lowSpeedVisible" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="mac" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -74,6 +75,7 @@
         <attribute name="temperature" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="temperatureVisible" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="usageCounter" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="voltage" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="zoneId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="deviceImages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DeviceImage" inverseName="device" inverseEntity="DeviceImage" syncable="YES"/>
@@ -387,7 +389,7 @@
     <elements>
         <element name="Card" positionX="-1413" positionY="-1899" width="128" height="165"/>
         <element name="Category" positionX="-1089" positionY="-1143" width="128" height="150"/>
-        <element name="Device" positionX="-974" positionY="-2091" width="128" height="930"/>
+        <element name="Device" positionX="-974" positionY="-2091" width="128" height="960"/>
         <element name="DeviceImage" positionX="-605" positionY="-1920" width="128" height="120"/>
         <element name="Event" positionX="-470" positionY="-1659" width="128" height="285"/>
         <element name="FilterParametar" positionX="-1197" positionY="-2304" width="128" height="165"/>

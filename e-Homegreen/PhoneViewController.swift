@@ -219,7 +219,7 @@ extension PhoneViewController {
         let keys: [CNKeyDescriptor] = [CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactPhoneNumbersKey as CNKeyDescriptor]
         let request = CNContactFetchRequest(keysToFetch: keys)
         
-        let predicate = CNContact.predicateForContacts(matchingName: recognizedContact)
+        let predicate = CNContact.predicateForContacts(matchingName: recognizedContact.removeUnwantedKeywords())
         
         do {
             let containerResults = try usersContactStorage.unifiedContacts(matching: predicate, keysToFetch: keys)
@@ -262,6 +262,10 @@ extension String {
         return newString
     }
     
+    fileprivate func removeUnwantedKeywords() -> String {
+        return self.replacingOccurrences(of: "call", with: "").replacingOccurrences(of: "dial", with: "").replacingOccurrences(of: "please", with: "")
+    }
+    
 }
 extension PhoneViewController {
     
@@ -275,6 +279,7 @@ extension PhoneViewController {
             UIApplication.shared.open(num, options: [:], completionHandler: nil)
         }
     }
+    
 }
 
 // MARK : - View setup

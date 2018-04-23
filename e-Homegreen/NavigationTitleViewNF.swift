@@ -69,7 +69,7 @@ class NavigationTitleViewNF: UIView {
         timeLabel.font                      = .tahoma(size: 17)
         timeLabel.textColor                 = .white
         timeLabel.adjustsFontSizeToFitWidth = true
-        timeLabel.textAlignment             = .left
+        timeLabel.textAlignment             = .right
         timeLabel.isUserInteractionEnabled  = true
         timeLabel.numberOfLines = 2
         timeLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(setClockType)))
@@ -77,13 +77,17 @@ class NavigationTitleViewNF: UIView {
         
         // Clock constraints
         let timeCenterY  = NSLayoutConstraint(item: timeLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
+        let timeHeight            = NSLayoutConstraint(item: timeLabel, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 1.0, constant: 0)
         let timeTrailing = NSLayoutConstraint(item: timeLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0)
         self.addConstraint(timeCenterY)
+        self.addConstraint(timeHeight)
         self.addConstraint(timeTrailing)
         
         // Title constraints
         let titleCenterY = NSLayoutConstraint(item: titleView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
         let titleLeading = NSLayoutConstraint(item: titleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 16)
+        let titleTrailing = NSLayoutConstraint(item: titleView, attribute: .trailing, relatedBy: .equal, toItem: timeLabel, attribute: .leading, multiplier: 1.0, constant: 0)
+        self.addConstraint(titleTrailing)
         self.addConstraint(titleCenterY)
         self.addConstraint(titleLeading)
     }

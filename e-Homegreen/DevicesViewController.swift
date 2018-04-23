@@ -260,8 +260,9 @@ class DevicesViewController: PopoverVC{
     func changeSliderValueWithTag(_ tag:Int, withOldValue:Int) {
         let device      = devices[tag]
         let controlType = device.controlType
-        let address     = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let address     = device.moduleAddress
 
+        device.increaseUsageCounterValue()
         deviceInControlMode = false
         //   Dimmer
         if controlType == ControlType.Dimmer {
@@ -321,6 +322,8 @@ class DevicesViewController: PopoverVC{
         let v2 = v*100/255
         let v3 = Int(v2)
         let v4 = UInt8(v3)
+        
+        device.increaseUsageCounterValue()
         
         if controlType == ControlType.Dimmer {
             DispatchQueue.main.async(execute: {
@@ -816,7 +819,7 @@ extension DevicesViewController {
             NSSortDescriptor(key: "gateway.name", ascending: true),
             NSSortDescriptor(key: "address", ascending: true),
             NSSortDescriptor(key: "type", ascending: true),
-            NSSortDescriptor(key: "channel", ascending: true)
+            NSSortDescriptor(key: "channel", ascending: true),
         ]
         
         var predicateArray:[NSPredicate] = [
@@ -861,6 +864,9 @@ extension DevicesViewController {
                         }
                     }
                     for device in devices { device.cellTitle = returnNameForDeviceAccordingToFilter(device) }
+                    devices.sort { (one, two) -> Bool in
+                        one.usageCounter!.intValue > two.usageCounter!.intValue
+                    }
                 }
             }
 
@@ -873,7 +879,7 @@ extension DevicesViewController {
             let tag         = button.tag
             let controlType = devices[tag].controlType
             let gateway     = devices[tag].gateway
-            let address     = [getByte(gateway.addressOne), getByte(gateway.addressTwo), getByte(devices[tag].address)]
+            let address     = devices[tag].moduleAddress
             
             // Light
             if controlType == ControlType.Dimmer {
@@ -911,10 +917,12 @@ extension DevicesViewController {
         let device      = devices[tag]
         let controlType = device.controlType
         
-        let address              = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let address              = device.moduleAddress
         var setDeviceValue:UInt8 = 0
         var skipLevel:UInt8      = 0
         let deviceCurrentValue   = device.currentValue
+        
+        device.increaseUsageCounterValue()
         
         // Light
         if controlType == ControlType.Dimmer {
@@ -981,7 +989,9 @@ extension DevicesViewController {
     func setACPowerStatus(_ gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
             let device  = devices[tag]
-            let address = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+            let address = device.moduleAddress
+            
+            device.increaseUsageCounterValue()
             
             if device.currentValue == 0x00 {
                 SendingHandler.sendCommand(
@@ -1004,7 +1014,7 @@ extension DevicesViewController {
         let tag                  = gestureRecognizer.view!.tag
         let device               = devices[tag]
         let controlType          = device.controlType
-        let address              = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let address              = device.moduleAddress
         let setDeviceValue:UInt8 = 0xFF
         let deviceCurrentValue   = Int(device.currentValue)
         let deviceGroupId        = device.curtainGroupID.intValue
@@ -1027,6 +1037,8 @@ extension DevicesViewController {
         
         if controlType == ControlType.Curtain {
             
+            device.increaseUsageCounterValue()
+            
             if devicePair == nil { // then this is new module, which works alone
                 device.currentValue = 0xFF // We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4. And this channel needs to be ON for image to be displayed properly
                 CoreDataController.sharedInstance.saveChanges()
@@ -1048,6 +1060,7 @@ extension DevicesViewController {
                     )
                 })
             } else {
+                devicePair?.increaseUsageCounterValue()
                 device.currentValue      = 0xFF // We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4. And this channel needs to be ON for image to be displayed properly
                 devicePair!.currentValue = 0xFF
                 CoreDataController.sharedInstance.saveChanges()
@@ -1077,7 +1090,7 @@ extension DevicesViewController {
         let tag                  = gestureRecognizer.view!.tag
         let device               = devices[tag]
         let controlType          = device.controlType
-        let address              = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let address              = device.moduleAddress
         let setDeviceValue:UInt8 = 0x00
         let deviceCurrentValue   = Int(device.currentValue)
         let deviceGroupId        = device.curtainGroupID.intValue
@@ -1099,6 +1112,8 @@ extension DevicesViewController {
         }
         
         if controlType == ControlType.Curtain {
+            device.increaseUsageCounterValue()
+            
             if devicePair == nil {
                 device.currentValue = 0x00
                 CoreDataController.sharedInstance.saveChanges()
@@ -1119,6 +1134,7 @@ extension DevicesViewController {
                 })
             } else {
                 guard let _ = devicePair else { print("Error, no pair device found for curtain relay control"); return }
+                devicePair?.increaseUsageCounterValue()
                 device.currentValue       = 0xFF// We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4.
                 devicePair?.currentValue  = 0
                 CoreDataController.sharedInstance.saveChanges()
@@ -1149,7 +1165,7 @@ extension DevicesViewController {
         let tag                  = gestureRecognizer.view!.tag
         let device               = devices[tag]
         let controlType          = device.controlType
-        let address              = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let address              = device.moduleAddress
         let setDeviceValue:UInt8 = 0xEF
         let deviceCurrentValue   = Int(device.currentValue)
         let deviceGroupId        = device.curtainGroupID.intValue
@@ -1171,6 +1187,7 @@ extension DevicesViewController {
         }
         
         if controlType == ControlType.Curtain {
+            device.increaseUsageCounterValue()
             
             if devicePair == nil {
                 device.currentValue = 0xEF
@@ -1194,6 +1211,7 @@ extension DevicesViewController {
             } else {
                 device.currentValue       = 0x00
                 devicePair?.currentValue  = 0x00
+                devicePair?.increaseUsageCounterValue()
                 CoreDataController.sharedInstance.saveChanges()
                 
                 DispatchQueue.main.async(execute: {
@@ -1220,10 +1238,12 @@ extension DevicesViewController {
     func lockSalto(_ gestureRecognizer:UITapGestureRecognizer) {
         let tag                   = gestureRecognizer.view!.tag
         let device                = devices[tag]
-        let address               = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let address               = device.moduleAddress
         let setDeviceValue:UInt8  = 0xFF
         let deviceCurrentValue    = Int(device.currentValue)
         device.currentValue = 0
+        device.increaseUsageCounterValue()
+        
         CoreDataController.sharedInstance.saveChanges()
         
         DispatchQueue.main.async(execute: {
@@ -1245,10 +1265,12 @@ extension DevicesViewController {
     func unlockSalto(_ gestureRecognizer:UITapGestureRecognizer) {
         let tag                   = gestureRecognizer.view!.tag
         let device                = devices[tag]
-        let address               = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let address               = device.moduleAddress
         let setDeviceValue:UInt8  = 0xFF
         let deviceCurrentValue    = Int(device.currentValue)
         device.currentValue = 1
+        device.increaseUsageCounterValue()
+        
         CoreDataController.sharedInstance.saveChanges()
         
         DispatchQueue.main.async(execute: {
@@ -1271,10 +1293,12 @@ extension DevicesViewController {
     func thirdFcnSalto(_ gestureRecognizer:UITapGestureRecognizer) {
         let tag                   = gestureRecognizer.view!.tag
         let device                = devices[tag]
-        let address               = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let address               = device.moduleAddress
         let setDeviceValue:UInt8  = 0xFF
         let deviceCurrentValue    = Int(device.currentValue)
         device.currentValue = 0
+        device.increaseUsageCounterValue()
+        
         CoreDataController.sharedInstance.saveChanges()
         
         DispatchQueue.main.async(execute: {

@@ -18,9 +18,9 @@ enum TypeOfLocationDevice:Int{
     case Ehomegreen = 0, Surveillance, Ehomeblue
     var description:String{
         switch self{
-            case .Ehomegreen   : return "e-Homegreen"
+            case .Ehomegreen   : return "Green IoT CONTROLS"
             case .Surveillance : return "IP Camera"
-            case .Ehomeblue    : return "e-Homeblue"
+            case .Ehomeblue    : return "Blue IoT CONTROLS"
         }
     }
     static let allValues = [Ehomegreen, Surveillance, Ehomeblue]

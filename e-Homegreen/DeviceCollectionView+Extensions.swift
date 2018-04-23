@@ -241,7 +241,7 @@ extension DevicesViewController {
         let gateway     = device.gateway
         let channel     = device.channel.intValue
         
-        let address = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+        let address = device.moduleAddress
         
         if controlType == ControlType.Dimmer || controlType == ControlType.Relay { SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway) }
         if controlType == ControlType.Climate { SendingHandler.sendCommand(byteArray: OutgoingHandler.getACStatus(address), gateway: gateway) }

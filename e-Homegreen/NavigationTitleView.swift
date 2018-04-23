@@ -27,6 +27,8 @@ class NavigationTitleView: UIView {
     
     let timeLabel = UILabel()
     
+    var subtitleTrailingConstraint = NSLayoutConstraint()
+    
     var clockTimer: Foundation.Timer!
 
     override init(frame: CGRect) {
@@ -83,7 +85,7 @@ class NavigationTitleView: UIView {
         timeLabel.font                      = .tahoma(size: 17)
         timeLabel.textColor                 = .white
         timeLabel.adjustsFontSizeToFitWidth = true
-        timeLabel.textAlignment             = .center
+        timeLabel.textAlignment             = .right
         timeLabel.isUserInteractionEnabled  = true
         timeLabel.numberOfLines = 2
         timeLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(setClockType)))
@@ -91,8 +93,12 @@ class NavigationTitleView: UIView {
         
         // Clock constraints
         let timeCenterY           = NSLayoutConstraint(item: timeLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
+        let timeHeight            = NSLayoutConstraint(item: timeLabel, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 1.0, constant: 0)
         let timeTrailing          = NSLayoutConstraint(item: timeLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0)
+        
+        // TODO: Time width
         self.addConstraint(timeCenterY)
+        self.addConstraint(timeHeight)
         self.addConstraint(timeTrailing)
         
         // set portrait constraint
@@ -100,7 +106,8 @@ class NavigationTitleView: UIView {
         titleLeadingConstraint    = NSLayoutConstraint(item: titleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 16)
         subtitleTopConstraint     = NSLayoutConstraint(item: subtitleView, attribute: .top, relatedBy: .equal, toItem: titleView, attribute: .bottom, multiplier: 1.0, constant: 0)
         subtitleLeadingConstraint = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 16)
-        
+        subtitleTrailingConstraint = NSLayoutConstraint(item: subtitleView, attribute: .trailing, relatedBy: .lessThanOrEqual, toItem: timeLabel, attribute: .leading, multiplier: 1.0, constant: -8)
+
         // set landscape constraint
         titleCenterConstraint = NSLayoutConstraint(item: titleView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
         
@@ -123,6 +130,7 @@ class NavigationTitleView: UIView {
         self.addConstraint(titleLeadingConstraint)
         self.addConstraint(subtitleTopConstraint)
         self.addConstraint(subtitleLeadingConstraint)
+        self.addConstraint(subtitleTrailingConstraint)
     }
     
     func setLandscapeTitle(){

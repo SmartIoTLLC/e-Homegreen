@@ -20,6 +20,7 @@ struct EditedDevice {
 class ChangeDeviceParametarsVC: PopoverVC {
     
     var deviceShouldResetImages: Bool = false
+    var imagesToReset: [DeviceImage] = []
     var button:UIButton!
     
     var level:Zone?
@@ -90,6 +91,9 @@ class ChangeDeviceParametarsVC: PopoverVC {
             if let id = object["deviceId"] {
                 if id == device.objectID {
                     deviceShouldResetImages = true
+                }
+                if let deviceImage = object["deviceImage"] as? DeviceImage {
+                    imagesToReset.append(deviceImage)
                 }
             }
         }
@@ -242,7 +246,13 @@ extension ChangeDeviceParametarsVC {
                 device.controlType      = editedDevice!.controlType
                 device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
                 CoreDataController.sharedInstance.saveChanges()
-                if deviceShouldResetImages { device.resetImages(moc) }
+                if deviceShouldResetImages {
+                    imagesToReset.forEach { (image) in
+                        device.resetSingleImage(image: image)
+                        imagesToReset = []
+                    }
+                    device.resetImages(moc)
+                }
                 deviceShouldResetImages = false
                 
                 self.delegate?.saveClicked()

@@ -17,7 +17,6 @@ class SecurityPadVC: CommonXIBTransitionVC {
     @IBOutlet weak var popUpView: UIView!
     
     var security:Security!
-    let defaults = Foundation.UserDefaults.standard
     var address:[UInt8]!
     var gateway: Gateway?
     

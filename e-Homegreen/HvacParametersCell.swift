@@ -25,6 +25,7 @@ enum SwitchTag : Int {
 class HvacParametersCell: PopoverVC {
     
     var deviceShouldResetImages: Bool = false
+    var imagesToReset: [DeviceImage] = []
     var button:UIButton!
     
     var level:Zone?
@@ -204,10 +205,13 @@ extension HvacParametersCell {
     }
     
     func handleResetImages(_ notification: Notification) {
-        if let object = notification.object as? [String: NSManagedObjectID] {
-            if let id = object["deviceId"] {
+        if let object = notification.object as? [String: Any] {
+            if let id = object["deviceId"] as? NSManagedObjectID {
                 if id == device.objectID {
                     deviceShouldResetImages = true
+                }
+                if let deviceImage = object["deviceImage"] as? DeviceImage {
+                    imagesToReset.append(deviceImage)
                 }
             }
         }
@@ -235,7 +239,12 @@ extension HvacParametersCell {
             device.medSpeedVisible    = switchMed.isOn as NSNumber?
             device.autoSpeedVisible   = switchAutoSpeed.isOn as NSNumber?
             
-            if deviceShouldResetImages { device.resetImages(appDel.managedObjectContext!) }
+            if deviceShouldResetImages {
+                imagesToReset.forEach { (image) in
+                    device.resetSingleImage(image: image)
+                }
+                imagesToReset = []
+            }
             deviceShouldResetImages = false
             
             CoreDataController.sharedInstance.saveChanges()

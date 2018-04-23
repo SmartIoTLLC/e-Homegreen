@@ -211,8 +211,12 @@ extension ButtonCell {
         setShadow()
         setButtonColor()
         switch button.buttonInternalType! {
-            case ButtonInternalType.image, ButtonInternalType.imageButton : scaleAndSetButtonImage()
-            case ButtonInternalType.regular                               : realButton.setImage(nil, for: UIControlState())
+            case ButtonInternalType.image, ButtonInternalType.imageButton :
+                scaleAndSetButtonImage()
+                realButton.setTitle(nil, for: UIControlState())
+            case ButtonInternalType.regular                               :
+                realButton.setImage(nil, for: UIControlState())
+                realButton.setTitle(button.name!, for: UIControlState())
             default                                                       : break
         }
     }

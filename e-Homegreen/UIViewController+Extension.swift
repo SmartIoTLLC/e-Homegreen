@@ -16,6 +16,8 @@ enum ReturnedValueFromAlertView {
 }
 
 extension UIViewController {
+    
+    var defaults: Foundation.UserDefaults { get { return .standard } }
 
     func sendFilterParametar(_ filterParametar:FilterItem){
         

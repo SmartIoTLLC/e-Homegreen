@@ -18,7 +18,6 @@ class SecuirtyCommandVC: UIViewController, UIGestureRecognizerDelegate {
     var appDel:AppDelegate!
     var error:NSError? = nil
     var security:Security!
-    var defaults = Foundation.UserDefaults.standard
     var isPresenting: Bool = true
     
     @IBOutlet weak var backViewHeight: NSLayoutConstraint!

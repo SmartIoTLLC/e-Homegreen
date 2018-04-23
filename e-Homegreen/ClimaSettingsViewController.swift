@@ -89,7 +89,7 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
     
     var device:Device! {
         didSet {
-            address = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+            address = device.moduleAddress
             channel = getByte(device.channel)
             gateway = device.gateway
         }
@@ -121,6 +121,8 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
     @IBAction func btnSet(_ sender: AnyObject) {
         print(hvacCommand)
         var timeInterval = 0.0
+        device.increaseUsageCounterValue()
+        
         if hvacCommand.coolTemperature != hvacCommandBefore.coolTemperature || hvacCommand.heatTemperature != hvacCommandBefore.heatTemperature {
             Foundation.Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(setACSetPoint), userInfo: nil, repeats: false)
             timeInterval += 0.3
@@ -338,6 +340,8 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
     }
     
     @IBAction func onOff(_ sender: AnyObject) {
+        device.increaseUsageCounterValue()
+        
         if device.currentValue == 0x00 {
             SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(address, channel: channel, status: 0xFF), gateway: gateway)
         }

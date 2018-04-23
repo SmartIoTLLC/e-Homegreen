@@ -12,6 +12,7 @@ import CoreData
 class DigitalInputPopup: PopoverVC {
     
     var deviceShouldResetImages: Bool = false
+    var imagesToReset: [DeviceImage] = []
     var button:UIButton!
     var level:Zone?
     var zoneSelected:Zone?
@@ -80,10 +81,14 @@ class DigitalInputPopup: PopoverVC {
     }
     
     func handleResetImages(_ notification: Notification) {
-        if let object = notification.object as? [String: NSManagedObjectID] {
-            if let id = object["deviceId"] {
+        if let object = notification.object as? [String: Any] {
+            if let id = object["deviceId"] as? NSManagedObjectID {
                 if id == device.objectID {
                     deviceShouldResetImages = true
+                }
+                
+                if let deviceImage = object["deviceImage"] as? DeviceImage {
+                    imagesToReset.append(deviceImage)
                 }
             }
         }
@@ -241,7 +246,13 @@ extension DigitalInputPopup {
             device.zoneId       = NSNumber(value: editedDevice!.zoneId as Int)
             device.categoryId   = NSNumber(value: editedDevice!.categoryId as Int)
             if editedDevice!.controlType == ControlType.Relay && device.isCurtainModeAllowed.boolValue { device.controlType = ControlType.Curtain } else { device.controlType = editedDevice!.controlType }
-            device.resetImages(appDel.managedObjectContext!)
+            if deviceShouldResetImages {
+                imagesToReset.forEach { (image) in
+                    device.resetSingleImage(image: image)
+                }
+                imagesToReset = []
+            }
+            deviceShouldResetImages = false
             device.digitalInputMode = NSNumber(value: editedDevice!.digitalInputMode as Int)
             CoreDataController.sharedInstance.saveChanges()
             self.delegate?.saveClicked()

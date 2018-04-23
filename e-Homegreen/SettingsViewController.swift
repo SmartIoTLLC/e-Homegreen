@@ -32,8 +32,22 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
     var user:User?
     var appDel:AppDelegate!
     var error:NSError? = nil
-    var hourRefresh:Int = 0
-    var minRefresh:Int = 0
+    var hourRefresh:Int {
+        get {
+            return defaults.integer(forKey: UserDefaults.RefreshDelayHours)
+        }
+        set {
+            defaults.setValue(newValue, forKey: UserDefaults.RefreshDelayHours)
+        }
+    }
+    var minRefresh:Int {
+        get {
+            return defaults.integer(forKey: UserDefaults.RefreshDelayMinutes)
+        }
+        set {
+            defaults.setValue(newValue, forKey: UserDefaults.RefreshDelayMinutes)
+        }
+    }
     var settingArray:[SettingsItem]!
     var isMore = false
     
@@ -111,17 +125,13 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
     }
     
     func btnDecHourPressed(_ sender:UIButton) {
-        if sender.tag == 1 {
-            if hourRefresh > 0 { hourRefresh -= 1 } else { hourRefresh = 23 }
-            settingsTableView.reloadData()
-            Foundation.UserDefaults.standard.setValue(hourRefresh, forKey: UserDefaults.RefreshDelayHours)
-            Foundation.UserDefaults.standard.synchronize()
-        }else{
-            if minRefresh > 0 { minRefresh -= 1 } else { minRefresh = 59 }
-            settingsTableView.reloadData()
-            Foundation.UserDefaults.standard.setValue(minRefresh, forKey: UserDefaults.RefreshDelayMinutes)
-            Foundation.UserDefaults.standard.synchronize()
+        switch sender.tag {
+            case 1:
+                if hourRefresh > 0 { hourRefresh -= 1 } else { hourRefresh = 23 }
+            default:
+                if minRefresh > 0 { minRefresh -= 1 } else { minRefresh = 59 }
         }
+        settingsTableView.reloadData()
     }
     
     func changeValue(_ sender:UISwitch) {
