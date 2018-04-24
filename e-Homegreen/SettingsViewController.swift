@@ -9,13 +9,14 @@
 import UIKit
 
 enum SettingsItem{
-    case mainMenu, interfaces, refreshStatusDelay, openLastScreen, broadcast, refreshConnection, lockProfile, resetPassword
+    case mainMenu, interfaces, refreshStatusDelay, openLastScreen, sortingDevices, broadcast, refreshConnection, lockProfile, resetPassword
     var description:String{
         switch self{
             case .mainMenu: return "Main Menu"
             case .interfaces: return "Locations"
             case .refreshStatusDelay: return "Refresh Status Delay"
-            case .openLastScreen: return "Open Last Screen"
+            case .openLastScreen: return "Open Last Screen:"
+            case .sortingDevices: return "Sorting devices:"
             case .broadcast: return "Broadcast"
             case .refreshConnection: return "Refresh Connection"
             case .lockProfile: return "Lock Profile"
@@ -73,7 +74,7 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
         titleView.setTitle("Settings")
         navigationItem.titleView = titleView
         
-        settingArray = [.mainMenu, .interfaces, .refreshStatusDelay, .openLastScreen, .broadcast]
+        settingArray = [.mainMenu, .interfaces, .refreshStatusDelay, .openLastScreen, .sortingDevices, .broadcast]
         
         if !AdminController.shared.isAdminLogged() { settingArray.append(.lockProfile) }
         
@@ -207,20 +208,17 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
 
 extension SettingsViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if settingArray[indexPath.section] == SettingsItem.mainMenu || settingArray[indexPath.section] == SettingsItem.interfaces || settingArray[indexPath.section] == SettingsItem.resetPassword {
+        switch settingArray[indexPath.section] {
             
+        case SettingsItem.mainMenu, SettingsItem.interfaces, SettingsItem.resetPassword:
             if let cell = tableView.dequeueReusableCell(withIdentifier: "settingsCell") as? SettinsTableViewCell {
                 cell.setCell(settingsArray: settingArray, indexPath: indexPath)
                 cell.settingsButton.addTarget(self, action: #selector(didTouchSettingButton(_:)), for: .touchUpInside)
-
+                
                 return cell
             }
-            return UITableViewCell()
-            
-        } else if settingArray[indexPath.section] == SettingsItem.refreshStatusDelay {
-            
+        case SettingsItem.refreshStatusDelay:
             if let cell = tableView.dequeueReusableCell(withIdentifier: "delayRefreshStatus") as? SettingsRefreshDelayTableViewCell {
-                
                 cell.setCell(min: minRefresh, hour: hourRefresh)
                 
                 cell.btnAddHourPressed.addTarget(self, action: #selector(btnAddHourPressed(_:)), for: .touchUpInside)
@@ -231,22 +229,19 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource{
                 return cell
             }
             
-            return UITableViewCell()
+        case SettingsItem.sortingDevices:
+            if let cell = tableView.dequeueReusableCell(withIdentifier: SortingDevicesTableViewCell.reuseIdentifier) as? SortingDevicesTableViewCell {
+                return cell
+            }
             
-        } else if settingArray[indexPath.section] == SettingsItem.openLastScreen {
-            
+        case SettingsItem.openLastScreen:
             if let cell = tableView.dequeueReusableCell(withIdentifier: "openLastScreen") as? SettingsLastScreenTableViewCell {
-                
                 cell.setCell(user: user, tag: indexPath.section)
                 cell.openLastScreen.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
                 
                 return cell
             }
-            
-            return UITableViewCell()
-            
-        } else if settingArray[indexPath.section] == SettingsItem.broadcast {
-            
+        case SettingsItem.broadcast:
             if let cell = tableView.dequeueReusableCell(withIdentifier: "idBroadcastCurrentAppTimeAndDate") as? BroadcastTimeAndDateTVC {
                 cell.setBroadcast()
                 cell.txtIp.delegate = self
@@ -255,10 +250,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource{
                 cell.txtM.delegate = self
                 return cell
             }
-            
-            return UITableViewCell()
-        } else if settingArray[indexPath.section] == SettingsItem.lockProfile {
-            
+        case SettingsItem.lockProfile:
             if let cell = tableView.dequeueReusableCell(withIdentifier: "openLastScreen") as? SettingsLastScreenTableViewCell {
                 
                 cell.setCell(settingsArray: settingArray, user: user, tag: indexPath.section)
@@ -266,13 +258,10 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource{
                 
                 return cell
             }
-            
-            return UITableViewCell()
-            
-        } else {
-            let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
-            return cell
+        default: return UITableViewCell()
         }
+        
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -393,6 +382,35 @@ class SettingsLastScreenTableViewCell: UITableViewCell {
         }
     }
     
+}
+
+// MARK: - Sorting Devices Cell
+class SortingDevicesTableViewCell: UITableViewCell {
+    
+    static let reuseIdentifier: String = "sortingDevices"
+    
+    @IBOutlet weak var sortingLabel: UIView!
+    @IBOutlet weak var sortingSwitch: UISwitch!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        setupViews()
+    }
+    
+    private func setupViews() {
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
+            sortingSwitch.isOn = user.sortDevicesByUsage!.boolValue
+        }
+        sortingSwitch.addTarget(self, action: #selector(setSortingPreferences), for: .touchUpInside)
+    }
+    
+    @objc private func setSortingPreferences() {
+        if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
+            user.sortDevicesByUsage = NSNumber(value: !user.sortDevicesByUsage!.boolValue)
+            sortingSwitch.isOn = user.sortDevicesByUsage!.boolValue
+            CoreDataController.sharedInstance.saveChanges()
+        }
+    }
 }
 
 class BroadcastTimeAndDateTVC: UITableViewCell, UITextFieldDelegate {

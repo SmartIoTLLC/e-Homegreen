@@ -949,113 +949,60 @@ extension DevicesViewController {
     }
     
     // CLIMATE
-    func setACPowerStatus(_ gesture:UIGestureRecognizer) {
+    @objc func setACPowerStatus(_ gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
             let device  = devices[tag]
-            let address = device.moduleAddress
+            var command: Byte!
+            
+            switch device.currentValue {
+            case 0x00 : command = 0xFF
+            case 0xFF : command = 0x00
+            default   : break
+            }
             
             device.increaseUsageCounterValue()
-            
-            if device.currentValue == 0x00 {
-                SendingHandler.sendCommand(
-                    byteArray: OutgoingHandler.setACStatus(address, channel: getByte(device.channel), status: 0xFF),
-                    gateway: device.gateway
-                )
-                
-            }
-            if device.currentValue == 0xFF {
-                SendingHandler.sendCommand(
-                    byteArray: OutgoingHandler.setACStatus(address, channel: getByte(device.channel), status: 0x00),
-                    gateway: device.gateway
-                )
-            }
+            SendingHandler.sendCommand(byteArray: OutgoingHandler.setACStatus(device.moduleAddress, channel: getByte(device.channel), status: command), gateway: device.gateway)
         }
     }
     
     // CURTAINS
-    func openCurtain(_ gestureRecognizer:UITapGestureRecognizer){
-        let tag                  = gestureRecognizer.view!.tag
-        let device               = devices[tag]
-        let controlType          = device.controlType
-        let address              = device.moduleAddress
-        let setDeviceValue:UInt8 = 0xFF
-        let deviceCurrentValue   = Int(device.currentValue)
-        let deviceGroupId        = device.curtainGroupID.intValue
-        
-        // Find the device that is the pair of this device for reley control
-        // First or second channel will always be presented (not 3 and 4), so we are looking for 3 and 4 channels
-        let allDevices = CoreDataController.sharedInstance.fetchDevicesForGateway(device.gateway)
-        var devicePair: Device? = nil
-        for deviceTemp in allDevices {
-            if deviceTemp.address == devices[tag].address {
-                if deviceTemp.curtainGroupID == device.curtainGroupID {
-                    if deviceTemp.channel.intValue != device.channel.intValue {
-                        if deviceTemp.isCurtainModeAllowed.boolValue == true && device.isCurtainModeAllowed.boolValue == true {
-                            devicePair = deviceTemp
-                        }
-                    }
-                }
-            }
-        }
-        
-        if controlType == ControlType.Curtain {
-            
-            device.increaseUsageCounterValue()
-            
-            if devicePair == nil { // then this is new module, which works alone
-                device.currentValue = 0xFF // We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4. And this channel needs to be ON for image to be displayed properly
-                CoreDataController.sharedInstance.saveChanges()
-                
-                DispatchQueue.main.async(execute: {
-                    RunnableList.sharedInstance.checkForSameDevice(
-                        device: device.objectID,
-                        newCommand: NSNumber(value: setDeviceValue),
-                        oldValue: NSNumber(value: deviceCurrentValue)
-                    )
-                    _ = RepeatSendingHandler(
-                        byteArray: OutgoingHandler.setCurtainStatus(
-                            address,
-                            value: setDeviceValue,
-                            groupId:  UInt8(deviceGroupId)),
-                        gateway: device.gateway,
-                        device: device, oldValue: deviceCurrentValue,
-                        command: NSNumber(value: setDeviceValue)
-                    )
-                })
-            } else {
-                devicePair?.increaseUsageCounterValue()
-                device.currentValue      = 0xFF // We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4. And this channel needs to be ON for image to be displayed properly
-                devicePair!.currentValue = 0xFF
-                CoreDataController.sharedInstance.saveChanges()
-                
-                DispatchQueue.main.async(execute: {
-                    RunnableList.sharedInstance.checkForSameDevice(
-                        device: device.objectID,
-                        newCommand: NSNumber(value: setDeviceValue),
-                        oldValue: NSNumber(value: deviceCurrentValue)
-                    )
-                    _ = RepeatSendingHandler(
-                        byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)),
-                        gateway: device.gateway,
-                        device: device,
-                        oldValue: deviceCurrentValue,
-                        command: NSNumber(value: setDeviceValue)
-                    )
-                })
-            }
-            
-        }
-        
-        updateCells()
+    @objc func openCurtain(_ gestureRecognizer:UITapGestureRecognizer){
+        moveCurtain(command: .open, gestureRecognizer: gestureRecognizer)
+    }
+    @objc func closeCurtain(_ gestureRecognizer:UITapGestureRecognizer) {
+        moveCurtain(command: .close, gestureRecognizer: gestureRecognizer)
+    }
+    @objc func stopCurtain(_ gestureRecognizer:UITapGestureRecognizer) {
+        moveCurtain(command: .stop, gestureRecognizer: gestureRecognizer)
     }
     
-    func closeCurtain(_ gestureRecognizer:UITapGestureRecognizer) {
+    private enum CurtainCommand {
+        case close
+        case open
+        case stop
+    }
+    
+    private func moveCurtain(command: CurtainCommand, gestureRecognizer: UITapGestureRecognizer) {
+        var commandValue: Byte!
+        var commandsForPair: [Byte]
+        switch command {
+        case .open:
+            commandValue = 0xFF
+            commandsForPair = [0xFF, 0xFF]
+        case .close:
+            commandValue = 0x00
+            commandsForPair = [0xFF, 0x00]
+        case .stop:
+            commandValue = 0xEF
+            commandsForPair = [0x00, 0x00]
+        }
+        
         let tag                  = gestureRecognizer.view!.tag
         let device               = devices[tag]
         let controlType          = device.controlType
         let address              = device.moduleAddress
-        let setDeviceValue:UInt8 = 0x00
-        let deviceCurrentValue   = Int(device.currentValue)
+        let setDeviceValue:UInt8 = commandValue
+        let deviceCurrentValue   = device.currentValue.intValue
         let deviceGroupId        = device.curtainGroupID.intValue
         
         // Find the device that is the pair of this device for reley control
@@ -1078,82 +1025,7 @@ extension DevicesViewController {
             device.increaseUsageCounterValue()
             
             if devicePair == nil {
-                device.currentValue = 0x00
-                CoreDataController.sharedInstance.saveChanges()
-                
-                DispatchQueue.main.async(execute: {
-                    RunnableList.sharedInstance.checkForSameDevice(
-                        device: device.objectID,
-                        newCommand: NSNumber(value: setDeviceValue),
-                        oldValue: NSNumber(value: deviceCurrentValue)
-                    )
-                    _ = RepeatSendingHandler(
-                        byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)),
-                        gateway: device.gateway,
-                        device: device,
-                        oldValue: deviceCurrentValue,
-                        command: NSNumber(value: setDeviceValue)
-                    ) // vratiti na deviceCurrentValue ovo poslednje
-                })
-            } else {
-                guard let _ = devicePair else { print("Error, no pair device found for curtain relay control"); return }
-                devicePair?.increaseUsageCounterValue()
-                device.currentValue       = 0xFF// We need to set this to 255 because we will always display Channel1 and 2 in devices. Not 3 or 4.
-                devicePair?.currentValue  = 0
-                CoreDataController.sharedInstance.saveChanges()
-                
-                DispatchQueue.main.async(execute: {
-                    RunnableList.sharedInstance.checkForSameDevice(
-                        device: device.objectID,
-                        newCommand: NSNumber(value: setDeviceValue),
-                        oldValue: NSNumber(value: deviceCurrentValue)
-                    )
-                    _ = RepeatSendingHandler(
-                        byteArray: OutgoingHandler.setCurtainStatus(address, value: setDeviceValue, groupId:  UInt8(deviceGroupId)),
-                        gateway: device.gateway,
-                        device: device,
-                        oldValue: deviceCurrentValue,
-                        command: NSNumber(value: setDeviceValue)
-                    ) // vratiti na deviceCurrentValue ovo poslednje
-                })
-            }
-        }
-        
-        
-        
-        updateCells()
-    }
-    
-    func stopCurtain(_ gestureRecognizer:UITapGestureRecognizer) {
-        let tag                  = gestureRecognizer.view!.tag
-        let device               = devices[tag]
-        let controlType          = device.controlType
-        let address              = device.moduleAddress
-        let setDeviceValue:UInt8 = 0xEF
-        let deviceCurrentValue   = Int(device.currentValue)
-        let deviceGroupId        = device.curtainGroupID.intValue
-        
-        // Find the device that is the pair of this device for reley control
-        // First or second channel will always be presented (not 3 and 4), so we are looking for 3 and 4 channels
-        let allDevices = CoreDataController.sharedInstance.fetchDevicesForGateway(device.gateway)
-        var devicePair: Device? = nil
-        for deviceTemp in allDevices {
-            if deviceTemp.address == device.address {
-                if deviceTemp.curtainGroupID == device.curtainGroupID {
-                    if deviceTemp.channel.intValue != device.channel.intValue {
-                        if deviceTemp.isCurtainModeAllowed.boolValue == true && device.isCurtainModeAllowed.boolValue == true {
-                            devicePair = deviceTemp
-                        }
-                    }
-                }
-            }
-        }
-        
-        if controlType == ControlType.Curtain {
-            device.increaseUsageCounterValue()
-            
-            if devicePair == nil {
-                device.currentValue = 0xEF
+                device.currentValue = NSNumber(value: setDeviceValue)
                 CoreDataController.sharedInstance.saveChanges()
                 
                 DispatchQueue.main.async(execute: {
@@ -1172,9 +1044,8 @@ extension DevicesViewController {
                 })
                 
             } else {
-                device.currentValue       = 0x00
-                devicePair?.currentValue  = 0x00
-                devicePair?.increaseUsageCounterValue()
+                device.currentValue       = NSNumber(value: commandsForPair[0])
+                devicePair?.currentValue  = NSNumber(value: commandsForPair[1])
                 CoreDataController.sharedInstance.saveChanges()
                 
                 DispatchQueue.main.async(execute: {
@@ -1193,76 +1064,49 @@ extension DevicesViewController {
                 })
             }
         }
-        
         updateCells()
     }
     
     // SALTO
-    func lockSalto(_ gestureRecognizer:UITapGestureRecognizer) {
-        let tag                   = gestureRecognizer.view!.tag
-        let device                = devices[tag]
-        let address               = device.moduleAddress
-        let setDeviceValue:UInt8  = 0xFF
-        let deviceCurrentValue    = Int(device.currentValue)
-        device.currentValue = 0
-        device.increaseUsageCounterValue()
-        
-        CoreDataController.sharedInstance.saveChanges()
-        
-        DispatchQueue.main.async(execute: {
-            RunnableList.sharedInstance.checkForSameDevice(
-                device: device.objectID,
-                newCommand: NSNumber(value: setDeviceValue),
-                oldValue: NSNumber(value: deviceCurrentValue)
-            )
-            _ = RepeatSendingHandler(
-                byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: device.channel.intValue, mode: 3),
-                gateway: device.gateway,
-                device: device,
-                oldValue: deviceCurrentValue,
-                command: NSNumber(value: setDeviceValue)
-            )
-        })
-        updateCells()
+    @objc func lockSalto(_ gestureRecognizer:UITapGestureRecognizer) {
+        engageSalto(command: .lock, gestureRecognizer: gestureRecognizer)
     }
-    func unlockSalto(_ gestureRecognizer:UITapGestureRecognizer) {
-        let tag                   = gestureRecognizer.view!.tag
-        let device                = devices[tag]
-        let address               = device.moduleAddress
-        let setDeviceValue:UInt8  = 0xFF
-        let deviceCurrentValue    = Int(device.currentValue)
-        device.currentValue = 1
-        device.increaseUsageCounterValue()
-        
-        CoreDataController.sharedInstance.saveChanges()
-        
-        DispatchQueue.main.async(execute: {
-            RunnableList.sharedInstance.checkForSameDevice(
-                device: device.objectID,
-                newCommand: NSNumber(value: setDeviceValue),
-                oldValue: NSNumber(value: deviceCurrentValue)
-            )
-            _ = RepeatSendingHandler(
-                byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: device.channel.intValue, mode: 2),
-                gateway: device.gateway,
-                device: device,
-                oldValue: deviceCurrentValue,
-                command: NSNumber(value: setDeviceValue)
-            )
-        })
-        updateCells()
+    @objc func unlockSalto(_ gestureRecognizer:UITapGestureRecognizer) {
+        engageSalto(command: .unlock, gestureRecognizer: gestureRecognizer)
+    }
+    @objc func thirdFcnSalto(_ gestureRecognizer:UITapGestureRecognizer) {
+        engageSalto(command: .third, gestureRecognizer: gestureRecognizer)
     }
     
-    func thirdFcnSalto(_ gestureRecognizer:UITapGestureRecognizer) {
+    private enum SaltoCommand {
+        case lock
+        case unlock
+        case third
+    }
+    private func engageSalto(command: SaltoCommand, gestureRecognizer: UITapGestureRecognizer) {
+        var commandValue: NSNumber!
+        var mode: Int!
+        switch command {
+        case .lock:
+            commandValue = 0
+            mode = 3
+        case .unlock:
+            commandValue = 1
+            mode = 2
+        case .third:
+            commandValue = 0
+            mode = 1
+        }
+        
         let tag                   = gestureRecognizer.view!.tag
         let device                = devices[tag]
         let address               = device.moduleAddress
         let setDeviceValue:UInt8  = 0xFF
-        let deviceCurrentValue    = Int(device.currentValue)
-        device.currentValue = 0
-        device.increaseUsageCounterValue()
-        
+        let deviceCurrentValue    = device.currentValue.intValue
+        device.currentValue = commandValue
         CoreDataController.sharedInstance.saveChanges()
+        
+        device.increaseUsageCounterValue()
         
         DispatchQueue.main.async(execute: {
             RunnableList.sharedInstance.checkForSameDevice(
@@ -1271,7 +1115,7 @@ extension DevicesViewController {
                 oldValue: NSNumber(value: deviceCurrentValue)
             )
             _ = RepeatSendingHandler(
-                byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: device.channel.intValue, mode: 1),
+                byteArray: OutgoingHandler.setSaltoAccessMode(address, lockId: device.channel.intValue, mode: mode),
                 gateway: device.gateway,
                 device: device,
                 oldValue: deviceCurrentValue,

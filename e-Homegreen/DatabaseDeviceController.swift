@@ -102,7 +102,12 @@ class DatabaseDeviceController: NSObject {
             
             do {
                 if let moc = appDel.managedObjectContext {
-                    if let fetchResults = try moc.fetch(fetchRequest) as? [Device] {
+                    if var fetchResults = try moc.fetch(fetchRequest) as? [Device] {
+                        if user.sortDevicesByUsage!.boolValue {
+                            fetchResults.sort { (one, two) -> Bool in
+                                one.usageCounter!.intValue > two.usageCounter!.intValue
+                            }
+                        }
                         return fetchResults
                     }
                 }
