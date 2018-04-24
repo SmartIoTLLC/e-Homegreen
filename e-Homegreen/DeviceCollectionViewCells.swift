@@ -11,6 +11,8 @@ import Foundation
 
 //Door
 class DefaultCell: UICollectionViewCell {
+    static let reuseIdentifier: String = "defaultCell"
+    
     @IBOutlet weak var defaultLabel: UILabel!
 }
 

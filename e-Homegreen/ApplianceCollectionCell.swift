@@ -9,6 +9,9 @@
 import UIKit
 
 class ApplianceCollectionCell: UICollectionViewCell {
+    
+    static let reuseIdentifier: String = "applianceCollectionCell"
+    
     @IBOutlet weak var backView: CustomGradientBackground!
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var image: UIImageView!

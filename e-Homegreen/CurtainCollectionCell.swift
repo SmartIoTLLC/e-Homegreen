@@ -22,6 +22,9 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 //curtain
 class CurtainCollectionCell: UICollectionViewCell {
+    
+    static let reuseIdentifier: String = "curtainCollectionCell"
+    
     @IBOutlet weak var backView: CustomGradientBackground!
     @IBOutlet weak var curtainName: UILabel!
     @IBOutlet weak var curtainImage: UIImageView!

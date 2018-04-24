@@ -20,7 +20,7 @@ extension FavoriteDevicesVC: UICollectionViewDataSource {
         
         switch controlType {
         case ControlType.Dimmer : // MARK: - Device cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "deviceCollectionCell", for: indexPath) as? DeviceCollectionCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DeviceCollectionCell.reuseIdentifier, for: indexPath) as? DeviceCollectionCell {
                 
                 cell.setCell(device: device, tag: tag)
                 
@@ -53,7 +53,7 @@ extension FavoriteDevicesVC: UICollectionViewDataSource {
                 return cell
             }
         case ControlType.Curtain: // MARK: - Curtain cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "curtainCollectionCell", for: indexPath) as? CurtainCollectionCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurtainCollectionCell.reuseIdentifier, for: indexPath) as? CurtainCollectionCell {
                 cell.setCell(device: device, tag: tag)
                 
                 // If device is enabled add all interactions
@@ -73,7 +73,7 @@ extension FavoriteDevicesVC: UICollectionViewDataSource {
                 return cell
             }
         case ControlType.SaltoAccess: // MARK: Salto Access cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "saltoAccessCell", for: indexPath) as? SaltoAccessCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SaltoAccessCell.reuseIdentifier, for: indexPath) as? SaltoAccessCell {
                 cell.setCell(device: device, tag: tag)
                 
                 // If device is enabled add all interactions
@@ -91,7 +91,7 @@ extension FavoriteDevicesVC: UICollectionViewDataSource {
                 return cell
             }
         case ControlType.Relay, ControlType.DigitalOutput: // MARK: - Appliance cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "applianceCollectionCell", for: indexPath) as? ApplianceCollectionCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ApplianceCollectionCell.reuseIdentifier, for: indexPath) as? ApplianceCollectionCell {
                 cell.setCell(device: device, tag: tag)
                 
                 // If device is enabled add all interactions
@@ -115,7 +115,7 @@ extension FavoriteDevicesVC: UICollectionViewDataSource {
                 return cell
             }
         case ControlType.Climate: // MARK: - Climate cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "climateCell", for: indexPath) as? ClimateCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ClimateCell.reuseIdentifier, for: indexPath) as? ClimateCell {
                 
                 cell.setCell(device: device, tag: tag)
                 
@@ -134,7 +134,7 @@ extension FavoriteDevicesVC: UICollectionViewDataSource {
                 return cell
             }
         case ControlType.Sensor, ControlType.IntelligentSwitch, ControlType.Gateway, ControlType.DigitalInput: // MARK: - MultiSensor cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "multiSensorCell", for: indexPath) as? MultiSensorCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MultiSensorCell.reuseIdentifier, for: indexPath) as? MultiSensorCell {
                 
                 cell.setCell(device: device, tag: tag)
                 
@@ -148,7 +148,7 @@ extension FavoriteDevicesVC: UICollectionViewDataSource {
             }
             
         default:
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultCell", for: indexPath) as? DefaultCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DefaultCell.reuseIdentifier, for: indexPath) as? DefaultCell {
                 cell.defaultLabel.text = ""
                 return cell
             }

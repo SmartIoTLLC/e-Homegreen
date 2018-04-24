@@ -5,7 +5,6 @@
 //  Created by Vladimir Zivanov on 7/21/16.
 //  Copyright © 2016 Teodor Stevic. All rights reserved.
 //
-
 import UIKit
 
 class NavigationTitleView: UIView {
@@ -20,6 +19,7 @@ class NavigationTitleView: UIView {
     var titleLeadingConstraint = NSLayoutConstraint()
     var subtitleTopConstraint = NSLayoutConstraint()
     var subtitleLeadingConstraint = NSLayoutConstraint()
+    var subtitleTrailingConstraint = NSLayoutConstraint()
     
     var titleCenterConstraint = NSLayoutConstraint()
     var subtitleCenterConstraint = NSLayoutConstraint()
@@ -27,10 +27,8 @@ class NavigationTitleView: UIView {
     
     let timeLabel = UILabel()
     
-    var subtitleTrailingConstraint = NSLayoutConstraint()
-    
     var clockTimer: Foundation.Timer!
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
@@ -60,17 +58,17 @@ class NavigationTitleView: UIView {
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.amSymbol = "AM"
         dateFormatter.pmSymbol = "PM"
-        timeLabel.text = dateFormatter.string(from: Date())        
+        timeLabel.text = dateFormatter.string(from: Date())
         clockTimer     = Foundation.Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(tickTock), userInfo: nil, repeats: true)
         
-        self.translatesAutoresizingMaskIntoConstraints = true        
+        self.translatesAutoresizingMaskIntoConstraints = true
         self.backgroundColor = .clear
         
         titleView.translatesAutoresizingMaskIntoConstraints = false
         titleView.backgroundColor = .clear
         titleView.font            = .tahoma(size: 17)
         titleView.textColor       = .white
-        titleView.setContentHuggingPriority(1000, for: .horizontal)
+        titleView.setContentHuggingPriority(UILayoutPriority(1000), for: .horizontal)
         self.addSubview(titleView)
         
         subtitleView.translatesAutoresizingMaskIntoConstraints = false
@@ -85,64 +83,71 @@ class NavigationTitleView: UIView {
         timeLabel.font                      = .tahoma(size: 17)
         timeLabel.textColor                 = .white
         timeLabel.adjustsFontSizeToFitWidth = true
-        timeLabel.textAlignment             = .right
+        timeLabel.textAlignment             = .center
         timeLabel.isUserInteractionEnabled  = true
         timeLabel.numberOfLines = 2
         timeLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(setClockType)))
         self.addSubview(timeLabel)
         
-        // Clock constraints
-        let timeCenterY           = NSLayoutConstraint(item: timeLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
-        let timeHeight            = NSLayoutConstraint(item: timeLabel, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 1.0, constant: 0)
-        let timeTrailing          = NSLayoutConstraint(item: timeLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0)
-        
-        // TODO: Time width
-        self.addConstraint(timeCenterY)
-        self.addConstraint(timeHeight)
-        self.addConstraint(timeTrailing)
         
         // set portrait constraint
         titleTopConstraint        = NSLayoutConstraint(item: titleView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0)
-        titleLeadingConstraint    = NSLayoutConstraint(item: titleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 16)
+        titleLeadingConstraint    = NSLayoutConstraint(item: titleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0)
         subtitleTopConstraint     = NSLayoutConstraint(item: subtitleView, attribute: .top, relatedBy: .equal, toItem: titleView, attribute: .bottom, multiplier: 1.0, constant: 0)
-        subtitleLeadingConstraint = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 16)
-        subtitleTrailingConstraint = NSLayoutConstraint(item: subtitleView, attribute: .trailing, relatedBy: .lessThanOrEqual, toItem: timeLabel, attribute: .leading, multiplier: 1.0, constant: -8)
-
+        subtitleLeadingConstraint = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0)
+        subtitleTrailingConstraint = NSLayoutConstraint(item: subtitleView, attribute: .rightMargin, relatedBy: .equal, toItem: timeLabel, attribute: .leftMargin, multiplier: 1.0, constant: 0)
+        
         // set landscape constraint
         titleCenterConstraint = NSLayoutConstraint(item: titleView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
         
         subtitleCenterConstraint           = NSLayoutConstraint(item: subtitleView, attribute: .centerY, relatedBy: .equal, toItem: titleView, attribute: .centerY, multiplier: 1.0, constant: 0)
         subtitleLeadingConstraintLandscape = NSLayoutConstraint(item: subtitleView, attribute: .leading, relatedBy: .equal, toItem: titleView, attribute: .trailing, multiplier: 1.0, constant: 10)
         
-        self.addConstraint(NSLayoutConstraint(item: subtitleView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0))
-
+        // Clock constraints
+        let timeCenterY  = NSLayoutConstraint(item: timeLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0)
+        let timeTrailing = NSLayoutConstraint(item: timeLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0)
+        
+        self.addConstraint(timeCenterY)
+        self.addConstraint(timeTrailing)
+        
+        self.addConstraint(NSLayoutConstraint(item: subtitleView, attribute: .trailing, relatedBy: .equal, toItem: timeLabel, attribute: .leadingMargin, multiplier: 1.0, constant: -8))
+        
         setPortraitTitle()
         
     }
     
     func setPortraitTitle(){
-        self.removeConstraint(titleLeadingConstraint)
-        self.removeConstraint(titleCenterConstraint)
-        self.removeConstraint(subtitleCenterConstraint)
-        self.removeConstraint(subtitleLeadingConstraintLandscape)
+        self.removeConstraints(
+            [titleLeadingConstraint,
+             titleCenterConstraint,
+             subtitleCenterConstraint,
+             subtitleLeadingConstraintLandscape]
+        )
         
-        self.addConstraint(titleTopConstraint)
-        self.addConstraint(titleLeadingConstraint)
-        self.addConstraint(subtitleTopConstraint)
-        self.addConstraint(subtitleLeadingConstraint)
-        self.addConstraint(subtitleTrailingConstraint)
+        self.addConstraints(
+            [titleTopConstraint,
+             titleLeadingConstraint,
+             subtitleTopConstraint,
+             subtitleLeadingConstraint,
+             subtitleTrailingConstraint]
+        )
+        
     }
     
     func setLandscapeTitle(){
-        self.removeConstraint(titleLeadingConstraint)
-        self.removeConstraint(titleTopConstraint)
-        self.removeConstraint(subtitleTopConstraint)
-        self.removeConstraint(subtitleLeadingConstraint)
+        self.removeConstraints(
+            [titleLeadingConstraint,
+             titleTopConstraint,
+             subtitleTopConstraint,
+             subtitleLeadingConstraint]
+        )
+        self.addConstraints(
+            [titleCenterConstraint,
+             titleLeadingConstraint,
+             subtitleCenterConstraint,
+             subtitleLeadingConstraintLandscape]
+        )
         
-        self.addConstraint(titleCenterConstraint)
-        self.addConstraint(titleLeadingConstraint)
-        self.addConstraint(subtitleCenterConstraint)
-        self.addConstraint(subtitleLeadingConstraintLandscape)
     }
     
     func setTitleAndSubtitle(_ title:String, subtitle:String){
@@ -151,24 +156,24 @@ class NavigationTitleView: UIView {
     }
     
     func loadClockSettings() {
-        if let clockSettings = Foundation.UserDefaults.standard.value(forKey: "clockType") as? Int { clockState = ClockType(rawValue: clockSettings)! }
+        if let clockSettings = Foundation.UserDefaults.standard.value(forKey: UserDefaults.ClockType) as? Int { clockState = ClockType(rawValue: clockSettings)! }
     }
     
     func setDateFormatter() {
         switch clockState {
-            case .timeAMPM         : dateFormatter.dateFormat = "h:mm a"
-            case .dateAndTimeUpper : dateFormatter.dateFormat = "dd/MM/yyyy\n h:mm a"
-            case .justDate         : dateFormatter.dateFormat = "dd/MM/yyyy"
-            case .dateAndTimeLower : dateFormatter.dateFormat = "h:mm a\ndd/MM/yyyy"
+        case .timeAMPM         : dateFormatter.dateFormat = "h:mm a"
+        case .dateAndTimeUpper : dateFormatter.dateFormat = "dd/MM/yyyy\n h:mm a"
+        case .justDate         : dateFormatter.dateFormat = "dd/MM/yyyy"
+        case .dateAndTimeLower : dateFormatter.dateFormat = "h:mm a\ndd/MM/yyyy"
         }
     }
     
-    func setClockType() {
+    @objc func setClockType() {
         switch clockState {
-            case .timeAMPM         : saveClock(type: ClockType.dateAndTimeLower.rawValue)
-            case .dateAndTimeLower : saveClock(type: ClockType.justDate.rawValue)
-            case .justDate         : saveClock(type: ClockType.dateAndTimeUpper.rawValue)
-            case .dateAndTimeUpper : saveClock(type: ClockType.timeAMPM.rawValue)
+        case .timeAMPM         : saveClock(type: ClockType.dateAndTimeLower.rawValue)
+        case .dateAndTimeLower : saveClock(type: ClockType.justDate.rawValue)
+        case .justDate         : saveClock(type: ClockType.dateAndTimeUpper.rawValue)
+        case .dateAndTimeUpper : saveClock(type: ClockType.timeAMPM.rawValue)
         }
         setDateFormatter()
         tickTock()
@@ -176,7 +181,7 @@ class NavigationTitleView: UIView {
     
     func saveClock(type: Int) {
         clockState = ClockType(rawValue: type)!
-        Foundation.UserDefaults.standard.set(type, forKey: "clockType")
+        Foundation.UserDefaults.standard.set(type, forKey: UserDefaults.ClockType)
     }
-
+    
 }

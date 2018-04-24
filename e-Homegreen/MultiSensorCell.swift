@@ -10,6 +10,9 @@ import UIKit
 
 // Multisensor 10 in 1 and 6 in 1
 class MultiSensorCell: UICollectionViewCell {
+    
+    static let reuseIdentifier: String = "multiSensorCell"
+    
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var sensorImage: UIImageView!
     @IBOutlet weak var sensorTitle: UILabel!

@@ -60,7 +60,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         if controlType == ControlType.Dimmer {
             
             // MARK: - Device cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? DeviceCollectionCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DeviceCollectionCell.reuseIdentifier, for: indexPath) as? DeviceCollectionCell {
                 
                 cell.setCell(device: device, tag: tag)
                 
@@ -99,7 +99,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         else if controlType == ControlType.Curtain {
             
             // MARK: - Curtain cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "curtainCell", for: indexPath) as? CurtainCollectionCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurtainCollectionCell.reuseIdentifier, for: indexPath) as? CurtainCollectionCell {
                 cell.setCell(device: device, tag: tag)
                 
                 // If device is enabled add all interactions
@@ -125,7 +125,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         else if controlType == ControlType.SaltoAccess {
             
             // MARK: Salto Access cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "saltoAccessCell", for: indexPath) as? SaltoAccessCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SaltoAccessCell.reuseIdentifier, for: indexPath) as? SaltoAccessCell {
                 
                 cell.setCell(device: device, tag: tag)
                 
@@ -150,7 +150,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         else if controlType == ControlType.Relay || controlType == ControlType.DigitalOutput {
             
             // MARK: - Appliance cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "applianceCell", for: indexPath) as? ApplianceCollectionCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ApplianceCollectionCell.reuseIdentifier, for: indexPath) as? ApplianceCollectionCell {
                 cell.setCell(device: device, tag: tag)
                 
                 // If device is enabled add all interactions
@@ -180,7 +180,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         else if controlType == ControlType.Climate {
             
             // MARK: - Climate cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "climaCell", for: indexPath) as? ClimateCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ClimateCell.reuseIdentifier, for: indexPath) as? ClimateCell {
                 
                 cell.setCell(device: device, tag: tag)
                 
@@ -205,7 +205,7 @@ extension DevicesViewController: UICollectionViewDataSource {
         else if controlType == ControlType.Sensor || controlType == ControlType.IntelligentSwitch || controlType == ControlType.Gateway || controlType == ControlType.DigitalInput {
             
             // MARK: - MultiSensor cell
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "multiSensorCell", for: indexPath) as? MultiSensorCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MultiSensorCell.reuseIdentifier, for: indexPath) as? MultiSensorCell {
                 
                 cell.setCell(device: device, tag: tag)
                 
@@ -221,7 +221,7 @@ extension DevicesViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         else {
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dafaultCell", for: indexPath) as? DefaultCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DefaultCell.reuseIdentifier, for: indexPath) as? DefaultCell {
                 cell.defaultLabel.text = ""
                 return cell
             }

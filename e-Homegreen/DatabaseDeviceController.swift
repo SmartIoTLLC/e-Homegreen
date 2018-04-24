@@ -248,12 +248,12 @@ class DatabaseDeviceController: NSObject {
     func toggleFavoriteDevice(device: Device, favoriteButton: UIButton) {
         device.isFavorite = NSNumber(value: !device.isFavorite!.boolValue)
         switch device.isFavorite!.boolValue {
-        case true: favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: UIControlState())
-        case false: favoriteButton.setImage(#imageLiteral(resourceName: "unfavorite"), for: UIControlState())
+            case true: favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: UIControlState())
+            case false: favoriteButton.setImage(#imageLiteral(resourceName: "unfavorite"), for: UIControlState())
         }
         
         CoreDataController.sharedInstance.saveChanges()
-        //NotificationCenter.default.post(name: .favoriteDeviceToggled, object: nil) TODO
+        NotificationCenter.default.post(name: .favoriteDeviceToggled, object: nil)
     }
     
 }

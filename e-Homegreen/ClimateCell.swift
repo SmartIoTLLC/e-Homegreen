@@ -10,6 +10,9 @@ import UIKit
 
 //Clima
 class ClimateCell: UICollectionViewCell {
+    
+    static let reuseIdentifier: String = "climateCell"
+    
     @IBOutlet weak var backView: CustomGradientBackground!
     @IBOutlet weak var imageOnOff: UIImageView!
     @IBOutlet weak var climateName: UILabel!

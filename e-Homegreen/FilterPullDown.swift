@@ -81,6 +81,12 @@ class FilterPullDown: UIScrollView {
     deinit {
         removeObservers()
     }
+    
+    @objc fileprivate func resetTime() {
+        hoursTextField.text = "0"
+        minTextField.text = "0"
+        secundsTextField.text = "0"
+    }
 
     func commonInit(){
         
@@ -118,6 +124,7 @@ class FilterPullDown: UIScrollView {
         
         //reset default button
         resetTimeButton.setImage(UIImage(named: "exit"), for: UIControlState())
+        resetTimeButton.addTarget(self, action: #selector(resetTime), for: .touchUpInside)
         resetTimeButton.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(resetTimeButton)
         
@@ -622,23 +629,23 @@ class FilterPullDown: UIScrollView {
         
         let filterItem = FilterItem(location: "All", levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
         if let location = location {
-            filterItem.location = location.name!
+            if let locationName = location.name { filterItem.location = locationName }
             filterItem.locationObjectId = location.objectID.uriRepresentation().absoluteString
         }
         if let category = category{
-            filterItem.categoryId = category.id!.intValue
-            filterItem.categoryName = category.name!
+            if let categoryId = category.id?.intValue { filterItem.categoryId = categoryId }
+            if let categoryName = category.name { filterItem.categoryName = categoryName }
             filterItem.categoryObjectId = category.objectID.uriRepresentation().absoluteString
         }
         if let level = level {
-            filterItem.levelId = level.id!.intValue
-            filterItem.levelName = level.name!
+            if let levelId = level.id?.intValue { filterItem.levelId = levelId }
+            if let levelName = level.name { filterItem.levelName = levelName }
             filterItem.levelObjectId = level.objectID.uriRepresentation().absoluteString
         }
 
         if let zone = zoneSelected {
-            filterItem.zoneId = zone.id!.intValue
-            filterItem.zoneName = zone.name!
+            if let zoneId = zone.id?.intValue { filterItem.zoneId = zoneId }
+            if let zoneName = zone.name { filterItem.zoneName = zoneName }
             filterItem.zoneObjectId = zone.objectID.uriRepresentation().absoluteString
         }
         
@@ -670,21 +677,21 @@ class FilterPullDown: UIScrollView {
         filterItem.locationObjectId = location.objectID.uriRepresentation().absoluteString
         
         if let category = category {
-            filterItem.categoryId = category.id!.intValue
-            filterItem.categoryName = category.name!
+            if let categoryId = category.id?.intValue { filterItem.categoryId = categoryId }
+            if let categoryName = category.name { filterItem.categoryName = categoryName }
             filterItem.categoryObjectId = category.objectID.uriRepresentation().absoluteString
         }
         
         guard let level = level else { filterDelegate?.filterParametars(filterItem); return }
         
-        filterItem.levelId = level.id!.intValue
-        filterItem.levelName = level.name!        
+        if let levelId = level.id?.intValue { filterItem.levelId = levelId }
+        if let levelName = level.name { filterItem.levelName = levelName }
         filterItem.levelObjectId = level.objectID.uriRepresentation().absoluteString
         
         guard let zone = zoneSelected else { filterDelegate?.filterParametars(filterItem); return }
         
-        filterItem.zoneId = zone.id!.intValue
-        filterItem.zoneName = zone.name!
+        if let zoneId = zone.id?.intValue { filterItem.zoneId = zoneId }
+        if let zoneName = zone.name { filterItem.zoneName = zoneName }
         filterItem.zoneObjectId = zone.objectID.uriRepresentation().absoluteString
         filterDelegate?.filterParametars(filterItem)
     }

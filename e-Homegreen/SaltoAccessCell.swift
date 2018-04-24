@@ -9,6 +9,9 @@
 import Foundation
 
 class SaltoAccessCell: UICollectionViewCell {
+    
+    static let reuseIdentifier: String = "saltoAccessCell"
+    
     @IBOutlet weak var backView: CustomGradientBackground!
     @IBOutlet weak var saltoName: UILabel!
     @IBOutlet weak var saltoImage: UIImageView!

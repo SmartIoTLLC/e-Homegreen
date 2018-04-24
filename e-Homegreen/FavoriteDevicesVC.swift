@@ -591,13 +591,13 @@ extension FavoriteDevicesVC {
 // MARK: - Setup views
 extension FavoriteDevicesVC {
     fileprivate func registerDeviceCells() {
-        deviceCollectionView.register(UINib(nibName: String(describing: DeviceCollectionCell.self), bundle: nil), forCellWithReuseIdentifier: "deviceCollectionCell")
-        deviceCollectionView.register(UINib(nibName: String(describing: ApplianceCollectionCell.self), bundle: nil), forCellWithReuseIdentifier: "applianceCollectionCell")
-        deviceCollectionView.register(UINib(nibName: String(describing: CurtainCollectionCell.self), bundle: nil), forCellWithReuseIdentifier: "curtainCollectionCell")
-        deviceCollectionView.register(UINib(nibName: String(describing: ClimateCell.self), bundle: nil), forCellWithReuseIdentifier: "climateCell")
-        deviceCollectionView.register(UINib(nibName: String(describing: MultiSensorCell.self), bundle: nil), forCellWithReuseIdentifier: "multiSensorCell")
-        deviceCollectionView.register(UINib(nibName: String(describing: SaltoAccessCell.self), bundle: nil), forCellWithReuseIdentifier: "saltoAccessCell")
-        deviceCollectionView.register(UINib(nibName: String(describing: DefaultCell.self), bundle: nil), forCellWithReuseIdentifier: "defaultCell")
+//        deviceCollectionView.register(UINib(nibName: String(describing: DeviceCollectionCell.self), bundle: nil), forCellWithReuseIdentifier: DeviceCollectionCell.reuseIdentifier)
+//        deviceCollectionView.register(UINib(nibName: String(describing: ApplianceCollectionCell.self), bundle: nil), forCellWithReuseIdentifier: ApplianceCollectionCell.reuseIdentifier)
+//        deviceCollectionView.register(UINib(nibName: String(describing: CurtainCollectionCell.self), bundle: nil), forCellWithReuseIdentifier: CurtainCollectionCell.reuseIdentifier)
+//        deviceCollectionView.register(UINib(nibName: String(describing: ClimateCell.self), bundle: nil), forCellWithReuseIdentifier: ClimateCell.reuseIdentifier)
+//        deviceCollectionView.register(UINib(nibName: String(describing: MultiSensorCell.self), bundle: nil), forCellWithReuseIdentifier: MultiSensorCell.reuseIdentifier)
+//        deviceCollectionView.register(UINib(nibName: String(describing: SaltoAccessCell.self), bundle: nil), forCellWithReuseIdentifier: SaltoAccessCell.reuseIdentifier)
+//        deviceCollectionView.register(UINib(nibName: String(describing: DefaultCell.self), bundle: nil), forCellWithReuseIdentifier: DefaultCell.reuseIdentifier)
     }
     
     fileprivate func addObservers() {

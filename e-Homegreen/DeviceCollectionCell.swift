@@ -9,6 +9,9 @@
 import UIKit
 //Light
 class DeviceCollectionCell: UICollectionViewCell {
+    
+    static let reuseIdentifier: String = "deviceCollectionCell"
+    
     @IBOutlet weak var backView: CustomGradientBackground!
     
     @IBOutlet weak var typeOfLight: MarqueeLabel!

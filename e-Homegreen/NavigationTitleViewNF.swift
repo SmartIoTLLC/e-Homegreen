@@ -61,6 +61,7 @@ class NavigationTitleViewNF: UIView {
         titleView.backgroundColor = .clear
         titleView.font            = .tahoma(size: 17)
         titleView.textColor       = .white
+        titleView.adjustsFontSizeToFitWidth = true
         titleView.setContentHuggingPriority(1000, for: .horizontal)
         self.addSubview(titleView)
         

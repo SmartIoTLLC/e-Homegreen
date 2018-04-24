@@ -32,6 +32,10 @@ class DimmerParametarVC: CommonXIBTransitionVC {
     @IBOutlet weak var lblCategory: UILabel!
     @IBOutlet weak var deviceAddress: UILabel!
     @IBOutlet weak var deviceChannel: UILabel!
+    @IBOutlet weak var favoriteButton: UIButton!
+    @IBAction func favoriteButton(_ sender: UIButton) {
+        favButtonTapped()
+    }
     
     @IBOutlet weak var centerY: NSLayoutConstraint!
     
@@ -91,6 +95,12 @@ class DimmerParametarVC: CommonXIBTransitionVC {
         lblCategory.text = "\(DatabaseHandler.sharedInstance.returnCategoryWithId(Int(deviceIn.categoryId), location: location))"
         deviceAddress.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne))):\(returnThreeCharactersForByte(Int(gateway.addressTwo))):\(returnThreeCharactersForByte(Int(deviceIn.address)))"
         deviceChannel.text = "\(deviceIn.channel)"
+        
+        switch deviceIn.isFavorite!.boolValue {
+            case true: favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: UIControlState())
+            case false: favoriteButton.setImage(#imageLiteral(resourceName: "unfavorite"), for: UIControlState())
+        }
+        if let buttonImageView = favoriteButton.imageView { favoriteButton.bringSubview(toFront: buttonImageView) }
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
@@ -103,13 +113,7 @@ class DimmerParametarVC: CommonXIBTransitionVC {
     }
     
     @IBAction func btnSave(_ sender: AnyObject) {
-        if let numberOne = Int(editDelay.text!), let numberTwo = Int(editRunTime.text!), let numberThree = Int(editSkipState.text!) {
-            if numberOne <= 65534 && numberTwo <= 65534 && numberThree <= 100 {
-                getDeviceAndSave(numberOne, numberTwo:numberTwo, numberThree:numberThree)
-                self.delegate?.saveClicked()
-                self.dismiss(animated: true, completion: nil)
-            }
-        }
+        saveTapped()
     }
     
     func dismissViewController () {
@@ -140,6 +144,20 @@ class DimmerParametarVC: CommonXIBTransitionVC {
         UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
+    fileprivate func favButtonTapped() {
+        let device = devices[indexPathRow]
+        DatabaseDeviceController.shared.toggleFavoriteDevice(device: device, favoriteButton: favoriteButton)
+    }
+    
+    fileprivate func saveTapped() {
+        if let numberOne = Int(editDelay.text!), let numberTwo = Int(editRunTime.text!), let numberThree = Int(editSkipState.text!) {
+            if numberOne <= 65534 && numberTwo <= 65534 && numberThree <= 100 {
+                getDeviceAndSave(numberOne, numberTwo:numberTwo, numberThree:numberThree)
+                self.delegate?.saveClicked()
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
 }
 
 extension DimmerParametarVC: UITextFieldDelegate{

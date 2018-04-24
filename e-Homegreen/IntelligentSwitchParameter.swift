@@ -21,6 +21,12 @@ class IntelligentSwitchParameter: CommonXIBTransitionVC {
     var delegate: DevicePropertiesDelegate?
     var device:Device?
     
+    
+    @IBOutlet weak var favoriteButton: UIButton!
+    @IBAction func favoriteButton(_ sender: UIButton) {
+        favButtonTapped()
+    }
+    
     @IBOutlet weak var lblLocation: UILabel!
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblLevel: UILabel!
@@ -29,8 +35,7 @@ class IntelligentSwitchParameter: CommonXIBTransitionVC {
     @IBOutlet weak var deviceAddress: UILabel!
     @IBOutlet weak var deviceChannel: UILabel!
     
-    
-    init(){
+    init() {
         super.init(nibName: "IntelligentSwitchParameter", bundle: nil)
     }
     
@@ -44,6 +49,11 @@ class IntelligentSwitchParameter: CommonXIBTransitionVC {
         appDel = UIApplication.shared.delegate as! AppDelegate
         
         setupViews()
+    }
+    
+    fileprivate func favButtonTapped() {
+        let device = devices[indexPathRow]
+        DatabaseDeviceController.shared.toggleFavoriteDevice(device: device, favoriteButton: favoriteButton)
     }
     
     func setupViews() {
