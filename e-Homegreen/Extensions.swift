@@ -46,6 +46,12 @@ extension UICollectionViewCell {
 
 extension UIViewController {
     
+    func calculateCellSizeForFavorites(completion: () -> Void) -> CGSize {
+        var size: CGSize = CGSize()
+        CellSize.calculateCellSize(&size, screenWidth: 240 - 8 - 5)
+        return size
+    }
+    
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return paths[0]

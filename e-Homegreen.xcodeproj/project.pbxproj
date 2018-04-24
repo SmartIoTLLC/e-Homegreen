@@ -158,6 +158,9 @@
 		4E0D9EEA1FA31D240066C5CC /* DatabaseRemoteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0D9EE91FA31D240066C5CC /* DatabaseRemoteController.swift */; };
 		4E0D9EED1FA327420066C5CC /* Remote+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0D9EEB1FA327420066C5CC /* Remote+CoreDataClass.swift */; };
 		4E0D9EEE1FA327420066C5CC /* Remote+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0D9EEC1FA327420066C5CC /* Remote+CoreDataProperties.swift */; };
+		4E114C7D208F200700493722 /* NavigationViewFavDevices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E114C7C208F200700493722 /* NavigationViewFavDevices.swift */; };
+		4E114C82208F293F00493722 /* FavoriteDevicesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E114C81208F293F00493722 /* FavoriteDevicesVC.swift */; };
+		4E114C84208F2B5500493722 /* FavoriteDevicesVC+Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E114C83208F2B5500493722 /* FavoriteDevicesVC+Cells.swift */; };
 		4E17717E1F7510920002C6D6 /* Quran.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E17717C1F7510920002C6D6 /* Quran.storyboard */; };
 		4E1771811F7510E10002C6D6 /* Radio.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E17717F1F7510E10002C6D6 /* Radio.storyboard */; };
 		4E1771841F7536880002C6D6 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1771821F7536880002C6D6 /* ContactCell.swift */; };
@@ -583,6 +586,9 @@
 		4E0D9EE91FA31D240066C5CC /* DatabaseRemoteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseRemoteController.swift; sourceTree = "<group>"; };
 		4E0D9EEB1FA327420066C5CC /* Remote+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Remote+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4E0D9EEC1FA327420066C5CC /* Remote+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Remote+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4E114C7C208F200700493722 /* NavigationViewFavDevices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewFavDevices.swift; sourceTree = "<group>"; };
+		4E114C81208F293F00493722 /* FavoriteDevicesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteDevicesVC.swift; sourceTree = "<group>"; };
+		4E114C83208F2B5500493722 /* FavoriteDevicesVC+Cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteDevicesVC+Cells.swift"; sourceTree = "<group>"; };
 		4E17717D1F7510920002C6D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "e-Homegreen/Base.lproj/Quran.storyboard"; sourceTree = "<group>"; };
 		4E1771801F7510E10002C6D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "e-Homegreen/Base.lproj/Radio.storyboard"; sourceTree = "<group>"; };
 		4E1771821F7536880002C6D6 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
@@ -1365,6 +1371,15 @@
 			name = "PC Control Notifications";
 			sourceTree = "<group>";
 		};
+		4E114C80208F292A00493722 /* FavoriteDevices */ = {
+			isa = PBXGroup;
+			children = (
+				4E114C81208F293F00493722 /* FavoriteDevicesVC.swift */,
+				4E114C83208F2B5500493722 /* FavoriteDevicesVC+Cells.swift */,
+			);
+			name = FavoriteDevices;
+			sourceTree = "<group>";
+		};
 		4E1961371FD5351200F48272 /* Remote Button */ = {
 			isa = PBXGroup;
 			children = (
@@ -1564,6 +1579,7 @@
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				4E114C80208F292A00493722 /* FavoriteDevices */,
 				223690C51CAD00C00037B54A /* Login */,
 				2232922C1CABE48E0001422B /* PullDown */,
 				223292291CABD3280001422B /* Energy */,
@@ -1896,6 +1912,7 @@
 				E76B57681BBD1EE400A70F69 /* CustomGradientBackground.swift */,
 				22F2C9E41D41058A008A04DE /* NavigationTitleView.swift */,
 				4E8515441FE00EC70017AA6D /* NavigationTitleViewNF.swift */,
+				4E114C7C208F200700493722 /* NavigationViewFavDevices.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -2457,6 +2474,7 @@
 				2238789B1C916748001357E0 /* Device_AppCell.swift in Sources */,
 				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
 				49C059721D91398F0061A544 /* FlagsCell.swift in Sources */,
+				4E114C84208F2B5500493722 /* FavoriteDevicesVC+Cells.swift in Sources */,
 				49C059641D9136E50061A544 /* PopoverVC.swift in Sources */,
 				73EBE28C1C1043990095F372 /* DeviceCollectionViewCells.swift in Sources */,
 				223BAD471D3E5395003E9365 /* FilterController.swift in Sources */,
@@ -2477,6 +2495,7 @@
 				22FD29911CBBC9D100BCE823 /* SequencesCollectionViewCell.swift in Sources */,
 				734E35781C8239990096E043 /* ScanFunction.swift in Sources */,
 				223362911CA2E4EC006C80C4 /* AddUserXIB.swift in Sources */,
+				4E114C7D208F200700493722 /* NavigationViewFavDevices.swift in Sources */,
 				E79FD4EC1BCE43B600CA17DB /* ChatBubble.swift in Sources */,
 				4EC2E1421F7E439700DA494B /* RemoteDetailsViewController.swift in Sources */,
 				225F59841D74402F00156BCD /* CommonXIBTransitionVC.swift in Sources */,
@@ -2677,6 +2696,7 @@
 				E7F57B0F1BA847F8006B0D71 /* ScanEventsViewController.swift in Sources */,
 				73331C181CA029DF009BA1DE /* FilterStruct.swift in Sources */,
 				49C0596A1D9138460061A544 /* SequencesCell.swift in Sources */,
+				4E114C82208F293F00493722 /* FavoriteDevicesVC.swift in Sources */,
 				E75F41671B662ED1005080F1 /* ScanViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

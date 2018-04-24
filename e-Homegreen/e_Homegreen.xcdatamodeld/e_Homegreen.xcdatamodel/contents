@@ -369,6 +369,8 @@
         <attribute name="lastScreenId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="openLastScreen" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sortDevicesByUsage" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="useDefaultFilterForAllTabs" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="filters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FilterParametar" inverseName="user" inverseEntity="FilterParametar" syncable="YES"/>
         <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="user" inverseEntity="Image" syncable="YES"/>
@@ -411,7 +413,7 @@
         <element name="Sura" positionX="-1845" positionY="-2178" width="128" height="88"/>
         <element name="Surveillance" positionX="-1503" positionY="-999" width="128" height="480"/>
         <element name="Timer" positionX="-1712" positionY="-1638" width="128" height="300"/>
-        <element name="User" positionX="-1422" positionY="-2322" width="128" height="225"/>
+        <element name="User" positionX="-1422" positionY="-2322" width="128" height="255"/>
         <element name="Zone" positionX="-1242" positionY="-765" width="128" height="180"/>
     </elements>
 </model>

@@ -61,6 +61,7 @@ class CreateUserFromJSONController: NSObject {
                         if let locations = json["locations"] as? [JSONDictionary] { createLocationFromJSON(locations, user: user) }
                         if let filters = json["filters"] as? [JSONDictionary] { createFiltersFromJSON(filters, user: user) }
                         if let images = json["images"] as? [JSONDictionary] { createImagesFromJSON(images, user: user) }
+                        if let sortDevices = json["sortDevicesByUsage"] as? Bool { user.sortDevicesByUsage = sortDevices as NSNumber }
                     }
                 }
                 CoreDataController.sharedInstance.saveChanges()

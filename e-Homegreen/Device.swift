@@ -69,6 +69,7 @@ class Device: NSManagedObject {
         self.categoryId = -1
         self.bateryStatus = -1
         self.usageCounter = 0
+        self.isFavorite = false as NSNumber
         
         if information.isClimate {
             self.mode = "AUTO"
@@ -132,6 +133,7 @@ class Device: NSManagedObject {
         self.categoryId = -1
         self.bateryStatus = -1
         self.usageCounter = 0
+        self.isFavorite = false as NSNumber
         
         if information.isClimate {
             self.mode = "AUTO"

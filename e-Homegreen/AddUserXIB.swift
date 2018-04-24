@@ -134,6 +134,7 @@ class AddUserXIB: CommonXIBTransitionVC {
                     user.isLocked       = false
                     user.isSuperUser    = superUserSwitch.isOn as NSNumber
                     user.openLastScreen = false
+                    user.sortDevicesByUsage = false
                     if let customImage = customImage { user.customImageId = customImage }
                     if let def  = defaultImage { user.defaultImage = def }
                     if let data = imageData {

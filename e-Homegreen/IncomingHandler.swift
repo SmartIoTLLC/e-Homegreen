@@ -1251,7 +1251,8 @@ extension IncomingHandler {
         return String(format: "%02d",number)
     }
     
-    func parseMessageAndPrint(_ byteArray: [UInt8]){
+    func parseMessageAndPrint(_ byteArray: [UInt8]) {
+        guard byteArray.count >= 9 else { print("Byte array shorter than 9"); return }
         let byteLength = byteArray.count
         let SOI        = byteArray[0]
         let LEN        = byteArray[1]

@@ -832,65 +832,9 @@ extension DevicesViewController {
     
     // GENERAL
     func updateDeviceList (_ user:User) {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
-
-        fetchRequest.sortDescriptors = [
-            NSSortDescriptor(key: "gateway.name", ascending: true),
-            NSSortDescriptor(key: "address", ascending: true),
-            NSSortDescriptor(key: "type", ascending: true),
-            NSSortDescriptor(key: "channel", ascending: true),
-        ]
-        
-        var predicateArray:[NSPredicate] = [
-            NSPredicate(format: "gateway.location.user == %@", user),
-            NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool)),
-            NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool)),
-            NSPredicate(format: "type != %@", ControlType.PC)         // Filtering out PC devices
-        ]
-        
-        // Filtering by parametars from filter
-        if filterParametar.location != "All" { predicateArray.append(NSPredicate(format: "gateway.location.name == %@", filterParametar.location)) }
-        if filterParametar.levelId != 0 && filterParametar.levelId != 255 { predicateArray.append(NSPredicate(format: "parentZoneId == %@", NSNumber(value: filterParametar.levelId as Int))) }
-        if filterParametar.zoneId != 0 && filterParametar.zoneId != 255 { predicateArray.append(NSPredicate(format: "zoneId == %@", NSNumber(value: filterParametar.zoneId as Int))) }
-        if filterParametar.categoryId != 0 && filterParametar.categoryId != 255 { predicateArray.append(NSPredicate(format: "categoryId == %@", NSNumber(value: filterParametar.categoryId as Int))) }
-        
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
-        fetchRequest.predicate = compoundPredicate
-        
-        do {
-            if let moc = appDel.managedObjectContext {
-                if let fetResults = try moc.fetch(fetchRequest) as? [Device] {
-                    devices = fetResults.map({$0})
-                    
-                    // filter Curtain devices that are, actually, one device
-                    
-                    // All curtains
-                    let curtainDevices = devices.filter({$0.controlType == ControlType.Curtain})
-                    if curtainDevices.count > 0 {
-                        for i in 0...curtainDevices.count - 1 {
-                            if i+1 < curtainDevices.count { // if next exist
-                                for j in i+1...curtainDevices.count - 1 {
-                                    if (curtainDevices[i].address == curtainDevices[j].address
-                                        && curtainDevices[i].controlType == curtainDevices[j].controlType
-                                        && curtainDevices[i].isCurtainModeAllowed.boolValue
-                                        && curtainDevices[j].isCurtainModeAllowed.boolValue
-                                        && curtainDevices[i].curtainGroupID == curtainDevices[j].curtainGroupID) {
-                                        
-                                        if let indexOfDeviceToBeNotShown = devices.index(of: curtainDevices[j]) { devices.remove(at: indexOfDeviceToBeNotShown) }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    for device in devices { device.cellTitle = returnNameForDeviceAccordingToFilter(device) }
-                    devices.sort { (one, two) -> Bool in
-                        one.usageCounter!.intValue > two.usageCounter!.intValue
-                    }
-                }
-            }
-
-            
-        } catch let error1 as NSError { error = error1; print("Unresolved error \(String(describing: error)), \(error!.userInfo)") }
+        if let devices = DatabaseDeviceController.shared.getDevicesOnDevicesScreen(filterParametar: filterParametar, user: user) {
+            self.devices = devices
+        }
     }
     
     func refreshDevice(_ sender:AnyObject) {

@@ -206,6 +206,9 @@ struct UserDefaults {
     static let IsScaningForZones = "EHGIsScanningForZones"
     static let IsScaningForCategories = "EHGIsScanningForCategories"
     static let GalleryContentOffset = "GalleryContentOffset"
+    static let ClockType = "clockType"
+    static let FavDevicesLabelType = "favDevicesLabelType"
+    
     struct Security {
         static let AlarmState = "EHGSecurityAlarmState"
         static let SecurityMode = "EHGSecuritySecurityMode"
@@ -552,6 +555,15 @@ struct NotificationKey {
     static let RefreshFilter = "kRefreshLocalParametarsNotification"
     
     static let RefreshIBeacon = "refreshIBeaconList"
+    
+
+}
+
+struct Constants {
+    struct Sizes {
+        static let statusBarHeight: CGFloat = UIApplication.shared.statusBarFrame.height
+    }
+
 }
 
 extension Notification.Name {
