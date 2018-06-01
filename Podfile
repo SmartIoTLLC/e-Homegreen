@@ -11,5 +11,5 @@ target 'e-Homegreen' do
     pod 'ALCameraViewController'
     pod 'Zip', '~> 0.6'
     pod 'AKImageCropperView'
-
+    pod 'SnapKit', '~> 3.0.0'
 end

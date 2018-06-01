@@ -172,8 +172,6 @@
 		4E1961401FD5883400F48272 /* DeleteButtonImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19613E1FD5883400F48272 /* DeleteButtonImageVC.swift */; };
 		4E1961411FD5883400F48272 /* DeleteButtonImageVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E19613F1FD5883400F48272 /* DeleteButtonImageVC.xib */; };
 		4E1AAB191F6C0A29006C59AA /* QuranViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1AAB181F6C0A29006C59AA /* QuranViewController.swift */; };
-		4E1AAB1C1F6C0A8C006C59AA /* ReciterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1AAB1A1F6C0A8C006C59AA /* ReciterCell.swift */; };
-		4E1AAB1D1F6C0A8C006C59AA /* ReciterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E1AAB1B1F6C0A8C006C59AA /* ReciterCell.xib */; };
 		4E218F491F7B92960068CA72 /* Remote.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E218F481F7B92960068CA72 /* Remote.storyboard */; };
 		4E218F4B1F7B92FC0068CA72 /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E218F4A1F7B92FC0068CA72 /* RemoteViewController.swift */; };
 		4E2DFB4A1FBDBF7D00F8AC00 /* ButtonSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DFB481FBDBF7D00F8AC00 /* ButtonSettingsVC.swift */; };
@@ -182,8 +180,12 @@
 		4E2DFB4F1FBDE1B800F8AC00 /* ChooseButtonColorVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E2DFB4D1FBDE1B800F8AC00 /* ChooseButtonColorVC.xib */; };
 		4E3CFD7C1F823C2F00E22C92 /* ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3CFD7A1F823C2F00E22C92 /* ButtonCell.swift */; };
 		4E3CFD7D1F823C2F00E22C92 /* ButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E3CFD7B1F823C2F00E22C92 /* ButtonCell.xib */; };
+		4E479B7B20BFF235007C32AE /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E479B7A20BFF235007C32AE /* GlobalConstants.swift */; };
+		4E479B7D20C00210007C32AE /* RadioStationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E479B7C20C00210007C32AE /* RadioStationTableViewCell.swift */; };
+		4E479B7F20C01C86007C32AE /* QuranTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E479B7E20C01C86007C32AE /* QuranTableViewCell.swift */; };
+		4E479B8120C01F0D007C32AE /* AudioPlayerBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E479B8020C01F0D007C32AE /* AudioPlayerBar.swift */; };
+		4E479B8320C033DD007C32AE /* RemoteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E479B8220C033DD007C32AE /* RemoteCollectionViewCell.swift */; };
 		4E5BE4011F7D42E700497335 /* EditRemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5BE3FF1F7D42E700497335 /* EditRemoteViewController.swift */; };
-		4E5BE4021F7D42E700497335 /* EditRemoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E5BE4001F7D42E700497335 /* EditRemoteViewController.xib */; };
 		4E605AA61FD81DEF00747EDC /* RealButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E605AA51FD81DEF00747EDC /* RealButton.swift */; };
 		4E62ABC81FBB1F51006D85E7 /* RemoteButton+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E62ABC61FBB1F51006D85E7 /* RemoteButton+CoreDataClass.swift */; };
 		4E62ABC91FBB1F51006D85E7 /* RemoteButton+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E62ABC71FBB1F51006D85E7 /* RemoteButton+CoreDataProperties.swift */; };
@@ -192,8 +194,6 @@
 		4E7115C21FD15E9D007DB67C /* ButtonImageEditorVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E7115C01FD15E9D007DB67C /* ButtonImageEditorVC.xib */; };
 		4E7945511F6FC64F006C3ACA /* Sura+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E79454F1F6FC64F006C3ACA /* Sura+CoreDataClass.swift */; };
 		4E7945521F6FC64F006C3ACA /* Sura+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7945501F6FC64F006C3ACA /* Sura+CoreDataProperties.swift */; };
-		4E7945551F6FCE31006C3ACA /* SuraCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7945531F6FCE31006C3ACA /* SuraCell.swift */; };
-		4E7945561F6FCE31006C3ACA /* SuraCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E7945541F6FCE31006C3ACA /* SuraCell.xib */; };
 		4E8515451FE00EC70017AA6D /* NavigationTitleViewNF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8515441FE00EC70017AA6D /* NavigationTitleViewNF.swift */; };
 		4E8C21711FCF0979004C0883 /* ButtonImagePickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8C216F1FCF0979004C0883 /* ButtonImagePickerVC.swift */; };
 		4E8C21721FCF0979004C0883 /* ButtonImagePickerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E8C21701FCF0979004C0883 /* ButtonImagePickerVC.xib */; };
@@ -206,8 +206,6 @@
 		4EC2E1421F7E439700DA494B /* RemoteDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */; };
 		4EDCE6811F6A8D740073736B /* radio_station.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EDCE6801F6A8D740073736B /* radio_station.json */; };
 		4EDCE6871F6A9BEA0073736B /* RadioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */; };
-		4EDCE68A1F6A9C090073736B /* StationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6881F6A9C090073736B /* StationCell.swift */; };
-		4EDCE68B1F6A9C090073736B /* StationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EDCE6891F6A9C090073736B /* StationCell.xib */; };
 		4EDCE6961F6AA76F0073736B /* Radio+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */; };
 		4EDCE6971F6AA76F0073736B /* Radio+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */; };
 		4EEEA4891FA0AB5600AC4AD6 /* RunnableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEEA4881FA0AB5600AC4AD6 /* RunnableList.swift */; };
@@ -600,8 +598,6 @@
 		4E19613E1FD5883400F48272 /* DeleteButtonImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteButtonImageVC.swift; sourceTree = "<group>"; };
 		4E19613F1FD5883400F48272 /* DeleteButtonImageVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeleteButtonImageVC.xib; sourceTree = "<group>"; };
 		4E1AAB181F6C0A29006C59AA /* QuranViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuranViewController.swift; sourceTree = "<group>"; };
-		4E1AAB1A1F6C0A8C006C59AA /* ReciterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReciterCell.swift; sourceTree = "<group>"; };
-		4E1AAB1B1F6C0A8C006C59AA /* ReciterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReciterCell.xib; sourceTree = "<group>"; };
 		4E218F481F7B92960068CA72 /* Remote.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Remote.storyboard; path = ../Remote.storyboard; sourceTree = "<group>"; };
 		4E218F4A1F7B92FC0068CA72 /* RemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteViewController.swift; sourceTree = "<group>"; };
 		4E2DFB481FBDBF7D00F8AC00 /* ButtonSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonSettingsVC.swift; sourceTree = "<group>"; };
@@ -610,8 +606,12 @@
 		4E2DFB4D1FBDE1B800F8AC00 /* ChooseButtonColorVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseButtonColorVC.xib; sourceTree = "<group>"; };
 		4E3CFD7A1F823C2F00E22C92 /* ButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCell.swift; sourceTree = "<group>"; };
 		4E3CFD7B1F823C2F00E22C92 /* ButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonCell.xib; sourceTree = "<group>"; };
+		4E479B7A20BFF235007C32AE /* GlobalConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
+		4E479B7C20C00210007C32AE /* RadioStationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioStationTableViewCell.swift; sourceTree = "<group>"; };
+		4E479B7E20C01C86007C32AE /* QuranTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuranTableViewCell.swift; sourceTree = "<group>"; };
+		4E479B8020C01F0D007C32AE /* AudioPlayerBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerBar.swift; sourceTree = "<group>"; };
+		4E479B8220C033DD007C32AE /* RemoteCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCollectionViewCell.swift; sourceTree = "<group>"; };
 		4E5BE3FF1F7D42E700497335 /* EditRemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditRemoteViewController.swift; sourceTree = "<group>"; };
-		4E5BE4001F7D42E700497335 /* EditRemoteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditRemoteViewController.xib; sourceTree = "<group>"; };
 		4E605AA51FD81DEF00747EDC /* RealButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealButton.swift; sourceTree = "<group>"; };
 		4E62ABC61FBB1F51006D85E7 /* RemoteButton+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteButton+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4E62ABC71FBB1F51006D85E7 /* RemoteButton+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteButton+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -620,8 +620,6 @@
 		4E7115C01FD15E9D007DB67C /* ButtonImageEditorVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonImageEditorVC.xib; sourceTree = "<group>"; };
 		4E79454F1F6FC64F006C3ACA /* Sura+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sura+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4E7945501F6FC64F006C3ACA /* Sura+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sura+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		4E7945531F6FCE31006C3ACA /* SuraCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuraCell.swift; sourceTree = "<group>"; };
-		4E7945541F6FCE31006C3ACA /* SuraCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SuraCell.xib; sourceTree = "<group>"; };
 		4E8515441FE00EC70017AA6D /* NavigationTitleViewNF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationTitleViewNF.swift; sourceTree = "<group>"; };
 		4E8C216F1FCF0979004C0883 /* ButtonImagePickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonImagePickerVC.swift; sourceTree = "<group>"; };
 		4E8C21701FCF0979004C0883 /* ButtonImagePickerVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonImagePickerVC.xib; sourceTree = "<group>"; };
@@ -634,8 +632,6 @@
 		4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDetailsViewController.swift; sourceTree = "<group>"; };
 		4EDCE6801F6A8D740073736B /* radio_station.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = radio_station.json; sourceTree = "<group>"; };
 		4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioViewController.swift; sourceTree = "<group>"; };
-		4EDCE6881F6A9C090073736B /* StationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StationCell.swift; sourceTree = "<group>"; };
-		4EDCE6891F6A9C090073736B /* StationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StationCell.xib; sourceTree = "<group>"; };
 		4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Radio+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Radio+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4EEEA4881FA0AB5600AC4AD6 /* RunnableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnableList.swift; sourceTree = "<group>"; };
@@ -1425,12 +1421,9 @@
 				4E17717C1F7510920002C6D6 /* Quran.storyboard */,
 				4EFAE02B1F6C183000C85074 /* reciters.json */,
 				4EFAE0291F6C0F5600C85074 /* sura_english.json */,
-				4E1AAB1A1F6C0A8C006C59AA /* ReciterCell.swift */,
-				4E1AAB1B1F6C0A8C006C59AA /* ReciterCell.xib */,
 				4E1AAB181F6C0A29006C59AA /* QuranViewController.swift */,
 				4EFAE02D1F6C27B700C85074 /* SuraPlayerViewController.swift */,
-				4E7945531F6FCE31006C3ACA /* SuraCell.swift */,
-				4E7945541F6FCE31006C3ACA /* SuraCell.xib */,
+				4E479B7E20C01C86007C32AE /* QuranTableViewCell.swift */,
 			);
 			name = Quran;
 			sourceTree = "<group>";
@@ -1453,7 +1446,7 @@
 				4EF41B9A1F7BE813007FBF64 /* AddRemoteViewController.swift */,
 				4EF41B9B1F7BE813007FBF64 /* AddRemoteViewController.xib */,
 				4E5BE3FF1F7D42E700497335 /* EditRemoteViewController.swift */,
-				4E5BE4001F7D42E700497335 /* EditRemoteViewController.xib */,
+				4E479B8220C033DD007C32AE /* RemoteCollectionViewCell.swift */,
 			);
 			name = "Remote collection";
 			sourceTree = "<group>";
@@ -1484,8 +1477,7 @@
 				4E17717F1F7510E10002C6D6 /* Radio.storyboard */,
 				4EDCE6801F6A8D740073736B /* radio_station.json */,
 				4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */,
-				4EDCE6881F6A9C090073736B /* StationCell.swift */,
-				4EDCE6891F6A9C090073736B /* StationCell.xib */,
+				4E479B7C20C00210007C32AE /* RadioStationTableViewCell.swift */,
 			);
 			name = Radio;
 			sourceTree = "<group>";
@@ -1572,6 +1564,7 @@
 				E7D9FFE51B3BE07900FC2C3B /* LXReorderableCollectionViewFlowLayout */,
 				22495D0B1CAA63EA0034FC94 /* SWRevealViewController */,
 				73F51A0A1C9484E4003EE702 /* Test.playground */,
+				4E479B7A20BFF235007C32AE /* GlobalConstants.swift */,
 			);
 			name = "Supporting files";
 			sourceTree = "<group>";
@@ -1913,6 +1906,7 @@
 				22F2C9E41D41058A008A04DE /* NavigationTitleView.swift */,
 				4E8515441FE00EC70017AA6D /* NavigationTitleViewNF.swift */,
 				4E114C7C208F200700493722 /* NavigationViewFavDevices.swift */,
+				4E479B8020C01F0D007C32AE /* AudioPlayerBar.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -2176,7 +2170,7 @@
 				TargetAttributes = {
 					73E206A51B2EEFFE0008B002 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = 2JR589G8SK;
+						DevelopmentTeam = 2VJ3RF77SN;
 						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -2269,7 +2263,6 @@
 				22495D271CAA7F510034FC94 /* Surveillance.storyboard in Resources */,
 				E70515A31BB3E147009FDA0D /* SurveillanceSettingsVC.xib in Resources */,
 				227F26471DA5155E00F5A236 /* TagsXIB.xib in Resources */,
-				4E1AAB1D1F6C0A8C006C59AA /* ReciterCell.xib in Resources */,
 				E7F15B051B8F27840025082D /* SceneGalleryVC.xib in Resources */,
 				E7E1A8251B3804F1008D8713 /* AcousticModelSpanish.bundle in Resources */,
 				4EFAE02A1F6C0F5600C85074 /* sura_english.json in Resources */,
@@ -2320,10 +2313,7 @@
 				73E82D0E1BECA97D00C1C621 /* Zones List.json in Resources */,
 				4EF41B9D1F7BE813007FBF64 /* AddRemoteViewController.xib in Resources */,
 				225F59881D74427300156BCD /* BigSliderXIB.xib in Resources */,
-				4EDCE68B1F6A9C090073736B /* StationCell.xib in Resources */,
 				22495D251CAA7C3E0034FC94 /* Security.storyboard in Resources */,
-				4E7945561F6FCE31006C3ACA /* SuraCell.xib in Resources */,
-				4E5BE4021F7D42E700497335 /* EditRemoteViewController.xib in Resources */,
 				E7DC67B91B457C0E00EA6543 /* weather-few-night@2x.png in Resources */,
 				4E2DFB4B1FBDBF7D00F8AC00 /* ButtonSettingsVC.xib in Resources */,
 				4E1961411FD5883400F48272 /* DeleteButtonImageVC.xib in Resources */,
@@ -2419,6 +2409,7 @@
 				22AF883B1D49E9E700048A33 /* ScanFilterPullDown.swift in Sources */,
 				2241E4721CC63FA200BCD763 /* DatabaseSurveillanceController.swift in Sources */,
 				4E7945511F6FC64F006C3ACA /* Sura+CoreDataClass.swift in Sources */,
+				4E479B7F20C01C86007C32AE /* QuranTableViewCell.swift in Sources */,
 				4E7945521F6FC64F006C3ACA /* Sura+CoreDataProperties.swift in Sources */,
 				223878A01C917A96001357E0 /* AddVideo_AppXIB.swift in Sources */,
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
@@ -2458,7 +2449,6 @@
 				73ED6AFD1BA0249800E6CE06 /* RepeatSendingHandler.swift in Sources */,
 				739D57171C809B30004CC50E /* DeviceImage.swift in Sources */,
 				2249A3321C90693C0019C6FB /* PCControlInterfaceXIB.swift in Sources */,
-				4EDCE68A1F6A9C090073736B /* StationCell.swift in Sources */,
 				738DEC9C1BBBC2F000D6B834 /* SecurityPadVC.swift in Sources */,
 				225F59871D74427300156BCD /* BigSliderXIB.swift in Sources */,
 				22FF1E651D86D92000ECB86E /* DatabaseCardsController.swift in Sources */,
@@ -2525,6 +2515,7 @@
 				737CED2E1C04571E0055DA0E /* CustomGradientButtonWhite.swift in Sources */,
 				223FB5911D64414600DC2627 /* DatabaseImageController.swift in Sources */,
 				73F1ECA81C8978B2007CEEAA /* Location+CoreDataProperties.swift in Sources */,
+				4E479B7D20C00210007C32AE /* RadioStationTableViewCell.swift in Sources */,
 				E75B4FC81B42FC0B00E48454 /* UIView+FSExtension.m in Sources */,
 				223687151CB4F13E005ACDE4 /* InsertGatewayAddressXIB.swift in Sources */,
 				E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */,
@@ -2573,7 +2564,6 @@
 				2240DCB01CBB931800F1F886 /* AdminController.swift in Sources */,
 				E7FB6A211B9D95D50016246B /* CameraVC.swift in Sources */,
 				E7F57B0D1BA847D8006B0D71 /* ScanSequencesesViewController.swift in Sources */,
-				4E1AAB1C1F6C0A8C006C59AA /* ReciterCell.swift in Sources */,
 				2240EAC81D46084E0062AC2F /* FilterParametar+CoreDataProperties.swift in Sources */,
 				73FD2E5A1C08AB9F00B9F11A /* ImageHandler.swift in Sources */,
 				222889B41CBBD5E0004EBADD /* FlagCollectionViewCell.swift in Sources */,
@@ -2582,7 +2572,6 @@
 				495D63721D9A49B300D9DC26 /* SaltoAccessCell.swift in Sources */,
 				E7F57B091BA7FE5D006B0D71 /* ScanScenesViewController.swift in Sources */,
 				73DB84A91B3013CB000DB4EB /* SecurityViewController.swift in Sources */,
-				4E7945551F6FCE31006C3ACA /* SuraCell.swift in Sources */,
 				E79FD4EE1BCE43D600CA17DB /* Util.swift in Sources */,
 				E7F5FC1E1BB9744200071982 /* LeftCustomButtom.swift in Sources */,
 				4EDCE6971F6AA76F0073736B /* Radio+CoreDataProperties.swift in Sources */,
@@ -2601,6 +2590,7 @@
 				E7AA26121BCD116800D5C3F0 /* IBeacon+CoreDataProperties.swift in Sources */,
 				E79309B81BC50E8E0009EFB1 /* ScanFlagViewController.swift in Sources */,
 				223362941CA2E518006C80C4 /* ProjectManagerViewController.swift in Sources */,
+				4E479B7B20BFF235007C32AE /* GlobalConstants.swift in Sources */,
 				223887121CB3F6A3003864B8 /* Zone.swift in Sources */,
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
 				E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */,
@@ -2608,6 +2598,7 @@
 				2237BC861D75AEC300E94D4B /* HVACButton.swift in Sources */,
 				223687191CB51834005ACDE4 /* Category+CoreDataProperties.swift in Sources */,
 				222889B21CBBCFD1004EBADD /* DatabaseTimersController.swift in Sources */,
+				4E479B8320C033DD007C32AE /* RemoteCollectionViewCell.swift in Sources */,
 				495726B71D4F493C004F2A3D /* ClimateCell.swift in Sources */,
 				223887111CB3F6A3003864B8 /* Zone+CoreDataProperties.swift in Sources */,
 				4E8C21751FCF20F6004C0883 /* ButtonImageCell.swift in Sources */,
@@ -2648,6 +2639,7 @@
 				E7F5FC221BB985E600071982 /* MoveCameraHandler.swift in Sources */,
 				E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */,
 				E7F0A6061BBBF06000B6648F /* CustomGradientButton.swift in Sources */,
+				4E479B8120C01F0D007C32AE /* AudioPlayerBar.swift in Sources */,
 				49C059741D913ACA0061A544 /* CardsCell.swift in Sources */,
 				49E4055B1D2D0A870031130B /* PullDownViewCell.swift in Sources */,
 				22409DDB1D6AFD2600C33F6D /* User+CoreDataProperties.swift in Sources */,
@@ -2911,7 +2903,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 2JR589G8SK;
+				DEVELOPMENT_TEAM = 2VJ3RF77SN;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2938,7 +2930,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 2JR589G8SK;
+				DEVELOPMENT_TEAM = 2VJ3RF77SN;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

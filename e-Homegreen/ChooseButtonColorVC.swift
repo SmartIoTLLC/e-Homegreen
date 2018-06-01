@@ -18,7 +18,9 @@ class ChooseButtonColorVC: CommonXIBTransitionVC {
     
     @IBOutlet weak var tableView: UITableView!
     
-    var colorsAndShapes: [String] = []
+    var colorsAndShapes: [String] = [] {
+        didSet { tableView.reloadData() }
+    }
     
     @IBOutlet weak var backgroundHeightConstraint: NSLayoutConstraint!
     
@@ -31,6 +33,7 @@ class ChooseButtonColorVC: CommonXIBTransitionVC {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         setColorsAndHeight()
     }
     
@@ -40,8 +43,8 @@ class ChooseButtonColorVC: CommonXIBTransitionVC {
 extension ChooseButtonColorVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch isForColors {
-        case true : if isRemote { return 4 } else { return 5 }
-        default   : if isRemote { return 2 } else { return 3 }
+            case true : return isRemote ? 4 : 5
+            default   : return isRemote ? 2 : 3
         }
     }
     
@@ -77,17 +80,14 @@ extension ChooseButtonColorVC {
     }
     
     fileprivate func setColorsAndHeight() {
-        switch isForColors {
-        case true  : colorsAndShapes = [ButtonColor.gray, ButtonColor.red, ButtonColor.green, ButtonColor.blue]
-        default    : colorsAndShapes = [ButtonShape.rectangle, ButtonShape.circle]
-        }
+        isForColors ? (colorsAndShapes = [ButtonColor.gray, ButtonColor.red, ButtonColor.green, ButtonColor.blue]) : (colorsAndShapes = [ButtonShape.rectangle, ButtonShape.circle])
         
         switch isRemote {
-        case false:
-            colorsAndShapes.insert("Use master", at: 0)
-            if isForColors { backgroundHeightConstraint.constant = 220 } else { backgroundHeightConstraint.constant = 132 }
+            case false:
+                colorsAndShapes.insert("Use master", at: 0)
+                backgroundHeightConstraint.constant = (isForColors ? 220 : 132)
             
-        default: if isForColors { backgroundHeightConstraint.constant = 176 } else { backgroundHeightConstraint.constant = 88 }
+            default: backgroundHeightConstraint.constant = (isForColors ? 176 : 88)
         }
         
         backgroundView.layoutIfNeeded()

@@ -1,19 +1,32 @@
-   //
-   //  SidePanelViewController.swift
-   //  e-Homegreen
-   //
-   //  Created by Teodor Stevic on 6/15/15.
-   //  Copyright (c) 2015 Teodor Stevic. All rights reserved.
-   //
+//
+//  SidePanelViewController.swift
+//  e-Homegreen
+//
+//  Created by Teodor Stevic on 6/15/15.
+//  Copyright (c) 2015 Teodor Stevic. All rights reserved.
+//
    
-   import UIKit
+import UIKit
+
+private struct LocalConstants {
+    static let sectionInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    static let itemCellSize: CGSize = CGSize(width: 88, height: 88)
+    static let logoutCellSize: CGSize = CGSize(width: 184, height: 70)
+    static let minimumLineSpacing: CGFloat = 8
+    static let interitemSpacing: CGFloat = 8
+    static let footerSize: CGSize = CGSize(width: UIScreen.main.bounds.width, height: 50)
+}
+
+enum SidemenuCellType: Int {
+    case featureCell
+    case logoutCell
+}
    
-   class SidePanelViewController: UIViewController, LXReorderableCollectionViewDataSource, LXReorderableCollectionViewDelegateFlowLayout {
+class SidePanelViewController: UIViewController, LXReorderableCollectionViewDataSource, LXReorderableCollectionViewDelegateFlowLayout {
     
-    @IBOutlet weak var logoImageView: UIImageView!
-    @IBOutlet weak var menuCollectionView: UICollectionView!
-    fileprivate var sectionInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-    var menu:[MenuItem] = []
+@IBOutlet weak var logoImageView: UIImageView!
+@IBOutlet weak var menuCollectionView: UICollectionView!
+var menu:[MenuItem] = []
     
     var user:User?
     
@@ -108,28 +121,33 @@
                 self.revealViewController().pushFrontViewController(item.controller, animated: true)
             }
         }
-        if let user = user { user.lastScreenId = menu[indexPath.row].id } // Index out of range posto nema Settings-a
+        if let user = user {
+            if indexPath.row <= menu.count { // Index out of range posto nema Settings-a
+                if let id = menu[indexPath.row].id as NSNumber? {
+                    user.lastScreenId = id
+                }
+            }
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return sectionInsets
+        return LocalConstants.sectionInsets
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 8
+        return LocalConstants.minimumLineSpacing
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 8
+        return LocalConstants.interitemSpacing
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if indexPath.row < menu.count { return CGSize(width: 88, height: 88) } else { return CGSize(width: 184, height: 70) }
+        return (indexPath.row < menu.count) ? LocalConstants.itemCellSize : LocalConstants.logoutCellSize
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        let footerSize = CGSize(width: menuCollectionView.frame.width, height: 50)
-        return footerSize
+        return LocalConstants.footerSize
     }
     
    }
@@ -145,17 +163,15 @@
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         if indexPath.row < menu.count {
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MenuItemCell", for: indexPath) as? MenuItemCell {
-                
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MenuItemCell.reuseIdentifier, for: indexPath) as? MenuItemCell {
                 cell.configureForMenu(menu[indexPath.row])
-            //    if cell.menuItemName.text == "Remote" || cell.menuItemName.text == "Media" { cell.isUserInteractionEnabled = false } else { cell.isUserInteractionEnabled = true }
                 return cell
             }
             
-            return UICollectionViewCell()
         } else {
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LogOutCell", for: indexPath) as? LogOutCell {
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LogOutCell.reuseIdentifier, for: indexPath) as? LogOutCell {
                 cell.setItem(user)
                 return cell
             }
@@ -165,22 +181,21 @@
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
-        switch kind {
-        case UICollectionElementKindSectionFooter:
-            let footerView = menuCollectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "footer", for: indexPath) as! MenuFooterView
-            footerView.configureFooter()
-            return footerView
-            
-        default:
-            let footerView = menuCollectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "footer", for: indexPath) as! MenuFooterView
-            footerView.configureFooter()
-            return footerView
+        if kind == UICollectionElementKindSectionFooter {
+            if let footerView = menuCollectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MenuFooterView.reuseIdentifier, for: indexPath) as? MenuFooterView {
+                footerView.configureFooter()
+                return footerView
+            }
         }
+        
+        return UICollectionReusableView()
     }
     
-   }
+}
    
-   class MenuItemCell: UICollectionViewCell {
+class MenuItemCell: UICollectionViewCell {
+    
+    static let reuseIdentifier: String = "MenuItemCell"
     
     @IBOutlet weak var menuItemImageView: UIImageView!
     @IBOutlet weak var menuItemName: UILabel!
@@ -218,16 +233,18 @@
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorLocations:[CGFloat] = [0.0, 1.0]
         let gradient = CGGradient(colorsSpace: colorSpace,
-                                                  colors: colors as CFArray,
-                                                  locations: colorLocations)
+                                  colors: colors as CFArray,
+                                  locations: colorLocations)
         let startPoint = CGPoint.zero
         let endPoint = CGPoint(x:0, y:bounds.height)
         context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
         
     }
-   }
+}
    
-   class LogOutCell: UICollectionViewCell {
+class LogOutCell: UICollectionViewCell {
+    
+    static let reuseIdentifier: String = "LogOutCell"
     
     @IBOutlet weak var userImage: UIImageView!
     @IBOutlet weak var userLabel: UILabel!
@@ -268,10 +285,12 @@
         }
         
     }
+    
+}
 
-   }
-
-   class MenuFooterView: UICollectionReusableView {
+class MenuFooterView: UICollectionReusableView {
+    
+    static let reuseIdentifier: String = "footer"
     
     @IBOutlet weak var footerImageView: UIImageView!
     
@@ -280,4 +299,4 @@
         footerImageView.contentMode = .scaleAspectFit
     }
     
-   }
+}

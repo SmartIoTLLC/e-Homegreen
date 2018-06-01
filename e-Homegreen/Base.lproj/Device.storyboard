@@ -830,7 +830,7 @@
                                             <outlet property="temperatureSetPoint" destination="Zzr-9M-VnP" id="S2S-TL-reg"/>
                                         </connections>
                                     </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="dafaultCell" id="QlI-BW-kem" customClass="defaultCell">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="dafaultCell" id="QlI-BW-kem" customClass="DefaultCell" customModule="e_Homegreen" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="380" width="150" height="180"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -868,7 +868,7 @@
                                             <outlet property="defaultLabel" destination="87N-IF-MNZ" id="5we-0r-I5H"/>
                                         </connections>
                                     </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="multiSensorCell" id="gAi-gO-Z83" customClass="multiSensorCell">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="multiSensorCell" id="gAi-gO-Z83" customClass="MultiSensorCell" customModule="e_Homegreen" customModuleProvider="target">
                                         <rect key="frame" x="170" y="380" width="150" height="180"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -1070,7 +1070,7 @@
                                             <outlet property="sensorTitle" destination="SbN-yE-qXC" id="7mi-a1-aqT"/>
                                         </connections>
                                     </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="saltoAccessCell" id="kyP-Lr-JiK" userLabel="saltoAccessCell" customClass="saltoAccessCell">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="saltoAccessCell" id="kyP-Lr-JiK" userLabel="saltoAccessCell" customClass="SaltoAccessCell" customModule="e_Homegreen" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="570" width="150" height="180"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">

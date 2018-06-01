@@ -21,6 +21,8 @@ class SaltoAccessCell: UICollectionViewCell {
     let image1 = UIImage(named: "14 Security - Lock - 01")
     
     override func awakeFromNib() {
+        super.awakeFromNib()
+        
         lockButton.layer.cornerRadius       = 5
         unlockButton.layer.cornerRadius     = 5
         disabledCellView.layer.cornerRadius = 5
@@ -36,9 +38,16 @@ class SaltoAccessCell: UICollectionViewCell {
         saltoName.isUserInteractionEnabled  = true
         saltoImage.isUserInteractionEnabled = true
         
-        if device.currentValue == 0 { saltoImage.image = image0 } else { saltoImage.image = image1 }
-        if device.isEnabled.boolValue { disabledCellView.isHidden = true } else { infoView.isHidden = false }
-        if device.info { infoView.isHidden = false; backView.isHidden = true } else { infoView.isHidden = true; backView.isHidden = false }
+        (device.currentValue == 0) ? (saltoImage.image = image0) : (saltoImage.image = image1)
+        device.isEnabled.boolValue ? (disabledCellView.isHidden = true) : (disabledCellView.isHidden = false)
+        
+        if device.info {
+            infoView.isHidden = false
+            backView.isHidden = true
+        } else {
+            infoView.isHidden = true
+            backView.isHidden = false
+        }
     }
     
     @IBOutlet weak var disabledCellView: UIView!

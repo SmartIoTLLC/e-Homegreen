@@ -141,7 +141,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         NotificationCenter.default.removeObserver(self)
     }
     
-    func getFormattedSuraID(id: NSNumber) -> String {
+    private func getFormattedSuraID(id: NSNumber) -> String {
         if String(describing: id).count == 1 { return "00" + String(describing: id) }
         if String(describing: id).count == 2 { return "0" + String(describing: id) }
         return String(describing: id)

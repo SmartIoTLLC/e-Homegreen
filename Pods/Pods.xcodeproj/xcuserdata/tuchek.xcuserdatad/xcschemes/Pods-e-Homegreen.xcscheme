@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A534A102613A8DEF752FBEA37A4D15D4"
+               BlueprintIdentifier = "81298EC23891B2ACDAF963F31F9F4C7D"
                BuildableName = "Pods_e_Homegreen.framework"
                BlueprintName = "Pods-e-Homegreen"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -26,7 +26,6 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
@@ -37,7 +36,6 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -47,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A534A102613A8DEF752FBEA37A4D15D4"
+            BlueprintIdentifier = "81298EC23891B2ACDAF963F31F9F4C7D"
             BuildableName = "Pods_e_Homegreen.framework"
             BlueprintName = "Pods-e-Homegreen"
             ReferencedContainer = "container:Pods.xcodeproj">

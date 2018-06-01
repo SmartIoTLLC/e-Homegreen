@@ -8,17 +8,27 @@
 
 import UIKit
 
+struct QuranReciterKeys {
+    static let id: String = "id"
+    static let name: String = "name"
+    static let server: String = "Server"
+    static let rewaya: String = "rewaya"
+    static let count: String = "count"
+    static let letter: String = "letter"
+    static let suras: String = "suras"
+}
+
 class QuranViewController: UIViewController {
     
     let context = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     
-    let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
+    private let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
-    let cellId   = "reciterCell"
-    var reciters = [Reciter]()
-    var selectedReciter: Reciter?
+    fileprivate var reciters = [Reciter]()
+    fileprivate var selectedReciter: Reciter?
     
-    @IBOutlet weak var tableView: UITableView!
+    private let backgroundImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "Background"))
+    fileprivate let tableView: UITableView = UITableView()
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
@@ -30,24 +40,62 @@ class QuranViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        updateViews()
+        revealViewController().delegate = self
+        setupSWRevealViewController(menuButton: menuButton)
+        
+        addBackgroundImageView()
+        addTitleView()
+        addTableView()
+        
+        setupConstraints()
+        
         fetchReciters()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        revealViewController().delegate = self
-        setupSWRevealViewController(menuButton: menuButton)
         
         changeFullscreenImage(fullscreenButton: fullscreenButton)
     }
     
+    private func addBackgroundImageView() {
+        backgroundImageView.contentMode = .scaleAspectFill
+        
+        view.addSubview(backgroundImageView)
+    }
+    
+    private func addTitleView() {
+        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
+        navigationItem.titleView  = titleView
+        titleView.setTitle("Reciters")
+    }
+    
+    private func addTableView() {
+        tableView.register(QuranTableViewCell.self, forCellReuseIdentifier: QuranTableViewCell.reuseIdentifier)
+        tableView.delegate   = self
+        tableView.dataSource = self
+        tableView.backgroundColor = .clear
+        tableView.separatorInset  = .zero
+        
+        view.addSubview(tableView)
+    }
+    
+    private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        tableView.snp.makeConstraints { (make) in
+            make.top.leading.trailing.bottom.equalToSuperview()
+        }
+    }
+    
     // MARK: - Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toSuraPlayer" {
-            if let destVC: SuraPlayerViewController = segue.destination as? SuraPlayerViewController {
-                destVC.reciter = selectedReciter                
-            }
+    fileprivate func goToSuraPlayerViewController() {
+        if let vc = UIStoryboard(name: "Quran", bundle: nil).instantiateViewController(withIdentifier: "SuraPlayer") as? SuraPlayerViewController {
+            vc.reciter = selectedReciter
+            
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
 
@@ -56,7 +104,12 @@ class QuranViewController: UIViewController {
 // MARK: - Table View Data Source & Delegate
 extension QuranViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return getCell(at: indexPath, tableView)
+        if let cell = tableView.dequeueReusableCell(withIdentifier: QuranTableViewCell.reuseIdentifier, for: indexPath) as? QuranTableViewCell {
+            cell.setCell(with: reciters[indexPath.row])
+            return cell
+        }
+        
+        return UITableViewCell()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -77,36 +130,6 @@ extension QuranViewController: UITableViewDataSource, UITableViewDelegate {
     
 }
 
-// MARK: - View setup
-extension QuranViewController {
-    
-    fileprivate func getCell(at indexPath: IndexPath, _ tableView: UITableView) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? ReciterCell {
-            
-            cell.reciter = reciters[indexPath.row]
-            
-            return cell
-        }
-        
-        return UITableViewCell()
-    }
-    
-    fileprivate func updateViews() {
-        if #available(iOS 11, *) { titleView.layoutIfNeeded() }
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(UINib(nibName: String(describing: ReciterCell.self), bundle: nil), forCellReuseIdentifier: cellId)
-        
-        tableView.backgroundColor = .clear
-        tableView.separatorInset  = .zero
-                
-        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
-        navigationItem.titleView  = titleView
-        titleView.setTitle("Reciters")
-    }
-}
-
 // MARK: - Logic
 extension QuranViewController {
     fileprivate func fetchReciters() {
@@ -122,13 +145,13 @@ extension QuranViewController {
                             if let moc = context {
                                 let reciter = Reciter(
                                     context : moc,
-                                    id      : object["id"] as! String,
-                                    name    : object["name"] as! String,
-                                    server  : object["Server"] as! String,
-                                    rewaya  : object["rewaya"] as! String,
-                                    count   : object["count"] as! String,
-                                    letter  : object["letter"] as! String,
-                                    suras   : object["suras"] as! String
+                                    id      : object[QuranReciterKeys.id] as! String,
+                                    name    : object[QuranReciterKeys.name] as! String,
+                                    server  : object[QuranReciterKeys.server] as! String,
+                                    rewaya  : object[QuranReciterKeys.rewaya] as! String,
+                                    count   : object[QuranReciterKeys.count] as! String,
+                                    letter  : object[QuranReciterKeys.letter] as! String,
+                                    suras   : object[QuranReciterKeys.suras] as! String
                                 )
                                 self.reciters.append(reciter)
                             }
@@ -146,7 +169,7 @@ extension QuranViewController {
     
     fileprivate func didSelectReciter(at indexPath: IndexPath) {
         selectedReciter = reciters[indexPath.row]
-        self.performSegue(withIdentifier: "toSuraPlayer", sender: self)
+        goToSuraPlayerViewController()
     }
 }
 

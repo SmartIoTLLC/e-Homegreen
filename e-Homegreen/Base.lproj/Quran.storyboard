@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="5XY-HS-MU6">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="5XY-HS-MU6">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,26 +20,7 @@
                     <view key="view" contentMode="scaleToFill" id="tER-hn-6qf">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="wTf-pI-KKx">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                            </imageView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="PXw-O4-JMy">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="wTf-pI-KKx" firstAttribute="width" secondItem="tER-hn-6qf" secondAttribute="width" id="K2m-So-bGg"/>
-                            <constraint firstItem="JW6-Ux-WwU" firstAttribute="top" secondItem="wTf-pI-KKx" secondAttribute="bottom" id="Veg-qI-bJz"/>
-                            <constraint firstItem="wTf-pI-KKx" firstAttribute="centerX" secondItem="tER-hn-6qf" secondAttribute="centerX" id="YTP-si-vbz"/>
-                            <constraint firstItem="PXw-O4-JMy" firstAttribute="centerX" secondItem="tER-hn-6qf" secondAttribute="centerX" id="Z6P-uj-9id"/>
-                            <constraint firstItem="PXw-O4-JMy" firstAttribute="top" secondItem="Qmi-Xh-7KN" secondAttribute="bottom" id="bM9-WX-vgn"/>
-                            <constraint firstItem="JW6-Ux-WwU" firstAttribute="top" secondItem="PXw-O4-JMy" secondAttribute="bottom" id="buf-bX-vU5"/>
-                            <constraint firstItem="wTf-pI-KKx" firstAttribute="top" secondItem="Qmi-Xh-7KN" secondAttribute="bottom" id="bvh-yB-s3I"/>
-                            <constraint firstItem="PXw-O4-JMy" firstAttribute="width" secondItem="tER-hn-6qf" secondAttribute="width" id="iQO-Jl-074"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Hx0-83-YpO">
                         <barButtonItem key="backBarButtonItem" title=" " id="zfS-od-PCY"/>
@@ -59,7 +40,6 @@
                     <connections>
                         <outlet property="fullscreenButton" destination="geH-Vh-55t" id="MYQ-K6-JsZ"/>
                         <outlet property="menuButton" destination="eoB-eF-1uz" id="aaA-l5-wQD"/>
-                        <outlet property="tableView" destination="PXw-O4-JMy" id="zWN-yS-aEg"/>
                         <segue destination="zBA-tB-i6a" kind="push" identifier="toSuraPlayer" id="ES7-Yb-0PT"/>
                     </connections>
                 </viewController>
@@ -70,7 +50,7 @@
         <!--Sura Player View Controller-->
         <scene sceneID="dQQ-lH-xHa">
             <objects>
-                <viewController id="zBA-tB-i6a" customClass="SuraPlayerViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SuraPlayer" id="zBA-tB-i6a" customClass="SuraPlayerViewController" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="XmG-rg-P3G"/>
                         <viewControllerLayoutGuide type="bottom" id="puT-y8-l0P"/>
@@ -78,80 +58,7 @@
                     <view key="view" contentMode="scaleToFill" id="PIO-Rs-DjU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="SXW-qj-AaS">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                            </imageView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cSQ-BY-7nu">
-                                <rect key="frame" x="0.0" y="64" width="375" height="483"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WqC-TS-jQp">
-                                <rect key="frame" x="0.0" y="547" width="375" height="120"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sura" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kFq-hU-68k">
-                                        <rect key="frame" x="16" y="8" width="351" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="ecv-Xq-daS"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IWv-c5-8C1">
-                                        <rect key="frame" x="167" y="63" width="41.5" height="32.5"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="41.5" id="Qph-nF-xs9"/>
-                                            <constraint firstAttribute="height" constant="32.5" id="VxV-yh-ZaV"/>
-                                        </constraints>
-                                        <state key="normal" image="audio_pause"/>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kLm-jx-o0j">
-                                        <rect key="frame" x="216" y="63" width="41.5" height="32.5"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="41.5" id="Ioy-Gt-twR"/>
-                                            <constraint firstAttribute="height" constant="32.5" id="yzq-hN-wSg"/>
-                                        </constraints>
-                                        <state key="normal" image="audio_play"/>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hq0-bH-wUc">
-                                        <rect key="frame" x="117" y="63" width="42" height="32.5"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="32.5" id="5b8-tY-EhA"/>
-                                            <constraint firstAttribute="width" constant="42" id="K3d-Sm-rh7"/>
-                                        </constraints>
-                                        <state key="normal" image="audio_stop"/>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="kLm-jx-o0j" secondAttribute="bottom" constant="24.5" id="Ii4-Qu-x3h"/>
-                                    <constraint firstAttribute="trailing" secondItem="kFq-hU-68k" secondAttribute="trailing" constant="8" id="SOY-pb-Cj8"/>
-                                    <constraint firstItem="kLm-jx-o0j" firstAttribute="leading" secondItem="IWv-c5-8C1" secondAttribute="trailing" constant="7.5" id="Tno-t7-teH"/>
-                                    <constraint firstItem="IWv-c5-8C1" firstAttribute="centerX" secondItem="WqC-TS-jQp" secondAttribute="centerX" id="X8h-cd-z5n"/>
-                                    <constraint firstItem="kFq-hU-68k" firstAttribute="leading" secondItem="WqC-TS-jQp" secondAttribute="leading" constant="16" id="bid-QW-YI8"/>
-                                    <constraint firstItem="IWv-c5-8C1" firstAttribute="leading" secondItem="hq0-bH-wUc" secondAttribute="trailing" constant="8" id="eYn-dg-gz9"/>
-                                    <constraint firstItem="kFq-hU-68k" firstAttribute="top" secondItem="WqC-TS-jQp" secondAttribute="top" constant="8" id="g5C-pD-Ws1"/>
-                                    <constraint firstAttribute="height" constant="120" id="iAw-mv-buy"/>
-                                    <constraint firstAttribute="bottom" secondItem="IWv-c5-8C1" secondAttribute="bottom" constant="24.5" id="oJ8-dn-aVb"/>
-                                    <constraint firstAttribute="bottom" secondItem="hq0-bH-wUc" secondAttribute="bottom" constant="24.5" id="sWu-VO-PcL"/>
-                                </constraints>
-                            </view>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="cSQ-BY-7nu" firstAttribute="top" secondItem="XmG-rg-P3G" secondAttribute="bottom" id="0Xj-T2-z6i"/>
-                            <constraint firstItem="SXW-qj-AaS" firstAttribute="width" secondItem="PIO-Rs-DjU" secondAttribute="width" id="Cbc-cp-wwW"/>
-                            <constraint firstItem="SXW-qj-AaS" firstAttribute="centerX" secondItem="PIO-Rs-DjU" secondAttribute="centerX" id="E1z-tq-dvu"/>
-                            <constraint firstItem="WqC-TS-jQp" firstAttribute="centerX" secondItem="PIO-Rs-DjU" secondAttribute="centerX" id="Jy0-2M-Soe"/>
-                            <constraint firstItem="puT-y8-l0P" firstAttribute="top" secondItem="SXW-qj-AaS" secondAttribute="bottom" id="Mbj-qT-8vd"/>
-                            <constraint firstItem="WqC-TS-jQp" firstAttribute="top" secondItem="cSQ-BY-7nu" secondAttribute="bottom" id="U49-yj-I4Q"/>
-                            <constraint firstItem="cSQ-BY-7nu" firstAttribute="centerX" secondItem="PIO-Rs-DjU" secondAttribute="centerX" id="eiq-WO-Uv0"/>
-                            <constraint firstItem="puT-y8-l0P" firstAttribute="top" secondItem="WqC-TS-jQp" secondAttribute="bottom" id="mBs-VO-QnG"/>
-                            <constraint firstItem="SXW-qj-AaS" firstAttribute="top" secondItem="XmG-rg-P3G" secondAttribute="bottom" id="ukZ-FA-6RH"/>
-                            <constraint firstItem="cSQ-BY-7nu" firstAttribute="width" secondItem="PIO-Rs-DjU" secondAttribute="width" id="upP-BL-WgR"/>
-                            <constraint firstItem="WqC-TS-jQp" firstAttribute="width" secondItem="PIO-Rs-DjU" secondAttribute="width" id="xf5-Xv-Ytt"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="FZZ-S5-dyC">
                         <barButtonItem key="backBarButtonItem" title=" " id="awV-ff-umx"/>
@@ -168,12 +75,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="fullscreenButton" destination="DfX-V4-N9l" id="ISb-Sv-2hp"/>
-                        <outlet property="pauseButton" destination="IWv-c5-8C1" id="opn-w7-YiS"/>
-                        <outlet property="playButton" destination="kLm-jx-o0j" id="jOP-av-gFj"/>
-                        <outlet property="radioBar" destination="WqC-TS-jQp" id="o1L-zg-jiC"/>
-                        <outlet property="stopButton" destination="hq0-bH-wUc" id="Tsi-w7-wlX"/>
-                        <outlet property="suraTitle" destination="kFq-hU-68k" id="cl8-t9-aY1"/>
-                        <outlet property="tableView" destination="cSQ-BY-7nu" id="h7D-q9-20A"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bI9-bV-cCZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -182,11 +83,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Background" width="512" height="384"/>
         <image name="Menu button" width="22" height="22"/>
-        <image name="audio_pause" width="90" height="90"/>
-        <image name="audio_play" width="90" height="90"/>
-        <image name="audio_stop" width="90" height="90"/>
         <image name="full screen" width="30" height="30"/>
     </resources>
 </document>

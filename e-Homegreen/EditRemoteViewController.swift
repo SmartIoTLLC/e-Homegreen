@@ -8,93 +8,136 @@
 
 import UIKit
 
+private struct LocalConstants {
+    static let buttonContainerSize: CGSize = CGSize(width: GlobalConstants.screenSize.width - 32, height: 46)
+    static let buttonSize: CGSize = CGSize(width: (buttonContainerSize.width - 2 * 4 - 2 * 8) / 3, height: 30)
+    static let itemSpacing: CGFloat = 8
+}
+
 class EditRemoteViewController: CommonXIBTransitionVC {
     
-    //var remote: RemoteDummy?
     var remote: Remote!
     var location: Location!
     var zoneId: Zone!
     
-    @IBOutlet weak var dismissView: UIView!
-
-    @IBOutlet weak var cancelButton: CustomGradientButton!
-    @IBOutlet weak var deleteButton: CustomGradientButton!
-    @IBOutlet weak var copyButton: CustomGradientButton!
+    private let dismissView: UIView = UIView()
     
-    @IBAction func cancelButton(_ sender: Any) {
-        dismissVC()
-    }
-    @IBAction func deleteButton(_ sender: Any) {
-        delete()
-    }
-    @IBAction func copyButton(_ sender: Any) {
-        clone()
-    }
-    @IBOutlet weak var backView: UIView!
+    private let buttonContainer: UIView = UIView()
+    private let cancelButton: CustomGradientButton = CustomGradientButton()
+    private let deleteButton: CustomGradientButton = CustomGradientButton()
+    private let copyButton: CustomGradientButton = CustomGradientButton()
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        updateViews()
-        setButtonSizes()
-    }
-    
-}
-
-// MARK: - View setup
-extension EditRemoteViewController {
-    fileprivate func updateViews() {
+    // MARK: - Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        dismissView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissVC)))
         
-        dismissView.backgroundColor  = .clear
-        backView.backgroundColor     = Colors.AndroidGrayColor
-        let width  = view.frame.width - 32
-        let height = CGFloat(46)
-        backView.frame.size          = CGSize(width: width, height: height)
-        backView.setGradientBackground()
-        backView.center              = view.center
-        backView.layer.cornerRadius  = 10
-        backView.layer.borderColor   = Colors.MediumGray
-        backView.layer.borderWidth   = 1
-        backView.layer.masksToBounds = true
-        backView.bringSubview(toFront: cancelButton)
-        backView.bringSubview(toFront: deleteButton)
-        backView.bringSubview(toFront: copyButton)
+        addDismissView()
+        addContainerView()
+        addCancelButton()
+        addDeleteButton()
+        addCopyButton()
+        
+        setupConstraints()
     }
     
-    fileprivate func setButtonSizes() {
-        let width = (backView.bounds.width - 2 * 4 - 2 * 8) / 3
-        let height: CGFloat = 30
-        let size            = CGSize(width: width, height: height)
-        cancelButton.frame.size = size
-        deleteButton.frame.size = size
-        copyButton.frame.size   = size
+    // MARK: - Setup views
+    private func addDismissView() {
+        dismissView.addTap {
+            self.dismiss(animated: true, completion: nil)
+        }
         
-        deleteButton.center       = backView.center
-        cancelButton.frame.origin = CGPoint(x: 8, y: 8)
-        copyButton.frame.origin   = CGPoint(x: backView.frame.width - 8 - width, y: 8)
-        
-        deleteButton.layoutIfNeeded()
-        cancelButton.layoutIfNeeded()
-        copyButton.layoutIfNeeded()
+        view.addSubview(dismissView)
     }
     
-    func dismissVC() {
-        dismiss(animated: true, completion: nil)
+    private func addContainerView() {
+        buttonContainer.backgroundColor     = Colors.AndroidGrayColor
+        buttonContainer.setGradientBackground()
+        buttonContainer.layer.cornerRadius  = 10
+        buttonContainer.layer.borderColor   = Colors.MediumGray
+        buttonContainer.layer.borderWidth   = 1
+        buttonContainer.layer.masksToBounds = true
+        
+        view.addSubview(buttonContainer)
     }
-}
-// MARK: - Logic
-extension EditRemoteViewController {
-    fileprivate func delete() {
+    
+    private func addCancelButton() {
+        cancelButton.setTitle("CANCEL", for: UIControlState())
+        cancelButton.setTitleColor(.white, for: UIControlState())
+        cancelButton.addTap {
+            self.dismiss(animated: true, completion: nil)
+        }
+        
+        buttonContainer.addSubview(cancelButton)
+    }
+    
+    private func addDeleteButton() {
+        deleteButton.setTitle("DELETE", for: UIControlState())
+        deleteButton.setTitleColor(.white, for: UIControlState())
+        deleteButton.addTap {
+            self.delete()
+        }
+        
+        buttonContainer.addSubview(deleteButton)
+    }
+    
+    private func addCopyButton() {
+        copyButton.setTitle("COPY", for: UIControlState())
+        copyButton.setTitleColor(.white, for: UIControlState())
+        copyButton.addTap {
+            self.clone()
+        }
+        
+        buttonContainer.addSubview(copyButton)
+    }
+    
+    
+    private func setupConstraints() {
+        dismissView.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
+        
+        buttonContainer.snp.makeConstraints { (make) in
+            make.centerY.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.width.equalTo(LocalConstants.buttonContainerSize.width)
+            make.height.equalTo(LocalConstants.buttonContainerSize.height)
+        }
+        
+        deleteButton.snp.makeConstraints { (make) in
+            make.width.equalTo(LocalConstants.buttonSize.width)
+            make.height.equalTo(LocalConstants.buttonSize.height)
+            make.centerY.equalToSuperview()
+            make.centerX.equalToSuperview()
+        }
+        
+        cancelButton.snp.makeConstraints { (make) in
+            make.width.equalTo(LocalConstants.buttonSize.width)
+            make.height.equalTo(LocalConstants.buttonSize.height)
+            make.trailing.equalTo(deleteButton.snp.leading).inset(-LocalConstants.itemSpacing)
+            make.centerY.equalToSuperview()
+        }
+        
+        copyButton.snp.makeConstraints { (make) in
+            make.width.equalTo(LocalConstants.buttonSize.width)
+            make.height.equalTo(LocalConstants.buttonSize.height)
+            make.leading.equalTo(deleteButton.snp.trailing).offset(LocalConstants.itemSpacing)
+            make.centerY.equalToSuperview()
+        }
+    }
+    
+    // MARK: - Logic
+    private func delete() {
         DatabaseRemoteController.sharedInstance.deleteRemote(remote: remote, from: location)
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshRemotes), object: nil)
-        dismissVC()
+        self.dismiss(animated: true, completion: nil)
     }
     
-    fileprivate func clone() {
+    private func clone() {
         DatabaseRemoteController.sharedInstance.cloneRemote(remote: remote, on: location)
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshRemotes), object: nil)
-        dismissVC()
+        self.dismiss(animated: true, completion: nil)
     }
 }
 

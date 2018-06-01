@@ -128,7 +128,7 @@ extension UIViewController {
     
     func calculateCellSize(completion: () -> Void) -> CGSize {
         var size: CGSize = CGSize()
-        CellSize.calculateCellSize(&size, screenWidth: view.frame.size.width)
+        CellSize.calculateCellSize(&size, screenWidth: GlobalConstants.screenSize.width)
         return size
     }
     

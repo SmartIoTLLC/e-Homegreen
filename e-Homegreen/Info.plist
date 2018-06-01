@@ -38,7 +38,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>23</string>
+	<string>26</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -66,6 +66,8 @@
 	<string>Allow camera in order to take photos</string>
 	<key>NSContactsUsageDescription</key>
 	<string>We need access to your contacts so you can call them.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We need your location so you can automatically trigger actions when you enter/leave the property</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>We need your location so you can automatically trigger actions when you enter/leave the property</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
