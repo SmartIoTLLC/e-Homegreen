@@ -106,38 +106,31 @@ class FilterPullDown: UIScrollView {
         
         //create and add bottom gray line
         bottomLine.backgroundColor = UIColor(red: 128/255, green: 128/255, blue: 128/255, alpha: 1.0)
-        bottomLine.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(bottomLine)
         
         //create signal indicators
         greenIndicator.backgroundColor = UIColor.clear
-        greenIndicator.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(greenIndicator)
         redIndicator.backgroundColor = UIColor.clear
-        redIndicator.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(redIndicator)
         
         //create pull down image
         pullView.image = UIImage(named: "pulldown")
-        pullView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(pullView)
         
         //reset default button
         resetTimeButton.setImage(UIImage(named: "exit"), for: UIControlState())
         resetTimeButton.addTarget(self, action: #selector(resetTime), for: .touchUpInside)
-        resetTimeButton.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(resetTimeButton)
         
         // secunds label
         secundsLabel.text = "s"
         secundsLabel.textAlignment = .center
         secundsLabel.textColor = UIColor.white
-        secundsLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(secundsLabel)
         
         //secunds textfield
         secundsTextField.borderStyle = .roundedRect
-        secundsTextField.translatesAutoresizingMaskIntoConstraints = false
         secundsTextField.inputAccessoryView = CustomToolBar()
         secundsTextField.keyboardType = .numberPad
         contentView.addSubview(secundsTextField)
@@ -148,12 +141,10 @@ class FilterPullDown: UIScrollView {
         minLabel.text = "m"
         minLabel.textAlignment = .center
         minLabel.textColor = UIColor.white
-        minLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(minLabel)
         
         //minutes textfield
         minTextField.borderStyle = .roundedRect
-        minTextField.translatesAutoresizingMaskIntoConstraints = false
         minTextField.inputAccessoryView = CustomToolBar()
         minTextField.keyboardType = .numberPad
         contentView.addSubview(minTextField)
@@ -164,12 +155,10 @@ class FilterPullDown: UIScrollView {
         hoursLabel.text = "h"
         hoursLabel.textAlignment = .center
         hoursLabel.textColor = UIColor.white
-        hoursLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(hoursLabel)
         
         //hours text field
         hoursTextField.borderStyle = .roundedRect
-        hoursTextField.translatesAutoresizingMaskIntoConstraints = false
         hoursTextField.inputAccessoryView = CustomToolBar()
         hoursTextField.keyboardType = .numberPad
         contentView.addSubview(hoursTextField)
@@ -182,7 +171,6 @@ class FilterPullDown: UIScrollView {
         setAsDefaultButton.titleLabel!.adjustsFontSizeToFitWidth = true
         setAsDefaultButton.titleLabel!.lineBreakMode = NSLineBreakMode.byClipping
         setAsDefaultButton.titleLabel?.font.withSize(8)
-        setAsDefaultButton.translatesAutoresizingMaskIntoConstraints = false
         setAsDefaultButton.addTarget(self, action: #selector(setDefaultParametar), for: .touchUpInside)
         contentView.addSubview(setAsDefaultButton)
         
@@ -196,13 +184,11 @@ class FilterPullDown: UIScrollView {
         //choose location button
         chooseLocationButon.setTitle("All", for: UIControlState())
         chooseLocationButon.addTarget(self, action: #selector(openLocations(_:)), for: .touchUpInside)
-        chooseLocationButon.translatesAutoresizingMaskIntoConstraints = false
         chooseLocationButon.tag = 0
         contentView.addSubview(chooseLocationButon)
         
         //reset location
         resetLocationButton.setImage(UIImage(named: "exit"), for: UIControlState())
-        resetLocationButton.translatesAutoresizingMaskIntoConstraints = false
         resetLocationButton.addTarget(self, action: #selector(resetLocations(_:)), for: .touchUpInside)
         contentView.addSubview(resetLocationButton)
         
@@ -210,19 +196,16 @@ class FilterPullDown: UIScrollView {
         levelLabel.text = "Level"
         levelLabel.textAlignment = .left
         levelLabel.textColor = UIColor.white
-        levelLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(levelLabel)
         
         //choose level button
         chooseLevelButon.setTitle("All", for: UIControlState())
-        chooseLevelButon.translatesAutoresizingMaskIntoConstraints = false
         chooseLevelButon.addTarget(self, action: #selector(openLevels(_:)), for: .touchUpInside)
         chooseLevelButon.tag = 1
         contentView.addSubview(chooseLevelButon)
         
         //reset level
         resetLevelButton.setImage(UIImage(named: "exit"), for: UIControlState())
-        resetLevelButton.translatesAutoresizingMaskIntoConstraints = false
         resetLevelButton.addTarget(self, action: #selector(resetLevel(_:)), for: .touchUpInside)
         contentView.addSubview(resetLevelButton)
         
@@ -230,19 +213,16 @@ class FilterPullDown: UIScrollView {
         zoneLabel.text = "Zone"
         zoneLabel.textAlignment = .left
         zoneLabel.textColor = UIColor.white
-        zoneLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(zoneLabel)
         
         //choose zone button
         chooseZoneButon.setTitle("All", for: UIControlState())
-        chooseZoneButon.translatesAutoresizingMaskIntoConstraints = false
         chooseZoneButon.addTarget(self, action: #selector(openZones(_:)), for: .touchUpInside)
         chooseZoneButon.tag = 2
         contentView.addSubview(chooseZoneButon)
         
         //reset zone
         resetZoneButton.setImage(UIImage(named: "exit"), for: UIControlState())
-        resetZoneButton.translatesAutoresizingMaskIntoConstraints = false
         resetZoneButton.addTarget(self, action: #selector(resetZone(_:)), for: .touchUpInside)
         contentView.addSubview(resetZoneButton)
         
@@ -250,25 +230,21 @@ class FilterPullDown: UIScrollView {
         categoryLabel.text = "Category"
         categoryLabel.textAlignment = .left
         categoryLabel.textColor = UIColor.white
-        categoryLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(categoryLabel)
         
         //choose category button
         chooseCategoryButon.setTitle("All", for: UIControlState())
-        chooseCategoryButon.translatesAutoresizingMaskIntoConstraints = false
         chooseCategoryButon.addTarget(self, action: #selector(openCategories(_:)), for: .touchUpInside)
         chooseCategoryButon.tag = 3
         contentView.addSubview(chooseCategoryButon)
         
         //reset category
         resetCategoryButton.setImage(UIImage(named: "exit"), for: UIControlState())
-        resetCategoryButton.translatesAutoresizingMaskIntoConstraints = false
         resetCategoryButton.addTarget(self, action: #selector(resetCategory(_:)), for: .touchUpInside)
         contentView.addSubview(resetCategoryButton)
         
         //GO button
         goButon.setTitle("Go", for: UIControlState())
-        goButon.translatesAutoresizingMaskIntoConstraints = false
         goButon.addTarget(self, action: #selector(go), for: .touchUpInside)
         contentView.addSubview(goButon)
         
@@ -301,175 +277,195 @@ class FilterPullDown: UIScrollView {
         setGo()
     }
     
-    func setBottomLineAndPullDownImageConstraint(){
-        //set bottomLine constraint
-        contentView.addConstraint(NSLayoutConstraint(item: bottomLine, attribute: .leading, relatedBy: .equal, toItem: contentView, attribute: .leading, multiplier: 1.0, constant: 0.0))
-        contentView.addConstraint(NSLayoutConstraint(item: bottomLine, attribute: .trailing, relatedBy: .equal, toItem: contentView, attribute: .trailing, multiplier: 1.0, constant: 0.0))
-        contentView.addConstraint(NSLayoutConstraint(item: bottomLine, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1.0, constant: 0))
-        bottomLine.addConstraint(NSLayoutConstraint(item: bottomLine, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 2))
+    func setBottomLineAndPullDownImageConstraint() {
+        bottomLine.snp.makeConstraints { (make) in
+            make.bottom.leading.trailing.equalToSuperview()
+            make.height.equalTo(2)
+        }
         
-        //set pullDown image
-        self.addConstraint(NSLayoutConstraint(item: pullView, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1.0, constant: 0.0))
-        self.addConstraint(NSLayoutConstraint(item: pullView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0))
+        pullView.snp.makeConstraints { (make) in
+            make.top.equalTo(contentView.snp.bottom)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(37)
+            make.width.equalTo(120)
+        }
         
-        pullView.addConstraint(NSLayoutConstraint(item: pullView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 37))
-        pullView.addConstraint(NSLayoutConstraint(item: pullView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 120))
+        greenIndicator.snp.makeConstraints { (make) in
+            make.top.equalTo(contentView.snp.bottom)
+            make.centerX.equalToSuperview().inset(-15)
+            make.height.equalTo(12)
+            make.width.equalTo(30)
+        }
         
-        //setGreenIndicator
-        self.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1.0, constant: 0.0))
-        self.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: -15))
-        
-        greenIndicator.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 12))
-        greenIndicator.addConstraint(NSLayoutConstraint(item: greenIndicator, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30))
-        
-        //setRedIndicator
-        self.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1.0, constant: 0.0))
-        self.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 15))
-        
-        redIndicator.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 12))
-        redIndicator.addConstraint(NSLayoutConstraint(item: redIndicator, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30))
+        redIndicator.snp.makeConstraints { (make) in
+            make.top.equalTo(contentView.snp.bottom)
+            make.centerX.equalToSuperview().offset(15)
+            make.height.equalTo(12)
+            make.width.equalTo(30)
+        }
+
     }
     
     func setDefaultValueConstraint(){
+        resetTimeButton.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().inset(10)
+            make.height.equalTo(35)
+            make.width.equalTo(35)
+        }
         
-        //reset value button
-        contentView.addConstraint(NSLayoutConstraint(item: resetTimeButton, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1.0, constant: 10))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: .trailing, relatedBy: .equal, toItem: resetTimeButton, attribute: .trailing, multiplier: 1.0, constant: 10))
-        resetTimeButton.addConstraint(NSLayoutConstraint(item: resetTimeButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 35))
-        resetTimeButton.addConstraint(NSLayoutConstraint(item: resetTimeButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 35))
+        secundsLabel.snp.makeConstraints { (make) in
+            make.centerY.equalTo(resetTimeButton.snp.centerY)
+            make.trailing.equalTo(resetTimeButton.snp.leading).inset(-3)
+            make.height.equalTo(35)
+            make.width.equalTo(20)
+        }
         
-        //secunds label
-        contentView.addConstraint(NSLayoutConstraint(item: resetTimeButton, attribute: .leading, relatedBy: .equal, toItem: secundsLabel, attribute: .trailing, multiplier: 1.0, constant: 3))
-        contentView.addConstraint(NSLayoutConstraint(item: secundsLabel, attribute: .centerY, relatedBy: .equal, toItem: resetTimeButton, attribute: .centerY, multiplier: 1, constant: 0))
-        secundsLabel.addConstraint(NSLayoutConstraint(item: secundsLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 35))
-        secundsLabel.addConstraint(NSLayoutConstraint(item: secundsLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20))
-        
-        //secunds text field
-        contentView.addConstraint(NSLayoutConstraint(item: secundsLabel, attribute: .leading, relatedBy: .equal, toItem: secundsTextField, attribute: .trailing, multiplier: 1.0, constant: 3))
-        contentView.addConstraint(NSLayoutConstraint(item: secundsTextField, attribute: .centerY, relatedBy: .equal, toItem: secundsLabel, attribute: .centerY, multiplier: 1, constant: 0))
-        secundsTextField.addConstraint(NSLayoutConstraint(item: secundsTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 35))
-        secundsTextField.addConstraint(NSLayoutConstraint(item: secundsTextField, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40))
-        
-        //minutes label
-        contentView.addConstraint(NSLayoutConstraint(item: secundsTextField, attribute: .leading, relatedBy: .equal, toItem: minLabel, attribute: .trailing, multiplier: 1.0, constant: 3))
-        contentView.addConstraint(NSLayoutConstraint(item: minLabel, attribute: .centerY, relatedBy: .equal, toItem: secundsTextField, attribute: .centerY, multiplier: 1, constant: 0))
-        minLabel.addConstraint(NSLayoutConstraint(item: minLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 35))
-        minLabel.addConstraint(NSLayoutConstraint(item: minLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20))
+        secundsTextField.snp.makeConstraints { (make) in
+            make.centerY.equalTo(secundsLabel.snp.centerY)
+            make.trailing.equalTo(secundsLabel.snp.leading).inset(-3)
+            make.height.equalTo(35)
+            make.width.equalTo(40)
+        }
+
+        minLabel.snp.makeConstraints { (make) in
+            make.centerY.equalTo(secundsTextField.snp.centerY)
+            make.trailing.equalTo(secundsTextField.snp.leading).inset(-3)
+            make.height.equalTo(35)
+            make.width.equalTo(20)
+        }
  
-        //minutes text field
-        contentView.addConstraint(NSLayoutConstraint(item: minLabel, attribute: .leading, relatedBy: .equal, toItem: minTextField, attribute: .trailing, multiplier: 1.0, constant: 3))
-        contentView.addConstraint(NSLayoutConstraint(item: minTextField, attribute: .centerY, relatedBy: .equal, toItem: minLabel, attribute: .centerY, multiplier: 1, constant: 0))
-        minTextField.addConstraint(NSLayoutConstraint(item: minTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 35))
-        minTextField.addConstraint(NSLayoutConstraint(item: minTextField, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40))
+        minTextField.snp.makeConstraints { (make) in
+            make.centerY.equalTo(minLabel.snp.centerY)
+            make.trailing.equalTo(minLabel.snp.leading).inset(-3)
+            make.height.equalTo(35)
+            make.width.equalTo(40)
+        }
         
-        //hours lebel
-        contentView.addConstraint(NSLayoutConstraint(item: minTextField, attribute: .leading, relatedBy: .equal, toItem: hoursLabel, attribute: .trailing, multiplier: 1.0, constant: 3))
-        contentView.addConstraint(NSLayoutConstraint(item: hoursLabel, attribute: .centerY, relatedBy: .equal, toItem: minTextField, attribute: .centerY, multiplier: 1, constant: 0))
-        hoursLabel.addConstraint(NSLayoutConstraint(item: hoursLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 35))
-        hoursLabel.addConstraint(NSLayoutConstraint(item: hoursLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 20))
+        hoursLabel.snp.makeConstraints { (make) in
+            make.centerY.equalTo(minTextField.snp.centerY)
+            make.trailing.equalTo(minTextField.snp.leading).inset(-3)
+            make.height.equalTo(35)
+            make.width.equalTo(20)
+        }
+
+        hoursTextField.snp.makeConstraints { (make) in
+            make.centerY.equalTo(hoursLabel.snp.centerY)
+            make.trailing.equalTo(hoursLabel.snp.leading).inset(-3)
+            make.height.equalTo(35)
+            make.width.equalTo(40)
+        }
         
-        //hours text field
-        contentView.addConstraint(NSLayoutConstraint(item: hoursLabel, attribute: .leading, relatedBy: .equal, toItem: hoursTextField, attribute: .trailing, multiplier: 1.0, constant: 3))
-        contentView.addConstraint(NSLayoutConstraint(item: hoursTextField, attribute: .centerY, relatedBy: .equal, toItem: hoursLabel, attribute: .centerY, multiplier: 1, constant: 0))
-        hoursTextField.addConstraint(NSLayoutConstraint(item: hoursTextField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 35))
-        hoursTextField.addConstraint(NSLayoutConstraint(item: hoursTextField, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40))
+        setAsDefaultButton.snp.makeConstraints { (make) in
+            make.centerY.equalTo(hoursTextField.snp.centerY)
+            make.height.equalTo(35)
+            make.trailing.equalTo(hoursTextField.snp.leading).offset(-5)
+            make.leading.equalToSuperview().offset(10)
+        }
         
-        //set as default button
-        contentView.addConstraint(NSLayoutConstraint(item: setAsDefaultButton, attribute: .leading, relatedBy: .equal, toItem: contentView, attribute: .leading, multiplier: 1.0, constant: 10))
-        contentView.addConstraint(NSLayoutConstraint(item: hoursTextField, attribute: .leading, relatedBy: .equal, toItem: setAsDefaultButton, attribute: .trailing, multiplier: 1.0, constant: 5))
-        contentView.addConstraint(NSLayoutConstraint(item: setAsDefaultButton, attribute: .centerY, relatedBy: .equal, toItem: hoursTextField, attribute: .centerY, multiplier: 1, constant: 0))
     }
     
-    func setLocationConstraint(){
+    func setLocationConstraint() {
+        locationLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(setAsDefaultButton.snp.bottom).offset(25)
+            make.leading.equalToSuperview().offset(10)
+            make.height.equalTo(35)
+            make.width.equalTo(80)
+        }
         
-        //location label
-        contentView.addConstraint(NSLayoutConstraint(item: locationLabel, attribute: .leading, relatedBy: .equal, toItem: contentView, attribute: .leading, multiplier: 1.0, constant: 10))
-        contentView.addConstraint(NSLayoutConstraint(item: locationLabel, attribute: .top, relatedBy: .equal, toItem: setAsDefaultButton, attribute: .bottom, multiplier: 1.0, constant: 25))
-        locationLabel.addConstraint(NSLayoutConstraint(item: locationLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 80))
+        chooseLocationButon.snp.makeConstraints { (make) in
+            make.centerY.equalTo(locationLabel.snp.centerY)
+            make.leading.equalTo(locationLabel.snp.trailing).offset(20)
+            make.trailing.equalTo(resetLocationButton.snp.leading).inset(-20)
+            make.height.equalTo(35)
+        }
         
-        //choose location button
-        contentView.addConstraint(NSLayoutConstraint(item: chooseLocationButon, attribute: .leading, relatedBy: .equal, toItem: locationLabel, attribute: .trailing, multiplier: 1.0, constant: 20))
-        contentView.addConstraint(NSLayoutConstraint(item: chooseLocationButon, attribute: .centerY, relatedBy: .equal, toItem: locationLabel, attribute: .centerY, multiplier: 1, constant: 0))
-        
-        //reset location
-        contentView.addConstraint(NSLayoutConstraint(item: resetLocationButton, attribute: .centerY, relatedBy: .equal, toItem: chooseLocationButon, attribute: .centerY, multiplier: 1, constant: 0))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: .trailing, relatedBy: .equal, toItem: resetLocationButton, attribute: .trailing, multiplier: 1.0, constant: 10))
-        resetLocationButton.addConstraint(NSLayoutConstraint(item: resetLocationButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 35))
-        resetLocationButton.addConstraint(NSLayoutConstraint(item: resetLocationButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 35))
-        
-        //choose location button trailing
-        contentView.addConstraint(NSLayoutConstraint(item: resetLocationButton, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: chooseLocationButon, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 20))
+        resetLocationButton.snp.makeConstraints { (make) in
+            make.height.equalTo(35)
+            make.width.equalTo(35)
+            make.centerY.equalTo(chooseLocationButon.snp.centerY)
+            make.trailing.equalToSuperview().inset(10)
+        }
     }
     
     func setLevelConstraint(){
-
-        // level label
-        contentView.addConstraint(NSLayoutConstraint(item: levelLabel, attribute: .leading, relatedBy: .equal, toItem: contentView, attribute: .leading, multiplier: 1.0, constant: 10))
-        contentView.addConstraint(NSLayoutConstraint(item: levelLabel, attribute: .top, relatedBy: .equal, toItem: locationLabel, attribute: .bottom, multiplier: 1.0, constant: 25))
-        levelLabel.addConstraint(NSLayoutConstraint(item: levelLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 80))
+        levelLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(locationLabel.snp.bottom).offset(10)
+            make.leading.equalToSuperview().offset(10)
+            make.height.equalTo(35)
+            make.width.equalTo(80)
+        }
         
-        //choose level button
-        contentView.addConstraint(NSLayoutConstraint(item: chooseLevelButon, attribute: .leading, relatedBy: .equal, toItem: levelLabel, attribute: .trailing, multiplier: 1.0, constant: 20))
-        contentView.addConstraint(NSLayoutConstraint(item: chooseLevelButon, attribute: .centerY, relatedBy: .equal, toItem: levelLabel, attribute: .centerY, multiplier: 1, constant: 0))
-
-        //reset level button
-        contentView.addConstraint(NSLayoutConstraint(item: resetLevelButton, attribute: .centerY, relatedBy: .equal, toItem: chooseLevelButon, attribute: .centerY, multiplier: 1, constant: 0))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: .trailing, relatedBy: .equal, toItem: resetLevelButton, attribute: .trailing, multiplier: 1.0, constant: 10))
-        resetLevelButton.addConstraint(NSLayoutConstraint(item: resetLevelButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 35))
-        resetLevelButton.addConstraint(NSLayoutConstraint(item: resetLevelButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 35))
+        chooseLevelButon.snp.makeConstraints { (make) in
+            make.centerY.equalTo(levelLabel.snp.centerY)
+            make.leading.equalTo(levelLabel.snp.trailing).offset(20)
+            make.trailing.equalTo(resetLevelButton.snp.leading).inset(-20)
+            make.height.equalTo(35)
+        }
         
-        //choose level button trailing
-        contentView.addConstraint(NSLayoutConstraint(item: resetLevelButton, attribute: .leading, relatedBy: .equal, toItem: chooseLevelButon, attribute: .trailing, multiplier: 1.0, constant: 20))
+        resetLevelButton.snp.makeConstraints { (make) in
+            make.centerY.equalTo(chooseLevelButon.snp.centerY)
+            make.trailing.equalToSuperview().inset(10)
+            make.height.equalTo(35)
+            make.width.equalTo(35)
+        }
     }
     
     func setZonesConstraint(){
-
-        //zone label
-        contentView.addConstraint(NSLayoutConstraint(item: zoneLabel, attribute: .leading, relatedBy: .equal, toItem: contentView, attribute: .leading, multiplier: 1.0, constant: 10))
-        contentView.addConstraint(NSLayoutConstraint(item: zoneLabel, attribute: .top, relatedBy: .equal, toItem: levelLabel, attribute: .bottom, multiplier: 1.0, constant: 25))
-        zoneLabel.addConstraint(NSLayoutConstraint(item: zoneLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 80))
-
-        //choose zone butoon
-        contentView.addConstraint(NSLayoutConstraint(item: chooseZoneButon, attribute: .leading, relatedBy: .equal, toItem: zoneLabel, attribute: .trailing, multiplier: 1.0, constant: 20))
-        contentView.addConstraint(NSLayoutConstraint(item: chooseZoneButon, attribute: .centerY, relatedBy: .equal, toItem: zoneLabel, attribute: .centerY, multiplier: 1, constant: 0))
+        zoneLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(levelLabel.snp.bottom).offset(10)
+            make.leading.equalToSuperview().offset(10)
+            make.height.equalTo(35)
+            make.width.equalTo(80)
+        }
         
-        //reset zone
-        contentView.addConstraint(NSLayoutConstraint(item: resetZoneButton, attribute: .centerY, relatedBy: .equal, toItem: chooseZoneButon, attribute: .centerY, multiplier: 1, constant: 0))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: .trailing, relatedBy: .equal, toItem: resetZoneButton, attribute: .trailing, multiplier: 1.0, constant: 10))
-        resetZoneButton.addConstraint(NSLayoutConstraint(item: resetZoneButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 35))
-        resetZoneButton.addConstraint(NSLayoutConstraint(item: resetZoneButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 35))
+        chooseZoneButon.snp.makeConstraints { (make) in
+            make.centerY.equalTo(zoneLabel.snp.centerY)
+            make.leading.equalTo(zoneLabel.snp.trailing).offset(20)
+            make.trailing.equalTo(resetZoneButton.snp.leading).inset(-20)
+            make.height.equalTo(35)
+        }
         
-        //choose zone trailing
-        contentView.addConstraint(NSLayoutConstraint(item: resetZoneButton, attribute: .leading, relatedBy: .equal, toItem: chooseZoneButon, attribute: .trailing, multiplier: 1.0, constant: 20))
+        resetZoneButton.snp.makeConstraints { (make) in
+            make.centerY.equalTo(chooseZoneButon.snp.centerY)
+            make.trailing.equalToSuperview().inset(10)
+            make.height.equalTo(35)
+            make.width.equalTo(35)
+        }
+
     }
     
     func setCategoryConstraint(){
-
-        //category label
-        contentView.addConstraint(NSLayoutConstraint(item: categoryLabel, attribute: .leading, relatedBy: .equal, toItem: contentView, attribute: .leading, multiplier: 1.0, constant: 10))
-        contentView.addConstraint(NSLayoutConstraint(item: categoryLabel, attribute: .top, relatedBy: .equal, toItem: zoneLabel, attribute: .bottom, multiplier: 1.0, constant: 25))
-        categoryLabel.addConstraint(NSLayoutConstraint(item: categoryLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 80))
-
-        //choose category label
-        contentView.addConstraint(NSLayoutConstraint(item: chooseCategoryButon, attribute: .leading, relatedBy: .equal, toItem: categoryLabel, attribute: .trailing, multiplier: 1.0, constant: 20))
-        contentView.addConstraint(NSLayoutConstraint(item: chooseCategoryButon, attribute: .centerY, relatedBy: .equal, toItem: categoryLabel, attribute: .centerY, multiplier: 1, constant: 0))
-
-        //reset category
-        contentView.addConstraint(NSLayoutConstraint(item: resetCategoryButton, attribute: .centerY, relatedBy: .equal, toItem: chooseCategoryButon, attribute: .centerY, multiplier: 1, constant: 0))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: .trailing, relatedBy: .equal, toItem: resetCategoryButton, attribute: .trailing, multiplier: 1.0, constant: 10))
-        resetCategoryButton.addConstraint(NSLayoutConstraint(item: resetCategoryButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 35))
-        resetCategoryButton.addConstraint(NSLayoutConstraint(item: resetCategoryButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 35))
+        categoryLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(zoneLabel.snp.bottom).offset(10)
+            make.leading.equalToSuperview().offset(10)
+            make.height.equalTo(35)
+            make.width.equalTo(80)
+        }
         
-        // choose button trailing
-        contentView.addConstraint(NSLayoutConstraint(item: resetCategoryButton, attribute: .leading, relatedBy: .equal, toItem: chooseCategoryButon, attribute: .trailing, multiplier: 1.0, constant: 20))
+        chooseCategoryButon.snp.makeConstraints { (make) in
+            make.centerY.equalTo(categoryLabel.snp.centerY)
+            make.leading.equalTo(categoryLabel.snp.trailing).offset(20)
+            make.trailing.equalTo(resetCategoryButton.snp.leading).inset(-20)
+            make.height.equalTo(35)
+        }
+        
+        resetCategoryButton.snp.makeConstraints { (make) in
+            make.centerY.equalTo(chooseCategoryButon.snp.centerY)
+            make.trailing.equalToSuperview().inset(10)
+            make.height.equalTo(35)
+            make.width.equalTo(35)
+        }
+
     }
     
-    func setGo(){
-        
-        //set go button constraints
-        contentView.addConstraint(NSLayoutConstraint(item: goButon, attribute: .trailing, relatedBy: .equal, toItem: chooseCategoryButon, attribute: .trailing, multiplier: 1.0, constant: 0))
-        contentView.addConstraint(NSLayoutConstraint(item: goButon, attribute: .top, relatedBy: .equal, toItem: chooseCategoryButon, attribute: .bottom, multiplier: 1.0, constant: 10))
-        contentView.addConstraint(NSLayoutConstraint(item: goButon, attribute: .width, relatedBy: .equal, toItem: chooseCategoryButon, attribute: .width, multiplier: 0.5, constant: 0))
+    func setGo() {
+        goButon.snp.makeConstraints { (make) in
+            make.width.equalTo(chooseCategoryButon.snp.width).dividedBy(2)
+            make.trailing.equalTo(chooseCategoryButon.snp.trailing)
+            make.top.equalTo(chooseCategoryButon.snp.bottom).offset(10)
+            make.height.equalTo(35)
+        }
     }
     
     func openLocations(_ sender : UIButton) {
