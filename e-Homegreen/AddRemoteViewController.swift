@@ -8,6 +8,10 @@
 
 import UIKit
 
+private struct LocalConstants {
+    static let scrollViewContentSize: CGSize = CGSize(width: GlobalConstants.screenSize.width - 32, height: 627)
+}
+
 class AddRemoteViewController: CommonXIBTransitionVC {
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     
@@ -109,9 +113,8 @@ extension AddRemoteViewController {
         dismissView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissVC)))
         
         prepareButtons()
-        heightForScrollView            = backView.frame.height
-        widthForScrollView             = backView.frame.width
-        scrollView.contentSize.height  = heightForScrollView
+
+        scrollView.contentSize = LocalConstants.scrollViewContentSize
         scrollView.layer.cornerRadius  = 10
         scrollView.layer.masksToBounds = true
         
@@ -230,25 +233,8 @@ extension AddRemoteViewController {
     fileprivate func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: .UIDeviceOrientationDidChange, object: nil)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(shapeRecieved(_:)), name: .ButtonShapeChosen, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(colorRecieved(_:)), name: .ButtonColorChosen, object: nil)
-    }
-    
-    @objc fileprivate func rotated() {
-        
-        if UIDevice.current.orientation == .portrait {
-            backView.frame.size.height  = heightForScrollView
-            backView.frame.size.width   = widthForScrollView
-        } else {
-            backView.frame.size.height  = widthForScrollView
-            backView.frame.size.width   = heightForScrollView
-        }
-        backView.center.x           = scrollView.center.x
-        backView.frame.origin.y     = scrollView.frame.origin.y
-        backView.layoutIfNeeded()
     }
     
     @objc fileprivate func keyboardWillShow(_ notification: Notification) {
@@ -326,8 +312,8 @@ extension AddRemoteViewController {
             
             if isNew {
                 let remote = Remote(context: moc, remoteInformation: remoteInfo)
-                if selectedLevel != nil { remote.parentZoneId = selectedLevel?.id } else { remote.parentZoneId = 255 }
-                if selectedZone != nil { remote.zoneId = selectedZone?.id } else { remote.zoneId = 255 }
+                remote.parentZoneId = (selectedLevel != nil) ? selectedLevel?.id : 255
+                remote.zoneId       = (selectedZone != nil) ? selectedZone?.id : 255
                 
                 DatabaseRemoteController.sharedInstance.saveRemote(remote: remote, to: location)
             } else {

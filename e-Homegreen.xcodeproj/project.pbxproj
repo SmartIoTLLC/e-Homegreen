@@ -176,8 +176,6 @@
 		4E218F4B1F7B92FC0068CA72 /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E218F4A1F7B92FC0068CA72 /* RemoteViewController.swift */; };
 		4E2DFB4A1FBDBF7D00F8AC00 /* ButtonSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DFB481FBDBF7D00F8AC00 /* ButtonSettingsVC.swift */; };
 		4E2DFB4B1FBDBF7D00F8AC00 /* ButtonSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E2DFB491FBDBF7D00F8AC00 /* ButtonSettingsVC.xib */; };
-		4E2DFB4E1FBDE1B800F8AC00 /* ChooseButtonColorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DFB4C1FBDE1B800F8AC00 /* ChooseButtonColorVC.swift */; };
-		4E2DFB4F1FBDE1B800F8AC00 /* ChooseButtonColorVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E2DFB4D1FBDE1B800F8AC00 /* ChooseButtonColorVC.xib */; };
 		4E3CFD7C1F823C2F00E22C92 /* ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3CFD7A1F823C2F00E22C92 /* ButtonCell.swift */; };
 		4E3CFD7D1F823C2F00E22C92 /* ButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E3CFD7B1F823C2F00E22C92 /* ButtonCell.xib */; };
 		4E479B7B20BFF235007C32AE /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E479B7A20BFF235007C32AE /* GlobalConstants.swift */; };
@@ -185,6 +183,8 @@
 		4E479B7F20C01C86007C32AE /* QuranTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E479B7E20C01C86007C32AE /* QuranTableViewCell.swift */; };
 		4E479B8120C01F0D007C32AE /* AudioPlayerBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E479B8020C01F0D007C32AE /* AudioPlayerBar.swift */; };
 		4E479B8320C033DD007C32AE /* RemoteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E479B8220C033DD007C32AE /* RemoteCollectionViewCell.swift */; };
+		4E4AC63920C53FFB00EDAEAD /* ChooseButtonColorOrShapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4AC63820C53FFB00EDAEAD /* ChooseButtonColorOrShapeViewController.swift */; };
+		4E4AC63B20C5579800EDAEAD /* NSNumberExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4AC63A20C5579800EDAEAD /* NSNumberExtensions.swift */; };
 		4E5BE4011F7D42E700497335 /* EditRemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5BE3FF1F7D42E700497335 /* EditRemoteViewController.swift */; };
 		4E605AA61FD81DEF00747EDC /* RealButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E605AA51FD81DEF00747EDC /* RealButton.swift */; };
 		4E62ABC81FBB1F51006D85E7 /* RemoteButton+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E62ABC61FBB1F51006D85E7 /* RemoteButton+CoreDataClass.swift */; };
@@ -602,8 +602,6 @@
 		4E218F4A1F7B92FC0068CA72 /* RemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteViewController.swift; sourceTree = "<group>"; };
 		4E2DFB481FBDBF7D00F8AC00 /* ButtonSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonSettingsVC.swift; sourceTree = "<group>"; };
 		4E2DFB491FBDBF7D00F8AC00 /* ButtonSettingsVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonSettingsVC.xib; sourceTree = "<group>"; };
-		4E2DFB4C1FBDE1B800F8AC00 /* ChooseButtonColorVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseButtonColorVC.swift; sourceTree = "<group>"; };
-		4E2DFB4D1FBDE1B800F8AC00 /* ChooseButtonColorVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseButtonColorVC.xib; sourceTree = "<group>"; };
 		4E3CFD7A1F823C2F00E22C92 /* ButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCell.swift; sourceTree = "<group>"; };
 		4E3CFD7B1F823C2F00E22C92 /* ButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonCell.xib; sourceTree = "<group>"; };
 		4E479B7A20BFF235007C32AE /* GlobalConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
@@ -611,6 +609,8 @@
 		4E479B7E20C01C86007C32AE /* QuranTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuranTableViewCell.swift; sourceTree = "<group>"; };
 		4E479B8020C01F0D007C32AE /* AudioPlayerBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerBar.swift; sourceTree = "<group>"; };
 		4E479B8220C033DD007C32AE /* RemoteCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCollectionViewCell.swift; sourceTree = "<group>"; };
+		4E4AC63820C53FFB00EDAEAD /* ChooseButtonColorOrShapeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseButtonColorOrShapeViewController.swift; sourceTree = "<group>"; };
+		4E4AC63A20C5579800EDAEAD /* NSNumberExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSNumberExtensions.swift; sourceTree = "<group>"; };
 		4E5BE3FF1F7D42E700497335 /* EditRemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditRemoteViewController.swift; sourceTree = "<group>"; };
 		4E605AA51FD81DEF00747EDC /* RealButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealButton.swift; sourceTree = "<group>"; };
 		4E62ABC61FBB1F51006D85E7 /* RemoteButton+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteButton+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -1383,8 +1383,7 @@
 				4E1961391FD537EC00F48272 /* Button Image */,
 				4E2DFB481FBDBF7D00F8AC00 /* ButtonSettingsVC.swift */,
 				4E2DFB491FBDBF7D00F8AC00 /* ButtonSettingsVC.xib */,
-				4E2DFB4C1FBDE1B800F8AC00 /* ChooseButtonColorVC.swift */,
-				4E2DFB4D1FBDE1B800F8AC00 /* ChooseButtonColorVC.xib */,
+				4E4AC63820C53FFB00EDAEAD /* ChooseButtonColorOrShapeViewController.swift */,
 			);
 			name = "Remote Button";
 			sourceTree = "<group>";
@@ -1770,6 +1769,7 @@
 				22495D321CAA868E0034FC94 /* UIGradient + Extension.swift */,
 				4D0D97211CAD4087001A1E89 /* HRToast+UIView.swift */,
 				4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */,
+				4E4AC63A20C5579800EDAEAD /* NSNumberExtensions.swift */,
 			);
 			name = "Extensions and Helpers";
 			sourceTree = "<group>";
@@ -2277,7 +2277,6 @@
 				E7DC67BD1B457C0E00EA6543 /* weather-mist@2x.png in Resources */,
 				22495D2A1CAA80600034FC94 /* Energy.storyboard in Resources */,
 				4EA4DA522004F33700CA8385 /* MediaCollectionCell.xib in Resources */,
-				4E2DFB4F1FBDE1B800F8AC00 /* ChooseButtonColorVC.xib in Resources */,
 				738DEC9D1BBBC2F000D6B834 /* SecurityPadVC.xib in Resources */,
 				E7DC67CF1B457CD400EA6543 /* night.png in Resources */,
 				733E5E861C666F840039B7A8 /* Config.plist in Resources */,
@@ -2476,6 +2475,7 @@
 				E7AA26131BCD116800D5C3F0 /* IBeacon.swift in Sources */,
 				223878A41C919A70001357E0 /* AddLocationXIB.swift in Sources */,
 				220176391CD0FED400A1470A /* MenuItem+CoreDataProperties.swift in Sources */,
+				4E4AC63920C53FFB00EDAEAD /* ChooseButtonColorOrShapeViewController.swift in Sources */,
 				E7C9CDFD1BC28D60007D8FE8 /* CustomTextView.swift in Sources */,
 				7372EB421BC410800097806D /* Sequence.swift in Sources */,
 				4E19613D1FD5397400F48272 /* RemoteDetailsVC+ViewSetup.swift in Sources */,
@@ -2610,7 +2610,6 @@
 				73E2311F1BA6E2C4003E41EC /* SequenceParametarVC.swift in Sources */,
 				4D0BB34B1D5C91020047688F /* PCCommand+CoreDataProperties.swift in Sources */,
 				4D411C9B1D5C982F000A3598 /* Device+CoreDataProperties.swift in Sources */,
-				4E2DFB4E1FBDE1B800F8AC00 /* ChooseButtonColorVC.swift in Sources */,
 				73EF277B1C07583F003A3A0A /* SurveilenceUrlsVC.swift in Sources */,
 				738E4E781C340A6F0017A7B0 /* IncomingHandler+Extensions.swift in Sources */,
 				495726B91D4F4966004F2A3D /* MultiSensorCell.swift in Sources */,
@@ -2684,6 +2683,7 @@
 				22FF1E621D86D86F00ECB86E /* Card+CoreDataProperties.swift in Sources */,
 				49C059701D91393F0061A544 /* TimerCell.swift in Sources */,
 				4E9EEAA5200374E900201E7C /* MediaCollectionVC.swift in Sources */,
+				4E4AC63B20C5579800EDAEAD /* NSNumberExtensions.swift in Sources */,
 				7372EB201BC3F7600097806D /* TimerParametarVC.swift in Sources */,
 				E7F57B0F1BA847F8006B0D71 /* ScanEventsViewController.swift in Sources */,
 				73331C181CA029DF009BA1DE /* FilterStruct.swift in Sources */,

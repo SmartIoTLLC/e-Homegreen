@@ -243,16 +243,23 @@ extension DevicesViewController {
         
         let address = device.moduleAddress
         
-        if controlType == ControlType.Dimmer || controlType == ControlType.Relay { SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway) }
-        if controlType == ControlType.Climate { SendingHandler.sendCommand(byteArray: OutgoingHandler.getACStatus(address), gateway: gateway) }
-        
-        if controlType == ControlType.Sensor || controlType == ControlType.IntelligentSwitch || controlType == ControlType.Gateway {
-            SendingHandler.sendCommand(byteArray: OutgoingHandler.getSensorState(address), gateway: gateway)
+        switch controlType {
+            case ControlType.Dimmer,
+                 ControlType.Relay:
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getLightRelayStatus(address), gateway: gateway)
+            case ControlType.Climate:
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getACStatus(address), gateway: gateway)
+            case ControlType.Sensor,
+                 ControlType.IntelligentSwitch,
+                 ControlType.Gateway:
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getSensorState(address), gateway: gateway)
+            case ControlType.Curtain:
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurtainStatus(address), gateway: gateway)
+            case ControlType.SaltoAccess:
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessState(address, lockId: channel), gateway: gateway)
+            default:
+                break
         }
-        
-        if controlType == ControlType.Curtain { SendingHandler.sendCommand(byteArray: OutgoingHandler.getCurtainStatus(address), gateway: gateway) }
-        if controlType == ControlType.SaltoAccess { SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessState(address, lockId: channel), gateway: gateway) } // TODO: CHECK
-        
         CoreDataController.sharedInstance.saveChanges()
     }
     

@@ -44,7 +44,6 @@ class DevicesViewController: PopoverVC{
     
     var appDel:AppDelegate!
     var devices:[Device] = []
-    var error:NSError? = nil
     var changeSliderValueOldValue = 0
     
     var storedIBeaconBarButtonItem: UIBarButtonItem!
@@ -68,8 +67,13 @@ class DevicesViewController: PopoverVC{
     @IBOutlet weak var fullscreenBarButton: UIBarButtonItem!
     @IBOutlet weak var refreshBarButton: UIBarButtonItem!
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.revealViewController().delegate = self
+        setupSWRevealViewController(menuButton: menuButton)
+        
         appDel = UIApplication.shared.delegate as! AppDelegate
 
         setupViews()
@@ -78,20 +82,14 @@ class DevicesViewController: PopoverVC{
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.revealViewController().delegate = self
-        setupSWRevealViewController(menuButton: menuButton)
+        super.viewWillAppear(animated)
         
         deviceCollectionView.isUserInteractionEnabled = true
         
-        getUserAndUpdateDeviceList()
+        updateDeviceList()
         refreshRunningTimes()
         changeFullscreenImage(fullscreenButton: fullScreenButton)
         startRefreshTimer()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
-        scrollView.setContentOffset(bottomOffset, animated: false)
         
         addObservers()
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
@@ -99,17 +97,25 @@ class DevicesViewController: PopoverVC{
         }
     }
     
-    override func viewWillLayoutSubviews() {
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        scrollView.setContentOffset(bottomOffset, animated: false)
         setContentOffset(for: scrollView)
         setTitleView(view: headerTitleSubtitleView)
+        
         collectionViewCellSize = calculateCellSize(completion: { deviceCollectionView.reloadData() })
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
         removeObservers()
         stopRefreshTimer()
     }
     
+    // MARK: - Logic
     fileprivate func refreshRunningTimes() {
         if !gotRunningTimes {
             devices.forEach { (device) in
@@ -149,11 +155,12 @@ class DevicesViewController: PopoverVC{
             if let index = deviceCollectionView.indexPathForItem(at: location) {
                 let controlType = devices[index.row].controlType
                 
-                if controlType == ControlType.Dimmer { showDimmerParametar(tag, devices: devices) }
-                else if controlType == ControlType.Relay { showRelayParametar(tag, devices: devices) }
-                else if controlType == ControlType.Curtain { showRelayParametar(tag, devices: devices) }
-                else { showIntelligentSwitchParameter(tag, devices: devices) }
-                
+                switch controlType {
+                    case ControlType.Dimmer : showDimmerParametar(tag, devices: devices)
+                    case ControlType.Relay  : showRelayParametar(tag, devices: devices)
+                    case ControlType.Curtain: showRelayParametar(tag, devices: devices)
+                    default                 : showIntelligentSwitchParameter(tag, devices: devices)
+                }
             }
         }
     }
@@ -176,31 +183,37 @@ class DevicesViewController: PopoverVC{
             let cell        = deviceCollectionView.cellForItem(at: index)
             let controlType = devices[index.row].controlType
             let options: UIViewAnimationOptions = [.transitionFlipFromBottom, .showHideTransitionViews]
+            let duration: Double = 0.5
             
-            if controlType == ControlType.Dimmer {
-                if let cell = cell as? DeviceCollectionCell {
-                    UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil)
-                }
+            switch controlType {
+                case ControlType.Dimmer:
+                    if let cell = cell as? DeviceCollectionCell {
+                        UIView.transition(from: cell.backView, to: cell.infoView, duration: duration, options: options , completion: nil)
+                    }
                 
-            } else if controlType == ControlType.Relay {
-                if let cell = cell as? ApplianceCollectionCell {
-                    UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil)
-                }
+                case ControlType.Relay:
+                    if let cell = cell as? ApplianceCollectionCell {
+                        UIView.transition(from: cell.backView, to: cell.infoView, duration: duration, options: options , completion: nil)
+                    }
                 
-            } else if controlType == ControlType.Sensor || controlType == ControlType.IntelligentSwitch || controlType == ControlType.Gateway {
-                if let cell = cell as? MultiSensorCell {
-                    UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil)
-                }
+                case ControlType.Sensor,
+                     ControlType.IntelligentSwitch,
+                     ControlType.Gateway:
+                    if let cell = cell as? MultiSensorCell {
+                        UIView.transition(from: cell.backView, to: cell.infoView, duration: duration, options: options , completion: nil)
+                    }
                 
-            } else if controlType == ControlType.Climate {
-                if let cell = cell as? ClimateCell {
-                    UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil)
-                }
+                case ControlType.Climate:
+                    if let cell = cell as? ClimateCell {
+                        UIView.transition(from: cell.backView, to: cell.infoView, duration: duration, options: options , completion: nil)
+                    }
                 
-            } else if controlType == ControlType.Curtain { // TODO: MAKE (REVISE) FUNCTIONALITY
-                if let cell = cell as? CurtainCollectionCell {
-                    UIView.transition(from: cell.backView, to: cell.infoView, duration: 0.5, options: options , completion: nil)
-                }
+                case ControlType.Curtain:
+                    if let cell = cell as? CurtainCollectionCell {
+                        UIView.transition(from: cell.backView, to: cell.infoView, duration: duration, options: options , completion: nil)
+                    }
+                
+                default: break
             }
             
             devices[index.row].info = true
@@ -214,30 +227,31 @@ class DevicesViewController: PopoverVC{
             let cell                            = deviceCollectionView.cellForItem(at: index)
             let controlType                     = devices[index.row].controlType
             let options: UIViewAnimationOptions = [.transitionFlipFromBottom, .showHideTransitionViews]
+            let duration: Double = 0.5
             
             if controlType == ControlType.Dimmer {
                 if let cell = cell as? DeviceCollectionCell {
-                    UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil)
+                    UIView.transition(from: cell.infoView, to: cell.backView, duration: duration, options: options, completion: nil)
                 }
                 
             } else if controlType == ControlType.Relay {
                 if let cell = cell as? ApplianceCollectionCell {
-                    UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil)
+                    UIView.transition(from: cell.infoView, to: cell.backView, duration: duration, options: options, completion: nil)
                 }
                 
             } else if controlType == ControlType.Sensor || controlType == ControlType.IntelligentSwitch || controlType == ControlType.Gateway {
                 if let cell = cell as? MultiSensorCell {
-                    UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil)
+                    UIView.transition(from: cell.infoView, to: cell.backView, duration: duration, options: options, completion: nil)
                 }
                 
             } else if controlType == ControlType.Climate {
                 if let cell = cell as? ClimateCell {
-                    UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil)
+                    UIView.transition(from: cell.infoView, to: cell.backView, duration: duration, options: options, completion: nil)
                 }
                 
             } else if controlType == ControlType.Curtain { // TODO: MAKE (REVISE) FUNCTIONALITY
                 if let cell = cell as? CurtainCollectionCell {
-                    UIView.transition(from: cell.infoView, to: cell.backView, duration: 0.5, options: options, completion: nil)
+                    UIView.transition(from: cell.infoView, to: cell.backView, duration: duration, options: options, completion: nil)
                 }
             }
             devices[index.row].info = false
@@ -752,17 +766,6 @@ extension DevicesViewController {
         scrollView.setFilterItem(Menu.devices)
     }
     
-    func calculateCellSize(_ size:inout CGSize) {
-        var i:CGFloat = 2
-        while i >= 2 {
-            if (view.frame.size.width / i) >= 120 && (view.frame.size.width / i) <= 160 { break }
-            i += 1
-        }
-        let const = (2/i + (i*5-5)/i)
-        let cellWidth = Int(view.frame.size.width/i - const)
-        size = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
-    }
-    
     //    This has to be done, because we dont receive updates immmediately from gateway
     func updateCells() {
         let indexPaths = deviceCollectionView.indexPathsForVisibleItems
@@ -831,10 +834,28 @@ extension DevicesViewController {
 extension DevicesViewController {
     
     // GENERAL
-    func updateDeviceList (_ user:User) {
-        if let devices = DatabaseDeviceController.shared.getDevicesOnDevicesScreen(filterParametar: filterParametar, user: user) {
-            self.devices = devices
+    func updateDeviceList() {
+        var loggedUser: User?
+        
+        if AdminController.shared.isAdminLogged() {
+            if let user = DatabaseUserController.shared.getOtherUser() {
+                loggedUser = user
+            }
+        } else {
+            if let user = DatabaseUserController.shared.getLoggedUser() {
+                loggedUser = user
+            }
         }
+        
+        if let user = loggedUser {
+            if let devices = DatabaseDeviceController.shared.getDevicesOnDevicesScreen(filterParametar: filterParametar, user: user) {
+                self.devices = devices
+            }
+        } else {
+            devices = []
+        }
+        
+        deviceCollectionView.reloadData()
     }
     
     func refreshDevice(_ sender:AnyObject) {
@@ -860,19 +881,6 @@ extension DevicesViewController {
                 SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: gateway)
             }
         }
-    }
-    
-    fileprivate func getUserAndUpdateDeviceList() {
-        if AdminController.shared.isAdminLogged() {
-            if let user = DatabaseUserController.shared.getOtherUser() { userLogged = user; updateDeviceList(user)
-            } else { devices = [] }
-            
-        } else {
-            if let user = DatabaseUserController.shared.getLoggedUser() { userLogged = user; updateDeviceList(user)
-            } else { devices = [] }
-            
-        }
-        deviceCollectionView.reloadData()
     }
     
     func oneTap(_ gestureRecognizer:UITapGestureRecognizer) {
@@ -1138,11 +1146,9 @@ extension DevicesViewController: FilterPullDownDelegate{
         
         checkZoneAndCategoryFromFilter(filterItem)
         
-        if let user = userLogged {
-            updateDeviceList(user)
-            deviceCollectionView.reloadData()
-            updateCells()
-        }
+        updateDeviceList()
+        updateCells()
+        
         toggleIBeaconButtonVisibility()
         
         TimerForFilter.shared.counterDevices = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.devices)
@@ -1169,18 +1175,14 @@ extension DevicesViewController: BigSliderDelegate {
         let device = devices[index]
         
         if device.controlType == ControlType.Dimmer {
-            var setDeviceValue:UInt8 = 0
-            var skipLevel:UInt8      = 0
+            let setDeviceValue: UInt8 = turnOff ? 0 : 100
+            let skipLevel: UInt8 = turnOff ? 0 : device.skipState.byteValue
+            
             if turnOff {
                 device.oldValue = device.currentValue
-                setDeviceValue  = UInt8(0)
-                skipLevel       = 0
-            } else {
-                setDeviceValue = 100
-                skipLevel      = getByte(device.skipState)
             }
             
-            let address            = [getByte(device.gateway.addressOne), getByte(device.gateway.addressTwo), getByte(device.address)]
+            let address            = [device.gateway.addressOne.byteValue, device.gateway.addressTwo.byteValue, device.address.byteValue]
             let deviceCurrentValue = Int(device.currentValue)
             device.currentValue = NSNumber(value: Int(setDeviceValue)*255/100)
             
@@ -1204,12 +1206,12 @@ extension DevicesViewController: BigSliderDelegate {
 
 extension DevicesViewController: SWRevealViewControllerDelegate{
     
-    func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition){
-        if position == .left { deviceCollectionView.isUserInteractionEnabled = true } else { deviceCollectionView.isUserInteractionEnabled = false }
+    func revealController(_ revealController: SWRevealViewController!,  willMoveTo position: FrontViewPosition) {
+        deviceCollectionView.isUserInteractionEnabled = (position == .left) ? true : false
     }
     
-    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition){
-        if position == .left { deviceCollectionView.isUserInteractionEnabled = true } else { deviceCollectionView.isUserInteractionEnabled = false }
+    func revealController(_ revealController: SWRevealViewController!,  didMoveTo position: FrontViewPosition) {
+        deviceCollectionView.isUserInteractionEnabled = (position == .left) ? true : false
     }
     
 }

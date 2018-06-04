@@ -140,11 +140,8 @@ extension ContactsListViewController {
         
         tableViewHeightConstraint.constant = height
         
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            tableViewWidthConstraint.constant = (UIScreen.main.bounds.width / 3) * 2.5
-        } else if UIDevice.current.userInterfaceIdiom == .pad {
-            tableViewWidthConstraint.constant = (UIScreen.main.bounds.width / 3) * 1.5
-        }
+        tableViewWidthConstraint.constant = (UIScreen.main.bounds.width / 3) * ((UIDevice.current.userInterfaceIdiom == .phone) ? 2.5 : 1.5)
+        
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         tableView.layoutIfNeeded()

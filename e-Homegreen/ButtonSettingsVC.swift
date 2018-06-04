@@ -64,7 +64,8 @@ class ButtonSettingsVC: CommonXIBTransitionVC, UITextFieldDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        scrollView.contentSize.height = backgroundViewHeight.constant
+        
+        scrollView.contentSize.height = backgroundViewHeight.constant // Bug posle rotiranja
     }
     
     // MARK: - Button look

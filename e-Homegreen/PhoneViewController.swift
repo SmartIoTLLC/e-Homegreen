@@ -12,7 +12,7 @@ import Contacts
 
 class PhoneViewController: UIViewController {
     
-    let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
+    fileprivate let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
     let audioEngine = AVAudioEngine()
     let speechRecognizer: SFSpeechRecognizer? = SFSpeechRecognizer()
@@ -243,7 +243,7 @@ extension PhoneViewController {
                     })
                     if self.contactsList.count != 0 {
                         self.showContactList(contacts: self.contactsList)
-                    } else { self.makeToastOnMainThread(message: "Didn't found contacts matching that name.") }
+                    } else { self.makeToastOnMainThread(message: "Didn't find contacts matching that name.") }
                     
                 } catch { self.makeToastOnMainThread(message: "Failed fetching contacts.") }
             }
@@ -306,7 +306,6 @@ extension PhoneViewController {
     func updateViews() {
         navigationItem.titleView = titleView
         titleView.setTitle("Phone")
-        if #available(iOS 11, *) { titleView.layoutIfNeeded() }
         navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: .default)
         
         setupMicrophoneView()

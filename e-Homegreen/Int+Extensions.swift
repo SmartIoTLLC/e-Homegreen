@@ -18,9 +18,16 @@ extension UInt {
         }
         return result
     }
+    
 }
 extension Byte {
     func covertToInt() -> Int {
         return Int(self)
+    }
+}
+
+extension Int {
+    var cgFloat: CGFloat {
+        return CGFloat(self)
     }
 }

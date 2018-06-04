@@ -37,6 +37,7 @@ class QuranViewController: UIViewController {
         sender.switchFullscreen()
     }
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -58,6 +59,7 @@ class QuranViewController: UIViewController {
         changeFullscreenImage(fullscreenButton: fullscreenButton)
     }
     
+    // MARK: - Setup views
     private func addBackgroundImageView() {
         backgroundImageView.contentMode = .scaleAspectFill
         
@@ -94,44 +96,12 @@ class QuranViewController: UIViewController {
     fileprivate func goToSuraPlayerViewController() {
         if let vc = UIStoryboard(name: "Quran", bundle: nil).instantiateViewController(withIdentifier: "SuraPlayer") as? SuraPlayerViewController {
             vc.reciter = selectedReciter
-            
+            vc.view.backgroundColor = .red
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
-
-}
-
-// MARK: - Table View Data Source & Delegate
-extension QuranViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: QuranTableViewCell.reuseIdentifier, for: indexPath) as? QuranTableViewCell {
-            cell.setCell(with: reciters[indexPath.row])
-            return cell
-        }
-        
-        return UITableViewCell()
-    }
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return reciters.count
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        didSelectReciter(at: indexPath)
-    }
-    
-}
-
-// MARK: - Logic
-extension QuranViewController {
+    // MARK: - Logic
     fileprivate func fetchReciters() {
         do {
             if let file = Bundle.main.url(forResource: "reciters", withExtension: "json") {
@@ -171,6 +141,35 @@ extension QuranViewController {
         selectedReciter = reciters[indexPath.row]
         goToSuraPlayerViewController()
     }
+}
+
+// MARK: - Table View Data Source & Delegate
+extension QuranViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: QuranTableViewCell.reuseIdentifier, for: indexPath) as? QuranTableViewCell {
+            cell.setCell(with: reciters[indexPath.row])
+            return cell
+        }
+        
+        return UITableViewCell()
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return reciters.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        didSelectReciter(at: indexPath)
+    }
+    
 }
 
 extension QuranViewController: SWRevealViewControllerDelegate {
