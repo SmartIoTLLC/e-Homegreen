@@ -192,6 +192,7 @@
 		4E635DD2201A127900216041 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E635DD1201A127900216041 /* AudioPlayer.swift */; };
 		4E7115C11FD15E9D007DB67C /* ButtonImageEditorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7115BF1FD15E9D007DB67C /* ButtonImageEditorVC.swift */; };
 		4E7115C21FD15E9D007DB67C /* ButtonImageEditorVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E7115C01FD15E9D007DB67C /* ButtonImageEditorVC.xib */; };
+		4E77754D20C687C2002E1469 /* PhoneInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E77754C20C687C2002E1469 /* PhoneInstructionsViewController.swift */; };
 		4E7945511F6FC64F006C3ACA /* Sura+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E79454F1F6FC64F006C3ACA /* Sura+CoreDataClass.swift */; };
 		4E7945521F6FC64F006C3ACA /* Sura+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7945501F6FC64F006C3ACA /* Sura+CoreDataProperties.swift */; };
 		4E8515451FE00EC70017AA6D /* NavigationTitleViewNF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8515441FE00EC70017AA6D /* NavigationTitleViewNF.swift */; };
@@ -618,6 +619,7 @@
 		4E635DD1201A127900216041 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		4E7115BF1FD15E9D007DB67C /* ButtonImageEditorVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonImageEditorVC.swift; sourceTree = "<group>"; };
 		4E7115C01FD15E9D007DB67C /* ButtonImageEditorVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonImageEditorVC.xib; sourceTree = "<group>"; };
+		4E77754C20C687C2002E1469 /* PhoneInstructionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneInstructionsViewController.swift; sourceTree = "<group>"; };
 		4E79454F1F6FC64F006C3ACA /* Sura+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sura+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4E7945501F6FC64F006C3ACA /* Sura+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sura+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4E8515441FE00EC70017AA6D /* NavigationTitleViewNF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationTitleViewNF.swift; sourceTree = "<group>"; };
@@ -1490,6 +1492,7 @@
 				4E1771831F7536880002C6D6 /* ContactCell.xib */,
 				4E1771861F753CEE0002C6D6 /* ContactsListViewController.swift */,
 				4E1771871F753CEE0002C6D6 /* ContactsListViewController.xib */,
+				4E77754C20C687C2002E1469 /* PhoneInstructionsViewController.swift */,
 			);
 			name = Phone;
 			sourceTree = "<group>";
@@ -2414,6 +2417,7 @@
 				73E427BA1B4D0B870083A747 /* DeviceInfo.swift in Sources */,
 				22D867671CBE832400A6575A /* ZoneAndCategoryControl.swift in Sources */,
 				738DECA21BBBC39F00D6B834 /* SecuirtyCommandVC.swift in Sources */,
+				4E77754D20C687C2002E1469 /* PhoneInstructionsViewController.swift in Sources */,
 				22D7EB9E1D780FB600853051 /* SecurityLocationCell.swift in Sources */,
 				22359C6A1CAE98290054434B /* LocationCell.swift in Sources */,
 				4D0D97221CAD4087001A1E89 /* HRToast+UIView.swift in Sources */,

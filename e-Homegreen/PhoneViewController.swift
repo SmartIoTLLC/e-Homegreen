@@ -32,6 +32,8 @@ class PhoneViewController: UIViewController {
     
     var dismissGesture: UITapGestureRecognizer!
     
+    private let infoButton: UIButton = UIButton()
+    
     @IBOutlet weak var background: UIImageView!
     
     @IBOutlet weak var microphoneView: UIView!
@@ -62,6 +64,34 @@ class PhoneViewController: UIViewController {
         
         requestSpeechAuthorization()
         updateViews()
+        
+        addInfoButton()
+        setupConstraints()
+    }
+    
+    private func addInfoButton() {
+        infoButton.setImage(#imageLiteral(resourceName: "info_3-512").withRenderingMode(.alwaysTemplate), for: UIControlState())
+        infoButton.imageView?.tintColor = .white
+        infoButton.addTap {
+            let infoViewController: PhoneInstructionsViewController = PhoneInstructionsViewController()
+            infoViewController.modalTransitionStyle = .crossDissolve
+            infoViewController.modalPresentationStyle = .overCurrentContext
+            self.present(infoViewController, animated: true, completion: nil)
+        }
+        
+        view.addSubview(infoButton)
+    }
+    
+    private func setupConstraints() {
+        background.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
+        
+        infoButton.snp.makeConstraints { (make) in
+            make.bottom.equalToSuperview().inset(GlobalConstants.sidePadding)
+            make.trailing.equalToSuperview().inset(GlobalConstants.sidePadding)
+            make.width.height.equalTo(35)
+        }
     }
 
 }
@@ -73,11 +103,11 @@ extension PhoneViewController {
     func toggleMic(off: Bool) {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.3, animations: {
-                if !off { self.microphoneView.alpha = 1.0 } else { self.microphoneView.alpha = 0.0 }
+                self.microphoneView.alpha = off ? 0.0 : 1.0
             } )
         }
-        if !off { view.addGestureRecognizer(dismissGesture) }
-        if off { view.removeGestureRecognizer(dismissGesture) }
+        
+        off ? view.removeGestureRecognizer(dismissGesture) : view.addGestureRecognizer(dismissGesture)
     }
     
     func toggleButtonOnMainThread(button: UIButton, enabled: Bool) {
@@ -217,14 +247,29 @@ extension PhoneViewController {
     func fetchContacts(recognizedContact: String) {
         
         let keys: [CNKeyDescriptor] = [CNContactFormatter.descriptorForRequiredKeys(for: .fullName), CNContactPhoneNumbersKey as CNKeyDescriptor]
-        let request = CNContactFetchRequest(keysToFetch: keys)
+        let request: CNContactFetchRequest = CNContactFetchRequest(keysToFetch: keys)
         
         let predicate = CNContact.predicateForContacts(matchingName: recognizedContact.removeUnwantedKeywords())
         
         do {
             let containerResults = try usersContactStorage.unifiedContacts(matching: predicate, keysToFetch: keys)
             
-            let contactName = (containerResults.first?.givenName ?? "") + (containerResults.first?.middleName ?? "") + (containerResults.first?.familyName ?? "")
+            var contactName: String = ""
+            
+            if let firstName = containerResults.first?.givenName {
+                contactName += firstName
+            }
+            if let middleName = containerResults.first?.middleName {
+                contactName += middleName
+            }
+            if let familyName = containerResults.first?.familyName {
+                contactName += familyName
+            }
+            
+            //let contactName = (containerResults.first?.givenName ?? "") + (containerResults.first?.middleName ?? "") + (containerResults.first?.familyName ?? "")
+            /* TODO: use CONTAINS + remove whitespace
+                add information button with a tutorial on how to use the feature
+             */
             
             if containerResults.count == 1 && recognizedContact.replacingOccurrences(of: " ", with: "") == contactName {
                 if let phoneNumber = containerResults.first?.phoneNumbers.first?.value.stringValue {

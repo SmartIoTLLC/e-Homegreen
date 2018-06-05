@@ -21,11 +21,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="FkF-H2-3Ej">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="FkF-H2-3Ej">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="25K-Qe-rIZ" customClass="CustomGradientButton" customModule="e_Homegreen" customModuleProvider="target">
-                                <rect key="frame" x="127" y="345" width="120" height="40"/>
+                                <rect key="frame" x="127" y="313.5" width="120" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="120" id="FjC-bE-bGY"/>
                                     <constraint firstAttribute="height" constant="40" id="KlV-Oo-TM7"/>
@@ -36,7 +37,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8uh-Wa-lvr">
-                                <rect key="frame" x="16" y="265" width="343" height="200"/>
+                                <rect key="frame" x="16" y="233.5" width="343" height="200"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="w9t-JG-aBp">
                                         <rect key="frame" x="121" y="50" width="100" height="100"/>
@@ -69,14 +70,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="ms1-TB-xcE" firstAttribute="top" secondItem="FkF-H2-3Ej" secondAttribute="bottom" id="4jz-e9-wTP"/>
-                            <constraint firstItem="FkF-H2-3Ej" firstAttribute="top" secondItem="QVb-CF-giZ" secondAttribute="bottom" id="MD0-fQ-cHj"/>
-                            <constraint firstItem="25K-Qe-rIZ" firstAttribute="centerX" secondItem="FkF-H2-3Ej" secondAttribute="centerX" id="R4x-4B-1ZA"/>
-                            <constraint firstItem="25K-Qe-rIZ" firstAttribute="centerY" secondItem="FkF-H2-3Ej" secondAttribute="centerY" id="Z8a-dG-ePI"/>
+                            <constraint firstItem="25K-Qe-rIZ" firstAttribute="centerY" secondItem="60N-cT-8OT" secondAttribute="centerY" id="Fkq-JN-BQb"/>
+                            <constraint firstItem="25K-Qe-rIZ" firstAttribute="centerX" secondItem="60N-cT-8OT" secondAttribute="centerX" id="bDO-zW-2NS"/>
                             <constraint firstItem="8uh-Wa-lvr" firstAttribute="centerX" secondItem="25K-Qe-rIZ" secondAttribute="centerX" id="hY6-1J-ROA"/>
                             <constraint firstItem="8uh-Wa-lvr" firstAttribute="centerY" secondItem="25K-Qe-rIZ" secondAttribute="centerY" id="nAa-Yj-NK5"/>
-                            <constraint firstItem="FkF-H2-3Ej" firstAttribute="width" secondItem="60N-cT-8OT" secondAttribute="width" id="rYe-7I-All"/>
-                            <constraint firstItem="FkF-H2-3Ej" firstAttribute="centerX" secondItem="60N-cT-8OT" secondAttribute="centerX" id="yuJ-Zl-12o"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="QQg-f2-LMF">
