@@ -11,6 +11,8 @@ import AudioToolbox
 
 class UsersViewController: PopoverVC {
     
+    @IBOutlet weak var backgroundImageView: UIImageView!
+    
     var timers:[Timer]             = []
     var scrollView                 = FilterPullDown()
     var collectionViewCellSize     = CGSize(width: 150, height: 180)
@@ -35,6 +37,8 @@ class UsersViewController: PopoverVC {
         
         setupViews()
         addObservers()
+        
+        setupConstraints()
     }
     
     override func viewWillLayoutSubviews() {
@@ -67,6 +71,12 @@ class UsersViewController: PopoverVC {
     
     override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
+    }
+    
+    private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
     }
 }
 

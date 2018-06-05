@@ -55,6 +55,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
     var to:Int = 0
     var pbSZ:ProgressBarVC?
     
+    @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var txtFrom: UITextField!
     @IBOutlet weak var txtTo: UITextField!
     @IBOutlet weak var importZoneTableView: UITableView!
@@ -86,6 +87,7 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         super.viewDidLoad()
         
         setupViews()
+        setupConstraints()
         refreshZoneList()
     }
     
@@ -102,6 +104,11 @@ class ImportZoneViewController: PopoverVC, ImportFilesDelegate, ProgressBarDeleg
         
     }
     
+    private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
+    }
 }
 
 

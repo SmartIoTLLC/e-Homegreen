@@ -81,12 +81,20 @@ class DashboardViewController: UIViewController, FSCalendarDataSource, FSCalenda
         
         let panRecognizer1 = UIPanGestureRecognizer(target:self, action:#selector(DashboardViewController.detectPan1(_:)))
         calendar.addGestureRecognizer(panRecognizer1)
+        
+        setupConstraints()
     }
     override func viewWillAppear(_ animated: Bool) {
         self.revealViewController().delegate = self
         setupSWRevealViewController(menuButton: menuButton)
         
         changeFullscreenImage(fullscreenButton: fullScreenButton)
+    }
+    
+    private func setupConstraints() {
+        backgroundImage.snp.makeConstraints { (make) in
+            make.leading.trailing.top.bottom.equalToSuperview()
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

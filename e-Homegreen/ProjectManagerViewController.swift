@@ -16,6 +16,7 @@ class ProjectManagerViewController: UIViewController {
     let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     var storedBarButtons: [UIBarButtonItem] = []
     
+    @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var usersTableView: UITableView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
@@ -48,6 +49,7 @@ class ProjectManagerViewController: UIViewController {
         storedBarButtons = [addBarButton, fullscreenBarButton]
 
         usersTableView.tableFooterView = UIView()
+        setupConstraints()
     }
     
     fileprivate func toggleAddButtonVisibility() {
@@ -65,6 +67,12 @@ class ProjectManagerViewController: UIViewController {
                     vc.user = users[button.tag]
                 }
             }
+        }
+    }
+    
+    private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
         }
     }
     

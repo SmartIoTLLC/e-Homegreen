@@ -12,6 +12,8 @@ import AudioToolbox
 
 class PCControlViewController: PopoverVC {
     
+    @IBOutlet weak var backgroundImageView: UIImageView!
+    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
     
@@ -31,6 +33,7 @@ class PCControlViewController: PopoverVC {
         super.viewDidLoad()
         
         setupViews()
+        setupConstraints()
         
         NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerPCControl), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updatePCList), name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
@@ -83,6 +86,12 @@ class PCControlViewController: PopoverVC {
     
     override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
+    }
+    
+    private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
     }
     
     func setDefaultFilterFromTimer() {

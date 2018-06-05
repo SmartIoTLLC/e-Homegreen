@@ -11,6 +11,8 @@ import AudioToolbox
 
 class EventsViewController: PopoverVC{
     
+    @IBOutlet weak var backgroundImageView: UIImageView!
+    
     fileprivate var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     fileprivate let reuseIdentifier = "EventCell"
     var collectionViewCellSize = CGSize(width: 150, height: 180)
@@ -34,6 +36,8 @@ class EventsViewController: PopoverVC{
         
         setupViews()
         addObservers()
+        
+        setupConstraints()
     }
     
     override func viewWillLayoutSubviews() {
@@ -59,6 +63,12 @@ class EventsViewController: PopoverVC{
     
     override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
+    }
+    
+    private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
     }
 
 }

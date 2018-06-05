@@ -98,12 +98,14 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
     var menu:[MenuItem] = []
     var menuList:[String] = []
     
+    @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var topView: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupViews()
+        setupConstraints()
     }
     
     fileprivate func setupViews() {
@@ -112,6 +114,12 @@ class MenuSettingsViewController: UIViewController, UITableViewDataSource, UITab
         if #available(iOS 11, *) { titleView.layoutIfNeeded() }
         navigationItem.titleView = titleView
         titleView.setTitle("Main Menu")
+    }
+    
+    private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

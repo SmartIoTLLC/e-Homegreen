@@ -63,6 +63,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     
     var pbSZ:ProgressBarVC?
     
+    @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var importCategoryTableView: UITableView!
     @IBOutlet weak var txtFrom: UITextField!
     @IBOutlet weak var txtTo: UITextField!
@@ -89,6 +90,7 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
         super.viewDidLoad()
         
         setupViews()
+        setupConstraints()
         refreshCategoryList()
     }
     
@@ -98,6 +100,12 @@ class ImportCategoryViewController: UIViewController, ImportFilesDelegate, EditC
     }
     override func viewWillAppear(_ animated: Bool) {
         addObservers()
+    }
+    
+    private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
     }
     
 }

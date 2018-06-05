@@ -11,6 +11,8 @@ import CoreData
 import AudioToolbox
 
 class SurveillenceViewController: PopoverVC {
+    
+    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var fullScreenButton: UIButton!
     @IBOutlet weak var cameraCollectionView: UICollectionView!
@@ -28,7 +30,8 @@ class SurveillenceViewController: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupViews()
+        setupViews()        
+        setupConstraints()
         
         NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSurvailance), object: nil)
     }
@@ -92,6 +95,12 @@ class SurveillenceViewController: PopoverVC {
     override func viewWillDisappear(_ animated: Bool) {
         for cell in cameraCollectionView.visibleCells as! [SurveillenceCell] { cell.timer?.invalidate() }
         removeObservers()
+    }
+    
+    private func setupConstraints() {
+        imageBack.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
     }
     
     func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){

@@ -11,6 +11,7 @@ import CoreData
 import AudioToolbox
 
 class EnergyViewController: PopoverVC  {
+    @IBOutlet weak var backgroundImageView: UIImageView!
     
     @IBOutlet weak var current: UILabel!
     @IBOutlet weak var powerUsage: UILabel!
@@ -31,6 +32,7 @@ class EnergyViewController: PopoverVC  {
         
         appDel = UIApplication.shared.delegate as! AppDelegate
         setupViews()
+        setupConstraints()
         addObserversVDL()
     }
     
@@ -63,6 +65,12 @@ class EnergyViewController: PopoverVC  {
 
     @IBAction func fullScreen(_ sender: UIButton) {
         sender.switchFullscreen(viewThatNeedsOffset: scrollView)        
+    }
+    
+    private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
     }
 }
 

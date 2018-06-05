@@ -28,6 +28,7 @@ class ImportSSIDViewController: UIViewController {
     var appDel:AppDelegate!
     var error:NSError? = nil
 
+    @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var ssidNameTextfield: UITextField!
     @IBOutlet weak var ssidTableView: UITableView!
     @IBAction func doneAction(_ sender: AnyObject) {
@@ -44,9 +45,15 @@ class ImportSSIDViewController: UIViewController {
         super.viewDidLoad()
         
         setupViews()
+        setupConstraints()
         updateSSID()
     }
     
+    private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
+    }
 }
 
 // MARK: - TableView DataSource & Delegate

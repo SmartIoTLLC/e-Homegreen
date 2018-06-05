@@ -11,6 +11,8 @@ import AudioToolbox
 
 class SequencesViewController: PopoverVC {
     
+    @IBOutlet weak var backgroundImageView: UIImageView!
+    
     var scrollView = FilterPullDown()
     var senderButton:UIButton?
     var sequences:[Sequence] = []
@@ -29,6 +31,8 @@ class SequencesViewController: PopoverVC {
         
         setupViews()
         addObservers()
+        
+        setupConstraints()
     }
     
     override func viewWillLayoutSubviews() {
@@ -58,6 +62,12 @@ class SequencesViewController: PopoverVC {
 
     @IBAction func fullScreen(_ sender: UIButton) {
         sender.switchFullscreen(viewThatNeedsOffset: scrollView)        
+    }
+    
+    private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
     }
 }
 

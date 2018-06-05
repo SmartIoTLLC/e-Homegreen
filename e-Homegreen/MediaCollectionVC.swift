@@ -11,6 +11,8 @@ import AudioToolbox
 
 class MediaCollectionVC: PopoverVC {
     
+    @IBOutlet weak var backgroundImageView: UIImageView!
+    
     let titleView = NavigationTitleView(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
     var filterParametar: FilterItem!
@@ -37,6 +39,7 @@ class MediaCollectionVC: PopoverVC {
         setupScrollView()
         updateViews()
         
+        setupConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,6 +64,12 @@ class MediaCollectionVC: PopoverVC {
     
     override func nameAndId(_ name: String, id: String) {
         scrollView.setButtonTitle(name, id: id)
+    }
+    
+    private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
     }
 }
 

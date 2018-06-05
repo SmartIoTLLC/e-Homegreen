@@ -29,6 +29,8 @@ class SecurityViewController: PopoverVC {
     fileprivate var sectionInsets = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     fileprivate let reuseIdentifier = "SecurityCell"
     
+    @IBOutlet weak var backgroundImageView: UIImageView!
+    
     var securities:[Security] = []
     var location:[Location] = []
         
@@ -60,6 +62,8 @@ class SecurityViewController: PopoverVC {
         refreshSecurityAlarmStateAndSecurityMode()
         
         addObserversVDL()
+        
+        setupConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -106,6 +110,11 @@ class SecurityViewController: PopoverVC {
         }
     }
     
+    private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
+    }
 }
 
 // MARK: - View Setup

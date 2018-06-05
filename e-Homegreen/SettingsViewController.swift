@@ -52,6 +52,7 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
     var settingArray:[SettingsItem]!
     var isMore = false
     
+    @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var settingsTableView: UITableView!
     @IBOutlet weak var tableBottomConstraint: NSLayoutConstraint!
@@ -61,6 +62,7 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
         appDel = UIApplication.shared.delegate as! AppDelegate
         
         setupViews()
+        setupConstraints()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
@@ -103,6 +105,12 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
             if let destinationVC = segue.destination as? MenuSettingsViewController {
                 if let user = user { destinationVC.user = user } else { let tempUser = DatabaseUserController.shared.getLoggedUser(); destinationVC.user = tempUser }
             }
+        }
+    }
+    
+    private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
         }
     }
 

@@ -17,6 +17,8 @@ struct ChatItem {
 
 class ChatViewController: PopoverVC, ChatDeviceDelegate {
     
+    @IBOutlet weak var backgroundImageView: UIImageView!
+    
     @IBOutlet weak var chatTableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
     
@@ -55,6 +57,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         
         setupViews()
         setupObservers()
+        setupConstraints()
     }
     
     func setupObservers() {
@@ -127,6 +130,12 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     
     @IBAction func fullScreen(_ sender: UIButton) {
         sender.switchFullscreen(viewThatNeedsOffset: scrollView)        
+    }
+    
+    private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
     }
     
     func refreshLocalParametars() {

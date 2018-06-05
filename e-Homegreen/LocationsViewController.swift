@@ -42,6 +42,7 @@ class LocationViewController: PopoverVC  {
     
     let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
+    @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var ipHostTextField: UITextField!
     @IBOutlet weak var portTextField: UITextField!
     @IBOutlet weak var gatewayTableView: UITableView!
@@ -73,6 +74,7 @@ class LocationViewController: PopoverVC  {
         
         updateViews()
         updateLocationList()
+        setupConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -84,6 +86,12 @@ class LocationViewController: PopoverVC  {
             if let vc = segue.destination as? ScanViewController {
                 if let gateway = sender as? Gateway { vc.gateway = gateway }
             }
+        }
+    }
+    
+    private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
         }
     }
 

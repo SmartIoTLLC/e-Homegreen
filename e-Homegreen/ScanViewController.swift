@@ -33,6 +33,7 @@ class ScanViewController: PopoverVC {
     
     var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Database)
     
+    @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -46,6 +47,7 @@ class ScanViewController: PopoverVC {
         super.viewDidLoad()
         
         setupViews()
+        setupConstraints()
         setupViewControllersInit()
         setupVCfiltersAndGateways()
         
@@ -61,6 +63,12 @@ class ScanViewController: PopoverVC {
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
         scrollView.isHidden = false
+    }
+    
+    private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
     }
     
     override func nameAndId(_ name: String, id: String) {
