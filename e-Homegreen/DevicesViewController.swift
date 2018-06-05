@@ -25,6 +25,8 @@ class DevicesViewController: PopoverVC{
         refreshTimer = nil
     }
     
+    private let backgroundView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "Background"))
+    
     var gotRunningTimes: Bool = false
     
     var sectionInsets = UIEdgeInsets(top: 25, left: 0, bottom: 20, right: 0)
@@ -73,12 +75,23 @@ class DevicesViewController: PopoverVC{
         
         self.revealViewController().delegate = self
         setupSWRevealViewController(menuButton: menuButton)
+        collectionViewCellSize = calculateCellSize(completion: { deviceCollectionView.reloadData() })
         
         appDel = UIApplication.shared.delegate as! AppDelegate
 
+        addBackgroundView()
+        setupConstraints()
+        
         setupViews()
         
         NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerDevices), object: nil)
+    }
+        
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        setContentOffset(for: scrollView)
+        setTitleView(view: headerTitleSubtitleView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -97,15 +110,11 @@ class DevicesViewController: PopoverVC{
         }
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
         scrollView.setContentOffset(bottomOffset, animated: false)
-        setContentOffset(for: scrollView)
-        setTitleView(view: headerTitleSubtitleView)
-        
-        collectionViewCellSize = calculateCellSize(completion: { deviceCollectionView.reloadData() })
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -113,6 +122,28 @@ class DevicesViewController: PopoverVC{
         
         removeObservers()
         stopRefreshTimer()
+    }
+    
+    private func addBackgroundView() {
+        backgroundView.contentMode = .scaleAspectFill
+        
+        view.addSubview(backgroundView)
+        view.bringSubview(toFront: deviceCollectionView)
+    }
+    
+    private func setupConstraints() {
+        backgroundView.snp.makeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
+        
+        deviceCollectionView.snp.makeConstraints { (make) in
+            make.top.leading.trailing.equalToSuperview()
+            if #available(iOS 11, *) {
+                make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            } else {
+                make.bottom.equalToSuperview()
+            }
+        }
     }
     
     // MARK: - Logic
@@ -1141,8 +1172,8 @@ extension DevicesViewController: FilterPullDownDelegate{
     // Function is called when filter is defined
     func filterParametars(_ filterItem: FilterItem) {
         filterParametar = filterItem
-        updateSubtitle(headerTitleSubtitleView, title: "Devices", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName) // Update the subtitle in navigation in order for user to see what filter parameters are selected.
-        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.devices) // Saves filter to database for later
+        updateSubtitle(headerTitleSubtitleView, title: "Devices", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.devices)
         
         checkZoneAndCategoryFromFilter(filterItem)
         

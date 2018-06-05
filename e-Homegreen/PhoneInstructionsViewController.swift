@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 private struct LocalConstants {
-    static let sidePadding: CGFloat = GlobalConstants.sidePadding / 2
     static let labelSide: CGFloat = 250
     static let borderWidth: CGFloat = 1
     static let cornerRadius: CGFloat = 3
@@ -42,22 +41,22 @@ class PhoneInstructionsViewController: UIViewController {
     }
     
     private func addBackgroundView() {
-        backgroundView.backgroundColor   = Colors.AndroidGrayColor
-        backgroundView.layer.borderColor = Colors.DarkGray
-        backgroundView.layer.borderWidth = LocalConstants.borderWidth
-        backgroundView.layer.cornerRadius = LocalConstants.cornerRadius
+        backgroundView.backgroundColor     = Colors.AndroidGrayColor
+        backgroundView.layer.borderColor   = Colors.DarkGray
+        backgroundView.layer.borderWidth   = LocalConstants.borderWidth
+        backgroundView.layer.cornerRadius  = LocalConstants.cornerRadius
         backgroundView.layer.masksToBounds = true
         
         view.addSubview(backgroundView)
     }
     
     private func addDescriptionLabel() {
-        descriptionLabel.font = .tahoma(size: 16)
+        descriptionLabel.font = .tahoma(size: 15)
         descriptionLabel.textAlignment = .center
         descriptionLabel.textColor = .white
         descriptionLabel.numberOfLines = 0
         
-        descriptionLabel.text = "To call someone, simply short-tap the 'Make a call' button and utter the name of the person you want to call loud and clear.\n\nTo use this feature, you'll need to give us access to your contacts and microphone.\nAdditionally, you'll need an active internet connection for voice recognition to work."
+        descriptionLabel.text = "To call someone, simply short-tap the 'Make a call' button. After the microphone appears, utter the name of the person you want to call loud and clear.\n\nTo use this feature, you'll need to give us access to your contacts and microphone.\nAdditionally, you'll need an active internet connection for voice recognition to work."
         
         backgroundView.addSubview(descriptionLabel)
     }
@@ -74,10 +73,10 @@ class PhoneInstructionsViewController: UIViewController {
         }
         
         descriptionLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(LocalConstants.sidePadding)
-            make.leading.equalToSuperview().offset(LocalConstants.sidePadding)
-            make.trailing.equalToSuperview().inset(LocalConstants.sidePadding)
-            make.bottom.equalToSuperview().inset(LocalConstants.sidePadding)
+            make.top.equalToSuperview().offset(GlobalConstants.sidePadding)
+            make.leading.equalToSuperview().offset(GlobalConstants.sidePadding)
+            make.trailing.equalToSuperview().inset(GlobalConstants.sidePadding)
+            make.bottom.equalToSuperview().inset(GlobalConstants.sidePadding)
         }
     }
 }

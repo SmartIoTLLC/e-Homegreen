@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -28,11 +28,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="836"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="xY1-6k-Eai">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="HnO-ii-vqM">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="836"/>
-                            </imageView>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="HnO-ii-vqM">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="836"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="vUG-jU-M6E">
                                     <size key="itemSize" width="150" height="180"/>
@@ -1402,20 +1400,12 @@
                         <constraints>
                             <constraint firstItem="GGM-7n-U7N" firstAttribute="top" secondItem="LfN-4l-5N1" secondAttribute="bottom" constant="7" id="0Hb-Fz-oFR"/>
                             <constraint firstAttribute="trailing" secondItem="GGM-7n-U7N" secondAttribute="trailing" constant="19" id="3BW-Ca-TlH"/>
-                            <constraint firstItem="bAS-V1-oK5" firstAttribute="top" secondItem="xY1-6k-Eai" secondAttribute="bottom" id="6ZK-3d-sVB"/>
                             <constraint firstItem="neL-6V-LuI" firstAttribute="centerY" secondItem="GGM-7n-U7N" secondAttribute="centerY" id="8O8-pF-HBV"/>
-                            <constraint firstItem="xY1-6k-Eai" firstAttribute="top" secondItem="LfN-4l-5N1" secondAttribute="bottom" id="BQ4-wf-J3K"/>
                             <constraint firstAttribute="bottom" secondItem="H0t-8Z-WMG" secondAttribute="bottom" constant="-154" id="D1V-Hf-bqH"/>
                             <constraint firstAttribute="trailing" secondItem="H0t-8Z-WMG" secondAttribute="trailing" id="O1D-ZO-hH8"/>
-                            <constraint firstItem="bAS-V1-oK5" firstAttribute="top" secondItem="HnO-ii-vqM" secondAttribute="bottom" id="R0B-JX-7Mq"/>
                             <constraint firstItem="neL-6V-LuI" firstAttribute="height" secondItem="GGM-7n-U7N" secondAttribute="height" id="SFP-86-Slr"/>
                             <constraint firstItem="H0t-8Z-WMG" firstAttribute="leading" secondItem="Kjq-wI-lY9" secondAttribute="leading" id="SJT-9i-to7"/>
-                            <constraint firstItem="HnO-ii-vqM" firstAttribute="top" secondItem="Kjq-wI-lY9" secondAttribute="top" id="YhM-lN-dO9"/>
-                            <constraint firstItem="xY1-6k-Eai" firstAttribute="leading" secondItem="Kjq-wI-lY9" secondAttribute="leading" id="bfK-Yw-mUR"/>
                             <constraint firstItem="GGM-7n-U7N" firstAttribute="leading" secondItem="neL-6V-LuI" secondAttribute="trailing" constant="11" id="eA7-7p-uyX"/>
-                            <constraint firstAttribute="trailing" secondItem="HnO-ii-vqM" secondAttribute="trailing" id="fwA-Lg-urB"/>
-                            <constraint firstAttribute="trailing" secondItem="xY1-6k-Eai" secondAttribute="trailing" id="jSw-ad-rb1"/>
-                            <constraint firstItem="HnO-ii-vqM" firstAttribute="leading" secondItem="Kjq-wI-lY9" secondAttribute="leading" id="mMe-Km-NPk"/>
                             <constraint firstItem="neL-6V-LuI" firstAttribute="width" secondItem="GGM-7n-U7N" secondAttribute="width" id="roj-Zv-LIB"/>
                         </constraints>
                     </view>
@@ -1480,7 +1470,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Background" width="512" height="384"/>
         <image name="Menu button" width="22" height="22"/>
         <image name="applianceoff" width="100" height="100"/>
         <image name="cool" width="20" height="20"/>

@@ -238,8 +238,10 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     
     func findDevicesLongPress(_ sender: UILongPressGestureRecognizer) {
         if sender.state == UIGestureRecognizerState.began {
+            
             arrayOfDevicesToBeSearched = [Int]()
-            indexOfDevicesToBeSearched = 0
+            indexOfDevicesToBeSearched = 0 // TODO: when there is no devices, long press should search everything again
+            
             do {
                 let sp = try returnSearchParametars(rangeFrom.text!, to: rangeTo.text!, isScaningNamesAndParametars: false)
                 Foundation.UserDefaults.standard.set(true, forKey: UserDefaults.IsScaningDevice)
@@ -266,7 +268,11 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
                     self.setProgressBarParametarsForSearchingDevices(address)   // Needs to be done because progres bar is an the beginning 100%, for some reason..
                     SendingHandler.sendCommand(byteArray: OutgoingHandler.searchForDevices(address), gateway: gateway)
                 } else {
-                    self.view.makeToast(message: "No devices to search")
+                    if self.devices.count == 0 {
+                        findDevice()
+                    } else {
+                        self.view.makeToast(message: "No devices to search")
+                    }
                 }
                 
             } catch let error as InputError { self.view.makeToast(message: error.description)

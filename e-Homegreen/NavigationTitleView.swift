@@ -57,16 +57,13 @@ class NavigationTitleView: UIView {
     }
     
     private func addTitleLabel() {
-        titleView.backgroundColor = .clear
         titleView.font            = .tahoma(size: 17)
         titleView.textColor       = .white
-        titleView.setContentHuggingPriority(UILayoutPriority(1000), for: .horizontal)
         
         self.addSubview(titleView)
     }
     
     private func addSubtitleLabel() {
-        subtitleView.backgroundColor           = .clear
         subtitleView.font                      = .tahoma(size: 13)
         subtitleView.textColor                 = .white
         subtitleView.adjustsFontSizeToFitWidth = true
@@ -80,7 +77,6 @@ class NavigationTitleView: UIView {
         dateFormatter.pmSymbol = "PM"
         timeLabel.text = dateFormatter.string(from: Date())
         clockTimer     = Foundation.Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(tickTock), userInfo: nil, repeats: true)
-        
         timeLabel.font                      = .tahoma(size: 17)
         timeLabel.textColor                 = .white
         timeLabel.textAlignment             = .right
@@ -111,6 +107,7 @@ class NavigationTitleView: UIView {
         
         timeLabel.snp.remakeConstraints { (make) in
             make.trailing.equalToSuperview()
+            make.width.equalTo(100)
             make.height.equalToSuperview()
             make.centerY.equalToSuperview()
         }
