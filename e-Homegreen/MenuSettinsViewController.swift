@@ -81,7 +81,7 @@ class MenuViewController{
     static let chatVC           = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Chat") as! UINavigationController)
     static let securityVC       = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Security") as! UINavigationController)
     static let surveillanceVC   = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Surveillance") as! UINavigationController)
-    static let energyVC         = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Energy") as! UINavigationController)
+    static let energyVC         = UINavigationController(rootViewController: EnergyViewController())
     static let usersVC          = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Users") as! UINavigationController)
     static let pccontrolVC      = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "PC Control") as! UINavigationController)
     static let phoneVC          = UINavigationController(rootViewController: PhoneViewController())

@@ -247,7 +247,6 @@
                         <segue destination="vnI-Vi-Ew0" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="oOp-5u-trh"/>
                         <segue destination="XP4-k4-Hso" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="Dtx-d5-942"/>
                         <segue destination="WLV-we-2q9" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="BYO-1d-f2S"/>
-                        <segue destination="cdg-zv-fZN" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="c3K-M4-6fM"/>
                         <segue destination="7Co-u0-uxP" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="rkg-5H-Lab"/>
                         <segue destination="YGL-uY-aAH" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="uh7-l5-Jsv"/>
                         <segue destination="qwi-Vy-FE7" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="Y1F-iZ-NRJ"/>
@@ -1858,34 +1857,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ERZ-33-Dat" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1966" y="260"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="bxX-ct-T3s">
-            <objects>
-                <navigationController storyboardIdentifier="Energy" automaticallyAdjustsScrollViewInsets="NO" id="cdg-zv-fZN" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="V0U-6N-jpL">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="rfH-o8-NLz" kind="relationship" relationship="rootViewController" id="4Pw-lI-IHO"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ft6-SS-HEX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1493" y="260"/>
-        </scene>
-        <!--EnergyViewController-->
-        <scene sceneID="0W1-cx-aTy">
-            <objects>
-                <viewControllerPlaceholder storyboardIdentifier="EnergyViewController" storyboardName="Energy" referencedIdentifier="EnergyViewController" id="rfH-o8-NLz" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="3wO-hs-Fsc"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Lqf-oT-fhN" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1493.5" y="671"/>
         </scene>
         <!--UsersViewController-->
         <scene sceneID="L2S-Ho-mLg">

@@ -75,7 +75,6 @@
 		22495D221CAA7B910034FC94 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22495D211CAA7B910034FC94 /* Chat.storyboard */; };
 		22495D251CAA7C3E0034FC94 /* Security.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22495D231CAA7C3E0034FC94 /* Security.storyboard */; };
 		22495D271CAA7F510034FC94 /* Surveillance.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22495D261CAA7F510034FC94 /* Surveillance.storyboard */; };
-		22495D2A1CAA80600034FC94 /* Energy.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22495D281CAA80600034FC94 /* Energy.storyboard */; };
 		22495D2C1CAA80F20034FC94 /* Users.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22495D2B1CAA80F20034FC94 /* Users.storyboard */; };
 		22495D2F1CAA81490034FC94 /* PCControl.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22495D2D1CAA81490034FC94 /* PCControl.storyboard */; };
 		22495D311CAA83260034FC94 /* Popover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22495D301CAA83260034FC94 /* Popover.storyboard */; };
@@ -496,7 +495,6 @@
 		22495D211CAA7B910034FC94 /* Chat.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
 		22495D241CAA7C3E0034FC94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Security.storyboard; sourceTree = "<group>"; };
 		22495D261CAA7F510034FC94 /* Surveillance.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Surveillance.storyboard; sourceTree = "<group>"; };
-		22495D291CAA80600034FC94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Energy.storyboard; sourceTree = "<group>"; };
 		22495D2B1CAA80F20034FC94 /* Users.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Users.storyboard; sourceTree = "<group>"; };
 		22495D2E1CAA81490034FC94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/PCControl.storyboard; sourceTree = "<group>"; };
 		22495D301CAA83260034FC94 /* Popover.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Popover.storyboard; sourceTree = "<group>"; };
@@ -971,7 +969,6 @@
 		223292291CABD3280001422B /* Energy */ = {
 			isa = PBXGroup;
 			children = (
-				22495D281CAA80600034FC94 /* Energy.storyboard */,
 				736F17DD1B3AE8A3003A6A02 /* EnergyViewController.swift */,
 			);
 			name = Energy;
@@ -2259,7 +2256,6 @@
 				73E2311C1BA6E2C4003E41EC /* EventParametarVC.xib in Resources */,
 				E7DC67BB1B457C0E00EA6543 /* weather-few@2x.png in Resources */,
 				E7DC67BD1B457C0E00EA6543 /* weather-mist@2x.png in Resources */,
-				22495D2A1CAA80600034FC94 /* Energy.storyboard in Resources */,
 				4EA4DA522004F33700CA8385 /* MediaCollectionCell.xib in Resources */,
 				738DEC9D1BBBC2F000D6B834 /* SecurityPadVC.xib in Resources */,
 				E7DC67CF1B457CD400EA6543 /* night.png in Resources */,
@@ -2734,14 +2730,6 @@
 				22495D241CAA7C3E0034FC94 /* Base */,
 			);
 			name = Security.storyboard;
-			sourceTree = "<group>";
-		};
-		22495D281CAA80600034FC94 /* Energy.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				22495D291CAA80600034FC94 /* Base */,
-			);
-			name = Energy.storyboard;
 			sourceTree = "<group>";
 		};
 		22495D2D1CAA81490034FC94 /* PCControl.storyboard */ = {

@@ -10,75 +10,247 @@ import UIKit
 import CoreData
 import AudioToolbox
 
+private struct LocalConstants {
+    static let titleLabelHeight: CGFloat = 22
+    static let valueLabelHeight: CGFloat = 19
+}
+
 class EnergyViewController: PopoverVC  {
-    @IBOutlet weak var backgroundImageView: UIImageView!
     
-    @IBOutlet weak var current: UILabel!
-    @IBOutlet weak var powerUsage: UILabel!
-    @IBOutlet weak var menuButton: UIBarButtonItem!
-    @IBOutlet weak var fullScreenButton: UIButton!
+    fileprivate let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
-    var scrollView = FilterPullDown()
-    let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
-    var appDel:AppDelegate!
-    var devices:[Device] = []
-    var error:NSError? = nil
-    var sumAmp:Float = 0
-    var sumPow:Float = 0
-    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Energy)
+    private var fullScreenButton: UIButton {
+        return self.makeFullscreenButton()
+    }
+    private var menuButton: UIBarButtonItem {
+        return self.makeMenuBarButton()
+    }
     
+    private let backgroundImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "Background"))
+    
+    fileprivate var scrollView = FilterPullDown()
+    
+    private let titleLabel: UILabel = UILabel()
+    private let currentValueLabel: UILabel = UILabel()
+    private let powerUsageValueLabel: UILabel = UILabel()
+    
+    fileprivate var devices:[Device] = []
+
+    fileprivate var filterParametar:FilterItem {
+        return Filter.sharedInstance.returnFilter(forTab: .Energy)
+    }
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.shared.delegate as! AppDelegate
-        setupViews()
+        self.revealViewController().delegate = self
+        
+        setupBarButtonItems()
+        
+        addTitleView()
+        addBackgroundImageView()
+        addPowerUsageValueLabel()
+        addCurrentLabel()
+        addTitleLabel()
+        
+        addScrollView()
         setupConstraints()
         addObserversVDL()
     }
     
-    override func viewWillLayoutSubviews() {
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
         setContentOffset(for: scrollView)
         setTitleView(view: headerTitleSubtitleView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.revealViewController().delegate = self
-        setupSWRevealViewController(menuButton: menuButton)
+        super.viewWillAppear(animated)
         
         changeFullscreenImage(fullscreenButton: fullScreenButton)
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        scrollView.setContentOffset(bottomOffset, animated: false)
+        
         refreshLocalParametars()
         addObserversVDA()
-        scrollView.setContentOffset(bottomOffset, animated: false)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
         removeObservers()
     }
     
     override func nameAndId(_ name : String, id:String){
         scrollView.setButtonTitle(name, id: id)
     }
-
-    @IBAction func fullScreen(_ sender: UIButton) {
-        sender.switchFullscreen(viewThatNeedsOffset: scrollView)        
+    
+    // MARK: - Setup views
+    private func setupBarButtonItems() {
+        navigationItem.leftBarButtonItem = menuButton
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: fullScreenButton)
+    }
+    
+    private func addBackgroundImageView() {
+        backgroundImageView.contentMode = .scaleAspectFill
+        
+        view.addSubview(backgroundImageView)
+    }
+    
+    private func addTitleView() {
+        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
+        
+        navigationItem.titleView = headerTitleSubtitleView
+        headerTitleSubtitleView.setTitleAndSubtitle("Energy", subtitle: "All All All")
+        
+        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(EnergyViewController.defaultFilter(_:)))
+        longPress.minimumPressDuration = 0.5
+        headerTitleSubtitleView.addGestureRecognizer(longPress)
+    }
+    
+    private func addPowerUsageValueLabel() {
+        powerUsageValueLabel.font = .tahoma(size: 15)
+        powerUsageValueLabel.textColor = .white
+        powerUsageValueLabel.text = "0.0 W"
+        powerUsageValueLabel.textAlignment = .center
+        
+        view.addSubview(powerUsageValueLabel)
+    }
+    
+    private func addCurrentLabel() {
+        currentValueLabel.font = .tahoma(size: 15)
+        currentValueLabel.textColor = .white
+        currentValueLabel.text = "0.0 A"
+        currentValueLabel.textAlignment = .center
+        
+        view.addSubview(currentValueLabel)
+    }
+    
+    private func addTitleLabel() {
+        titleLabel.font = .tahoma(size: 18)
+        titleLabel.textColor = .white
+        titleLabel.text = "Power Usage:"
+        titleLabel.textAlignment = .center
+        
+        view.addSubview(titleLabel)
     }
     
     private func setupConstraints() {
         backgroundImageView.snp.makeConstraints { (make) in
             make.top.bottom.leading.trailing.equalToSuperview()
         }
+        
+        powerUsageValueLabel.snp.makeConstraints { (make) in
+            make.bottom.equalToSuperview().dividedBy(2)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(LocalConstants.valueLabelHeight)
+        }
+        
+        currentValueLabel.snp.makeConstraints { (make) in
+            make.bottom.equalTo(powerUsageValueLabel.snp.top).inset(-(GlobalConstants.sidePadding / 2))
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(LocalConstants.valueLabelHeight)
+        }
+        
+        titleLabel.snp.makeConstraints { (make) in
+            make.bottom.equalTo(currentValueLabel.snp.top).inset(-(GlobalConstants.sidePadding / 2))
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(LocalConstants.titleLabelHeight)
+        }
+        
     }
+    
+    func addScrollView() {
+        UIView.hr_setToastThemeColor(color: UIColor.red)
+        
+        scrollView.filterDelegate = self
+        
+        scrollView.setFilterItem(Menu.energy)
+        
+        view.addSubview(scrollView)
+        updateConstraints(item: scrollView)
+        scrollView.setItem(self.view)
+    }
+    
+    fileprivate func addObserversVDA() {
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshLocalParametars), name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
+    }
+    fileprivate func addObserversVDL() {
+        NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEnergy), object: nil)
+    }
+    
+    fileprivate func removeObservers() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
+    }
+    
+    // MARK: - Logic
+    func updateDeviceList() {
+        var sumAmp: Float = 0
+        var sumPow: Float = 0
+        
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
+
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: "gateway.location.name", ascending: true),
+            NSSortDescriptor(key: "address", ascending: true),
+            NSSortDescriptor(key: "type", ascending: true),
+            NSSortDescriptor(key: "channel", ascending: true)
+        ]
+        
+        var predicateArray:[NSPredicate] = [
+            NSPredicate(format: "categoryId != 0"),
+            NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool)),
+            NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool))
+        ]
+        
+        if filterParametar.location != "All" {
+            predicateArray.append(NSPredicate(format: "gateway.name == %@", filterParametar.location))
+        }
+        if filterParametar.levelId != 0 && filterParametar.levelId != 255{
+            predicateArray.append(NSPredicate(format: "parentZoneId == %@", NSNumber(value: filterParametar.levelId as Int)))
+        }
+        if filterParametar.zoneId != 0 && filterParametar.zoneId != 255{
+            predicateArray.append(NSPredicate(format: "zoneId == %@", NSNumber(value: filterParametar.zoneId as Int)))
+        }
+        if filterParametar.categoryId != 0 && filterParametar.categoryId != 255{
+            predicateArray.append(NSPredicate(format: "categoryId == %@", NSNumber(value: filterParametar.categoryId as Int)))
+        }
+        
+        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
+        fetchRequest.predicate = compoundPredicate
+        
+        do {
+            if let appDel = UIApplication.shared.delegate as? AppDelegate {
+                if let fetResults = try appDel.managedObjectContext?.fetch(fetchRequest) as? [Device] {
+                    devices = fetResults
+                }
+            }
+            
+        } catch let error as NSError {
+            print("Unresolved error: \(String(describing: error.userInfo))")
+        }
+        
+        for item in devices {
+            sumAmp += Float(item.current)
+            sumPow += Float(item.current) * Float(item.voltage) * 0.01
+        }
+        currentValueLabel.text = "\(sumAmp * 0.01) A"
+        powerUsageValueLabel.text = "\(sumPow) W"
+    }
+    
 }
 
 // MARK: - Parametar from filter and relaod data
 extension EnergyViewController: FilterPullDownDelegate{
     func filterParametars(_ filterItem: FilterItem){
         Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Energy)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
         
         updateSubtitle(headerTitleSubtitleView, title: "Energy", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.energy)
@@ -97,7 +269,6 @@ extension EnergyViewController: FilterPullDownDelegate{
     }
     
     func refreshLocalParametars() {
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
         updateDeviceList()
     }
     
@@ -106,98 +277,6 @@ extension EnergyViewController: FilterPullDownDelegate{
             scrollView.setDefaultFilterItem(Menu.energy)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
-    }
-}
-
-// MARK: - View setup
-extension EnergyViewController {
-    
-    func setupViews() {
-        if #available(iOS 11, *) { headerTitleSubtitleView.layoutIfNeeded() }
-        
-        UIView.hr_setToastThemeColor(color: UIColor.red)
-        
-        scrollView.filterDelegate = self
-        view.addSubview(scrollView)
-        updateConstraints(item: scrollView)
-        scrollView.setItem(self.view)
-        
-        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
-        
-        navigationItem.titleView = headerTitleSubtitleView
-        headerTitleSubtitleView.setTitleAndSubtitle("Energy", subtitle: "All All All")
-        
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Energy)
-        
-        let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(EnergyViewController.defaultFilter(_:)))
-        longPress.minimumPressDuration = 0.5
-        headerTitleSubtitleView.addGestureRecognizer(longPress)
-        
-        scrollView.setFilterItem(Menu.energy)
-    }
-    
-    fileprivate func addObserversVDA() {
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshLocalParametars), name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
-    }
-    fileprivate func addObserversVDL() {
-        NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEnergy), object: nil)
-    }
-    
-    fileprivate func removeObservers() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.RefreshFilter), object: nil)
-    }
-}
-
-// MARK: - Logic
-extension EnergyViewController {
-    func updateDeviceList() {
-        sumAmp = 0
-        sumPow = 0
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
-        let sortDescriptorOne = NSSortDescriptor(key: "gateway.location.name", ascending: true)
-        let sortDescriptorTwo = NSSortDescriptor(key: "address", ascending: true)
-        let sortDescriptorThree = NSSortDescriptor(key: "type", ascending: true)
-        let sortDescriptorFour = NSSortDescriptor(key: "channel", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptorOne, sortDescriptorTwo, sortDescriptorThree, sortDescriptorFour]
-        
-        let predicateNull = NSPredicate(format: "categoryId != 0")
-        let predicateOne = NSPredicate(format: "gateway.turnedOn == %@", NSNumber(value: true as Bool))
-        let predicateTwo = NSPredicate(format: "isVisible == %@", NSNumber(value: true as Bool))
-        var predicateArray:[NSPredicate] = [predicateNull, predicateOne, predicateTwo]
-        
-        if filterParametar.location != "All" {
-            let locationPredicate = NSPredicate(format: "gateway.name == %@", filterParametar.location)
-            predicateArray.append(locationPredicate)
-        }
-        if filterParametar.levelId != 0 && filterParametar.levelId != 255{
-            let levelPredicate = NSPredicate(format: "parentZoneId == %@", NSNumber(value: filterParametar.levelId as Int))
-            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [levelPredicate])
-            predicateArray.append(copmpoundPredicate)
-        }
-        if filterParametar.zoneId != 0 && filterParametar.zoneId != 255{
-            let zonePredicate = NSPredicate(format: "zoneId == %@", NSNumber(value: filterParametar.zoneId as Int))
-            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [zonePredicate])
-            predicateArray.append(copmpoundPredicate)
-        }
-        if filterParametar.categoryId != 0 && filterParametar.categoryId != 255{
-            let categoryPredicate = NSPredicate(format: "categoryId == %@", NSNumber(value: filterParametar.categoryId as Int))
-            let copmpoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate])
-            predicateArray.append(copmpoundPredicate)
-        }
-        let compoundPredicate = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.and, subpredicates: predicateArray)
-        fetchRequest.predicate = compoundPredicate
-        
-        do {
-            let fetResults = try appDel.managedObjectContext!.fetch(fetchRequest) as? [Device]
-            devices = fetResults!
-        } catch let error1 as NSError { error = error1; print("Unresolved error: \(String(describing: error!.userInfo))") }
-        
-        for item in devices {
-            sumAmp += Float(item.current)
-            sumPow += Float(item.current) * Float(item.voltage) * 0.01
-        }
-        current.text = "\(sumAmp * 0.01) A"
-        powerUsage.text = "\(sumPow) W"
     }
 }
 
