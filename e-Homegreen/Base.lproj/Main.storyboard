@@ -250,9 +250,6 @@
                         <segue destination="cdg-zv-fZN" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="c3K-M4-6fM"/>
                         <segue destination="7Co-u0-uxP" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="rkg-5H-Lab"/>
                         <segue destination="YGL-uY-aAH" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="uh7-l5-Jsv"/>
-                        <segue destination="uav-iN-FCG" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="uuv-TB-wPH"/>
-                        <segue destination="p44-p0-BuE" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="WM6-ra-4dm"/>
-                        <segue destination="LTd-tK-Iyx" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="heh-TF-gVm"/>
                         <segue destination="qwi-Vy-FE7" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="Y1F-iZ-NRJ"/>
                         <segue destination="6ia-pk-N9N" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="957-Q9-t39"/>
                     </connections>
@@ -1965,90 +1962,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hWn-WI-Grs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="213.5" y="707"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="qzv-gz-Q1u">
-            <objects>
-                <navigationController storyboardIdentifier="Phone" automaticallyAdjustsScrollViewInsets="NO" id="uav-iN-FCG" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="BbB-Fx-NTY">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="7U7-tR-MTf" kind="relationship" relationship="rootViewController" id="N39-pr-0fM"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KUw-n1-B6n" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-399" y="290"/>
-        </scene>
-        <!--Phone-->
-        <scene sceneID="jCi-1K-pfJ">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Phone" id="7U7-tR-MTf" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="Ahy-cF-g8o"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="pqI-mJ-9Yp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-400" y="707"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="4SM-k2-Q2k">
-            <objects>
-                <navigationController storyboardIdentifier="Quran" automaticallyAdjustsScrollViewInsets="NO" id="p44-p0-BuE" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Ld4-MA-bn7">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="8ET-Sn-1vc" kind="relationship" relationship="rootViewController" id="TKb-dH-Pcp"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="OPL-aR-RmA" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1386.5" y="1444.5"/>
-        </scene>
-        <!--Quran-->
-        <scene sceneID="08R-R0-u0l">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Quran" id="8ET-Sn-1vc" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="gFQ-WA-wqQ"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Xde-0P-RJb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1386.5" y="1911"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="tHu-5J-MIB">
-            <objects>
-                <navigationController storyboardIdentifier="Radio" automaticallyAdjustsScrollViewInsets="NO" id="LTd-tK-Iyx" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="C4Y-TZ-w4y">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="tuj-Jl-7Y8" kind="relationship" relationship="rootViewController" id="ya4-27-qUf"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vmV-p0-vf0" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="213" y="1206"/>
-        </scene>
-        <!--Radio-->
-        <scene sceneID="WMv-ib-FYu">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Radio" id="tuj-Jl-7Y8" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="XOc-Sm-Gz5"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hw8-kL-k2E" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="798.5" y="1690"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="saS-QM-CDL">

@@ -10,6 +10,13 @@ import UIKit
 import Speech
 import Contacts
 
+private struct LocalConstants {
+    static let micViewSize: CGSize = CGSize(width: 340, height: 200)
+    static let micLabelHeight: CGFloat = 30
+    static let micImageSize: CGFloat = 100
+    static let makeCallButtonSize: CGSize = CGSize(width: 120, height: 40)
+}
+
 class PhoneViewController: UIViewController {
     
     fileprivate let titleView = NavigationTitleViewNF(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
@@ -34,39 +41,101 @@ class PhoneViewController: UIViewController {
     
     private let infoButton: UIButton = UIButton()
     
-    @IBOutlet weak var background: UIImageView!
+    private let backgroundImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "Background"))
     
-    @IBOutlet weak var microphoneView: UIView!
-    @IBOutlet weak var micLabel: UILabel!
-    @IBOutlet weak var micImage: UIImageView!
-    @IBOutlet weak var menuButton: UIBarButtonItem!
-    @IBOutlet weak var fullscreenButton: UIButton!
-    @IBAction func fullscreenButton(_ sender: UIButton) {
-        sender.switchFullscreen()
+    private let microphoneView: UIView = UIView()
+    private let micLabel: UILabel = UILabel()
+    private let micImage: UIImageView = UIImageView(image: #imageLiteral(resourceName: "siri_mic"))
+    
+    private var menuButton: UIBarButtonItem {
+        return self.makeMenuBarButton()
     }
     
-    @IBOutlet weak var makeCallButton: CustomGradientButton!
-    @IBAction func makeCallButton(_ sender: CustomGradientButton) {
-        toggleMic(off: false)
-        recordAndRecognizeSpeech()
+    private var fullscreenButton: UIButton {
+        return self.makeFullscreenButton()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupSWRevealViewController(menuButton: menuButton)
-        
-        changeFullscreenImage(fullscreenButton: fullscreenButton)        
-    }
+    private let makeCallButton: CustomGradientButton = CustomGradientButton()
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         dismissGesture = UITapGestureRecognizer(target: self, action: #selector(micBackgroundTapped(_:)))
         
+        setupBarButtonItems()
         requestSpeechAuthorization()
-        updateViews()
+        
+        addBackgroundImageView()
+        addTitleView()
+        addMakeCallButton()
+        addMicrophoneView()
+        addMicLabel()
+        addMicImageView()
         
         addInfoButton()
+        
         setupConstraints()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        changeFullscreenImage(fullscreenButton: fullscreenButton)
+    }
+    
+    // MARK: - Setup views
+    func addTitleView() {
+        navigationItem.titleView = titleView
+        titleView.setTitle("Phone")
+        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: .default)
+    }
+    
+    private func setupBarButtonItems() {
+        navigationItem.leftBarButtonItem = menuButton
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: fullscreenButton)
+    }
+    
+    private func addBackgroundImageView() {
+        backgroundImageView.contentMode = .scaleAspectFill
+        
+        view.addSubview(backgroundImageView)
+    }
+    
+    private func addMicrophoneView() {
+        microphoneView.layer.cornerRadius = 5
+        microphoneView.backgroundColor    = .googleMicBackgroundWhite
+        microphoneView.alpha              = 0.0
+        microphoneView.addShadows()
+        
+        view.addSubview(microphoneView)
+    }
+    
+    private func addMicLabel() {
+        micLabel.text                      = "Speak to search"
+        micLabel.textColor                 = .googleMicTextGreen
+        micLabel.font                      = .tahoma(size: 15)
+        micLabel.textAlignment             = .center
+        
+        microphoneView.addSubview(micLabel)
+    }
+    
+    private func addMicImageView() {
+        micImage.contentMode         = .scaleAspectFit
+        micImage.layer.cornerRadius  = LocalConstants.micImageSize / 2
+        micImage.layer.masksToBounds = true
+        
+        microphoneView.addSubview(micImage)
+    }
+    
+    private func addMakeCallButton() {
+        makeCallButton.setTitleColor(.white, for: UIControlState())
+        makeCallButton.setTitle("MAKE A CALL", for: UIControlState())
+        makeCallButton.addTap {
+            self.toggleMic(off: false)
+            self.recordAndRecognizeSpeech()
+        }
+        
+        view.addSubview(makeCallButton)
     }
     
     private func addInfoButton() {
@@ -83,8 +152,32 @@ class PhoneViewController: UIViewController {
     }
     
     private func setupConstraints() {
-        background.snp.makeConstraints { (make) in
+        backgroundImageView.snp.makeConstraints { (make) in
             make.top.bottom.leading.trailing.equalToSuperview()
+        }
+        
+        microphoneView.snp.makeConstraints { (make) in
+            make.centerY.centerX.equalToSuperview()
+            make.width.equalTo(LocalConstants.micViewSize.width)
+            make.height.equalTo(LocalConstants.micViewSize.height)
+        }
+        
+        micLabel.snp.makeConstraints { (make) in
+            make.height.equalTo(LocalConstants.micLabelHeight)
+            make.leading.equalToSuperview().offset(GlobalConstants.sidePadding)
+            make.trailing.equalToSuperview().inset(GlobalConstants.sidePadding)
+            make.top.equalToSuperview()
+        }
+        
+        micImage.snp.makeConstraints { (make) in
+            make.centerX.centerY.equalToSuperview()
+            make.width.height.equalTo(LocalConstants.micImageSize)
+        }
+        
+        makeCallButton.snp.makeConstraints { (make) in
+            make.centerY.centerX.equalToSuperview()
+            make.width.equalTo(LocalConstants.makeCallButtonSize.width)
+            make.height.equalTo(LocalConstants.makeCallButtonSize.height)
         }
         
         infoButton.snp.makeConstraints { (make) in
@@ -93,12 +186,8 @@ class PhoneViewController: UIViewController {
             make.width.height.equalTo(35)
         }
     }
-
-}
-
-// MARK: - Logic
-extension PhoneViewController {
     
+    // MARK: - Logic
     // AUDIO
     func toggleMic(off: Bool) {
         DispatchQueue.main.async {
@@ -268,7 +357,7 @@ extension PhoneViewController {
             
             //let contactName = (containerResults.first?.givenName ?? "") + (containerResults.first?.middleName ?? "") + (containerResults.first?.familyName ?? "")
             /* TODO: use CONTAINS + remove whitespace
-                add information button with a tutorial on how to use the feature
+             add information button with a tutorial on how to use the feature
              */
             
             if containerResults.count == 1 && recognizedContact.replacingOccurrences(of: " ", with: "") == contactName {
@@ -294,6 +383,17 @@ extension PhoneViewController {
             }
         } catch { self.makeToastOnMainThread(message: "Failed fetching contacts.") }
     }
+    
+    func callContact(number: String) {
+        var formattedNumber = ""
+        for c in number {
+            if ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].contains(c) { formattedNumber += String(describing: c) }
+        }
+        
+        if let num = URL(string: "tel:\(formattedNumber)") {
+            UIApplication.shared.open(num, options: [:], completionHandler: nil)
+        }
+    }
 }
 
 // MARK : - Utility
@@ -311,48 +411,4 @@ extension String {
         return self.replacingOccurrences(of: "call", with: "").replacingOccurrences(of: "dial", with: "").replacingOccurrences(of: "please", with: "")
     }
     
-}
-extension PhoneViewController {
-    
-    func callContact(number: String) {
-        var formattedNumber = ""
-        for c in number {
-            if ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].contains(c) { formattedNumber += String(describing: c) }
-        }
-        
-        if let num = URL(string: "tel:\(formattedNumber)") {
-            UIApplication.shared.open(num, options: [:], completionHandler: nil)
-        }
-    }
-    
-}
-
-// MARK : - View setup
-extension PhoneViewController {
-    func setupMicrophoneView() {
-        microphoneView.layer.cornerRadius = 5
-        microphoneView.backgroundColor    = .googleMicBackgroundWhite
-        microphoneView.alpha              = 0.0
-        microphoneView.addShadows()
-        
-        micImage.image               = #imageLiteral(resourceName: "siri_mic")
-        micImage.contentMode         = .scaleAspectFit
-        micImage.layer.cornerRadius  = micImage.frame.width / 2
-        micImage.layer.masksToBounds = true
-        
-        micLabel.text                      = "Speak to search"
-        micLabel.textColor                 = .googleMicTextGreen
-        micLabel.font                      = .tahoma(size: 15)
-        micLabel.backgroundColor           = .clear
-        micLabel.adjustsFontSizeToFitWidth = true
-        micLabel.textAlignment             = .center
-    }
-    
-    func updateViews() {
-        navigationItem.titleView = titleView
-        titleView.setTitle("Phone")
-        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: .default)
-        
-        setupMicrophoneView()
-    }
 }

@@ -25,10 +25,12 @@ class RadioViewController: UIViewController {
     fileprivate var radioStations = [Radio]()
     fileprivate var currentStation: Radio!
     
-    @IBOutlet weak var menuButton: UIBarButtonItem!
-    @IBOutlet weak var fullscreenButton: UIButton!
-    @IBAction func fullscreen(_ sender: UIButton) {
-        sender.switchFullscreen()
+    private var menuButton: UIBarButtonItem {
+        return self.makeMenuBarButton()
+    }
+    
+    private var fullscreenButton: UIButton {
+        return self.makeFullscreenButton()
     }
     
     fileprivate let tableView: UITableView = UITableView()
@@ -39,7 +41,7 @@ class RadioViewController: UIViewController {
         super.viewDidLoad()
         
         revealViewController().delegate = self
-        setupSWRevealViewController(menuButton: menuButton)
+        setBarButtons()
         addObservers()
         
         addBackgroundView()
@@ -59,6 +61,11 @@ class RadioViewController: UIViewController {
     }
     
     // MARK: - Setup views
+    private func setBarButtons() {
+        navigationItem.leftBarButtonItem = menuButton
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: fullscreenButton)
+    }
+    
     private func addBackgroundView() {
         backgroundImageView.contentMode = .scaleAspectFill
         

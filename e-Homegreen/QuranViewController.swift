@@ -30,11 +30,12 @@ class QuranViewController: UIViewController {
     private let backgroundImageView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "Background"))
     fileprivate let tableView: UITableView = UITableView()
     
-    @IBOutlet weak var menuButton: UIBarButtonItem!
+    private var menuButton: UIBarButtonItem {
+        return self.makeMenuBarButton()
+    }
     
-    @IBOutlet weak var fullscreenButton: UIButton!
-    @IBAction func fullscreenButton(_ sender: UIButton) {
-        sender.switchFullscreen()
+    private var fullscreenButton: UIButton {
+        return self.makeFullscreenButton()
     }
 
     // MARK: - Lifecycle
@@ -42,7 +43,7 @@ class QuranViewController: UIViewController {
         super.viewDidLoad()
 
         revealViewController().delegate = self
-        setupSWRevealViewController(menuButton: menuButton)
+        setupBarButtonItems()
         
         addBackgroundImageView()
         addTitleView()
@@ -60,6 +61,11 @@ class QuranViewController: UIViewController {
     }
     
     // MARK: - Setup views
+    private func setupBarButtonItems() {
+        navigationItem.leftBarButtonItem = menuButton
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: fullscreenButton)
+    }
+    
     private func addBackgroundImageView() {
         backgroundImageView.contentMode = .scaleAspectFill
         
@@ -94,11 +100,9 @@ class QuranViewController: UIViewController {
     
     // MARK: - Navigation
     fileprivate func goToSuraPlayerViewController() {
-        if let vc = UIStoryboard(name: "Quran", bundle: nil).instantiateViewController(withIdentifier: "SuraPlayer") as? SuraPlayerViewController {
-            vc.reciter = selectedReciter
-            vc.view.backgroundColor = .red
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
+        let suraPlayerViewController: SuraPlayerViewController = SuraPlayerViewController()
+        suraPlayerViewController.reciter = selectedReciter
+        self.navigationController?.pushViewController(suraPlayerViewController, animated: true)
     }
     
     // MARK: - Logic

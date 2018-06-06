@@ -9,24 +9,24 @@
 import UIKit
 import Contacts
 
-class ContactsListViewController: CommonXIBTransitionVC, UITableViewDataSource, UITableViewDelegate {
+private struct LocalConstants {
+    static let cellHeight: CGFloat = 60
+}
+
+class ContactsListViewController: CommonXIBTransitionVC {
     
-    let cellId = "contactCell"
-    
-    @IBOutlet weak var tableView: UITableView!
-    
-    @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var tableViewWidthConstraint: NSLayoutConstraint!
-    
-    @IBOutlet weak var tapBG: UIView!
+    private let tableView: UITableView = UITableView()
+    private let dismissArea: UIView = UIView()
     
     var contacts = [CNContact]()
     
     override func viewDidLoad() {
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTableViewConstraints), name: .UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setupConstraints), name: .UIDeviceOrientationDidChange, object: nil)
 
-        setupViews()
-        updateViews()
+        addDismissArea()
+        addTableView()
+        
+        setupConstraints()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -34,37 +34,56 @@ class ContactsListViewController: CommonXIBTransitionVC, UITableViewDataSource, 
         NotificationCenter.default.removeObserver(self, name: .UIDeviceOrientationDidChange, object: nil)
     }
     
-}
-
-// MARK: - Table View Data Source
-extension ContactsListViewController {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+    private func addDismissArea() {
+        dismissArea.addTap {
+            self.dismiss(animated: true, completion: nil)
+        }
+        
+        view.addSubview(dismissArea)
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return contacts.count
+    private func addTableView() {
+        let header           = UILabel()
+        header.frame.size    = CGSize(width: tableView.frame.width, height: 60)
+        header.text          = "    Contacts"
+        header.font          = UIFont(name: "Tahoma", size: 25)
+        header.textColor     = .white
+        
+        tableView.delegate   = self
+        tableView.dataSource = self
+        tableView.register(ContactTableViewCell.self, forCellReuseIdentifier: ContactTableViewCell.reuseIdentifier)
+        tableView.separatorInset     = .zero
+        tableView.backgroundColor    = Colors.AndroidGrayColor
+        tableView.separatorColor     = .clear
+        tableView.layer.cornerRadius = 3
+        tableView.tableHeaderView    = header
+        
+        view.addSubview(tableView)
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return getCell(at: indexPath, tableView)
+    @objc private func setupConstraints() {
+        dismissArea.snp.remakeConstraints { (make) in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
+        
+        var height        = CGFloat(contacts.count + 1) * LocalConstants.cellHeight
+        let width: CGFloat = (GlobalConstants.screenSize.width / 3) * ((UIDevice.current.userInterfaceIdiom == .phone) ? 2.5 : 1.5)
+        let availableRows = round((GlobalConstants.screenSize.height - (2 * LocalConstants.cellHeight)) / LocalConstants.cellHeight )
+        
+        if height > (GlobalConstants.screenSize.height - (2 * LocalConstants.cellHeight)) { height = CGFloat(availableRows * 60) }
+        
+        tableView.snp.remakeConstraints { (make) in
+            make.centerX.centerY.equalToSuperview()
+            make.width.equalTo(width)
+            make.height.equalTo(height)
+        }
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+    private func updateViews() {
+        contacts.sort(by: { ( $0.givenName < $1.givenName ) })
     }
-}
-
-// MARK: - Table View Delegate
-extension ContactsListViewController {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        didSelectContact(at: indexPath)
-    }
-}
-
-// MARK: - Setup views & Logic
-extension ContactsListViewController {
     
+    // MARK: - Logic
     func callContact(number: String) {
         var formattedNumber = ""
         for c in number.characters {
@@ -81,70 +100,37 @@ extension ContactsListViewController {
         }
     }
     
-    fileprivate func didSelectContact(at indexPath: IndexPath) {
-        if let number = contacts[indexPath.row].phoneNumbers.first?.value.stringValue {
-            self.callContact(number: number)
-        }
+}
+
+// MARK: - Table View Data Source & Delegate
+extension ContactsListViewController: UITableViewDataSource, UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
     
-    fileprivate func getCell(at indexPath: IndexPath, _ tableView: UITableView) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? ContactCell {
-            
-            cell.contact = contacts[indexPath.row]
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return contacts.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.reuseIdentifier, for: indexPath) as? ContactTableViewCell {
+            cell.setCell(with: contacts[indexPath.row])
             return cell
         }
         
         return UITableViewCell()
     }
     
-    func dismissOnTap() {
-        self.dismiss(animated: true, completion: nil)
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return LocalConstants.cellHeight
     }
     
-    fileprivate func setupViews() {
-        tableView.delegate   = self
-        tableView.dataSource = self
-        tableView.register(UINib(nibName: String(describing: ContactCell.self), bundle: nil), forCellReuseIdentifier: cellId)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        tapBG.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissOnTap)))
-    }
-    
-    fileprivate func updateViews() {
-        tapBG.backgroundColor = .clear
-        
-        let header           = UILabel()
-        header.frame.size    = CGSize(width: tableView.frame.width, height: 60)
-        header.text          = "    Contacts"
-        header.font          = UIFont(name: "Tahoma", size: 25)
-        header.textColor     = .white
-        
-        view.backgroundColor = .clear
-        
-        updateTableViewConstraints()
-        
-        tableView.separatorInset     = .zero
-        tableView.backgroundColor    = Colors.AndroidGrayColor
-        tableView.separatorColor     = .clear
-        tableView.layer.cornerRadius = 3
-        tableView.tableHeaderView    = header
-        contacts = contacts.sorted(by: { ( $0.givenName < $1.givenName) })
-        tableView.reloadData()
-    }
-    
-    @objc fileprivate func updateTableViewConstraints() {
-        
-        var height        = CGFloat((contacts.count + 1) * 60)
-        let availableRows = round((view.frame.height - 60) / 60) - 1
-        
-        if height > view.frame.height - 60 { height = CGFloat(availableRows * 60) }
-        
-        tableViewHeightConstraint.constant = height
-        
-        tableViewWidthConstraint.constant = (UIScreen.main.bounds.width / 3) * ((UIDevice.current.userInterfaceIdiom == .phone) ? 2.5 : 1.5)
-        
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        
-        tableView.layoutIfNeeded()
+        if let number = contacts[indexPath.row].phoneNumbers.first?.value.stringValue {
+            self.callContact(number: number)
+        }
     }
 }
 

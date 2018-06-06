@@ -27,15 +27,15 @@ class SuraPlayerViewController: UIViewController {
     fileprivate let audioPlayerView: AudioPlayerBar = AudioPlayerBar()
     fileprivate let tableView: UITableView = UITableView()
     
-    @IBOutlet weak var fullscreenButton: UIButton!
-    @IBAction func fullscreenButton(_ sender: UIButton) {
-        sender.switchFullscreen()
+    private var fullscreenButton: UIButton {
+        return self.makeFullscreenButton()
     }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        addFullscreenBarButton()
         addBackgroundImageView()
         addTitleView()
         addTableView()
@@ -54,6 +54,10 @@ class SuraPlayerViewController: UIViewController {
     }
     
     // MARK: - Setup views
+    private func addFullscreenBarButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: fullscreenButton)
+    }
+    
     private func addBackgroundImageView() {
         backgroundImageView.contentMode = .scaleAspectFill
         

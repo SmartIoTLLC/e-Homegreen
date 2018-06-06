@@ -154,19 +154,13 @@
 		4D16A1291D51CB8D00817477 /* HvacParametersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4D16A1271D51CB8D00817477 /* HvacParametersCell.xib */; };
 		4D411C9B1D5C982F000A3598 /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */; };
 		4D411C9C1D5C982F000A3598 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D411C9A1D5C982F000A3598 /* Device.swift */; };
-		4E04DB7B1F750DAC00DC1E58 /* Phone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E04DB7A1F750DAC00DC1E58 /* Phone.storyboard */; };
 		4E0D9EEA1FA31D240066C5CC /* DatabaseRemoteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0D9EE91FA31D240066C5CC /* DatabaseRemoteController.swift */; };
 		4E0D9EED1FA327420066C5CC /* Remote+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0D9EEB1FA327420066C5CC /* Remote+CoreDataClass.swift */; };
 		4E0D9EEE1FA327420066C5CC /* Remote+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0D9EEC1FA327420066C5CC /* Remote+CoreDataProperties.swift */; };
 		4E114C7D208F200700493722 /* NavigationViewFavDevices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E114C7C208F200700493722 /* NavigationViewFavDevices.swift */; };
 		4E114C82208F293F00493722 /* FavoriteDevicesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E114C81208F293F00493722 /* FavoriteDevicesVC.swift */; };
 		4E114C84208F2B5500493722 /* FavoriteDevicesVC+Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E114C83208F2B5500493722 /* FavoriteDevicesVC+Cells.swift */; };
-		4E17717E1F7510920002C6D6 /* Quran.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E17717C1F7510920002C6D6 /* Quran.storyboard */; };
-		4E1771811F7510E10002C6D6 /* Radio.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E17717F1F7510E10002C6D6 /* Radio.storyboard */; };
-		4E1771841F7536880002C6D6 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1771821F7536880002C6D6 /* ContactCell.swift */; };
-		4E1771851F7536880002C6D6 /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E1771831F7536880002C6D6 /* ContactCell.xib */; };
 		4E1771881F753CEE0002C6D6 /* ContactsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1771861F753CEE0002C6D6 /* ContactsListViewController.swift */; };
-		4E1771891F753CEE0002C6D6 /* ContactsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E1771871F753CEE0002C6D6 /* ContactsListViewController.xib */; };
 		4E19613B1FD5385500F48272 /* ButtonCell+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19613A1FD5385500F48272 /* ButtonCell+Logic.swift */; };
 		4E19613D1FD5397400F48272 /* RemoteDetailsVC+ViewSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19613C1FD5397400F48272 /* RemoteDetailsVC+ViewSetup.swift */; };
 		4E1961401FD5883400F48272 /* DeleteButtonImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19613E1FD5883400F48272 /* DeleteButtonImageVC.swift */; };
@@ -176,6 +170,7 @@
 		4E218F4B1F7B92FC0068CA72 /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E218F4A1F7B92FC0068CA72 /* RemoteViewController.swift */; };
 		4E2DFB4A1FBDBF7D00F8AC00 /* ButtonSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DFB481FBDBF7D00F8AC00 /* ButtonSettingsVC.swift */; };
 		4E2DFB4B1FBDBF7D00F8AC00 /* ButtonSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E2DFB491FBDBF7D00F8AC00 /* ButtonSettingsVC.xib */; };
+		4E3522DF20C7EEA900B467A2 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3522DE20C7EEA900B467A2 /* ContactTableViewCell.swift */; };
 		4E3CFD7C1F823C2F00E22C92 /* ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3CFD7A1F823C2F00E22C92 /* ButtonCell.swift */; };
 		4E3CFD7D1F823C2F00E22C92 /* ButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E3CFD7B1F823C2F00E22C92 /* ButtonCell.xib */; };
 		4E479B7B20BFF235007C32AE /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E479B7A20BFF235007C32AE /* GlobalConstants.swift */; };
@@ -581,19 +576,13 @@
 		4D16A1271D51CB8D00817477 /* HvacParametersCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HvacParametersCell.xib; sourceTree = "<group>"; };
 		4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4D411C9A1D5C982F000A3598 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
-		4E04DB7A1F750DAC00DC1E58 /* Phone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Phone.storyboard; sourceTree = "<group>"; };
 		4E0D9EE91FA31D240066C5CC /* DatabaseRemoteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseRemoteController.swift; sourceTree = "<group>"; };
 		4E0D9EEB1FA327420066C5CC /* Remote+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Remote+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4E0D9EEC1FA327420066C5CC /* Remote+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Remote+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4E114C7C208F200700493722 /* NavigationViewFavDevices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewFavDevices.swift; sourceTree = "<group>"; };
 		4E114C81208F293F00493722 /* FavoriteDevicesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteDevicesVC.swift; sourceTree = "<group>"; };
 		4E114C83208F2B5500493722 /* FavoriteDevicesVC+Cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteDevicesVC+Cells.swift"; sourceTree = "<group>"; };
-		4E17717D1F7510920002C6D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "e-Homegreen/Base.lproj/Quran.storyboard"; sourceTree = "<group>"; };
-		4E1771801F7510E10002C6D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "e-Homegreen/Base.lproj/Radio.storyboard"; sourceTree = "<group>"; };
-		4E1771821F7536880002C6D6 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
-		4E1771831F7536880002C6D6 /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
 		4E1771861F753CEE0002C6D6 /* ContactsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsListViewController.swift; sourceTree = "<group>"; };
-		4E1771871F753CEE0002C6D6 /* ContactsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactsListViewController.xib; sourceTree = "<group>"; };
 		4E19613A1FD5385500F48272 /* ButtonCell+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ButtonCell+Logic.swift"; sourceTree = "<group>"; };
 		4E19613C1FD5397400F48272 /* RemoteDetailsVC+ViewSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteDetailsVC+ViewSetup.swift"; sourceTree = "<group>"; };
 		4E19613E1FD5883400F48272 /* DeleteButtonImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteButtonImageVC.swift; sourceTree = "<group>"; };
@@ -603,6 +592,7 @@
 		4E218F4A1F7B92FC0068CA72 /* RemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteViewController.swift; sourceTree = "<group>"; };
 		4E2DFB481FBDBF7D00F8AC00 /* ButtonSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonSettingsVC.swift; sourceTree = "<group>"; };
 		4E2DFB491FBDBF7D00F8AC00 /* ButtonSettingsVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonSettingsVC.xib; sourceTree = "<group>"; };
+		4E3522DE20C7EEA900B467A2 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		4E3CFD7A1F823C2F00E22C92 /* ButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCell.swift; sourceTree = "<group>"; };
 		4E3CFD7B1F823C2F00E22C92 /* ButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonCell.xib; sourceTree = "<group>"; };
 		4E479B7A20BFF235007C32AE /* GlobalConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
@@ -1419,7 +1409,6 @@
 		4E1AAB171F6C09FC006C59AA /* Quran */ = {
 			isa = PBXGroup;
 			children = (
-				4E17717C1F7510920002C6D6 /* Quran.storyboard */,
 				4EFAE02B1F6C183000C85074 /* reciters.json */,
 				4EFAE0291F6C0F5600C85074 /* sura_english.json */,
 				4E1AAB181F6C0A29006C59AA /* QuranViewController.swift */,
@@ -1475,7 +1464,6 @@
 		4EDCE6821F6A90E10073736B /* Radio */ = {
 			isa = PBXGroup;
 			children = (
-				4E17717F1F7510E10002C6D6 /* Radio.storyboard */,
 				4EDCE6801F6A8D740073736B /* radio_station.json */,
 				4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */,
 				4E479B7C20C00210007C32AE /* RadioStationTableViewCell.swift */,
@@ -1486,13 +1474,10 @@
 		4EF908231F70142500897A3C /* Phone */ = {
 			isa = PBXGroup;
 			children = (
-				4E04DB7A1F750DAC00DC1E58 /* Phone.storyboard */,
 				4EF908261F70161000897A3C /* PhoneViewController.swift */,
-				4E1771821F7536880002C6D6 /* ContactCell.swift */,
-				4E1771831F7536880002C6D6 /* ContactCell.xib */,
 				4E1771861F753CEE0002C6D6 /* ContactsListViewController.swift */,
-				4E1771871F753CEE0002C6D6 /* ContactsListViewController.xib */,
 				4E77754C20C687C2002E1469 /* PhoneInstructionsViewController.swift */,
+				4E3522DE20C7EEA900B467A2 /* ContactTableViewCell.swift */,
 			);
 			name = Phone;
 			sourceTree = "<group>";
@@ -2242,7 +2227,6 @@
 				73E206B41B2EEFFE0008B002 /* Main.storyboard in Resources */,
 				734DBFC01BEF7950002FE77E /* ChangeDeviceParametarsVC.xib in Resources */,
 				E7DC67CB1B457C0E00EA6543 /* weather-tstorm@2x.png in Resources */,
-				4E04DB7B1F750DAC00DC1E58 /* Phone.storyboard in Resources */,
 				73E2311E1BA6E2C4003E41EC /* SceneParametarVC.xib in Resources */,
 				223362921CA2E4EC006C80C4 /* AddUserXIB.xib in Resources */,
 				73E82D0D1BECA97D00C1C621 /* Categories List.json in Resources */,
@@ -2250,7 +2234,6 @@
 				490C352E1D6D848400C9B851 /* DeleteConfirmation.xib in Resources */,
 				2232922B1CABD6790001422B /* Settings.storyboard in Resources */,
 				E7DC67B61B457C0E00EA6543 /* weather-clear.png in Resources */,
-				4E1771851F7536880002C6D6 /* ContactCell.xib in Resources */,
 				E7DC67BC1B457C0E00EA6543 /* weather-mist.png in Resources */,
 				490DC22E1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.xib in Resources */,
 				22495D221CAA7B910034FC94 /* Chat.storyboard in Resources */,
@@ -2258,11 +2241,9 @@
 				E7DC67C61B457C0E00EA6543 /* weather-shower.png in Resources */,
 				E7DC67C31B457C0E00EA6543 /* weather-rain@2x.png in Resources */,
 				E7DC67C81B457C0E00EA6543 /* weather-snow.png in Resources */,
-				4E1771891F753CEE0002C6D6 /* ContactsListViewController.xib in Resources */,
 				4D16A1291D51CB8D00817477 /* HvacParametersCell.xib in Resources */,
 				22D7EBA21D78418F00853051 /* SecurityLocationXIB.xib in Resources */,
 				738DECB11BBBFC1100D6B834 /* Security.json in Resources */,
-				4E17717E1F7510920002C6D6 /* Quran.storyboard in Resources */,
 				22495D271CAA7F510034FC94 /* Surveillance.storyboard in Resources */,
 				E70515A31BB3E147009FDA0D /* SurveillanceSettingsVC.xib in Resources */,
 				227F26471DA5155E00F5A236 /* TagsXIB.xib in Resources */,
@@ -2300,7 +2281,6 @@
 				E7DC67B71B457C0E00EA6543 /* weather-clear@2x.png in Resources */,
 				4EFAE02C1F6C183000C85074 /* reciters.json in Resources */,
 				223878A51C919A70001357E0 /* AddLocationXIB.xib in Resources */,
-				4E1771811F7510E10002C6D6 /* Radio.storyboard in Resources */,
 				4983C7E61D4B5F2D00C8E865 /* RelayParametersCell.xib in Resources */,
 				E79AEBB91B70C43300410E2D /* RelayParametarVC.xib in Resources */,
 				73E231201BA6E2C4003E41EC /* SequenceParametarVC.xib in Resources */,
@@ -2609,7 +2589,6 @@
 				223FB5941D645AB500DC2627 /* Image+CoreDataProperties.swift in Sources */,
 				73D592E81C1EC08500E206ED /* ChatInfo.swift in Sources */,
 				223690C71CAD022A0037B54A /* LogInViewController.swift in Sources */,
-				4E1771841F7536880002C6D6 /* ContactCell.swift in Sources */,
 				4EEEA4891FA0AB5600AC4AD6 /* RunnableList.swift in Sources */,
 				73E2311F1BA6E2C4003E41EC /* SequenceParametarVC.swift in Sources */,
 				4D0BB34B1D5C91020047688F /* PCCommand+CoreDataProperties.swift in Sources */,
@@ -2671,6 +2650,7 @@
 				7372EB331BC410800097806D /* Timer+CoreDataProperties.swift in Sources */,
 				223878991C916645001357E0 /* ListOfDevice_AppViewController.swift in Sources */,
 				49C059761D913D7D0061A544 /* ScanZone.swift in Sources */,
+				4E3522DF20C7EEA900B467A2 /* ContactTableViewCell.swift in Sources */,
 				E79AEBB81B70C43300410E2D /* RelayParametarVC.swift in Sources */,
 				49C0596C1D91386A0061A544 /* EventsCell.swift in Sources */,
 				22402A851CBFC54C00CBB6E4 /* SecurityCollectionCell.swift in Sources */,
@@ -2770,24 +2750,6 @@
 				22495D2E1CAA81490034FC94 /* Base */,
 			);
 			name = PCControl.storyboard;
-			sourceTree = "<group>";
-		};
-		4E17717C1F7510920002C6D6 /* Quran.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4E17717D1F7510920002C6D6 /* Base */,
-			);
-			name = Quran.storyboard;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		4E17717F1F7510E10002C6D6 /* Radio.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4E1771801F7510E10002C6D6 /* Base */,
-			);
-			name = Radio.storyboard;
-			path = ..;
 			sourceTree = "<group>";
 		};
 		73E206B21B2EEFFE0008B002 /* Main.storyboard */ = {

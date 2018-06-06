@@ -17,6 +17,28 @@ enum ReturnedValueFromAlertView {
 
 extension UIViewController {
     
+    func makeFullscreenButton() -> UIButton {
+        let fullscreenButton: UIButton = UIButton()
+        fullscreenButton.setImage(#imageLiteral(resourceName: "full screen"), for: UIControlState())
+        fullscreenButton.addTap {
+            fullscreenButton.switchFullscreen()
+        }
+        return fullscreenButton
+    }
+    
+    func makeMenuBarButton() -> UIBarButtonItem {
+        let menuButton: UIButton = UIButton()
+        menuButton.setImage(#imageLiteral(resourceName: "Menu button"), for: UIControlState())
+        menuButton.addTarget(self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
+        let menuBarButton: UIBarButtonItem = UIBarButtonItem(customView: menuButton)
+        view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+        
+        revealViewController().toggleAnimationDuration = 0.5
+        revealViewController().rearViewRevealWidth = 200
+        
+        return menuBarButton
+    }
+    
     override open func remoteControlReceived(with event: UIEvent?) {
         if AudioPlayer.sharedInstance.isActive {
             if let event = event {
