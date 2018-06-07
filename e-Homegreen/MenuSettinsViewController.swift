@@ -38,7 +38,7 @@ enum Menu:Int{
     
     var controller:UINavigationController{
         switch self{
-        case .dashboard     : return MenuViewController.dushboardVC
+        case .dashboard     : return MenuViewController.dashboardVC
         case .devices       : return MenuViewController.devicesVC
         case .scenes        : return MenuViewController.scenesVC
         case .events        : return MenuViewController.eventsVC
@@ -67,7 +67,7 @@ enum Menu:Int{
 }
 
 class MenuViewController{
-    static let dushboardVC      = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Dashboard") as! UINavigationController)
+    static let dashboardVC      = UINavigationController(rootViewController: DashboardViewController())
     static let devicesVC        = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Devices") as! UINavigationController)
     static let scenesVC         = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Scenes") as! UINavigationController)
     static let eventsVC         = (UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "Events") as! UINavigationController)

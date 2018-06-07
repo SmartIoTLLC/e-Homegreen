@@ -209,6 +209,11 @@ struct UserDefaults {
     static let ClockType = "clockType"
     static let FavDevicesLabelType = "favDevicesLabelType"
     
+    struct Dashboard {
+        static let calendarCenterPoint = "calendarCenterPoint"
+        static let clockCenterPoint = "clockCenterPoint"
+    }
+    
     struct Security {
         static let AlarmState = "EHGSecurityAlarmState"
         static let SecurityMode = "EHGSecuritySecurityMode"

@@ -237,7 +237,6 @@
                         <outlet property="logoImageView" destination="dBy-un-k0R" id="xM2-OJ-WPo"/>
                         <outlet property="menuCollectionView" destination="VwH-0j-wOZ" id="VrP-O5-7rg"/>
                         <segue destination="uQN-u9-JqS" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="8zo-MZ-dnY"/>
-                        <segue destination="X3e-9w-vdD" kind="custom" identifier="" customClass="SWRevealViewControllerSeguePushController" id="eTR-ld-Vug"/>
                         <segue destination="rVI-Hx-Fff" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="85J-mA-tTU"/>
                         <segue destination="axL-Uc-con" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="j4p-7H-9BR"/>
                         <segue destination="trK-6X-QtI" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="kE3-Jp-wcQ"/>
@@ -1569,34 +1568,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NtW-AU-egd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="614" y="-1072"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="a3U-JU-FKN">
-            <objects>
-                <navigationController storyboardIdentifier="Dashboard" automaticallyAdjustsScrollViewInsets="NO" id="X3e-9w-vdD" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Q7l-Va-JtE">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="cV5-8U-j5C" kind="relationship" relationship="rootViewController" id="lX1-Nn-gEi"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2Oe-sk-M2X" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="876" y="-1072"/>
-        </scene>
-        <!--DashboardViewController-->
-        <scene sceneID="3yR-e2-alO">
-            <objects>
-                <viewControllerPlaceholder storyboardIdentifier="DashboardViewController" storyboardName="Dashboard" referencedIdentifier="DashboardViewController" id="cV5-8U-j5C" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="SGl-UV-tFw"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kft-QW-eS0" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1200" y="-1067"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="9MF-AQ-Hcm">

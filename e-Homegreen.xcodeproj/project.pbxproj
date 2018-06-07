@@ -66,7 +66,6 @@
 		22453A9F1D391E33009DCB07 /* FilterPullDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22453A9E1D391E33009DCB07 /* FilterPullDown.swift */; };
 		22495D0E1CAA63EA0034FC94 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22495D0D1CAA63EA0034FC94 /* SWRevealViewController.m */; };
 		22495D111CAA72020034FC94 /* Device.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22495D0F1CAA72020034FC94 /* Device.storyboard */; };
-		22495D131CAA74880034FC94 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22495D121CAA74880034FC94 /* Dashboard.storyboard */; };
 		22495D161CAA75100034FC94 /* Scenes.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22495D141CAA75100034FC94 /* Scenes.storyboard */; };
 		22495D181CAA75DC0034FC94 /* Events.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22495D171CAA75DC0034FC94 /* Events.storyboard */; };
 		22495D1B1CAA797C0034FC94 /* Sequences.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22495D191CAA797C0034FC94 /* Sequences.storyboard */; };
@@ -486,7 +485,6 @@
 		22495D0C1CAA63EA0034FC94 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		22495D0D1CAA63EA0034FC94 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		22495D101CAA72020034FC94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Device.storyboard; sourceTree = "<group>"; };
-		22495D121CAA74880034FC94 /* Dashboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
 		22495D151CAA75100034FC94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Scenes.storyboard; sourceTree = "<group>"; };
 		22495D171CAA75DC0034FC94 /* Events.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Events.storyboard; sourceTree = "<group>"; };
 		22495D1A1CAA797C0034FC94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Sequences.storyboard; sourceTree = "<group>"; };
@@ -894,7 +892,6 @@
 		223292211CABCB180001422B /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
-				22495D121CAA74880034FC94 /* Dashboard.storyboard */,
 				736F17DF1B3AF3E9003A6A02 /* DashboardViewController.swift */,
 			);
 			name = Dashboard;
@@ -2282,7 +2279,6 @@
 				73E231201BA6E2C4003E41EC /* SequenceParametarVC.xib in Resources */,
 				E7DC67BE1B457C0E00EA6543 /* weather-moon.png in Resources */,
 				E7DC67C71B457C0E00EA6543 /* weather-shower@2x.png in Resources */,
-				22495D131CAA74880034FC94 /* Dashboard.storyboard in Resources */,
 				E79AEBB51B70BFD500410E2D /* DimmerParametarVC.xib in Resources */,
 				22EEAD0F1C8715E000AD66F0 /* EditCategoryViewController.xib in Resources */,
 				E7DC67C01B457C0E00EA6543 /* weather-rain-night.png in Resources */,
