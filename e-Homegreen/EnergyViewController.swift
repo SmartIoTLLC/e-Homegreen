@@ -64,6 +64,8 @@ class EnergyViewController: PopoverVC  {
         
         setContentOffset(for: scrollView)
         setTitleView(view: headerTitleSubtitleView)
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        scrollView.setContentOffset(bottomOffset, animated: false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,9 +76,6 @@ class EnergyViewController: PopoverVC  {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
-        scrollView.setContentOffset(bottomOffset, animated: false)
         
         refreshLocalParametars()
         addObserversVDA()

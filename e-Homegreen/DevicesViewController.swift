@@ -91,6 +91,9 @@ class DevicesViewController: PopoverVC{
         super.viewDidLayoutSubviews()
         
         setContentOffset(for: scrollView)
+        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
+        scrollView.setContentOffset(bottomOffset, animated: false)
+        
         setTitleView(view: headerTitleSubtitleView)
     }
     
@@ -108,13 +111,6 @@ class DevicesViewController: PopoverVC{
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
             self.refreshVisibleDevicesInScrollView()
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
-        scrollView.setContentOffset(bottomOffset, animated: false)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

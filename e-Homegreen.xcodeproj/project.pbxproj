@@ -198,12 +198,14 @@
 		4EA4DA522004F33700CA8385 /* MediaCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EA4DA502004F33700CA8385 /* MediaCollectionCell.xib */; };
 		4EA9A7C31FA1D00500C8D6B8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */; };
 		4EC2E1421F7E439700DA494B /* RemoteDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */; };
+		4ED325E020CA7AB100E3A32A /* SidemenuItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED325DF20CA7AB100E3A32A /* SidemenuItemCollectionViewCell.swift */; };
+		4ED325E220CA7B6700E3A32A /* SidemenuUserCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED325E120CA7B6700E3A32A /* SidemenuUserCollectionViewCell.swift */; };
+		4ED325E420CA846100E3A32A /* SidemenuCollectionViewFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED325E320CA846100E3A32A /* SidemenuCollectionViewFooter.swift */; };
 		4EDCE6811F6A8D740073736B /* radio_station.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EDCE6801F6A8D740073736B /* radio_station.json */; };
 		4EDCE6871F6A9BEA0073736B /* RadioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */; };
 		4EDCE6961F6AA76F0073736B /* Radio+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */; };
 		4EDCE6971F6AA76F0073736B /* Radio+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */; };
 		4EEEA4891FA0AB5600AC4AD6 /* RunnableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEEA4881FA0AB5600AC4AD6 /* RunnableList.swift */; };
-		4EF41B971F7BAD88007FBF64 /* RemoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF41B961F7BAD88007FBF64 /* RemoteCell.swift */; };
 		4EF41B9C1F7BE813007FBF64 /* AddRemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF41B9A1F7BE813007FBF64 /* AddRemoteViewController.swift */; };
 		4EF41B9D1F7BE813007FBF64 /* AddRemoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EF41B9B1F7BE813007FBF64 /* AddRemoteViewController.xib */; };
 		4EF6C8831FD197C80009E985 /* ImagePickerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF6C8821FD197C80009E985 /* ImagePickerHandler.swift */; };
@@ -618,12 +620,14 @@
 		4EA4DA502004F33700CA8385 /* MediaCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MediaCollectionCell.xib; sourceTree = "<group>"; };
 		4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDetailsViewController.swift; sourceTree = "<group>"; };
+		4ED325DF20CA7AB100E3A32A /* SidemenuItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidemenuItemCollectionViewCell.swift; sourceTree = "<group>"; };
+		4ED325E120CA7B6700E3A32A /* SidemenuUserCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidemenuUserCollectionViewCell.swift; sourceTree = "<group>"; };
+		4ED325E320CA846100E3A32A /* SidemenuCollectionViewFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidemenuCollectionViewFooter.swift; sourceTree = "<group>"; };
 		4EDCE6801F6A8D740073736B /* radio_station.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = radio_station.json; sourceTree = "<group>"; };
 		4EDCE6861F6A9BEA0073736B /* RadioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioViewController.swift; sourceTree = "<group>"; };
 		4EDCE6941F6AA76F0073736B /* Radio+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Radio+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4EDCE6951F6AA76F0073736B /* Radio+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Radio+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4EEEA4881FA0AB5600AC4AD6 /* RunnableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnableList.swift; sourceTree = "<group>"; };
-		4EF41B961F7BAD88007FBF64 /* RemoteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCell.swift; sourceTree = "<group>"; };
 		4EF41B9A1F7BE813007FBF64 /* AddRemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRemoteViewController.swift; sourceTree = "<group>"; };
 		4EF41B9B1F7BE813007FBF64 /* AddRemoteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddRemoteViewController.xib; sourceTree = "<group>"; };
 		4EF6C8821FD197C80009E985 /* ImagePickerHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerHandler.swift; sourceTree = "<group>"; };
@@ -1426,7 +1430,6 @@
 			isa = PBXGroup;
 			children = (
 				4E218F4A1F7B92FC0068CA72 /* RemoteViewController.swift */,
-				4EF41B961F7BAD88007FBF64 /* RemoteCell.swift */,
 				4EF41B9A1F7BE813007FBF64 /* AddRemoteViewController.swift */,
 				4EF41B9B1F7BE813007FBF64 /* AddRemoteViewController.xib */,
 				4E5BE3FF1F7D42E700497335 /* EditRemoteViewController.swift */,
@@ -1584,6 +1587,9 @@
 			isa = PBXGroup;
 			children = (
 				73DB8B961B2FFA4D00139E58 /* SidePanelViewController.swift */,
+				4ED325DF20CA7AB100E3A32A /* SidemenuItemCollectionViewCell.swift */,
+				4ED325E120CA7B6700E3A32A /* SidemenuUserCollectionViewCell.swift */,
+				4ED325E320CA846100E3A32A /* SidemenuCollectionViewFooter.swift */,
 			);
 			name = "Side Menu";
 			sourceTree = "<group>";
@@ -2417,6 +2423,7 @@
 				22FD298F1CBBC62400BCE823 /* EventCell.swift in Sources */,
 				73E206D91B2F16720008B002 /* DevicesViewController.swift in Sources */,
 				22402A811CBF72A600CBB6E4 /* DatabaseGatewayController.swift in Sources */,
+				4ED325E020CA7AB100E3A32A /* SidemenuItemCollectionViewCell.swift in Sources */,
 				225469001CBD142500473BC7 /* DatabaseUserTimerController.swift in Sources */,
 				E79AEBB41B70BFD500410E2D /* DimmerParametarVC.swift in Sources */,
 				736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */,
@@ -2524,7 +2531,6 @@
 				223FD9C21C888AEF00D288F9 /* UIViewController+Extension.swift in Sources */,
 				22495D0E1CAA63EA0034FC94 /* SWRevealViewController.m in Sources */,
 				736F17D61B3AE85F003A6A02 /* TimersViewController.swift in Sources */,
-				4EF41B971F7BAD88007FBF64 /* RemoteCell.swift in Sources */,
 				73E758F11B4EBE0300ECE061 /* LocationsViewController.swift in Sources */,
 				2236871A1CB51834005ACDE4 /* Category.swift in Sources */,
 				73DA61FA1BCBF50B00ADCDBF /* ChatDeviceSuggestionVC.swift in Sources */,
@@ -2634,6 +2640,7 @@
 				2260FBA11D2CF5EC00576513 /* CustomToolBar.swift in Sources */,
 				4EF6C8831FD197C80009E985 /* ImagePickerHandler.swift in Sources */,
 				2252B4081CA58A4F005E84AA /* ImportSSIDViewController.swift in Sources */,
+				4ED325E420CA846100E3A32A /* SidemenuCollectionViewFooter.swift in Sources */,
 				73F51A091C9475C6003EE702 /* wol.c in Sources */,
 				4E3CFD7C1F823C2F00E22C92 /* ButtonCell.swift in Sources */,
 				22506E8F1CB7DF25004EB47A /* DatabaseScenesController.swift in Sources */,
@@ -2658,6 +2665,7 @@
 				2241E46C1CC612B400BCD763 /* DatabaseZoneController.swift in Sources */,
 				22FF1E621D86D86F00ECB86E /* Card+CoreDataProperties.swift in Sources */,
 				49C059701D91393F0061A544 /* TimerCell.swift in Sources */,
+				4ED325E220CA7B6700E3A32A /* SidemenuUserCollectionViewCell.swift in Sources */,
 				4E9EEAA5200374E900201E7C /* MediaCollectionVC.swift in Sources */,
 				4E4AC63B20C5579800EDAEAD /* NSNumberExtensions.swift in Sources */,
 				7372EB201BC3F7600097806D /* TimerParametarVC.swift in Sources */,

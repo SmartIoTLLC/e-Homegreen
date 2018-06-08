@@ -13,60 +13,70 @@ protocol FilterPullDownDelegate{
     func saveDefaultFilter()
 }
 
+struct FilterPulldownKeys {
+    static let all: String = "All"
+    static let defaultID: Int = 0
+    static let timeDefaultValue: String = "0"
+    
+    static let lamp: String = "lamp"
+    static let lamp_red: String = "red"
+    static let lamp_green: String = "green"
+}
+
 class FilterPullDown: UIScrollView {
     
     var filterDelegate : FilterPullDownDelegate?
     
-    var bottom = NSLayoutConstraint()
+    var bottomLayoutConstraint: NSLayoutConstraint = NSLayoutConstraint()
     
-    let contentView = UIView()
-    let bottomLine = UIView()
-    let pullView:UIImageView = UIImageView()
+    fileprivate let contentView: UIView = UIView()
+    private let bottomLine: UIView = UIView()
+    private let pullView: UIImageView = UIImageView()
     
-    let redIndicator = UIView()
-    let greenIndicator = UIView()
+    private let redIndicator: UIView = UIView()
+    private let greenIndicator: UIView = UIView()
     
-    //default value element
-    let resetTimeButton:UIButton = UIButton()
-    let secundsLabel:UILabel = UILabel()
-    let secundsTextField:EditTextField = EditTextField()
-    let minLabel:UILabel = UILabel()
-    let minTextField:EditTextField = EditTextField()
-    let hoursLabel:UILabel = UILabel()
-    let hoursTextField:EditTextField = EditTextField()
-    var setAsDefaultButton:CustomGradientButton = CustomGradientButton()
+    // MARK: - Default value components declaration
+    private let resetTimeButton: UIButton = UIButton()
+    private let secondsLabel: UILabel = UILabel()
+    private let secondsTextField: EditTextField = EditTextField()
+    private let minutesLabel: UILabel = UILabel()
+    private let minutesTextField: EditTextField = EditTextField()
+    private let hoursLabel: UILabel = UILabel()
+    private let hoursTextField: EditTextField = EditTextField()
+    private let setAsDefaultButton: CustomGradientButton = CustomGradientButton()
     
-    //location
-    let locationLabel:UILabel = UILabel()
-    let chooseLocationButon:CustomGradientButton = CustomGradientButton()
-    let resetLocationButton:UIButton = UIButton()
+    // MARK: - Location components declaration
+    private let locationLabel: UILabel = UILabel()
+    private let chooseLocationButon: CustomGradientButton = CustomGradientButton()
+    private let resetLocationButton: UIButton = UIButton()
     
-    //level
-    let levelLabel:UILabel = UILabel()
-    let chooseLevelButon:CustomGradientButton = CustomGradientButton()
-    let resetLevelButton:UIButton = UIButton()
+    // MARK: - Level components declaration
+    private let levelLabel: UILabel = UILabel()
+    private let chooseLevelButon: CustomGradientButton = CustomGradientButton()
+    private let resetLevelButton: UIButton = UIButton()
     
-    //zone
-    let zoneLabel:UILabel = UILabel()
-    let chooseZoneButon:CustomGradientButton = CustomGradientButton()
-    let resetZoneButton:UIButton = UIButton()
+    // MARK: - Zone components declaration
+    private let zoneLabel: UILabel = UILabel()
+    private let chooseZoneButon: CustomGradientButton = CustomGradientButton()
+    private let resetZoneButton: UIButton = UIButton()
     
-    //category
-    let categoryLabel:UILabel = UILabel()
-    let chooseCategoryButon:CustomGradientButton = CustomGradientButton()
-    let resetCategoryButton:UIButton = UIButton()
+    // MARK: - Category components declaration
+    private let categoryLabel: UILabel = UILabel()
+    private let chooseCategoryButon: CustomGradientButton = CustomGradientButton()
+    private let resetCategoryButton: UIButton = UIButton()
     
-    // go button
-    let goButon:CustomGradientButton = CustomGradientButton()
+    // MARK: - Go button components declaration
+    private let goButon: CustomGradientButton = CustomGradientButton()
     
-    var button:UIButton!
+    private var button: UIButton!
     
-    var location:Location?
-    var level:Zone?
-    var zoneSelected:Zone?
-    var category:Category?
+    private var location: Location?
+    private var level: Zone?
+    private var zoneSelected: Zone?
+    private var category: Category?
     
-    var menuItem:Menu!
+    private var menuItem: Menu!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -83,9 +93,9 @@ class FilterPullDown: UIScrollView {
     }
     
     @objc fileprivate func resetTime() {
-        hoursTextField.text = "0"
-        minTextField.text = "0"
-        secundsTextField.text = "0"
+        hoursTextField.text   = FilterPulldownKeys.timeDefaultValue
+        minutesTextField.text = FilterPulldownKeys.timeDefaultValue
+        secondsTextField.text = FilterPulldownKeys.timeDefaultValue
     }
 
     func commonInit(){
@@ -109,9 +119,11 @@ class FilterPullDown: UIScrollView {
         contentView.addSubview(bottomLine)
         
         //create signal indicators
-        greenIndicator.backgroundColor = UIColor.clear
+        greenIndicator.backgroundColor = UIColor(red: 24/255, green: 202/255, blue: 0/255, alpha: 1.0)
+        greenIndicator.alpha = 0
         self.addSubview(greenIndicator)
-        redIndicator.backgroundColor = UIColor.clear
+        redIndicator.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0)
+        redIndicator.alpha = 0
         self.addSubview(redIndicator)
         
         //create pull down image
@@ -124,32 +136,32 @@ class FilterPullDown: UIScrollView {
         contentView.addSubview(resetTimeButton)
         
         // secunds label
-        secundsLabel.text = "s"
-        secundsLabel.textAlignment = .center
-        secundsLabel.textColor = UIColor.white
-        contentView.addSubview(secundsLabel)
+        secondsLabel.text = "s"
+        secondsLabel.textAlignment = .center
+        secondsLabel.textColor = UIColor.white
+        contentView.addSubview(secondsLabel)
         
         //secunds textfield
-        secundsTextField.borderStyle = .roundedRect
-        secundsTextField.inputAccessoryView = CustomToolBar()
-        secundsTextField.keyboardType = .numberPad
-        contentView.addSubview(secundsTextField)
-        secundsTextField.text = "0"
-        secundsTextField.backgroundColor = UIColor.white
+        secondsTextField.borderStyle = .roundedRect
+        secondsTextField.inputAccessoryView = CustomToolBar()
+        secondsTextField.keyboardType = .numberPad
+        contentView.addSubview(secondsTextField)
+        secondsTextField.text = FilterPulldownKeys.timeDefaultValue
+        secondsTextField.backgroundColor = UIColor.white
         
         //minutes label
-        minLabel.text = "m"
-        minLabel.textAlignment = .center
-        minLabel.textColor = UIColor.white
-        contentView.addSubview(minLabel)
+        minutesLabel.text = "m"
+        minutesLabel.textAlignment = .center
+        minutesLabel.textColor = UIColor.white
+        contentView.addSubview(minutesLabel)
         
         //minutes textfield
-        minTextField.borderStyle = .roundedRect
-        minTextField.inputAccessoryView = CustomToolBar()
-        minTextField.keyboardType = .numberPad
-        contentView.addSubview(minTextField)
-        minTextField.text = "0"
-        minTextField.backgroundColor = UIColor.white
+        minutesTextField.borderStyle = .roundedRect
+        minutesTextField.inputAccessoryView = CustomToolBar()
+        minutesTextField.keyboardType = .numberPad
+        contentView.addSubview(minutesTextField)
+        minutesTextField.text = FilterPulldownKeys.timeDefaultValue
+        minutesTextField.backgroundColor = UIColor.white
         
         //hours label
         hoursLabel.text = "h"
@@ -162,7 +174,7 @@ class FilterPullDown: UIScrollView {
         hoursTextField.inputAccessoryView = CustomToolBar()
         hoursTextField.keyboardType = .numberPad
         contentView.addSubview(hoursTextField)
-        hoursTextField.text = "0"
+        hoursTextField.text = FilterPulldownKeys.timeDefaultValue
         hoursTextField.backgroundColor = UIColor.white
         
         //set as default button
@@ -176,13 +188,11 @@ class FilterPullDown: UIScrollView {
         
         //location label
         locationLabel.text = "Location"
-        locationLabel.textAlignment = .left
         locationLabel.textColor = UIColor.white
-        locationLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(locationLabel)
         
         //choose location button
-        chooseLocationButon.setTitle("All", for: UIControlState())
+        chooseLocationButon.setTitle(FilterPulldownKeys.all, for: UIControlState())
         chooseLocationButon.addTarget(self, action: #selector(openLocations(_:)), for: .touchUpInside)
         chooseLocationButon.tag = 0
         contentView.addSubview(chooseLocationButon)
@@ -194,12 +204,11 @@ class FilterPullDown: UIScrollView {
         
         //level label
         levelLabel.text = "Level"
-        levelLabel.textAlignment = .left
         levelLabel.textColor = UIColor.white
         contentView.addSubview(levelLabel)
         
         //choose level button
-        chooseLevelButon.setTitle("All", for: UIControlState())
+        chooseLevelButon.setTitle(FilterPulldownKeys.all, for: UIControlState())
         chooseLevelButon.addTarget(self, action: #selector(openLevels(_:)), for: .touchUpInside)
         chooseLevelButon.tag = 1
         contentView.addSubview(chooseLevelButon)
@@ -211,12 +220,11 @@ class FilterPullDown: UIScrollView {
         
         //zone label
         zoneLabel.text = "Zone"
-        zoneLabel.textAlignment = .left
         zoneLabel.textColor = UIColor.white
         contentView.addSubview(zoneLabel)
         
         //choose zone button
-        chooseZoneButon.setTitle("All", for: UIControlState())
+        chooseZoneButon.setTitle(FilterPulldownKeys.all, for: UIControlState())
         chooseZoneButon.addTarget(self, action: #selector(openZones(_:)), for: .touchUpInside)
         chooseZoneButon.tag = 2
         contentView.addSubview(chooseZoneButon)
@@ -228,12 +236,11 @@ class FilterPullDown: UIScrollView {
         
         //category label
         categoryLabel.text = "Category"
-        categoryLabel.textAlignment = .left
         categoryLabel.textColor = UIColor.white
         contentView.addSubview(categoryLabel)
         
         //choose category button
-        chooseCategoryButon.setTitle("All", for: UIControlState())
+        chooseCategoryButon.setTitle(FilterPulldownKeys.all, for: UIControlState())
         chooseCategoryButon.addTarget(self, action: #selector(openCategories(_:)), for: .touchUpInside)
         chooseCategoryButon.tag = 3
         contentView.addSubview(chooseCategoryButon)
@@ -256,12 +263,12 @@ class FilterPullDown: UIScrollView {
         
         //set content view constraint
         self.addConstraint(NSLayoutConstraint(item: contentView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0.0))
-        
-        bottom = NSLayoutConstraint(item: contentView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: -600)
-        self.addConstraint(bottom)
+
+        bottomLayoutConstraint = NSLayoutConstraint(item: contentView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: -600)
+        self.addConstraint(bottomLayoutConstraint)
         self.addConstraint(NSLayoutConstraint(item: contentView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0.0))
         self.addConstraint(NSLayoutConstraint(item: contentView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0.0))
-        
+
         view.addConstraint(NSLayoutConstraint(item: contentView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1.0, constant: 0.0))
         view.addConstraint(NSLayoutConstraint(item: contentView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1.0, constant: 0.0))
 
@@ -314,37 +321,37 @@ class FilterPullDown: UIScrollView {
             make.width.equalTo(35)
         }
         
-        secundsLabel.snp.makeConstraints { (make) in
+        secondsLabel.snp.makeConstraints { (make) in
             make.centerY.equalTo(resetTimeButton.snp.centerY)
             make.trailing.equalTo(resetTimeButton.snp.leading).inset(-3)
             make.height.equalTo(35)
             make.width.equalTo(20)
         }
         
-        secundsTextField.snp.makeConstraints { (make) in
-            make.centerY.equalTo(secundsLabel.snp.centerY)
-            make.trailing.equalTo(secundsLabel.snp.leading).inset(-3)
+        secondsTextField.snp.makeConstraints { (make) in
+            make.centerY.equalTo(secondsLabel.snp.centerY)
+            make.trailing.equalTo(secondsLabel.snp.leading).inset(-3)
             make.height.equalTo(35)
             make.width.equalTo(40)
         }
 
-        minLabel.snp.makeConstraints { (make) in
-            make.centerY.equalTo(secundsTextField.snp.centerY)
-            make.trailing.equalTo(secundsTextField.snp.leading).inset(-3)
+        minutesLabel.snp.makeConstraints { (make) in
+            make.centerY.equalTo(secondsTextField.snp.centerY)
+            make.trailing.equalTo(secondsTextField.snp.leading).inset(-3)
             make.height.equalTo(35)
             make.width.equalTo(20)
         }
  
-        minTextField.snp.makeConstraints { (make) in
-            make.centerY.equalTo(minLabel.snp.centerY)
-            make.trailing.equalTo(minLabel.snp.leading).inset(-3)
+        minutesTextField.snp.makeConstraints { (make) in
+            make.centerY.equalTo(minutesLabel.snp.centerY)
+            make.trailing.equalTo(minutesLabel.snp.leading).inset(-3)
             make.height.equalTo(35)
             make.width.equalTo(40)
         }
         
         hoursLabel.snp.makeConstraints { (make) in
-            make.centerY.equalTo(minTextField.snp.centerY)
-            make.trailing.equalTo(minTextField.snp.leading).inset(-3)
+            make.centerY.equalTo(minutesTextField.snp.centerY)
+            make.trailing.equalTo(minutesTextField.snp.leading).inset(-3)
             make.height.equalTo(35)
             make.width.equalTo(20)
         }
@@ -473,7 +480,7 @@ class FilterPullDown: UIScrollView {
         var popoverList:[PopOverItem] = []
         let list:[Location] = FilterController.shared.getLocationForFilterByUser()
         for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
-        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
+        popoverList.insert(PopOverItem(name: FilterPulldownKeys.all, id: ""), at: 0)
         if let vc = self.parentViewController as? PopoverVC { vc.openPopover(sender, popOverList:popoverList) }
     }
     
@@ -482,10 +489,10 @@ class FilterPullDown: UIScrollView {
         level = nil
         zoneSelected = nil
         category = nil
-        chooseLocationButon.setTitle("All", for: UIControlState())
-        chooseZoneButon.setTitle("All", for: UIControlState())
-        chooseLevelButon.setTitle("All", for: UIControlState())
-        chooseCategoryButon.setTitle("All", for: UIControlState())
+        chooseLocationButon.setTitle(FilterPulldownKeys.all, for: UIControlState())
+        chooseZoneButon.setTitle(FilterPulldownKeys.all, for: UIControlState())
+        chooseLevelButon.setTitle(FilterPulldownKeys.all, for: UIControlState())
+        chooseCategoryButon.setTitle(FilterPulldownKeys.all, for: UIControlState())
     }
     
     func openLevels(_ sender : UIButton) {
@@ -496,15 +503,15 @@ class FilterPullDown: UIScrollView {
             for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
         }
         
-        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
+        popoverList.insert(PopOverItem(name: FilterPulldownKeys.all, id: ""), at: 0)
         if let vc = self.parentViewController as? PopoverVC { vc.openPopover(sender, popOverList:popoverList) }
     }
     
     func resetLevel(_ sender : UIButton) {
         level = nil
         zoneSelected = nil
-        chooseZoneButon.setTitle("All", for: UIControlState())
-        chooseLevelButon.setTitle("All", for: UIControlState())
+        chooseZoneButon.setTitle(FilterPulldownKeys.all, for: UIControlState())
+        chooseLevelButon.setTitle(FilterPulldownKeys.all, for: UIControlState())
     }
     
     func openZones(_ sender : UIButton) {
@@ -515,13 +522,13 @@ class FilterPullDown: UIScrollView {
             for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
         }
 
-        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
+        popoverList.insert(PopOverItem(name: FilterPulldownKeys.all, id: ""), at: 0)
         if let vc = self.parentViewController as? PopoverVC { vc.openPopover(sender, popOverList:popoverList) }
     }
     
     func resetZone(_ sender : UIButton) {
         zoneSelected = nil
-        chooseZoneButon.setTitle("All", for: UIControlState())
+        chooseZoneButon.setTitle(FilterPulldownKeys.all, for: UIControlState())
     }
     
     func openCategories(_ sender : UIButton) {
@@ -532,13 +539,13 @@ class FilterPullDown: UIScrollView {
             for item in list { popoverList.append(PopOverItem(name: item.name!, id: item.objectID.uriRepresentation().absoluteString)) }
         }
         
-        popoverList.insert(PopOverItem(name: "All", id: ""), at: 0)
+        popoverList.insert(PopOverItem(name: FilterPulldownKeys.all, id: ""), at: 0)
         if let vc = self.parentViewController as? PopoverVC {  vc.openPopover(sender, popOverList:popoverList) }
     }
     
     func resetCategory(_ sender : UIButton) {
         category = nil
-        chooseCategoryButon.setTitle("All", for: UIControlState())
+        chooseCategoryButon.setTitle(FilterPulldownKeys.all, for: UIControlState())
     }
     
     func setButtonTitle(_ text:String, id:String) {
@@ -548,13 +555,13 @@ class FilterPullDown: UIScrollView {
             level = nil
             zoneSelected = nil
             category = nil
-            chooseLevelButon.setTitle("All", for: UIControlState())
-            chooseZoneButon.setTitle("All", for: UIControlState())
-            chooseCategoryButon.setTitle("All", for: UIControlState())
+            chooseLevelButon.setTitle(FilterPulldownKeys.all, for: UIControlState())
+            chooseZoneButon.setTitle(FilterPulldownKeys.all, for: UIControlState())
+            chooseCategoryButon.setTitle(FilterPulldownKeys.all, for: UIControlState())
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
             zoneSelected = nil
-            chooseZoneButon.setTitle("All", for: UIControlState())
+            chooseZoneButon.setTitle(FilterPulldownKeys.all, for: UIControlState())
             break
         case 2:
             zoneSelected = FilterController.shared.getZoneByObjectId(id)
@@ -572,21 +579,21 @@ class FilterPullDown: UIScrollView {
     func setFilterItem(_ menu:Menu) {
         self.menuItem = menu
         if let filter = DatabaseFilterController.shared.getFilterByMenu(menu) {
-            if filter.locationId != "All" {
+            if filter.locationId != FilterPulldownKeys.all {
                 if let location = FilterController.shared.getLocationByObjectId(filter.locationId) { chooseLocationButon.setTitle(location.name, for: UIControlState()); self.location = location }
-            } else { chooseLocationButon.setTitle("All", for: UIControlState()); self.location = nil }
+            } else { chooseLocationButon.setTitle(FilterPulldownKeys.all, for: UIControlState()); self.location = nil }
             
-            if filter.levelId != "All" {
+            if filter.levelId != FilterPulldownKeys.all {
                 if let level = FilterController.shared.getZoneByObjectId(filter.levelId) { chooseLevelButon.setTitle(level.name, for: UIControlState()); self.level = level }
-            } else { chooseLevelButon.setTitle("All", for: UIControlState()); self.level = nil }
+            } else { chooseLevelButon.setTitle(FilterPulldownKeys.all, for: UIControlState()); self.level = nil }
             
-            if filter.zoneId != "All" {
+            if filter.zoneId != FilterPulldownKeys.all {
                 if let zone = FilterController.shared.getZoneByObjectId(filter.zoneId) { chooseZoneButon.setTitle(zone.name, for: UIControlState()); self.zoneSelected = zone }
-            } else { chooseZoneButon.setTitle("All", for: UIControlState()); self.zoneSelected = nil }
+            } else { chooseZoneButon.setTitle(FilterPulldownKeys.all, for: UIControlState()); self.zoneSelected = nil }
             
-            if filter.categoryId != "All" {
+            if filter.categoryId != FilterPulldownKeys.all {
                 if let category = FilterController.shared.getCategoryByObjectId(filter.categoryId) { chooseCategoryButon.setTitle(category.name, for: UIControlState()); self.category = category }
-            } else { chooseCategoryButon.setTitle("All", for: UIControlState()); self.category = nil }
+            } else { chooseCategoryButon.setTitle(FilterPulldownKeys.all, for: UIControlState()); self.category = nil }
             
         }
         returnFilter()
@@ -594,21 +601,21 @@ class FilterPullDown: UIScrollView {
     
     func setDefaultFilterItem(_ menu:Menu) {
         if let filter = DatabaseFilterController.shared.getDefaultFilterByMenu(menu) {
-            if filter.locationId != "All" {
+            if filter.locationId != FilterPulldownKeys.all {
                 if let location = FilterController.shared.getLocationByObjectId(filter.locationId) { chooseLocationButon.setTitle(location.name, for: UIControlState()); self.location = location }
-            } else { chooseLocationButon.setTitle("All", for: UIControlState()); self.location = nil }
+            } else { chooseLocationButon.setTitle(FilterPulldownKeys.all, for: UIControlState()); self.location = nil }
             
-            if filter.levelId != "All" {
+            if filter.levelId != FilterPulldownKeys.all {
                 if let level = FilterController.shared.getZoneByObjectId(filter.levelId) { chooseLevelButon.setTitle(level.name, for: UIControlState()); self.level = level }
-            } else { chooseLevelButon.setTitle("All", for: UIControlState()); self.level = nil }
+            } else { chooseLevelButon.setTitle(FilterPulldownKeys.all, for: UIControlState()); self.level = nil }
             
-            if filter.zoneId != "All" {
+            if filter.zoneId != FilterPulldownKeys.all {
                 if let zone = FilterController.shared.getZoneByObjectId(filter.zoneId) { chooseZoneButon.setTitle(zone.name, for: UIControlState()); self.zoneSelected = zone }
-            } else { chooseZoneButon.setTitle("All", for: UIControlState()); self.zoneSelected = nil }
+            } else { chooseZoneButon.setTitle(FilterPulldownKeys.all, for: UIControlState()); self.zoneSelected = nil }
             
-            if filter.categoryId != "All" {
+            if filter.categoryId != FilterPulldownKeys.all {
                 if let category = FilterController.shared.getCategoryByObjectId(filter.categoryId) { chooseCategoryButon.setTitle(category.name, for: UIControlState()); self.category = category }
-            } else { chooseCategoryButon.setTitle("All", for: UIControlState()); self.category = nil }
+            } else { chooseCategoryButon.setTitle(FilterPulldownKeys.all, for: UIControlState()); self.category = nil }
             
         }
         returnFilter()
@@ -616,14 +623,14 @@ class FilterPullDown: UIScrollView {
     
     func setDefaultParametar(){
         guard let h = hoursTextField.text else { return }
-        guard let m = minTextField.text else { return }
-        guard let s = secundsTextField.text else { return }
+        guard let m = minutesTextField.text else { return }
+        guard let s = secondsTextField.text else { return }
         
         guard let hours = Int(h) else { return }
         guard let minutes = Int(m) else { return }
-        guard let socunds  = Int(s) else { return }
+        guard let seconds  = Int(s) else { return }
         
-        let filterItem = FilterItem(location: "All", levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
+        let filterItem = FilterItem(location: FilterPulldownKeys.all, levelId: FilterPulldownKeys.defaultID, zoneId: FilterPulldownKeys.defaultID, categoryId: FilterPulldownKeys.defaultID, levelName: FilterPulldownKeys.all, zoneName: FilterPulldownKeys.all, categoryName: FilterPulldownKeys.all)
         if let location = location {
             if let locationName = location.name { filterItem.location = locationName }
             filterItem.locationObjectId = location.objectID.uriRepresentation().absoluteString
@@ -645,7 +652,7 @@ class FilterPullDown: UIScrollView {
             filterItem.zoneObjectId = zone.objectID.uriRepresentation().absoluteString
         }
         
-        let time = socunds + minutes*60 + hours*3600
+        let time = seconds + minutes*60 + hours*3600
         
         DatabaseFilterController.shared.saveDeafultFilter(filterItem, menu: menuItem, time: time)
         
@@ -660,7 +667,15 @@ class FilterPullDown: UIScrollView {
     }
     
     func returnFilter() {
-        let filterItem = FilterItem(location: "All", levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
+        let filterItem = FilterItem(
+            location: FilterPulldownKeys.all,
+            levelId: FilterPulldownKeys.defaultID,
+            zoneId: FilterPulldownKeys.defaultID,
+            categoryId: FilterPulldownKeys.defaultID,
+            levelName: FilterPulldownKeys.all,
+            zoneName: FilterPulldownKeys.all,
+            categoryName: FilterPulldownKeys.all
+        )
         guard let location = location else { filterDelegate?.filterParametars(filterItem); return }
         
         if let locationName = location.name { filterItem.location = locationName }
@@ -694,32 +709,16 @@ class FilterPullDown: UIScrollView {
     
     func updateIndicator(_ notification:Notification) {
         if let info = notification.userInfo as? [String:String] {
-            
-            if let lamp = info["lamp"] {
-                if lamp == "red" {
-                    redIndicator.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0)
-
-                    self.redIndicator.alpha = 1
-                    UIView.animate(withDuration: 0.5, animations: {
-                        self.redIndicator.alpha = 0
-                        }, completion: { (Bool) in
-                            self.redIndicator.backgroundColor = UIColor.clear
-                            self.greenIndicator.backgroundColor = UIColor.clear
-
-                    })
-                } else if lamp == "green" {
-                    greenIndicator.backgroundColor = UIColor(red: 24/255, green: 202/255, blue: 0/255, alpha: 1.0)
-
-                    self.greenIndicator.alpha = 1
-                    UIView.animate(withDuration: 0.5, animations: {
-                        self.greenIndicator.alpha = 0
-                        }, completion: { (Bool) in
-                            self.redIndicator.backgroundColor = UIColor.clear
-                            self.greenIndicator.backgroundColor = UIColor.clear
-                    })
+            if let lamp = info[FilterPulldownKeys.lamp] {
+                
+                let indicatorView: UIView = (lamp == FilterPulldownKeys.lamp_red) ? redIndicator : greenIndicator
+                
+                indicatorView.alpha = 1
+                
+                UIView.animate(withDuration: 0.5) {
+                    indicatorView.alpha = 0
                 }
             }
-            
         }
     }
     

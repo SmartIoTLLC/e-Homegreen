@@ -158,6 +158,7 @@ class RemoteViewController: PopoverVC {
         if segue.identifier == "toSingleRemote" {
             if let vc: RemoteDetailsViewController = segue.destination as? RemoteDetailsViewController {
                 vc.remote = selectedRemote
+                print("level \(filterParametar.levelName), zone \(filterParametar.zoneName)")
                 vc.filterParameter = filterParametar
             }
         }
@@ -178,6 +179,10 @@ class RemoteViewController: PopoverVC {
     
     fileprivate func loadRemotes(from location: Location) {
         remotesList = DatabaseRemoteController.sharedInstance.getRemotes(from: location)
+        /*
+         TODO: filter remotes by Level and Zone
+         */
+        
         if remotesList.count != 0 {
             remotesList.sort(by: { (one, two) -> Bool in one.name! < two.name! })
         }

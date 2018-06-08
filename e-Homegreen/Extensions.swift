@@ -137,7 +137,7 @@ extension UIViewController {
             let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom)
             scrollView.setContentOffset(bottomOffset, animated: false)
         }
-        scrollView.bottom.constant = -(self.view.frame.height - 2)
+        scrollView.bottomLayoutConstraint.constant = -(self.view.frame.height - 2)
     }
     
     func setContentOffset(forScan scrollView: ScanFilterPullDown) {

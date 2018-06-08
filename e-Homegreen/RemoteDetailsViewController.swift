@@ -137,9 +137,9 @@ extension RemoteDetailsViewController {
         buttonsCollectionView.layer.borderColor = Colors.DarkGray
         
         remoteBottomLabel.isUserInteractionEnabled = true
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(goToEditRemote))
-        longPress.minimumPressDuration = 0.5
-        remoteBottomLabel.addGestureRecognizer(longPress)
+        remoteBottomLabel.addLongPress(minimumPressDuration: 0.5) {
+            self.goToEditRemote()
+        }
         
         calculateRemoteHeight(remote: remote)
     }

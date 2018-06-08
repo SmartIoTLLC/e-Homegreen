@@ -7,7 +7,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -50,192 +49,9 @@
                     <view key="view" contentMode="scaleToFill" id="O6L-S2-kpn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d8d-eR-V4h">
-                                <rect key="frame" x="0.0" y="82.5" width="375" height="1"/>
-                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="24X-Xh-4Mz"/>
-                                </constraints>
-                            </view>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="VwH-0j-wOZ">
-                                <rect key="frame" x="0.0" y="83.5" width="200" height="583.5"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="NIM-6X-AKZ"/>
-                                </constraints>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Uls-rA-eCm" customClass="LXReorderableCollectionViewFlowLayout">
-                                    <size key="itemSize" width="90" height="90"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="50" height="50"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells>
-                                    <collectionViewCell clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MenuItemCell" id="CyH-w3-Nwh" customClass="MenuItemCell" customModule="e_Homegreen" customModuleProvider="target">
-                                        <rect key="frame" x="55" y="0.0" width="90" height="90"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iZb-Lg-wFF">
-                                                    <rect key="frame" x="8" y="66" width="74" height="14.5"/>
-                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <accessibility key="accessibilityConfiguration">
-                                                        <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
-                                                    </accessibility>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZiK-lj-IHi">
-                                                    <rect key="frame" x="20" y="11" width="50" height="50"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="50" id="DtN-Qz-ZPP"/>
-                                                        <constraint firstAttribute="height" constant="50" id="Q8t-3F-MAi"/>
-                                                    </constraints>
-                                                </imageView>
-                                            </subviews>
-                                        </view>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="centerX" secondItem="ZiK-lj-IHi" secondAttribute="centerX" id="2k6-09-wxx"/>
-                                            <constraint firstItem="ZiK-lj-IHi" firstAttribute="top" secondItem="CyH-w3-Nwh" secondAttribute="topMargin" constant="3" id="SwG-ca-3pW"/>
-                                            <constraint firstItem="iZb-Lg-wFF" firstAttribute="leading" secondItem="CyH-w3-Nwh" secondAttribute="leadingMargin" id="chA-YP-Ryh"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="iZb-Lg-wFF" secondAttribute="trailing" id="spg-MY-wiJ"/>
-                                            <constraint firstItem="iZb-Lg-wFF" firstAttribute="top" secondItem="ZiK-lj-IHi" secondAttribute="bottom" constant="5" id="xbj-AW-AvM"/>
-                                        </constraints>
-                                        <connections>
-                                            <outlet property="menuItemImageView" destination="ZiK-lj-IHi" id="hA3-l9-cEA"/>
-                                            <outlet property="menuItemName" destination="iZb-Lg-wFF" id="rQs-Mt-qkv"/>
-                                        </connections>
-                                    </collectionViewCell>
-                                    <collectionViewCell clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="LogOutCell" id="Def-uu-OHA" customClass="LogOutCell" customModule="e_Homegreen" customModuleProvider="target">
-                                        <rect key="frame" x="10" y="100" width="180" height="60"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="180" height="60"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="User" translatesAutoresizingMaskIntoConstraints="NO" id="eIi-rG-nwg">
-                                                    <rect key="frame" x="8" y="8" width="44" height="44"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="eIi-rG-nwg" secondAttribute="height" multiplier="1:1" id="Ujt-3f-F1v"/>
-                                                    </constraints>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="5"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="YES"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </imageView>
-                                                <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="user" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="03e-HB-FVI">
-                                                    <rect key="frame" x="60" y="8" width="64" height="18.5"/>
-                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <accessibility key="accessibilityConfiguration">
-                                                        <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
-                                                    </accessibility>
-                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="15"/>
-                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ct-6g-Pug">
-                                                    <rect key="frame" x="60" y="52" width="64" height="0.0"/>
-                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <accessibility key="accessibilityConfiguration">
-                                                        <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
-                                                    </accessibility>
-                                                    <fontDescription key="fontDescription" name="Tahoma" family="Tahoma" pointSize="14"/>
-                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hI3-4I-vLu">
-                                                    <rect key="frame" x="132" y="10" width="40" height="40"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="40" id="6UL-GZ-2vr"/>
-                                                        <constraint firstAttribute="width" secondItem="hI3-4I-vLu" secondAttribute="height" multiplier="1:1" id="jdh-tU-wLi"/>
-                                                    </constraints>
-                                                    <state key="normal" image="btn_log_out"/>
-                                                    <connections>
-                                                        <action selector="logOutAction:" destination="tid-St-yaC" eventType="touchUpInside" id="6DV-T2-NOO"/>
-                                                    </connections>
-                                                </button>
-                                            </subviews>
-                                        </view>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="hI3-4I-vLu" secondAttribute="trailing" constant="8" id="85j-oI-VZi"/>
-                                            <constraint firstItem="5ct-6g-Pug" firstAttribute="trailing" secondItem="03e-HB-FVI" secondAttribute="trailing" id="Ets-ug-nGM"/>
-                                            <constraint firstItem="eIi-rG-nwg" firstAttribute="leading" secondItem="Def-uu-OHA" secondAttribute="leading" constant="8" id="Igy-Zd-Bpd"/>
-                                            <constraint firstItem="03e-HB-FVI" firstAttribute="top" secondItem="eIi-rG-nwg" secondAttribute="top" id="JCk-oI-aov"/>
-                                            <constraint firstItem="5ct-6g-Pug" firstAttribute="bottom" secondItem="eIi-rG-nwg" secondAttribute="bottom" id="MXG-Gj-qAu"/>
-                                            <constraint firstItem="5ct-6g-Pug" firstAttribute="leading" secondItem="03e-HB-FVI" secondAttribute="leading" id="O7L-N2-Tj3"/>
-                                            <constraint firstItem="hI3-4I-vLu" firstAttribute="leading" secondItem="03e-HB-FVI" secondAttribute="trailing" constant="8" id="Veu-2F-qnM"/>
-                                            <constraint firstItem="03e-HB-FVI" firstAttribute="leading" secondItem="eIi-rG-nwg" secondAttribute="trailing" constant="8" id="Y7R-jZ-Utv"/>
-                                            <constraint firstAttribute="bottom" secondItem="eIi-rG-nwg" secondAttribute="bottom" constant="8" id="Zdh-YM-c49"/>
-                                            <constraint firstItem="hI3-4I-vLu" firstAttribute="centerY" secondItem="eIi-rG-nwg" secondAttribute="centerY" id="pj4-yc-gjR"/>
-                                            <constraint firstItem="eIi-rG-nwg" firstAttribute="top" secondItem="Def-uu-OHA" secondAttribute="top" constant="8" id="rW8-HA-hBw"/>
-                                        </constraints>
-                                        <size key="customSize" width="180" height="60"/>
-                                        <connections>
-                                            <outlet property="dataBaseLabel" destination="5ct-6g-Pug" id="FSH-cp-3le"/>
-                                            <outlet property="logOutButton" destination="hI3-4I-vLu" id="jFA-uw-70I"/>
-                                            <outlet property="userImage" destination="eIi-rG-nwg" id="Ufq-0K-b2a"/>
-                                            <outlet property="userLabel" destination="03e-HB-FVI" id="ZbG-as-Xtg"/>
-                                        </connections>
-                                    </collectionViewCell>
-                                </cells>
-                                <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="footer" id="vgb-4e-AhD" customClass="MenuFooterView" customModule="e_Homegreen" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="160" width="200" height="50"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="main_manu_bottom" translatesAutoresizingMaskIntoConstraints="NO" id="gao-X5-m69">
-                                            <rect key="frame" x="52" y="0.0" width="140" height="50"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="50" id="GWl-St-SNK"/>
-                                                <constraint firstAttribute="width" constant="140" id="Psc-LE-nrU"/>
-                                            </constraints>
-                                        </imageView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="gao-X5-m69" secondAttribute="trailing" id="2KW-Wr-8pq"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="gao-X5-m69" secondAttribute="bottom" constant="-8" id="f7h-Qb-tYq"/>
-                                        <constraint firstItem="gao-X5-m69" firstAttribute="leading" secondItem="vgb-4e-AhD" secondAttribute="leadingMargin" constant="44" id="h6J-jz-3kq"/>
-                                        <constraint firstItem="gao-X5-m69" firstAttribute="top" secondItem="vgb-4e-AhD" secondAttribute="topMargin" constant="-8" id="nu2-K1-j6z"/>
-                                    </constraints>
-                                    <connections>
-                                        <outlet property="footerImageView" destination="gao-X5-m69" id="Pld-n2-2PX"/>
-                                    </connections>
-                                </collectionReusableView>
-                                <connections>
-                                    <outlet property="dataSource" destination="tid-St-yaC" id="mNK-BY-sej"/>
-                                    <outlet property="delegate" destination="tid-St-yaC" id="f5f-e1-erA"/>
-                                </connections>
-                            </collectionView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="main_menu_top" translatesAutoresizingMaskIntoConstraints="NO" id="dBy-un-k0R">
-                                <rect key="frame" x="8" y="38.5" width="184" height="42"/>
-                                <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="42" id="8vh-UT-Z3y"/>
-                                    <constraint firstAttribute="width" constant="184" id="TaG-AY-7aV"/>
-                                </constraints>
-                            </imageView>
-                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="d8d-eR-V4h" firstAttribute="top" secondItem="dBy-un-k0R" secondAttribute="bottom" constant="2" id="K5m-oI-D8U"/>
-                            <constraint firstItem="VwH-0j-wOZ" firstAttribute="top" secondItem="d8d-eR-V4h" secondAttribute="bottom" id="OAW-gv-MG7"/>
-                            <constraint firstItem="dBy-un-k0R" firstAttribute="top" secondItem="d8V-WK-jAD" secondAttribute="bottom" constant="18.5" id="SUR-nk-OkR"/>
-                            <constraint firstItem="d8d-eR-V4h" firstAttribute="leading" secondItem="O6L-S2-kpn" secondAttribute="leading" id="WbM-KT-x0k"/>
-                            <constraint firstItem="5SW-tk-Re0" firstAttribute="top" secondItem="VwH-0j-wOZ" secondAttribute="bottom" id="YIu-nN-rWI"/>
-                            <constraint firstItem="dBy-un-k0R" firstAttribute="leading" secondItem="O6L-S2-kpn" secondAttribute="leading" constant="8" id="ghN-gu-ZlV"/>
-                            <constraint firstItem="VwH-0j-wOZ" firstAttribute="leading" secondItem="O6L-S2-kpn" secondAttribute="leading" id="m4D-mb-KFg"/>
-                            <constraint firstAttribute="trailing" secondItem="d8d-eR-V4h" secondAttribute="trailing" id="yAV-4J-p63"/>
-                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="logoImageView" destination="dBy-un-k0R" id="xM2-OJ-WPo"/>
-                        <outlet property="menuCollectionView" destination="VwH-0j-wOZ" id="VrP-O5-7rg"/>
                         <segue destination="uQN-u9-JqS" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="8zo-MZ-dnY"/>
                         <segue destination="rVI-Hx-Fff" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="85J-mA-tTU"/>
                         <segue destination="axL-Uc-con" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="j4p-7H-9BR"/>
@@ -2015,17 +1831,13 @@
     <resources>
         <image name="Background" width="512" height="384"/>
         <image name="Menu button" width="22" height="22"/>
-        <image name="User" width="393" height="390"/>
         <image name="applianceoff" width="100" height="100"/>
-        <image name="btn_log_out" width="105" height="105"/>
         <image name="cool" width="20" height="20"/>
         <image name="curtain0" width="100" height="100"/>
         <image name="fanhigh" width="59" height="60"/>
         <image name="full screen" width="30" height="30"/>
         <image name="green leaf" width="56" height="86"/>
         <image name="lightBulb" width="100" height="100"/>
-        <image name="main_manu_bottom" width="4002" height="1081"/>
-        <image name="main_menu_top" width="3955" height="1081"/>
         <image name="poweroff" width="60" height="60"/>
         <image name="refesh screen" width="30" height="30"/>
     </resources>
