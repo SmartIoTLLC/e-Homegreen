@@ -494,13 +494,14 @@ class DevicesViewController: PopoverVC {
                 }
             } else if title == "Category" {
                 if filterParametar.categoryObjectId != "All" {
-                    if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId) {
-                        if category.allowOption.intValue == TypeOfControl.allowed.rawValue {
-                            ZoneAndCategoryControl.shared.changeValueByCategory(filterParametar.categoryId, location: filterParametar.location, value: sliderValue)
+                    if let category = FilterController.shared.getCategoryByObjectId(filterParametar.categoryObjectId) { print("category exists")
+                        print("category allow option \(category.allowOption.intValue)")
+                        if category.allowOption.intValue == TypeOfControl.allowed.rawValue { print("category allowed")
+                            ZoneAndCategoryControl.shared.changeValueByCategory(filterParametar.categoryId, location: filterParametar.location, value: sliderValue);print("category func")
                         } else if category.allowOption.intValue == TypeOfControl.confirm.rawValue {
                             showOKAlertView(sender, message: "Are you sure you want to proced with this control?", completion: { (action) in
-                                if action == ReturnedValueFromAlertView.ok {
-                                    ZoneAndCategoryControl.shared.changeValueByCategory(self.filterParametar.zoneId, location: self.filterParametar.location, value: sliderValue)
+                                if action == ReturnedValueFromAlertView.ok {print("category confirm")
+                                    ZoneAndCategoryControl.shared.changeValueByCategory(self.filterParametar.zoneId, location: self.filterParametar.location, value: sliderValue);print("category func")
                                 }
                             })
                         }
@@ -620,11 +621,9 @@ extension DevicesViewController {
         
         UIView.hr_setToastThemeColor(color: UIColor.red)
         
-//        zoneAndCategorySlider.isContinuous = false
-
+        zoneAndCategorySlider.isContinuous = false
         
-        
-//        zoneAndCategorySlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.changeGroupSliderValueOnOneTap(_:))))
+        zoneAndCategorySlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DevicesViewController.changeGroupSliderValueOnOneTap(_:))))
         
     }
     

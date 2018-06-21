@@ -140,7 +140,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     
     func handleTap (_ gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
-            showGallery(index, user: gateway.location.user).delegate = self
+            showGallery(index, user: gateway.location.user, isForScenes: true).delegate = self
         }
     }
     

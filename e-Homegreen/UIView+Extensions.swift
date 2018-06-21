@@ -22,11 +22,12 @@ extension UIView {
         addGestureRecognizer(tapRecognizer)
     }
     
-    func addLongPress(minimumPressDuration: CFTimeInterval, action: @escaping () -> Void) {
+    func addLongPress(minimumPressDuration: CFTimeInterval, cancelTouchesInView: Bool = true, action: @escaping () -> Void) {
         isUserInteractionEnabled = true
         objc_setAssociatedObject(self, &UIView.tapKey, TapAction(action: action), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(tapView))
         longPress.minimumPressDuration = minimumPressDuration
+        longPress.cancelsTouchesInView = cancelTouchesInView
         addGestureRecognizer(longPress)
     }
     

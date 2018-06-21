@@ -61,6 +61,10 @@ class AddUserXIB: CommonXIBTransitionVC {
         passwordTextView.delegate        = self
         confirmPasswordtextView.delegate = self
         
+        userImageButton.addLongPress(minimumPressDuration: 0.5) {
+            self.deleteUsersCustomPhoto()
+        }
+        
         if let user = user {
             usernameTextField.text = user.username
             
@@ -92,8 +96,30 @@ class AddUserXIB: CommonXIBTransitionVC {
         return true
     }
     
+    private func deleteUsersCustomPhoto() {
+        self.showAlertView(userImageButton, message: "Are you sure you want to delete your profile photo?") { (returnValue) in
+            
+            switch returnValue {
+                case .delete:
+                    if let user = self.user {
+                        user.customImageId = nil
+                        
+                        CoreDataController.sharedInstance.saveChanges()
+                        
+                        if let defaultImage = user.defaultImage {
+                            self.userImageButton.setImage(UIImage(named: defaultImage), for: UIControlState())
+                        } else {
+                            self.userImageButton.setImage(UIImage(named: "User"), for: UIControlState())
+                        }
+                    }
+                default: break
+            }
+        }
+
+    }
+    
     @IBAction func changePicture(_ sender: AnyObject) {
-        showGallery(1, user: user).delegate = self
+        showGallery(1, user: user, isForScenes: true).delegate = self
     }
     
     @IBAction func saveAction(_ sender: AnyObject) {
@@ -137,15 +163,6 @@ class AddUserXIB: CommonXIBTransitionVC {
                     user.sortDevicesByUsage = false
                     if let customImage = customImage { user.customImageId = customImage }
                     if let def  = defaultImage { user.defaultImage = def }
-                    if let data = imageData {
-                        if let image = NSEntityDescription.insertNewObject(forEntityName: "Image", into: moc) as? Image {
-                            image.imageData    = data
-                            image.imageId      = UUID().uuidString
-                            user.customImageId = image.imageId
-                            
-                            user.addImagesObject(image)
-                        }
-                    }
                     
                     CoreDataController.sharedInstance.saveChanges()
                     DatabaseMenuController.shared.createMenu(user)
@@ -167,11 +184,16 @@ class AddUserXIB: CommonXIBTransitionVC {
 
 extension AddUserXIB : SceneGalleryDelegate {
     
-    func backImageFromGallery(_ data: Data, imageIndex: Int) {
-        defaultImage = nil
-        customImage  = nil
-        imageData    = data
+    func returnedGaleryImage(_ image: Image, data: Data, imageIndex: Int) {
+        customImage = image.imageId
         userImageButton.setImage(UIImage(data: data), for: UIControlState())
+    }
+    
+    func backImageFromGallery(_ data: Data, imageIndex: Int) {
+//        defaultImage = nil
+//        customImage  = nil
+//        imageData    = data
+//        userImageButton.setImage(UIImage(data: data), for: UIControlState())
     }
     
     func backString(_ strText: String, imageIndex: Int) {

@@ -208,6 +208,8 @@ class SceneGalleryVC: CommonXIBTransitionVC {
     var galleryImages:[AnyObject] = []
     var imageIndex:Int!
     fileprivate var createdImage: Image?
+    fileprivate var isShowingCustomGallery: Bool = false
+    var isForSceneImages: Bool = false
     var imagePicker = UIImagePickerController()
     var appDel:AppDelegate
     var images:[Image] = []
@@ -263,6 +265,10 @@ extension SceneGalleryVC : UICollectionViewDataSource, UICollectionViewDelegate 
             if let image = galleryImages[indexPath.row] as? Image { cell.cellImage.image = UIImage(data: image.imageData! as Data) }
             if let string = galleryImages[indexPath.row] as? String { cell.cellImage.image = UIImage(named:string) }
             
+            cell.addLongPress(minimumPressDuration: 0.5, cancelTouchesInView: false) {
+                self.deletePhoto(of: cell, at: indexPath)
+            }
+            
             return cell
         }
         
@@ -290,8 +296,7 @@ extension SceneGalleryVC: UICollectionViewDelegateFlowLayout {
 // MARK: - View setup
 extension SceneGalleryVC {
     fileprivate func setupViews() {
-        self.gallery.register(UINib(nibName: "GalleryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cell")
-        
+        self.gallery.register(UINib(nibName: "GalleryCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cell")        
         images = returnImages()
         for item in galleryList { galleryImages.append(item as AnyObject) }
     }
@@ -311,14 +316,38 @@ extension SceneGalleryVC {
 
 // MARK: - Logic
 extension SceneGalleryVC {
+    
+    fileprivate func deletePhoto(of cell: UICollectionViewCell, at indexPath: IndexPath) {
+        if isShowingCustomGallery {
+            self.showAlertView(cell, message: "Are you sure you want to delete this photo?") { (returnValue) in
+                
+                switch returnValue {
+                    case .delete:
+                        if let user = self.user {
+                            user.removeFromImages(self.images[indexPath.row])
+                            
+                            CoreDataController.sharedInstance.saveChanges()
+                            self.images = self.returnImages()
+                            self.galleryImages.remove(at: indexPath.row)
+                            self.gallery.reloadData()
+                        }
+                    default: break
+                }
+            }
+        }
+    }
+    
     fileprivate func openGallery() {
         let libraryViewController = CameraViewController.imagePickerViewController(croppingEnabled: true) { [weak self] image, asset in
             if let backImage = image {
                 self?.updateWithImage(backImage)
                 self?.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self!.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self!.imageIndex)
+                
                 if let _self = self {
-                    if let image = _self.createdImage {
-                        _self.delegate?.returnedGaleryImage!(image, data: UIImageJPEGRepresentation(_self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: _self.imageIndex)
+                    if _self.isForSceneImages {
+                        if let image = _self.createdImage {
+                            _self.delegate?.returnedGaleryImage!(image, data: UIImageJPEGRepresentation(_self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: _self.imageIndex)
+                        }
                     }
                 }
                 
@@ -334,9 +363,11 @@ extension SceneGalleryVC {
     
     fileprivate func changeGallery(with sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 {
+            self.isShowingCustomGallery = false
             galleryImages = []
             for item in galleryList { galleryImages.append(item as AnyObject) }
         } else {
+            self.isShowingCustomGallery = true
             galleryImages = []
             images = returnImages()
             for item in images { galleryImages.append(item) }
@@ -349,8 +380,10 @@ extension SceneGalleryVC {
             if let backImage = image {
                 self.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self.imageIndex)
                 self.updateWithImage(backImage)
-                if let image = self.createdImage {
-                    self.delegate?.returnedGaleryImage!(image, data: UIImageJPEGRepresentation(self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self.imageIndex)
+                if self.isForSceneImages {
+                    if let image = self.createdImage {
+                        self.delegate?.returnedGaleryImage!(image, data: UIImageJPEGRepresentation(self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self.imageIndex)
+                    }
                 }
                 self.dismiss(animated: true, completion: { () -> Void in
                     self.dismiss(animated: true, completion: nil)
@@ -377,8 +410,8 @@ extension SceneGalleryVC {
     }
     
     fileprivate func selected(at indexPath: IndexPath) {
-        if let image = galleryImages[indexPath.row] as? Image { delegate?.backImage?(image, imageIndex: imageIndex);print("image func 1") }
-        if let string = galleryImages[indexPath.row] as? String { delegate?.backString?(string, imageIndex: imageIndex);print("image func 2") }
+        if let image = galleryImages[indexPath.row] as? Image { delegate?.backImage?(image, imageIndex: imageIndex) }
+        if let string = galleryImages[indexPath.row] as? String { delegate?.backString?(string, imageIndex: imageIndex) }
         
         self.dismiss(animated: true, completion: nil)
     }
@@ -433,10 +466,11 @@ extension SceneGalleryVC {
 }
 
 extension UIViewController {
-    func showGallery(_ index:Int, user: User?) -> SceneGalleryVC {
+    func showGallery(_ index:Int, user: User?, isForScenes: Bool = false) -> SceneGalleryVC {
         let galleryVC = SceneGalleryVC()
         galleryVC.imageIndex = index
         galleryVC.user = user
+        galleryVC.isForSceneImages = isForScenes
         self.present(galleryVC, animated: true, completion: nil)
         return galleryVC
     }
