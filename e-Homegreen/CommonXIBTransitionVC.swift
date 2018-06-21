@@ -10,7 +10,7 @@ import UIKit
 
 class CommonXIBTransitionVC: UIViewController {
     
-    var isPresenting: Bool = true
+    var isPresenting: Bool = true        
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -19,7 +19,7 @@ class CommonXIBTransitionVC: UIViewController {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
 
     override func viewDidLoad() {

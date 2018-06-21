@@ -152,12 +152,12 @@
 		4D16A1291D51CB8D00817477 /* HvacParametersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4D16A1271D51CB8D00817477 /* HvacParametersCell.xib */; };
 		4D411C9B1D5C982F000A3598 /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */; };
 		4D411C9C1D5C982F000A3598 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D411C9A1D5C982F000A3598 /* Device.swift */; };
+		4E0A527C20CE9FAD00E30105 /* DeviceActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0A527B20CE9FAD00E30105 /* DeviceActionButton.swift */; };
 		4E0D9EEA1FA31D240066C5CC /* DatabaseRemoteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0D9EE91FA31D240066C5CC /* DatabaseRemoteController.swift */; };
 		4E0D9EED1FA327420066C5CC /* Remote+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0D9EEB1FA327420066C5CC /* Remote+CoreDataClass.swift */; };
 		4E0D9EEE1FA327420066C5CC /* Remote+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0D9EEC1FA327420066C5CC /* Remote+CoreDataProperties.swift */; };
 		4E114C7D208F200700493722 /* NavigationViewFavDevices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E114C7C208F200700493722 /* NavigationViewFavDevices.swift */; };
 		4E114C82208F293F00493722 /* FavoriteDevicesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E114C81208F293F00493722 /* FavoriteDevicesVC.swift */; };
-		4E114C84208F2B5500493722 /* FavoriteDevicesVC+Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E114C83208F2B5500493722 /* FavoriteDevicesVC+Cells.swift */; };
 		4E1771881F753CEE0002C6D6 /* ContactsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1771861F753CEE0002C6D6 /* ContactsListViewController.swift */; };
 		4E19613B1FD5385500F48272 /* ButtonCell+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19613A1FD5385500F48272 /* ButtonCell+Logic.swift */; };
 		4E19613D1FD5397400F48272 /* RemoteDetailsVC+ViewSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19613C1FD5397400F48272 /* RemoteDetailsVC+ViewSetup.swift */; };
@@ -176,6 +176,9 @@
 		4E479B7F20C01C86007C32AE /* QuranTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E479B7E20C01C86007C32AE /* QuranTableViewCell.swift */; };
 		4E479B8120C01F0D007C32AE /* AudioPlayerBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E479B8020C01F0D007C32AE /* AudioPlayerBar.swift */; };
 		4E479B8320C033DD007C32AE /* RemoteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E479B8220C033DD007C32AE /* RemoteCollectionViewCell.swift */; };
+		4E4882C020CE41F8004FA093 /* BaseDeviceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4882BF20CE41F8004FA093 /* BaseDeviceCollectionViewCell.swift */; };
+		4E4882C220CE6791004FA093 /* DimmerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4882C120CE6791004FA093 /* DimmerCollectionViewCell.swift */; };
+		4E4882C420CE69BB004FA093 /* CurtainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4882C320CE69BB004FA093 /* CurtainCollectionViewCell.swift */; };
 		4E4AC63920C53FFB00EDAEAD /* ChooseButtonColorOrShapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4AC63820C53FFB00EDAEAD /* ChooseButtonColorOrShapeViewController.swift */; };
 		4E4AC63B20C5579800EDAEAD /* NSNumberExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4AC63A20C5579800EDAEAD /* NSNumberExtensions.swift */; };
 		4E5BE4011F7D42E700497335 /* EditRemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5BE3FF1F7D42E700497335 /* EditRemoteViewController.swift */; };
@@ -183,6 +186,11 @@
 		4E62ABC81FBB1F51006D85E7 /* RemoteButton+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E62ABC61FBB1F51006D85E7 /* RemoteButton+CoreDataClass.swift */; };
 		4E62ABC91FBB1F51006D85E7 /* RemoteButton+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E62ABC71FBB1F51006D85E7 /* RemoteButton+CoreDataProperties.swift */; };
 		4E635DD2201A127900216041 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E635DD1201A127900216041 /* AudioPlayer.swift */; };
+		4E699EFD20CEA4590075E4E8 /* ApplianceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E699EFC20CEA4590075E4E8 /* ApplianceCollectionViewCell.swift */; };
+		4E699EFF20CEA52B0075E4E8 /* DeviceInfoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E699EFE20CEA52B0075E4E8 /* DeviceInfoLabel.swift */; };
+		4E6BF55B20CFCA2500FCE6A1 /* ClimateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6BF55A20CFCA2500FCE6A1 /* ClimateCollectionViewCell.swift */; };
+		4E6BF55D20CFF95D00FCE6A1 /* MultisensorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6BF55C20CFF95D00FCE6A1 /* MultisensorCollectionViewCell.swift */; };
+		4E6BF55F20D0144D00FCE6A1 /* SaltoAccessCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6BF55E20D0144D00FCE6A1 /* SaltoAccessCollectionViewCell.swift */; };
 		4E7115C11FD15E9D007DB67C /* ButtonImageEditorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7115BF1FD15E9D007DB67C /* ButtonImageEditorVC.swift */; };
 		4E7115C21FD15E9D007DB67C /* ButtonImageEditorVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E7115C01FD15E9D007DB67C /* ButtonImageEditorVC.xib */; };
 		4E77754D20C687C2002E1469 /* PhoneInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E77754C20C687C2002E1469 /* PhoneInstructionsViewController.swift */; };
@@ -196,8 +204,13 @@
 		4E9EEAA5200374E900201E7C /* MediaCollectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9EEAA4200374E900201E7C /* MediaCollectionVC.swift */; };
 		4EA4DA512004F33700CA8385 /* MediaCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA4DA4F2004F33700CA8385 /* MediaCollectionCell.swift */; };
 		4EA4DA522004F33700CA8385 /* MediaCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EA4DA502004F33700CA8385 /* MediaCollectionCell.xib */; };
+		4EA6AC5B20D24E87000CFDF7 /* MediaCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA6AC5A20D24E87000CFDF7 /* MediaCollectionViewController.swift */; };
+		4EA6AC5D20D29EB5000CFDF7 /* SliderCurtainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA6AC5C20D29EB5000CFDF7 /* SliderCurtainCollectionViewCell.swift */; };
+		4EA6AC5F20D29F72000CFDF7 /* SICSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA6AC5E20D29F72000CFDF7 /* SICSlider.swift */; };
 		4EA9A7C31FA1D00500C8D6B8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */; };
 		4EC2E1421F7E439700DA494B /* RemoteDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */; };
+		4ECACD6720D7D252002B7BC0 /* DimmerBigSliderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECACD6620D7D252002B7BC0 /* DimmerBigSliderViewController.swift */; };
+		4ECBC42220D90FBD005AD492 /* ZoneAndCategoryControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECBC42120D90FBD005AD492 /* ZoneAndCategoryControlView.swift */; };
 		4ED325E020CA7AB100E3A32A /* SidemenuItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED325DF20CA7AB100E3A32A /* SidemenuItemCollectionViewCell.swift */; };
 		4ED325E220CA7B6700E3A32A /* SidemenuUserCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED325E120CA7B6700E3A32A /* SidemenuUserCollectionViewCell.swift */; };
 		4ED325E420CA846100E3A32A /* SidemenuCollectionViewFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED325E320CA846100E3A32A /* SidemenuCollectionViewFooter.swift */; };
@@ -295,7 +308,6 @@
 		73E82D0D1BECA97D00C1C621 /* Categories List.json in Resources */ = {isa = PBXBuildFile; fileRef = 73E82D0B1BECA97D00C1C621 /* Categories List.json */; };
 		73E82D0E1BECA97D00C1C621 /* Zones List.json in Resources */ = {isa = PBXBuildFile; fileRef = 73E82D0C1BECA97D00C1C621 /* Zones List.json */; };
 		73EBE28C1C1043990095F372 /* DeviceCollectionViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EBE28B1C1043990095F372 /* DeviceCollectionViewCells.swift */; };
-		73EBE28E1C1043D70095F372 /* DeviceCollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EBE28D1C1043D70095F372 /* DeviceCollectionView+Extensions.swift */; };
 		73ECD4A31B332A6F00767740 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ECD4A21B332A6F00767740 /* Constants.swift */; };
 		73ED6AFD1BA0249800E6CE06 /* RepeatSendingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */; };
 		73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ED6AFE1BA068B900E6CE06 /* ProgressBarVC.swift */; };
@@ -574,12 +586,12 @@
 		4D16A1271D51CB8D00817477 /* HvacParametersCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HvacParametersCell.xib; sourceTree = "<group>"; };
 		4D411C991D5C982F000A3598 /* Device+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4D411C9A1D5C982F000A3598 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		4E0A527B20CE9FAD00E30105 /* DeviceActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceActionButton.swift; sourceTree = "<group>"; };
 		4E0D9EE91FA31D240066C5CC /* DatabaseRemoteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseRemoteController.swift; sourceTree = "<group>"; };
 		4E0D9EEB1FA327420066C5CC /* Remote+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Remote+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4E0D9EEC1FA327420066C5CC /* Remote+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Remote+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4E114C7C208F200700493722 /* NavigationViewFavDevices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewFavDevices.swift; sourceTree = "<group>"; };
 		4E114C81208F293F00493722 /* FavoriteDevicesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteDevicesVC.swift; sourceTree = "<group>"; };
-		4E114C83208F2B5500493722 /* FavoriteDevicesVC+Cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteDevicesVC+Cells.swift"; sourceTree = "<group>"; };
 		4E1771861F753CEE0002C6D6 /* ContactsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsListViewController.swift; sourceTree = "<group>"; };
 		4E19613A1FD5385500F48272 /* ButtonCell+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ButtonCell+Logic.swift"; sourceTree = "<group>"; };
 		4E19613C1FD5397400F48272 /* RemoteDetailsVC+ViewSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteDetailsVC+ViewSetup.swift"; sourceTree = "<group>"; };
@@ -598,6 +610,9 @@
 		4E479B7E20C01C86007C32AE /* QuranTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuranTableViewCell.swift; sourceTree = "<group>"; };
 		4E479B8020C01F0D007C32AE /* AudioPlayerBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerBar.swift; sourceTree = "<group>"; };
 		4E479B8220C033DD007C32AE /* RemoteCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCollectionViewCell.swift; sourceTree = "<group>"; };
+		4E4882BF20CE41F8004FA093 /* BaseDeviceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDeviceCollectionViewCell.swift; sourceTree = "<group>"; };
+		4E4882C120CE6791004FA093 /* DimmerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DimmerCollectionViewCell.swift; sourceTree = "<group>"; };
+		4E4882C320CE69BB004FA093 /* CurtainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurtainCollectionViewCell.swift; sourceTree = "<group>"; };
 		4E4AC63820C53FFB00EDAEAD /* ChooseButtonColorOrShapeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseButtonColorOrShapeViewController.swift; sourceTree = "<group>"; };
 		4E4AC63A20C5579800EDAEAD /* NSNumberExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSNumberExtensions.swift; sourceTree = "<group>"; };
 		4E5BE3FF1F7D42E700497335 /* EditRemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditRemoteViewController.swift; sourceTree = "<group>"; };
@@ -605,6 +620,11 @@
 		4E62ABC61FBB1F51006D85E7 /* RemoteButton+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteButton+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4E62ABC71FBB1F51006D85E7 /* RemoteButton+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteButton+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4E635DD1201A127900216041 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		4E699EFC20CEA4590075E4E8 /* ApplianceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplianceCollectionViewCell.swift; sourceTree = "<group>"; };
+		4E699EFE20CEA52B0075E4E8 /* DeviceInfoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoLabel.swift; sourceTree = "<group>"; };
+		4E6BF55A20CFCA2500FCE6A1 /* ClimateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimateCollectionViewCell.swift; sourceTree = "<group>"; };
+		4E6BF55C20CFF95D00FCE6A1 /* MultisensorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisensorCollectionViewCell.swift; sourceTree = "<group>"; };
+		4E6BF55E20D0144D00FCE6A1 /* SaltoAccessCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaltoAccessCollectionViewCell.swift; sourceTree = "<group>"; };
 		4E7115BF1FD15E9D007DB67C /* ButtonImageEditorVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonImageEditorVC.swift; sourceTree = "<group>"; };
 		4E7115C01FD15E9D007DB67C /* ButtonImageEditorVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonImageEditorVC.xib; sourceTree = "<group>"; };
 		4E77754C20C687C2002E1469 /* PhoneInstructionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneInstructionsViewController.swift; sourceTree = "<group>"; };
@@ -618,8 +638,13 @@
 		4E9EEAA4200374E900201E7C /* MediaCollectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCollectionVC.swift; sourceTree = "<group>"; };
 		4EA4DA4F2004F33700CA8385 /* MediaCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCollectionCell.swift; sourceTree = "<group>"; };
 		4EA4DA502004F33700CA8385 /* MediaCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MediaCollectionCell.xib; sourceTree = "<group>"; };
+		4EA6AC5A20D24E87000CFDF7 /* MediaCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCollectionViewController.swift; sourceTree = "<group>"; };
+		4EA6AC5C20D29EB5000CFDF7 /* SliderCurtainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderCurtainCollectionViewCell.swift; sourceTree = "<group>"; };
+		4EA6AC5E20D29F72000CFDF7 /* SICSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SICSlider.swift; sourceTree = "<group>"; };
 		4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		4EC2E1411F7E439700DA494B /* RemoteDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteDetailsViewController.swift; sourceTree = "<group>"; };
+		4ECACD6620D7D252002B7BC0 /* DimmerBigSliderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DimmerBigSliderViewController.swift; sourceTree = "<group>"; };
+		4ECBC42120D90FBD005AD492 /* ZoneAndCategoryControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoneAndCategoryControlView.swift; sourceTree = "<group>"; };
 		4ED325DF20CA7AB100E3A32A /* SidemenuItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidemenuItemCollectionViewCell.swift; sourceTree = "<group>"; };
 		4ED325E120CA7B6700E3A32A /* SidemenuUserCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidemenuUserCollectionViewCell.swift; sourceTree = "<group>"; };
 		4ED325E320CA846100E3A32A /* SidemenuCollectionViewFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidemenuCollectionViewFooter.swift; sourceTree = "<group>"; };
@@ -722,7 +747,6 @@
 		73E82D0B1BECA97D00C1C621 /* Categories List.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Categories List.json"; sourceTree = "<group>"; };
 		73E82D0C1BECA97D00C1C621 /* Zones List.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Zones List.json"; sourceTree = "<group>"; };
 		73EBE28B1C1043990095F372 /* DeviceCollectionViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceCollectionViewCells.swift; sourceTree = "<group>"; };
-		73EBE28D1C1043D70095F372 /* DeviceCollectionView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "DeviceCollectionView+Extensions.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		73ECD4A21B332A6F00767740 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		73ED6AFC1BA0249800E6CE06 /* RepeatSendingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatSendingHandler.swift; sourceTree = "<group>"; };
 		73ED6AFE1BA068B900E6CE06 /* ProgressBarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressBarVC.swift; sourceTree = "<group>"; };
@@ -1112,6 +1136,7 @@
 			children = (
 				225F59851D74427300156BCD /* BigSliderXIB.swift */,
 				225F59861D74427300156BCD /* BigSliderXIB.xib */,
+				4ECACD6620D7D252002B7BC0 /* DimmerBigSliderViewController.swift */,
 			);
 			name = "Big Dimmer Slider XIB";
 			sourceTree = "<group>";
@@ -1311,6 +1336,14 @@
 				495726B61D4F493C004F2A3D /* ClimateCell.swift */,
 				495726B81D4F4966004F2A3D /* MultiSensorCell.swift */,
 				495D63711D9A49B300D9DC26 /* SaltoAccessCell.swift */,
+				4E4882BF20CE41F8004FA093 /* BaseDeviceCollectionViewCell.swift */,
+				4E4882C120CE6791004FA093 /* DimmerCollectionViewCell.swift */,
+				4E4882C320CE69BB004FA093 /* CurtainCollectionViewCell.swift */,
+				4E699EFC20CEA4590075E4E8 /* ApplianceCollectionViewCell.swift */,
+				4E6BF55A20CFCA2500FCE6A1 /* ClimateCollectionViewCell.swift */,
+				4E6BF55C20CFF95D00FCE6A1 /* MultisensorCollectionViewCell.swift */,
+				4E6BF55E20D0144D00FCE6A1 /* SaltoAccessCollectionViewCell.swift */,
+				4EA6AC5C20D29EB5000CFDF7 /* SliderCurtainCollectionViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1361,7 +1394,6 @@
 			isa = PBXGroup;
 			children = (
 				4E114C81208F293F00493722 /* FavoriteDevicesVC.swift */,
-				4E114C83208F2B5500493722 /* FavoriteDevicesVC+Cells.swift */,
 			);
 			name = FavoriteDevices;
 			sourceTree = "<group>";
@@ -1454,8 +1486,17 @@
 				4E9EEAA4200374E900201E7C /* MediaCollectionVC.swift */,
 				4EA4DA4F2004F33700CA8385 /* MediaCollectionCell.swift */,
 				4EA4DA502004F33700CA8385 /* MediaCollectionCell.xib */,
+				4EA6AC5A20D24E87000CFDF7 /* MediaCollectionViewController.swift */,
 			);
 			name = Media;
+			sourceTree = "<group>";
+		};
+		4ECBC42020D90F4D005AD492 /* ZoneAndCategoryControl */ = {
+			isa = PBXGroup;
+			children = (
+				4ECBC42120D90FBD005AD492 /* ZoneAndCategoryControlView.swift */,
+			);
+			name = ZoneAndCategoryControl;
 			sourceTree = "<group>";
 		};
 		4EDCE6821F6A90E10073736B /* Radio */ = {
@@ -1880,6 +1921,7 @@
 				E7F5FC1B1BB9744200071982 /* TopButton.swift */,
 				E7F5FC1C1BB9744200071982 /* BottomButton.swift */,
 				2237BC851D75AEC300E94D4B /* HVACButton.swift */,
+				4E0A527B20CE9FAD00E30105 /* DeviceActionButton.swift */,
 			);
 			name = Button;
 			sourceTree = "<group>";
@@ -1895,6 +1937,8 @@
 				4E8515441FE00EC70017AA6D /* NavigationTitleViewNF.swift */,
 				4E114C7C208F200700493722 /* NavigationViewFavDevices.swift */,
 				4E479B8020C01F0D007C32AE /* AudioPlayerBar.swift */,
+				4E699EFE20CEA52B0075E4E8 /* DeviceInfoLabel.swift */,
+				4EA6AC5E20D29F72000CFDF7 /* SICSlider.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -2049,6 +2093,7 @@
 		E7E08E011B4E4D5400153E9A /* Devices */ = {
 			isa = PBXGroup;
 			children = (
+				4ECBC42020D90F4D005AD492 /* ZoneAndCategoryControl */,
 				E7AAF7611BBE875100992A18 /* ClimaXIB */,
 				4923279E1D6EEC7300B9BC05 /* Parameters XIB */,
 				225F59821D743FE500156BCD /* Big Dimmer Slider XIB */,
@@ -2056,7 +2101,6 @@
 				22495D0F1CAA72020034FC94 /* Device.storyboard */,
 				73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */,
 				73E206D81B2F16720008B002 /* DevicesViewController.swift */,
-				73EBE28D1C1043D70095F372 /* DeviceCollectionView+Extensions.swift */,
 				73F1ECAC1C8993E8007CEEAA /* DefaultDeviceImages.swift */,
 			);
 			name = Devices;
@@ -2385,6 +2429,7 @@
 				4E605AA61FD81DEF00747EDC /* RealButton.swift in Sources */,
 				22F2C9E51D41058A008A04DE /* NavigationTitleView.swift in Sources */,
 				739866801C0DEE1600CEBDB4 /* DatabaseHandler.swift in Sources */,
+				4E6BF55D20CFF95D00FCE6A1 /* MultisensorCollectionViewCell.swift in Sources */,
 				495726B11D4F4842004F2A3D /* ApplianceCollectionCell.swift in Sources */,
 				22AF883B1D49E9E700048A33 /* ScanFilterPullDown.swift in Sources */,
 				2241E4721CC63FA200BCD763 /* DatabaseSurveillanceController.swift in Sources */,
@@ -2397,6 +2442,7 @@
 				738DECA21BBBC39F00D6B834 /* SecuirtyCommandVC.swift in Sources */,
 				4E77754D20C687C2002E1469 /* PhoneInstructionsViewController.swift in Sources */,
 				22D7EB9E1D780FB600853051 /* SecurityLocationCell.swift in Sources */,
+				4E6BF55B20CFCA2500FCE6A1 /* ClimateCollectionViewCell.swift in Sources */,
 				22359C6A1CAE98290054434B /* LocationCell.swift in Sources */,
 				4D0D97221CAD4087001A1E89 /* HRToast+UIView.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Constants.swift in Sources */,
@@ -2407,6 +2453,7 @@
 				4E0D9EEE1FA327420066C5CC /* Remote+CoreDataProperties.swift in Sources */,
 				4E1771881F753CEE0002C6D6 /* ContactsListViewController.swift in Sources */,
 				73DB849F1B30116D000DB4EB /* ScenesViewController.swift in Sources */,
+				4ECACD6720D7D252002B7BC0 /* DimmerBigSliderViewController.swift in Sources */,
 				E7E08E041B4E4D9700153E9A /* ClimaSettingsViewController.swift in Sources */,
 				7372EB381BC410800097806D /* Flag.swift in Sources */,
 				E79A89261BAD6D6000714C64 /* ScanTimerViewController.swift in Sources */,
@@ -2438,7 +2485,6 @@
 				73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */,
 				739D57161C809B30004CC50E /* DeviceImage+CoreDataProperties.swift in Sources */,
 				4E19613B1FD5385500F48272 /* ButtonCell+Logic.swift in Sources */,
-				73EBE28E1C1043D70095F372 /* DeviceCollectionView+Extensions.swift in Sources */,
 				E7AAF76A1BBEA34000992A18 /* CameraParametarXIBViewController.swift in Sources */,
 				73B42ACA1BCBBB0500D28621 /* LocalSearchParametar.swift in Sources */,
 				73F1ECA91C8978B2007CEEAA /* Location.swift in Sources */,
@@ -2446,12 +2492,12 @@
 				2238789B1C916748001357E0 /* Device_AppCell.swift in Sources */,
 				73FAAEAE1B57EE7200754810 /* ConnectionSettingsVC.swift in Sources */,
 				49C059721D91398F0061A544 /* FlagsCell.swift in Sources */,
-				4E114C84208F2B5500493722 /* FavoriteDevicesVC+Cells.swift in Sources */,
 				49C059641D9136E50061A544 /* PopoverVC.swift in Sources */,
 				73EBE28C1C1043990095F372 /* DeviceCollectionViewCells.swift in Sources */,
 				223BAD471D3E5395003E9365 /* FilterController.swift in Sources */,
 				223690CB1CAD04270037B54A /* LogInTextField.swift in Sources */,
 				490C352D1D6D848400C9B851 /* DeleteConfirmation.swift in Sources */,
+				4E4882C420CE69BB004FA093 /* CurtainCollectionViewCell.swift in Sources */,
 				490DC22D1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift in Sources */,
 				73F1ECAD1C8993E8007CEEAA /* DefaultDeviceImages.swift in Sources */,
 				7372EB371BC410800097806D /* Flag+CoreDataProperties.swift in Sources */,
@@ -2513,6 +2559,7 @@
 				7372EB3D1BC410800097806D /* Event+CoreDataProperties.swift in Sources */,
 				4EA4DA512004F33700CA8385 /* MediaCollectionCell.swift in Sources */,
 				73ED6B001BA068B900E6CE06 /* ProgressBarVC.swift in Sources */,
+				4E699EFF20CEA52B0075E4E8 /* DeviceInfoLabel.swift in Sources */,
 				2233628D1CA2E477006C80C4 /* EditTextField.swift in Sources */,
 				4E8C21711FCF0979004C0883 /* ButtonImagePickerVC.swift in Sources */,
 				4E8515451FE00EC70017AA6D /* NavigationTitleViewNF.swift in Sources */,
@@ -2525,6 +2572,7 @@
 				22CD267A1BD53685005BA67D /* DAKeyboardControl.m in Sources */,
 				4D14B0D11D59E50B0004E10A /* PCControlNotificationsXIB.swift in Sources */,
 				731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */,
+				4EA6AC5D20D29EB5000CFDF7 /* SliderCurtainCollectionViewCell.swift in Sources */,
 				22FD29931CBBCB4B00BCE823 /* DatabaseSequencesController.swift in Sources */,
 				73F4D6B61C805DEF00FE0514 /* DeviceImagesPickerVC.swift in Sources */,
 				73DB8B971B2FFA4D00139E58 /* SidePanelViewController.swift in Sources */,
@@ -2537,6 +2585,7 @@
 				2249A32F1C9041CB0019C6FB /* PCControlCell.swift in Sources */,
 				E7F5FC201BB9744200071982 /* BottomButton.swift in Sources */,
 				4E62ABC81FBB1F51006D85E7 /* RemoteButton+CoreDataClass.swift in Sources */,
+				4E6BF55F20D0144D00FCE6A1 /* SaltoAccessCollectionViewCell.swift in Sources */,
 				22954B051CC100EB0082BFCF /* DatabaseSecurityController.swift in Sources */,
 				E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */,
 				73F4D6BA1C807A5900FE0514 /* DeviceImagePickerTVC.swift in Sources */,
@@ -2574,12 +2623,15 @@
 				223362941CA2E518006C80C4 /* ProjectManagerViewController.swift in Sources */,
 				4E479B7B20BFF235007C32AE /* GlobalConstants.swift in Sources */,
 				223887121CB3F6A3003864B8 /* Zone.swift in Sources */,
+				4E0A527C20CE9FAD00E30105 /* DeviceActionButton.swift in Sources */,
+				4E4882C020CE41F8004FA093 /* BaseDeviceCollectionViewCell.swift in Sources */,
 				73B6D94E1B5B92FE00E783DD /* SendingHandler.swift in Sources */,
 				E7F15B081B8F4B240025082D /* GalleryCollectionViewCell.swift in Sources */,
 				E75B4FC61B42FC0B00E48454 /* NSCalendar+FSExtension.m in Sources */,
 				2237BC861D75AEC300E94D4B /* HVACButton.swift in Sources */,
 				223687191CB51834005ACDE4 /* Category+CoreDataProperties.swift in Sources */,
 				222889B21CBBCFD1004EBADD /* DatabaseTimersController.swift in Sources */,
+				4EA6AC5B20D24E87000CFDF7 /* MediaCollectionViewController.swift in Sources */,
 				4E479B8320C033DD007C32AE /* RemoteCollectionViewCell.swift in Sources */,
 				495726B71D4F493C004F2A3D /* ClimateCell.swift in Sources */,
 				223887111CB3F6A3003864B8 /* Zone+CoreDataProperties.swift in Sources */,
@@ -2593,6 +2645,7 @@
 				4D411C9B1D5C982F000A3598 /* Device+CoreDataProperties.swift in Sources */,
 				73EF277B1C07583F003A3A0A /* SurveilenceUrlsVC.swift in Sources */,
 				738E4E781C340A6F0017A7B0 /* IncomingHandler+Extensions.swift in Sources */,
+				4EA6AC5F20D29F72000CFDF7 /* SICSlider.swift in Sources */,
 				495726B91D4F4966004F2A3D /* MultiSensorCell.swift in Sources */,
 				E7FE70CF1BB526040098EF65 /* SurveillanceHandler.swift in Sources */,
 				495726B51D4F491D004F2A3D /* CurtainCollectionCell.swift in Sources */,
@@ -2616,6 +2669,7 @@
 				2241E4701CC6389700BCD763 /* SurveillanceCell.swift in Sources */,
 				49C059661D91373C0061A544 /* ScanCell.swift in Sources */,
 				7372EB3F1BC410800097806D /* Gateway+CoreDataProperties.swift in Sources */,
+				4E4882C220CE6791004FA093 /* DimmerCollectionViewCell.swift in Sources */,
 				E7F5FC221BB985E600071982 /* MoveCameraHandler.swift in Sources */,
 				E75B4FC31B42FC0B00E48454 /* FSCalendar.m in Sources */,
 				E7F0A6061BBBF06000B6648F /* CustomGradientButton.swift in Sources */,
@@ -2634,11 +2688,13 @@
 				E75B4F7F1B42CB1100E48454 /* SPClockView.m in Sources */,
 				4E0D9EED1FA327420066C5CC /* Remote+CoreDataClass.swift in Sources */,
 				4EDCE6871F6A9BEA0073736B /* RadioViewController.swift in Sources */,
+				4ECBC42220D90FBD005AD492 /* ZoneAndCategoryControlView.swift in Sources */,
 				736F17D81B3AE870003A6A02 /* FlagsViewController.swift in Sources */,
 				73E2311D1BA6E2C4003E41EC /* SceneParametarVC.swift in Sources */,
 				22495D331CAA868E0034FC94 /* UIGradient + Extension.swift in Sources */,
 				2260FBA11D2CF5EC00576513 /* CustomToolBar.swift in Sources */,
 				4EF6C8831FD197C80009E985 /* ImagePickerHandler.swift in Sources */,
+				4E699EFD20CEA4590075E4E8 /* ApplianceCollectionViewCell.swift in Sources */,
 				2252B4081CA58A4F005E84AA /* ImportSSIDViewController.swift in Sources */,
 				4ED325E420CA846100E3A32A /* SidemenuCollectionViewFooter.swift in Sources */,
 				73F51A091C9475C6003EE702 /* wol.c in Sources */,

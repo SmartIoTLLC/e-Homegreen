@@ -15,69 +15,73 @@ enum FavDeviceFilterType: String {
     case deviceName            = "NAME"
 }
 
+private struct LocalConstants {
+    static let frameWidth: CGFloat = 240
+    static let itemPadding: CGFloat = 4
+    static let labelSize: CGSize = CGSize(width: 80, height: 44)
+    static let filterButtonWidthMeasure: CGFloat = (240 - 84 - 4) / 4
+    static let filterButtonHeight: CGFloat = 40
+}
+
 class NavigationViewFavDevices: UIView {
     
     private var filterType: FavDeviceFilterType!
     
-    var favLabel: UILabel!
-    var filterButton: CustomGradientButton!
-    var fbWidthMeasure: CGFloat!
+    private let favLabel: UILabel = UILabel()
+    private let filterButton: CustomGradientButton = CustomGradientButton()
     
-    var buttonTrailing: NSLayoutConstraint!
-    var buttonTop: NSLayoutConstraint!
-    var buttonBottom: NSLayoutConstraint!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupViews()
+        
+        backgroundColor = .black
+        
+        addFavoriteLabel()
+        addFilterButton()
+        
         setConstraints()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setupViews()
+        
+        backgroundColor = .black
+        
+        addFavoriteLabel()
+        addFilterButton()
+        
         setConstraints()
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        favLabel.frame = CGRect(x: 4, y: 0, width: 80, height: 44)
-        favLabel.layoutIfNeeded()
-        changeButtonWidth()
-    }
-    
-    fileprivate func setupViews() {
+    private func addFavoriteLabel() {
         filterType = FavDeviceFilterType(rawValue: Foundation.UserDefaults.standard.string(forKey: UserDefaults.FavDevicesLabelType)!)!
-        favLabel = UILabel(frame: CGRect(x: 4, y: 0, width: 80, height: 44))
         favLabel.font = .tahoma(size: 17)
         favLabel.text = "Favorites"
         favLabel.textColor = .white
-        favLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        fbWidthMeasure = (frame.width - 84 - 4) / 4
-        filterButton = CustomGradientButton(frame: CGRect(x: 84, y: 0, width: fbWidthMeasure, height: 40))
+        addSubview(favLabel)
+    }
+    
+    private func addFilterButton() {
         filterButton.addTarget(self, action: #selector(changeType), for: .touchUpInside)
         filterButton.titleLabel?.font = .tahoma(size: 17)
         filterButton.titleLabel?.adjustsFontSizeToFitWidth = true
         filterButton.setTitle(filterType.rawValue, for: UIControlState())
-        filterButton.translatesAutoresizingMaskIntoConstraints = false
         
-        addSubview(favLabel)
+        
         addSubview(filterButton)
-        
-        backgroundColor = .black
     }
     
     fileprivate func setConstraints() {
-        buttonTrailing    = NSLayoutConstraint(item: filterButton, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 4)
-        buttonTop         = NSLayoutConstraint(item: filterButton, attribute: .topMargin, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0)
-        buttonBottom      = NSLayoutConstraint(item: filterButton, attribute: .bottomMargin, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0)
+        changeFilterButtonConstraints()
         
-        self.addConstraints(
-            [buttonTrailing,
-             buttonTop,
-             buttonBottom]
-        )
+        favLabel.snp.makeConstraints { (make) in
+            make.height.equalTo(LocalConstants.labelSize.height)
+            make.width.equalTo(LocalConstants.labelSize.width)
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().offset(LocalConstants.itemPadding)
+        }
+        
     }
     
     @objc fileprivate func changeType() {
@@ -90,10 +94,11 @@ class NavigationViewFavDevices: UIView {
         }
         filterButton.setTitle(filterType.rawValue, for: UIControlState())
         Foundation.UserDefaults.standard.set(filterType.rawValue, forKey: UserDefaults.FavDevicesLabelType)
-        changeButtonWidth()
+        changeFilterButtonConstraints()
         NotificationCenter.default.post(name: .favDeviceFilterTypeChanged, object: filterType)
     }
-    fileprivate func changeButtonWidth() {
+    
+    fileprivate func changeFilterButtonConstraints() {
         var i: CGFloat = 1
         switch filterType {
             case .locationLevelZoneName : i = 4
@@ -102,8 +107,12 @@ class NavigationViewFavDevices: UIView {
             case .deviceName            : i = 1
             default: break
         }
-        filterButton.frame = CGRect(x: frame.width - fbWidthMeasure * i, y: 0, width: fbWidthMeasure * i, height: 40)
-        filterButton.layoutIfNeeded()
+        
+        filterButton.snp.remakeConstraints { (make) in
+            make.top.bottom.equalToSuperview()
+            make.trailing.equalToSuperview().inset(LocalConstants.itemPadding)
+            make.width.equalTo(LocalConstants.filterButtonWidthMeasure * i)
+        }
     }
 }
 

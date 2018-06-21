@@ -17,6 +17,8 @@ import CoreData
     @objc optional func backImageFromGallery(_ data:Data, imageIndex:Int)
     // Returns Image for image and index
     @objc optional func backImage(_ image:Image, imageIndex:Int)
+    
+    @objc optional func returnedGaleryImage(_ image: Image, data: Data, imageIndex: Int)
 }
 
 class SceneGalleryVC: CommonXIBTransitionVC {
@@ -205,6 +207,7 @@ class SceneGalleryVC: CommonXIBTransitionVC {
     
     var galleryImages:[AnyObject] = []
     var imageIndex:Int!
+    fileprivate var createdImage: Image?
     var imagePicker = UIImagePickerController()
     var appDel:AppDelegate
     var images:[Image] = []
@@ -313,6 +316,12 @@ extension SceneGalleryVC {
             if let backImage = image {
                 self?.updateWithImage(backImage)
                 self?.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self!.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self!.imageIndex)
+                if let _self = self {
+                    if let image = _self.createdImage {
+                        _self.delegate?.returnedGaleryImage!(image, data: UIImageJPEGRepresentation(_self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: _self.imageIndex)
+                    }
+                }
+                
                 self?.dismiss(animated: true, completion: { () -> Void in
                     self?.dismiss(animated: true, completion: nil)
                 })
@@ -339,6 +348,10 @@ extension SceneGalleryVC {
         let cameraViewController = CameraViewController(croppingEnabled: true) { (image, asset) in
             if let backImage = image {
                 self.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self.imageIndex)
+                self.updateWithImage(backImage)
+                if let image = self.createdImage {
+                    self.delegate?.returnedGaleryImage!(image, data: UIImageJPEGRepresentation(self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self.imageIndex)
+                }
                 self.dismiss(animated: true, completion: { () -> Void in
                     self.dismiss(animated: true, completion: nil)
                 })
@@ -353,14 +366,19 @@ extension SceneGalleryVC {
         if let moc = appDel.managedObjectContext {
             let newImage = Image(context: moc)
             newImage.imageData = UIImageJPEGRepresentation(RBResizeImage(image, targetSize: CGSize(width: 150, height: 150)), 0.5)
+            newImage.imageId = String(describing: Date())
+            if let user = user {
+                user.addImagesObject(newImage)
+            }
+            self.createdImage = newImage
             galleryImages.append(newImage)
             gallery.reloadData()
         }
     }
     
     fileprivate func selected(at indexPath: IndexPath) {
-        if let image = galleryImages[indexPath.row] as? Image { delegate?.backImage?(image, imageIndex: imageIndex) }
-        if let string = galleryImages[indexPath.row] as? String { delegate?.backString?(string, imageIndex: imageIndex) }
+        if let image = galleryImages[indexPath.row] as? Image { delegate?.backImage?(image, imageIndex: imageIndex);print("image func 1") }
+        if let string = galleryImages[indexPath.row] as? String { delegate?.backString?(string, imageIndex: imageIndex);print("image func 2") }
         
         self.dismiss(animated: true, completion: nil)
     }

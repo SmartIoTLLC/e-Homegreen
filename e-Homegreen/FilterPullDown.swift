@@ -661,9 +661,7 @@ class FilterPullDown: UIScrollView {
     
     func go() {
         returnFilter()
-        
-        let bottomOffset = CGPoint(x: 0, y: self.contentSize.height - self.bounds.size.height + self.contentInset.bottom)
-        self.setContentOffset(bottomOffset, animated: true)
+        self.setContentOffset(CGPoint(x: 0, y: GlobalConstants.screenSize.height - (GlobalConstants.statusBarHeight + self.parentViewController!.navigationBarHeight) - 2), animated: true)
     }
     
     func returnFilter() {

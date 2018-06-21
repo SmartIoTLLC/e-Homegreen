@@ -50,7 +50,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="laW-Do-HeS" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="laW-Do-HeS" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FIy-oF-Uap" customClass="MarqueeLabel">
@@ -310,7 +310,7 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="66l-f6-pas" userLabel="Info View" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="66l-f6-pas" userLabel="Info View" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UnD-pt-sba">
@@ -435,7 +435,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sm4-Wf-EEJ" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sm4-Wf-EEJ" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" image="applianceoff" translatesAutoresizingMaskIntoConstraints="NO" id="YOI-EX-BDa">
@@ -620,7 +620,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RN0-vn-pbv" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RN0-vn-pbv" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="253" verticalCompressionResistancePriority="751" text="Manager AC" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BPb-W0-bit" customClass="MarqueeLabel">
@@ -944,7 +944,7 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="isHeader" value="NO"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dxX-CA-Y99" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dxX-CA-Y99" customClass="CustomGradientBackground" customModule="e_Homegreen" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="150" height="180"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="tg0-Gf-im8">
@@ -1401,7 +1401,7 @@
                             <constraint firstItem="GGM-7n-U7N" firstAttribute="top" secondItem="LfN-4l-5N1" secondAttribute="bottom" constant="7" id="0Hb-Fz-oFR"/>
                             <constraint firstAttribute="trailing" secondItem="GGM-7n-U7N" secondAttribute="trailing" constant="19" id="3BW-Ca-TlH"/>
                             <constraint firstItem="neL-6V-LuI" firstAttribute="centerY" secondItem="GGM-7n-U7N" secondAttribute="centerY" id="8O8-pF-HBV"/>
-                            <constraint firstAttribute="bottom" secondItem="H0t-8Z-WMG" secondAttribute="bottom" constant="-154" id="D1V-Hf-bqH"/>
+                            <constraint firstItem="bAS-V1-oK5" firstAttribute="top" secondItem="H0t-8Z-WMG" secondAttribute="bottom" constant="-154" id="D1V-Hf-bqH"/>
                             <constraint firstAttribute="trailing" secondItem="H0t-8Z-WMG" secondAttribute="trailing" id="O1D-ZO-hH8"/>
                             <constraint firstItem="neL-6V-LuI" firstAttribute="height" secondItem="GGM-7n-U7N" secondAttribute="height" id="SFP-86-Slr"/>
                             <constraint firstItem="H0t-8Z-WMG" firstAttribute="leading" secondItem="Kjq-wI-lY9" secondAttribute="leading" id="SJT-9i-to7"/>

@@ -55,43 +55,34 @@ class SceneCollectionCell: UICollectionViewCell {
     
     func getImagesFrom(_ scene:Scene) {
         
-        if let id = scene.sceneImageOneCustom {
-            if let image = DatabaseImageController.shared.getImageById(id) {
-                if let data =  image.imageData {
-                    imageOne = UIImage(data: data)
-                } else {
-                    if let defaultImage = scene.sceneImageOneDefault { imageOne = UIImage(named: defaultImage)
-                    } else { imageOne = allOn0 }
+        imageOne = allOn0
+        imageTwo = allOn1
+        
+        if let customImageOne = scene.sceneImageOneCustom {
+            if let imageObject = DatabaseImageController.shared.getImageById(customImageOne) {
+                if let imageData = imageObject.imageData {
+                    imageOne = UIImage(data: imageData)
                 }
-                
             } else {
-                if let defaultImage = scene.sceneImageOneDefault { imageOne = UIImage(named: defaultImage)
-                } else { imageOne = allOn0 }
+                imageOne = UIImage(named: customImageOne)
+            }
+        } else if let defaultImageOne = scene.sceneImageOneDefault {
+            imageOne = UIImage(named: defaultImageOne)
+        }
+        
+        if let customImageTwo = scene.sceneImageTwoCustom {
+            if let imageObject = DatabaseImageController.shared.getImageById(customImageTwo) {
+                if let imageData = imageObject.imageData {
+                    imageTwo = UIImage(data: imageData)
+                }
+            } else {
+                imageTwo = UIImage(named: customImageTwo)
             }
             
-        } else {
-            if let defaultImage = scene.sceneImageOneDefault { imageOne = UIImage(named: defaultImage)
-            } else { imageOne = allOn0 }
+        } else if let defaultImageTwo = scene.sceneImageTwoDefault {
+            imageTwo = UIImage(named: defaultImageTwo)
         }
-        
-        if let id = scene.sceneImageTwoCustom {
-            if let image = DatabaseImageController.shared.getImageById(id) {
-                if let data =  image.imageData {
-                    imageTwo = UIImage(data: data)
-                    
-                } else {
-                    if let defaultImage = scene.sceneImageTwoDefault { imageTwo = UIImage(named: defaultImage)
-                    } else { imageTwo = allOn1 }
-                }
-            } else {
-                if let defaultImage = scene.sceneImageTwoDefault { imageTwo = UIImage(named: defaultImage)
-                } else { imageTwo = allOn1 }
-            }
-        } else {
-            if let defaultImage = scene.sceneImageTwoDefault { imageTwo = UIImage(named: defaultImage)
-            } else { imageTwo = allOn1 }
-        }
-        
+                
         sceneCellImageView.image = imageOne
         setNeedsDisplay()
     }

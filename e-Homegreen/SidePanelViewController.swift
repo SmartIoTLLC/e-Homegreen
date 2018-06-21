@@ -39,6 +39,8 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
         view.backgroundColor = UIColor.black
         user = DatabaseUserController.shared.getLoggedUser()
         
+        self.revealViewController().setRight(FavoriteDevicesVC(), animated: true)
+        
         addLogoImageView()
         addSeparatorView()
         addCollectionView()
@@ -154,16 +156,15 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
    extension SidePanelViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.row != menuItemList.count {
-            if let item = Menu(rawValue: Int(menuItemList[indexPath.row].id)) {
-                self.revealViewController().pushFrontViewController(item.controller, animated: true)
+        if indexPath.row < menuItemList.count {
+            let id = menuItemList[indexPath.row].id
+            
+            if let user = user {
+                user.lastScreenId = id
             }
-        }
-        if let user = user {
-            if indexPath.row <= menuItemList.count { // Index out of range posto nema Settings-a
-                if let id = menuItemList[indexPath.row].id as NSNumber? {
-                    user.lastScreenId = id
-                }
+            
+            if let menuItem = Menu(rawValue: id.intValue) {
+                self.revealViewController().pushFrontViewController(menuItem.controller, animated: true)
             }
         }
     }

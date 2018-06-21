@@ -41,6 +41,8 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     var customImageOne:String?
     var defaultImageOne:String?
     
+    fileprivate var selectedScene: Scene?
+    
     var imageDataTwo:Data?
     var customImageTwo:String?
     var defaultImageTwo:String?
@@ -364,13 +366,17 @@ extension ScanScenesViewController: SceneGalleryDelegate {
             customImageOne = image.imageId
             imageDataOne = nil
             self.imageSceneOne.image = UIImage(data: image.imageData! as Data)
+            self.selectedScene?.sceneImageOneCustom = image.imageId
         }
         if imageIndex == 2 {
             defaultImageTwo = nil
             customImageTwo = image.imageId
             imageDataTwo = nil
             self.imageSceneTwo.image = UIImage(data: image.imageData! as Data)
+            self.selectedScene?.sceneImageTwoCustom = image.imageId
         }
+        CoreDataController.sharedInstance.saveChanges()
+        self.sceneTableView.reloadData()
     }
     
     func backString(_ strText: String, imageIndex:Int) {
@@ -379,28 +385,55 @@ extension ScanScenesViewController: SceneGalleryDelegate {
             customImageOne = nil
             imageDataOne = nil
             self.imageSceneOne.image = UIImage(named: strText)
+            self.selectedScene?.sceneImageOneCustom = strText
         }
         if imageIndex == 2 {
             defaultImageTwo = strText
             customImageTwo = nil
             imageDataTwo = nil
             self.imageSceneTwo.image = UIImage(named: strText)
+            self.selectedScene?.sceneImageTwoCustom = strText
         }
+        
+        CoreDataController.sharedInstance.saveChanges()
+        self.sceneTableView.reloadData()
     }
     
     func backImageFromGallery(_ data: Data, imageIndex:Int ) {
+//        if imageIndex == 1 {
+//            defaultImageOne = nil
+//            customImageOne = nil
+//            imageDataOne = data
+//            self.imageSceneOne.image = UIImage(data: data)
+//            // TODO:
+//        }
+//        if imageIndex == 2 {
+//            defaultImageTwo = nil
+//            customImageTwo = nil
+//            imageDataTwo = data
+//            self.imageSceneTwo.image = UIImage(data: data)
+//            // TODO:
+//        }
+    }
+    
+    func returnedGaleryImage(_ image: Image, data: Data, imageIndex: Int) {
         if imageIndex == 1 {
             defaultImageOne = nil
             customImageOne = nil
             imageDataOne = data
             self.imageSceneOne.image = UIImage(data: data)
+            self.selectedScene?.sceneImageOneCustom = image.imageId
         }
         if imageIndex == 2 {
             defaultImageTwo = nil
             customImageTwo = nil
             imageDataTwo = data
             self.imageSceneTwo.image = UIImage(data: data)
+            self.selectedScene?.sceneImageTwoCustom = image.imageId
         }
+        
+        CoreDataController.sharedInstance.saveChanges()
+        self.sceneTableView.reloadData()
     }
 }
 
@@ -451,6 +484,8 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
     }
     
     func didSelect(scene: Scene) {
+        self.selectedScene = scene
+        
         IDedit.text = "\(scene.sceneId)"
         nameEdit.text = "\(scene.sceneName)"
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(scene.address)))"
@@ -474,23 +509,40 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
         customImageTwo = scene.sceneImageTwoCustom
         imageDataTwo = nil
         
-        if let id = scene.sceneImageOneCustom {
-            if let image = DatabaseImageController.shared.getImageById(id) {
-                
-                if let data = image.imageData { imageSceneOne.image = UIImage(data: data)
-                } else { if let defaultImage = scene.sceneImageOneDefault { imageSceneOne.image = UIImage(named: defaultImage) } }
-                
-            } else { if let defaultImage = scene.sceneImageOneDefault { imageSceneOne.image = UIImage(named: defaultImage) } }
-        } else { if let defaultImage = scene.sceneImageOneDefault { imageSceneOne.image = UIImage(named: defaultImage) } }
+        var imageOne: UIImage?
+        var imageTwo: UIImage?
         
-        if let id = scene.sceneImageTwoCustom {
-            if let image = DatabaseImageController.shared.getImageById(id) {
-                
-                if let data = image.imageData { imageSceneTwo.image = UIImage(data: data)
-                } else { if let defaultImage = scene.sceneImageTwoDefault { imageSceneTwo.image = UIImage(named: defaultImage) } }
-                
-            } else { if let defaultImage = scene.sceneImageTwoDefault { imageSceneTwo.image = UIImage(named: defaultImage) } }
-        } else { if let defaultImage = scene.sceneImageTwoDefault { imageSceneTwo.image = UIImage(named: defaultImage) } }
+        if let customImageOne = scene.sceneImageOneCustom {
+            if let imageObject = DatabaseImageController.shared.getImageById(customImageOne) {
+                if let imageData = imageObject.imageData {
+                    imageOne = UIImage(data: imageData)
+                }
+            } else {
+                imageOne = UIImage(named: customImageOne)
+            }
+        } else if let defaultImageOne = scene.sceneImageOneDefault {
+            imageOne = UIImage(named: defaultImageOne)
+        }
+        
+        if let customImageTwo = scene.sceneImageTwoCustom {
+            if let imageObject = DatabaseImageController.shared.getImageById(customImageTwo) {
+                if let imageData = imageObject.imageData {
+                    imageTwo = UIImage(data: imageData)
+                }
+            } else {
+                imageTwo = UIImage(named: customImageTwo)
+            }
+            
+        } else if let defaultImageTwo = scene.sceneImageTwoDefault {
+            imageTwo = UIImage(named: defaultImageTwo)
+        }
+        
+        if let imageOne = imageOne {
+            self.imageSceneOne.image = imageOne
+        }
+        if let imageTwo = imageTwo {
+            self.imageSceneTwo.image = imageTwo
+        }
         
     }
 }

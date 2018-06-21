@@ -88,11 +88,7 @@ extension MediaCollectionVC: FilterPullDownDelegate {
 // MARK: - View setup
 extension MediaCollectionVC {
     fileprivate func setupScrollView() {
-        scrollView.filterDelegate = self
-        view.addSubview(scrollView)
-        updateConstraints(item: scrollView)
-        scrollView.setItem(view)
-        scrollView.setFilterItem(Menu.security)
+        
     }
     
     fileprivate func updateViews() {
@@ -100,13 +96,7 @@ extension MediaCollectionVC {
         
         UIView.hr_setToastThemeColor(color: .red)
         
-        navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
-        navigationItem.titleView = titleView
-        titleView.setTitleAndSubtitle("Media", subtitle: "All All All")
         
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(defaultFilter(_:)))
-        longPress.minimumPressDuration = 0.5
-        titleView.addGestureRecognizer(longPress)
     }
     
     func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){

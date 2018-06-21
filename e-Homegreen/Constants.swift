@@ -435,6 +435,19 @@ struct CellSize {
         size = CGSize(width: cellWidth, height: Int(cellWidth*10/7))
     }
     
+    static func calculateCellSize() -> CGSize {
+        let screenWidth: CGFloat = GlobalConstants.screenSize.width
+        
+        var i:CGFloat = 2
+        while i >= 2 {
+            if (screenWidth / i) >= 120 && (screenWidth / i) <= 160 { break }
+            i += 1
+        }
+        let const = (2/i + (i*5-5)/i)
+        let cellWidth = Int(screenWidth/i - const)
+        return CGSize(width: cellWidth, height: Int(cellWidth*10/7))
+    }
+    
     static func calculateSurvCellSize(_ size:inout CGSize, screenWidth:CGFloat) {
         var i:CGFloat = 2
         while i >= 2 {

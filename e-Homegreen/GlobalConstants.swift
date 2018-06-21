@@ -11,4 +11,5 @@ import Foundation
 struct GlobalConstants {
     static let screenSize: CGSize = UIScreen.main.bounds.size
     static let sidePadding: CGFloat = 16
+    static let statusBarHeight: CGFloat = UIApplication.shared.statusBarFrame.height
 }

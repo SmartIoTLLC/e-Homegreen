@@ -17,6 +17,13 @@ enum ReturnedValueFromAlertView {
 
 extension UIViewController {
     
+    var navigationBarHeight: CGFloat {
+        if let nbh = self.navigationController?.navigationBar.frame.height {
+            return nbh
+        }
+        return 0
+    }
+    
     func makeFullscreenButton() -> UIButton {
         let fullscreenButton: UIButton = UIButton()
         fullscreenButton.setImage(#imageLiteral(resourceName: "full screen"), for: UIControlState())
@@ -37,6 +44,12 @@ extension UIViewController {
         revealViewController().rearViewRevealWidth = 200
         
         return menuBarButton
+    }
+    
+    func makeRefreshButton() -> UIButton {
+        let refreshButton: UIButton = UIButton()
+        refreshButton.setImage(#imageLiteral(resourceName: "refesh screen"), for: UIControlState())
+        return refreshButton
     }
     
     override open func remoteControlReceived(with event: UIEvent?) {

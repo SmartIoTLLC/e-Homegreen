@@ -22,25 +22,40 @@ class ScenesCell: UITableViewCell{
         labelName.text  = "\(scene.sceneName)"
         address.text    = "\(returnThreeCharactersForByte(Int(scene.gateway.addressOne))):\(returnThreeCharactersForByte(Int(scene.gateway.addressTwo))):\(Int(scene.address))"
         
-        if let id = scene.sceneImageOneCustom {
-            if let image = DatabaseImageController.shared.getImageById(id) {
-                
-                if let data = image.imageData {
-                    imageOne.image = UIImage(data: data)
-                } else { if let defaultImage = scene.sceneImageOneDefault { imageOne.image = UIImage(named: defaultImage) } }
-                
-            } else { if let defaultImage = scene.sceneImageOneDefault { imageOne.image = UIImage(named: defaultImage) } }
-        } else { if let defaultImage = scene.sceneImageOneDefault { imageOne.image = UIImage(named: defaultImage) } }
+        var imageOne: UIImage?
+        var imageTwo: UIImage?
         
-        if let id = scene.sceneImageTwoCustom {
-            if let image = DatabaseImageController.shared.getImageById(id) {
-                
-                if let data = image.imageData {
-                    imageOne.image = UIImage(data: data)
-                } else { if let defaultImage = scene.sceneImageTwoDefault { imageOne.image = UIImage(named: defaultImage) } }
-                
-            } else { if let defaultImage = scene.sceneImageTwoDefault { imageOne.image = UIImage(named: defaultImage) } }
-        } else { if let defaultImage = scene.sceneImageTwoDefault { imageOne.image = UIImage(named: defaultImage) } }
+        if let customImageOne = scene.sceneImageOneCustom {
+            if let imageObject = DatabaseImageController.shared.getImageById(customImageOne) {
+                if let imageData = imageObject.imageData {
+                    imageOne = UIImage(data: imageData)
+                }
+            } else {
+                imageOne = UIImage(named: customImageOne)
+            }
+        } else if let defaultImageOne = scene.sceneImageOneDefault {
+            imageOne = UIImage(named: defaultImageOne)
+        }
+        
+        if let customImageTwo = scene.sceneImageTwoCustom {
+            if let imageObject = DatabaseImageController.shared.getImageById(customImageTwo) {
+                if let imageData = imageObject.imageData {
+                    imageTwo = UIImage(data: imageData)
+                }
+            } else {
+                imageTwo = UIImage(named: customImageTwo)
+            }
+            
+        } else if let defaultImageTwo = scene.sceneImageTwoDefault {
+            imageTwo = UIImage(named: defaultImageTwo)
+        }
+        
+        if let imageOne = imageOne {
+            self.imageOne.image = imageOne
+        }
+        if let imageTwo = imageTwo {
+            self.imageTwo.image = imageTwo
+        }
         
     }
     

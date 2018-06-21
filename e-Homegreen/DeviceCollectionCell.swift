@@ -114,3 +114,5 @@ class DeviceCollectionCell: UICollectionViewCell {
         SendingHandler.sendCommand(byteArray: OutgoingHandler.resetRunningTime(address, channel: 0xFF), gateway: device!.gateway)
     }
 }
+
+
