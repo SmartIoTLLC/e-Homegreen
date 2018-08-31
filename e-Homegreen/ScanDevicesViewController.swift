@@ -80,6 +80,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         longGestureFindNames.minimumPressDuration = 1
         findNamesBtn.addGestureRecognizer(tapGestureFindNames)
         findNamesBtn.addGestureRecognizer(longGestureFindNames)
+        longPressGestureSetupForMacros()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -896,4 +898,42 @@ extension ScanDevicesViewController: DevicePropertiesDelegate{
     func saveClicked() {
         deviceTableView.reloadData()
     }
+}
+
+//MARK: ADD DEVICE ACTION TO MACROS
+extension ScanDevicesViewController {
+    
+    func longPressGestureSetupForMacros() {
+        let longGestureAddToMacros = UILongPressGestureRecognizer(target: self, action: #selector(ScanDevicesViewController.addToMacrosOnLongPress(_:))) //Long function will call when user long press on tableview cell.
+        longGestureAddToMacros.minimumPressDuration = 1
+        self.deviceTableView.addGestureRecognizer(longGestureAddToMacros)
+    }
+    
+    func addToMacrosOnLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        if longPressGestureRecognizer.state == .began {
+            let touchPoint = longPressGestureRecognizer.location(in: self.deviceTableView)
+            if let indexPath = deviceTableView.indexPathForRow(at: touchPoint) {
+                DispatchQueue.main.async {
+                    self.presentChooseMacroVC(deviceIndex: indexPath.row)
+                }
+            }
+        }
+    }
+    
+    private func presentChooseMacroVC(deviceIndex: Int) {
+        let storyBoard = UIStoryboard(name: "Macros", bundle: nil)
+        if let viewController = storyBoard.instantiateViewController(withIdentifier: "chooseMacroPopUp") as? ChooseMacroPopupVC {
+            viewController.device = devices[deviceIndex]
+            self.present(viewController, animated: true, completion: nil)
+        }
+        
+        //viewController.modalPresentationStyle = .overCurrentContext
+        
+        //        let viewController = ChooseMacroPopupVC()
+        //        //viewController.modalPresentationStyle = .overCurrentContext
+        
+    }
+    
+    
+    
 }

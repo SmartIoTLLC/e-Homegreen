@@ -228,6 +228,18 @@
 		4EFAE02A1F6C0F5600C85074 /* sura_english.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EFAE0291F6C0F5600C85074 /* sura_english.json */; };
 		4EFAE02C1F6C183000C85074 /* reciters.json in Resources */ = {isa = PBXBuildFile; fileRef = 4EFAE02B1F6C183000C85074 /* reciters.json */; };
 		4EFAE02E1F6C27B700C85074 /* SuraPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFAE02D1F6C27B700C85074 /* SuraPlayerViewController.swift */; };
+		6E40EC4F2139743C00CEFB36 /* Macros.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E40EC4E2139743C00CEFB36 /* Macros.storyboard */; };
+		6E40EC51213975CE00CEFB36 /* AddNewMacroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC50213975CE00CEFB36 /* AddNewMacroViewController.swift */; };
+		6E40EC532139768C00CEFB36 /* DatabaseMacrosController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC522139768C00CEFB36 /* DatabaseMacrosController.swift */; };
+		6E40EC58213978AA00CEFB36 /* Macro_action+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC54213978AA00CEFB36 /* Macro_action+CoreDataClass.swift */; };
+		6E40EC59213978AA00CEFB36 /* Macro_action+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC55213978AA00CEFB36 /* Macro_action+CoreDataProperties.swift */; };
+		6E40EC5A213978AA00CEFB36 /* Macro+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC56213978AA00CEFB36 /* Macro+CoreDataClass.swift */; };
+		6E40EC5B213978AA00CEFB36 /* Macro+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC57213978AA00CEFB36 /* Macro+CoreDataProperties.swift */; };
+		6E40EC5D2139793500CEFB36 /* MacrosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC5C2139793500CEFB36 /* MacrosCell.swift */; };
+		6E40EC5F2139795700CEFB36 /* MacrosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC5E2139795700CEFB36 /* MacrosViewController.swift */; };
+		6E40EC6321397ADE00CEFB36 /* ChooseMacroPopupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC6221397ADE00CEFB36 /* ChooseMacroPopupVC.swift */; };
+		6E40EC6521397CD600CEFB36 /* MacroDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC6421397CD600CEFB36 /* MacroDetailsCell.swift */; };
+		6E40EC6721397D0A00CEFB36 /* MacroDetailsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC6621397D0A00CEFB36 /* MacroDetailsTVC.swift */; };
 		731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */; };
 		731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */; };
 		73331C181CA029DF009BA1DE /* FilterStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73331C171CA029DF009BA1DE /* FilterStruct.swift */; };
@@ -663,6 +675,18 @@
 		4EFAE02B1F6C183000C85074 /* reciters.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = reciters.json; sourceTree = "<group>"; };
 		4EFAE02D1F6C27B700C85074 /* SuraPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuraPlayerViewController.swift; sourceTree = "<group>"; };
 		60177B146AC24AC775D3907A /* Pods-e-Homegreen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-e-Homegreen.debug.xcconfig"; path = "Pods/Target Support Files/Pods-e-Homegreen/Pods-e-Homegreen.debug.xcconfig"; sourceTree = "<group>"; };
+		6E40EC4E2139743C00CEFB36 /* Macros.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Macros.storyboard; sourceTree = "<group>"; };
+		6E40EC50213975CE00CEFB36 /* AddNewMacroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewMacroViewController.swift; sourceTree = "<group>"; };
+		6E40EC522139768C00CEFB36 /* DatabaseMacrosController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMacrosController.swift; sourceTree = "<group>"; };
+		6E40EC54213978AA00CEFB36 /* Macro_action+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Macro_action+CoreDataClass.swift"; sourceTree = "<group>"; };
+		6E40EC55213978AA00CEFB36 /* Macro_action+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Macro_action+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		6E40EC56213978AA00CEFB36 /* Macro+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Macro+CoreDataClass.swift"; sourceTree = "<group>"; };
+		6E40EC57213978AA00CEFB36 /* Macro+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Macro+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		6E40EC5C2139793500CEFB36 /* MacrosCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacrosCell.swift; sourceTree = "<group>"; };
+		6E40EC5E2139795700CEFB36 /* MacrosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacrosViewController.swift; sourceTree = "<group>"; };
+		6E40EC6221397ADE00CEFB36 /* ChooseMacroPopupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseMacroPopupVC.swift; sourceTree = "<group>"; };
+		6E40EC6421397CD600CEFB36 /* MacroDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroDetailsCell.swift; sourceTree = "<group>"; };
+		6E40EC6621397D0A00CEFB36 /* MacroDetailsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroDetailsTVC.swift; sourceTree = "<group>"; };
 		731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "AppDelegate+BroadcastTimeAndDate.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Location.swift"; sourceTree = "<group>"; };
 		73331C171CA029DF009BA1DE /* FilterStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterStruct.swift; sourceTree = "<group>"; };
@@ -1520,6 +1544,20 @@
 			name = Phone;
 			sourceTree = "<group>";
 		};
+		6E40EC4B2139738300CEFB36 /* Macros */ = {
+			isa = PBXGroup;
+			children = (
+				6E40EC6621397D0A00CEFB36 /* MacroDetailsTVC.swift */,
+				6E40EC6421397CD600CEFB36 /* MacroDetailsCell.swift */,
+				6E40EC6221397ADE00CEFB36 /* ChooseMacroPopupVC.swift */,
+				6E40EC4E2139743C00CEFB36 /* Macros.storyboard */,
+				6E40EC50213975CE00CEFB36 /* AddNewMacroViewController.swift */,
+				6E40EC5C2139793500CEFB36 /* MacrosCell.swift */,
+				6E40EC5E2139795700CEFB36 /* MacrosViewController.swift */,
+			);
+			name = Macros;
+			sourceTree = "<group>";
+		};
 		736265DD1B4A47FE0078C11D /* Business Logic */ = {
 			isa = PBXGroup;
 			children = (
@@ -1597,6 +1635,7 @@
 		73DEA21F1B32CE67007836B4 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				6E40EC4B2139738300CEFB36 /* Macros */,
 				4E114C80208F292A00493722 /* FavoriteDevices */,
 				223690C51CAD00C00037B54A /* Login */,
 				2232922C1CABE48E0001422B /* PullDown */,
@@ -1695,6 +1734,10 @@
 		73E2390E1B97145D00CB38ED /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				6E40EC54213978AA00CEFB36 /* Macro_action+CoreDataClass.swift */,
+				6E40EC55213978AA00CEFB36 /* Macro_action+CoreDataProperties.swift */,
+				6E40EC56213978AA00CEFB36 /* Macro+CoreDataClass.swift */,
+				6E40EC57213978AA00CEFB36 /* Macro+CoreDataProperties.swift */,
 				4E62ABC61FBB1F51006D85E7 /* RemoteButton+CoreDataClass.swift */,
 				4E62ABC71FBB1F51006D85E7 /* RemoteButton+CoreDataProperties.swift */,
 				22FF1E611D86D86F00ECB86E /* Card.swift */,
@@ -1806,6 +1849,7 @@
 		73F04ECC1C92CD95009696EF /* Database Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				6E40EC522139768C00CEFB36 /* DatabaseMacrosController.swift */,
 				7398667F1C0DEE1600CEBDB4 /* DatabaseHandler.swift */,
 				73F04ECD1C92CDA9009696EF /* CoreDataController.swift */,
 				223690CC1CAD5A500037B54A /* DatabaseUserController.swift */,
@@ -2202,7 +2246,7 @@
 				TargetAttributes = {
 					73E206A51B2EEFFE0008B002 = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = 2VJ3RF77SN;
+						DevelopmentTeam = 2JR589G8SK;
 						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -2327,6 +2371,7 @@
 				4983C7E61D4B5F2D00C8E865 /* RelayParametersCell.xib in Resources */,
 				E79AEBB91B70C43300410E2D /* RelayParametarVC.xib in Resources */,
 				73E231201BA6E2C4003E41EC /* SequenceParametarVC.xib in Resources */,
+				6E40EC4F2139743C00CEFB36 /* Macros.storyboard in Resources */,
 				E7DC67BE1B457C0E00EA6543 /* weather-moon.png in Resources */,
 				E7DC67C71B457C0E00EA6543 /* weather-shower@2x.png in Resources */,
 				E79AEBB51B70BFD500410E2D /* DimmerParametarVC.xib in Resources */,
@@ -2442,9 +2487,11 @@
 				738DECA21BBBC39F00D6B834 /* SecuirtyCommandVC.swift in Sources */,
 				4E77754D20C687C2002E1469 /* PhoneInstructionsViewController.swift in Sources */,
 				22D7EB9E1D780FB600853051 /* SecurityLocationCell.swift in Sources */,
+				6E40EC5B213978AA00CEFB36 /* Macro+CoreDataProperties.swift in Sources */,
 				4E6BF55B20CFCA2500FCE6A1 /* ClimateCollectionViewCell.swift in Sources */,
 				22359C6A1CAE98290054434B /* LocationCell.swift in Sources */,
 				4D0D97221CAD4087001A1E89 /* HRToast+UIView.swift in Sources */,
+				6E40EC59213978AA00CEFB36 /* Macro_action+CoreDataProperties.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Constants.swift in Sources */,
 				4E5BE4011F7D42E700497335 /* EditRemoteViewController.swift in Sources */,
 				223DC0C61CE2089A00C5E2F6 /* CreateUserFromJSONController.swift in Sources */,
@@ -2456,12 +2503,14 @@
 				4ECACD6720D7D252002B7BC0 /* DimmerBigSliderViewController.swift in Sources */,
 				E7E08E041B4E4D9700153E9A /* ClimaSettingsViewController.swift in Sources */,
 				7372EB381BC410800097806D /* Flag.swift in Sources */,
+				6E40EC6521397CD600CEFB36 /* MacroDetailsCell.swift in Sources */,
 				E79A89261BAD6D6000714C64 /* ScanTimerViewController.swift in Sources */,
 				E75B4FC41B42FC0B00E48454 /* FSCalendarCell.m in Sources */,
 				736F17DA1B3AE87E003A6A02 /* ChatViewController.swift in Sources */,
 				4E1AAB191F6C0A29006C59AA /* QuranViewController.swift in Sources */,
 				738BFD061B9EF79F005D183F /* DataImporter.swift in Sources */,
 				22FF1E631D86D86F00ECB86E /* Card.swift in Sources */,
+				6E40EC532139768C00CEFB36 /* DatabaseMacrosController.swift in Sources */,
 				4E1961401FD5883400F48272 /* DeleteButtonImageVC.swift in Sources */,
 				22EEAD0E1C8715E000AD66F0 /* EditCategoryViewController.swift in Sources */,
 				223690C91CAD02530037B54A /* CreateAdminViewController.swift in Sources */,
@@ -2475,11 +2524,14 @@
 				E79AEBB41B70BFD500410E2D /* DimmerParametarVC.swift in Sources */,
 				736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */,
 				73E28EDF1B6657A80016CD77 /* e_Homegreen.xcdatamodeld in Sources */,
+				6E40EC51213975CE00CEFB36 /* AddNewMacroViewController.swift in Sources */,
+				6E40EC58213978AA00CEFB36 /* Macro_action+CoreDataClass.swift in Sources */,
 				73ED6AFD1BA0249800E6CE06 /* RepeatSendingHandler.swift in Sources */,
 				739D57171C809B30004CC50E /* DeviceImage.swift in Sources */,
 				2249A3321C90693C0019C6FB /* PCControlInterfaceXIB.swift in Sources */,
 				738DEC9C1BBBC2F000D6B834 /* SecurityPadVC.swift in Sources */,
 				225F59871D74427300156BCD /* BigSliderXIB.swift in Sources */,
+				6E40EC5F2139795700CEFB36 /* MacrosViewController.swift in Sources */,
 				22FF1E651D86D92000ECB86E /* DatabaseCardsController.swift in Sources */,
 				E75B4FC51B42FC0B00E48454 /* FSCalendarHeader.m in Sources */,
 				73E427B61B4D08CE0083A747 /* IncomingHandler.swift in Sources */,
@@ -2537,9 +2589,11 @@
 				223E25DC1CC77DBB00BC3905 /* Surveillance+CoreDataProperties.swift in Sources */,
 				2249A32D1C903F1E0019C6FB /* PCControlViewController.swift in Sources */,
 				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,
+				6E40EC5A213978AA00CEFB36 /* Macro+CoreDataClass.swift in Sources */,
 				73E485231B60D531007A35AD /* InOutSocket.swift in Sources */,
 				222889B61CBBD60F004EBADD /* DatabaseFlagsController.swift in Sources */,
 				4E635DD2201A127900216041 /* AudioPlayer.swift in Sources */,
+				6E40EC6321397ADE00CEFB36 /* ChooseMacroPopupVC.swift in Sources */,
 				22E7B2101CC4FC9A00F813AC /* ResetPasswordXIB.swift in Sources */,
 				737CED2E1C04571E0055DA0E /* CustomGradientButtonWhite.swift in Sources */,
 				223FB5911D64414600DC2627 /* DatabaseImageController.swift in Sources */,
@@ -2587,6 +2641,7 @@
 				4E62ABC81FBB1F51006D85E7 /* RemoteButton+CoreDataClass.swift in Sources */,
 				4E6BF55F20D0144D00FCE6A1 /* SaltoAccessCollectionViewCell.swift in Sources */,
 				22954B051CC100EB0082BFCF /* DatabaseSecurityController.swift in Sources */,
+				6E40EC5D2139793500CEFB36 /* MacrosCell.swift in Sources */,
 				E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */,
 				73F4D6BA1C807A5900FE0514 /* DeviceImagePickerTVC.swift in Sources */,
 				223FB5951D645AB500DC2627 /* Image.swift in Sources */,
@@ -2612,6 +2667,7 @@
 				225469021CBD19DD00473BC7 /* UsersCell.swift in Sources */,
 				E79309BC1BC5715D0009EFB1 /* MarqueeLabel.m in Sources */,
 				736F17DE1B3AE8A3003A6A02 /* EnergyViewController.swift in Sources */,
+				6E40EC6721397D0A00CEFB36 /* MacroDetailsTVC.swift in Sources */,
 				73FDF1CA1BFB8E3200BCC300 /* UIView+Extensions.swift in Sources */,
 				E73993121BCE753400C74486 /* VoiceControllerTableViewCell.swift in Sources */,
 				E70A6ED31BCFE86900EBB53D /* TellMeAJokeHandler.swift in Sources */,
@@ -2917,7 +2973,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 2VJ3RF77SN;
+				DEVELOPMENT_TEAM = 2JR589G8SK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2944,7 +3000,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 2VJ3RF77SN;
+				DEVELOPMENT_TEAM = 2JR589G8SK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

@@ -584,6 +584,18 @@ struct Constants {
 
 }
 
+struct MacroTypes {
+    static let block = "block"
+    static let restart = "restart"
+    static let queue = "queue"
+}
+
+struct MacroActionCommands {
+    static let turnOff: Int = 0
+    static let turnOn: Int = 1
+    static let toggle: Int = 2
+}
+
 extension Notification.Name {
     static let ButtonColorChosen       = Notification.Name("buttonColorChosen")
     static let ButtonShapeChosen       = Notification.Name("buttonShapeChosen")

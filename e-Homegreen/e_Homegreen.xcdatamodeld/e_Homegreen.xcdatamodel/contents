@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17G65" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17E199" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Card" representedClassName=".Card" syncable="YES">
         <attribute name="address" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="cardId" attributeType="String" syncable="YES"/>
@@ -189,6 +189,29 @@
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="locations" inverseEntity="User" syncable="YES"/>
         <relationship name="zones" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Zone" inverseName="location" inverseEntity="Zone" syncable="YES"/>
     </entity>
+    <entity name="Macro" representedClassName=".Macro" syncable="YES">
+        <attribute name="macro_category" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="macro_level" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="macro_location" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="macro_zone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="negative_image" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="positive_image" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="macro_actions" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Macro_action" inverseName="macro" inverseEntity="Macro_action" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="macros" inverseEntity="User" syncable="YES"/>
+    </entity>
+    <entity name="Macro_action" representedClassName=".Macro_action" syncable="YES">
+        <attribute name="command" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="control_type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="delay" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="deviceAddress" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="deviceChannel" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="gatewayAddressOne" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="gatewayAddressTwo" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="gatewayId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="macro" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Macro" inverseName="macro_actions" inverseEntity="Macro" syncable="YES"/>
+    </entity>
     <entity name="MenuItem" representedClassName=".MenuItem" syncable="YES">
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isVisible" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -376,6 +399,7 @@
         <relationship name="filters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FilterParametar" inverseName="user" inverseEntity="FilterParametar" syncable="YES"/>
         <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Image" inverseName="user" inverseEntity="Image" syncable="YES"/>
         <relationship name="locations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Location" inverseName="user" inverseEntity="Location" syncable="YES"/>
+        <relationship name="macros" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Macro" inverseName="user" inverseEntity="Macro" syncable="YES"/>
         <relationship name="menu" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MenuItem" inverseName="user" inverseEntity="MenuItem" syncable="YES"/>
     </entity>
     <entity name="Zone" representedClassName="e_Homegreen.Zone" syncable="YES">
@@ -414,7 +438,9 @@
         <element name="Sura" positionX="-1845" positionY="-2178" width="128" height="88"/>
         <element name="Surveillance" positionX="-1503" positionY="-999" width="128" height="480"/>
         <element name="Timer" positionX="-1712" positionY="-1638" width="128" height="300"/>
-        <element name="User" positionX="-1422" positionY="-2322" width="128" height="255"/>
+        <element name="User" positionX="-1422" positionY="-2322" width="128" height="270"/>
         <element name="Zone" positionX="-1242" positionY="-765" width="128" height="180"/>
+        <element name="Macro" positionX="-1647" positionY="-2178" width="128" height="195"/>
+        <element name="Macro_action" positionX="-1638" positionY="-2169" width="128" height="180"/>
     </elements>
 </model>
