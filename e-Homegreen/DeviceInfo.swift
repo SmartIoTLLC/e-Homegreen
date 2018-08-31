@@ -298,6 +298,7 @@ struct DeviceInfo {
         // I/O Series
         DeviceType(deviceId: 0x42, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.AnalogOutput, MPN: "AO4010V"), // Analog Output Module, 4CH 0-10V
         DeviceType(deviceId: 0x43, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.DigitalInput, MPN: "DI04GPC"), // Digital Input Module, 4CH
+        DeviceType(deviceId: 0x2A, subId: 0x00):DeviceTypeCode(channel: Channel.Two, name: ControlType.DigitalOutput, MPN: "DO0201S"), // Digital Output Module, 2CH
         DeviceType(deviceId: 0x2A, subId: 0x01):DeviceTypeCode(channel:Channel.Two, name:ControlType.DigitalOutput, MPN: "DO02GPC"), // Digital Output Module, 2CH
         DeviceType(deviceId: 0x44, subId: 0x00):DeviceTypeCode(channel:Channel.Four, name:ControlType.AnalogInput, MPN: "AI0402S"), // Analog Input Module, 4CH 0-10V/0-20mA
         

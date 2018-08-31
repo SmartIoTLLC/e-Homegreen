@@ -172,6 +172,7 @@ class DevicesViewController: PopoverVC {
         deviceCollectionView.register(ClimateCollectionViewCell.self, forCellWithReuseIdentifier: ClimateCollectionViewCell.reuseIdentifier)
         deviceCollectionView.register(MultisensorCollectionViewCell.self, forCellWithReuseIdentifier: MultisensorCollectionViewCell.reuseIdentifier)
         deviceCollectionView.register(SaltoAccessCollectionViewCell.self, forCellWithReuseIdentifier: SaltoAccessCollectionViewCell.reuseIdentifier)
+        deviceCollectionView.register(SliderCurtainCollectionViewCell.self, forCellWithReuseIdentifier: SliderCurtainCollectionViewCell.reuseIdentifier)
     }
     
     private func setupConstraints() {
@@ -855,12 +856,22 @@ extension DevicesViewController: UICollectionViewDataSource {
             }
             
         case ControlType.Curtain:
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurtainCollectionViewCell.reuseIdentifier, for: indexPath) as? CurtainCollectionViewCell {
-                cell.setCell(with: device, tag: tag)
-                return cell
+
+            if device.curtainNeedsSlider.boolValue {
+                if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SliderCurtainCollectionViewCell.reuseIdentifier, for: indexPath) as? SliderCurtainCollectionViewCell {
+                    cell.setCell(with: device, tag: tag)
+                    return cell
+                }
+            } else {
+                
+                if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurtainCollectionViewCell.reuseIdentifier, for: indexPath) as? CurtainCollectionViewCell {
+                    cell.setCell(with: device, tag: tag)
+                    return cell
+                }
             }
             
         case ControlType.SaltoAccess:
+            
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SaltoAccessCollectionViewCell.reuseIdentifier, for: indexPath) as? SaltoAccessCollectionViewCell {
                 cell.setCell(with: device, tag: tag)
                 return cell

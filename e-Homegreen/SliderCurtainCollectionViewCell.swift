@@ -30,7 +30,7 @@ class SliderCurtainCollectionViewCell: BaseDeviceCollectionViewCell {
     // MARK: - UI components declaration
     private let backTitleLabel: MarqueeLabel = MarqueeLabel()
     private let backCurtainImage: UIImageView = UIImageView()
-    private let backLightSlider: UISlider = UISlider()
+    private let backCurtainSlider: UISlider = UISlider()
     
     private let infoAddressTitleLabel: DeviceInfoLabel = DeviceInfoLabel()
     private let infoAddressValueLabel: DeviceInfoLabel = DeviceInfoLabel()
@@ -44,6 +44,20 @@ class SliderCurtainCollectionViewCell: BaseDeviceCollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        addBackTitleLabel()
+        addBackCurtainImage()
+        addBackSlider()
+        
+        addInfoAddressTitleLabel()
+        addInfoAddressValueLabel()
+        addInfoZoneValueLabel()
+        addInfoZoneTitleLabel()
+        addInfoLevelTitleLabel()
+        addInfoLevelValueLabel()
+        addInfoCategoryTitleLabel()
+        addInfoCategoryValueLabel()
+        
+        setupConstraints()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -67,25 +81,26 @@ class SliderCurtainCollectionViewCell: BaseDeviceCollectionViewCell {
     private func addBackCurtainImage() {
         backCurtainImage.contentMode = .scaleAspectFit
         backCurtainImage.isUserInteractionEnabled = true
-//        backCurtainImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(stopCurtain(_:))))
-        // TODO: open-close on tap
+        let lpgr: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(showBigSlider(_:)))
+        lpgr.minimumPressDuration = 0.5
+        backCurtainImage.addGestureRecognizer(lpgr)
         
         backView.addSubview(backCurtainImage)
     }
     
     private func addBackSlider() {
-        backLightSlider.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
-        backLightSlider.addTarget(self, action: #selector(sliderEnded(_:)), for: .touchUpInside)
-        backLightSlider.addTarget(self, action: #selector(sliderStarted(_:)), for: .touchDown)
-        backLightSlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sliderTapped(_:))))
+        backCurtainSlider.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
+        backCurtainSlider.addTarget(self, action: #selector(sliderEnded(_:)), for: .touchUpInside)
+        backCurtainSlider.addTarget(self, action: #selector(sliderStarted(_:)), for: .touchDown)
+        backCurtainSlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sliderTapped(_:))))
         
-        backView.addSubview(backLightSlider)
+        backView.addSubview(backCurtainSlider)
     }
     
     
     // Info View components
     private func addInfoAddressTitleLabel() {
-        //        infoAddressTitleLabel.setText("Address:", fontSize: LocalConstants.titleLabelFontSize)
+        infoAddressTitleLabel.setText("Address:", fontSize: LocalConstants.titleLabelFontSize)
         
         infoView.addSubview(infoAddressTitleLabel)
     }
@@ -93,7 +108,7 @@ class SliderCurtainCollectionViewCell: BaseDeviceCollectionViewCell {
         infoView.addSubview(infoAddressValueLabel)
     }
     private func addInfoLevelTitleLabel() {
-        //        infoLevelTitleLabel.setText("Level:", fontSize: LocalConstants.titleLabelFontSize)
+        infoLevelTitleLabel.setText("Level:", fontSize: LocalConstants.titleLabelFontSize)
         
         infoView.addSubview(infoLevelTitleLabel)
     }
@@ -101,7 +116,7 @@ class SliderCurtainCollectionViewCell: BaseDeviceCollectionViewCell {
         infoView.addSubview(infoLevelValueLabel)
     }
     private func addInfoZoneTitleLabel() {
-        //        infoZoneTitleLabel.setText("Zone:", fontSize: LocalConstants.titleLabelFontSize)
+        infoZoneTitleLabel.setText("Zone:", fontSize: LocalConstants.titleLabelFontSize)
         
         infoView.addSubview(infoZoneTitleLabel)
     }
@@ -109,7 +124,7 @@ class SliderCurtainCollectionViewCell: BaseDeviceCollectionViewCell {
         infoView.addSubview(infoZoneValueLabel)
     }
     private func addInfoCategoryTitleLabel() {
-        //        infoCategoryTitleLabel.setText("Category:", fontSize: LocalConstants.titleLabelFontSize)
+        infoCategoryTitleLabel.setText("Category:", fontSize: LocalConstants.titleLabelFontSize)
         
         infoView.addSubview(infoCategoryTitleLabel)
     }
@@ -132,7 +147,7 @@ class SliderCurtainCollectionViewCell: BaseDeviceCollectionViewCell {
             make.height.equalTo(backCurtainImage.snp.width)
         }
         
-        backLightSlider.snp.makeConstraints { (make) in
+        backCurtainSlider.snp.makeConstraints { (make) in
             make.bottom.equalToSuperview().inset(LocalConstants.itemSpacing)
             make.leading.equalToSuperview().offset(LocalConstants.imageInset)
             make.trailing.equalToSuperview().inset(LocalConstants.imageInset)
@@ -199,11 +214,21 @@ class SliderCurtainCollectionViewCell: BaseDeviceCollectionViewCell {
     override func setCell(with device: Device, tag: Int) {
         super.setCell(with: device, tag: tag)
         
+        infoAddressValueLabel.setText(String(describing: device.moduleAddress), fontSize: LocalConstants.titleLabelFontSize)
+        infoCategoryValueLabel.setText(device.controlType, fontSize: LocalConstants.titleLabelFontSize)
         backTitleLabel.attributedText = NSAttributedString(string: device.cellTitle, attributes:[NSForegroundColorAttributeName: UIColor.white])
         backTitleLabel.tag  = tag
         backCurtainImage.tag = tag
-        
+        backCurtainSlider.tag = tag
         setDeviceImage(with: device)
+        
+        backCurtainImage.addTap {
+            self.toggleDeviceOnOff(at: tag)
+        }
+        
+        print("device current value: \(device.currentValue.floatValue)")
+        let deviceValue = device.currentValue.doubleValue
+        backCurtainSlider.value = Float(deviceValue) / 255
     }
     
     private func setDeviceImage(with device: Device) {
@@ -283,7 +308,7 @@ class SliderCurtainCollectionViewCell: BaseDeviceCollectionViewCell {
     // MARK: - Logic
     @objc private func showBigSlider(_ gestureRecognizer: UILongPressGestureRecognizer) {
         if let device = self.getDeviceFromGesture(gestureRecognizer) {
-            if device.controlType == ControlType.Dimmer {
+//            if device.controlType == ControlType.Dimmer {
                 if gestureRecognizer.state == .began {
                     if let devicesViewController = self.parentViewController as? DevicesViewController {
                         if let index = gestureRecognizer.view?.tag {
@@ -295,7 +320,7 @@ class SliderCurtainCollectionViewCell: BaseDeviceCollectionViewCell {
                         }
                     }
                 }
-            }
+//            }
         }
     }
     
@@ -309,40 +334,49 @@ class SliderCurtainCollectionViewCell: BaseDeviceCollectionViewCell {
     @objc fileprivate func sliderValueChanged(_ sender: UISlider) {
         if let device = self.getDevice(from: sender) {
             device.currentValue = NSNumber(value: Int(sender.value * 255))
-            
+
             let deviceValue = device.currentValue.doubleValue
-//            backDeviceImageView.image = device.returnImage(deviceValue)
-            backLightSlider.value = Float(deviceValue / 255)
+            setDeviceImage(with: device)
+            backCurtainSlider.value = Float(deviceValue / 255)
         }
     }
     
     @objc fileprivate func sliderEnded(_ sender: UISlider) {
-//        if let device = self.getDevice(from: sender) {
-//            let valueToSet: Byte = UInt8(Int(device.currentValue.doubleValue * (100/255)))
-//            
-//            device.increaseUsageCounterValue()
-//            
-//            if let sliderOldValue = sliderOldValue {
-//                DispatchQueue.main.async {
-//                    RunnableList.sharedInstance.checkForSameDevice(
-//                        device: device.objectID,
-//                        newCommand: NSNumber(value: valueToSet),
-//                        oldValue: NSNumber(value: sliderOldValue)
-//                    )
-//                    
+        if let device = self.getDevice(from: sender) {
+            let valueToSet: Byte = UInt8(Int(device.currentValue.doubleValue * (100/255)))
+            
+            device.increaseUsageCounterValue()
+            
+            if let sliderOldValue = sliderOldValue {
+                DispatchQueue.main.async {
+                    RunnableList.sharedInstance.checkForSameDevice(
+                        device: device.objectID,
+                        newCommand: NSNumber(value: valueToSet),
+                        oldValue: NSNumber(value: sliderOldValue)
+                    )
+                    
+                    
+                    _ = RepeatSendingHandler(
+                        byteArray: OutgoingHandler.setCurtainStatus(device.moduleAddress, value: valueToSet, groupId: device.curtainGroupID.byteValue),
+                        gateway: device.gateway,
+                        device: device,
+                        oldValue: sliderOldValue,
+                        command: NSNumber(value: valueToSet)
+                    )
 //                    _ = RepeatSendingHandler(
-//                        byteArray: OutgoingHandler.setCurtainStatus(device.moduleAddress, value: valueToSet, groupId: device.curtainGroupID),
+//                        byteArray: OutgoingHandler.setCurtainStatus(device.moduleAddress, value: valueToSet, groupId: device.curtainGroupID.byteValue),
 //                        gateway: device.gateway,
 //                        device: device,
-//                        oldValue: <#T##Int#>,
-//                        command: <#T##NSNumber?#>
+//                        oldValue: sliderOldValue,
+//                        command: NSNumber(value: valueToSet)
 //                    )
-//                }
-//            }
-//            
-//            sliderOldValue = 0
-//            self.setDeviceInControlMode(to: false)
-//        }
+                }
+            }
+            
+            sliderOldValue = nil
+            self.setDeviceInControlMode(to: false)
+            self.reloadDeviceCell(at: sender.tag)
+        }
     }
     
     @objc private func sliderTapped(_ gestureRecognizer: UIGestureRecognizer) {
@@ -384,16 +418,25 @@ class SliderCurtainCollectionViewCell: BaseDeviceCollectionViewCell {
                         newCommand: NSNumber(value: setValue),
                         oldValue: NSNumber(value: sliderOldValue)
                     )
+                    
                     _ = RepeatSendingHandler(
-                        byteArray: OutgoingHandler.setLightRelayStatus(device.moduleAddress, channel: device.channel.byteValue, value: setValue, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: device.skipState.byteValue),
+                        byteArray: OutgoingHandler.setCurtainStatus(device.moduleAddress, value: setValue, groupId: device.curtainGroupID.byteValue),
                         gateway: device.gateway,
                         device: device,
                         oldValue: Int(sliderOldValue),
                         command: NSNumber(value: setValue)
                     )
+//                    _ = RepeatSendingHandler(
+//                        byteArray: OutgoingHandler.setLightRelayStatus(device.moduleAddress, channel: device.channel.byteValue, value: setValue, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: device.skipState.byteValue),
+//                        gateway: device.gateway,
+//                        device: device,
+//                        oldValue: Int(sliderOldValue),
+//                        command: NSNumber(value: setValue)
+//                    )
+                    
+                    self.reloadDeviceCell(via: gestureRecognizer)
                 }
                 
-                reloadDeviceCell(via: gestureRecognizer)
             }
         }
         
@@ -417,36 +460,58 @@ extension SliderCurtainCollectionViewCell: BigSliderDelegate {
         } else if let fdvc = self.parentViewController as? FavoriteDevicesVC {
             device = fdvc.devices[index]
         }
-        
         if let device = device {
-//            if device.controlType == ControlType.Dimmer {
-//                let setDeviceValue: Byte = turnOff ? 0 : 100
-//                let skipLevel: Byte = turnOff ? 0 : device.skipState.byteValue
-//
-//                if turnOff {
-//                    device.oldValue = device.currentValue
-//                }
-//
-//                let deviceCurrentValue = device.currentValue.intValue
-//                device.currentValue = NSNumber(value: Int(setDeviceValue)*255/100)
-//
-//                DispatchQueue.main.async(execute: {
-//                    RunnableList.sharedInstance.checkForSameDevice(
-//                        device: device.objectID,
-//                        newCommand: NSNumber(value: setDeviceValue),
-//                        oldValue: NSNumber(value: deviceCurrentValue)
-//                    )
-//                    _ = RepeatSendingHandler(
-//                        byteArray: OutgoingHandler.setLightRelayStatus(device.moduleAddress, channel: device.channel.byteValue, value: setDeviceValue, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: skipLevel),
-//                        gateway: device.gateway,
-//                        device: device,
-//                        oldValue: deviceCurrentValue,
-//                        command: NSNumber(value: setDeviceValue)
-//                    )
-//                })
-//            }
+            
+            /* TODO: check */
+            let setDeviceValue: Byte = turnOff ? 0 : 100
+//            let skipLevel: Byte = turnOff ? 0 : device.skipState.byteValue
+            
+            if turnOff {
+                device.oldValue = device.currentValue
+            }
+            
+            let deviceCurrentValue = device.currentValue.intValue
+            device.currentValue = NSNumber(value: Int(setDeviceValue)*255/100)
+            
+            DispatchQueue.main.async(execute: {
+                RunnableList.sharedInstance.checkForSameDevice(
+                    device: device.objectID,
+                    newCommand: NSNumber(value: setDeviceValue),
+                    oldValue: NSNumber(value: deviceCurrentValue)
+                )
+                
+                _ = RepeatSendingHandler(
+                    byteArray: OutgoingHandler.setCurtainStatus(device.moduleAddress, value: setDeviceValue, groupId: device.curtainGroupID.byteValue),
+                    gateway: device.gateway,
+                    device: device,
+                    oldValue: deviceCurrentValue,
+                    command: NSNumber(value: setDeviceValue)
+                )
+//                _ = RepeatSendingHandler(
+//                    byteArray: OutgoingHandler.setLightRelayStatus(device.moduleAddress, channel: device.channel.byteValue, value: setDeviceValue, delay: device.delay.intValue, runningTime: device.runtime.intValue, skipLevel: skipLevel),
+//                    gateway: device.gateway,
+//                    device: device,
+//                    oldValue: deviceCurrentValue,
+//                    command: NSNumber(value: setDeviceValue)
+//                )
+                
+                self.reloadDeviceCell(at: index)
+            })
+            
         }
         
+    }
+    
+    fileprivate func toggleDeviceOnOff(at index: Int) {
+        var device: Device?
+        
+        if let dvc = self.parentViewController as? DevicesViewController {
+            device = dvc.devices[index]
+        } else if let fdvc = self.parentViewController as? FavoriteDevicesVC {
+            device = fdvc.devices[index]
+        }
+        
+        setONOFFDimmer(index, turnOff: device?.currentValue != 0)
     }
     
 }

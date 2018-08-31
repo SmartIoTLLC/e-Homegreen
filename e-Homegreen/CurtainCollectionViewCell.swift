@@ -117,7 +117,7 @@ class CurtainCollectionViewCell: BaseDeviceCollectionViewCell {
     
     // Info View components
     private func addInfoAddressTitleLabel() {
-//        infoAddressTitleLabel.setText("Address:", fontSize: LocalConstants.titleLabelFontSize)
+        infoAddressTitleLabel.setText("Address:", fontSize: LocalConstants.titleLabelFontSize)
         
         infoView.addSubview(infoAddressTitleLabel)
     }
@@ -125,7 +125,7 @@ class CurtainCollectionViewCell: BaseDeviceCollectionViewCell {
         infoView.addSubview(infoAddressValueLabel)
     }
     private func addInfoLevelTitleLabel() {
-//        infoLevelTitleLabel.setText("Level:", fontSize: LocalConstants.titleLabelFontSize)
+        infoLevelTitleLabel.setText("Level:", fontSize: LocalConstants.titleLabelFontSize)
         
         infoView.addSubview(infoLevelTitleLabel)
     }
@@ -133,7 +133,7 @@ class CurtainCollectionViewCell: BaseDeviceCollectionViewCell {
         infoView.addSubview(infoLevelValueLabel)
     }
     private func addInfoZoneTitleLabel() {
-//        infoZoneTitleLabel.setText("Zone:", fontSize: LocalConstants.titleLabelFontSize)
+        infoZoneTitleLabel.setText("Zone:", fontSize: LocalConstants.titleLabelFontSize)
         
         infoView.addSubview(infoZoneTitleLabel)
     }
@@ -141,7 +141,7 @@ class CurtainCollectionViewCell: BaseDeviceCollectionViewCell {
         infoView.addSubview(infoZoneValueLabel)
     }
     private func addInfoCategoryTitleLabel() {
-//        infoCategoryTitleLabel.setText("Category:", fontSize: LocalConstants.titleLabelFontSize)
+        infoCategoryTitleLabel.setText("Category:", fontSize: LocalConstants.titleLabelFontSize)
         
         infoView.addSubview(infoCategoryTitleLabel)
     }
@@ -238,6 +238,8 @@ class CurtainCollectionViewCell: BaseDeviceCollectionViewCell {
     override func setCell(with device: Device, tag: Int) {
         super.setCell(with: device, tag: tag)
         
+        infoAddressValueLabel.setText(String(describing: device.moduleAddress), fontSize: LocalConstants.titleLabelFontSize)
+        infoCategoryValueLabel.setText(device.controlType, fontSize: LocalConstants.titleLabelFontSize)
         backTitleLabel.attributedText = NSAttributedString(string: device.cellTitle, attributes:[NSForegroundColorAttributeName: UIColor.white])
         backTitleLabel.tag  = tag
         backCurtainImage.tag = tag

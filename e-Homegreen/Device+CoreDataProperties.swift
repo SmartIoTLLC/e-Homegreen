@@ -16,7 +16,7 @@ extension Device {
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Device> {
         return NSFetchRequest<Device>(entityName: "Device")
     }
-
+    @NSManaged var curtainNeedsSlider: NSNumber
     @NSManaged var deviceImages: NSSet?
     @NSManaged var address: NSNumber
     @NSManaged var allowEnergySaving: NSNumber

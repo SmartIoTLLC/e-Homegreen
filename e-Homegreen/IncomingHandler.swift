@@ -391,6 +391,13 @@ class IncomingHandler: NSObject {
             if let channel = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.channel,
                 let controlType = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.name {
                 
+                var curtainNeedsSlider: Bool = false
+                if let deviceMPN = DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]?.MPN {
+                    if deviceMPN == "ICM05XX" {
+                        curtainNeedsSlider = true
+                    }
+                }
+                
                 let MAC:[Byte] = Array(byteArray[9...14])
                 if devices != [] {
                     for device in devices { if Int(device.address) == Int(byteArray[4]) {deviceExists = true} }
@@ -401,7 +408,7 @@ class IncomingHandler: NSObject {
                         var isClimate = false
                         if controlType == ControlType.Climate { isClimate = true }
                         
-                        let deviceInformation = DeviceInformation(address: Int(byteArray[4]), channel: i, numberOfDevices: channel, type: controlType, gateway: gateways[0], mac: Data(bytes: UnsafePointer<UInt8>(MAC), count: MAC.count), isClimate:isClimate)
+                        let deviceInformation = DeviceInformation(address: Int(byteArray[4]), channel: i, numberOfDevices: channel, type: controlType, gateway: gateways[0], mac: Data(bytes: UnsafePointer<UInt8>(MAC), count: MAC.count), isClimate:isClimate, curtainNeedsSlider: curtainNeedsSlider)
                         
                         if let moc = appDel.managedObjectContext {
                             if (controlType == ControlType.Sensor ||
@@ -448,7 +455,7 @@ class IncomingHandler: NSObject {
                 
                 if !deviceExists {
                     for i in 1...4 {
-                        let deviceInformation = DeviceInformation(address: Int(byteArray[4]), channel: i, numberOfDevices: 4, type: controlType, gateway: gateways[0], mac: Data(bytes: UnsafePointer<UInt8>(MAC), count: MAC.count), isClimate:false)
+                        let deviceInformation = DeviceInformation(address: Int(byteArray[4]), channel: i, numberOfDevices: 4, type: controlType, gateway: gateways[0], mac: Data(bytes: UnsafePointer<UInt8>(MAC), count: MAC.count), isClimate:false, curtainNeedsSlider: false)
                         
                         if controlType == ControlType.SaltoAccess {
                             if let moc = appDel.managedObjectContext { let _ = Device(context: moc, specificDeviceInformation: deviceInformation, channelName: "Lock \(i)") }

@@ -17,5 +17,6 @@ struct DeviceInformation {
     let gateway:Gateway
     let mac:Data
     let isClimate:Bool
+    let curtainNeedsSlider: Bool
 }
 

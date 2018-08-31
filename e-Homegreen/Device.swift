@@ -70,6 +70,7 @@ class Device: NSManagedObject {
         self.bateryStatus = -1
         self.usageCounter = 0
         self.isFavorite = false as NSNumber
+        self.curtainNeedsSlider = information.curtainNeedsSlider as NSNumber
         
         if information.isClimate {
             self.mode = "AUTO"
