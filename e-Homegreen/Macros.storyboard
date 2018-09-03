@@ -70,7 +70,7 @@
                         <outlet property="backgroundImage" destination="uTp-A0-beQ" id="GGZ-HQ-bEV"/>
                         <outlet property="collectionView" destination="bRp-xr-8Rp" id="xrz-q3-qCv"/>
                         <outlet property="menuButton" destination="xb8-nD-CB7" id="oLo-Tr-dv6"/>
-                        <segue destination="Jho-F3-rZq" kind="push" identifier="goToDetails" id="60a-Lz-WpU"/>
+                        <segue destination="oNC-p6-Hlu" kind="push" identifier="goToDetails" id="dd0-09-szP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sRF-C8-8qe" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -106,33 +106,23 @@
             <point key="canvasLocation" x="1871" y="3314"/>
         </scene>
         <!--Macro DetailsTVC-->
-        <scene sceneID="z2s-UC-Jzo">
+        <scene sceneID="1sk-Tg-mkS">
             <objects>
-                <tableViewController storyboardIdentifier="MacroDetails" id="Jho-F3-rZq" customClass="MacroDetailsTVC" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Qvu-KG-X6A">
+                <viewController id="oNC-p6-Hlu" customClass="MacroDetailsTVC" customModule="e_Homegreen" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="YOF-r7-pDD"/>
+                        <viewControllerLayoutGuide type="bottom" id="tmo-0W-nRR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="jJj-z4-Xhb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="macroActionCell" id="aHY-jh-L3E">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aHY-jh-L3E" id="btB-Ru-Yxr">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="Jho-F3-rZq" id="qu5-pp-sX4"/>
-                            <outlet property="delegate" destination="Jho-F3-rZq" id="v6s-yM-S0E"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="kGa-FY-GM1"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="CZX-hl-aVm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="IaN-LI-1tl"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="044-Ez-j0F" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2443" y="3314"/>
+            <point key="canvasLocation" x="2366" y="3314"/>
         </scene>
         <!--Add New Macro View Controller-->
         <scene sceneID="NyQ-X3-V6H">

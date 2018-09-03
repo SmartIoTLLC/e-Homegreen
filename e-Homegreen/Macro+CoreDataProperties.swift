@@ -2,7 +2,7 @@
 //  Macro+CoreDataProperties.swift
 //  e-Homegreen
 //
-//  Created by Bratislav Baljak on 8/31/18.
+//  Created by Bratislav Baljak on 9/3/18.
 //  Copyright © 2018 Teodor Stevic. All rights reserved.
 //
 //
@@ -25,24 +25,24 @@ extension Macro {
     @NSManaged public var negative_image: String?
     @NSManaged public var positive_image: String?
     @NSManaged public var type: String?
-    @NSManaged private var user: User?
     @NSManaged public var macro_actions: NSSet?
+    @NSManaged private var user: User?
 
 }
 
 // MARK: Generated accessors for macro_actions
 extension Macro {
-    
+
     @objc(addMacro_actionsObject:)
     @NSManaged public func addToMacro_actions(_ value: Macro_action)
-    
+
     @objc(removeMacro_actionsObject:)
     @NSManaged public func removeFromMacro_actions(_ value: Macro_action)
-    
+
     @objc(addMacro_actions:)
     @NSManaged public func addToMacro_actions(_ values: NSSet)
-    
+
     @objc(removeMacro_actions:)
     @NSManaged public func removeFromMacro_actions(_ values: NSSet)
-    
+
 }

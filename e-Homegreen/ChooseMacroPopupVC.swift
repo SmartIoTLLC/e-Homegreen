@@ -152,7 +152,7 @@ class ChooseMacroPopupVC: PopoverVC {
         }
         
         if stateOfDevice == nil || macroListForAction.count == 0 {
-            //TODO: add msg box to inform user
+            createAlert(with: "You must set device state, and choose at least one macro.")
             return
         }
         
@@ -160,6 +160,13 @@ class ChooseMacroPopupVC: PopoverVC {
             DatabaseMacrosController.sharedInstance.addActionToMacros(command: stateOfDevice!, control_type: (device?.controlType)!, delay: 0, deviceAddress: (device?.address)!, gatewayAddressOne: (device?.gateway.addressOne)!, gatewayAddressTwo: (device?.gateway.addressTwo)!, gatewayId: device?.gateway.gatewayId, deviceChannel: (device?.channel)!, macro: oneMacro)
         }
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    private func createAlert(with text: String) {
+        let alertController = UIAlertController(title: "Error", message: text, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        
+        self.present(alertController, animated: true, completion: nil)
     }
     
     @objc func cancel(_ sender: UIButton) {

@@ -231,15 +231,15 @@
 		6E40EC4F2139743C00CEFB36 /* Macros.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E40EC4E2139743C00CEFB36 /* Macros.storyboard */; };
 		6E40EC51213975CE00CEFB36 /* AddNewMacroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC50213975CE00CEFB36 /* AddNewMacroViewController.swift */; };
 		6E40EC532139768C00CEFB36 /* DatabaseMacrosController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC522139768C00CEFB36 /* DatabaseMacrosController.swift */; };
-		6E40EC58213978AA00CEFB36 /* Macro_action+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC54213978AA00CEFB36 /* Macro_action+CoreDataClass.swift */; };
-		6E40EC59213978AA00CEFB36 /* Macro_action+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC55213978AA00CEFB36 /* Macro_action+CoreDataProperties.swift */; };
-		6E40EC5A213978AA00CEFB36 /* Macro+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC56213978AA00CEFB36 /* Macro+CoreDataClass.swift */; };
-		6E40EC5B213978AA00CEFB36 /* Macro+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC57213978AA00CEFB36 /* Macro+CoreDataProperties.swift */; };
 		6E40EC5D2139793500CEFB36 /* MacrosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC5C2139793500CEFB36 /* MacrosCell.swift */; };
 		6E40EC5F2139795700CEFB36 /* MacrosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC5E2139795700CEFB36 /* MacrosViewController.swift */; };
 		6E40EC6321397ADE00CEFB36 /* ChooseMacroPopupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC6221397ADE00CEFB36 /* ChooseMacroPopupVC.swift */; };
 		6E40EC6521397CD600CEFB36 /* MacroDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC6421397CD600CEFB36 /* MacroDetailsCell.swift */; };
 		6E40EC6721397D0A00CEFB36 /* MacroDetailsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E40EC6621397D0A00CEFB36 /* MacroDetailsTVC.swift */; };
+		6E6D4FDA213D270200C1D0D5 /* Macro_action+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6D4FD6213D270200C1D0D5 /* Macro_action+CoreDataClass.swift */; };
+		6E6D4FDB213D270200C1D0D5 /* Macro_action+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6D4FD7213D270200C1D0D5 /* Macro_action+CoreDataProperties.swift */; };
+		6E6D4FDC213D270200C1D0D5 /* Macro+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6D4FD8213D270200C1D0D5 /* Macro+CoreDataClass.swift */; };
+		6E6D4FDD213D270200C1D0D5 /* Macro+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6D4FD9213D270200C1D0D5 /* Macro+CoreDataProperties.swift */; };
 		731E1AB21C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */; };
 		731E1AB61C60F28000B7BDA8 /* AppDelegate+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */; };
 		73331C181CA029DF009BA1DE /* FilterStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73331C171CA029DF009BA1DE /* FilterStruct.swift */; };
@@ -678,15 +678,15 @@
 		6E40EC4E2139743C00CEFB36 /* Macros.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Macros.storyboard; sourceTree = "<group>"; };
 		6E40EC50213975CE00CEFB36 /* AddNewMacroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewMacroViewController.swift; sourceTree = "<group>"; };
 		6E40EC522139768C00CEFB36 /* DatabaseMacrosController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMacrosController.swift; sourceTree = "<group>"; };
-		6E40EC54213978AA00CEFB36 /* Macro_action+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Macro_action+CoreDataClass.swift"; sourceTree = "<group>"; };
-		6E40EC55213978AA00CEFB36 /* Macro_action+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Macro_action+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		6E40EC56213978AA00CEFB36 /* Macro+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Macro+CoreDataClass.swift"; sourceTree = "<group>"; };
-		6E40EC57213978AA00CEFB36 /* Macro+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Macro+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		6E40EC5C2139793500CEFB36 /* MacrosCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacrosCell.swift; sourceTree = "<group>"; };
 		6E40EC5E2139795700CEFB36 /* MacrosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacrosViewController.swift; sourceTree = "<group>"; };
 		6E40EC6221397ADE00CEFB36 /* ChooseMacroPopupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseMacroPopupVC.swift; sourceTree = "<group>"; };
 		6E40EC6421397CD600CEFB36 /* MacroDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroDetailsCell.swift; sourceTree = "<group>"; };
 		6E40EC6621397D0A00CEFB36 /* MacroDetailsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroDetailsTVC.swift; sourceTree = "<group>"; };
+		6E6D4FD6213D270200C1D0D5 /* Macro_action+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Macro_action+CoreDataClass.swift"; sourceTree = "<group>"; };
+		6E6D4FD7213D270200C1D0D5 /* Macro_action+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Macro_action+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		6E6D4FD8213D270200C1D0D5 /* Macro+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Macro+CoreDataClass.swift"; sourceTree = "<group>"; };
+		6E6D4FD9213D270200C1D0D5 /* Macro+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Macro+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		731E1AB11C60CB1B00B7BDA8 /* AppDelegate+BroadcastTimeAndDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "AppDelegate+BroadcastTimeAndDate.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		731E1AB51C60F28000B7BDA8 /* AppDelegate+Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Location.swift"; sourceTree = "<group>"; };
 		73331C171CA029DF009BA1DE /* FilterStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterStruct.swift; sourceTree = "<group>"; };
@@ -1734,10 +1734,10 @@
 		73E2390E1B97145D00CB38ED /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				6E40EC54213978AA00CEFB36 /* Macro_action+CoreDataClass.swift */,
-				6E40EC55213978AA00CEFB36 /* Macro_action+CoreDataProperties.swift */,
-				6E40EC56213978AA00CEFB36 /* Macro+CoreDataClass.swift */,
-				6E40EC57213978AA00CEFB36 /* Macro+CoreDataProperties.swift */,
+				6E6D4FD6213D270200C1D0D5 /* Macro_action+CoreDataClass.swift */,
+				6E6D4FD7213D270200C1D0D5 /* Macro_action+CoreDataProperties.swift */,
+				6E6D4FD8213D270200C1D0D5 /* Macro+CoreDataClass.swift */,
+				6E6D4FD9213D270200C1D0D5 /* Macro+CoreDataProperties.swift */,
 				4E62ABC61FBB1F51006D85E7 /* RemoteButton+CoreDataClass.swift */,
 				4E62ABC71FBB1F51006D85E7 /* RemoteButton+CoreDataProperties.swift */,
 				22FF1E611D86D86F00ECB86E /* Card.swift */,
@@ -2487,11 +2487,9 @@
 				738DECA21BBBC39F00D6B834 /* SecuirtyCommandVC.swift in Sources */,
 				4E77754D20C687C2002E1469 /* PhoneInstructionsViewController.swift in Sources */,
 				22D7EB9E1D780FB600853051 /* SecurityLocationCell.swift in Sources */,
-				6E40EC5B213978AA00CEFB36 /* Macro+CoreDataProperties.swift in Sources */,
 				4E6BF55B20CFCA2500FCE6A1 /* ClimateCollectionViewCell.swift in Sources */,
 				22359C6A1CAE98290054434B /* LocationCell.swift in Sources */,
 				4D0D97221CAD4087001A1E89 /* HRToast+UIView.swift in Sources */,
-				6E40EC59213978AA00CEFB36 /* Macro_action+CoreDataProperties.swift in Sources */,
 				73ECD4A31B332A6F00767740 /* Constants.swift in Sources */,
 				4E5BE4011F7D42E700497335 /* EditRemoteViewController.swift in Sources */,
 				223DC0C61CE2089A00C5E2F6 /* CreateUserFromJSONController.swift in Sources */,
@@ -2525,7 +2523,6 @@
 				736F17D41B3AE850003A6A02 /* SequencesViewController.swift in Sources */,
 				73E28EDF1B6657A80016CD77 /* e_Homegreen.xcdatamodeld in Sources */,
 				6E40EC51213975CE00CEFB36 /* AddNewMacroViewController.swift in Sources */,
-				6E40EC58213978AA00CEFB36 /* Macro_action+CoreDataClass.swift in Sources */,
 				73ED6AFD1BA0249800E6CE06 /* RepeatSendingHandler.swift in Sources */,
 				739D57171C809B30004CC50E /* DeviceImage.swift in Sources */,
 				2249A3321C90693C0019C6FB /* PCControlInterfaceXIB.swift in Sources */,
@@ -2553,6 +2550,7 @@
 				490DC22D1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift in Sources */,
 				73F1ECAD1C8993E8007CEEAA /* DefaultDeviceImages.swift in Sources */,
 				7372EB371BC410800097806D /* Flag+CoreDataProperties.swift in Sources */,
+				6E6D4FDB213D270200C1D0D5 /* Macro_action+CoreDataProperties.swift in Sources */,
 				E7AA26131BCD116800D5C3F0 /* IBeacon.swift in Sources */,
 				223878A41C919A70001357E0 /* AddLocationXIB.swift in Sources */,
 				220176391CD0FED400A1470A /* MenuItem+CoreDataProperties.swift in Sources */,
@@ -2566,6 +2564,7 @@
 				22FD29911CBBC9D100BCE823 /* SequencesCollectionViewCell.swift in Sources */,
 				734E35781C8239990096E043 /* ScanFunction.swift in Sources */,
 				223362911CA2E4EC006C80C4 /* AddUserXIB.swift in Sources */,
+				6E6D4FDD213D270200C1D0D5 /* Macro+CoreDataProperties.swift in Sources */,
 				4E114C7D208F200700493722 /* NavigationViewFavDevices.swift in Sources */,
 				E79FD4EC1BCE43B600CA17DB /* ChatBubble.swift in Sources */,
 				4EC2E1421F7E439700DA494B /* RemoteDetailsViewController.swift in Sources */,
@@ -2589,7 +2588,6 @@
 				223E25DC1CC77DBB00BC3905 /* Surveillance+CoreDataProperties.swift in Sources */,
 				2249A32D1C903F1E0019C6FB /* PCControlViewController.swift in Sources */,
 				E7D9FFEA1B3C2E3D00FC2C3B /* PopOverViewController.swift in Sources */,
-				6E40EC5A213978AA00CEFB36 /* Macro+CoreDataClass.swift in Sources */,
 				73E485231B60D531007A35AD /* InOutSocket.swift in Sources */,
 				222889B61CBBD60F004EBADD /* DatabaseFlagsController.swift in Sources */,
 				4E635DD2201A127900216041 /* AudioPlayer.swift in Sources */,
@@ -2644,6 +2642,7 @@
 				6E40EC5D2139793500CEFB36 /* MacrosCell.swift in Sources */,
 				E75B4FC71B42FC0B00E48454 /* NSDate+FSExtension.m in Sources */,
 				73F4D6BA1C807A5900FE0514 /* DeviceImagePickerTVC.swift in Sources */,
+				6E6D4FDC213D270200C1D0D5 /* Macro+CoreDataClass.swift in Sources */,
 				223FB5951D645AB500DC2627 /* Image.swift in Sources */,
 				22409DDC1D6AFD2600C33F6D /* User.swift in Sources */,
 				736265E31B4A483E0078C11D /* OutgoingHandler.swift in Sources */,
@@ -2653,6 +2652,7 @@
 				2240EAC81D46084E0062AC2F /* FilterParametar+CoreDataProperties.swift in Sources */,
 				73FD2E5A1C08AB9F00B9F11A /* ImageHandler.swift in Sources */,
 				222889B41CBBD5E0004EBADD /* FlagCollectionViewCell.swift in Sources */,
+				6E6D4FDA213D270200C1D0D5 /* Macro_action+CoreDataClass.swift in Sources */,
 				734DBFBF1BEF7950002FE77E /* ChangeDeviceParametarsVC.swift in Sources */,
 				7372EB411BC410800097806D /* Sequence+CoreDataProperties.swift in Sources */,
 				495D63721D9A49B300D9DC26 /* SaltoAccessCell.swift in Sources */,
