@@ -11,6 +11,9 @@
 
 import UIKit
 
+private struct MacroContants {
+    static let tableRowHeight = 60
+}
 
 class ChooseMacroPopupVC: PopoverVC {
     
@@ -40,6 +43,10 @@ class ChooseMacroPopupVC: PopoverVC {
     var selectedIndexPaths = [Int]()
     var stateOfDevice: NSNumber?
     
+    var heightOfMacroTable: Int = 0
+    var heightOfPopUpView: Int = 0
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -49,6 +56,8 @@ class ChooseMacroPopupVC: PopoverVC {
         if let macroList = DatabaseMacrosController.sharedInstance.fetchAllMacrosFromCD() {
             self.macroList = macroList
         }
+        
+        calculateHeightOfMacroTableView()
         setUpPopUpView()
         self.hideKeyboardWhenTappedAround()
     }
@@ -57,9 +66,19 @@ class ChooseMacroPopupVC: PopoverVC {
         super.viewWillAppear(animated)
     }
     
+    private func calculateHeightOfMacroTableView() {
+        if macroList.count <= 3 {
+            heightOfMacroTable = macroList.count * MacroContants.tableRowHeight
+            heightOfPopUpView = 350 - ((3 - macroList.count) * MacroContants.tableRowHeight)
+        } else {
+            heightOfMacroTable = 3 * MacroContants.tableRowHeight
+            heightOfPopUpView = 350
+        }
+    }
+    
     func setUpPopUpView() {
         
-        popUpView.frame = CGRect(x: 6, y: 0, width: screenWidth - 12, height: screenHeight/1.7)
+        popUpView.frame = CGRect(x: 6, y: 0, width: screenWidth - 12, height: CGFloat(heightOfPopUpView))
         popUpView.center.y = self.view.center.y
         popUpView.layer.cornerRadius = 9
         popUpView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -78,6 +97,7 @@ class ChooseMacroPopupVC: PopoverVC {
         delayLabel.font = .tahoma(size: 14)
         
         delayHours = EditTextField()
+        delayHours.textAlignment = .center
         delayHours.frame = CGRect(x: delayLabel.frame.maxX + 5, y: 10, width: 30, height: 30)
         
         firstTwoDotsLabel = UILabel()
@@ -86,6 +106,8 @@ class ChooseMacroPopupVC: PopoverVC {
         firstTwoDotsLabel.textColor = .white
         
         delayMinutes = EditTextField()
+        delayMinutes.textAlignment = .center
+
         delayMinutes.frame = CGRect(x: firstTwoDotsLabel.frame.maxX + 2, y: 10, width: 30, height: 30)
         
         secondTwoDotsLabel = UILabel()
@@ -94,6 +116,7 @@ class ChooseMacroPopupVC: PopoverVC {
         secondTwoDotsLabel.textColor = .white
         
         delaySeconds = EditTextField()
+        delaySeconds.textAlignment = .center
         delaySeconds.frame = CGRect(x: secondTwoDotsLabel.frame.maxX + 2, y: 10, width: 30, height: 30)
         
         stateOfDeviceLabel = UILabel()
@@ -103,18 +126,17 @@ class ChooseMacroPopupVC: PopoverVC {
         stateOfDeviceLabel.font = .tahoma(size: 14)
         
         stateOfDeviceDropDown = CustomGradientButton()
-        stateOfDeviceDropDown.frame = CGRect(x: delayHours.frame.minX, y: delayHours.frame.maxY + 9, width: 105, height: 30)
+        stateOfDeviceDropDown.frame = CGRect(x: delayHours.frame.minX, y: delayHours.frame.maxY + 9, width: 105, height: 31)
         stateOfDeviceDropDown.setTitle("State", for: UIControlState())
         stateOfDeviceDropDown.titleLabel?.font = UIFont(name: "Tahoma", size: 14)
         stateOfDeviceDropDown.addTarget(self, action: #selector(openStateDropDown(_:)), for: .touchUpInside)
         
         macroTableView = UITableView()
-        macroTableView.frame = CGRect(x: 8, y: stateOfDeviceDropDown.frame.maxY + 6, width: popUpWidth - 16, height: popUpHeight/1.7)
+        macroTableView.frame = CGRect(x: 8, y: stateOfDeviceDropDown.frame.maxY + 21, width: popUpWidth - 16, height: CGFloat(heightOfMacroTable))
         macroTableView.delegate = self
         macroTableView.dataSource = self
-        macroTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        macroTableView.register(ChooseMacroCell.self, forCellReuseIdentifier: ChooseMacroCell.cellId)
         macroTableView.backgroundColor = .clear
-        macroTableView.separatorStyle = .singleLine
         
         cancelButton = CustomGradientButton()
         cancelButton.frame = CGRect(x: 8, y: popUpHeight - 31 - 8, width: (popUpWidth/2) - 8 - 4, height: 31)
@@ -127,6 +149,7 @@ class ChooseMacroPopupVC: PopoverVC {
         confirmButton.setTitle("ADD ACTION TO MACROS", for: UIControlState())
         confirmButton.titleLabel?.font = UIFont(name: "Tahoma", size: 11)
         confirmButton.addTarget(self, action: #selector(submit(_:)), for: .touchUpInside)
+        confirmButton.isEnabled = macroList.count == 0 ? false : true
         
         
         //add to popup view
@@ -198,45 +221,77 @@ extension ChooseMacroPopupVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = macroList[indexPath.row].name
-        cell.textLabel?.font = .tahoma(size: 14)
-        cell.textLabel?.textColor = .white
-        cell.backgroundColor = .clear
-        
-        return cell
+        if let cell = tableView.dequeueReusableCell(withIdentifier: ChooseMacroCell.cellId, for: indexPath) as? ChooseMacroCell {
+            cell.textLabel?.text = macroList[indexPath.row].name
+            cell.textLabel?.font = .tahoma(size: 14)
+            cell.textLabel?.textColor = .white
+            cell.backgroundColor = .clear
+            cell.isChecked = false
+            
+            return cell
+        }
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
-            selectedIndexPaths = selectedIndexPaths.filter({$0 != indexPath.row})
-            tableView.cellForRow(at: indexPath)?.accessoryType = .none
-        } else {
-            selectedIndexPaths.append(indexPath.row)
-            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+        if let cell = tableView.cellForRow(at: indexPath) as? ChooseMacroCell {
+            if cell.isChecked == false {
+                cell.isChecked = true
+                selectedIndexPaths.append(indexPath.row)
+            } else {
+                cell.isChecked = false
+                selectedIndexPaths = selectedIndexPaths.filter({$0 != indexPath.row})
+            }
         }
-        
     }
     
-    
-    //    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-    //        return true
-    //    }
-    //
-    //    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-    //        tableView.cellForRow(at: indexPath)?.contentView.backgroundColor = UIColor.lightGray
-    //        tableView.cellForRow(at: indexPath)?.backgroundColor = UIColor.lightGray
-    //
-    //    }
-    
-    //    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-    //        tableView.cellForRow(at: indexPath)?.contentView.backgroundColor = .red
-    //        tableView.cellForRow(at: indexPath)?.backgroundColor = .clear
-    //    }
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CGFloat(60)
+        return CGFloat(MacroContants.tableRowHeight)
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
+    }
+    
+}
+
+class ChooseMacroCell: UITableViewCell {
+    
+    static let cellId = "ChooseMacroCell"
+    
+    private let checkedImageView = UIImageView(image: UIImage(named: "checked"))
+    
+    var isChecked: Bool = false {
+        didSet { checkedImageView.isHidden = isChecked ? false : true }
+    }
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        addSubview(checkedImageView)
+        setupCell()
+        setupConstraints()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+        
+        addSubview(checkedImageView)
+        setupCell()
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
+        checkedImageView.snp.makeConstraints { (make) in
+            make.trailing.equalToSuperview().inset(15)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(self.snp.height).dividedBy(2)
+        }
+    }
+    
+    private func setupCell() {
+        selectionStyle = .none
+        separatorInset = .zero
     }
     
 }

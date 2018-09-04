@@ -17,16 +17,14 @@ class AddNewMacroViewController: PopoverVC {
     @IBOutlet weak var popUpView: CustomGradientBackground!
     
     var nameLabel: UILabel!
-    var nameTextField: EditTextField!
+    var nameTextField: MacroTextField!
     var typeLabel: UILabel!
     var typeDropDown: CustomGradientButton!
     
     var leftImageButton: UIButton!
     var leftImageString: String = "library_event_movie_00" //default image
-    //var leftLabelImage: UILabel!
     var rightImageButton: UIButton!
     var rightImageString: String = "library_event_movie_01" //default image
-    //var rightLabelImage: UILabel!
     
     var cancelButton: CustomGradientButton!
     var submitButton: CustomGradientButton!
@@ -38,6 +36,7 @@ class AddNewMacroViewController: PopoverVC {
     
     var macroType: String = "block" //default macro type
     var macroDelegate: SuccessfullyAddedMacroDelegate?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,9 +74,9 @@ class AddNewMacroViewController: PopoverVC {
         nameLabel.font = .tahoma(size: 15)
         nameLabel.textColor = .white
         
-        nameTextField = EditTextField()
+        nameTextField = MacroTextField()
         nameTextField.frame = CGRect(x: nameLabel.frame.maxX + 10, y: 10, width: popUpWidth - nameLabel.frame.width - 10 - 8 - 8, height: 35)
-        nameTextField.placeholder = " Name"
+        nameTextField.placeholder = "Name"
         
         typeLabel = UILabel()
         typeLabel.frame = CGRect(x: 8, y: nameTextField.frame.maxY + 12 , width: 50, height: 21)
@@ -195,6 +194,44 @@ extension AddNewMacroViewController : SceneGalleryDelegate {
         
     }
     
+}
+
+class MacroTextField: UITextField {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        updateTextField()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        updateTextField()
+    }
+    
+    func updateTextField(){
+        self.tintColor = UIColor.black
+        self.textColor = UIColor.black
+        self.font = .tahoma(size: 13)
+        self.layer.borderColor = UIColor.black.cgColor
+        self.layer.borderWidth = 1
+        self.layer.cornerRadius = 5
+        self.backgroundColor = UIColor.white
+    }
+    
+    override func textRect(forBounds bounds: CGRect) -> CGRect {
+        let padding = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 7)
+        return UIEdgeInsetsInsetRect(bounds, padding)
+    }
+    
+    override open func editingRect(forBounds bounds: CGRect) -> CGRect {
+        let padding = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 7)
+        return UIEdgeInsetsInsetRect(bounds, padding)
+    }
+    
+    override open func placeholderRect(forBounds bounds: CGRect) -> CGRect {
+        let padding = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 7)
+        return UIEdgeInsetsInsetRect(bounds, padding)
+    }
 }
 
 
