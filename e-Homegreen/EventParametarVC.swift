@@ -67,7 +67,7 @@ extension EventParametarVC {
         useTrigger.isOn = event!.useTrigger
     }
     
-    func dismissViewController () {
+    @objc func dismissViewController () {
         dismiss(animated: true, completion: nil)
     }
     
@@ -90,7 +90,7 @@ extension EventParametarVC {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func changeValue (_ sender:UISwitch) {
+    @objc func changeValue (_ sender:UISwitch) {
         if sender.tag == 100 {
             if sender.isOn == true { isLocalcast.isOn = false } else { isLocalcast.isOn = false }
         } else if sender.tag == 200 {

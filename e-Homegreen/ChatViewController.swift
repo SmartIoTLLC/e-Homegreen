@@ -61,8 +61,8 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     }
     
     func setupObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name:.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name:.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name:UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name:UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerChat), object: nil)
     }
     
@@ -121,8 +121,8 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         scrollView.setButtonTitle(name, id: id)
     }
     
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizer.State.began {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             scrollView.setDefaultFilterItem(Menu.chat)
         }
@@ -138,7 +138,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         }
     }
     
-    func refreshLocalParametars() {
+    @objc func refreshLocalParametars() {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
         chatTableView.reloadData()
     }
@@ -168,10 +168,10 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     @IBAction func controlValleryVOice(_ sender: AnyObject) {
         stopTextToSpeech()
         if isValeryVoiceOn {
-            controlValleryVoice.setImage(UIImage(named: "mute"), for: UIControlState())
+            controlValleryVoice.setImage(UIImage(named: "mute"), for: UIControl.State())
             isValeryVoiceOn = false
         } else {
-            controlValleryVoice.setImage(UIImage(named: "unmute"), for: UIControlState())
+            controlValleryVoice.setImage(UIImage(named: "unmute"), for: UIControl.State())
             isValeryVoiceOn = true
         }
     }
@@ -610,14 +610,14 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         }
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        let duration:TimeInterval = (info[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+        let keyboardFrame: CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let duration:TimeInterval = (info[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
         self.bottomConstraint.constant = keyboardFrame.size.height
         UIView.animate(withDuration: duration,
             delay: 0,
-            options: UIViewAnimationOptions.curveLinear,
+            options: UIView.AnimationOptions.curveLinear,
             animations: { self.view.layoutIfNeeded() },
             completion: nil)
         if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
@@ -628,14 +628,14 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     
     override func keyboardWillHide(_ notification: Notification) {
         let info = notification.userInfo!
-        let duration:TimeInterval = (info[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+        let duration:TimeInterval = (info[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
         self.bottomConstraint.constant = 0
         if chatTextView.text.isEmpty{
             viewHeight.constant = 49
         }
         UIView.animate(withDuration: duration,
             delay: 0,
-            options: UIViewAnimationOptions.curveLinear,
+            options: UIView.AnimationOptions.curveLinear,
             animations: { self.view.layoutIfNeeded() },
             completion: nil)
         if self.chatTableView.contentSize.height > self.chatTableView.frame.size.height{
@@ -643,7 +643,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         }
     }
     
-    func setDefaultFilterFromTimer(){
+    @objc func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.chat)
     }
 }
@@ -736,14 +736,14 @@ extension ChatViewController: UITableViewDataSource {
         cell.contentView.addSubview(chatBubbleMine)
         return cell
     }
-    func oneTap (_ gesture:UIGestureRecognizer) {
+    @objc func oneTap (_ gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
             self.chatTextView.text = chatList[tag].text
         }
     }
-    func longPress (_ gesture:UIGestureRecognizer) {
+    @objc func longPress (_ gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
-            if gesture.state == UIGestureRecognizerState.began {
+            if gesture.state == UIGestureRecognizer.State.began {
                 chatList.append(ChatItem(text: chatList[tag].text, type: .mine))
                 calculateHeight()
                 chatTableView.reloadData()

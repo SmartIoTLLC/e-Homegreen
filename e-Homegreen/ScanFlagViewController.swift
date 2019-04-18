@@ -110,7 +110,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
         switch button.tag{
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
-            btnZone.setTitle("All", for: UIControlState())
+            btnZone.setTitle("All", for: UIControl.State())
             zoneSelected = nil
             
             break
@@ -124,10 +124,10 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
             break
         }
         
-        button.setTitle(name, for: UIControlState())
+        button.setTitle(name, for: UIControl.State())
     }
     
-    func changeValue (_ sender:UISwitch) {
+    @objc func changeValue (_ sender:UISwitch) {
         if sender.tag == 100 { localcastSwitch.isOn = false } else if sender.tag == 200 { broadcastSwitch.isOn = false }
     }
     
@@ -136,7 +136,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
         flagTableView.reloadData()
     }
     
-    func handleTap (_ gesture:UITapGestureRecognizer) {
+    @objc func handleTap (_ gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
             showGallery(index, user: gateway.location.user).delegate = self
         }
@@ -276,7 +276,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     }
     // Called from findNames or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingNames for that specific timer id.
-    func checkIfFlagDidGetName (_ timer:Foundation.Timer) {
+    @objc func checkIfFlagDidGetName (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -309,7 +309,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
-    func nameReceivedFromPLC (_ notification:Notification) {
+    @objc func nameReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningFlagNames) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let flagIndex = info["flagId"] else { return }
@@ -349,7 +349,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     
     // MARK: - Timer parameters
     // Gets all input parameters and prepares everything for scanning, and initiates scanning.
-    func findParametarsForFlag() {
+    @objc func findParametarsForFlag() {
         progressBarScreenFlagNames?.dissmissProgressBar()
         progressBarScreenFlagNames = nil
         
@@ -392,7 +392,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     // Called from findParametarsForTimer or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingParameterWithTimerAddress for that specific timer id.
     
-    func checkIfFlagDidGetParametar (_ timer:Foundation.Timer) {
+    @objc func checkIfFlagDidGetParametar (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -424,7 +424,7 @@ class ScanFlagViewController: PopoverVC, ProgressBarDelegate {
     
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
-    func flagParametarReceivedFromPLC (_ notification:Notification) {
+    @objc func flagParametarReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningFlagParameters) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let flagIndex = info["flagId"] else { return }
@@ -591,15 +591,15 @@ extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
-            self.tableView(self.flagTableView, commit: UITableViewCellEditingStyle.delete, forRowAt: indexPath)
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
+            self.tableView(self.flagTableView, commit: UITableViewCell.EditingStyle.delete, forRowAt: indexPath)
         })
         
         button.backgroundColor = UIColor.red
         return [button]
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             DatabaseFlagsController.shared.deleteFlag(flags[indexPath.row])
             flags.remove(at: indexPath.row)
@@ -617,14 +617,14 @@ extension ScanFlagViewController: UITableViewDataSource, UITableViewDelegate {
         broadcastSwitch.isOn = flag.isBroadcast.boolValue
         localcastSwitch.isOn = flag.isLocalcast.boolValue
         
-        if let levelId = flag.entityLevelId as? Int { level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location); btnLevel.setTitle(level?.name, for: UIControlState())
-        } else { btnLevel.setTitle("All", for: UIControlState()) }
+        if let levelId = flag.entityLevelId as? Int { level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location); btnLevel.setTitle(level?.name, for: UIControl.State())
+        } else { btnLevel.setTitle("All", for: UIControl.State()) }
         
-        if let zoneId = flag.flagZoneId as? Int { zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location); btnZone.setTitle(zoneSelected?.name, for: UIControlState())
-        } else { btnZone.setTitle("All", for: UIControlState()) }
+        if let zoneId = flag.flagZoneId as? Int { zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location); btnZone.setTitle(zoneSelected?.name, for: UIControl.State())
+        } else { btnZone.setTitle("All", for: UIControl.State()) }
         
-        if let categoryId = flag.flagCategoryId as? Int { category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location); btnCategory.setTitle(category?.name, for: UIControlState())
-        } else { btnCategory.setTitle("All", for: UIControlState()) }
+        if let categoryId = flag.flagCategoryId as? Int { category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location); btnCategory.setTitle(category?.name, for: UIControl.State())
+        } else { btnCategory.setTitle("All", for: UIControl.State()) }
         
         defaultImageOne = flag.flagImageOneDefault
         customImageOne = flag.flagImageOneCustom

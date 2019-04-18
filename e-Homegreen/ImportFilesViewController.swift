@@ -50,7 +50,7 @@ class ImportFilesViewController: UIViewController, UITableViewDataSource, UITabl
 // MARK: - TableView Data Source & Delegate
 extension ImportFilesViewController {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
+        let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "cell")
         cell.textLabel?.text = listOfJson[indexPath.row]
         cell.textLabel?.numberOfLines = 0
         return cell

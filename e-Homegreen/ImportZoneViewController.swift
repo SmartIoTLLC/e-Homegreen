@@ -149,7 +149,7 @@ extension ImportZoneViewController: UITableViewDataSource {
         return canEditZone(at: indexPath)
     }
 
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete { deleteSingleZone(at: indexPath) }
     }
     
@@ -341,7 +341,7 @@ extension ImportZoneViewController {
     }
     
     //move tableview cell on hold and swipe
-    func longPressGestureRecognized(_ gestureRecognizer: UIGestureRecognizer){
+    @objc func longPressGestureRecognized(_ gestureRecognizer: UIGestureRecognizer){
         
         if let longPress = gestureRecognizer as? UILongPressGestureRecognizer {
             let state = longPress.state
@@ -428,13 +428,13 @@ extension ImportZoneViewController {
         }
     }
     
-    func isVisibleValueChanged (_ sender:UISwitch) {
+    @objc func isVisibleValueChanged (_ sender:UISwitch) {
         if sender.isOn == true { zones[sender.tag].isVisible = true } else { zones[sender.tag].isVisible = false }
         CoreDataController.sharedInstance.saveChanges()
         importZoneTableView.reloadData()
     }
     
-    func chooseGateway (_ gestureRecognizer:UIGestureRecognizer) {
+    @objc func chooseGateway (_ gestureRecognizer:UIGestureRecognizer) {
         if let tag = gestureRecognizer.view?.tag {
             choosedIndex = tag
             var popoverList:[PopOverItem] = []
@@ -488,7 +488,7 @@ extension ImportZoneViewController {
             self.view.makeToast(message: "Something went wrong.")
         }
     }
-    func checkIfGatewayDidGetZones (_ timer:Foundation.Timer) {
+    @objc func checkIfGatewayDidGetZones (_ timer:Foundation.Timer) {
         guard var zoneId = timer.userInfo as? Int else { return }
         
         timesRepeatedCounter += 1
@@ -512,7 +512,7 @@ extension ImportZoneViewController {
             }
         }
     }
-    func zoneReceivedFromGateway (_ notification:Notification) {
+    @objc func zoneReceivedFromGateway (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningForZones) {
             guard var zoneId = notification.userInfo as? [String:Int] else { return }
             
@@ -619,29 +619,29 @@ class ImportZoneTableViewCell: UITableViewCell {
         btnZonePicker.setTitle("Add iBeacon", for: [])
         tagsButton.setTitle("Tags", for: [])
         
-        if let iBeaconName = zone.iBeacon?.name { btnZonePicker.setTitle(iBeaconName, for: UIControlState()) }
+        if let iBeaconName = zone.iBeacon?.name { btnZonePicker.setTitle(iBeaconName, for: UIControl.State()) }
         btnZonePicker.tag = tag
         
         self.zoneItem = zone
         if let type = TypeOfControl(rawValue: (zone.allowOption.intValue)) {
-            controlTypeButton.setTitle(type.description, for: UIControlState())
+            controlTypeButton.setTitle(type.description, for: UIControl.State())
         }
     }
     
     @IBAction func changeControlType(_ sender: AnyObject) {
         if zoneItem.allowOption.intValue == 1 {
             DatabaseZoneController.shared.changeAllowOption(2, zone: zoneItem)
-            controlTypeButton.setTitle(TypeOfControl.confirm.description , for: UIControlState())
+            controlTypeButton.setTitle(TypeOfControl.confirm.description , for: UIControl.State())
             return
         }
         if zoneItem.allowOption.intValue == 2 {
             DatabaseZoneController.shared.changeAllowOption(3, zone: zoneItem)
-            controlTypeButton.setTitle(TypeOfControl.notAllowed.description , for: UIControlState())
+            controlTypeButton.setTitle(TypeOfControl.notAllowed.description , for: UIControl.State())
             return
         }
         if zoneItem.allowOption.intValue == 3 {
             DatabaseZoneController.shared.changeAllowOption(1, zone: zoneItem)
-            controlTypeButton.setTitle(TypeOfControl.allowed.description , for: UIControlState())
+            controlTypeButton.setTitle(TypeOfControl.allowed.description , for: UIControl.State())
             return
         }
     }

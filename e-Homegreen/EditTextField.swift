@@ -43,7 +43,7 @@ class EditTextField: UITextField {
                 let button = view as! UIButton
                 if let uiImage = button.image(for: .highlighted) {
                     if tintedClearImage == nil { tintedClearImage = tintImage(uiImage, color: tintColor) }
-                    button.setImage(tintedClearImage, for: UIControlState())
+                    button.setImage(tintedClearImage, for: UIControl.State())
                     button.setImage(tintedClearImage, for: .highlighted)
                 }
             }

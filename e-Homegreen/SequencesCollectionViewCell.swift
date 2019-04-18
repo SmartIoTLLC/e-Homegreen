@@ -97,7 +97,7 @@ class SequenceCollectionViewCell: UICollectionViewCell {
         Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(changeImageToNormal), userInfo: nil, repeats: false)
     }
     
-    func changeImageToNormal () {
+    @objc func changeImageToNormal () {
         sequenceImageView.image = imageOne
         setNeedsDisplay()
     }

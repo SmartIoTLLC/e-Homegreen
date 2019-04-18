@@ -216,7 +216,7 @@ class SliderCurtainCollectionViewCell: BaseDeviceCollectionViewCell {
         
         infoAddressValueLabel.setText(String(describing: device.moduleAddress), fontSize: LocalConstants.titleLabelFontSize)
         infoCategoryValueLabel.setText(device.controlType, fontSize: LocalConstants.titleLabelFontSize)
-        backTitleLabel.attributedText = NSAttributedString(string: device.cellTitle, attributes:[NSForegroundColorAttributeName: UIColor.white])
+        backTitleLabel.attributedText = NSAttributedString(string: device.cellTitle, attributes:[NSAttributedString.Key.foregroundColor: UIColor.white])
         backTitleLabel.tag  = tag
         backCurtainImage.tag = tag
         backCurtainSlider.tag = tag

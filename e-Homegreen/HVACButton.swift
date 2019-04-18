@@ -28,8 +28,8 @@ class HVACButton: UIButton {
     }
     
     func setParametar(){
-        self.imageEdgeInsets = UIEdgeInsetsMake(0, -1, 0, 1)
-        self.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
+        self.imageEdgeInsets = UIEdgeInsets(top: 0, left: -1, bottom: 0, right: 1)
+        self.titleEdgeInsets = UIEdgeInsets(top: 0, left: 3, bottom: 0, right: 0)
     }
     
     override func draw(_ rect: CGRect) {
@@ -44,7 +44,7 @@ class HVACButton: UIButton {
             
             path.fill()
             
-            self.setTitleColor(UIColor.white, for: UIControlState())
+            self.setTitleColor(UIColor.white, for: UIControl.State())
             self.backgroundColor = UIColor.clear
         } else {
             
@@ -73,7 +73,7 @@ class HVACButton: UIButton {
             context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
             
             path.stroke()
-            self.setTitleColor(UIColor.white, for: UIControlState())
+            self.setTitleColor(UIColor.white, for: UIControl.State())
             self.backgroundColor = UIColor.clear
         }
     }

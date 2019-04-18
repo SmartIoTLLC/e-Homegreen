@@ -45,7 +45,7 @@ class FlagParametarVC: CommonXIBTransitionVC {
 
 // MARK: - Logic
 extension FlagParametarVC {
-    func changeValue (_ sender:UISwitch) {
+    @objc func changeValue (_ sender:UISwitch) {
         if sender.tag == 100 {
             if sender.isOn == true { isLocalcast.isOn = false } else { isLocalcast.isOn = false }
         } else if sender.tag == 200 {
@@ -80,7 +80,7 @@ extension FlagParametarVC {
         isBroadcast.addTarget(self, action: #selector(changeValue(_:)), for: .valueChanged)
     }
     
-    func dismissViewController () {
+    @objc func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
     

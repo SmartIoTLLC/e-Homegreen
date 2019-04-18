@@ -94,12 +94,12 @@ extension ScenesViewController: FilterPullDownDelegate{
         scenesCollectionView.reloadData()
     }
     
-    func setDefaultFilterFromTimer(){
+    @objc func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.scenes)
     }
     
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizer.State.began {
             scrollView.setDefaultFilterItem(Menu.scenes)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
@@ -158,7 +158,7 @@ extension ScenesViewController: UICollectionViewDataSource {
 
 // MARK: - Logic
 extension ScenesViewController {
-    func setScene (_ gesture:UIGestureRecognizer) {
+    @objc func setScene (_ gesture:UIGestureRecognizer) {
         if let tag = gesture.view?.tag {
             let scene = scenes[tag]
             var address:[UInt8] = []
@@ -182,9 +182,9 @@ extension ScenesViewController {
         }
     }
     
-    func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer) {
+    @objc func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer) {
         if let tag = gestureRecognizer.view?.tag {
-            if gestureRecognizer.state == UIGestureRecognizerState.began {
+            if gestureRecognizer.state == UIGestureRecognizer.State.began {
                 let location = gestureRecognizer.location(in: scenesCollectionView)
                 if let index = scenesCollectionView.indexPathForItem(at: location) {
                     if let cell = scenesCollectionView.cellForItem(at: index) {

@@ -45,19 +45,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         // slider setup
-        UISlider.appearance().setMaximumTrackImage(UIImage(named: "slidertrackmax"), for: UIControlState())
-        UISlider.appearance().setMinimumTrackImage(UIImage(named: "slidertrackmin"), for: UIControlState())
-        UISlider.appearance().setThumbImage(UIImage(named: "slider"), for: UIControlState())
-        UISlider.appearance().setThumbImage(UIImage(named: "sliderselected"), for: UIControlState.highlighted)
+        UISlider.appearance().setMaximumTrackImage(UIImage(named: "slidertrackmax"), for: UIControl.State())
+        UISlider.appearance().setMinimumTrackImage(UIImage(named: "slidertrackmin"), for: UIControl.State())
+        UISlider.appearance().setThumbImage(UIImage(named: "slider"), for: UIControl.State())
+        UISlider.appearance().setThumbImage(UIImage(named: "sliderselected"), for: UIControl.State.highlighted)
         UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
         
         //navigation setup
         UINavigationBar.appearance().isTranslucent = false
         UINavigationBar.appearance().tintColor = UIColor.white
-        let fontDictionary = [ NSForegroundColorAttributeName:UIColor.white ]
+        let fontDictionary = [ NSAttributedString.Key.foregroundColor:UIColor.white ]
         UINavigationBar.appearance().titleTextAttributes = fontDictionary
         
         setUserDefaults()
@@ -238,7 +238,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func refreshGateways(_ timer:Foundation.Timer) {
+    @objc func refreshGateways(_ timer:Foundation.Timer) {
         if let userInfo = timer.userInfo as? [String: AnyObject] {
             if let gateway = userInfo["gateway"] as? Gateway {
                 let address = [Byte(Int(gateway.addressOne)), Byte(Int(gateway.addressTwo)), Byte(Int(gateway.addressThree))]

@@ -116,13 +116,13 @@ class ScanFilterPullDown: UIScrollView {
         contentView.addSubview(locationLabel)
         
         //choose location button
-        chooseLocationButon.setTitle("All", for: UIControlState())
+        chooseLocationButon.setTitle("All", for: UIControl.State())
         chooseLocationButon.translatesAutoresizingMaskIntoConstraints = false
         chooseLocationButon.tag = 0
         contentView.addSubview(chooseLocationButon)
         
         //reset location
-        resetLocationButton.setImage(UIImage(named: "exit"), for: UIControlState())
+        resetLocationButton.setImage(UIImage(named: "exit"), for: UIControl.State())
         resetLocationButton.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(resetLocationButton)
         
@@ -134,14 +134,14 @@ class ScanFilterPullDown: UIScrollView {
         contentView.addSubview(levelLabel)
         
         //choose level button
-        chooseLevelButon.setTitle("All", for: UIControlState())
+        chooseLevelButon.setTitle("All", for: UIControl.State())
         chooseLevelButon.translatesAutoresizingMaskIntoConstraints = false
         chooseLevelButon.addTarget(self, action: #selector(openLevels(_:)), for: .touchUpInside)
         chooseLevelButon.tag = 1
         contentView.addSubview(chooseLevelButon)
         
         //reset level
-        resetLevelButton.setImage(UIImage(named: "exit"), for: UIControlState())
+        resetLevelButton.setImage(UIImage(named: "exit"), for: UIControl.State())
         resetLevelButton.translatesAutoresizingMaskIntoConstraints = false
         resetLevelButton.addTarget(self, action: #selector(resetLevel(_:)), for: .touchUpInside)
         contentView.addSubview(resetLevelButton)
@@ -154,14 +154,14 @@ class ScanFilterPullDown: UIScrollView {
         contentView.addSubview(zoneLabel)
         
         //choose zone button
-        chooseZoneButon.setTitle("All", for: UIControlState())
+        chooseZoneButon.setTitle("All", for: UIControl.State())
         chooseZoneButon.translatesAutoresizingMaskIntoConstraints = false
         chooseZoneButon.addTarget(self, action: #selector(openZones(_:)), for: .touchUpInside)
         chooseZoneButon.tag = 2
         contentView.addSubview(chooseZoneButon)
         
         //reset zone
-        resetZoneButton.setImage(UIImage(named: "exit"), for: UIControlState())
+        resetZoneButton.setImage(UIImage(named: "exit"), for: UIControl.State())
         resetZoneButton.translatesAutoresizingMaskIntoConstraints = false
         resetZoneButton.addTarget(self, action: #selector(resetZone(_:)), for: .touchUpInside)
         contentView.addSubview(resetZoneButton)
@@ -174,20 +174,20 @@ class ScanFilterPullDown: UIScrollView {
         contentView.addSubview(categoryLabel)
         
         //choose category button
-        chooseCategoryButon.setTitle("All", for: UIControlState())
+        chooseCategoryButon.setTitle("All", for: UIControl.State())
         chooseCategoryButon.translatesAutoresizingMaskIntoConstraints = false
         chooseCategoryButon.addTarget(self, action: #selector(openCategories(_:)), for: .touchUpInside)
         chooseCategoryButon.tag = 3
         contentView.addSubview(chooseCategoryButon)
         
         //reset category
-        resetCategoryButton.setImage(UIImage(named: "exit"), for: UIControlState())
+        resetCategoryButton.setImage(UIImage(named: "exit"), for: UIControl.State())
         resetCategoryButton.translatesAutoresizingMaskIntoConstraints = false
         resetCategoryButton.addTarget(self, action: #selector(resetCategory(_:)), for: .touchUpInside)
         contentView.addSubview(resetCategoryButton)
         
         //GO button
-        goButon.setTitle("Go", for: UIControlState())
+        goButon.setTitle("Go", for: UIControl.State())
         goButon.translatesAutoresizingMaskIntoConstraints = false
         goButon.addTarget(self, action: #selector(go), for: .touchUpInside)
         contentView.addSubview(goButon)
@@ -197,7 +197,7 @@ class ScanFilterPullDown: UIScrollView {
     func setItem(_ view: UIView, location: Location){
         
         self.location = location
-        chooseLocationButon.setTitle(location.name, for: UIControlState())
+        chooseLocationButon.setTitle(location.name, for: UIControl.State())
         
         //set content view constraint
         self.addConstraint(NSLayoutConstraint(item: contentView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0.0))
@@ -339,7 +339,7 @@ class ScanFilterPullDown: UIScrollView {
         contentView.addConstraint(NSLayoutConstraint(item: goButon, attribute: .width, relatedBy: .equal, toItem: chooseCategoryButon, attribute: .width, multiplier: 0.5, constant: 0))
     }
     
-    func openLevels(_ sender : UIButton) {
+    @objc func openLevels(_ sender : UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Zone] = DatabaseZoneController.shared.getLevelsByLocation(location)
@@ -349,14 +349,14 @@ class ScanFilterPullDown: UIScrollView {
         if let vc = self.parentViewController as? PopoverVC { vc.openPopover(sender, popOverList:popoverList) }
     }
     
-    func resetLevel(_ sender : UIButton) {
+    @objc func resetLevel(_ sender : UIButton) {
         level = nil
         zoneSelected = nil
-        chooseZoneButon.setTitle("All", for: UIControlState())
-        chooseLevelButon.setTitle("All", for: UIControlState())
+        chooseZoneButon.setTitle("All", for: UIControl.State())
+        chooseLevelButon.setTitle("All", for: UIControl.State())
     }
     
-    func openZones(_ sender : UIButton) {
+    @objc func openZones(_ sender : UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         if let level = level {
@@ -368,12 +368,12 @@ class ScanFilterPullDown: UIScrollView {
         if let vc = self.parentViewController as? PopoverVC { vc.openPopover(sender, popOverList:popoverList) }
     }
     
-    func resetZone(_ sender : UIButton) {
+    @objc func resetZone(_ sender : UIButton) {
         zoneSelected = nil
-        chooseZoneButon.setTitle("All", for: UIControlState())
+        chooseZoneButon.setTitle("All", for: UIControl.State())
     }
     
-    func openCategories(_ sender : UIButton) {
+    @objc func openCategories(_ sender : UIButton) {
         button = sender
         var popoverList:[PopOverItem] = []
         let list:[Category] = DatabaseCategoryController.shared.getCategoriesByLocation(location)
@@ -383,33 +383,33 @@ class ScanFilterPullDown: UIScrollView {
         if let vc = self.parentViewController as? PopoverVC { vc.openPopover(sender, popOverList:popoverList) }
     }
     
-    func resetCategory(_ sender : UIButton) {
+    @objc func resetCategory(_ sender : UIButton) {
         category = nil
-        chooseCategoryButon.setTitle("All", for: UIControlState())
+        chooseCategoryButon.setTitle("All", for: UIControl.State())
     }
     
     func setButtonTitle(_ text:String, id:String) {
         switch button.tag {
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
-            button.setTitle(text, for: UIControlState())
+            button.setTitle(text, for: UIControl.State())
             zoneSelected = nil
-            chooseZoneButon.setTitle("All", for: UIControlState())
+            chooseZoneButon.setTitle("All", for: UIControl.State())
             break
         case 2:
             zoneSelected = FilterController.shared.getZoneByObjectId(id)
-            button.setTitle(text, for: UIControlState())
+            button.setTitle(text, for: UIControl.State())
             break
         case 3:
             category = FilterController.shared.getCategoryByObjectId(id)
-            button.setTitle(text, for: UIControlState())
+            button.setTitle(text, for: UIControl.State())
             break
         default:
             break
         }
     }
     
-    func go() {
+    @objc func go() {
         returnFilter()
         
         let bottomOffset = CGPoint(x: 0, y: self.contentSize.height - self.bounds.size.height + self.contentInset.bottom)
@@ -447,7 +447,7 @@ class ScanFilterPullDown: UIScrollView {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationKey.IndicatorLamp), object: nil)
     }
     
-    func updateIndicator(_ notification:Notification) {
+    @objc func updateIndicator(_ notification:Notification) {
         if let info = notification.userInfo as? [String:String] {
             
             if let lamp = info["lamp"] {

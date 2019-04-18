@@ -253,8 +253,8 @@ class DatabaseDeviceController: NSObject {
     func toggleFavoriteDevice(device: Device, favoriteButton: UIButton) {
         device.isFavorite = NSNumber(value: !device.isFavorite!.boolValue)
         switch device.isFavorite!.boolValue {
-            case true: favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: UIControlState())
-            case false: favoriteButton.setImage(#imageLiteral(resourceName: "unfavorite"), for: UIControlState())
+        case true: favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: UIControl.State())
+        case false: favoriteButton.setImage(#imageLiteral(resourceName: "unfavorite"), for: UIControl.State())
         }
         
         CoreDataController.sharedInstance.saveChanges()

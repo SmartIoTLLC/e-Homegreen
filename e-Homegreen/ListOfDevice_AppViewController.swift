@@ -66,7 +66,7 @@ class ListOfDevice_AppViewController: UIViewController, UITableViewDelegate, UIT
         showAddVideoAppXIB(typeOfFile, device:device, command:filteredArray[indexPath.row]).delegate = self
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             appDel.managedObjectContext?.delete(filteredArray[indexPath.row])
             appDel.saveContext()

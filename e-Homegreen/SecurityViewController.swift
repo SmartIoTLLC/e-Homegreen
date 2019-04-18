@@ -103,8 +103,8 @@ class SecurityViewController: PopoverVC {
         removeObservers()
     }
     
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizer.State.began {
             scrollView.setDefaultFilterItem(Menu.security)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
@@ -211,7 +211,7 @@ extension SecurityViewController {
 // MARK: - Logic
 extension SecurityViewController {
     
-    func refreshSecurity() {
+    @objc func refreshSecurity() {
         updateSecurityList()
         reorganizeSecurityArray()
         securityCollectionView.reloadData()
@@ -230,7 +230,7 @@ extension SecurityViewController {
         
     }
     
-    func refreshSecurityAlarmStateAndSecurityMode() {
+    @objc func refreshSecurityAlarmStateAndSecurityMode() {
         if securities.count > 0 {
             let address:[UInt8] = [getByte(securities[0].addressOne), getByte(securities[0].addressTwo), getByte(securities[0].addressThree)]
             if let id = securities[0].gatewayId {
@@ -242,7 +242,7 @@ extension SecurityViewController {
         }
     }
     
-    func openParametar (_ gestureRecognizer:UITapGestureRecognizer) {
+    @objc func openParametar (_ gestureRecognizer:UITapGestureRecognizer) {
         if let tag = gestureRecognizer.view?.tag {
             if gestureRecognizer.state == .began {
                 let location = gestureRecognizer.location(in: securityCollectionView)
@@ -255,13 +255,13 @@ extension SecurityViewController {
         }
     }
     
-    func openMode(_ gestureRecognizer:UITapGestureRecognizer){
+    @objc func openMode(_ gestureRecognizer:UITapGestureRecognizer){
         if gestureRecognizer.state == .began {
             showSecurityLocationParametar()
         }
     }
     
-    func buttonPressed (_ gestureRecognizer:UITapGestureRecognizer) {
+    @objc func buttonPressed (_ gestureRecognizer:UITapGestureRecognizer) {
         if let tag = gestureRecognizer.view?.tag {
             let userDefaults = Foundation.UserDefaults.standard
             let location = gestureRecognizer.location(in: securityCollectionView)
@@ -322,14 +322,14 @@ extension SecurityViewController {
         }
     }
     
-    func startBlinking(_ notification: Notification){
+    @objc func startBlinking(_ notification: Notification){
         securityCollectionView.isScrollEnabled = false
     }
-    func stopBlinking(_ notification: Notification){
+    @objc func stopBlinking(_ notification: Notification){
         securityCollectionView.isScrollEnabled = true
     }
     
-    func setDefaultFilterFromTimer(){
+    @objc func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.security)
     }
 }

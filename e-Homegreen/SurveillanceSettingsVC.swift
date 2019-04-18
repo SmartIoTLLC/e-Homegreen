@@ -32,7 +32,7 @@ class SurveillanceSettingsVC: PopoverVC {
     @IBOutlet weak var editPassword: UITextField!
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var btnSave: UIButton!
-    func dismissViewController () {
+    @objc func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
     @IBAction func btnCancel(_ sender: AnyObject) {
@@ -88,7 +88,7 @@ class SurveillanceSettingsVC: PopoverVC {
         switch button.tag {
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
-            zoneButton.setTitle("All", for: UIControlState())
+            zoneButton.setTitle("All", for: UIControl.State())
             zoneSelected = nil
             break
         case 2:
@@ -101,7 +101,7 @@ class SurveillanceSettingsVC: PopoverVC {
             break
         }
         
-        button.setTitle(name, for: UIControlState())
+        button.setTitle(name, for: UIControl.State())
     }
     
 }
@@ -110,8 +110,8 @@ class SurveillanceSettingsVC: PopoverVC {
 extension SurveillanceSettingsVC {
     
     fileprivate func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     fileprivate func setupViews() {
@@ -142,9 +142,9 @@ extension SurveillanceSettingsVC {
             editPassword.text = surv.password
             editName.text     = surv.name
             
-            levelButton.setTitle(surv.surveillanceLevel, for: UIControlState())
-            zoneButton.setTitle(surv.surveillanceZone, for: UIControlState())
-            categoryButton.setTitle(surv.surveillanceCategory, for: UIControlState())
+            levelButton.setTitle(surv.surveillanceLevel, for: UIControl.State())
+            zoneButton.setTitle(surv.surveillanceZone, for: UIControl.State())
+            categoryButton.setTitle(surv.surveillanceCategory, for: UIControl.State())
             
             if let levelId = surv.surveillanceLevelId as? Int { level = DatabaseZoneController.shared.getZoneById(levelId, location: surv.location!) }
             if let zoneId = surv.surveillanceLevelId as? Int { zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: surv.location!) }
@@ -155,9 +155,9 @@ extension SurveillanceSettingsVC {
         }
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let keyboardFrame: CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
         moveTextfield(textfield: editPortRemote, keyboardFrame: keyboardFrame, backView: backView)
         moveTextfield(textfield: editIPRemote, keyboardFrame: keyboardFrame, backView: backView)
@@ -166,7 +166,7 @@ extension SurveillanceSettingsVC {
         moveTextfield(textfield: editUserName, keyboardFrame: keyboardFrame, backView: backView)
         moveTextfield(textfield: editPassword, keyboardFrame: keyboardFrame, backView: backView)
         
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
 }
 

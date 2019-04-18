@@ -74,22 +74,22 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
         dwellTimeLabel.text = "\(dwellTimeSlider.value)"
     }
     
-    func changePanStep(_ slider: UISlider){
+    @objc func changePanStep(_ slider: UISlider){
         slider.value = round(slider.value)
         panStepLabel.text = "\(round(slider.value))"
     }
     
-    func changeTiltStep(_ slider: UISlider){
+    @objc func changeTiltStep(_ slider: UISlider){
         slider.value = round(slider.value)
         tiltStepLabel.text = "\(round(slider.value))"
     }
     
-    func changeAutoPanStep(_ slider: UISlider){
+    @objc func changeAutoPanStep(_ slider: UISlider){
         slider.value = round(slider.value)
         autoPanStepLabel.text = "\(round(slider.value))"
     }
     
-    func changeDwellTimeSlider(_ slider: UISlider){
+    @objc func changeDwellTimeSlider(_ slider: UISlider){
         slider.value = round(slider.value)
         dwellTimeLabel.text = "\(round(slider.value))"
     }
@@ -110,7 +110,7 @@ class CameraParametarXIBViewController: UIViewController, UIGestureRecognizerDel
         return true
     }
     
-    func dismissViewController () {
+    @objc func dismissViewController () {
         dismiss(animated: true, completion: nil)
     }
     

@@ -86,8 +86,8 @@ extension SequencesViewController: FilterPullDownDelegate{
         view.makeToast(message: "Default filter parametar saved!")
     }
     
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizer.State.began {
             scrollView.setDefaultFilterItem(Menu.sequences)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
@@ -101,7 +101,7 @@ extension SequencesViewController: FilterPullDownDelegate{
         sequenceCollectionView.reloadData()
     }
     
-    func setDefaultFilterFromTimer(){
+    @objc func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.sequences)
     }
 }
@@ -131,9 +131,9 @@ extension SequencesViewController: UICollectionViewDataSource {
         return sequences.count
     }
     
-    func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer) {
+    @objc func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer) {
         if let tag = gestureRecognizer.view?.tag {
-            if gestureRecognizer.state == UIGestureRecognizerState.began {
+            if gestureRecognizer.state == UIGestureRecognizer.State.began {
                 let location = gestureRecognizer.location(in: sequenceCollectionView)
                 if let index = sequenceCollectionView.indexPathForItem(at: location) {
                     if let cell = sequenceCollectionView.cellForItem(at: index) {
@@ -204,7 +204,7 @@ extension SequencesViewController {
 // MARK: - Logic
 extension SequencesViewController {
     
-    func setSequence (_ gesture:UIGestureRecognizer) {
+    @objc func setSequence (_ gesture:UIGestureRecognizer) {
         if let originPoint = gesture.view?.bounds.origin {
             if let pointInCollection = gesture.view?.convert(originPoint, to: sequenceCollectionView) {
                 if let indexPath = sequenceCollectionView.indexPathForItem(at: pointInCollection) {
@@ -219,7 +219,7 @@ extension SequencesViewController {
         }
     }
     
-    func tapStop (_ gesture:UITapGestureRecognizer) {
+    @objc func tapStop (_ gesture:UITapGestureRecognizer) {
         if let originPoint = gesture.view?.bounds.origin {
             if let pointInCollection = gesture.view?.convert(originPoint, to: sequenceCollectionView) {
                 if let indexPath = sequenceCollectionView.indexPathForItem(at: pointInCollection) {

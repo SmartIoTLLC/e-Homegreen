@@ -46,7 +46,7 @@ class NavigationTitleViewNF: UIView {
     }
     
     override var intrinsicContentSize: CGSize {
-        return UILayoutFittingExpandedSize
+        return UIView.layoutFittingExpandedSize
     }
     
     deinit {
@@ -61,7 +61,7 @@ class NavigationTitleViewNF: UIView {
         titleLabel.font            = .tahoma(size: 17)
         titleLabel.textColor       = .white
         titleLabel.adjustsFontSizeToFitWidth = true
-        titleLabel.setContentHuggingPriority(1000, for: .horizontal)
+        titleLabel.setContentHuggingPriority(UILayoutPriority(rawValue: 1000), for: .horizontal)
         
         self.addSubview(titleLabel)
     }

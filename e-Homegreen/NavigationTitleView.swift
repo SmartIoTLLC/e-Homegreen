@@ -34,7 +34,7 @@ class NavigationTitleView: UIView {
     }
     
     override var intrinsicContentSize: CGSize {
-        return UILayoutFittingExpandedSize
+        return UIView.layoutFittingExpandedSize
     }
     
     deinit {

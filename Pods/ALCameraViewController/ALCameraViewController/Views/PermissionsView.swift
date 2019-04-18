@@ -29,17 +29,17 @@ internal class PermissionsView: UIView {
         commonInit()
     }
     
-    func configureInView(_ view: UIView, title: String, descriptiom: String, completion: @escaping ButtonAction) {
+    func configureInView(_ view: UIView, title: String, description: String, completion: @escaping ButtonAction) {
         let closeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
         
         view.addSubview(self)
         addSubview(closeButton)
         
         titleLabel.text = title
-        descriptionLabel.text = descriptiom
+        descriptionLabel.text = description
         
         closeButton.action = completion
-        closeButton.setImage(UIImage(named: "retakeButton", in: CameraGlobals.shared.bundle, compatibleWith: nil), for: UIControlState())
+        closeButton.setImage(UIImage(named: "retakeButton", in: CameraGlobals.shared.bundle, compatibleWith: nil), for: UIControl.State())
         closeButton.sizeToFit()
         
         let size = view.frame.size
@@ -69,13 +69,13 @@ internal class PermissionsView: UIView {
         let icon = UIImage(named: "permissionsIcon", in: CameraGlobals.shared.bundle, compatibleWith: nil)!
         iconView.image = icon
         
-        settingsButton.contentEdgeInsets = UIEdgeInsetsMake(6, 12, 6, 12)
-        settingsButton.setTitle(localizedString("permissions.settings"), for: UIControlState())
-        settingsButton.setTitleColor(UIColor.white, for: UIControlState())
+        settingsButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
+        settingsButton.setTitle(localizedString("permissions.settings"), for: UIControl.State())
+        settingsButton.setTitleColor(UIColor.white, for: UIControl.State())
         settingsButton.layer.cornerRadius = 4
         settingsButton.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 14)
         settingsButton.backgroundColor = UIColor(red: 52.0/255.0, green: 183.0/255.0, blue: 250.0/255.0, alpha: 1)
-        settingsButton.addTarget(self, action: #selector(PermissionsView.openSettings), for: UIControlEvents.touchUpInside)
+        settingsButton.addTarget(self, action: #selector(PermissionsView.openSettings), for: UIControl.Event.touchUpInside)
         
         addSubview(iconView)
         addSubview(titleLabel)
@@ -83,8 +83,8 @@ internal class PermissionsView: UIView {
         addSubview(settingsButton)
     }
     
-    func openSettings() {
-        if let appSettings = URL(string: UIApplicationOpenSettingsURLString) {
+    @objc func openSettings() {
+        if let appSettings = URL(string: UIApplication.openSettingsURLString) {
             UIApplication.shared.openURL(appSettings)
         }
     }

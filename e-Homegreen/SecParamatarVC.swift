@@ -74,7 +74,7 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
     
     func keyboardWillShow(_ notification: Notification) {
         let info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let keyboardFrame: CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         if popUpTextView.isFirstResponder {
             if popUpView.frame.origin.y + popUpView.frame.size.height > self.view.frame.size.height - keyboardFrame.size.height {
                 
@@ -99,7 +99,7 @@ class SecParamatarVC: UIViewController, UIGestureRecognizerDelegate, UITextViewD
         
     }
     
-    func handleTap(_ gesture:UITapGestureRecognizer){
+    @objc func handleTap(_ gesture:UITapGestureRecognizer){
         self.dismiss(animated: true, completion: nil)
     }
     

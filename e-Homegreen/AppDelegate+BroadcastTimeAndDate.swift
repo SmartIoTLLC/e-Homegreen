@@ -46,7 +46,7 @@ extension AppDelegate {
         }
     }
     
-    func sendDataToBroadcastTimeAndDate() {
+    @objc func sendDataToBroadcastTimeAndDate() {
         
         let date = Date()
         let calendar = Calendar.current

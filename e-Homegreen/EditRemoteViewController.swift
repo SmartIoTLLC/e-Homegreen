@@ -63,8 +63,8 @@ class EditRemoteViewController: CommonXIBTransitionVC {
     }
     
     private func addCancelButton() {
-        cancelButton.setTitle("CANCEL", for: UIControlState())
-        cancelButton.setTitleColor(.white, for: UIControlState())
+        cancelButton.setTitle("CANCEL", for: UIControl.State())
+        cancelButton.setTitleColor(.white, for: UIControl.State())
         cancelButton.addTap {
             self.dismiss(animated: true, completion: nil)
         }
@@ -73,8 +73,8 @@ class EditRemoteViewController: CommonXIBTransitionVC {
     }
     
     private func addDeleteButton() {
-        deleteButton.setTitle("DELETE", for: UIControlState())
-        deleteButton.setTitleColor(.white, for: UIControlState())
+        deleteButton.setTitle("DELETE", for: UIControl.State())
+        deleteButton.setTitleColor(.white, for: UIControl.State())
         deleteButton.addTap {
             self.delete()
         }
@@ -83,8 +83,8 @@ class EditRemoteViewController: CommonXIBTransitionVC {
     }
     
     private func addCopyButton() {
-        copyButton.setTitle("COPY", for: UIControlState())
-        copyButton.setTitleColor(.white, for: UIControlState())
+        copyButton.setTitle("COPY", for: UIControl.State())
+        copyButton.setTitleColor(.white, for: UIControl.State())
         copyButton.addTap {
             self.clone()
         }

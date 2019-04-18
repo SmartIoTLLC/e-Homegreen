@@ -22,7 +22,7 @@ class ImagePickerHandler: NSObject {
         self.delegate = delegate
     }
     
-    func openPhotoLibrary(on vc: UIViewController, allowsEditing: Bool, mediaType: UIImagePickerControllerSourceType) {
+    func openPhotoLibrary(on vc: UIViewController, allowsEditing: Bool, mediaType: UIImagePickerController.SourceType) {
         
         guard isPhotoLibraryAvailable && isSavedPhotoAlbumAvailable else { return }
         let type = kUTTypeImage as String

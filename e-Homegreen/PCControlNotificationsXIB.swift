@@ -93,8 +93,8 @@ class PCControlNotificationsXIB: PopoverVC {
         
         setupViews()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     func setupViews() {
@@ -120,13 +120,13 @@ class PCControlNotificationsXIB: PopoverVC {
         if let delay = pc.notificationDelay { delayTextField.text = String(describing: delay) }
         delayTextField.keyboardType = .numberPad
         delayTextField.inputAccessoryView = CustomToolBar()
-        delayTextField.attributedPlaceholder = NSAttributedString(string:"0", attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+        delayTextField.attributedPlaceholder = NSAttributedString(string:"0", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         delayTextField.delegate = self
         
         if let display = pc.notificationDisplayTime { displayTimeTextField.text = String(describing: display) }
         displayTimeTextField.keyboardType = .numberPad
         displayTimeTextField.inputAccessoryView = CustomToolBar()
-        displayTimeTextField.attributedPlaceholder = NSAttributedString(string:"0", attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+        displayTimeTextField.attributedPlaceholder = NSAttributedString(string:"0", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         displayTimeTextField.delegate = self
         titleLabel.text = pc.name
         
@@ -145,7 +145,7 @@ class PCControlNotificationsXIB: PopoverVC {
         if let position = pos { notificationPosition = NotificationPosition(rawValue: position)! }
     }
     
-    func dismissViewController () {
+    @objc func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -205,14 +205,14 @@ class PCControlNotificationsXIB: PopoverVC {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let keyboardFrame: CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
         moveTextfield(textfield: delayTextField, keyboardFrame: keyboardFrame, backView: backView)
         moveTextfield(textfield: displayTimeTextField, keyboardFrame: keyboardFrame, backView: backView)
         
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
 }

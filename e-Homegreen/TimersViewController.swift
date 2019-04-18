@@ -95,19 +95,19 @@ extension TimersViewController: FilterPullDownDelegate{
         view.makeToast(message: "Default filter parametar saved!")
     }
     
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizer.State.began {
             scrollView.setDefaultFilterItem(Menu.timers)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
     
-    func refreshTimerList() {
+    @objc func refreshTimerList() {
         timers = DatabaseTimersController.shared.getTimers(filterParametar)
         timersCollectionView.reloadData()
     }
     
-    func setDefaultFilterFromTimer(){
+    @objc func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.timers)
     }
 }
@@ -144,32 +144,32 @@ extension TimersViewController {
 
 // MARK: - Logic
 extension TimersViewController {
-    func pressedPause (_ button:UIButton) {
+    @objc func pressedPause (_ button:UIButton) {
         let tag = button.tag
         
         sendTimerCommand(.pause, timerTag: tag)
         changeImageInCell(button)
     }
-    func pressedStart (_ button:UIButton) {
+    @objc func pressedStart (_ button:UIButton) {
         let tag = button.tag
         
         sendTimerCommand(.start, timerTag: tag)
         changeImageInCell(button)
     }
-    func pressedResume (_ button:UIButton) {
+    @objc func pressedResume (_ button:UIButton) {
         let tag = button.tag
         
         sendTimerCommand(.resume, timerTag: tag)
         changeImageInCell(button)
     }
-    func pressedCancel (_ button:UIButton) {
+    @objc func pressedCancel (_ button:UIButton) {
         let tag = button.tag
         
         sendTimerCommand(.cancel, timerTag: tag)
         changeImageInCell(button)
     }
     
-    fileprivate func sendTimerCommand(_ command: TimerCommand, timerTag tag: Int) {
+    private func sendTimerCommand(_ command: TimerCommand, timerTag tag: Int) {
         let timer   = timers[tag]
         let command = command.rawValue
         var address: [Byte] = []
@@ -244,13 +244,13 @@ extension TimersViewController: UICollectionViewDataSource {
         return 1
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int  {
         return timers.count
     }
     
-    func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer) {
+    @objc func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer) {
         if let tag = gestureRecognizer.view?.tag {
-            if gestureRecognizer.state == UIGestureRecognizerState.began {
+            if gestureRecognizer.state == UIGestureRecognizer.State.began {
                 let location = gestureRecognizer.location(in: timersCollectionView)
                 if let index = timersCollectionView.indexPathForItem(at: location) {
                     let cell = timersCollectionView.cellForItem(at: index)

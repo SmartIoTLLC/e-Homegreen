@@ -69,7 +69,7 @@ extension UIView {
     func collapseInReturnToNormal (_ times:Float) {
         let scaleAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
         scaleAnimation.values = [1.0, 0.7, 1.0]
-        scaleAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        scaleAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         scaleAnimation.repeatCount = times
         scaleAnimation.duration = 1
         layer.add(scaleAnimation, forKey: "bouncingEffectOnTouch")

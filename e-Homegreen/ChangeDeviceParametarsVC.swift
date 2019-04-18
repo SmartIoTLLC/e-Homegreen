@@ -86,7 +86,7 @@ class ChangeDeviceParametarsVC: PopoverVC {
         addObservers()
     }
     
-    func handleResetImages(_ notification: Notification) {
+    @objc func handleResetImages(_ notification: Notification) {
         if let object = notification.object as? [String: NSManagedObjectID] {
             if let id = object["deviceId"] {
                 if id == device.objectID {
@@ -109,7 +109,7 @@ class ChangeDeviceParametarsVC: PopoverVC {
             } else {
                 // Set default levelId
                 editedDevice?.levelId = 255
-                btnZone.setTitle("All", for: UIControlState())
+                btnZone.setTitle("All", for: UIControl.State())
                 level = nil
             }
             break
@@ -135,13 +135,13 @@ class ChangeDeviceParametarsVC: PopoverVC {
             break
         case 4:
             editedDevice?.controlType = name
-            btnControlType.setTitle(name, for: UIControlState())
+            btnControlType.setTitle(name, for: UIControl.State())
             break
         default:
             break
         }
         
-        button.setTitle(name, for: UIControlState())
+        button.setTitle(name, for: UIControl.State())
     }
 }
 
@@ -161,15 +161,15 @@ extension ChangeDeviceParametarsVC {
         lblChannel.text = "\(device.channel)"
         
         level = DatabaseZoneController.shared.getZoneById(Int(device.parentZoneId), location: device.gateway.location)
-        if let level = level, level.name != "Default" { btnLevel.setTitle(level.name, for: UIControlState()) } else { btnLevel.setTitle("All", for: UIControlState()) }
+        if let level = level, level.name != "Default" { btnLevel.setTitle(level.name, for: UIControl.State()) } else { btnLevel.setTitle("All", for: UIControl.State()) }
         
         zoneSelected = DatabaseZoneController.shared.getZoneById(Int(device.zoneId), location: device.gateway.location)
-        if zoneSelected != nil { btnZone.setTitle(zoneSelected!.name, for: UIControlState()) } else { btnZone.setTitle("All", for: UIControlState()) }
+        if zoneSelected != nil { btnZone.setTitle(zoneSelected!.name, for: UIControl.State()) } else { btnZone.setTitle("All", for: UIControl.State()) }
         
         let category = DatabaseCategoryController.shared.getCategoryById(Int(device.categoryId), location: device.gateway.location)
-        if category != nil { btnCategory.setTitle(category?.name, for: UIControlState()) } else { btnCategory.setTitle("All", for: UIControlState()) }
+        if category != nil { btnCategory.setTitle(category?.name, for: UIControl.State()) } else { btnCategory.setTitle("All", for: UIControl.State()) }
         
-        btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", for: UIControlState())
+        btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", for: UIControl.State())
         
         txtFieldName.delegate = self
         
@@ -184,7 +184,7 @@ extension ChangeDeviceParametarsVC {
         NotificationCenter.default.addObserver(self, selector: #selector(handleResetImages(_:)), name: .deviceShouldResetImages, object: nil)
     }
     
-    func handleTap(_ gesture:UITapGestureRecognizer){
+    @objc func handleTap(_ gesture:UITapGestureRecognizer){
         self.dismiss(animated: true, completion: nil)
     }
 }

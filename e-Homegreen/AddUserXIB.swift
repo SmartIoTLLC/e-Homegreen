@@ -77,17 +77,17 @@ class AddUserXIB: CommonXIBTransitionVC {
                 if let image = DatabaseImageController.shared.getImageById(id) {
                     
                     if let data =  image.imageData {
-                        userImageButton.setImage(UIImage(data: data), for: UIControlState())
+                        userImageButton.setImage(UIImage(data: data), for: UIControl.State())
                     } else {
-                        if let defaultImage = user.defaultImage { userImageButton.setImage(UIImage(named: defaultImage), for: UIControlState())
-                        } else { userImageButton.setImage(UIImage(named: "User"), for: UIControlState()) } }
+                        if let defaultImage = user.defaultImage { userImageButton.setImage(UIImage(named: defaultImage), for: UIControl.State())
+                        } else { userImageButton.setImage(UIImage(named: "User"), for: UIControl.State()) } }
                     
                 } else {
-                    if let defaultImage = user.defaultImage { userImageButton.setImage(UIImage(named: defaultImage), for: UIControlState())
-                    } else { userImageButton.setImage(UIImage(named: "User"), for: UIControlState()) } }
+                    if let defaultImage = user.defaultImage { userImageButton.setImage(UIImage(named: defaultImage), for: UIControl.State())
+                    } else { userImageButton.setImage(UIImage(named: "User"), for: UIControl.State()) } }
             } else {
-                if let defaultImage = user.defaultImage { userImageButton.setImage(UIImage(named: defaultImage), for: UIControlState())
-                } else { userImageButton.setImage(UIImage(named: "User"), for: UIControlState()) } }
+                if let defaultImage = user.defaultImage { userImageButton.setImage(UIImage(named: defaultImage), for: UIControl.State())
+                } else { userImageButton.setImage(UIImage(named: "User"), for: UIControl.State()) } }
         }
     }
     
@@ -107,9 +107,9 @@ class AddUserXIB: CommonXIBTransitionVC {
                         CoreDataController.sharedInstance.saveChanges()
                         
                         if let defaultImage = user.defaultImage {
-                            self.userImageButton.setImage(UIImage(named: defaultImage), for: UIControlState())
+                            self.userImageButton.setImage(UIImage(named: defaultImage), for: UIControl.State())
                         } else {
-                            self.userImageButton.setImage(UIImage(named: "User"), for: UIControlState())
+                            self.userImageButton.setImage(UIImage(named: "User"), for: UIControl.State())
                         }
                     }
                 default: break
@@ -186,7 +186,7 @@ extension AddUserXIB : SceneGalleryDelegate {
     
     func returnedGaleryImage(_ image: Image, data: Data, imageIndex: Int) {
         customImage = image.imageId
-        userImageButton.setImage(UIImage(data: data), for: UIControlState())
+        userImageButton.setImage(UIImage(data: data), for: UIControl.State())
     }
     
     func backImageFromGallery(_ data: Data, imageIndex: Int) {
@@ -197,7 +197,7 @@ extension AddUserXIB : SceneGalleryDelegate {
     }
     
     func backString(_ strText: String, imageIndex: Int) {
-        userImageButton.setImage(UIImage(named: strText), for: UIControlState())
+        userImageButton.setImage(UIImage(named: strText), for: UIControl.State())
         defaultImage = strText
         customImage  = nil
         imageData    = nil
@@ -207,7 +207,7 @@ extension AddUserXIB : SceneGalleryDelegate {
         defaultImage = nil
         customImage  = image.imageId
         imageData    = nil
-        userImageButton.setImage(UIImage(data: image.imageData! as Data), for: UIControlState())
+        userImageButton.setImage(UIImage(data: image.imageData! as Data), for: UIControl.State())
     }
     
 }

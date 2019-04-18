@@ -216,9 +216,9 @@ class ClimateCollectionViewCell: BaseDeviceCollectionViewCell {
         infoSaveButton.setAttributedTitle(
             NSAttributedString(
                 string: "Save",
-                attributes: [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont.tahoma(size: 10)]
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.tahoma(size: 10)]
             )
-            , for: UIControlState()
+            , for: UIControl.State()
         )
         
         
@@ -338,7 +338,7 @@ class ClimateCollectionViewCell: BaseDeviceCollectionViewCell {
         
         backEnergySavingImageView.isHidden = device.allowEnergySaving.boolValue ? false : true
         
-        backClimateNameLabel.attributedText = NSAttributedString(string: device.cellTitle, attributes:[NSForegroundColorAttributeName: UIColor.white])
+        backClimateNameLabel.attributedText = NSAttributedString(string: device.cellTitle, attributes:[NSAttributedString.Key.foregroundColor: UIColor.white])
         backClimateNameLabel.tag = tag
         
         backTemperatureLabel.setText("\(device.roomTemperature) \(degrees)", fontSize: LocalConstants.temperatureFontSize)
@@ -352,7 +352,7 @@ class ClimateCollectionViewCell: BaseDeviceCollectionViewCell {
         infoVoltageLabel.setText("\(Float(device.voltage)) V", fontSize: LocalConstants.deviceInfoFontSize)
         
         backOnOffButton.tag = tag
-        backOnOffButton.setImage((device.currentValue == 0) ? powerOffImage : powerOnImage, for: UIControlState())
+        backOnOffButton.setImage((device.currentValue == 0) ? powerOffImage : powerOnImage, for: UIControl.State())
         
         infoSaveButton.addTap {
             self.saveEnergySavingSettings(of: device)

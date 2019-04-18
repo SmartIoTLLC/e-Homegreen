@@ -143,7 +143,7 @@ extension ImportCategoryViewController: UITableViewDataSource {
         return canEditCategory(at: indexPath)
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             deleteSingleCategory(at: indexPath)
         }
@@ -235,7 +235,7 @@ extension ImportCategoryViewController {
     }
     
     //move tableview cell on hold and swipe
-    func longPressGestureRecognized(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func longPressGestureRecognized(_ gestureRecognizer: UIGestureRecognizer) {
         
         if let longPress = gestureRecognizer as? UILongPressGestureRecognizer {
             let state = longPress.state
@@ -382,7 +382,7 @@ extension ImportCategoryViewController {
         }
     }
     
-    func isVisibleValueChanged (_ sender:UISwitch) {
+    @objc func isVisibleValueChanged (_ sender:UISwitch) {
         if sender.isOn == true { categories[sender.tag].isVisible = true } else { categories[sender.tag].isVisible = false }
         CoreDataController.sharedInstance.saveChanges()
         importCategoryTableView.reloadData()
@@ -453,7 +453,7 @@ extension ImportCategoryViewController {
         } catch {}
     }
     
-    func categoryReceivedFromGateway (_ notification:Notification) {
+    @objc func categoryReceivedFromGateway (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningForZones) {
             guard var categoryId = notification.userInfo as? [String:Int] else { return }
             timesRepeatedCounter = 0
@@ -474,7 +474,7 @@ extension ImportCategoryViewController {
         }
     }
     
-    func checkIfGatewayDidGetCategory (_ timer:Foundation.Timer) {
+    @objc func checkIfGatewayDidGetCategory (_ timer:Foundation.Timer) {
         guard var categoryId = timer.userInfo as? Int else { return }
         timesRepeatedCounter += 1
         if timesRepeatedCounter < 4 {  // sve dok ne pokusa tri puta, treba da pokusava
@@ -528,23 +528,23 @@ class ImportCategoryTableViewCell: UITableViewCell {
         switchVisible.isOn = Bool(category.isVisible)
         
         self.category = category
-        if let type = TypeOfControl(rawValue: (category.allowOption.intValue)) { controlTypeButton.setTitle(type.description, for: UIControlState()) }
+        if let type = TypeOfControl(rawValue: (category.allowOption.intValue)) { controlTypeButton.setTitle(type.description, for: UIControl.State()) }
     }
     
     @IBAction func changeControlType(_ sender: AnyObject) {
         if category.allowOption.intValue == 1 {
             DatabaseCategoryController.shared.changeAllowOption(2, category: category)
-            controlTypeButton.setTitle(TypeOfControl.confirm.description , for: UIControlState())
+            controlTypeButton.setTitle(TypeOfControl.confirm.description , for: UIControl.State())
             return
         }
         if category.allowOption.intValue == 2 {
             DatabaseCategoryController.shared.changeAllowOption(3, category: category)
-            controlTypeButton.setTitle(TypeOfControl.notAllowed.description , for: UIControlState())
+            controlTypeButton.setTitle(TypeOfControl.notAllowed.description , for: UIControl.State())
             return
         }
         if category.allowOption.intValue == 3 {
             DatabaseCategoryController.shared.changeAllowOption(1, category: category)
-            controlTypeButton.setTitle(TypeOfControl.allowed.description , for: UIControlState())
+            controlTypeButton.setTitle(TypeOfControl.allowed.description , for: UIControl.State())
             return
         }
     }

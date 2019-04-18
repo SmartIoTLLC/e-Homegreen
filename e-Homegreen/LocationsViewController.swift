@@ -194,7 +194,7 @@ extension LocationViewController {
         appDel = UIApplication.shared.delegate as! AppDelegate
         
         gatewayTableView.estimatedRowHeight = 44.0
-        gatewayTableView.rowHeight          = UITableViewAutomaticDimension
+        gatewayTableView.rowHeight          = UITableView.automaticDimension
         self.gatewayTableView.contentInset  = UIEdgeInsets(top: 15, left: 0, bottom: 15, right: 0)
         
         titleView.setTitle("Locations")

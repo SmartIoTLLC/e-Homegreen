@@ -53,7 +53,7 @@ class CreateUserFromJSONController: NSObject {
                         if let password = json["password"] as? String { user.password = password }
                         if let isLocked = json["is_locked"] as? Bool { user.isLocked = isLocked as NSNumber }
                         if let isSuperUser = json["is_super_user"] as? Bool { user.isSuperUser = isSuperUser as NSNumber }
-                        if let openLastScreen = json["open_last_screen"] as? Bool { user.openLastScreen = openLastScreen as NSNumber! }
+                        if let openLastScreen = json["open_last_screen"] as? Bool { user.openLastScreen = openLastScreen as NSNumber? }
                         if let lastScreenId = json["last_screen_id"] as? Int { user.lastScreenId = lastScreenId as NSNumber? }
                         if let defaultImage = json["default_image"] as? String { user.defaultImage = defaultImage }
                         if let customImage = json["custom_image_id"] as? String { user.customImageId = customImage }
@@ -421,7 +421,7 @@ class CreateUserFromJSONController: NSObject {
                 if let id = zone["id"] as? Int { newZone.id = id as NSNumber? }
                 if let level = zone["level"] as? Int { newZone.level = level as NSNumber? }
                 if let orderId = zone["order_id"] as? Int { newZone.orderId = orderId as NSNumber? }
-                if let allowOption = zone["allow_option"] as? Int { newZone.allowOption = allowOption as NSNumber! }
+                if let allowOption = zone["allow_option"] as? Int { newZone.allowOption = allowOption as NSNumber? }
                 
                 newZone.allowOption = 1
                 newZone.location = location
@@ -437,7 +437,7 @@ class CreateUserFromJSONController: NSObject {
                 if let isVisible = category["is_visible"] as? Bool { newCategory.isVisible = isVisible as NSNumber }
                 if let id = category["id"] as? Int { newCategory.id = id as NSNumber? }
                 if let orderId = category["order_id"] as? Int { newCategory.orderId = orderId as NSNumber? }
-                if let allowOption = category["allow_option"] as? Int { newCategory.allowOption = allowOption as NSNumber! }
+                if let allowOption = category["allow_option"] as? Int { newCategory.allowOption = allowOption as NSNumber? }
                 
                 newCategory.location = location
             }

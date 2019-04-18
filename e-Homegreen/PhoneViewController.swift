@@ -128,8 +128,8 @@ class PhoneViewController: UIViewController {
     }
     
     private func addMakeCallButton() {
-        makeCallButton.setTitleColor(.white, for: UIControlState())
-        makeCallButton.setTitle("MAKE A CALL", for: UIControlState())
+        makeCallButton.setTitleColor(.white, for: UIControl.State())
+        makeCallButton.setTitle("MAKE A CALL", for: UIControl.State())
         makeCallButton.addTap {
             self.toggleMic(off: false)
             self.recordAndRecognizeSpeech()
@@ -139,7 +139,7 @@ class PhoneViewController: UIViewController {
     }
     
     private func addInfoButton() {
-        infoButton.setImage(#imageLiteral(resourceName: "info_3-512").withRenderingMode(.alwaysTemplate), for: UIControlState())
+        infoButton.setImage(#imageLiteral(resourceName: "info_3-512").withRenderingMode(.alwaysTemplate), for: UIControl.State())
         infoButton.imageView?.tintColor = .white
         infoButton.addTap {
             let infoViewController: PhoneInstructionsViewController = PhoneInstructionsViewController()
@@ -203,7 +203,7 @@ class PhoneViewController: UIViewController {
         DispatchQueue.main.async { button.isEnabled = enabled }
     }
     
-    func micBackgroundTapped(_ gestureRecognizer: UITapGestureRecognizer) {
+    @objc func micBackgroundTapped(_ gestureRecognizer: UITapGestureRecognizer) {
         toggleMic(off: true)
         stopRecording()
     }
@@ -218,7 +218,7 @@ class PhoneViewController: UIViewController {
         view.removeGestureRecognizer(dismissGesture)
     }
     
-    func timedOut() {
+    @objc func timedOut() {
         stopRecording()
     }
     
@@ -232,12 +232,7 @@ class PhoneViewController: UIViewController {
     
     func recordAndRecognizeSpeech() {
         
-        guard let node = audioEngine.inputNode else {
-            hideToastActivityOnMainThread()
-            self.forceRemoveMic()
-            self.makeToastOnMainThread(message: "Audio engine failed.")
-            return
-        }
+        let node = audioEngine.inputNode
         
         let recordingFormat = node.inputFormat(forBus: 0)
         node.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer, tamper) in

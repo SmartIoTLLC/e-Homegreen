@@ -27,8 +27,8 @@ class FlagCollectionViewCell: UICollectionViewCell {
         
         flagButton.tag = tag
         
-        if flag.setState.boolValue { flagButton.setTitle("Set False", for: UIControlState())
-        } else { flagButton.setTitle("Set True", for: UIControlState()) }
+        if flag.setState.boolValue { flagButton.setTitle("Set False", for: UIControl.State())
+        } else { flagButton.setTitle("Set True", for: UIControl.State()) }
         
         flagImageView.layer.cornerRadius = 5
         flagImageView.clipsToBounds      = true
@@ -104,7 +104,7 @@ class FlagCollectionViewCell: UICollectionViewCell {
         Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(changeImageToNormal), userInfo: nil, repeats: false)
     }
     
-    func changeImageToNormal () {
+    @objc func changeImageToNormal () {
         flagImageView.image = imageOne
         setNeedsDisplay()
     }

@@ -71,7 +71,7 @@ class MediaCollectionViewController: PopoverVC {
     }
     
     // MARK: - Logic
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
         if gestureRecognizer.state == .began {
             scrollView.setDefaultFilterItem(Menu.media)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))

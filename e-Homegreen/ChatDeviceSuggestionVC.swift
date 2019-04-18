@@ -52,7 +52,7 @@ class ChatDeviceSuggestionVC: UIViewController, UITableViewDataSource, UITableVi
         return true
     }
     
-    func handleTap(_ gesture:UITapGestureRecognizer){
+    @objc func handleTap(_ gesture:UITapGestureRecognizer){
         self.dismiss(animated: true, completion: nil)
     }
     

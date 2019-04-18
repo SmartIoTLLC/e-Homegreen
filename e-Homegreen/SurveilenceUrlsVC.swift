@@ -57,8 +57,8 @@ class SurveilenceUrlsVC: CommonXIBTransitionVC {
         
         setupViews()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     func setupViews() {
@@ -106,7 +106,7 @@ class SurveilenceUrlsVC: CommonXIBTransitionVC {
         return true
     }
     
-    func dismissViewController () {
+    @objc func dismissViewController () {
         dismiss(animated: true, completion: nil)
     }
     
@@ -131,9 +131,9 @@ class SurveilenceUrlsVC: CommonXIBTransitionVC {
         self.dismiss(animated: true, completion: nil)
     }
 
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let keyboardFrame: CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
         moveTextfield(textfield: txtMoveRight, keyboardFrame: keyboardFrame, backView: backView)
         moveTextfield(textfield: txtMoveUp, keyboardFrame: keyboardFrame, backView: backView)
@@ -144,7 +144,7 @@ class SurveilenceUrlsVC: CommonXIBTransitionVC {
         moveTextfield(textfield: txtStopPresetSequence, keyboardFrame: keyboardFrame, backView: backView)
         moveTextfield(textfield: txtHome, keyboardFrame: keyboardFrame, backView: backView)
         
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
 
 }

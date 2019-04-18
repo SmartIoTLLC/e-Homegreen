@@ -134,7 +134,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         switch button.tag{
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
-            btnZone.setTitle("All", for: UIControlState())
+            btnZone.setTitle("All", for: UIControl.State())
             zoneSelected = nil
             break
         case 2:
@@ -150,10 +150,10 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
             break
         }
         
-        button.setTitle(name, for: UIControlState())
+        button.setTitle(name, for: UIControl.State())
     }
     
-    func changeValue (_ sender:UISwitch){
+    @objc func changeValue (_ sender:UISwitch){
         if sender.tag == 100 { localcastSwitch.isOn = false } else if sender.tag == 200 { broadcastSwitch.isOn = false }
     }
     func refreshTimerList() {
@@ -167,7 +167,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
         timerTableView.reloadData()
     }
     
-    func handleTap (_ gesture:UITapGestureRecognizer) {
+    @objc func handleTap (_ gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
             showGallery(index, user: gateway.location.user).delegate = self
         }
@@ -321,7 +321,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     
     // Called from findNames or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingNames for that specific timer id.
-    func checkIfTimerDidGetName (_ timer:Foundation.Timer) {
+    @objc func checkIfTimerDidGetName (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated. 
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -353,7 +353,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
-    func nameReceivedFromPLC (_ notification:Notification) {
+    @objc func nameReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningTimerNames) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let timerIndex = info["timerId"] else { return }
@@ -394,7 +394,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     
     // MARK: - Timer parameters
     // Gets all input parameters and prepares everything for scanning, and initiates scanning.
-    func findParametarsForTimer() {
+    @objc func findParametarsForTimer() {
         progressBarScreenTimerNames?.dissmissProgressBar()
         progressBarScreenTimerNames = nil
         arrayOfParametersToBeSearched = [Int]()
@@ -436,7 +436,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     
     // Called from findParametarsForTimer or from it self.
     // Checks which timer ID should be searched for and calls sendCommandForFindingParameterWithTimerAddress for that specific timer id.
-    func checkIfTimerDidGetParametar (_ timer:Foundation.Timer) {
+    @objc func checkIfTimerDidGetParametar (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -469,7 +469,7 @@ class ScanTimerViewController: PopoverVC, ProgressBarDelegate {
     
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next timer ID to search for. If there is not, dismiss progres bar and end the search.
-    func timerParametarReceivedFromPLC (_ notification:Notification) {
+    @objc func timerParametarReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningTimerParameters) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let timerIndex = info["timerId"] else { return }
@@ -605,15 +605,15 @@ extension ScanTimerViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
-            self.tableView(self.timerTableView, commit: UITableViewCellEditingStyle.delete, forRowAt: indexPath)
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
+            self.tableView(self.timerTableView, commit: UITableViewCell.EditingStyle.delete, forRowAt: indexPath)
         })
         
         button.backgroundColor = UIColor.red
         return [button]
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             DatabaseTimersController.shared.deleteTimer(timers[indexPath.row])
             timers.remove(at: indexPath.row)
@@ -641,20 +641,20 @@ extension ScanTimerViewController: UITableViewDataSource, UITableViewDelegate {
         nameEdit.text = "\(timer.timerName)"
         devAddressThree.text = "\(returnThreeCharactersForByte(Int(timer.address)))"
         
-        if let type = TimerType(rawValue: Int(timer.type)) { btnType.setTitle(type.description, for: UIControlState()); timerTypeId = type.rawValue
-        } else { btnType.setTitle("--", for: UIControlState()); timerTypeId = nil }
+        if let type = TimerType(rawValue: Int(timer.type)) { btnType.setTitle(type.description, for: UIControl.State()); timerTypeId = type.rawValue
+        } else { btnType.setTitle("--", for: UIControl.State()); timerTypeId = nil }
         
         broadcastSwitch.isOn = timer.isBroadcast.boolValue
         localcastSwitch.isOn = timer.isLocalcast.boolValue
         
-        if let levelId = timer.entityLevelId as? Int { level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location); btnLevel.setTitle(level?.name, for: UIControlState())
-        } else { btnLevel.setTitle("All", for: UIControlState()) }
+        if let levelId = timer.entityLevelId as? Int { level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location); btnLevel.setTitle(level?.name, for: UIControl.State())
+        } else { btnLevel.setTitle("All", for: UIControl.State()) }
         
-        if let zoneId = timer.timeZoneId as? Int { zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location); btnZone.setTitle(zoneSelected?.name, for: UIControlState())
-        } else { btnZone.setTitle("All", for: UIControlState()) }
+        if let zoneId = timer.timeZoneId as? Int { zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location); btnZone.setTitle(zoneSelected?.name, for: UIControl.State())
+        } else { btnZone.setTitle("All", for: UIControl.State()) }
         
-        if let categoryId = timer.timerCategoryId as? Int { category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location); btnCategory.setTitle(category?.name, for: UIControlState())
-        } else { btnCategory.setTitle("All", for: UIControlState()) }
+        if let categoryId = timer.timerCategoryId as? Int { category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location); btnCategory.setTitle(category?.name, for: UIControl.State())
+        } else { btnCategory.setTitle("All", for: UIControl.State()) }
         
         defaultImageOne = timer.timerImageOneDefault
         customImageOne = timer.timerImageOneCustom

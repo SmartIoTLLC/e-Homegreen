@@ -94,7 +94,7 @@ class RelayParametersCell: PopoverVC {
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
             if let level = level { editedDevice?.levelId = (level.id?.intValue)! } else { editedDevice?.levelId = 255 }
-            btnZone.setTitle("All", for: UIControlState())
+            btnZone.setTitle("All", for: UIControl.State())
             zoneSelected = nil
             break
         case 2:
@@ -108,17 +108,17 @@ class RelayParametersCell: PopoverVC {
             break
         case 4:
             editedDevice?.controlType = name
-            btnControlType.setTitle(name, for: UIControlState())
+            btnControlType.setTitle(name, for: UIControl.State())
             break
         case 5:
             editedDevice?.digitalInputMode = DigitalInput.modeInfoReverse[name]!
-            changeControlMode.setTitle(name,for: UIControlState())
+            changeControlMode.setTitle(name,for: UIControl.State())
             break
         default:
             break
         }
         
-        button.setTitle(name, for: UIControlState())
+        button.setTitle(name, for: UIControl.State())
     }
     
 }
@@ -142,24 +142,24 @@ extension RelayParametersCell {
         lblChannel.text   = "\(device.channel)"
         
         level = DatabaseZoneController.shared.getZoneById(Int(device.parentZoneId), location: device.gateway.location)
-        if let level = level { btnLevel.setTitle(level.name, for: UIControlState()) } else { btnLevel.setTitle("All", for: UIControlState()) }
+        if let level = level { btnLevel.setTitle(level.name, for: UIControl.State()) } else { btnLevel.setTitle("All", for: UIControl.State()) }
         
         zoneSelected = DatabaseZoneController.shared.getZoneById(Int(device.zoneId), location: device.gateway.location)
-        if let zoneSelected = zoneSelected { btnZone.setTitle(zoneSelected.name, for: UIControlState()) } else { btnZone.setTitle("All", for: UIControlState()) }
+        if let zoneSelected = zoneSelected { btnZone.setTitle(zoneSelected.name, for: UIControl.State()) } else { btnZone.setTitle("All", for: UIControl.State()) }
         
         let category = DatabaseCategoryController.shared.getCategoryById(Int(device.categoryId), location: device.gateway.location)
-        if category != nil { btnCategory.setTitle(category?.name, for: UIControlState()) } else { btnCategory.setTitle("All", for: UIControlState()) }
+        if category != nil { btnCategory.setTitle(category?.name, for: UIControl.State()) } else { btnCategory.setTitle("All", for: UIControl.State()) }
         
         if var digInputMode = device.digitalInputMode?.intValue {
             if digInputMode == 1 || digInputMode == 2 {} else { digInputMode = 1 }
             let controlType = DigitalInput.modeInfo[digInputMode]
             // It can be only NO and NC. If nothing is selected from those two set default value (NormallyOpen)
             if controlType != "" || controlType != DigitalInput.NormallyOpen.description() || controlType != DigitalInput.NormallyClosed.description() {
-                changeControlMode.setTitle(controlType, for: UIControlState())
-            } else { changeControlMode.setTitle(DigitalInput.NormallyOpen.description(), for: UIControlState()) }
+                changeControlMode.setTitle(controlType, for: UIControl.State())
+            } else { changeControlMode.setTitle(DigitalInput.NormallyOpen.description(), for: UIControl.State()) }
         }
         
-        btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", for: UIControlState())
+        btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", for: UIControl.State())
         
         txtFieldName.delegate = self
         
@@ -178,35 +178,35 @@ extension RelayParametersCell {
     }
     
     fileprivate func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleResetImages(_:)), name: .deviceShouldResetImages, object: nil)
     }
     
-    func handleResetImages(_ notification: Notification) {
+    @objc func handleResetImages(_ notification: Notification) {
         if let object = notification.object as? [String: Any] {
             if let id = object["deviceId"] as? NSManagedObjectID {
                 if id == device.objectID {
                     deviceShouldResetImages = true
                 }
                 if let deviceImage = object["deviceImage"] as? DeviceImage {
-                    imagesToReset.append(deviceImage)
+                    imagesToReset.append(deviceImage) 
                 }
             }
         }
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let keyboardFrame: CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
         moveTextfield(textfield: txtCurtainGroupId, keyboardFrame: keyboardFrame, backView: backView)
         
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
-    func handleTap(_ gesture:UITapGestureRecognizer){
+    @objc func handleTap(_ gesture:UITapGestureRecognizer){
         self.dismiss(animated: true, completion: nil)
     }
 }

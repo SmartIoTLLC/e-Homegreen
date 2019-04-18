@@ -1,38 +1,36 @@
 PODS:
   - AKImageCropperView (2.0.0)
-  - ALCameraViewController (1.2.5)
-  - CocoaAsyncSocket (7.5.0):
-    - CocoaAsyncSocket/GCD (= 7.5.0)
-  - CocoaAsyncSocket/GCD (7.5.0)
-  - DateParser (0.1.0)
-  - NSEntityDescription-SYNCPrimaryKey (1.2.6):
-    - NSString-HYPNetworking (~> 1.0.5)
-  - NSManagedObject-HYPPropertyMapper (4.1.0):
-    - DateParser (~> 0.1.0)
-    - NSEntityDescription-SYNCPrimaryKey (~> 1.2.6)
-  - NSString-HYPNetworking (1.0.5)
-  - SnapKit (3.0.2)
-  - Zip (0.6.0)
+  - ALCameraViewController (2.0.3)
+  - CocoaAsyncSocket (7.6.3)
+  - NSManagedObject-HYPPropertyMapper (4.1.4)
+  - SnapKit (4.0.1)
+  - Zip (1.1.0)
 
 DEPENDENCIES:
   - AKImageCropperView
-  - ALCameraViewController
+  - ALCameraViewController (~> 2.0.3)
   - CocoaAsyncSocket
   - NSManagedObject-HYPPropertyMapper
-  - SnapKit (~> 3.0.0)
-  - Zip (~> 0.6)
+  - SnapKit (~> 4.0.0)
+  - Zip (~> 1.1)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AKImageCropperView
+    - ALCameraViewController
+    - CocoaAsyncSocket
+    - NSManagedObject-HYPPropertyMapper
+    - SnapKit
+    - Zip
 
 SPEC CHECKSUMS:
   AKImageCropperView: 9c80fd45512daa69426161ad51c248655c1b5182
-  ALCameraViewController: 3ce731eed0b58f2791ce7404f9d039d10f2235c3
-  CocoaAsyncSocket: 3baeb1ddd969f81cf9fca81053ae49ef2d1cbbfa
-  DateParser: 6609ccde5a21650e2f61cea718a2e5c6c34ce4e8
-  NSEntityDescription-SYNCPrimaryKey: 9449ab486b46ee949421d17d11de8cd7d4c31904
-  NSManagedObject-HYPPropertyMapper: 2ed97ce16ff3ad3adafb6c76b3c865ef4697d66b
-  NSString-HYPNetworking: a42e1fddceabb89735e53cbbb4b5865edd4f2bb6
-  SnapKit: 2e456761aa92d4d4067a7a5594c18769d451a8ad
-  Zip: 805fc2fa9d2f05bbb7762d982d7a42ccdcc51f42
+  ALCameraViewController: 7b86c2888df0e63f53a801e9d96fe194f51157ec
+  CocoaAsyncSocket: eafaa68a7e0ec99ead0a7b35015e0bf25d2c8987
+  NSManagedObject-HYPPropertyMapper: 0502d7a0dcb8c0c8112757b80e6318a1baf9c486
+  SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
+  Zip: 8877eede3dda76bcac281225c20e71c25270774c
 
-PODFILE CHECKSUM: e2edf96d412343527decbe6199d270197a0a6f59
+PODFILE CHECKSUM: 2c840e6b0968da98773fafa6b10426573a2c8c6b
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.5.3

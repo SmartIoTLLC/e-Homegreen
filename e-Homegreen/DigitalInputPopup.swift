@@ -80,7 +80,7 @@ class DigitalInputPopup: PopoverVC {
         addObservers()
     }
     
-    func handleResetImages(_ notification: Notification) {
+    @objc func handleResetImages(_ notification: Notification) {
         if let object = notification.object as? [String: Any] {
             if let id = object["deviceId"] as? NSManagedObjectID {
                 if id == device.objectID {
@@ -101,12 +101,12 @@ class DigitalInputPopup: PopoverVC {
             level = FilterController.shared.getZoneByObjectId(id)
             if let level = level {
                 editedDevice?.levelId = (level.id?.intValue)!
-                btnZone.setTitle("All", for: UIControlState())
+                btnZone.setTitle("All", for: UIControl.State())
                 zoneSelected = nil
             } else {
                 // set default
                 editedDevice?.levelId = 255
-                btnZone.setTitle("All", for: UIControlState())
+                btnZone.setTitle("All", for: UIControl.State())
                 zoneSelected = nil
             }
             break
@@ -133,17 +133,17 @@ class DigitalInputPopup: PopoverVC {
             break
         case 4:
             editedDevice?.controlType = name
-            btnControlType.setTitle(name, for: UIControlState())
+            btnControlType.setTitle(name, for: UIControl.State())
             break
         case 5:
             editedDevice?.digitalInputMode = DigitalInput.modeInfoReverse[name]!
-            changeDeviceInputMode.setTitle(name,for: UIControlState())
+            changeDeviceInputMode.setTitle(name,for: UIControl.State())
             break
         default:
             break
         }
         
-        button.setTitle(name, for: UIControlState())
+        button.setTitle(name, for: UIControl.State())
     }
 }
 
@@ -163,24 +163,24 @@ extension DigitalInputPopup {
         lblChannel.text   = "\(device.channel)"
         
         level = DatabaseZoneController.shared.getZoneById(Int(device.parentZoneId), location: device.gateway.location)
-        if let level = level { btnLevel.setTitle(level.name, for: UIControlState()) } else { btnLevel.setTitle("All", for: UIControlState()) }
+        if let level = level { btnLevel.setTitle(level.name, for: UIControl.State()) } else { btnLevel.setTitle("All", for: UIControl.State()) }
         
         zoneSelected = DatabaseZoneController.shared.getZoneById(Int(device.zoneId), location: device.gateway.location)
-        if let zoneSelected = zoneSelected , zoneSelected.name != "Default" { btnZone.setTitle(zoneSelected.name, for: UIControlState()) } else { btnZone.setTitle("All", for: UIControlState()) }
+        if let zoneSelected = zoneSelected , zoneSelected.name != "Default" { btnZone.setTitle(zoneSelected.name, for: UIControl.State()) } else { btnZone.setTitle("All", for: UIControl.State()) }
         
         let category = DatabaseCategoryController.shared.getCategoryById(Int(device.categoryId), location: device.gateway.location)
-        if category != nil { btnCategory.setTitle(category?.name, for: UIControlState()) } else { btnCategory.setTitle("All", for: UIControlState()) }
+        if category != nil { btnCategory.setTitle(category?.name, for: UIControl.State()) } else { btnCategory.setTitle("All", for: UIControl.State()) }
         
         if let digInputMode = device.digitalInputMode?.intValue {
             let controlType = DigitalInput.modeInfo[digInputMode]
-            if controlType != "" { changeDeviceInputMode.setTitle(controlType, for: UIControlState()) } else { changeDeviceInputMode.setTitle("All", for: UIControlState()) }
+            if controlType != "" { changeDeviceInputMode.setTitle(controlType, for: UIControl.State()) } else { changeDeviceInputMode.setTitle("All", for: UIControl.State()) }
         }
         
-        btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", for: UIControlState())
+        btnControlType.setTitle("\(device.controlType == ControlType.Curtain ? ControlType.Relay : device.controlType)", for: UIControl.State())
         
         // Set current device input mode.
         // In DigitalInput struct is defined "ids" and "values" for digitalInputMode
-        if let diMode = device.digitalInputMode as? Int { changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], for: UIControlState()) }
+        if let diMode = device.digitalInputMode as? Int { changeDeviceInputMode.setTitle(DigitalInput.modeInfo[diMode], for: UIControl.State()) }
         
         txtFieldName.delegate = self
         

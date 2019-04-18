@@ -156,7 +156,7 @@ class EventsCollectionViewCell: UICollectionViewCell {
             Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(changeImageToNormal), userInfo: nil, repeats: false)
         }
     }
-    func changeImage(_ notification:Notification) {
+    @objc func changeImage(_ notification:Notification) {
         if let info = notification.userInfo! as? [String:Int] {
             
             if info["value"] == 1 { eventImageView.image = imageTwo; setNeedsDisplay() }
@@ -164,12 +164,12 @@ class EventsCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func changeImageToNormal () {
+    @objc func changeImageToNormal () {
         eventImageView.image = imageOne
         setNeedsDisplay()
     }
     
-    func saveParameters() {
+    @objc func saveParameters() {
         if broadcastSwitch.isOn { event.isBroadcast = true } else { event.isBroadcast = false }
         if localcastSwitch.isOn { event.isLocalcast = true } else { event.isLocalcast = false }
         if triggerSwitch.isOn { event.useTrigger = true } else { event.useTrigger = false }
@@ -186,18 +186,18 @@ class EventsCollectionViewCell: UICollectionViewCell {
     
     func setupBackView() {
         backView.setGradientBackground()
-        backView.bringSubview(toFront: broadcastLabel)
-        backView.bringSubview(toFront: broadcastSwitch)
-        backView.bringSubview(toFront: localcastLabel)
-        backView.bringSubview(toFront: localcastSwitch)
-        backView.bringSubview(toFront: triggerLabel)
-        backView.bringSubview(toFront: triggerSwitch)
-        backView.bringSubview(toFront: saveButton)
+        backView.bringSubviewToFront(broadcastLabel)
+        backView.bringSubviewToFront(broadcastSwitch)
+        backView.bringSubviewToFront(localcastLabel)
+        backView.bringSubviewToFront(localcastSwitch)
+        backView.bringSubviewToFront(triggerLabel)
+        backView.bringSubviewToFront(triggerSwitch)
+        backView.bringSubviewToFront(saveButton)
         
         frontView.setGradientBackground(colors: [UIColor(red: 13/255, green: 76/255, blue: 102/255, alpha: 1.0).withAlphaComponent(0.95).cgColor, UIColor(red: 82/255, green: 181/255, blue: 219/255, alpha: 1.0).withAlphaComponent(1.0).cgColor])
-        frontView.bringSubview(toFront: eventTitle)
-        frontView.bringSubview(toFront: eventImageView)
-        frontView.bringSubview(toFront: eventButton)
+        frontView.bringSubviewToFront(eventTitle)
+        frontView.bringSubviewToFront(eventImageView)
+        frontView.bringSubviewToFront(eventButton)
         
         broadcastSwitch.isOn = event.isBroadcast.boolValue
         localcastSwitch.isOn = event.isLocalcast.boolValue

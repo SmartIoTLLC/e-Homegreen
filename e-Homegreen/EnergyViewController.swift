@@ -263,16 +263,16 @@ extension EnergyViewController: FilterPullDownDelegate{
         self.view.makeToast(message: "Default filter parametar saved!")
     }
     
-    func setDefaultFilterFromTimer(){
+    @objc func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.energy)
     }
     
-    func refreshLocalParametars() {
+    @objc func refreshLocalParametars() {
         updateDeviceList()
     }
     
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizer.State.began {
             scrollView.setDefaultFilterItem(Menu.energy)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }

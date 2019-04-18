@@ -74,7 +74,7 @@ class SidemenuUserCollectionViewCell: UICollectionViewCell {
         logoutButton.addTap {
             self.logOut()
         }
-        logoutButton.setImage(#imageLiteral(resourceName: "btn_log_out"), for: UIControlState())
+        logoutButton.setImage(#imageLiteral(resourceName: "btn_log_out"), for: UIControl.State())
         
         addSubview(logoutButton)
     }

@@ -54,7 +54,7 @@ class BigSliderXIB: CommonXIBTransitionVC {
         return true
     }
     
-    func changeSliderValueOnOneTap (_ gesture:UIGestureRecognizer) {
+    @objc func changeSliderValueOnOneTap (_ gesture:UIGestureRecognizer) {
         let s = gesture.view as! UISlider
         if s.isHighlighted { return } // tap on thumb, let slider deal with it
         

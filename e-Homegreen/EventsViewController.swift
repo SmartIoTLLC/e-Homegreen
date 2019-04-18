@@ -97,12 +97,12 @@ extension EventsViewController: FilterPullDownDelegate{
         eventCollectionView.reloadData()
     }
     
-    func setDefaultFilterFromTimer(){
+    @objc func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.events)
     }
     
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizer.State.began {
             scrollView.setDefaultFilterItem(Menu.events)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
@@ -186,7 +186,7 @@ extension EventsViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerEvents), object: nil)
     }
     
-    func rotateCell(_ gesture: UILongPressGestureRecognizer) {
+    @objc func rotateCell(_ gesture: UILongPressGestureRecognizer) {
         if gesture.state == .began {
             let location = gesture.location(in: eventCollectionView)
             if let indexPath = eventCollectionView.indexPathForItem(at: location) {
@@ -203,10 +203,10 @@ extension EventsViewController {
 // MARK: - Logic
 extension EventsViewController {
     
-    func setEvent (_ gesture:UIGestureRecognizer) {
+    @objc func setEvent (_ gesture:UIGestureRecognizer) {
         sendEventCommand(from: gesture, eventType: .run)
     }
-    func tapCancel (_ gesture:UITapGestureRecognizer) {
+    @objc func tapCancel (_ gesture:UITapGestureRecognizer) {
         sendEventCommand(from: gesture, eventType: .cancel)
     }
     

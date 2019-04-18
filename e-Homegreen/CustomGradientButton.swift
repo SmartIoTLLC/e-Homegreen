@@ -42,7 +42,7 @@ class CustomGradientButton: UIButton {
         context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions(rawValue: 0))
         
         path.stroke()
-        self.setTitleColor(UIColor.white, for: UIControlState())
+        self.setTitleColor(UIColor.white, for: UIControl.State())
         self.backgroundColor = UIColor.clear
     }
     

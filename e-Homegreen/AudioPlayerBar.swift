@@ -57,7 +57,7 @@ class AudioPlayerBar: UIView {
     }
     
     private func addPauseButton() {
-        pauseButton.setImage(#imageLiteral(resourceName: "audio_pause"), for: UIControlState())
+        pauseButton.setImage(#imageLiteral(resourceName: "audio_pause"), for: UIControl.State())
         pauseButton.backgroundColor        = UIColor.darkGray
         pauseButton.imageView?.contentMode = .scaleAspectFit
         pauseButton.layer.cornerRadius     = 3
@@ -66,7 +66,7 @@ class AudioPlayerBar: UIView {
     }
     
     private func addStopButton() {
-        stopButton.setImage(#imageLiteral(resourceName: "audio_stop"), for: UIControlState())
+        stopButton.setImage(#imageLiteral(resourceName: "audio_stop"), for: UIControl.State())
         stopButton.backgroundColor        = UIColor.darkGray
         stopButton.layer.cornerRadius     = 3
         stopButton.imageView?.contentMode = .scaleAspectFit
@@ -75,7 +75,7 @@ class AudioPlayerBar: UIView {
     }
     
     private func addPlayButton() {
-        playButton.setImage(#imageLiteral(resourceName: "audio_play"), for: UIControlState())
+        playButton.setImage(#imageLiteral(resourceName: "audio_play"), for: UIControl.State())
         playButton.backgroundColor        = UIColor.darkGray
         playButton.layer.cornerRadius     = 3
         playButton.imageView?.contentMode = .scaleAspectFit

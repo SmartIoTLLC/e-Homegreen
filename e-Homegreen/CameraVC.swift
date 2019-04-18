@@ -81,7 +81,7 @@ class CameraVC: UIViewController {
     @IBAction func btnAutoPan(_ sender: AnyObject) {
         var title = ""
         if isAutoPanStop { title = "AUTO PAN" } else { title = "STOP" }
-        btnAutoPan.setTitle(title, for: UIControlState())
+        btnAutoPan.setTitle(title, for: UIControl.State())
         moveCam.autoPan(surv, isStopNecessary: isAutoPanStop)
         isAutoPanStop = !isAutoPanStop
     }
@@ -94,7 +94,7 @@ class CameraVC: UIViewController {
         var title = ""
         if isPresetSequenceStop { title = "PRESET SEQUENCE" } else { title = "STOP" }
         isPresetSequenceStop = !isPresetSequenceStop
-        btnPresetSequence.setTitle(title, for: UIControlState())
+        btnPresetSequence.setTitle(title, for: UIControl.State())
         moveCam.presetSequence(surv, isStopNecessary: isPresetSequenceStop)
     }
     
@@ -102,7 +102,7 @@ class CameraVC: UIViewController {
         return UIInterfaceOrientationMask.landscapeLeft
     }
     
-    func update(){
+    @objc func update(){
         if surv.imageData != nil { image.image = UIImage(data: surv.imageData! as Data) } else { image.image = UIImage(named: "loading") }
     }
     

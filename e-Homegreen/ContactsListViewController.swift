@@ -21,7 +21,7 @@ class ContactsListViewController: CommonXIBTransitionVC {
     var contacts = [CNContact]()
     
     override func viewDidLoad() {
-        NotificationCenter.default.addObserver(self, selector: #selector(setupConstraints), name: .UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setupConstraints), name: UIDevice.orientationDidChangeNotification, object: nil)
 
         addDismissArea()
         addTableView()
@@ -31,7 +31,7 @@ class ContactsListViewController: CommonXIBTransitionVC {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: .UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
     private func addDismissArea() {
@@ -86,7 +86,7 @@ class ContactsListViewController: CommonXIBTransitionVC {
     // MARK: - Logic
     func callContact(number: String) {
         var formattedNumber = ""
-        for c in number.characters {
+        for c in number {
             if ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].contains(c) {
                 formattedNumber += String(describing: c)
             }

@@ -205,7 +205,7 @@ class ApplianceCollectionViewCell: BaseDeviceCollectionViewCell {
     override func setCell(with device: Device, tag: Int) {
         super.setCell(with: device, tag: tag)
         
-        backTitleLabel.attributedText = NSAttributedString(string: device.cellTitle, attributes:[NSForegroundColorAttributeName: UIColor.white])
+        backTitleLabel.attributedText = NSAttributedString(string: device.cellTitle, attributes:[NSAttributedString.Key.foregroundColor: UIColor.white])
         backTitleLabel.tag = tag
         
         let deviceValue:Double = { return Double(device.currentValue) }()

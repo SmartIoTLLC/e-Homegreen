@@ -111,7 +111,7 @@ extension ButtonCell {
             default: break
         }
         if color != .clear { addGradient(color: color) } else { removeGradient() }
-        if let imageView = realButton.imageView { realButton.bringSubview(toFront: imageView) }
+        if let imageView = realButton.imageView { realButton.bringSubviewToFront(imageView) }
         
         switch button.buttonState! {
             case ButtonState.visible                        :
@@ -213,10 +213,10 @@ extension ButtonCell {
         switch button.buttonInternalType! {
             case ButtonInternalType.image, ButtonInternalType.imageButton :
                 scaleAndSetButtonImage()
-                realButton.setTitle(nil, for: UIControlState())
+                realButton.setTitle(nil, for: UIControl.State())
             case ButtonInternalType.regular                               :
-                realButton.setImage(nil, for: UIControlState())
-                realButton.setTitle(button.name!, for: UIControlState())
+                realButton.setImage(nil, for: UIControl.State())
+                realButton.setTitle(button.name!, for: UIControl.State())
             default                                                       : break
         }
     }
@@ -227,8 +227,8 @@ extension ButtonCell {
         setType()
         setInternalType()
         
-        realButton.setTitle(button.name, for: UIControlState())
-        realButton.setTitleColor(.white, for: UIControlState())
+        realButton.setTitle(button.name, for: UIControl.State())
+        realButton.setTitleColor(.white, for: UIControl.State())
         if let rbLabel = realButton.titleLabel {
             rbLabel.textAlignment             = .center
             rbLabel.font                      = .tahoma(size: 15)
@@ -256,15 +256,15 @@ extension ButtonCell {
             let uiImage = UIImage(data: image as Data)
             if imageScaleX != 1.0 || imageScaleY != 1.0 {
                 if let scaledImage = uiImage?.getScaledButtonImage(x: imageScaleX!, y: imageScaleY!) {
-                    realButton.setImage(scaledImage, for: UIControlState())
+                    realButton.setImage(scaledImage, for: UIControl.State())
                 }
             } else {
-                realButton.setImage(uiImage, for: UIControlState())
+                realButton.setImage(uiImage, for: UIControl.State())
             }
             realButton.imageView?.contentMode = .scaleAspectFit
             realButton.imageEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
         } else {
-            realButton.setImage(nil, for: UIControlState())
+            realButton.setImage(nil, for: UIControl.State())
         }
     }
     

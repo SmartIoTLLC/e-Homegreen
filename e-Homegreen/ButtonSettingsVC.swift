@@ -69,23 +69,23 @@ class ButtonSettingsVC: CommonXIBTransitionVC, UITextFieldDelegate {
     }
     
     // MARK: - Button look
-    func receivedButtonColor(_ notification: Notification) {
+    @objc func receivedButtonColor(_ notification: Notification) {
         if let color = notification.object as? String {
-            buttonColor.setTitle(color, for: UIControlState())
+            buttonColor.setTitle(color, for: UIControl.State())
         }
     }
     
-    func receivedButtonShape(_ notification: Notification) {
+    @objc func receivedButtonShape(_ notification: Notification) {
         if let shape = notification.object as? String {
-            buttonShape.setTitle(shape, for: UIControlState())
+            buttonShape.setTitle(shape, for: UIControl.State())
         }
     }
     
     @objc fileprivate func setButtonImage() {
         if let buttonImage = button.image {
-            imageButton.setBackgroundImage(UIImage(data: buttonImage as Data), for: UIControlState())            
+            imageButton.setBackgroundImage(UIImage(data: buttonImage as Data), for: UIControl.State())
         } else {
-            imageButton.setBackgroundImage(#imageLiteral(resourceName: "galleryIcon").withRenderingMode(.alwaysTemplate), for: UIControlState())
+            imageButton.setBackgroundImage(#imageLiteral(resourceName: "galleryIcon").withRenderingMode(.alwaysTemplate), for: UIControl.State())
             (imageButton.subviews[0] as! UIImageView).tintColor = .white            
         }
         (imageButton.subviews[0] as! UIImageView).contentMode = .scaleAspectFit
@@ -106,7 +106,7 @@ class ButtonSettingsVC: CommonXIBTransitionVC, UITextFieldDelegate {
     }
     
     fileprivate func setIRmode() {
-        buttonType.setTitle(ButtonType.irButton, for: UIControlState())
+        buttonType.setTitle(ButtonType.irButton, for: UIControl.State())
         
         addressOneTF.setEnabled()
         addressTwoTF.setEnabled()
@@ -118,7 +118,7 @@ class ButtonSettingsVC: CommonXIBTransitionVC, UITextFieldDelegate {
     }
     
     fileprivate func setSceneMode() {
-        buttonType.setTitle(ButtonType.sceneButton, for: UIControlState())
+        buttonType.setTitle(ButtonType.sceneButton, for: UIControl.State())
         
         addressOneTF.setEnabled()
         addressTwoTF.setEnabled()
@@ -129,7 +129,7 @@ class ButtonSettingsVC: CommonXIBTransitionVC, UITextFieldDelegate {
     }
     
     fileprivate func setHEXmode() {
-        buttonType.setTitle(ButtonType.hexButton, for: UIControlState())
+        buttonType.setTitle(ButtonType.hexButton, for: UIControl.State())
         
         addressOneTF.setDisabled()
         addressTwoTF.setDisabled()
@@ -151,21 +151,21 @@ class ButtonSettingsVC: CommonXIBTransitionVC, UITextFieldDelegate {
     }
     
     fileprivate func setRegularInteralType() {
-        buttonInternalType.setTitle(ButtonInternalType.regular, for: UIControlState())
+        buttonInternalType.setTitle(ButtonInternalType.regular, for: UIControl.State())
         imageButton.isEnabled = false
         scaleXTF.setDisabled()
         scaleYTF.setDisabled()
     }
     
     fileprivate func setImageInternalType() {
-        buttonInternalType.setTitle(ButtonInternalType.image, for: UIControlState())
+        buttonInternalType.setTitle(ButtonInternalType.image, for: UIControl.State())
         imageButton.isEnabled = true
         scaleXTF.setEnabled()
         scaleYTF.setEnabled()
     }
     
     fileprivate func setImageButtonInternalType() {
-        buttonInternalType.setTitle(ButtonInternalType.imageButton, for: UIControlState())
+        buttonInternalType.setTitle(ButtonInternalType.imageButton, for: UIControl.State())
         imageButton.isEnabled = true
         scaleXTF.setEnabled()
         scaleYTF.setEnabled()
@@ -174,9 +174,9 @@ class ButtonSettingsVC: CommonXIBTransitionVC, UITextFieldDelegate {
     // MARK: - Button visibility
     @objc fileprivate func setButtonVisibility() {
         switch visibilityButton.titleLabel!.text! {
-            case ButtonState.visible    : visibilityButton.setTitle(ButtonState.invisible, for: UIControlState())
-            case ButtonState.invisible  : visibilityButton.setTitle(ButtonState.disable, for: UIControlState())
-            case ButtonState.disable    : visibilityButton.setTitle(ButtonState.visible, for: UIControlState())
+        case ButtonState.visible    : visibilityButton.setTitle(ButtonState.invisible, for: UIControl.State())
+        case ButtonState.invisible  : visibilityButton.setTitle(ButtonState.disable, for: UIControl.State())
+        case ButtonState.disable    : visibilityButton.setTitle(ButtonState.visible, for: UIControl.State())
             default: break
         }
     }
@@ -342,25 +342,25 @@ extension ButtonSettingsVC {
         }
         
         switch button.buttonState! {
-            case ButtonState.visible    : visibilityButton.setTitle(ButtonState.visible, for: UIControlState())
-            case ButtonState.invisible  : visibilityButton.setTitle(ButtonState.invisible, for: UIControlState())
-            case ButtonState.disable    : visibilityButton.setTitle(ButtonState.disable, for: UIControlState())
+        case ButtonState.visible    : visibilityButton.setTitle(ButtonState.visible, for: UIControl.State())
+        case ButtonState.invisible  : visibilityButton.setTitle(ButtonState.invisible, for: UIControl.State())
+        case ButtonState.disable    : visibilityButton.setTitle(ButtonState.disable, for: UIControl.State())
             default: break
         }
         
         switch button.buttonShape! {
-            case ButtonShape.circle         : buttonShape.setTitle(ButtonShape.circle, for: UIControlState())
-            case ButtonShape.rectangle    : buttonShape.setTitle(ButtonShape.rectangle, for: UIControlState())
+        case ButtonShape.circle         : buttonShape.setTitle(ButtonShape.circle, for: UIControl.State())
+        case ButtonShape.rectangle    : buttonShape.setTitle(ButtonShape.rectangle, for: UIControl.State())
             default: break
         }
         
-        buttonColor.setTitle(button.buttonColor!, for: UIControlState())
+        buttonColor.setTitle(button.buttonColor!, for: UIControl.State())
     }
     
     fileprivate func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(receivedButtonColor(_:)), name: .ButtonColorChosen, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name:.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name:UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(receivedButtonShape(_:)), name: .ButtonShapeChosen, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setButtonImage), name: .ButtonImageChosen, object: nil)
     }
@@ -379,9 +379,9 @@ extension ButtonSettingsVC {
         topMarginTF.delegate    = self
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let keyboardFrame: CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
         moveTextfield(textfield: nameTF, keyboardFrame: keyboardFrame, backView: backgroundView)
         moveTextfield(textfield: addressOneTF, keyboardFrame: keyboardFrame, backView: backgroundView)

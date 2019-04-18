@@ -338,15 +338,16 @@ extension SceneGalleryVC {
     }
     
     fileprivate func openGallery() {
-        let libraryViewController = CameraViewController.imagePickerViewController(croppingEnabled: true) { [weak self] image, asset in
+        let parameters: CroppingParameters = CroppingParameters(isEnabled: true, allowResizing: false, allowMoving: true, minimumSize: .zero)
+        let libraryViewController = CameraViewController.imagePickerViewController(croppingParameters: parameters) { [weak self] image, asset in
             if let backImage = image {
                 self?.updateWithImage(backImage)
-                self?.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self!.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self!.imageIndex)
+                self?.delegate?.backImageFromGallery!(self!.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)).jpegData(compressionQuality: 0.5)!, imageIndex: self!.imageIndex)
                 
                 if let _self = self {
                     if _self.isForSceneImages {
                         if let image = _self.createdImage {
-                            _self.delegate?.returnedGaleryImage!(image, data: UIImageJPEGRepresentation(_self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: _self.imageIndex)
+                            _self.delegate?.returnedGaleryImage!(image, data: _self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)).jpegData(compressionQuality: 0.5)!, imageIndex: _self.imageIndex)
                         }
                     }
                 }
@@ -376,13 +377,17 @@ extension SceneGalleryVC {
     }
     
     fileprivate func openCamera() {
-        let cameraViewController = CameraViewController(croppingEnabled: true) { (image, asset) in
+        let parameters: CroppingParameters = CroppingParameters(isEnabled: true, allowResizing: false, allowMoving: true, minimumSize: .zero)
+        let cameraViewController = CameraViewController(croppingParameters: parameters, allowsLibraryAccess: true, allowsSwapCameraOrientation: true, allowVolumeButtonCapture: true) { (image, asset) in
             if let backImage = image {
-                self.delegate?.backImageFromGallery!(UIImageJPEGRepresentation(self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self.imageIndex)
+                let targetSize = CGSize(width: 200, height: 200)
+                let resizedImage = self.RBResizeImage(backImage, targetSize: targetSize)
+                self.delegate?.backImageFromGallery?(resizedImage.jpegData(compressionQuality: 0.5)!, imageIndex: self.imageIndex)
+            
                 self.updateWithImage(backImage)
                 if self.isForSceneImages {
                     if let image = self.createdImage {
-                        self.delegate?.returnedGaleryImage!(image, data: UIImageJPEGRepresentation(self.RBResizeImage(backImage, targetSize: CGSize(width: 200, height: 200)), 0.5)!, imageIndex: self.imageIndex)
+                        self.delegate?.returnedGaleryImage!(image, data: resizedImage.jpegData(compressionQuality: 0.5)!, imageIndex: self.imageIndex)
                     }
                 }
                 self.dismiss(animated: true, completion: { () -> Void in
@@ -392,13 +397,14 @@ extension SceneGalleryVC {
                 self.dismiss(animated: true, completion: nil)
             }
         }
+
         present(cameraViewController, animated: true, completion: nil)
     }
     
     func updateWithImage (_ image:UIImage) {
         if let moc = appDel.managedObjectContext {
             let newImage = Image(context: moc)
-            newImage.imageData = UIImageJPEGRepresentation(RBResizeImage(image, targetSize: CGSize(width: 150, height: 150)), 0.5)
+            newImage.imageData = RBResizeImage(image, targetSize: CGSize(width: 150, height: 150)).jpegData(compressionQuality: 0.5)
             newImage.imageId = String(describing: Date())
             if let user = user {
                 user.addImagesObject(newImage)

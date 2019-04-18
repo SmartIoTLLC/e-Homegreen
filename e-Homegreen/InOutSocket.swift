@@ -45,7 +45,7 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
         }
     }
 
-    func udpSocketDidClose(_ sock: GCDAsyncUdpSocket, withError error: Error) {
+    func udpSocketDidClose(_ sock: GCDAsyncUdpSocket, withError error: Error?) {
         print("UDP DID CLOSE")
     }
     
@@ -63,13 +63,13 @@ class InOutSocket: NSObject, GCDAsyncUdpSocketDelegate {
     
     func udpSocket(_ sock: GCDAsyncUdpSocket, didConnectToAddress address: Data) {}
     
-    func udpSocket(_ sock: GCDAsyncUdpSocket, didNotConnect error: Error) {
+    func udpSocket(_ sock: GCDAsyncUdpSocket, didNotConnect error: Error?) {
         print("UDP didNotConnect \(error)")
     }
     
     func udpSocket(_ sock: GCDAsyncUdpSocket, didSendDataWithTag tag: Int) {}
     
-    func udpSocket(_ sock: GCDAsyncUdpSocket, didNotSendDataWithTag tag: Int, dueToError error: Error) {
+    func udpSocket(_ sock: GCDAsyncUdpSocket, didNotSendDataWithTag tag: Int, dueToError error: Error?) {
         print("UDP did not send")
     }
     

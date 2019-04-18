@@ -188,11 +188,11 @@ extension AddRemoteViewController {
     
     func setButton(button: CustomGradientButton, title: String) {
         button.titleLabel?.font = .tahoma(size: 15)
-        button.setTitle(title, for: UIControlState())
+        button.setTitle(title, for: UIControl.State())
         button.backgroundColor  = .clear
     }
     
-    func dismissVC() {
+    @objc func dismissVC() {
         dismiss(animated: true, completion: nil)
     }
     
@@ -216,7 +216,7 @@ extension AddRemoteViewController {
     
     @objc fileprivate func colorRecieved(_ notification: Notification) {
         if let color = notification.object as? String {
-            colorButton.setTitle(color, for: UIControlState())
+            colorButton.setTitle(color, for: UIControl.State())
         }
     }
     
@@ -226,13 +226,13 @@ extension AddRemoteViewController {
     
     @objc fileprivate func shapeRecieved(_ notification: Notification) {
         if let shape = notification.object as? String {
-            shapeButton.setTitle(shape, for: UIControlState())
+            shapeButton.setTitle(shape, for: UIControl.State())
         }
     }
     
     fileprivate func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(shapeRecieved(_:)), name: .ButtonShapeChosen, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(colorRecieved(_:)), name: .ButtonColorChosen, object: nil)
     }
@@ -240,7 +240,7 @@ extension AddRemoteViewController {
     @objc fileprivate func keyboardWillShow(_ notification: Notification) {
         
         let info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let keyboardFrame: CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
         moveTextfield(textfield: nameTF, keyboardFrame: keyboardFrame, backView: backView)
         moveTextfield(textfield: columnsTF, keyboardFrame: keyboardFrame, backView: backView)
@@ -353,18 +353,18 @@ extension AddRemoteViewController: UIPopoverPresentationControllerDelegate, PopO
         case 0 : break // Sme li da se menja lokacija sa ovog ekrana??
         case 1 :
             if let levelTemp = FilterController.shared.getZoneByObjectId(id) {
-                levelButton.setTitle(levelTemp.name, for: UIControlState())
+                levelButton.setTitle(levelTemp.name, for: UIControl.State())
                 selectedLevel = levelTemp
             } else {
-                levelButton.setTitle("All", for: UIControlState())
+                levelButton.setTitle("All", for: UIControl.State())
                 selectedLevel = nil
             }
         case 2 :
             if let zoneTemp = FilterController.shared.getZoneByObjectId(id) {
-                zoneButton.setTitle(zoneTemp.name, for: UIControlState())
+                zoneButton.setTitle(zoneTemp.name, for: UIControl.State())
                 selectedZone = zoneTemp
             } else {
-                zoneButton.setTitle("All", for: UIControlState())
+                zoneButton.setTitle("All", for: UIControl.State())
                 selectedZone = nil
             }
         default: break

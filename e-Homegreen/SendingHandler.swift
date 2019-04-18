@@ -73,7 +73,7 @@ extension UIDevice {
                     let rec = unsafeBitCast(interfaceName, to: AnyObject.self)
                     let unsafeInterfaceData = CNCopyCurrentNetworkInfo("\(rec)" as CFString)
                     if unsafeInterfaceData != nil {
-                        let interfaceData = unsafeInterfaceData! as NSDictionary!
+                        let interfaceData = unsafeInterfaceData! as NSDictionary?
                         return (interfaceData?["SSID"] as! String)
                     }
                 }

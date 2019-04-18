@@ -94,7 +94,7 @@ class SceneCollectionCell: UICollectionViewCell {
         sceneCellImageView.image = imageOne
     }
     
-    func changeImageToNormal () {
+    @objc func changeImageToNormal () {
         sceneCellImageView.image = imageOne
     }
     

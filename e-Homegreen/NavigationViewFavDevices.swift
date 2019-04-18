@@ -66,7 +66,7 @@ class NavigationViewFavDevices: UIView {
         filterButton.addTarget(self, action: #selector(changeType), for: .touchUpInside)
         filterButton.titleLabel?.font = .tahoma(size: 17)
         filterButton.titleLabel?.adjustsFontSizeToFitWidth = true
-        filterButton.setTitle(filterType.rawValue, for: UIControlState())
+        filterButton.setTitle(filterType.rawValue, for: UIControl.State())
         
         
         addSubview(filterButton)
@@ -86,13 +86,13 @@ class NavigationViewFavDevices: UIView {
     
     @objc fileprivate func changeType() {
         switch filterType {
-            case .locationLevelZoneName : filterType = .levelZoneName
-            case .levelZoneName         : filterType = .zoneName
-            case .zoneName              : filterType = .deviceName
-            case .deviceName            : filterType = .locationLevelZoneName
+            case .locationLevelZoneName? : filterType = .levelZoneName
+            case .levelZoneName?         : filterType = .zoneName
+            case .zoneName?              : filterType = .deviceName
+            case .deviceName?            : filterType = .locationLevelZoneName
             default: break
         }
-        filterButton.setTitle(filterType.rawValue, for: UIControlState())
+        filterButton.setTitle(filterType.rawValue, for: UIControl.State())
         Foundation.UserDefaults.standard.set(filterType.rawValue, forKey: UserDefaults.FavDevicesLabelType)
         changeFilterButtonConstraints()
         NotificationCenter.default.post(name: .favDeviceFilterTypeChanged, object: filterType)
@@ -101,10 +101,10 @@ class NavigationViewFavDevices: UIView {
     fileprivate func changeFilterButtonConstraints() {
         var i: CGFloat = 1
         switch filterType {
-            case .locationLevelZoneName : i = 4
-            case .levelZoneName         : i = 3
-            case .zoneName              : i = 2
-            case .deviceName            : i = 1
+            case .locationLevelZoneName? : i = 4
+            case .levelZoneName?         : i = 3
+            case .zoneName?              : i = 2
+            case .deviceName?            : i = 1
             default: break
         }
         

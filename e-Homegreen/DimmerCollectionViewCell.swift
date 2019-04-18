@@ -108,9 +108,9 @@ class DimmerCollectionViewCell: BaseDeviceCollectionViewCell {
         infoRefreshButton.setAttributedTitle(
             NSAttributedString(
                 string: "Refresh",
-                attributes: [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont.tahoma(size: 15)]
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.tahoma(size: 15)]
             )
-            , for: UIControlState()
+            , for: UIControl.State()
         )
         
         infoView.addSubview(infoRefreshButton)
@@ -202,7 +202,7 @@ class DimmerCollectionViewCell: BaseDeviceCollectionViewCell {
     override func setCell(with device: Device, tag: Int) {
         super.setCell(with: device, tag: tag)
         
-        backTitleLabel.attributedText = NSAttributedString(string: device.cellTitle, attributes:[NSForegroundColorAttributeName: UIColor.white])
+        backTitleLabel.attributedText = NSAttributedString(string: device.cellTitle, attributes:[NSAttributedString.Key.foregroundColor: UIColor.white])
         backTitleLabel.tag  = tag
         
         let deviceValue:Double = { return Double(device.currentValue) }() // 255

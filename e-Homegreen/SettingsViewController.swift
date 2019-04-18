@@ -64,8 +64,8 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
         setupViews()
         setupConstraints()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     func setupViews() {
@@ -118,7 +118,7 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
         self.view.makeToast(message: "Passwords was changed successfully")
     }
     
-    func btnAddHourPressed(_ sender:UIButton) {
+    @objc func btnAddHourPressed(_ sender:UIButton) {
         if sender.tag == 1 {
             if hourRefresh < 23 { hourRefresh += 1 } else { hourRefresh = 0 }
             settingsTableView.reloadData()
@@ -133,7 +133,7 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
         
     }
     
-    func btnDecHourPressed(_ sender:UIButton) {
+    @objc func btnDecHourPressed(_ sender:UIButton) {
         switch sender.tag {
             case 1:
                 if hourRefresh > 0 { hourRefresh -= 1 } else { hourRefresh = 23 }
@@ -143,19 +143,19 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
         settingsTableView.reloadData()
     }
     
-    func changeValue(_ sender:UISwitch) {
-        if let user = user { user.openLastScreen = sender.isOn as NSNumber!
-        } else { if let tempUser = DatabaseUserController.shared.getLoggedUser() { tempUser.openLastScreen = sender.isOn as NSNumber! } }
+    @objc func changeValue(_ sender:UISwitch) {
+        if let user = user { user.openLastScreen = sender.isOn as NSNumber?
+        } else { if let tempUser = DatabaseUserController.shared.getLoggedUser() { tempUser.openLastScreen = sender.isOn as NSNumber? } }
     }
     
-    func lockProfile(_ sender:UISwitch) {
+    @objc func lockProfile(_ sender:UISwitch) {
         
         if let user = user { user.isLocked = sender.isOn as NSNumber
         } else if let user = DatabaseUserController.shared.getLoggedUser() { user.isLocked = sender.isOn as NSNumber }
         CoreDataController.sharedInstance.saveChanges()
     }
     
-    func didTouchSettingButton (_ sender:AnyObject) {
+    @objc func didTouchSettingButton (_ sender:AnyObject) {
         if let view = sender as? UIButton {
             let tag = view.tag
             
@@ -170,13 +170,13 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
         }
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         if let userInfo = notification.userInfo {
-            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-            let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
-            let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
-            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions().rawValue
-            let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
+            let endFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            let duration:TimeInterval = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+            let animationCurveRawNSN = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber
+            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIView.AnimationOptions().rawValue
+            let animationCurve:UIView.AnimationOptions = UIView.AnimationOptions(rawValue: animationCurveRaw)
             if let endFrame = endFrame { self.tableBottomConstraint.constant = endFrame.size.height + 5 }
             UIView.animate(withDuration: duration,
                            delay: TimeInterval(0),
@@ -188,10 +188,10 @@ class SettingsViewController: UIViewController, UIGestureRecognizerDelegate, SWR
     
     override func keyboardWillHide(_ notification: Notification) {
         if let userInfo = notification.userInfo {
-            let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
-            let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
-            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions().rawValue
-            let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
+            let duration:TimeInterval = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+            let animationCurveRawNSN = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber
+            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIView.AnimationOptions().rawValue
+            let animationCurve:UIView.AnimationOptions = UIView.AnimationOptions(rawValue: animationCurveRaw)
             
             self.tableBottomConstraint.constant = 0
             
@@ -320,7 +320,7 @@ extension SettingsViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if let cell = textField.superview?.superview as? BroadcastTimeAndDateTVC {
-            settingsTableView.scrollToRow(at: settingsTableView.indexPath(for: cell)!, at: UITableViewScrollPosition.middle, animated: true)
+            settingsTableView.scrollToRow(at: settingsTableView.indexPath(for: cell)!, at: UITableView.ScrollPosition.middle, animated: true)
         }
     }
 }
@@ -331,7 +331,7 @@ class SettinsTableViewCell: UITableViewCell {
     
     func setCell(settingsArray: [SettingsItem], indexPath: IndexPath) {
         settingsButton.tag = indexPath.section
-        settingsButton.setTitle(settingsArray[indexPath.section].description, for: UIControlState())
+        settingsButton.setTitle(settingsArray[indexPath.section].description, for: UIControl.State())
         backgroundColor = .clear
         layer.cornerRadius = 5
     }

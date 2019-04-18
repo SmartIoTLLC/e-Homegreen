@@ -70,9 +70,27 @@ class ButtonImagePickerVC: CommonXIBTransitionVC {
 
 // MARK: - Image Picker Delegate
 extension ButtonImagePickerVC: UIImagePickerControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
-        savePickedImage(info: info)
+        var pickedImage: UIImage!
+        
+        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            pickedImage = image
+        } else if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
+            pickedImage = image
+        }
+        
+        if let moc = managedContext {
+            if let image = pickedImage.pngData() {
+                let moImage = Image(context: moc, image: image, id: "buttonImage")
+                
+                if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
+                    user.addImagesObject(moImage)
+                    CoreDataController.sharedInstance.saveChanges()
+                    NotificationCenter.default.post(name: .CustomButtonImageEdited, object: nil)
+                }
+            }
+        }
         
         picker.dismiss(animated: true, completion: nil)
     }
@@ -101,11 +119,8 @@ extension ButtonImagePickerVC {
         
         segmentedControl.setTitle("DEFAULT LIBRARY", forSegmentAt: 0)
         segmentedControl.setTitle("CUSTOM LIBRARY", forSegmentAt: 1)
-        let attributes: [String: AnyObject] = [
-            NSForegroundColorAttributeName: UIColor.white,
-            NSFontAttributeName: UIFont(name: "Tahoma", size: 15.0)!
-        ]
-        segmentedControl.setTitleTextAttributes(attributes, for: UIControlState())
+        let attributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.tahoma(size: 15)]
+        segmentedControl.setTitleTextAttributes(attributes, for: UIControl.State())
         
         toolbarSeparator.backgroundColor = UIColor(cgColor: Colors.MediumGray).withAlphaComponent(0.5)
         bottomToolbar.addSubview(toolbarSeparator)
@@ -177,14 +192,14 @@ extension ButtonImagePickerVC {
     
     fileprivate func set(button: UIButton, tag: CGFloat) {
         switch tag {
-            case 0  : button.setTitle("EDIT", for: UIControlState())
-            case 1  : button.setTitle("IMPORT", for: UIControlState())
-            case 2  : button.setTitle("CANCEL", for: UIControlState())
-            case 3  : button.setTitle("SET", for: UIControlState())
+        case 0  : button.setTitle("EDIT", for: UIControl.State())
+        case 1  : button.setTitle("IMPORT", for: UIControl.State())
+        case 2  : button.setTitle("CANCEL", for: UIControl.State())
+        case 3  : button.setTitle("SET", for: UIControl.State())
             default : break
         }
         
-        button.setTitleColor(.white, for: UIControlState())
+        button.setTitleColor(.white, for: UIControl.State())
         button.titleLabel?.font = .tahoma(size: 15)
         
         button.backgroundColor  = .clear
@@ -420,31 +435,9 @@ extension ButtonImagePickerVC {
 // MARK: - Logic
 extension ButtonImagePickerVC {
     
-    fileprivate func savePickedImage(info: [String: Any]) {
-        var pickedImage: UIImage!
-        
-        if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
-            pickedImage = image
-        } else if let image = info[UIImagePickerControllerOriginalImage] as? UIImage{
-            pickedImage = image
-        }
-        
-        if let moc = managedContext {
-            if let image = UIImagePNGRepresentation(pickedImage) {
-                let moImage = Image(context: moc, image: image, id: "buttonImage")
-                
-                if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
-                    user.addImagesObject(moImage)
-                    CoreDataController.sharedInstance.saveChanges()
-                    NotificationCenter.default.post(name: .CustomButtonImageEdited, object: nil)
-                }
-            }
-        }
-    }
-    
     @objc fileprivate func chooseImage() {
         if let selectedImage = selectedImage {
-            button.image = UIImagePNGRepresentation(selectedImage)! as NSData
+            button.image = selectedImage.pngData()! as NSData
             NotificationCenter.default.post(name: .ButtonImageChosen, object: nil)
             dismissModal()
         } else {

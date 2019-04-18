@@ -7,6 +7,8 @@
 //
 import Foundation
 
+#warning("Kada Khalifa prihvati License Agreement na AppStoreConnectu, bundle id treba vratiti na com.e-homeautomation.eHomegreen i tim prebaciti na SmartIoT nalog")
+
 private struct LocalConstants {
     static let titleViewSize: CGSize = CGSize(width: 240, height: 44)
     static let collectionViewWidth: CGFloat = 240

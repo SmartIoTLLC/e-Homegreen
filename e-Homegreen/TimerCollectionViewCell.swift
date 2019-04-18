@@ -49,15 +49,15 @@ class TimerCollectionViewCell: UICollectionViewCell {
             timerButtonLeft.isHidden = true
             timerButtonRight.isHidden = true
             timerButton.isEnabled = true
-            timerButton.setTitle("Start", for: UIControlState())
+            timerButton.setTitle("Start", for: UIControl.State())
             
             if timer.timerState == 1 {
                 timerButton.isHidden = true
                 timerButtonLeft.isHidden = false
                 timerButtonRight.isHidden = false
                 startTimer()
-                timerButtonRight.setTitle("Pause", for: UIControlState())
-                timerButtonLeft.setTitle("Cancel", for: UIControlState())
+                timerButtonRight.setTitle("Pause", for: UIControl.State())
+                timerButtonLeft.setTitle("Cancel", for: UIControl.State())
             }
             
             if timer.timerState == 240 {
@@ -66,7 +66,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
                 timerButtonRight.isHidden = true
                 stopTimer()
                 timerButton.isEnabled = true
-                timerButton.setTitle("Start", for: UIControlState())
+                timerButton.setTitle("Start", for: UIControl.State())
             }
             
             if timer.timerState == 238 {
@@ -74,8 +74,8 @@ class TimerCollectionViewCell: UICollectionViewCell {
                 timerButtonLeft.isHidden = false
                 timerButtonRight.isHidden = false
                 stopTimer()
-                timerButtonRight.setTitle("Resume", for: UIControlState())
-                timerButtonLeft.setTitle("Cancel", for: UIControlState())
+                timerButtonRight.setTitle("Resume", for: UIControl.State())
+                timerButtonLeft.setTitle("Cancel", for: UIControl.State())
             }
             
         } else {
@@ -84,13 +84,13 @@ class TimerCollectionViewCell: UICollectionViewCell {
                 timerButton.isHidden = false
                 timerButtonLeft.isHidden = true
                 timerButtonRight.isHidden = true
-                timerButton.setTitle("Cancel", for: UIControlState())
+                timerButton.setTitle("Cancel", for: UIControl.State())
                 timerButton.isEnabled = false
             } else {
                 timerButton.isHidden = false
                 timerButtonLeft.isHidden = true
                 timerButtonRight.isHidden = true
-                timerButton.setTitle("Cancel", for: UIControlState())
+                timerButton.setTitle("Cancel", for: UIControl.State())
                 timerButton.isEnabled = true
             }
         }
@@ -122,7 +122,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
         time?.invalidate()
     }
     
-    func countUp(_ timer:Foundation.Timer){
+    @objc func countUp(_ timer:Foundation.Timer){
         cellTimer.timerCount += 1
         let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
         timerCOuntingLabel.text = String(format: "%02d", h) + ":" + String(format: "%02d", m) + ":" + String(format: "%02d", s)
@@ -132,7 +132,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
         time?.invalidate()
     }
     
-    func countDown(_ timer:Foundation.Timer){
+    @objc func countDown(_ timer:Foundation.Timer){
         if cellTimer.timerCount > 0 {
             cellTimer.timerCount -= 1
             let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
@@ -203,7 +203,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
         Foundation.Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TimerCollectionViewCell.changeImageToNormal), userInfo: nil, repeats: false)
     }
     
-    func changeImageToNormal () {
+    @objc func changeImageToNormal () {
         timerImageView.image = imageOne
         setNeedsDisplay()
     }

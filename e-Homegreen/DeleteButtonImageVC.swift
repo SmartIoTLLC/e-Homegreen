@@ -40,14 +40,14 @@ class DeleteButtonImageVC: CommonXIBTransitionVC {
 
         deleteLabel.text = "Are you sure you want to delete this image?"
         deleteLabel.textColor = .white
-        cancelButton.setTitle("CANCEL", for: UIControlState())
-        cancelButton.setTitleColor(.white, for: UIControlState())
-        okButton.setTitle("OK", for: UIControlState())
-        okButton.setTitleColor(.white, for: UIControlState())
+        cancelButton.setTitle("CANCEL", for: UIControl.State())
+        cancelButton.setTitleColor(.white, for: UIControl.State())
+        okButton.setTitle("OK", for: UIControl.State())
+        okButton.setTitleColor(.white, for: UIControl.State())
         
-        backView.bringSubview(toFront: cancelButton)
-        backView.bringSubview(toFront: okButton)
-        backView.bringSubview(toFront: deleteLabel)
+        backView.bringSubviewToFront(cancelButton)
+        backView.bringSubviewToFront(okButton)
+        backView.bringSubviewToFront(deleteLabel)
     }
     
     @objc fileprivate func deleteImage() {

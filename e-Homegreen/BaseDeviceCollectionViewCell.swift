@@ -115,7 +115,7 @@ class BaseDeviceCollectionViewCell: UICollectionViewCell {
         backView.isHidden = device.info ? true : false
         disabledCellView.isHidden = device.isEnabled.boolValue ? true : false
         
-        device.isEnabled.boolValue ? sendSubview(toBack: disabledCellView) : bringSubview(toFront: disabledCellView)
+        device.isEnabled.boolValue ? sendSubviewToBack(disabledCellView) : bringSubviewToFront(disabledCellView)
     }
     
     func getDevice(from sender: UIView) -> Device? {

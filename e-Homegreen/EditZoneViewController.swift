@@ -64,12 +64,12 @@ class EditZoneViewController: PopoverVC {
             idTextField.text = "\(zoneForEdit.id!.intValue)"
             nameTextField.text = zoneForEdit.name!
             levelTextField.text = zoneForEdit.zoneDescription
-            levelButton.setTitle("", for: UIControlState())
+            levelButton.setTitle("", for: UIControl.State())
             if let id = zoneForEdit.level?.intValue{
                 if id != 0 {
                     if let level = DatabaseZoneController.shared.getZoneById(id, location: location) {
                         self.level = level
-                        levelButton.setTitle(level.name, for: UIControlState())
+                        levelButton.setTitle(level.name, for: UIControl.State())
                     }
                 }
             }
@@ -84,7 +84,7 @@ class EditZoneViewController: PopoverVC {
     
     override func nameAndId(_ name: String, id: String) {
         level = FilterController.shared.getZoneByObjectId(id)
-        levelButton.setTitle(name, for: UIControlState())
+        levelButton.setTitle(name, for: UIControl.State())
     }
     
     @IBAction func levelButton(_ sender: AnyObject) {
@@ -98,7 +98,7 @@ class EditZoneViewController: PopoverVC {
         
     }
     
-    func dismissViewController () {
+    @objc func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
     

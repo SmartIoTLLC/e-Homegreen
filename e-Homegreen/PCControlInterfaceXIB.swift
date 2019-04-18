@@ -105,15 +105,15 @@ class PCControlInterfaceXIB: PopoverVC {
         
         setupViews()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     func setupViews() {
         for option in PowerOption.allValues { powerCommandList.append(PopOverItem(name: option.description, id: "")) }
         if powerCommandList.count != 0 { powerLabel.text = powerCommandList.first?.name }
         
-        commandTextField.attributedPlaceholder = NSAttributedString(string:"Enter Command", attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+        commandTextField.attributedPlaceholder = NSAttributedString(string:"Enter Command", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         commandTextField.delegate = self
         
         titleLabel.text = pc.name
@@ -165,7 +165,7 @@ class PCControlInterfaceXIB: PopoverVC {
         
     }
     
-    func dismissViewController () {
+    @objc func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -246,13 +246,13 @@ class PCControlInterfaceXIB: PopoverVC {
         print("Send voice command!")
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let keyboardFrame: CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
         moveTextfield(textfield: commandTextField, keyboardFrame: keyboardFrame, backView: backView)
         
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
 }

@@ -77,7 +77,7 @@ extension DeviceImagesPickerVC {
         return makeRowAction(at: indexPath)
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete { deleteDevices(indexPath: indexPath) }
     }
 }
@@ -90,7 +90,7 @@ extension DeviceImagesPickerVC {
     }
     
     fileprivate func makeRowAction(at indexPath: IndexPath) -> [UITableViewRowAction] {
-        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
             let deleteMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             let delete = UIAlertAction(title: "Delete", style: .destructive){(action) -> Void in
                 self.tableView(self.tableView, commit: .delete, forRowAt: indexPath)

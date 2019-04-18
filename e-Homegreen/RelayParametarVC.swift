@@ -50,8 +50,8 @@ class RelayParametarVC: CommonXIBTransitionVC {
         
         setupViews()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     fileprivate func favButtonTapped() {
@@ -85,10 +85,10 @@ class RelayParametarVC: CommonXIBTransitionVC {
         deviceChannel.text = "\(deviceIn.channel)"
         
         switch deviceIn.isFavorite!.boolValue {
-            case true: favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: UIControlState())
-            case false: favoriteButton.setImage(#imageLiteral(resourceName: "unfavorite"), for: UIControlState())
+        case true: favoriteButton.setImage(#imageLiteral(resourceName: "favorite"), for: UIControl.State())
+        case false: favoriteButton.setImage(#imageLiteral(resourceName: "unfavorite"), for: UIControl.State())
         }
-        if let buttonImageView = favoriteButton.imageView { favoriteButton.bringSubview(toFront: buttonImageView) }
+        if let buttonImageView = favoriteButton.imageView { favoriteButton.bringSubviewToFront(buttonImageView) }
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
@@ -145,13 +145,13 @@ class RelayParametarVC: CommonXIBTransitionVC {
         return ""
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue                
+        let keyboardFrame: CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue                
         
         moveTextfield(textfield: editDelay, keyboardFrame: keyboardFrame, backView: backView)
         
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
 }

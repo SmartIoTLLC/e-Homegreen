@@ -78,10 +78,10 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
         
         broadcastSwitch.tag = 100
         broadcastSwitch.isOn = false
-        broadcastSwitch.addTarget(self, action: #selector(ScanSequencesesViewController.changeValue(_:)), for: UIControlEvents.valueChanged)
+        broadcastSwitch.addTarget(self, action: #selector(ScanSequencesesViewController.changeValue(_:)), for: UIControl.Event.valueChanged)
         localcastSwitch.tag = 200
         localcastSwitch.isOn = false
-        localcastSwitch.addTarget(self, action: #selector(ScanSequencesesViewController.changeValue(_:)), for: UIControlEvents.valueChanged)
+        localcastSwitch.addTarget(self, action: #selector(ScanSequencesesViewController.changeValue(_:)), for: UIControl.Event.valueChanged)
         
         devAddressOne.text = "\(returnThreeCharactersForByte(Int(gateway.addressOne)))"
         devAddressTwo.text = "\(returnThreeCharactersForByte(Int(gateway.addressTwo)))"
@@ -106,7 +106,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
         switch button.tag{
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
-            btnZone.setTitle("All", for: UIControlState())
+            btnZone.setTitle("All", for: UIControl.State())
             zoneSelected = nil
             break
         case 2:
@@ -119,10 +119,10 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
             break
         }
         
-        button.setTitle(name, for: UIControlState())
+        button.setTitle(name, for: UIControl.State())
     }
     
-    func changeValue (_ sender:UISwitch){
+    @objc func changeValue (_ sender:UISwitch){
         if sender.tag == 100 { localcastSwitch.isOn = false } else if sender.tag == 200 { broadcastSwitch.isOn = false }
     }
     
@@ -137,7 +137,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
         sequencesTableView.reloadData()
     }
     
-    func handleTap (_ gesture:UITapGestureRecognizer) {
+    @objc func handleTap (_ gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
             showGallery(index, user: gateway.location.user).delegate = self
         }
@@ -272,7 +272,7 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
     }
     // Called from findSequences or from it self.
     // Checks which sequence ID should be searched for and calls sendCommandWithSequenceAddress for that specific sequence id.
-    func checkIfSequenceDidGetName (_ timer:Foundation.Timer) {
+    @objc func checkIfSequenceDidGetName (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -302,8 +302,8 @@ class ScanSequencesesViewController: PopoverVC, ProgressBarDelegate {
         }
     }
     // If message is received from PLC, notification is sent and notification calls this function.
-    // Checks whether there is next sequence ID to search for. If there is not, dismiss progres bar and end the search.
-    func nameReceivedFromPLC (_ notification:Notification) {
+    // Checks whether there is next sequence ID to search for. If there is not, dismiss progres bar and @objc end the search.
+    @objc func nameReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningSequencesNameAndParameters) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let timerIndex = info["sequenceId"] else { return }
@@ -435,14 +435,14 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
-            self.tableView(self.sequencesTableView, commit: UITableViewCellEditingStyle.delete, forRowAt: indexPath)
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
+            self.tableView(self.sequencesTableView, commit: UITableViewCell.EditingStyle.delete, forRowAt: indexPath)
         })
         button.backgroundColor = UIColor.red
         return [button]
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             DatabaseSequencesController.shared.deleteSequence(sequences[indexPath.row])
             sequences.remove(at: indexPath.row)
@@ -459,14 +459,14 @@ extension ScanSequencesesViewController: UITableViewDataSource, UITableViewDeleg
         broadcastSwitch.isOn = sequence.isBroadcast.boolValue
         localcastSwitch.isOn = sequence.isLocalcast.boolValue
         
-        if let levelId = sequence.entityLevelId as? Int { level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location); btnLevel.setTitle(level?.name, for: UIControlState())
-        } else { btnLevel.setTitle("All", for: UIControlState()) }
+        if let levelId = sequence.entityLevelId as? Int { level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location); btnLevel.setTitle(level?.name, for: UIControl.State())
+        } else { btnLevel.setTitle("All", for: UIControl.State()) }
         
-        if let zoneId = sequence.sequenceZoneId as? Int { zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location); btnZone.setTitle(zoneSelected?.name, for: UIControlState())
-        } else { btnZone.setTitle("All", for: UIControlState()) }
+        if let zoneId = sequence.sequenceZoneId as? Int { zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location); btnZone.setTitle(zoneSelected?.name, for: UIControl.State())
+        } else { btnZone.setTitle("All", for: UIControl.State()) }
         
-        if let categoryId = sequence.sequenceCategoryId as? Int { category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location); btnCategory.setTitle(category?.name, for: UIControlState())
-        } else { btnCategory.setTitle("All", for: UIControlState()) }
+        if let categoryId = sequence.sequenceCategoryId as? Int { category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location); btnCategory.setTitle(category?.name, for: UIControl.State())
+        } else { btnCategory.setTitle("All", for: UIControl.State()) }
         
         defaultImageOne = sequence.sequenceImageOneDefault
         customImageOne = sequence.sequenceImageOneCustom

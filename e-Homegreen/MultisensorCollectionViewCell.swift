@@ -269,7 +269,7 @@ class MultisensorCollectionViewCell: BaseDeviceCollectionViewCell {
         super.setCell(with: device, tag: tag)
         
         backTitleLabel.tag = tag
-        backTitleLabel.attributedText = NSAttributedString(string: device.cellTitle, attributes:[NSForegroundColorAttributeName: UIColor.white])
+        backTitleLabel.attributedText = NSAttributedString(string: device.cellTitle, attributes:[NSAttributedString.Key.foregroundColor: UIColor.white])
         
         infoIDValueLabel.setText("\(device.address.intValue)", fontSize: LocalConstants.deviceInfoValueFontSize)
         infoNameValueLabel.setText("\(device.name)", fontSize: LocalConstants.deviceInfoValueFontSize)

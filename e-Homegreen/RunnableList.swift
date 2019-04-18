@@ -11,7 +11,7 @@ import CoreData
 
 public class RunnableList {
     
-    open static let sharedInstance = RunnableList()
+    public static let sharedInstance = RunnableList()
     
     var runnableList: [NSManagedObjectID: NSNumber] = [:]
     var deviceHasValue: [NSManagedObjectID: Bool] = [:]

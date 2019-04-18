@@ -72,10 +72,10 @@ class DimmerBigSliderViewController: CommonXIBTransitionVC {
     private func addOffButton() {
         offButton.setAttributedTitle(
             NSAttributedString(string: "OFF", attributes: [
-                NSFontAttributeName: UIFont.tahoma(size: LocalConstants.buttonFontSize),
-                NSForegroundColorAttributeName: UIColor.white
+                NSAttributedString.Key.font: UIFont.tahoma(size: LocalConstants.buttonFontSize),
+                NSAttributedString.Key.foregroundColor: UIColor.white
                 ]),
-            for: UIControlState()
+            for: UIControl.State()
         )
         offButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(turnLightOff(_:))))
         
@@ -85,10 +85,10 @@ class DimmerBigSliderViewController: CommonXIBTransitionVC {
     private func addOnButton() {
         onButton.setAttributedTitle(
             NSAttributedString(string: "ON", attributes: [
-                NSFontAttributeName: UIFont.tahoma(size: LocalConstants.buttonFontSize),
-                NSForegroundColorAttributeName: UIColor.white
+                NSAttributedString.Key.font: UIFont.tahoma(size: LocalConstants.buttonFontSize),
+                NSAttributedString.Key.foregroundColor: UIColor.white
                 ]),
-            for: UIControlState()
+            for: UIControl.State()
         )
         onButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(turnLightOn(_:))))
         
@@ -197,7 +197,7 @@ class DimmerBigSliderViewController: CommonXIBTransitionVC {
         }
     }
     
-    func sliderTapped(_ gestureRecognizer :UIGestureRecognizer) {
+    @objc func sliderTapped(_ gestureRecognizer :UIGestureRecognizer) {
         if let s = gestureRecognizer.view as? UISlider {
             if s.isHighlighted { return } // tap on thumb, let slider deal with it
             

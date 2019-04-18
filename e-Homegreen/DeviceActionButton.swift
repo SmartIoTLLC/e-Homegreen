@@ -35,7 +35,7 @@ class DeviceActionButton: CustomGradientButtonWhite {
     func setTitle(_ title: String, fontSize: CGFloat = 16) {
         setAttributedTitle(NSAttributedString(
             string: title,
-            attributes: [NSFontAttributeName: UIFont.tahoma(size: fontSize)]
-        ), for: UIControlState())
+            attributes: [NSAttributedString.Key.font: UIFont.tahoma(size: fontSize)]
+        ), for: UIControl.State())
     }
 }

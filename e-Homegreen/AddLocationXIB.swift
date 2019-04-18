@@ -105,19 +105,19 @@ class AddLocationXIB: PopoverVC {
         if button.tag == 2 {
             if let gateway = DatabaseGatewayController.shared.getGatewayByStringObjectID(id) {
                 DatabaseSecurityController.shared.createSecurityForLocation(location!, gateway: gateway)
-                securityButton.setTitle(gateway.gatewayDescription, for: UIControlState())
+                securityButton.setTitle(gateway.gatewayDescription, for: UIControl.State())
             } else {
                 DatabaseSecurityController.shared.removeSecurityForLocation(location!)
-                securityButton.setTitle("", for: UIControlState())
+                securityButton.setTitle("", for: UIControl.State())
             }
         }
         if button.tag == 1 {
             if let timer = DatabaseTimersController.shared.getTimerByStringObjectID(id) {
                 location!.timerId = timer.id
-                timerButton.setTitle(timer.timerName, for: UIControlState())
+                timerButton.setTitle(timer.timerName, for: UIControl.State())
             } else {
                 location!.timerId = nil
-                timerButton.setTitle("", for: UIControlState())
+                timerButton.setTitle("", for: UIControl.State())
             }
         }
     }
@@ -168,12 +168,12 @@ extension AddLocationXIB {
                 addRadiusCircle(locationCoordinate)
                 if let orderId = location.orderId { idTextField.text = "\(orderId)" }
                 if let id = location.timerId {
-                    if let timer = DatabaseTimersController.shared.getTimerByid(id) { timerButton.setTitle(timer.timerName, for: UIControlState()) }
+                    if let timer = DatabaseTimersController.shared.getTimerByid(id) { timerButton.setTitle(timer.timerName, for: UIControl.State()) }
                 }
                 if let security = location.security?.allObjects as? [Security] {
                     if security.count != 0 {
                         if let id = security[0].gatewayId {
-                            if let gateway = DatabaseGatewayController.shared.getGatewayByid(id) { securityButton.setTitle(gateway.gatewayDescription, for: UIControlState()) }
+                            if let gateway = DatabaseGatewayController.shared.getGatewayByid(id) { securityButton.setTitle(gateway.gatewayDescription, for: UIControl.State()) }
                         }
                     }
                 }
@@ -312,9 +312,9 @@ extension AddLocationXIB {
     }
     
     // tap on map and find coordinate
-    func handleLongPress(_ gestureReconizer: UILongPressGestureRecognizer) {
-        if gestureReconizer.state != UIGestureRecognizerState.began { return }
-        if gestureReconizer.state != UIGestureRecognizerState.ended {
+    @objc func handleLongPress(_ gestureReconizer: UILongPressGestureRecognizer) {
+        if gestureReconizer.state != UIGestureRecognizer.State.began { return }
+        if gestureReconizer.state != UIGestureRecognizer.State.ended {
             let touchLocation = gestureReconizer.location(in: locationMap)
             let locationCoordinate = locationMap.convert(touchLocation,toCoordinateFrom: locationMap)
             print("Tapped at lat: \(locationCoordinate.latitude) long: \(locationCoordinate.longitude)")
@@ -363,10 +363,10 @@ extension AddLocationXIB {
         let circle = MKCircle(center: location.coordinate, radius: radius as CLLocationDistance)
         let overlays = locationMap.overlays
         locationMap.removeOverlays(overlays)
-        self.locationMap.add(circle)
+        self.locationMap.addOverlay(circle)
     }
     
-    func dismissViewController () {
+    @objc func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
     

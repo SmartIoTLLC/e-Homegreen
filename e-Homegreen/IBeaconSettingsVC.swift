@@ -90,13 +90,13 @@ extension IBeaconSettingsVC {
         editMinor.layer.borderColor = UIColor.lightGray.cgColor
         
         editName.attributedPlaceholder  = NSAttributedString(string:"Name",
-                                                            attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+                                                             attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         editUUID.attributedPlaceholder  = NSAttributedString(string:"UUID",
-                                                            attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+                                                             attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         editMajor.attributedPlaceholder = NSAttributedString(string:"Major",
-                                                             attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+                                                             attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         editMinor.attributedPlaceholder = NSAttributedString(string:"Minor",
-                                                             attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+                                                             attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         
         btnCancel.layer.cornerRadius = 2
         btnSave.layer.cornerRadius   = 2
@@ -118,19 +118,19 @@ extension IBeaconSettingsVC {
     }
     
     fileprivate func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name:.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         let info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let keyboardFrame: CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
         moveTextfield(textfield: editUUID, keyboardFrame: keyboardFrame, backView: backView)
         moveTextfield(textfield: editMajor, keyboardFrame: keyboardFrame, backView: backView)
         moveTextfield(textfield: editMinor, keyboardFrame: keyboardFrame, backView: backView)
         
-        UIView.animate(withDuration: 0.3, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
     func endEditingNow(){
@@ -139,7 +139,7 @@ extension IBeaconSettingsVC {
         centarConstraint.constant = 0
         UIView.animate(withDuration: 0.3,
                        delay: 0,
-                       options: UIViewAnimationOptions.curveLinear,
+                       options: UIView.AnimationOptions.curveLinear,
                        animations: { self.view.layoutIfNeeded() },
                        completion: nil)
     }
@@ -150,7 +150,7 @@ extension IBeaconSettingsVC {
         return true
     }
     
-    func dismissViewController () {
+    @objc func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
 }
@@ -193,7 +193,7 @@ extension IBeaconSettingsVC: UITextFieldDelegate {
         centarConstraint.constant = 0
         UIView.animate(withDuration: 0.3,
                        delay: 0,
-                       options: UIViewAnimationOptions.curveLinear,
+                       options: UIView.AnimationOptions.curveLinear,
                        animations: { self.view.layoutIfNeeded() },
                        completion: nil)
         return true

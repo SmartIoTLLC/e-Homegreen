@@ -61,7 +61,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             NotificationCenter.default.addObserver(self, selector: #selector(autoplay), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: item)
             player = AVQueuePlayer(playerItem: item)
             
-            try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: [.defaultToSpeaker, .allowBluetooth, .allowBluetoothA2DP, .allowAirPlay, .mixWithOthers])
+            try? AVAudioSession.sharedInstance().setCategory(.playback, options: [.defaultToSpeaker, .allowBluetooth, .allowBluetoothA2DP, .allowAirPlay, .mixWithOthers])            
             
             player.play()
             

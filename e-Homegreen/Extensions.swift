@@ -14,10 +14,10 @@ extension UIButton {
         self.collapseInReturnToNormal(1)
         if UIApplication.shared.isStatusBarHidden {
             UIApplication.shared.isStatusBarHidden = false
-            self.setImage(UIImage(named: "full screen"), for: UIControlState())
+            self.setImage(UIImage(named: "full screen"), for: UIControl.State())
         } else {
             UIApplication.shared.isStatusBarHidden = true
-            self.setImage(UIImage(named: "full screen exit"), for: UIControlState())
+            self.setImage(UIImage(named: "full screen exit"), for: UIControl.State())
         }
     }
     
@@ -25,10 +25,10 @@ extension UIButton {
         self.collapseInReturnToNormal(1)
         if UIApplication.shared.isStatusBarHidden {
             UIApplication.shared.isStatusBarHidden = false
-            self.setImage(UIImage(named: "full screen"), for: UIControlState())
+            self.setImage(UIImage(named: "full screen"), for: UIControl.State())
         } else {
             UIApplication.shared.isStatusBarHidden = true
-            self.setImage(UIImage(named: "full screen exit"), for: UIControlState())
+            self.setImage(UIImage(named: "full screen exit"), for: UIControl.State())
             if viewThatNeedsOffset.contentOffset.y != 0 {
                 let bottomOffset = CGPoint(x: 0, y: viewThatNeedsOffset.contentSize.height - viewThatNeedsOffset.bounds.size.height + viewThatNeedsOffset.contentInset.bottom)
                 viewThatNeedsOffset.setContentOffset(bottomOffset, animated: false)
@@ -67,9 +67,9 @@ extension UIViewController {
     
     func changeFullscreenImage(fullscreenButton: UIButton) {
         if UIApplication.shared.isStatusBarHidden {
-            fullscreenButton.setImage(UIImage(named: "full screen exit"), for: UIControlState())
+            fullscreenButton.setImage(UIImage(named: "full screen exit"), for: UIControl.State())
         } else {
-            fullscreenButton.setImage(UIImage(named: "full screen"), for: UIControlState())
+            fullscreenButton.setImage(UIImage(named: "full screen"), for: UIControl.State())
         }
     }
     
@@ -103,11 +103,11 @@ extension UIViewController {
         }
     }
     
-    func dismissEditing() {
+    @objc func dismissEditing() {
         view.endEditing(true)
     }
     
-    func dismissModal() {
+    @objc func dismissModal() {
         dismiss(animated: true, completion: nil)
     }
     
@@ -155,7 +155,7 @@ extension UIViewController {
         }
     }
     
-    func keyboardWillHide(_ notification: Notification) {
+    @objc func keyboardWillHide(_ notification: Notification) {
         view.frame.origin.y = 0
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
@@ -303,4 +303,3 @@ public class HelperFunctions {
         
     }
 }
-

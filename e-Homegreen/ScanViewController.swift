@@ -75,7 +75,7 @@ class ScanViewController: PopoverVC {
         
         if let to = ChoosedTab(rawValue: name) {
             searchBar.text = ""
-            senderButton.setTitle(name, for: UIControlState())
+            senderButton.setTitle(name, for: UIControl.State())
             switch to {
                 case .Devices   : toViewController = scanDeviceViewController
                 case .Scenes    : toViewController = scanSceneViewController
@@ -86,17 +86,17 @@ class ScanViewController: PopoverVC {
                 case .Cards     : toViewController = scanCardsViewController
             }
             
-            if let fromViewController = childViewControllers.last {
+            if let fromViewController = children.last {
                 if toViewController != fromViewController {
-                    self.addChildViewController(toViewController)
-                    self.transition(from: fromViewController, to: toViewController, duration: 0.0, options: UIViewAnimationOptions.transitionFlipFromRight, animations: nil, completion: {finished in
-                        fromViewController.removeFromParentViewController()
-                        self.toViewController.didMove(toParentViewController: self)
+                    self.addChild(toViewController)
+                    self.transition(from: fromViewController, to: toViewController, duration: 0.0, options: UIView.AnimationOptions.transitionFlipFromRight, animations: nil, completion: {finished in
+                        fromViewController.removeFromParent()
+                        self.toViewController.didMove(toParent: self)
                         self.toViewController.view.frame = self.container.bounds
                     })
                 } else {
-                    childViewControllers.last!.viewWillAppear(true)
-                    childViewControllers.last!.viewDidAppear(true)
+                    children.last!.viewWillAppear(true)
+                    children.last!.viewDidAppear(true)
                 }
             }
             
@@ -155,10 +155,10 @@ extension ScanViewController {
     }
     
     fileprivate func updateViews() {
-        self.addChildViewController(scanDeviceViewController)
+        self.addChild(scanDeviceViewController)
         scanDeviceViewController.view.frame = CGRect(x: 0, y: 0, width: self.container.frame.size.width, height: self.container.frame.size.height)
         container.addSubview(scanDeviceViewController.view)
-        scanDeviceViewController.didMove(toParentViewController: self)
+        scanDeviceViewController.didMove(toParent: self)
         
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
     }

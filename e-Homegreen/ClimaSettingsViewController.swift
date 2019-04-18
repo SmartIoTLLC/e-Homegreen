@@ -137,11 +137,11 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         dismiss(animated: true, completion: nil)
     }
     
-    func setACSetPoint () {
+    @objc func setACSetPoint () {
         SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSetPoint(address, channel: channel, coolingSetPoint: getIByte(hvacCommand.coolTemperature), heatingSetPoint: getIByte(hvacCommand.heatTemperature)), gateway: gateway)
     }
     
-    func setACSpeed () {
+    @objc func setACSpeed () {
         switch hvacCommand.fan {
             case .low   : setACSpeedWith(value: 0x01)
             case .med   : setACSpeedWith(value: 0x02)
@@ -154,7 +154,7 @@ class ClimaSettingsViewController: CommonXIBTransitionVC {
         SendingHandler.sendCommand(byteArray: OutgoingHandler.setACSpeed(address, channel: channel, value: value), gateway: gateway)
     }
     
-    func setACmode () {
+    @objc func setACmode () {
         switch hvacCommand.mode {
             case .cool  : setACModeWith(value: 0x01)
             case .heat  : setACModeWith(value: 0x02)

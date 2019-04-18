@@ -105,10 +105,10 @@ class ZoneAndCategoryControlView: UIView {
     private func addOnButton() {
         onButton.setAttributedTitle(
             NSAttributedString(string: "ON", attributes: [
-                NSFontAttributeName: UIFont.tahoma(size: LocalConstants.buttonFontSize),
-                NSForegroundColorAttributeName: UIColor.white
+                NSAttributedString.Key.font: UIFont.tahoma(size: LocalConstants.buttonFontSize),
+                NSAttributedString.Key.foregroundColor: UIColor.white
                 ]),
-            for: UIControlState()
+            for: UIControl.State()
         )
         
         onButton.addTap {
@@ -121,10 +121,10 @@ class ZoneAndCategoryControlView: UIView {
     private func addOffButton() {
         offButton.setAttributedTitle(
             NSAttributedString(string: "OFF", attributes: [
-                NSFontAttributeName: UIFont.tahoma(size: LocalConstants.buttonFontSize),
-                NSForegroundColorAttributeName: UIColor.white
+                NSAttributedString.Key.font: UIFont.tahoma(size: LocalConstants.buttonFontSize),
+                NSAttributedString.Key.foregroundColor: UIColor.white
                 ]),
-            for: UIControlState()
+            for: UIControl.State()
         )
         
         offButton.addTap {

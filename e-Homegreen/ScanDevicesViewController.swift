@@ -190,7 +190,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     var arrayOfDevicesToBeSearched = [Int]()
     var indexOfDevicesToBeSearched = 0
     
-    func findDevice() {
+    @objc func findDevice() {
         arrayOfDevicesToBeSearched = [Int]()
         indexOfDevicesToBeSearched = 0
         UIApplication.shared.isIdleTimerDisabled = true
@@ -236,8 +236,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
     }
     
-    func findDevicesLongPress(_ sender: UILongPressGestureRecognizer) {
-        if sender.state == UIGestureRecognizerState.began {
+    @objc func findDevicesLongPress(_ sender: UILongPressGestureRecognizer) {
+        if sender.state == UIGestureRecognizer.State.began {
             
             arrayOfDevicesToBeSearched = [Int]()
             indexOfDevicesToBeSearched = 0 // TODO: when there is no devices, long press should search everything again
@@ -280,7 +280,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             
         }
     }
-    func deviceReceivedFromPLC (_ notification:Notification) {
+    @objc func deviceReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDevice) {
             if let info = notification.userInfo! as? [String:Int] {
                 if let deviceIndex = info["deviceAddresInGateway"] {
@@ -302,7 +302,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             }
         }
     }
-    func checkIfGatewayDidGetDevice (_ timer:Foundation.Timer) {
+    @objc func checkIfGatewayDidGetDevice (_ timer:Foundation.Timer) {
         if let index = timer.userInfo as? Int {
             updateDeviceList()
             
@@ -366,7 +366,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     
     // MARK: - DELETING DEVICES FOR GATEWAY
-    func changeValueEnable (_ sender:UISwitch) {
+    @objc func changeValueEnable (_ sender:UISwitch) {
         
         if sender.isOn { devices[sender.tag].isEnabled = NSNumber(value: true as Bool)
         } else { devices[sender.tag].isEnabled = NSNumber(value: false as Bool) }
@@ -374,7 +374,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         CoreDataController.sharedInstance.saveChanges()
     }
     
-    func changeValueVisible (_ sender:UISwitch) {
+    @objc func changeValueVisible (_ sender:UISwitch) {
         
         if sender.isOn { devices[sender.tag].isVisible = NSNumber(value: true as Bool)
         } else { devices[sender.tag].isVisible = NSNumber(value: false as Bool) }
@@ -390,7 +390,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     var indexOfNamesToBeSearched = 0
     var longPressScannParameters = false
     
-    func findNames() {
+    @objc func findNames() {
         arrayOfNamesToBeSearched = [Int]()
         indexOfNamesToBeSearched = 0
         
@@ -439,8 +439,8 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
     }
     
-    func findNamesLongPress(_ sender: UILongPressGestureRecognizer) {
-        if sender.state == UIGestureRecognizerState.began {
+    @objc func findNamesLongPress(_ sender: UILongPressGestureRecognizer) {
+        if sender.state == UIGestureRecognizer.State.began {
             arrayOfNamesToBeSearched = [Int]()
             indexOfNamesToBeSearched = 0
             if devices.count != 0 {
@@ -487,7 +487,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             }
         }
     }
-    func nameReceivedFromPLC (_ notification:Notification) {
+    @objc func nameReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
             
             guard let info = notification.userInfo! as? [String:Int] else { return }
@@ -530,7 +530,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
             
         }
     }
-    func checkIfDeviceDidGetName (_ timer:Foundation.Timer) {
+    @objc func checkIfDeviceDidGetName (_ timer:Foundation.Timer) {
         if let deviceIndex = timer.userInfo as? Int {
             // if name not found search again
             if devices[deviceIndex].name == "Unknown" {
@@ -667,7 +667,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
     }
     
-    func checkIfSensorDidGotParametar (_ timer:Foundation.Timer) {
+    @objc func checkIfSensorDidGotParametar (_ timer:Foundation.Timer) {
         if let deviceIndex = timer.userInfo as? Int {
             // if name not found search again
             if devices[deviceIndex].zoneId == 0 {
@@ -715,7 +715,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         }
     }
     
-    func sensorParametarReceivedFromPLC (_ notification:Notification) {
+    @objc func sensorParametarReceivedFromPLC (_ notification:Notification) {
         let parameter = Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningSensorParametars)
         if parameter {
             if let info = notification.userInfo! as? [String:Int] {
@@ -750,7 +750,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     
     // MARK: - Other
-    func refreshDeviceList() {
+    @objc func refreshDeviceList() {
         updateDeviceList()
         if !searchBarText.isEmpty{
             devices = self.devices.filter() {
@@ -848,7 +848,7 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
         return makeButtonAction(at: indexPath)
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete { deleteDevices(indexPath: indexPath) }
     }
     
@@ -870,8 +870,8 @@ extension ScanDevicesViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     fileprivate func makeButtonAction(at indexPath: IndexPath) -> [UITableViewRowAction] {
-        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
-            self.tableView(self.deviceTableView, commit: UITableViewCellEditingStyle.delete, forRowAt: indexPath)
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
+            self.tableView(self.deviceTableView, commit: UITableViewCell.EditingStyle.delete, forRowAt: indexPath)
         })
         button.backgroundColor = UIColor.red
         return [button]

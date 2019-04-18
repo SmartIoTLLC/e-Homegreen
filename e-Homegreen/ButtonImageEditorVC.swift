@@ -48,7 +48,7 @@ extension ButtonImageEditorVC {
         if let titleLabel = casiButton.titleLabel {
             titleLabel.numberOfLines = 2
             titleLabel.textAlignment = .center
-            casiButton.setTitle("CROP AND\nSAVE IMAGE", for: UIControlState())
+            casiButton.setTitle("CROP AND\nSAVE IMAGE", for: UIControl.State())
         }
         
         loadButton.addTarget(self, action: #selector(loadImage), for: .touchUpInside)
@@ -72,7 +72,7 @@ extension ButtonImageEditorVC {
         saveButton.frame.origin = CGPoint(x: casiButton.frame.maxX, y: 0)
         
         upperView.setGradientBackground()
-        upperView.bringSubview(toFront: backButton)
+        upperView.bringSubviewToFront(backButton)
     }
 }
 
@@ -120,7 +120,7 @@ extension ButtonImageEditorVC {
         if let moc = managedContext {
             let moImage       = Image(context: moc)
             moImage.imageId   = "buttonImage"
-            moImage.imageData = UIImagePNGRepresentation(image)
+            moImage.imageData = image.pngData()
             if let user = DatabaseUserController.shared.loggedUserOrAdmin() {
                 user.addImagesObject(moImage)
                 CoreDataController.sharedInstance.saveChanges()
@@ -132,13 +132,13 @@ extension ButtonImageEditorVC {
 
 // MARK: - Image Picker Delegate
 extension ButtonImageEditorVC: UIImagePickerControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         var pickedImage: UIImage!
-        
-        if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
+     
+        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             pickedImage = image
-        } else if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+        } else if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             pickedImage = image
         }
         

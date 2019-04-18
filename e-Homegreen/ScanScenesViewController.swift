@@ -107,7 +107,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
         switch button.tag {
         case 1:
             level = FilterController.shared.getZoneByObjectId(id)
-            btnZone.setTitle("All", for: UIControlState())
+            btnZone.setTitle("All", for: UIControl.State())
             zoneSelected = nil
             break
         case 2:
@@ -120,10 +120,10 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
             break
         }
         
-        button.setTitle(name, for: UIControlState())
+        button.setTitle(name, for: UIControl.State())
     }
     
-    func changeValue (_ sender:UISwitch) {
+    @objc func changeValue (_ sender:UISwitch) {
         if sender.tag == 100 { localcastSwitch.isOn = false } else if sender.tag == 200 { broadcastSwitch.isOn = false }
     }
     
@@ -138,7 +138,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
         sceneTableView.reloadData()
     }
     
-    func handleTap (_ gesture:UITapGestureRecognizer) {
+    @objc func handleTap (_ gesture:UITapGestureRecognizer) {
         if let index = gesture.view?.tag {
             showGallery(index, user: gateway.location.user, isForScenes: true).delegate = self
         }
@@ -272,7 +272,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     }
     // Called from findScenes or from it self.
     // Checks which scene ID should be searched for and calls sendCommandWithSceneAddress for that specific scene id.
-    func checkIfSceneDidGetName (_ timer:Foundation.Timer) {
+    @objc func checkIfSceneDidGetName (_ timer:Foundation.Timer) {
         // If entered in this function that means that we still havent received good response from PLC because in that case timer would be invalidated.
         // Here we just need to see whether we repeated the call to PLC less than 3 times.
         // If not tree times, send same command again
@@ -303,7 +303,7 @@ class ScanScenesViewController: PopoverVC, ProgressBarDelegate {
     }
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next scene ID to search for. If there is not, dismiss progres bar and end the search.
-    func nameReceivedFromPLC (_ notification:Notification) {
+    @objc func nameReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningSceneNameAndParameters) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let sceneIndex = info["sceneId"] else { return }
@@ -467,15 +467,15 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
-            self.tableView(self.sceneTableView, commit: UITableViewCellEditingStyle.delete, forRowAt: indexPath)
+        let button:UITableViewRowAction = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "Delete", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
+            self.tableView(self.sceneTableView, commit: UITableViewCell.EditingStyle.delete, forRowAt: indexPath)
         })
         
         button.backgroundColor = UIColor.red
         return [button]
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             DatabaseScenesController.shared.deleteScene(scenes[indexPath.row])
             scenes.remove(at: indexPath.row)
@@ -492,14 +492,14 @@ extension ScanScenesViewController:  UITableViewDataSource, UITableViewDelegate{
         broadcastSwitch.isOn = scene.isBroadcast.boolValue
         localcastSwitch.isOn = scene.isLocalcast.boolValue
         
-        if let levelId = scene.entityLevelId as? Int { level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location); btnLevel.setTitle(level?.name, for: UIControlState())
-        } else { btnLevel.setTitle("All", for: UIControlState()) }
+        if let levelId = scene.entityLevelId as? Int { level = DatabaseZoneController.shared.getZoneById(levelId, location: gateway.location); btnLevel.setTitle(level?.name, for: UIControl.State())
+        } else { btnLevel.setTitle("All", for: UIControl.State()) }
         
-        if let zoneId = scene.sceneZoneId as? Int { zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location); btnZone.setTitle(zoneSelected?.name, for: UIControlState())
-        } else { btnZone.setTitle("All", for: UIControlState()) }
+        if let zoneId = scene.sceneZoneId as? Int { zoneSelected = DatabaseZoneController.shared.getZoneById(zoneId, location: gateway.location); btnZone.setTitle(zoneSelected?.name, for: UIControl.State())
+        } else { btnZone.setTitle("All", for: UIControl.State()) }
         
-        if let categoryId = scene.sceneCategoryId as? Int { category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location); btnCategory.setTitle(category?.name, for: UIControlState())
-        } else { btnCategory.setTitle("All", for: UIControlState()) }
+        if let categoryId = scene.sceneCategoryId as? Int { category = DatabaseCategoryController.shared.getCategoryById(categoryId, location: gateway.location); btnCategory.setTitle(category?.name, for: UIControl.State())
+        } else { btnCategory.setTitle("All", for: UIControl.State()) }
         
         defaultImageOne = scene.sceneImageOneDefault
         customImageOne = scene.sceneImageOneCustom

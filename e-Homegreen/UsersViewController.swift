@@ -96,7 +96,7 @@ extension UsersViewController: FilterPullDownDelegate{
         self.view.makeToast(message: "Default filter parametar saved!")
     }
     
-    func setDefaultFilterFromTimer(){
+    @objc func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.users)
     }
     
@@ -105,8 +105,8 @@ extension UsersViewController: FilterPullDownDelegate{
         usersCollectionView.reloadData()
     }
     
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizer.State.began {
             scrollView.setDefaultFilterItem(Menu.users)
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
@@ -162,19 +162,19 @@ extension UsersViewController {
         }
     }
     
-    func pressedPause (_ button:UIButton) {
+    @objc func pressedPause (_ button:UIButton) {
         sendTimerCommand(.pause, sender: button)
     }
     
-    func pressedStart (_ button:UIButton) {
+    @objc func pressedStart (_ button:UIButton) {
         sendTimerCommand(.start, sender: button)
     }
     
-    func pressedResume (_ button:UIButton) {
+    @objc func pressedResume (_ button:UIButton) {
         sendTimerCommand(.resume, sender: button)
     }
     
-    func pressedCancel (_ button:UIButton) {
+    @objc func pressedCancel (_ button:UIButton) {
         sendTimerCommand(.cancel, sender: button)
     }
     
@@ -244,9 +244,9 @@ extension UsersViewController: UICollectionViewDataSource {
         return timers.count
     }
     
-    func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer){
+    @objc func openCellParametar (_ gestureRecognizer: UILongPressGestureRecognizer){
         let tag = gestureRecognizer.view!.tag
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
+        if gestureRecognizer.state == UIGestureRecognizer.State.began {
             let location = gestureRecognizer.location(in: usersCollectionView)
             if let index = usersCollectionView.indexPathForItem(at: location){
                 let cell = usersCollectionView.cellForItem(at: index)

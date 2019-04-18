@@ -66,15 +66,15 @@ class AddVideo_AppXIB: CommonXIBTransitionVC{
         pathTextField.layer.borderColor = UIColor.lightGray.cgColor
         
         nameTextField.attributedPlaceholder = NSAttributedString(string:"Name",
-            attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+                                                                 attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         if typeOfFile == FileType.app {
             pathTextField.attributedPlaceholder = NSAttributedString(string:"Command",
-                attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+                                                                     attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
             pathOrCmdLabel.text = "Command"
         }
         else{
             pathTextField.attributedPlaceholder = NSAttributedString(string:"Path",
-                attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+                                                                     attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
             pathOrCmdLabel.text = "Path"
         }
 
@@ -104,7 +104,7 @@ class AddVideo_AppXIB: CommonXIBTransitionVC{
         return true
     }
     
-    func dismissViewController () {
+    @objc func dismissViewController () {
         self.dismiss(animated: true, completion: nil)
     }
 

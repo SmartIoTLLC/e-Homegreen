@@ -26,7 +26,7 @@ extension UIViewController {
     
     func makeFullscreenButton() -> UIButton {
         let fullscreenButton: UIButton = UIButton()
-        fullscreenButton.setImage(#imageLiteral(resourceName: "full screen"), for: UIControlState())
+        fullscreenButton.setImage(#imageLiteral(resourceName: "full screen"), for: UIControl.State())
         fullscreenButton.addTap {
             fullscreenButton.switchFullscreen()
         }
@@ -35,7 +35,7 @@ extension UIViewController {
     
     func makeMenuBarButton() -> UIBarButtonItem {
         let menuButton: UIButton = UIButton()
-        menuButton.setImage(#imageLiteral(resourceName: "Menu button"), for: UIControlState())
+        menuButton.setImage(#imageLiteral(resourceName: "Menu button"), for: UIControl.State())
         menuButton.addTarget(self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
         let menuBarButton: UIBarButtonItem = UIBarButtonItem(customView: menuButton)
         view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
@@ -48,7 +48,7 @@ extension UIViewController {
     
     func makeRefreshButton() -> UIButton {
         let refreshButton: UIButton = UIButton()
-        refreshButton.setImage(#imageLiteral(resourceName: "refesh screen"), for: UIControlState())
+        refreshButton.setImage(#imageLiteral(resourceName: "refesh screen"), for: UIControl.State())
         return refreshButton
     }
     
@@ -69,11 +69,11 @@ extension UIViewController {
     
     var defaults: Foundation.UserDefaults { get { return .standard } }
 
-    func sendFilterParametar(_ filterParametar:FilterItem){
+    @objc func sendFilterParametar(_ filterParametar:FilterItem){
         
     }
     
-    func sendSearchBarText(_ text:String){
+    @objc func sendSearchBarText(_ text:String){
         
     }
     
@@ -89,9 +89,9 @@ extension UIViewController {
         UIGraphicsEndImageContext()
         return image!
     }
-    
+       
     // Presents Alert view that has Delete and Cancel buttons.
-    // Returns which action is selected
+    // Return@objc s which ac@objc tion is selected
     func showAlertView(_ sender:UIView, message:String, completion: @escaping (_ action: ReturnedValueFromAlertView) -> ()){
         let optionMenu = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
         let deleteAction = UIAlertAction(title: "Delete", style: .default, handler: {

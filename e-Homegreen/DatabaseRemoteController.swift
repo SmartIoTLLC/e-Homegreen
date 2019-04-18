@@ -11,7 +11,7 @@ import CoreData
 
 public class DatabaseRemoteController: NSObject {
     
-    open static let sharedInstance = DatabaseRemoteController()
+    public static let sharedInstance = DatabaseRemoteController()
     
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     
@@ -142,7 +142,7 @@ public class DatabaseRemoteController: NSObject {
 
 public class DatabaseRemoteButtonController: NSObject {
     
-    open static let sharedInstance = DatabaseRemoteButtonController()
+    public static let sharedInstance = DatabaseRemoteButtonController()
     
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     

@@ -25,7 +25,7 @@ class ApplianceCollectionCell: UICollectionViewCell {
         
         image.image = device.returnImage(Double(device.currentValue))
         
-        if deviceValue == 255 { onOff.setTitle("ON", for: UIControlState()) } else if device.currentValue == 0 { onOff.setTitle("OFF", for: UIControlState()) }
+        if deviceValue == 255 { onOff.setTitle("ON", for: UIControl.State()) } else if device.currentValue == 0 { onOff.setTitle("OFF", for: UIControl.State()) }
         
         onOff.tag = tag
         
@@ -55,7 +55,7 @@ class ApplianceCollectionCell: UICollectionViewCell {
         
         image.image = device.returnImage(Double(device.currentValue))
         
-        if deviceValue == 255 { onOff.setTitle("ON", for: UIControlState()) } else if device.currentValue == 0 { onOff.setTitle("OFF", for: UIControlState()) }
+        if deviceValue == 255 { onOff.setTitle("ON", for: UIControl.State()) } else if device.currentValue == 0 { onOff.setTitle("OFF", for: UIControl.State()) }
         
         if device.info { infoView.isHidden = false; backView.isHidden = true } else { infoView.isHidden = true; backView.isHidden = false }
         

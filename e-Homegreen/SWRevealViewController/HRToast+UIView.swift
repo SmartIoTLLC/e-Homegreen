@@ -219,7 +219,7 @@ extension UIView {
             activityView.layer.shadowOffset = HRToastShadowOffset
         }
         
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let activityIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
         activityIndicatorView.center = CGPoint(x: activityView.bounds.size.width / 2, y: activityView.bounds.size.height / 2)
         activityView.addSubview(activityIndicatorView)
         activityIndicatorView.startAnimating()
@@ -241,7 +241,7 @@ extension UIView {
         
         UIView.animate(withDuration: HRToastFadeDuration,
             delay: 0.0,
-            options: UIViewAnimationOptions.curveEaseOut,
+            options: UIView.AnimationOptions.curveEaseOut,
             animations: {
                 activityView.alpha = 1.0
             },
@@ -253,7 +253,7 @@ extension UIView {
         if existingActivityView == nil { return }
         UIView.animate(withDuration: HRToastFadeDuration,
             delay: 0.0,
-            options: UIViewAnimationOptions.curveEaseOut,
+            options: UIView.AnimationOptions.curveEaseOut,
             animations: {
                 existingActivityView!.alpha = 0.0
             },
@@ -289,11 +289,11 @@ extension UIView {
         }
     }
     
-    func toastTimerDidFinish(_ timer: Foundation.Timer) {
+    @objc func toastTimerDidFinish(_ timer: Foundation.Timer) {
         self.hideToast(toast: timer.userInfo as! UIView)
     }
     
-    func handleToastTapped(_ recognizer: UITapGestureRecognizer) {
+    @objc func handleToastTapped(_ recognizer: UITapGestureRecognizer) {
         let timer = objc_getAssociatedObject(self, &HRToastTimer) as! Foundation.Timer
         timer.invalidate()
         
@@ -439,8 +439,8 @@ extension String {
         let size = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byWordWrapping;
-        let attributes = [NSFontAttributeName:font!,
-            NSParagraphStyleAttributeName:paragraphStyle.copy()]
+        let attributes = [NSAttributedString.Key.font:font!,
+                          NSAttributedString.Key.paragraphStyle:paragraphStyle.copy()]
         
         let text = self as NSString
         let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: attributes, context:nil)

@@ -159,7 +159,7 @@ class DevicesViewController: PopoverVC {
         backgroundView.contentMode = .scaleAspectFill
         
         view.addSubview(backgroundView)
-        view.sendSubview(toBack: backgroundView)
+        view.sendSubviewToBack(backgroundView)
     }
     
     private func addCollectionView() {
@@ -207,14 +207,14 @@ class DevicesViewController: PopoverVC {
         scrollView.setButtonTitle(name, id: id)
     }
 
-    func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
+    @objc func defaultFilter(_ gestureRecognizer: UILongPressGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizer.State.began {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             scrollView.setDefaultFilterItem(Menu.devices)
         }
     }
     
-    func refreshLocalParametars () {
+    @objc func refreshLocalParametars () {
         filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
         deviceCollectionView.reloadData()
     }
@@ -295,7 +295,7 @@ class DevicesViewController: PopoverVC {
         }
     }
     
-    func refreshDeviceList() {
+    @objc func refreshDeviceList() {
         if !deviceInControlMode {
             if !isScrolling { self.reloadItemsAtVisibleIndexPaths() } // TODO: change to reload data
         }
@@ -304,7 +304,7 @@ class DevicesViewController: PopoverVC {
     //MARK: Zone and category controll
     
     //gesture delegate function
-    func panView(_ gesture:UIPanGestureRecognizer){
+    @objc func panView(_ gesture:UIPanGestureRecognizer){
         switch (gesture.state) {
         case .began:
             self.panStartPoint = gesture.location(in: self.bottomView)
@@ -417,14 +417,14 @@ class DevicesViewController: PopoverVC {
         var duration:Float = 0
         if animated { duration = 0.1 }
         
-        UIView.animate(withDuration: TimeInterval(duration), delay: TimeInterval(0), options: UIViewAnimationOptions.curveEaseOut, animations:{ self.bottomView.layoutIfNeeded() }, completion: {
+        UIView.animate(withDuration: TimeInterval(duration), delay: TimeInterval(0), options: UIView.AnimationOptions.curveEaseOut, animations:{ self.bottomView.layoutIfNeeded() }, completion: {
             success in
             completion(success)
         })
         
     }
     
-    func changeGroupSliderValueOnOneTap (_ gesture:UIGestureRecognizer) {
+    @objc func changeGroupSliderValueOnOneTap (_ gesture:UIGestureRecognizer) {
         let s = gesture.view as! UISlider
         if s.isHighlighted { return } // tap on thumb, let slider deal with it
         let pt:CGPoint         = gesture.location(in: s)
@@ -470,7 +470,7 @@ class DevicesViewController: PopoverVC {
     
     
     // Helper functions
-    func setDefaultFilterFromTimer(){
+    @objc func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.devices)
     }
     
@@ -948,7 +948,7 @@ extension DevicesViewController {
         CoreDataController.sharedInstance.saveChanges()
     }
     
-    func refreshVisibleDevicesInScrollView () {
+    @objc func refreshVisibleDevicesInScrollView () {
         let indexPaths = deviceCollectionView.indexPathsForVisibleItems
         for indexPath in indexPaths { updateDeviceStatus (indexPathRow: indexPath.row) }
     }

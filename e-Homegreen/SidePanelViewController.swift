@@ -65,7 +65,7 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     private func addCollectionView() {
         menuCollectionView.register(SidemenuItemCollectionViewCell.self, forCellWithReuseIdentifier: SidemenuItemCollectionViewCell.reuseIdentifier)
         menuCollectionView.register(SidemenuUserCollectionViewCell.self, forCellWithReuseIdentifier: SidemenuUserCollectionViewCell.reuseIdentifier)
-        menuCollectionView.register(SidemenuCollectionViewFooter.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: SidemenuCollectionViewFooter.reuseIdentifier)
+        menuCollectionView.register(SidemenuCollectionViewFooter.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: SidemenuCollectionViewFooter.reuseIdentifier)
         
         menuCollectionView.delegate = self
         menuCollectionView.dataSource = self
@@ -221,7 +221,7 @@ class SidePanelViewController: UIViewController, LXReorderableCollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
-        if kind == UICollectionElementKindSectionFooter {
+        if kind == UICollectionView.elementKindSectionFooter {
             if let footerView = menuCollectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SidemenuCollectionViewFooter.reuseIdentifier, for: indexPath) as? SidemenuCollectionViewFooter {
                 
                 return footerView

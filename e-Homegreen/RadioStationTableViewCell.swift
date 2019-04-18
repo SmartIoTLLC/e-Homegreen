@@ -23,7 +23,7 @@ class RadioStationTableViewCell: UITableViewCell {
     private let areaLabel: RadioLabel = RadioLabel()
     private let genreLabel: RadioLabel = RadioLabel()
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         setBackgroundView()
