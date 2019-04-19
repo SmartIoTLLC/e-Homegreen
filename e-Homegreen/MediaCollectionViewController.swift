@@ -34,6 +34,8 @@ class MediaCollectionViewController: PopoverVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        loadFilter()
     }
     
     private func addTitleView() {
@@ -77,11 +79,18 @@ class MediaCollectionViewController: PopoverVC {
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }
+    
+    private func loadFilter() {
+        if let filter = FilterItem.loadFilter(type: .Media) {
+            filterParametars(filter)
+        }
+    }
 }
 
 extension MediaCollectionViewController: FilterPullDownDelegate {
     func filterParametars(_ filterItem: FilterItem) {
         filterParameter = filterItem
+        FilterItem.saveFilter(filterItem, type: .Media)
         // TODO: logic
     }
     

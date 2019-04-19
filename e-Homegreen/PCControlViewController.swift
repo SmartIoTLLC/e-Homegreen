@@ -27,7 +27,7 @@ class PCControlViewController: PopoverVC {
     @IBOutlet weak var pccontrolCollectionView: UICollectionView!
     var pcs:[Device] = []
     
-    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .PCControl)
+    var filterParametar:FilterItem = FilterItem.loadEmptyFilter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +37,8 @@ class PCControlViewController: PopoverVC {
         
         NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerPCControl), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updatePCList), name: NSNotification.Name(rawValue: NotificationKey.RefreshDevice), object: nil)
+        
+        loadFilter()
     }
     
     func setupViews() {
@@ -55,7 +57,7 @@ class PCControlViewController: PopoverVC {
         headerTitleSubtitleView.setTitleAndSubtitle("PC Control", subtitle: "All All All")
         
         pccontrolCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionCell")
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .PCControl)
+//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .PCControl)
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(PCControlViewController.defaultFilter(_:)))
         longPress.minimumPressDuration = 0.5
@@ -163,16 +165,22 @@ class PCControlViewController: PopoverVC {
             pcs[tag].currentValue = NSNumber(value: Int(value*100))
         }
     }
+    
+    private func loadFilter() {
+        if let filter = FilterItem.loadFilter(type: .PCControl) {
+            filterParametars(filter)
+        }
+    }
 
 }
 
 // Parametar from filter and relaod data
 extension PCControlViewController: FilterPullDownDelegate {
     func filterParametars(_ filterItem: FilterItem){
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .PCControl)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .PCControl)
+        filterParametar = filterItem
         updateSubtitle(headerTitleSubtitleView, title: "PC Control", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)        
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.pcControl)
+        FilterItem.saveFilter(filterItem, type: .PCControl)
         updatePCList()
         TimerForFilter.shared.counterPCControl = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.pcControl)
         TimerForFilter.shared.startTimer(type: Menu.pcControl)

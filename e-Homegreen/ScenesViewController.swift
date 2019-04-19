@@ -37,6 +37,8 @@ class ScenesViewController: PopoverVC {
         addObservers()
         
         setupConstraints()
+        
+        loadFilter()
     }
     
     override func viewWillLayoutSubviews() {
@@ -68,6 +70,12 @@ class ScenesViewController: PopoverVC {
             make.top.bottom.leading.trailing.equalToSuperview()
         }
     }
+    
+    private func loadFilter() {
+        if let filter = FilterItem.loadFilter(type: .Scenes) {
+            filterParametars(filter)
+        }
+    }
 }
 
 // Parametar from filter and relaod data
@@ -76,6 +84,7 @@ extension ScenesViewController: FilterPullDownDelegate{
         filterParametar = filterItem
         updateSubtitle(headerTitleSubtitleView, title: "Scenes", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)        
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.scenes)
+        FilterItem.saveFilter(filterItem, type: .Scenes)
         updateSceneList()
         TimerForFilter.shared.counterScenes = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.scenes)
         TimerForFilter.shared.startTimer(type: Menu.scenes)

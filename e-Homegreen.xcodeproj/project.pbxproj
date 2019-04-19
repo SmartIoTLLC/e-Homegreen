@@ -334,6 +334,7 @@
 		73FAAEAF1B57EE7200754810 /* ConnectionSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73FAAEAD1B57EE7200754810 /* ConnectionSettingsVC.xib */; };
 		73FD2E5A1C08AB9F00B9F11A /* ImageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FD2E591C08AB9F00B9F11A /* ImageHandler.swift */; };
 		73FDF1CA1BFB8E3200BCC300 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FDF1C91BFB8E3200BCC300 /* UIView+Extensions.swift */; };
+		A92AB5F12269AE6000EDF592 /* EncodableExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92AB5F02269AE6000EDF592 /* EncodableExtensions.swift */; };
 		E70515A21BB3E147009FDA0D /* SurveillanceSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */; };
 		E70515A31BB3E147009FDA0D /* SurveillanceSettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */; };
 		E70A6ED31BCFE86900EBB53D /* TellMeAJokeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70A6ED21BCFE86900EBB53D /* TellMeAJokeHandler.swift */; };
@@ -777,6 +778,7 @@
 		73FDF1C91BFB8E3200BCC300 /* UIView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		80BCDAD58C51E5A3CC1189F2 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A709B65FB4ECDB6FE8CDEB43 /* Pods_e_Homegreen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_e_Homegreen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A92AB5F02269AE6000EDF592 /* EncodableExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodableExtensions.swift; sourceTree = "<group>"; };
 		D1F85A0FF80F87BEA7F7A666 /* Pods-e-Homegreen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-e-Homegreen.release.xcconfig"; path = "Pods/Target Support Files/Pods-e-Homegreen/Pods-e-Homegreen.release.xcconfig"; sourceTree = "<group>"; };
 		E70515A01BB3E147009FDA0D /* SurveillanceSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveillanceSettingsVC.swift; sourceTree = "<group>"; };
 		E70515A11BB3E147009FDA0D /* SurveillanceSettingsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SurveillanceSettingsVC.xib; sourceTree = "<group>"; };
@@ -1787,18 +1789,19 @@
 			isa = PBXGroup;
 			children = (
 				73ECD4A21B332A6F00767740 /* Constants.swift */,
+				73E427B91B4D0B870083A747 /* DeviceInfo.swift */,
+				4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */,
+				73331C171CA029DF009BA1DE /* FilterStruct.swift */,
+				736A5B261B5A678F008FD745 /* HashTable.swift */,
+				4D0D97211CAD4087001A1E89 /* HRToast+UIView.swift */,
 				73F04EC81C92C74C009696EF /* Int+Extensions.swift */,
+				4E4AC63A20C5579800EDAEAD /* NSNumberExtensions.swift */,
 				73F51A0B1C9490B9003EE702 /* NSObject+Extensions.swift */,
 				22320C881C9ACE0900F15B36 /* UIColor + Extension.swift */,
+				22495D321CAA868E0034FC94 /* UIGradient + Extension.swift */,
 				73FDF1C91BFB8E3200BCC300 /* UIView+Extensions.swift */,
 				223FD9C11C888AEF00D288F9 /* UIViewController+Extension.swift */,
-				73E427B91B4D0B870083A747 /* DeviceInfo.swift */,
-				736A5B261B5A678F008FD745 /* HashTable.swift */,
-				73331C171CA029DF009BA1DE /* FilterStruct.swift */,
-				22495D321CAA868E0034FC94 /* UIGradient + Extension.swift */,
-				4D0D97211CAD4087001A1E89 /* HRToast+UIView.swift */,
-				4EA9A7C21FA1D00500C8D6B8 /* Extensions.swift */,
-				4E4AC63A20C5579800EDAEAD /* NSNumberExtensions.swift */,
+				A92AB5F02269AE6000EDF592 /* EncodableExtensions.swift */,
 			);
 			name = "Extensions and Helpers";
 			sourceTree = "<group>";
@@ -2499,6 +2502,7 @@
 				223690CB1CAD04270037B54A /* LogInTextField.swift in Sources */,
 				490C352D1D6D848400C9B851 /* DeleteConfirmation.swift in Sources */,
 				4E4882C420CE69BB004FA093 /* CurtainCollectionViewCell.swift in Sources */,
+				A92AB5F12269AE6000EDF592 /* EncodableExtensions.swift in Sources */,
 				490DC22D1D5B4DEC004EF91B /* SecurityNeedDisarmInformation.swift in Sources */,
 				73F1ECAD1C8993E8007CEEAA /* DefaultDeviceImages.swift in Sources */,
 				7372EB371BC410800097806D /* Flag+CoreDataProperties.swift in Sources */,

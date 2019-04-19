@@ -37,7 +37,7 @@ class EnergyViewController: PopoverVC  {
     fileprivate var devices:[Device] = []
 
     fileprivate var filterParametar:FilterItem {
-        return Filter.sharedInstance.returnFilter(forTab: .Energy)
+        return FilterItem.loadFilter(type: .Energy) ?? FilterItem.loadEmptyFilter()
     }
     
     // MARK: - Lifecycle
@@ -57,6 +57,8 @@ class EnergyViewController: PopoverVC  {
         addScrollView()
         setupConstraints()
         addObserversVDL()
+        
+        loadFilter()
     }
     
     override func viewDidLayoutSubviews() {
@@ -244,15 +246,22 @@ class EnergyViewController: PopoverVC  {
         powerUsageValueLabel.text = "\(sumPow) W"
     }
     
+    private func loadFilter() {
+        if let filter = FilterItem.loadFilter(type: .Energy) {
+            filterParametars(filter)
+        }
+    }
+    
 }
 
 // MARK: - Parametar from filter and relaod data
 extension EnergyViewController: FilterPullDownDelegate{
     func filterParametars(_ filterItem: FilterItem){
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Energy)
+//        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Energy)
         
         updateSubtitle(headerTitleSubtitleView, title: "Energy", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.energy)
+        FilterItem.saveFilter(filterItem, type: .Energy)
         refreshLocalParametars()
         
         TimerForFilter.shared.counterEnergy = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.energy)

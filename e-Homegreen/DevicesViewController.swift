@@ -48,7 +48,7 @@ class DevicesViewController: PopoverVC {
     
     fileprivate var storedIBeaconBarButtonItem: UIBarButtonItem!
     
-    fileprivate var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Device)
+    fileprivate var filterParametar:FilterItem = FilterItem.loadEmptyFilter()
     
     fileprivate let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     
@@ -83,6 +83,8 @@ class DevicesViewController: PopoverVC {
         setupConstraints()
         
         setupViews()
+        
+        loadFilter()
         
         NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerDevices), object: nil)
     }
@@ -126,6 +128,12 @@ class DevicesViewController: PopoverVC {
     }
     
     // MARK: - Setup views
+    private func loadFilter() {
+        if let filter = FilterItem.loadFilter(type: .Device) {
+            filterParametars(filter)
+        }
+    }
+    
     private func addTitleView() {
         storedIBeaconBarButtonItem = iBeaconBarButton
         
@@ -215,7 +223,7 @@ class DevicesViewController: PopoverVC {
     }
     
     @objc func refreshLocalParametars () {
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Device)
+        filterParametar = FilterItem.loadFilter(type: .Device) ?? FilterItem.loadEmptyFilter()
         deviceCollectionView.reloadData()
     }
 
@@ -761,6 +769,7 @@ extension DevicesViewController: FilterPullDownDelegate{
         filterParametar = filterItem
         updateSubtitle(headerTitleSubtitleView, title: "Devices", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.devices)
+        FilterItem.saveFilter(filterItem, type: .Device)
         
         checkZoneAndCategoryFromFilter(filterItem)
         

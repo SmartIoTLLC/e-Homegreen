@@ -23,7 +23,7 @@ class RemoteViewController: PopoverVC {
     
     fileprivate var scrollView = FilterPullDown()
     fileprivate let headerTitleSubtitleView = NavigationTitleView(frame: CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
-    fileprivate var filterParametar: FilterItem = Filter.sharedInstance.returnFilter(forTab: .Remote)
+    fileprivate var filterParametar: FilterItem = FilterItem.loadEmptyFilter()
     fileprivate var collectionViewCellSize = CGSize(width: 150, height: 180)
     
     fileprivate let remoteCollectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -52,6 +52,8 @@ class RemoteViewController: PopoverVC {
         addScrollView()
         
         setupConstraints()
+        
+        loadFilter()
         
         addObservers()
     }
@@ -83,6 +85,12 @@ class RemoteViewController: PopoverVC {
     }
     
     // MARK: - Setup views
+    private func loadFilter() {
+        if let filter = FilterItem.loadFilter(type: .Remote) {
+            filterParametars(filter)
+        }
+    }
+    
     private func addBackgroundView() {
         backgroundImageView.contentMode = .scaleAspectFill
         
@@ -264,6 +272,7 @@ extension RemoteViewController: FilterPullDownDelegate {
         filterParametar = filterItem
         updateSubtitle(headerTitleSubtitleView, title: "Remote", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.remote)
+        FilterItem.saveFilter(filterItem, type: .Remote)
         prepareLocation()
         if pickedLocation != nil { loadRemotes(from: pickedLocation!) }
     

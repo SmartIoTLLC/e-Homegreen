@@ -36,7 +36,7 @@ private struct ZACCTypeOfControl {
 
 class ZoneAndCategoryControlView: UIView {
     private var filterItem: FilterItem {
-        get { return Filter.sharedInstance.returnFilter(forTab: .Device) }
+        get { return FilterItem.loadFilter(type: .Device) ?? FilterItem.loadEmptyFilter() }
     }
     
     // MARK: - UI components declaration

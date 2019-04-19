@@ -8,7 +8,22 @@
 
 import Foundation
 
-class FilterItem: NSObject {
+class FilterItem: NSObject, Codable {
+    
+    enum CodingKeys: String, CodingKey {
+        case location
+        case levelId
+        case zoneId
+        case categoryId
+        case levelName
+        case zoneName
+        case categoryName
+        case locationObjectId
+        case levelObjectId
+        case zoneObjectId
+        case categoryObjectId
+    }
+    
     var location:String = "All"
     var levelId:Int = 0
     var zoneId:Int = 0
@@ -51,6 +66,26 @@ class FilterItem: NSObject {
         aCoder.encode(levelName, forKey: FilterKey.levelName)
         aCoder.encode(zoneName, forKey: FilterKey.zoneName)
         aCoder.encode(categoryName, forKey: FilterKey.categoryName)
+    }
+
+    
+    class func saveFilter(_ filter: FilterItem, type: FilterEnumeration) {
+        if let dictionary = filter.dictionary {
+            Foundation.UserDefaults.standard.setValue(dictionary, forKey: "filter:\(type.rawValue)")
+        }
+    }
+    
+    class func loadFilter(type: FilterEnumeration) -> FilterItem? {
+        guard let filterDictionary: [String: Any] = Foundation.UserDefaults.standard.dictionary(forKey: "filter:\(type.rawValue)"),
+            let data = try? JSONSerialization.data(withJSONObject: filterDictionary, options: .prettyPrinted),
+            let filter = try? JSONDecoder().decode(FilterItem.self, from: data) else {
+                return nil
+        }
+        
+        return filter
+    }
+    class func loadEmptyFilter() -> FilterItem {
+        return FilterItem(location: "All", levelId: 0, zoneId: 0, categoryId: 0, levelName: "All", zoneName: "All", categoryName: "All")
     }
 }
 class Filter:NSObject {

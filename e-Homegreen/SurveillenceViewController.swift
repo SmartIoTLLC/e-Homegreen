@@ -23,7 +23,7 @@ class SurveillenceViewController: PopoverVC {
     let headerTitleSubtitleView = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
     var scrollView = FilterPullDown()
     var surveillance:[Surveillance] = []
-    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
+    var filterParametar:FilterItem = FilterItem.loadEmptyFilter()
     var collectionViewCellSize = CGSize(width: 150, height: 180)
     var data:Data?
     
@@ -32,6 +32,8 @@ class SurveillenceViewController: PopoverVC {
         
         setupViews()        
         setupConstraints()
+        
+        loadFilter()
         
         NotificationCenter.default.addObserver(self, selector: #selector(setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerSurvailance), object: nil)
     }
@@ -55,7 +57,7 @@ class SurveillenceViewController: PopoverVC {
         
         navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
+//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
         scrollView.setFilterItem(Menu.surveillance)
     }
     
@@ -111,7 +113,7 @@ class SurveillenceViewController: PopoverVC {
     }
 
     @objc func refreshLocalParametars() {
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
+        filterParametar = FilterItem.loadFilter(type: .Surveillance) ?? FilterItem.loadEmptyFilter()
         fetchSurveillance()
     }
     func refreshSurveillanceList(){
@@ -148,15 +150,23 @@ class SurveillenceViewController: PopoverVC {
     @IBAction func fullScreen(_ sender: UIButton) {
         sender.switchFullscreen(viewThatNeedsOffset: scrollView)
     }
+    
+    private func loadFilter() {
+        if let filter = FilterItem.loadFilter(type: .Surveillance) {
+            filterParametars(filter)
+        }
+    }
 }
 
 // Parametar from filter and relaod data
 extension SurveillenceViewController: FilterPullDownDelegate{
     func filterParametars(_ filterItem: FilterItem){
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Surveillance)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Surveillance)
         updateSubtitle(headerTitleSubtitleView, title: "Surveillance", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.surveillance)
+        if let filter = FilterItem.loadFilter(type: .Surveillance) {
+            filterParametar = filter
+        }
+        FilterItem.saveFilter(filterItem, type: .Surveillance)
         fetchSurveillance()
         TimerForFilter.shared.counterSurvailance = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.surveillance)
         TimerForFilter.shared.startTimer(type: Menu.surveillance)

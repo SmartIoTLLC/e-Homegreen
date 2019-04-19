@@ -25,7 +25,7 @@ class FavoriteDevicesVC: UIViewController {
     private let titleView: NavigationViewFavDevices = NavigationViewFavDevices()
     let deviceCollectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
-    private var filterParameter: FilterItem = Filter.sharedInstance.returnFilter(forTab: .Device)
+    private var filterParameter: FilterItem = FilterItem.loadFilter(type: .Device) ?? FilterItem.loadEmptyFilter()
     private var filterNameType: FavDeviceFilterType! { get { return FavDeviceFilterType(rawValue: defaults.string(forKey: UserDefaults.FavDevicesLabelType)!) } }
     
     override func viewDidLoad() {

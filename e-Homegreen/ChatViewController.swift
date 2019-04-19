@@ -46,7 +46,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     let reuseIdentifierCommand  = "chatCommandCell"
     let reuseIdentifierAnswer  = "chatAnswerCell"
     
-    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Chat)
+    var filterParametar:FilterItem = FilterItem.loadFilter(type: .Chat) ?? FilterItem.loadEmptyFilter()
     
     @IBOutlet weak var controlValleryVoice: UIButton!    
     
@@ -58,6 +58,14 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         setupViews()
         setupObservers()
         setupConstraints()
+        
+        loadFilter()
+    }
+    
+    private func loadFilter() {
+        if let filter = FilterItem.loadFilter(type: .Chat) {
+            filterParametars(filter)
+        }
     }
     
     func setupObservers() {
@@ -88,7 +96,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
         navigationItem.titleView = headerTitleSubtitleView
         headerTitleSubtitleView.setTitleAndSubtitle("Chat", subtitle: "All All All")
         
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
+//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
         adjustScrollInsetsPullDownViewAndBackgroudImage()
         
         let longPress:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ChatViewController.defaultFilter(_:)))
@@ -139,7 +147,7 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
     }
     
     @objc func refreshLocalParametars() {
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
+        filterParametar = FilterItem.loadFilter(type: .Chat) ?? FilterItem.loadEmptyFilter()
         chatTableView.reloadData()
     }
     
@@ -651,10 +659,10 @@ class ChatViewController: PopoverVC, ChatDeviceDelegate {
 // Parametar from filter and relaod data
 extension ChatViewController: FilterPullDownDelegate{
     func filterParametars(_ filterItem: FilterItem){
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Chat)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Chat)
+        filterParametar = filterItem
         updateSubtitle(headerTitleSubtitleView, title: "Chat", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.chat)
+        FilterItem.saveFilter(filterItem, type: .Chat)
         chatTableView.reloadData()
         TimerForFilter.shared.counterChat = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.chat)
         TimerForFilter.shared.startTimer(type: Menu.chat)

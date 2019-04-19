@@ -38,6 +38,8 @@ class TimersViewController: PopoverVC {
         setupViews()
         addObservers()
         
+        loadFilter()
+        
         setupConstraints()
     }
     
@@ -86,6 +88,7 @@ extension TimersViewController: FilterPullDownDelegate{
         filterParametar = filterItem
         updateSubtitle(headerTitleSubtitleView, title: "Timers", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)        
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.timers)
+        FilterItem.saveFilter(filterItem, type: .Timers)
         refreshTimerList()
         TimerForFilter.shared.counterTimers = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.timers)
         TimerForFilter.shared.startTimer(type: Menu.timers)
@@ -211,6 +214,12 @@ extension TimersViewController {
             }
             SendingHandler.sendCommand(byteArray: OutgoingHandler.refreshTimerStatus(address), gateway: timer.gateway)
             SendingHandler.sendCommand(byteArray: OutgoingHandler.refreshTimerStatusCountApp(address), gateway: timer.gateway)
+        }
+    }
+    
+    private func loadFilter() {
+        if let filter = FilterItem.loadFilter(type: .Timers) {
+            filterParametars(filter)
         }
     }
 }

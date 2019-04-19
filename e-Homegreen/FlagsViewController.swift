@@ -34,6 +34,8 @@ class FlagsViewController: PopoverVC {
         setupViews()
         addObservers()
         
+        loadFilter()
+        
         setupConstraints()
     }
     
@@ -75,6 +77,7 @@ extension FlagsViewController: FilterPullDownDelegate{
         filterParametar = filterItem
         updateSubtitle(headerTitleSubtitleView, title: "Flags", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.flags)
+        FilterItem.saveFilter(filterItem, type: .Flags)
         reloadFlagsList()
         TimerForFilter.shared.counterFlags = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.flags)
         TimerForFilter.shared.startTimer(type: Menu.flags)
@@ -89,7 +92,7 @@ extension FlagsViewController: FilterPullDownDelegate{
     }
     
     func refreshLocalParametars() {
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Flags)
+        filterParametar = FilterItem.loadFilter(type: .Flags) ?? FilterItem.loadEmptyFilter()
         flagsCollectionView.reloadData()
     }
     
@@ -246,6 +249,12 @@ extension FlagsViewController {
             } else {
                 SendingHandler.sendCommand(byteArray: OutgoingHandler.setFlag(address, id: UInt8(flagId), command: 0x00), gateway: flag.gateway)
             }
+        }
+    }
+    
+    private func loadFilter() {
+        if let filter = FilterItem.loadFilter(type: .Device) {
+            filterParametars(filter)
         }
     }
 }

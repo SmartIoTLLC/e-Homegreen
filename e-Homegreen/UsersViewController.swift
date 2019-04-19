@@ -17,7 +17,7 @@ class UsersViewController: PopoverVC {
     var scrollView                 = FilterPullDown()
     var collectionViewCellSize     = CGSize(width: 150, height: 180)
     let headerTitleSubtitleView    = NavigationTitleView(frame:  CGRect(x: 0, y: 0, width: CGFloat.greatestFiniteMagnitude, height: 44))
-    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Users)
+    var filterParametar:FilterItem = FilterItem.loadEmptyFilter()
     fileprivate var sectionInsets  = UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
     
     @IBOutlet weak var usersCollectionView: UICollectionView!
@@ -39,6 +39,8 @@ class UsersViewController: PopoverVC {
         addObservers()
         
         setupConstraints()
+        
+        loadFilter()
     }
     
     override func viewWillLayoutSubviews() {
@@ -78,15 +80,21 @@ class UsersViewController: PopoverVC {
             make.top.bottom.leading.trailing.equalToSuperview()
         }
     }
+    
+    private func loadFilter() {
+        if let filter = FilterItem.loadFilter(type: .Users) {
+            filterParametars(filter)
+        }
+    }
 }
 
 // Parametar from filter and relaod data
 extension UsersViewController: FilterPullDownDelegate{
     func filterParametars(_ filterItem: FilterItem){
-        Filter.sharedInstance.saveFilter(item: filterItem, forTab: .Users)
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Users)
+        filterParametar = filterItem
         updateSubtitle(headerTitleSubtitleView, title: "Users", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.users)
+        FilterItem.saveFilter(filterItem, type: .Users)
         refreshTimerList()
         TimerForFilter.shared.counterUsers = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.users)
         TimerForFilter.shared.startTimer(type: Menu.users)
@@ -122,7 +130,7 @@ extension UsersViewController {
         
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Users)
+//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Users)
         
         scrollView.filterDelegate = self
         view.addSubview(scrollView)

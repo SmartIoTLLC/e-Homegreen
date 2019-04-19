@@ -25,7 +25,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     var devices:[Device] = []
     var gateway:Gateway!
     
-    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Database)
+    var filterParametar:FilterItem = FilterItem.loadEmptyFilter()
     
     var findSensorParametar = false
     var indexOfSensorAddresses = 0
@@ -64,7 +64,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         rangeFrom.inputAccessoryView = CustomToolBar()
         rangeTo.inputAccessoryView = CustomToolBar()
         
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
+//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
         
         // Add  gestures to Find Devices button in order to make "click" and "long press" possible
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(findDevice))                              //Tap function will call when user tap on button

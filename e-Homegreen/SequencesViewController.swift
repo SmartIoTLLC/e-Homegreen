@@ -77,6 +77,7 @@ extension SequencesViewController: FilterPullDownDelegate{
         filterParametar = filterItem
         updateSubtitle(headerTitleSubtitleView, title: "Sequences", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.sequences)
+        FilterItem.saveFilter(filterItem, type: .Sequences)
         updateSequencesList()
         TimerForFilter.shared.counterSequences = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.sequences)
         TimerForFilter.shared.startTimer(type: Menu.sequences)
@@ -103,6 +104,12 @@ extension SequencesViewController: FilterPullDownDelegate{
     
     @objc func setDefaultFilterFromTimer(){
         scrollView.setDefaultFilterItem(Menu.sequences)
+    }
+    
+    private func loadFilter() {
+        if let filter = FilterItem.loadFilter(type: .Sequences) {
+            filterParametars(filter)
+        }
     }
 }
 

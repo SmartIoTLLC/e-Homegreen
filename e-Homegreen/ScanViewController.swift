@@ -31,7 +31,7 @@ class ScanViewController: PopoverVC {
     var isPresenting:Bool = true
     var gateway:Gateway!
     
-    var filterParametar:FilterItem = Filter.sharedInstance.returnFilter(forTab: .Database)
+    var filterParametar:FilterItem = FilterItem.loadEmptyFilter()
     
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var topView: UIView!
@@ -160,7 +160,7 @@ extension ScanViewController {
         container.addSubview(scanDeviceViewController.view)
         scanDeviceViewController.didMove(toParent: self)
         
-        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
+//        filterParametar = Filter.sharedInstance.returnFilter(forTab: .Database)
     }
     
     func setupViewControllersInit() {

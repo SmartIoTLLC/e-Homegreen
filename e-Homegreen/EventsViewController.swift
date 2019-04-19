@@ -37,6 +37,8 @@ class EventsViewController: PopoverVC{
         setupViews()
         addObservers()
         
+        loadFilter()
+        
         setupConstraints()
     }
     
@@ -70,6 +72,12 @@ class EventsViewController: PopoverVC{
             make.top.bottom.leading.trailing.equalToSuperview()
         }
     }
+    
+    private func loadFilter() {
+        if let filter = FilterItem.loadFilter(type: .Events) {
+            filterParametars(filter)
+        }
+    }
 
 }
 
@@ -79,6 +87,7 @@ extension EventsViewController: FilterPullDownDelegate{
         filterParametar = filterItem
         updateSubtitle(headerTitleSubtitleView, title: "Events", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.events)
+        FilterItem.saveFilter(filterItem, type: .Events)
         updateEventsList()
         
         TimerForFilter.shared.counterEvents = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.events)

@@ -64,6 +64,8 @@ class SecurityViewController: PopoverVC {
         addObserversVDL()
         
         setupConstraints()
+        
+        loadFilter()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -113,6 +115,12 @@ class SecurityViewController: PopoverVC {
     private func setupConstraints() {
         backgroundImageView.snp.makeConstraints { (make) in
             make.top.bottom.leading.trailing.equalToSuperview()
+        }
+    }
+    
+    private func loadFilter() {
+        if let filter = FilterItem.loadFilter(type: .Security) {
+            filterParametars(filter)
         }
     }
 }
@@ -340,6 +348,7 @@ extension SecurityViewController: FilterPullDownDelegate {
         filterParametar = filterItem
         DatabaseFilterController.shared.saveFilter(filterItem, menu: Menu.security)
         updateSubtitle(headerTitleSubtitleView, title: "Security", location: filterItem.location, level: filterItem.levelName, zone: filterItem.zoneName)
+        FilterItem.saveFilter(filterItem, type: .Security)
         refreshSecurity()
         TimerForFilter.shared.counterSecurity = DatabaseFilterController.shared.getDeafultFilterTimeDuration(menu: Menu.security)
         TimerForFilter.shared.startTimer(type: Menu.security)
