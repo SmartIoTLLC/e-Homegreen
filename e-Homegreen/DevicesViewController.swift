@@ -250,7 +250,7 @@ class DevicesViewController: PopoverVC {
                         oldValue: NSNumber(value: withOldValue)
                     )
                     _ = RepeatSendingHandler(
-                        byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setValue, delay: Int(device.delay), runningTime: Int(device.runtime), skipLevel: self.getByte(device.skipState)),
+                        byteArray: OutgoingHandler.setLightRelayStatus(address, channel: self.getByte(device.channel), value: setValue, delay: Int(truncating: device.delay), runningTime: Int(truncating: device.runtime), skipLevel: self.getByte(device.skipState)),
                         gateway: device.gateway,
                         device: device,
                         oldValue: withOldValue,
@@ -294,7 +294,7 @@ class DevicesViewController: PopoverVC {
              logic is moved to its proper place (DeviceCollectionViewCell)
              */
             
-            let deviceValue:Double = { return Double(device.currentValue) }()
+            let deviceValue:Double = { return Double(truncating: device.currentValue) }()
             cell.picture.image     = device.returnImage(Double(deviceValue))
             cell.lightSlider.value = Float(deviceValue/255) // Slider value accepts values from 0 to 1
             cell.setNeedsDisplay()
@@ -990,7 +990,7 @@ extension DevicesViewController {
                         let minuteValue = Foundation.UserDefaults.standard.value(forKey: UserDefaults.RefreshDelayMinutes) as? Int {
                         let minutes = (hourValue * 60 + minuteValue) * 60
                         
-                        if Date().timeIntervalSince(stateUpdatedAt.addingTimeInterval(TimeInterval(NSNumber(value: minutes as Int)))) >= 0 {
+                        if Date().timeIntervalSince(stateUpdatedAt.addingTimeInterval(TimeInterval(truncating: NSNumber(value: minutes as Int)))) >= 0 {
                             
                             updateDeviceStatus (indexPathRow: indexPath.row)
                             refreshRunningTime(of: devices[indexPath.row])

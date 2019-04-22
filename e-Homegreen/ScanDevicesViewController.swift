@@ -46,7 +46,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.shared.delegate as! AppDelegate
+        appDel = (UIApplication.shared.delegate as! AppDelegate)
         loadDevices()
         
         refreshDeviceList()
@@ -131,7 +131,7 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
     }
     
     func updateDeviceList () {
-        appDel = UIApplication.shared.delegate as! AppDelegate
+        appDel = (UIApplication.shared.delegate as! AppDelegate)
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = Device.fetchRequest()
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(key: "gateway.name", ascending: true),

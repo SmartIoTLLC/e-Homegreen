@@ -22,7 +22,7 @@ class ListOfDevice_AppViewController: UIViewController, UITableViewDelegate, UIT
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        appDel = UIApplication.shared.delegate as! AppDelegate
+        appDel = (UIApplication.shared.delegate as! AppDelegate)
 
         self.navigationController?.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
         self.navigationItem.title = typeOfFile?.description

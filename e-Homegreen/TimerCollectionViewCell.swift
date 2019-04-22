@@ -32,7 +32,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
         
         timerTitle.isUserInteractionEnabled = true
         timerTitle.text = getName(timer, filterParametar: filterParametar)
-        if Int(cellTimer.type) == TimerType.timer.rawValue || Int(cellTimer.type) == TimerType.stopwatch.rawValue{
+        if Int(truncating: cellTimer.type) == TimerType.timer.rawValue || Int(truncating: cellTimer.type) == TimerType.stopwatch.rawValue{
             let (h,m,s) = secondsToHoursMinutesSeconds(Int(cellTimer.timerCount))
             timerCOuntingLabel.text = String(format: "%02d", h) + ":" + String(format: "%02d", m) + ":" + String(format: "%02d", s)
         }else{
@@ -44,7 +44,7 @@ class TimerCollectionViewCell: UICollectionViewCell {
         timerButtonRight.tag = tag
         
         //   ===   Default   ===
-        if Int(timer.type) == TimerType.timer.rawValue || Int(timer.type) == TimerType.stopwatch.rawValue {
+        if Int(truncating: timer.type) == TimerType.timer.rawValue || Int(truncating: timer.type) == TimerType.stopwatch.rawValue {
             timerButton.isHidden = false
             timerButtonLeft.isHidden = true
             timerButtonRight.isHidden = true
@@ -106,12 +106,12 @@ class TimerCollectionViewCell: UICollectionViewCell {
     }
     
     func startTimer(){
-        if Int(cellTimer.type) == TimerType.timer.rawValue{
+        if Int(truncating: cellTimer.type) == TimerType.timer.rawValue{
             time?.invalidate()
             time = Foundation.Timer.scheduledTimer(timeInterval: 1, target:self, selector: #selector(countDown(_:)), userInfo:nil, repeats: true)
             
         }
-        if Int(cellTimer.type) == TimerType.stopwatch.rawValue{
+        if Int(truncating: cellTimer.type) == TimerType.stopwatch.rawValue{
             time?.invalidate()
             time = Foundation.Timer.scheduledTimer(timeInterval: 1, target:self, selector: #selector(countUp(_:)), userInfo:nil, repeats: true)
             

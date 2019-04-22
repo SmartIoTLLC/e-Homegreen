@@ -52,7 +52,7 @@ class AddVideo_AppXIB: CommonXIBTransitionVC{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.shared.delegate as! AppDelegate
+        appDel = (UIApplication.shared.delegate as! AppDelegate)
         
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.2)
         

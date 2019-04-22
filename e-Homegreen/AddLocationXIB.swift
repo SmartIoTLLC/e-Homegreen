@@ -126,7 +126,7 @@ class AddLocationXIB: PopoverVC {
 // MARK: - Setup views
 extension AddLocationXIB {
     func setupViews() {
-        appDel = UIApplication.shared.delegate as! AppDelegate
+        appDel = (UIApplication.shared.delegate as! AppDelegate)
         
         UIView.hr_setToastThemeColor(color: UIColor.red)
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)

@@ -425,6 +425,12 @@ class ClimateCollectionViewCell: BaseDeviceCollectionViewCell {
         } else {
             backFanSpeedImageView.image = fanOffImage
             backClimateModeImageView.stopAnimating()
+            switch mode { 
+            case .cool : backTemperatureSetPointLabel.text = "\(device.coolTemperature) \(degrees)"
+            case .heat : backTemperatureSetPointLabel.text = "\(device.heatTemperature) \(degrees)"
+            case .fan  : backTemperatureSetPointLabel.text = "\(device.coolTemperature) \(degrees)"
+            case .auto : backTemperatureSetPointLabel.text = "\(device.coolTemperature) \(degrees)"
+            }
         }
         
     }

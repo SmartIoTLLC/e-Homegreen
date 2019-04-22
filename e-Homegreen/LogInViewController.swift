@@ -22,7 +22,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate, UIGestureRecog
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDel = UIApplication.shared.delegate as! AppDelegate
+        appDel = (UIApplication.shared.delegate as! AppDelegate)
         
         tableView.layer.borderWidth = 1
         tableView.layer.cornerRadius = 5

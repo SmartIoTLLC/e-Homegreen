@@ -35,14 +35,14 @@ class RepeatSendingHandler: NSObject {
     //
     init(byteArray:[UInt8], gateway: Gateway, device:Device, oldValue:Int, command: NSNumber? = nil) {
         super.init()
-        appDel = UIApplication.shared.delegate as! AppDelegate
+        appDel = (UIApplication.shared.delegate as! AppDelegate)
         currentDeviceKey = [device.objectID: command!]
         
         self.byteArray = byteArray
         self.gateway = gateway
         self.device = device
         self.deviceOldValue = oldValue
-        self.delay = Double(device.delay) + 1
+        self.delay = Double(truncating: device.delay) + 1
         
         NotificationCenter.default.addObserver(self, selector: #selector(RepeatSendingHandler.didGetResponseNotification(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(sameDevice(_:)), name: Notification.Name(rawValue: NotificationKey.SameDeviceDifferentCommand), object: nil)
@@ -78,7 +78,7 @@ class RepeatSendingHandler: NSObject {
     
     init(byteArray:[UInt8], gateway: Gateway) {
         super.init()
-        appDel = UIApplication.shared.delegate as! AppDelegate
+        appDel = (UIApplication.shared.delegate as! AppDelegate)
         
         self.byteArray = byteArray
         self.gateway = gateway
