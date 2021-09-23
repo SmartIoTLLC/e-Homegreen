@@ -902,7 +902,8 @@ extension DevicesViewController: UICollectionViewDataSource {
         case ControlType.Sensor,
              ControlType.IntelligentSwitch,
              ControlType.Gateway,
-             ControlType.DigitalInput:
+             ControlType.DigitalInput,
+             ControlType.AnalogInput:
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MultisensorCollectionViewCell.reuseIdentifier, for: indexPath) as? MultisensorCollectionViewCell {
                 cell.setCell(with: device, tag: tag)
                 return cell

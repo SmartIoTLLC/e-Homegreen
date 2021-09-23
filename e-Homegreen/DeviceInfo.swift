@@ -38,6 +38,7 @@ struct Channel {
     static let Four = 4
     static let Five = 5
     static let Six = 6
+    static let Seven = 7
     static let Eight = 8
     static let Ten = 10
     static let Twelve = 12
@@ -58,6 +59,7 @@ struct ControlType {
     static let Curtain = "Curtain"
     static let PC = "PC"
     static let SaltoAccess = "saltoAccess"
+    static let GuestRoomModule = "GuestRoomModule"
     
 //    static let CurtainsRS485 = "Curtains RS485"
 //    static let Gateway = "Gateway"
@@ -114,7 +116,7 @@ struct CategoryId {
     static let Default = 255
 }
 struct DeviceInfo {
-    
+ 
     static let setMode:[Int:String] = [0 : "Auto",
         1:"Cool",
         2:"Heat",
@@ -311,6 +313,9 @@ struct DeviceInfo {
         // New device - security, MAC address:40-D8-55-0F-E0-00
         DeviceType(deviceId: 0xC4, subId: 0x00):DeviceTypeCode(channel:Channel.One, name:ControlType.IRTransmitter, MPN: "UCM/EHG"), // Comfort Panel
         DeviceType(deviceId: 0x0C, subId: 0x00):DeviceTypeCode(channel:Channel.One, name:ControlType.PC, MPN: "PC0000S"), // e-Homegreen PC Controller
+        
+        //GuestRoomModule
+        DeviceType(deviceId: 0x36, subId: 0x01):DeviceTypeCode(channel:Channel.Seven, name:ControlType.GuestRoomModule, MPN: "GDTOROC"),
     ]
 }
 struct DeviceChannelType {
@@ -429,3 +434,4 @@ let temperatureImagesTwoStateNO = [DeviceImageState(defaultImage: "12 Appliance 
                                    DeviceImageState(defaultImage: "12 Appliance - Water Heater - 01", state: 1, text: "On")]
 let temperatureImagesTwoStateNC = [DeviceImageState(defaultImage: "12 Appliance - Water Heater - 00", state: 0, text: "On"),
                                    DeviceImageState(defaultImage: "12 Appliance - Water Heater - 01", state: 1, text: "Off")]
+

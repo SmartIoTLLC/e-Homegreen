@@ -262,4 +262,6 @@ class Device: NSManagedObject {
             self.usageCounter = NSNumber(value: counterValue + 1)
         }
     }
+    
+
 }

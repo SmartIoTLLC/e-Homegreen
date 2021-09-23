@@ -356,7 +356,7 @@ extension ImportZoneViewController {
                 }
                 
                 switch state {
-                case UIGestureRecognizerState.began:
+                case UIGestureRecognizer.State.began:
                     
                     Path.initialIndexPath = indexPath
                     if let cell = importZoneTableView.cellForRow(at: indexPath) {
@@ -380,7 +380,7 @@ extension ImportZoneViewController {
                         })
                     }
                     
-                case UIGestureRecognizerState.changed:
+                case UIGestureRecognizer.State.changed:
                     var center = My.cellSnapshot!.center
                     center.y   = locationInView.y
                     

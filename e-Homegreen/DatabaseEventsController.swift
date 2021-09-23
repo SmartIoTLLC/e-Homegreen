@@ -92,7 +92,7 @@ class DatabaseEventsController: NSObject {
         return []
     }
     
-    func createEvent(_ eventId: Int, eventName: String, moduleAddress: Int, gateway: Gateway, levelId: Int?, zoneId: Int?, categoryId: Int?, isBroadcast:Bool = true, isLocalcast:Bool = true, sceneImageOneDefault:String? = "17 Event - Up Down - 00", sceneImageTwoDefault:String? = "17 Event - Up Down - 01", sceneImageOneCustom:String? = nil, sceneImageTwoCustom:String? = nil, imageDataOne:Data? = nil, imageDataTwo:Data? = nil, report:Bool = false){
+    func createEvent(_ eventId: Int, eventName: String, moduleAddress: Int, gateway: Gateway, levelId: Int?, zoneId: Int?, categoryId: Int?, isBroadcast:Bool = false, isLocalcast:Bool = false, sceneImageOneDefault:String? = "17 Event - Up Down - 00", sceneImageTwoDefault:String? = "17 Event - Up Down - 01", sceneImageOneCustom:String? = nil, sceneImageTwoCustom:String? = nil, imageDataOne:Data? = nil, imageDataTwo:Data? = nil, report:Bool = false){
         var itExists = false
         let eventsArray = fetchEventWithIdAndAddress(eventId, gateway: gateway, moduleAddress: moduleAddress)
         if eventsArray.count > 0 { itExists = true }

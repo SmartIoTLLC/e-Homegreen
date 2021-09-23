@@ -151,7 +151,7 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     
     func addObservers(){
         // Notification that tells us that timer is received and stored
-        NotificationCenter.default.addObserver(self, selector: #selector(ScanSequencesesViewController.nameReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveEventFromGateway), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ScanEventsViewController.nameReceivedFromPLC(_:)), name: NSNotification.Name(rawValue: NotificationKey.DidReceiveEventFromGateway), object: nil)
     }
     
     func removeObservers(){
@@ -318,7 +318,7 @@ class ScanEventsViewController: PopoverVC, ProgressBarDelegate {
     
     // If message is received from PLC, notification is sent and notification calls this function.
     // Checks whether there is next sequence ID to search for. If there is not, dismiss progres bar and end the search.
-    func nameReceivedFromPLC (_ notification:Notification) {
+    @objc func nameReceivedFromPLC (_ notification:Notification) {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningEventsNameAndParameters) {
             guard let info = notification.userInfo! as? [String:Int] else { return }
             guard let timerIndex = info["eventId"] else { return }

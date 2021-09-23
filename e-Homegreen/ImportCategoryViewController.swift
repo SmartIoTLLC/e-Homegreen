@@ -249,7 +249,7 @@ extension ImportCategoryViewController {
                 }
                 
                 switch state {
-                case UIGestureRecognizerState.began:
+                case UIGestureRecognizer.State.began:
                         Path.initialIndexPath = indexPath
                         if let cell = importCategoryTableView.cellForRow(at: indexPath) {
                             My.cellSnapshot  = HelperFunctions.snapshotOfCell(cell)
@@ -273,7 +273,7 @@ extension ImportCategoryViewController {
                         }
 
                     
-                case UIGestureRecognizerState.changed:
+                case UIGestureRecognizer.State.changed:
                     var center = My.cellSnapshot!.center
                     
                     center.y = locationInView.y

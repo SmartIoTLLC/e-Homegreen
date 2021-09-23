@@ -52,7 +52,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UISlider.appearance().setMinimumTrackImage(UIImage(named: "slidertrackmin"), for: UIControl.State())
         UISlider.appearance().setThumbImage(UIImage(named: "slider"), for: UIControl.State())
         UISlider.appearance().setThumbImage(UIImage(named: "sliderselected"), for: UIControl.State.highlighted)
-        UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
+//        UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
+ 
         
         //navigation setup
         UINavigationBar.appearance().isTranslucent = false

@@ -578,15 +578,23 @@ class ScanDevicesViewController: UIViewController, UITextFieldDelegate, Progress
         let channel = getByte(device.channel)
         let address = [getByte(gateway.addressOne), getByte(gateway.addressTwo), getByte(device.address)]
         
+        print("find names address \(address[0]):\(address[1]):\(address[2]) ch: \(channel) type: \(type)" )
         switch type {
-            case ControlType.Dimmer, ControlType.AnalogOutput : SendingHandler.sendCommand(byteArray: OutgoingHandler.getChannelName(address, channel: channel), gateway: gateway)
-            case ControlType.Curtain, ControlType.PC          : SendingHandler.sendCommand(byteArray: OutgoingHandler.getModuleName(address), gateway: gateway)
-            case ControlType.Relay, ControlType.DigitalOutput : SendingHandler.sendCommand(byteArray: OutgoingHandler.getChannelName(address, channel: channel), gateway: gateway)
-            case ControlType.Climate                          : SendingHandler.sendCommand(byteArray: OutgoingHandler.getACName(address, channel: channel), gateway: gateway)
-            case ControlType.SaltoAccess                      : SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessInfoWithAddress(address), gateway: gateway)
-            case ControlType.IntelligentSwitch                : SendingHandler.sendCommand(byteArray: OutgoingHandler.getModuleName(address), gateway: gateway)
+            case ControlType.Dimmer, ControlType.AnalogOutput :
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getChannelName(address, channel: channel), gateway: gateway)
+            case ControlType.Curtain, ControlType.PC          :
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getModuleName(address), gateway: gateway)
+        case ControlType.Relay, ControlType.DigitalOutput:
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getChannelName(address, channel: channel), gateway: gateway)
+            case ControlType.Climate                          :
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getACName(address, channel: channel), gateway: gateway)
+            case ControlType.SaltoAccess                      :
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getSaltoAccessInfoWithAddress(address), gateway: gateway)
+            case ControlType.IntelligentSwitch                :
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getModuleName(address), gateway: gateway)
             case ControlType.Sensor, ControlType.IntelligentSwitch,
-                 ControlType.Gateway,ControlType.DigitalInput : SendingHandler.sendCommand(byteArray: OutgoingHandler.getSensorName(address, channel: channel), gateway: gateway)
+                 ControlType.Gateway,ControlType.DigitalInput, ControlType.AnalogInput:
+                SendingHandler.sendCommand(byteArray: OutgoingHandler.getSensorName(address, channel: channel), gateway: gateway)
             default: break
         }
     }

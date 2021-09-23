@@ -430,6 +430,17 @@ class IncomingHandler: NSObject {
                                 
                                 let _ = Device(context: moc, specificDeviceInformation: deviceInformation)
                             }
+                            else if controlType == ControlType.GuestRoomModule{
+                                let cType = getDeviceTypeOfGRMbyChannel(DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]!.MPN, i)
+                                var ch = i
+                                if(channel == 7 && cType == ControlType.Climate){
+                                    ch = 1
+                                }
+                                
+                                let deviceInfo = DeviceInformation(address: Int(byteArray[4]), channel: ch, numberOfDevices: channel, type: cType, gateway: gateways[0], mac: Data(bytes: UnsafePointer<UInt8>(MAC), count: MAC.count), isClimate:isClimate, curtainNeedsSlider: curtainNeedsSlider)
+                                
+                                let _ = Device(context: moc, specificDeviceInformation: deviceInfo)
+                            }
                         }
                         
                         CoreDataController.sharedInstance.saveChanges()
@@ -441,6 +452,28 @@ class IncomingHandler: NSObject {
             }
         }
     }
+    
+    
+    func getDeviceTypeOfGRMbyChannel(_ module : String, _ channel : Int) -> String
+    {
+        switch module {
+        case "GDTOROC":
+            switch channel {
+            case 1, 2:
+                return ControlType.Dimmer
+            case 3, 4, 5, 6:
+                return ControlType.Relay;
+            case 7:
+                return ControlType.Climate;
+            default:
+                break
+            }
+        default:
+            break
+        }
+        return module
+    }
+    
     func parseMessageNewDevicSalto (_ byteArray:[Byte]) {
         print("NEW DEVICE SALTO")
         parseMessageAndPrint(byteArray)
@@ -602,7 +635,7 @@ class IncomingHandler: NSObject {
         
         devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         for i in 0..<devices.count {
-            if isCorrectDeviceAddress(i: i, for: byteArray) {
+            if isCorrectDeviceAddress(i: i, for: byteArray) && devices[i].type == ControlType.Climate{
                 
                 let channel = Int(devices[i].channel)
                 devices[i].currentValue = getNSNumber(for: byteArray[8+13*(channel-1)])
@@ -618,7 +651,9 @@ class IncomingHandler: NSObject {
                 devices[i].humidity          = getNSNumber(for: byteArray[16+13*(channel-1)])
                 devices[i].filterWarning     = byteArray[17+13*(channel-1)] == 0x00 ? false : true
                 devices[i].allowEnergySaving = byteArray[18+13*(channel-1)] == 0x00 ? getNSNumber(from: false) : getNSNumber(from: true)
-                devices[i].current           = getNSNumber(for: byteArray[19+13*(channel-1)] + byteArray[20+13*(channel-1)])
+//                devices[i].current           = getNSNumber(for: byteArray[19+13*(channel-1)] + byteArray[20+13*(channel-1)])
+                devices[i].current = NSNumber(value: Int(UInt16(byteArray[19+13*(channel-1)])*256 + UInt16(byteArray[20+13*(channel-1)]))) // current
+                
                 let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
                 NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
             }
@@ -669,7 +704,8 @@ class IncomingHandler: NSObject {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
             devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
             for i in 0..<devices.count {
-                if isCorrectDeviceAddress(i: i, for: byteArray) && isCorrectDeviceChannel(i: i, byteArray: byteArray) {
+                if isCorrectDeviceAddress(i: i, for: byteArray) && isCorrectDeviceChannel(i: i, byteArray: byteArray)
+                    && isCorrectDeviceType(i: i, for: byteArray) {
                     
                     let name: String = getName(count: 42, byteArray: byteArray) // device name
                     if name != "" { devices[i].name = name } else { devices[i].name = "Unknown" }
@@ -692,6 +728,7 @@ class IncomingHandler: NSObject {
                     let data = ["deviceIndexForFoundName":i]
                     NSLog("dosao je u ovaj incoming handler sa deviceom: \(i)")
                     NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidFindDeviceName), object: self, userInfo: data)
+                    break
                 }
             }
             CoreDataController.sharedInstance.saveChanges()
@@ -934,7 +971,9 @@ class IncomingHandler: NSObject {
         if Foundation.UserDefaults.standard.bool(forKey: UserDefaults.IsScaningDeviceName) {
             devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
             for i in 0..<devices.count {
-                if  isCorrectDeviceAddress(i: i, for: byteArray) && isCorrectDeviceChannel(i: i, byteArray: byteArray) {
+                if  isCorrectDeviceAddress(i: i, for: byteArray) && isCorrectDeviceChannel(i: i, byteArray: byteArray)
+                        && isCorrectDeviceType(i: i, for: byteArray)
+                {
                     if let moc = appDel.managedObjectContext {
                         // Parse device name
                         let name: String = getName(count: 8+47, byteArray: byteArray) // device name
@@ -1192,9 +1231,51 @@ class IncomingHandler: NSObject {
 extension IncomingHandler {
     
     func isCorrectDeviceAddress(i: Int, for byteArray: [Byte]) -> Bool {
-        if Int(devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(devices[i].address) == Int(byteArray[4]) { return true }
+        if Int(devices[i].gateway.addressOne) == Int(byteArray[2]) && Int(devices[i].gateway.addressTwo) == Int(byteArray[3]) && Int(devices[i].address) == Int(byteArray[4]) {
+            return true }
         return false
+        
     }
+    
+    func isCorrectDeviceType(i: Int, for byteArray: [Byte]) -> Bool {
+
+        let device  = devices[i]
+        let type    = device.type
+        let gateway = device.gateway
+        let channel = getByte(device.channel)
+        let address = [getByte(gateway.addressOne), getByte(gateway.addressTwo), getByte(device.address)]
+        print("isCorrectDeviceType \(type)")
+        var sendCommand : [Byte] = []
+        
+        switch type {
+            case ControlType.Dimmer, ControlType.AnalogOutput :
+                sendCommand =  OutgoingHandler.getChannelName(address, channel: channel)
+            case ControlType.Curtain, ControlType.PC          :
+                sendCommand =  OutgoingHandler.getModuleName(address)
+            case ControlType.Relay, ControlType.DigitalOutput :
+                sendCommand =   OutgoingHandler.getChannelName(address, channel: channel)
+            case ControlType.Climate                          :
+                sendCommand =    OutgoingHandler.getACName(address, channel: channel)
+            case ControlType.SaltoAccess                      :
+                sendCommand =   OutgoingHandler.getSaltoAccessInfoWithAddress(address)
+            case ControlType.IntelligentSwitch                :
+                sendCommand =   OutgoingHandler.getModuleName(address)
+            case ControlType.Sensor, ControlType.IntelligentSwitch,
+                 ControlType.Gateway,ControlType.DigitalInput, ControlType.AnalogInput :
+                sendCommand =   OutgoingHandler.getSensorName(address, channel: channel)
+            default:
+                return false
+        }
+        
+        return Int(byteArray[5]) == Int(sendCommand[5]) + 240 && Int(byteArray[6]) == Int(sendCommand[6])
+        
+    }
+
+    func getByte(_ value: NSNumber) -> UInt8 {
+        return UInt8(Int(value))
+    }
+
+    
     func isCorrectDeviceAddress(device: Device, for byteArray: [Byte]) -> Bool {
         if Int(device.gateway.addressOne) == Int(byteArray[2]) && Int(device.gateway.addressTwo) == Int(byteArray[3]) && Int(device.address) == Int(byteArray[4]) { return true }
         return false

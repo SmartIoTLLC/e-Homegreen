@@ -241,7 +241,10 @@ extension EventsViewController {
                     if useTrigger {
                         SendingHandler.sendCommand(byteArray: OutgoingHandler.triggerEvent(address, id: UInt8(eventID)), gateway: gateway)
                     } else {
-                        if eventID >= 0 && eventID <= 255 { SendingHandler.sendCommand(byteArray: OutgoingHandler.runEvent(address, id: UInt8(eventID)), gateway: gateway) }
+                        if eventID >= 0 && eventID <= 255 {
+                            SendingHandler.sendCommand(byteArray: OutgoingHandler.runEvent(address, id: UInt8(eventID)), gateway: gateway)
+                            
+                        }
                     }
                 case .cancel  : SendingHandler.sendCommand(byteArray: OutgoingHandler.cancelEvent(address, id: UInt8(eventID)), gateway: gateway)
             }
