@@ -35,6 +35,8 @@ enum Menu:Int{
             case .notSuperUserSettings: return "Settings"
         }
     }
+
+
     
     var controller:UINavigationController{
         switch self{

@@ -8,8 +8,8 @@ target 'e-Homegreen' do
     # Pods for e-Homegreen
     pod 'CocoaAsyncSocket'
     pod 'NSManagedObject-HYPPropertyMapper'
-    pod 'ALCameraViewController', '~> 2.0.3'
-    pod 'Zip', '~> 1.1'
+    pod 'ALCameraViewController'
+    pod 'Zip'
     pod 'AKImageCropperView'
     pod 'SnapKit', '~> 4.0.0'
 end

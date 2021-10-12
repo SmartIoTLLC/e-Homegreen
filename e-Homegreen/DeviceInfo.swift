@@ -40,6 +40,7 @@ struct Channel {
     static let Six = 6
     static let Seven = 7
     static let Eight = 8
+    static let Nine = 9
     static let Ten = 10
     static let Twelve = 12
 }
@@ -315,7 +316,9 @@ struct DeviceInfo {
         DeviceType(deviceId: 0x0C, subId: 0x00):DeviceTypeCode(channel:Channel.One, name:ControlType.PC, MPN: "PC0000S"), // e-Homegreen PC Controller
         
         //GuestRoomModule
-        DeviceType(deviceId: 0x36, subId: 0x01):DeviceTypeCode(channel:Channel.Seven, name:ControlType.GuestRoomModule, MPN: "GDTOROC"),
+        DeviceType(deviceId: 0x36, subId: 0x01):DeviceTypeCode(channel:Channel.Nine, name:ControlType.GuestRoomModule, MPN: "GDTOR5C"),
+        DeviceType(deviceId: 0x37, subId: 0x00):DeviceTypeCode(channel:Channel.Nine, name:ControlType.GuestRoomModule, MPN: "GP805AC"),
+        DeviceType(deviceId: 0x38, subId: 0x00):DeviceTypeCode(channel:Channel.Eight, name:ControlType.GuestRoomModule, MPN: "GR0805A"),
     ]
 }
 struct DeviceChannelType {

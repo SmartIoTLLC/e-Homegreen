@@ -3,32 +3,45 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "ScanDevicesViewController.nameReceivedFromPLC(_:):ScanDevicesViewController.swift">
+         contextName = "TimerForFilter.startTimer(type:):TimerForFilter.swift">
          <PersistentStrings>
             <PersistentString
-               value = "arrayOfNamesToBeSearched.count">
+               value = "counterDevices">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "ScanDevicesViewController.deviceReceivedFromPLC(_:):ScanDevicesViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "ScanDevicesViewController.findNames():ScanDevicesViewController.swift">
+         contextName = "FilterPullDown.setDefaultFilterItem(_:):FilterPullDown.swift">
          <PersistentStrings>
             <PersistentString
-               value = "arrayOfNamesToBeSearched">
+               value = "filter.locationId == FilterPulldownKeys.all">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "main:AppDelegate.swift">
-      </ContextState>
-      <ContextState
-         contextName = "IncomingHandler.parseMessageChannelParameter(_:):IncomingHandler.swift">
+         contextName = "ClimaSettingsViewController.setupViews():ClimaSettingsViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "devices">
+               value = "device.coolModeVisible">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "IncomingHandler.parseMessageDimmerGetRunningTime(_:):IncomingHandler.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "devices[0].type">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "DevicesViewController.loadFilter():DevicesViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "DevicesViewController.updateDeviceList():DevicesViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "filterParametar">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -43,6 +56,48 @@
             </PersistentString>
             <PersistentString
                value = "getNSNumber(for: byteArray[20+13*(channel-1)])">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "main:AppDelegate.swift">
+      </ContextState>
+      <ContextState
+         contextName = "DevicesViewController.filterParametars(_:):DevicesViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static FilterItem.saveFilter(_:type:):FilterStruct.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ScanDevicesViewController.deviceReceivedFromPLC(_:):ScanDevicesViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ScanDevicesViewController.findNames():ScanDevicesViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "arrayOfNamesToBeSearched">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ScanDevicesViewController.nameReceivedFromPLC(_:):ScanDevicesViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "arrayOfNamesToBeSearched.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "IncomingHandler.parseMessageChannelParameter(_:):IncomingHandler.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "devices">
+            </PersistentString>
+            <PersistentString
+               value = "getNSNumber(for: byteArray[9])">
+            </PersistentString>
+            <PersistentString
+               value = "Int(byteArray[9])">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

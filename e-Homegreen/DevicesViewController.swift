@@ -84,10 +84,12 @@ class DevicesViewController: PopoverVC {
         
         setupViews()
         
-        loadFilter()
+        
         
         NotificationCenter.default.addObserver(self, selector: #selector(DevicesViewController.setDefaultFilterFromTimer), name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerDevices), object: nil)
-    }
+        }
+    
+
         
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -100,6 +102,7 @@ class DevicesViewController: PopoverVC {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        loadFilter()
         deviceCollectionView.isUserInteractionEnabled = true
         
         updateDeviceList()

@@ -403,12 +403,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let counterValue = currentTime - timeExitedTheApp
             let seconds = Int(counterValue)
             
-            if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerDevicesValueWhenExitedApp") as? Int {
-                TimerForFilter.shared.counterDevices = timerOldValue - Int(seconds)
-                if TimerForFilter.shared.counterDevices > 0 { TimerForFilter.shared.startTimer(type: Menu.devices)
-                } else { NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerDevices), object: nil) }
-            }
-            
+//                if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerDevicesValueWhenExitedApp") as? Int {
+//                    TimerForFilter.shared.counterDevices = timerOldValue - Int(seconds)
+                    if TimerForFilter.shared.counterDevices > 0 { TimerForFilter.shared.startTimer(type: Menu.devices)
+                    }
+//                    else {
+//                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationKey.FilterTimers.timerDevices), object: nil)
+//
+//                    }
+//                }
+
             if let timerOldValue = Foundation.UserDefaults.standard.value(forKey: "timerScenesValueWhenExitedApp") as? Int {
                 TimerForFilter.shared.counterScenes = timerOldValue - Int(seconds)
                 if TimerForFilter.shared.counterScenes > 0 { TimerForFilter.shared.startTimer(type: Menu.scenes)

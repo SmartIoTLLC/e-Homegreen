@@ -433,8 +433,9 @@ class IncomingHandler: NSObject {
                             else if controlType == ControlType.GuestRoomModule{
                                 let cType = getDeviceTypeOfGRMbyChannel(DeviceInfo.deviceType[DeviceType(deviceId: byteArray[7], subId: byteArray[8])]!.MPN, i)
                                 var ch = i
-                                if(channel == 7 && cType == ControlType.Climate){
+                                if(cType == ControlType.Climate){
                                     ch = 1
+                                    isClimate = true
                                 }
                                 
                                 let deviceInfo = DeviceInformation(address: Int(byteArray[4]), channel: ch, numberOfDevices: channel, type: cType, gateway: gateways[0], mac: Data(bytes: UnsafePointer<UInt8>(MAC), count: MAC.count), isClimate:isClimate, curtainNeedsSlider: curtainNeedsSlider)
@@ -457,17 +458,37 @@ class IncomingHandler: NSObject {
     func getDeviceTypeOfGRMbyChannel(_ module : String, _ channel : Int) -> String
     {
         switch module {
-        case "GDTOROC":
+        case "GDTOR5C":
             switch channel {
             case 1, 2:
                 return ControlType.Dimmer
-            case 3, 4, 5, 6:
+            case 3, 4, 5, 6, 7, 8:
                 return ControlType.Relay;
-            case 7:
+            case 9:
                 return ControlType.Climate;
             default:
                 break
             }
+            
+        case "GP805AC":
+            switch channel {
+            
+            case 1, 2, 3, 4, 5, 6, 7, 8:
+                return ControlType.Relay;
+            case 9:
+                return ControlType.Climate;
+            default:
+                break
+            }
+            
+        case "GR0805A":
+        switch channel {
+            case 1, 2, 3, 4, 5, 6, 7, 8:
+                return ControlType.Relay
+          default:
+                break
+            }
+    
         default:
             break
         }
@@ -635,27 +656,30 @@ class IncomingHandler: NSObject {
         
         devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         for i in 0..<devices.count {
-            if isCorrectDeviceAddress(i: i, for: byteArray) && devices[i].type == ControlType.Climate{
-                
-                let channel = Int(devices[i].channel)
-                devices[i].currentValue = getNSNumber(for: byteArray[8+13*(channel-1)])
-                
-                if let mode         = DeviceInfo.setMode[Int(byteArray[9+13*(channel-1)])] { devices[i].mode = mode } else { devices[i].mode = "Auto" }
-                if let modeState    = DeviceInfo.modeState[Int(byteArray[10+13*(channel-1)])] { devices[i].modeState = modeState } else { devices[i].modeState = "Off" }
-                if let speed        = DeviceInfo.setSpeed[Int(byteArray[11+13*(channel-1)])] { devices[i].speed = speed } else { devices[i].speed = "Auto" }
-                if let speedState   = DeviceInfo.speedState[Int(byteArray[12+13*(channel-1)])] { devices[i].speedState = speedState } else { devices[i].speedState = "Off" }
+            
+            if(devices[i].type == ControlType.Climate){
+                if isCorrectDeviceAddress(i: i, for: byteArray) && devices[i].type == ControlType.Climate{
+                    
+                    let channel = Int(devices[i].channel)
+                    devices[i].currentValue = getNSNumber(for: byteArray[8+13*(channel-1)])
+                    
+                    if let mode         = DeviceInfo.setMode[Int(byteArray[9+13*(channel-1)])] { devices[i].mode = mode } else { devices[i].mode = "Auto" }
+                    if let modeState    = DeviceInfo.modeState[Int(byteArray[10+13*(channel-1)])] { devices[i].modeState = modeState } else { devices[i].modeState = "Off" }
+                    if let speed        = DeviceInfo.setSpeed[Int(byteArray[11+13*(channel-1)])] { devices[i].speed = speed } else { devices[i].speed = "Auto" }
+                    if let speedState   = DeviceInfo.speedState[Int(byteArray[12+13*(channel-1)])] { devices[i].speedState = speedState } else { devices[i].speedState = "Off" }
 
-                devices[i].coolTemperature   = getNSNumber(for: byteArray[13+13*(channel-1)])
-                devices[i].heatTemperature   = getNSNumber(for: byteArray[14+13*(channel-1)])
-                devices[i].roomTemperature   = getNSNumber(for: byteArray[15+13*(channel-1)])
-                devices[i].humidity          = getNSNumber(for: byteArray[16+13*(channel-1)])
-                devices[i].filterWarning     = byteArray[17+13*(channel-1)] == 0x00 ? false : true
-                devices[i].allowEnergySaving = byteArray[18+13*(channel-1)] == 0x00 ? getNSNumber(from: false) : getNSNumber(from: true)
-//                devices[i].current           = getNSNumber(for: byteArray[19+13*(channel-1)] + byteArray[20+13*(channel-1)])
-                devices[i].current = NSNumber(value: Int(UInt16(byteArray[19+13*(channel-1)])*256 + UInt16(byteArray[20+13*(channel-1)]))) // current
-                
-                let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
-                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
+                    devices[i].coolTemperature   = getNSNumber(for: byteArray[13+13*(channel-1)])
+                    devices[i].heatTemperature   = getNSNumber(for: byteArray[14+13*(channel-1)])
+                    devices[i].roomTemperature   = getNSNumber(for: byteArray[15+13*(channel-1)])
+                    devices[i].humidity          = getNSNumber(for: byteArray[16+13*(channel-1)])
+                    devices[i].filterWarning     = byteArray[17+13*(channel-1)] == 0x00 ? false : true
+                    devices[i].allowEnergySaving = byteArray[18+13*(channel-1)] == 0x00 ? getNSNumber(from: false) : getNSNumber(from: true)
+    //                devices[i].current           = getNSNumber(for: byteArray[19+13*(channel-1)] + byteArray[20+13*(channel-1)])
+                    devices[i].current = NSNumber(value: Int(UInt16(byteArray[19+13*(channel-1)])*256 + UInt16(byteArray[20+13*(channel-1)]))) // current
+                    
+                    let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
+                }
             }
         }
         CoreDataController.sharedInstance.saveChanges()
@@ -805,17 +829,19 @@ class IncomingHandler: NSObject {
         
         devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         for i in  0..<devices.count{
-            if isCorrectDeviceAddress(i: i, for: byteArray) {
-                if byteArray[7] != 0xFF && byteArray[7] != 0xF0 {
-                    devices[i].runningTime = returnRunningTime([byteArray[8], byteArray[9], byteArray[10], byteArray[11]])
-                } else if byteArray[7] == 0xF0 {
-                    
-                } else {
-                    let channel = Int(devices[i].channel)
-                    print(Int(devices[i].channel))
-                    devices[i].runningTime = returnRunningTime([byteArray[8+4*(channel-1)], byteArray[9+4*(channel-1)], byteArray[10+4*(channel-1)], byteArray[11+4*(channel-1)]])
-                    print(devices[i].controlType )
-                    print(devices[i].runningTime)
+            if(devices[i].type == ControlType.Dimmer){
+                if isCorrectDeviceAddress(i: i, for: byteArray) {
+                    if byteArray[7] != 0xFF && byteArray[7] != 0xF0 {
+                        devices[i].runningTime = returnRunningTime([byteArray[8], byteArray[9], byteArray[10], byteArray[11]])
+                    } else if byteArray[7] == 0xF0 {
+                        
+                    } else {
+                        let channel = Int(devices[i].channel)
+                        print(Int(devices[i].channel))
+                        devices[i].runningTime = returnRunningTime([byteArray[8+4*(channel-1)], byteArray[9+4*(channel-1)], byteArray[10+4*(channel-1)], byteArray[11+4*(channel-1)]])
+                        print(devices[i].controlType )
+                        print(devices[i].runningTime)
+                    }
                 }
             }
         }
@@ -925,6 +951,25 @@ class IncomingHandler: NSObject {
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.RefreshDevice), object: self, userInfo: nil)
     }
 
+    
+//    static let Gateway = "Gateway"
+//    static let Dimmer = "Dimmer"
+//    static let Relay = "Relay"
+//    static let Climate = "hvac"
+//    static let IntelligentSwitch = "Intelligent Switch"
+//    static let AnalogOutput = "Analog Output"
+//    static let DigitalInput = "Digital Input"
+//    static let DigitalOutput = "Digital Output"
+//    static let AnalogInput = "Analog Input"
+//    static let Sensor = "Sensor"
+//    static let IRTransmitter = "IR Transmitter"
+//    static let Curtain = "Curtain"
+//    static let PC = "PC"
+//    static let SaltoAccess = "saltoAccess"
+//    static let GuestRoomModule = "GuestRoomModule"
+    
+    
+    
     // MARK: - Channel functions   |   informacije o stanjima na uredjajima
     func parseMessageChannelsState (_ byteArray:[Byte]) {
         print("CHANNEL'S STATE")
@@ -933,28 +978,31 @@ class IncomingHandler: NSObject {
         devices = CoreDataController.sharedInstance.fetchDevicesForGateway(gateways[0])
         if devices.count != 0 {
             for i in 0..<devices.count {
-                if isCorrectDeviceAddress(i: i, for: byteArray) {
-                    let channelNumber = Int(devices[i].channel)
-                    
-                    // Problem: If device is dimmer, then value that is received is in range from 0-100. In rest of the cases value is 0x00 or 0xFF (0 or 255)
-                    // That is why we must check whether device value is >100. If value is greater than 100 that means that it is not dimmer and the only value greater than 100 can be 255
-                    if 8+5*(channelNumber-1) < byteArray.count {
-                        if Int(byteArray[8+5*(channelNumber-1)]) > 100 {
-                            devices[i].currentValue = getNSNumber(for: byteArray[8+5*(channelNumber-1)]) // device is NOT dimmer and the value should be saved as received
-                        } else {
-                            devices[i].currentValue = NSNumber(value:  Int(byteArray[8+5*(channelNumber-1)])*255/100) // two cases: the device is dimmer and has some value. the device is not dimmer but the value is 0
+                
+                if(devices[i].type == ControlType.Dimmer || devices[i].type == ControlType.Relay || devices[i].type == ControlType.DigitalOutput || devices[i].type == ControlType.AnalogOutput || devices[i].type == ControlType.IntelligentSwitch){
+                    if isCorrectDeviceAddress(i: i, for: byteArray) {
+                        let channelNumber = Int(devices[i].channel)
+                        
+                        // Problem: If device is dimmer, then value that is received is in range from 0-100. In rest of the cases value is 0x00 or 0xFF (0 or 255)
+                        // That is why we must check whether device value is >100. If value is greater than 100 that means that it is not dimmer and the only value greater than 100 can be 255
+                        if 8+5*(channelNumber-1) < byteArray.count {
+                            if Int(byteArray[8+5*(channelNumber-1)]) > 100 {
+                                devices[i].currentValue = getNSNumber(for: byteArray[8+5*(channelNumber-1)]) // device is NOT dimmer and the value should be saved as received
+                            } else {
+                                devices[i].currentValue = NSNumber(value:  Int(byteArray[8+5*(channelNumber-1)])*255/100) // two cases: the device is dimmer and has some value. the device is not dimmer but the value is 0
+                            }
                         }
-                    }
-                    
-                    print("CHANNELS STATE RECEIVED :", devices[i].currentValue)
-                    
-                    // check if number of channel is lower than bytearray
-                    if 12+5*(channelNumber-1) < byteArray.count {
-                        devices[i].current     = NSNumber(value: Int(UInt16(byteArray[9+5*(channelNumber-1)])*256 + UInt16(byteArray[10+5*(channelNumber-1)]))) // current
-                        devices[i].voltage     = getNSNumber(for: byteArray[11+5*(channelNumber-1)]) // voltage
-                        devices[i].temperature = getNSNumber(for: byteArray[12+5*(channelNumber-1)]) // temperature
-                        let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
-                        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
+                        
+                        print("CHANNELS STATE RECEIVED :\(devices[i].name)", devices[i].currentValue)
+                        
+                        // check if number of channel is lower than bytearray
+                        if 12+5*(channelNumber-1) < byteArray.count {
+                            devices[i].current     = NSNumber(value: Int(UInt16(byteArray[9+5*(channelNumber-1)])*256 + UInt16(byteArray[10+5*(channelNumber-1)]))) // current
+                            devices[i].voltage     = getNSNumber(for: byteArray[11+5*(channelNumber-1)]) // voltage
+                            devices[i].temperature = getNSNumber(for: byteArray[12+5*(channelNumber-1)]) // temperature
+                            let data = ["deviceDidReceiveSignalFromGateway":devices[i]]
+                            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationKey.DidReceiveDataForRepeatSendingHandler), object: self, userInfo: data)
+                        }
                     }
                 }
             }

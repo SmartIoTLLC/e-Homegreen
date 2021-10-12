@@ -13,7 +13,16 @@ class PopoverVC: UIViewController, UIPopoverPresentationControllerDelegate, PopO
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
+
+//    deinit {
+//        NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
+//    }
+    
+//    @objc fileprivate func willEnterForeground() {
+//        viewWillAppear(false)
+//    }
     
     func openPopover(_ sender: AnyObject, popOverList:[PopOverItem]) {
         let storyboard = UIStoryboard(name: "Popover", bundle: nil)

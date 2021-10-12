@@ -18,9 +18,7 @@ public class CameraView: UIView {
     var preview: AVCaptureVideoPreviewLayer!
     
     let cameraQueue = DispatchQueue(label: "com.zero.ALCameraViewController.Queue")
-    
-    let focusView = CropOverlay(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
-    
+
     public var currentPosition = CameraGlobals.shared.defaultCameraPosition
     
     public func startSession() {
@@ -81,64 +79,10 @@ public class CameraView: UIView {
         super.layoutSubviews()
         preview?.frame = bounds
     }
-    
-    public func configureFocus() {
-        
-        if let gestureRecognizers = gestureRecognizers {
-            gestureRecognizers.forEach({ removeGestureRecognizer($0) })
-        }
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(focus(gesture:)))
-        addGestureRecognizer(tapGesture)
-        isUserInteractionEnabled = true
-        addSubview(focusView)
-        
-        focusView.isHidden = true
-        
-        let lines = focusView.horizontalLines + focusView.verticalLines + focusView.outerLines
-        
-        lines.forEach { line in
-            line.alpha = 0
-        }
-    }
 
     public func configureZoom() {
         let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinch(gesture:)))
         addGestureRecognizer(pinchGesture)
-    }
-    
-    @objc internal func focus(gesture: UITapGestureRecognizer) {
-        let point = gesture.location(in: self)
-        
-        guard focusCamera(toPoint: point) else {
-            return
-        }
-        
-        focusView.isHidden = false
-        focusView.center = point
-        focusView.alpha = 0
-        focusView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-        
-        bringSubviewToFront(focusView)
-        
-        UIView.animateKeyframes(withDuration: 1.5, delay: 0, options: UIView.KeyframeAnimationOptions(), animations: {
-            
-            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.15, animations: { [weak self] in
-                self?.focusView.alpha = 1
-                self?.focusView.transform = CGAffineTransform.identity
-            })
-            
-            UIView.addKeyframe(withRelativeStartTime: 0.80, relativeDuration: 0.20, animations: { [weak self] in
-                self?.focusView.alpha = 0
-                self?.focusView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            })
-            
-            
-            }, completion: { [weak self] finished in
-                if finished {
-                    self?.focusView.isHidden = true
-                }
-        })
     }
 
     @objc internal func pinch(gesture: UIPinchGestureRecognizer) {
@@ -182,9 +126,7 @@ public class CameraView: UIView {
     }
     
     private func cameraWithPosition(position: AVCaptureDevice.Position) -> AVCaptureDevice? {
-        guard let devices = AVCaptureDevice.devices(for: AVMediaType.video) as? [AVCaptureDevice] else {
-            return nil
-        }
+        let devices = AVCaptureDevice.devices(for: AVMediaType.video)
         return devices.filter { $0.position == position }.first
     }
     
@@ -283,16 +225,16 @@ public class CameraView: UIView {
         }
         switch UIApplication.shared.statusBarOrientation {
             case .portrait:
-                preview?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
+              preview?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
               break
             case .portraitUpsideDown:
-                preview?.connection?.videoOrientation = AVCaptureVideoOrientation.portraitUpsideDown
+              preview?.connection?.videoOrientation = AVCaptureVideoOrientation.portraitUpsideDown
               break
             case .landscapeRight:
-                preview?.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeRight
+              preview?.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeRight
               break
             case .landscapeLeft:
-                preview?.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeLeft
+              preview?.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeLeft
               break
             default: break
         }

@@ -618,7 +618,43 @@ class FilterPullDown: UIScrollView {
             } else { chooseCategoryButon.setTitle(FilterPulldownKeys.all, for: UIControl.State()); self.category = nil }
             
         }
+        
+        
+//        filterDelegate?.filterParametars(FilterItem.loadFilter(type: getFilterForMenu(menu: menu))!)
         returnFilter()
+    }
+    
+    func  getFilterForMenu(menu : Menu) -> FilterEnumeration{
+        switch menu {
+        case .devices:
+            return FilterEnumeration.Device
+        case .scenes:
+            return FilterEnumeration.Scenes
+        case .events:
+            return FilterEnumeration.Events
+        case .remote:
+            return FilterEnumeration.Remote
+        case .sequences:
+            return FilterEnumeration.Sequences
+        case .timers:
+            return FilterEnumeration.Timers
+        case .flags:
+            return FilterEnumeration.Flags
+        case .chat:
+            return FilterEnumeration.Chat
+        case .security:
+            return FilterEnumeration.Security
+        case .surveillance:
+            return FilterEnumeration.Surveillance
+        case .energy:
+            return FilterEnumeration.Energy
+        case .pcControl:
+            return FilterEnumeration.PCControl
+        case .users:
+            return FilterEnumeration.Users
+        default:
+            return FilterEnumeration.Device
+        }
     }
     
     @objc func setDefaultParametar(){
